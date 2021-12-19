@@ -1,6 +1,9 @@
 +++
 title = "Ocufabulous: An Oculus Rift DK2 Review"
 date = 2014-10-12
+
+[taxonomies]
+tags=["xr"]
 +++
 
 The [Oculus Rift Development Kit 2](http://www.oculus.com/blog/announcing-the-oculus-rift-development-kit-2-dk2/) is Oculus' latest virtual reality headset available to the "public." As the name suggests, it exists to allow developers to produce and test experiences for the eventual consumer version.
@@ -95,6 +98,7 @@ Generally, it was a pleasant introduction to VR; there were a few scenes that ca
 ## Virtual Desktop
 ![Unwarped screenshot of the Windows desktop, as seen through Virtual Desktop](vd1-unwarp.jpg)
 ![Unwarped screenshot of Super Hexagon, as seen through Virtual Desktop](vd2-unwarp.jpg)
+
 [Virtual Desktop](http://www.vrdesktop.net/) is an application quite simple in concept, but at the same time one of the most useful applications available for the Rift. It takes your primary monitor and projects it on a (optionally curved) virtual screen.
 
 It’s one of the most flexible applications I have used, as you can consume normal 2D content in an isolated environment. You can easily play a game, for example, on a massive screen that fills up your field of vision.
@@ -104,6 +108,7 @@ The developer is quite active and readily fixes any bugs that get reported. In g
 ## Welcome to Oculus
 ![Unwarped screenshot of Welcome to Oculus' first room](wto1-unwarp.jpg)
 ![Unwarped screenshot of Welcome to Oculus' living room](wto2-unwarp.jpg)
+
 [Welcome to Oculus](http://treyte.ch/oculus/) is another introductory demo that takes you through the history of media in order to contextualize the rapid advance of technology and the creation of consumer-friendly virtual reality. It does this by showing a variety of scenes, overlaid by the sweet, dulcet tones of what I can only assume to be text-to-speech. (That's something that could be significantly improved!)
 
 While SightLine - The Chair attempted to take advantage of a line-of-sight mechanic to communicate the possibilities of VR, Welcome to Oculus takes this contextualization of media and reframes it in the perspective of VR, giving the user an insight into how VR developed and what it can be used for.
@@ -117,6 +122,7 @@ However, in general, it was an excellent demo and I’m more than happy to recom
 ## Radial-G
 ![Unwarped screenshot of the log-in screen for Radial-G](radialg1-unwarp.jpg)
 ![Unwarped screenshot of Radial-G gameplay](radialg2-unwarp.jpg)
+
 [Radial-G](http://radial-g.com/) is an in-development racing game based around radial movement around a cylindrical track. A single-player demo has been released in order to demonstrate the concept, and it's been specifically designed with VR in mind.
 
 Out of the VR games I’ve tested so far, this is by far my favorite one. The demo itself is a clean, polished concept and clearly demonstrates what they’re going for; it’s an engaging experience, and it plays very well into the strengths of VR. It’s easy to lose track of time while playing this on the Rift; its core gameplay mechanic is so utterly addictive that I’d end up spending half an hour just trying to beat my lap time without ever realizing the time spent at any point.

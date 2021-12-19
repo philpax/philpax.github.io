@@ -1,6 +1,9 @@
 +++
 title = "Abusing The C Preprocessor: Writing A 4-Bit Adder"
 date = 2013-10-01
+
+[taxonomies]
+tags=["c", "cursed"]
 +++
 
 I've always wondered what could be done with the C preprocessor. The existence of projects such as [Boost Preprocessor](http://www.boost.org/doc/libs/release/libs/preprocessor/) and the infamous [Brainfuck interpreter](https://github.com/orangeduck/CPP_COMPLETE) are a testament to its wide-ranging capabilities.

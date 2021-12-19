@@ -1,6 +1,9 @@
 +++
 title = "Heady House Hunting with D"
 date = 2015-01-13
+
+[taxonomies]
+tags=["d"]
 +++
 
 Several months ago, my family found ourselves in the most tedious of quests: searching for a new house. Our old house was showing all the signs of advanced age: weakened structural integrity, cracks in the walls, failing appliances - and there was only so much we could do to patch around the fundamental issues. "Enough," said we, "it's time to go."
@@ -50,13 +53,13 @@ Inspecting the source HTML of the page, we notice that links to a house look lik
 
 All we need to do is to extract the URL from that link (the `/property-house-vic-reservoir-3092468912`), which can be done with a simple regular expression:
 
-```html
+```re
 <a href='/(.+?)' class='name' rel='listingName'>
 ```
 
 After storing all the results from the above regular expression, we can then use another regular expression to extract the next page link (which looks like `<li class="nextLink"><a href="/buy/omitted-for-clarity" rel="newSearchPage">Next</a>`):
 
-```html
+```re
 <li class="nextLink"><a href="(.+?)"
 ```
 
@@ -71,13 +74,13 @@ Since most of these are presented in the same way, the resulting regular express
 
 Getting the description of the house (Example: `<p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`):
 
-```html
+```re
 <p class="body">(.*?)</p>
 ```
 
 Getting the number of bedrooms (Example: `<li>Bedrooms:<span>4</span></li>`):
 
-```html
+```re
 <li>Bedrooms:<span>([0-9]+?)</span></li>
 ```
 
@@ -192,11 +195,11 @@ Extract the time span from the response:
 
 Extract the number of hours and minutes from the time span:
 
-```regex
+```re
 ([0-9]+)h
 ```
 
-```regex
+```re
 ([0-9]+)min
 ```
 
