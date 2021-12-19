@@ -1,6 +1,7 @@
 base_url = "https://philpax.me"
 build_search_index = false
 compile_sass = true
+description = "your friendly neighbourhood polyglot programmer/engineer"
 taxonomies = [
   {name = "tags"},
 ]
