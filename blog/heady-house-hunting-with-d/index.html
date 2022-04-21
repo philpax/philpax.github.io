@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>Heady House Hunting with D - Philpax</title>
+    
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="your friendly neighbourhood polyglot programmer&#x2F;engineer"/>
+
+    <meta property="og:title" content="Philpax&nbsp;-&nbsp;Heady House Hunting with D" />
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https:&#x2F;&#x2F;philpax.me&#x2F;blog&#x2F;heady-house-hunting-with-d&#x2F;"/>
+    <meta property="og:description" content="Several months ago, my family found ourselves in the most tedious of quests: searching for a new house. Our old house was showing all the signs of advanced age: weakened structural integrity, cracks i…"/>
+    <link rel="preload" href="https://philpax.me/assets/fonts/FiraCode-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://philpax.me/assets/fonts/FiraCode-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://philpax.me/style.css?h=4ffdd54e7b066fbdcf280f65a4eb6f12bd85d1beeabddd9b2ae6f66585dc690b">
+    <link rel="stylesheet" href="https://philpax.me/color/purple.css?h=af5472926e882590ce4fb43255caefd527646092b37417e3222375974bb7b6bb">
+</head>
+    <body>
+        <div class="container center">
+<header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="&#x2F;">
+    <div class="logo">
+        philpax
+    </div>
+</a>
+        </div>
+        
+    <ul class="menu__inner menu__inner--desktop">
+        
+        
+                <li>
+                    <a href="
+    
+        https://philpax.me
+    
+">blog</a>
+                </li>
+            
+                <li>
+                    <a href="
+    
+        https://philpax.me/tags
+    
+">tags</a>
+                </li>
+            
+                <li>
+                    <a href="
+    
+        https:&#x2F;&#x2F;github.com&#x2F;philpax
+    
+">github</a>
+                </li>
+            
+                <li>
+                    <a href="
+    
+        https:&#x2F;&#x2F;twitter.com&#x2F;philpax_
+    
+">twitter</a>
+                </li>
+            
+                <li>
+                    <a href="
+    
+        https://philpax.me/about
+    
+">about</a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-trigger">menu</div>
+    </div>
+    
+    <nav class="menu">
+        
+    <ul class="menu__inner menu__inner--mobile">
+        
+        <li>
+            <a href="
+    
+        https://philpax.me
+    
+">blog</a>
+        </li>
+        <li>
+            <a href="
+    
+        https://philpax.me/tags
+    
+">tags</a>
+        </li>
+        <li>
+            <a href="
+    
+        https:&#x2F;&#x2F;github.com&#x2F;philpax
+    
+">github</a>
+        </li>
+        <li>
+            <a href="
+    
+        https:&#x2F;&#x2F;twitter.com&#x2F;philpax_
+    
+">twitter</a>
+        </li>
+        <li>
+            <a href="
+    
+        https://philpax.me/about
+    
+">about</a>
+        </li>
+    </ul>
+
+    </nav>
+
+    </header>
+<div class="content"><article class="post">
+        
+    <header>
+        <div class="post-title">
+            <div class="flex-container">
+                <h1>
+                    <a href="https:&#x2F;&#x2F;philpax.me&#x2F;blog&#x2F;heady-house-hunting-with-d&#x2F;">Heady House Hunting with D</a>
+                </h1>
+
+                <span class="post-date">2015-01-13
+                        <!---->
+                </span>
+            </div>
+
+            <div class="meta">
+                
+    <div class="post-meta">
+        
+
+    
+    <a href="https://philpax.me/tags/d/">#d</a>
+        
+    
+            
+        
+    </div>
+
+            </div>
+        </div>
+    </header>
+<p>Several months ago, my family found ourselves in the most tedious of quests: searching for a new house. Our old house was showing all the signs of advanced age: weakened structural integrity, cracks in the walls, failing appliances - and there was only so much we could do to patch around the fundamental issues. &quot;Enough,&quot; said we, &quot;it's time to go.&quot;</p>
+<p>So with high spirits and higher expectations, we plugged in our basic criteria into a real estate website - and then felt the despair rise as hundreds of results flooded in. This simply wouldn't do! None of us had the time or will to individually appraise over four hundred houses, especially when we'd have to keep looking at new houses as they entered the market.</p>
+<span id="continue-reading"></span>
+<p>We needed a more systematic approach to this problem. I compiled a list of criteria for the house - what do we need? What would be nice to have? What <em>don't</em> we want? This let us nail down what our hypothetical house would require, and gave us a base upon which we could start investigating potential candidates. The only problem with that, of course, was that we still had to manually look at each house and determine whether they fit the criteria.</p>
+<p>As you can imagine, this was not a satisfactory solution for anyone involved. I thought about the problem at hand, and thought of a simple approach. If we know what we're looking for, why not filter the list and <em>automatically</em> find suitable houses?</p>
+<h1 id="step-0-getting-started">Step 0: Getting Started</h1>
+<p>To begin with, I needed to decide what I was going to write this little project in. The choice of language or framework doesn't particularly matter in the short-term, but I wanted something that I was familiar with and would make my life easier.</p>
+<p>With this in mind, I chose <a href="http://dlang.org/">D</a> and <a href="http://vibed.org/">vibe.d</a>. I knew how to use both well, and D's ability to model strongly-typed data combined with its performance made it a winning choice for me. vibe.d allowed me to asynchronously connect to websites and collect data. I decided that I wanted the resulting houses to be displayed as a webpage, so it was a fairly straightforward task to use vibe.d to present a simple listing of houses.</p>
+<p>I made the early decision to not invest too much time or effort into this; after all, it was an experimental hack with no guarantees as to whether it would produce workable results. As a result, general code quality is poor, with many losses in efficiency; acceptable for a proof-of-concept, but not ideal for production code.</p>
+<p>I wrote a few helper methods to ease the collection of data, as well as HTTP communication. What these are used for will be explained later on:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#65737e;">// Attempt to match a regular expression, and convert it to the specified type
+</span><span style="color:#b48ead;">Type </span><span style="color:#8fa1b3;">getRegexMatch</span><span>(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">Regex</span><span>, </span><span style="color:#bf616a;">Type </span><span>= </span><span style="color:#b48ead;">string</span><span>)(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">toMatch</span><span>);
+</span><span style="color:#65737e;">// Return all the matches for a given regular expression
+</span><span style="color:#b48ead;">string</span><span>[] </span><span style="color:#8fa1b3;">getRegexMatches</span><span>(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">Regex</span><span>)(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">toMatch</span><span>);
+</span><span style="color:#65737e;">// Send a HTTP request to a given URL, and then call the handler with the response
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">httpRequest</span><span>(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">url</span><span>, </span><span style="color:#b48ead;">scope void delegate</span><span>(</span><span style="color:#b48ead;">string</span><span>, </span><span style="color:#b48ead;">scope HTTPClientResponse</span><span>) </span><span style="color:#bf616a;">responder</span><span>);
+</span><span style="color:#65737e;">// Send a POST request with URL-encoded variables to a given URL, and then call the handler with the response
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">httpPost</span><span>(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">url</span><span>, </span><span style="color:#b48ead;">string</span><span>[</span><span style="color:#b48ead;">string</span><span>] </span><span style="color:#bf616a;">vars</span><span>, </span><span style="color:#b48ead;">scope void delegate</span><span>(</span><span style="color:#b48ead;">scope HTTPClientResponse</span><span>) </span><span style="color:#bf616a;">responder</span><span>);
+</span></code></pre>
+<h1 id="step-1-the-list">Step 1: The List</h1>
+<p>The first order of business is to produce a complete list of houses that we can analyze. We already have a good starting point for this: the search results that we obtained with our basic criteria.</p>
+<p>For this, I chose to <a href="http://en.wikipedia.org/wiki/Data_scraping">scrape</a> realestate.com.au. The idea was simple: get the <a href="http://www.realestate.com.au/buy/property-house-with-4-bedrooms-between-0-400000-in-melbourne+-+northern+region+vic/list-1?newOrEstablished=established&amp;numParkingSpaces=2&amp;numBaths=2&amp;maxBeds=any">first page of results that fit our basic criteria</a>, get the link to each house, head to the next page, and then repeat until complete.</p>
+<p>There are several approaches that can be taken when scraping a webpage. I wanted quick results, so I decided to use <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions (regexes)</a> which are used to extract data from text using specially-prepared expressions. In general, regexes are the <a href="http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454">wrong tool for parsing webpages</a>, but a simple use case like this doesn't need more.</p>
+<p>vibe.d is used to request the results page; upon getting the page back, we can break out our toolset on it. As webpages are HTML, and HTML is textual, data can be easily extracted from the page.</p>
+<p>Inspecting the source HTML of the page, we notice that links to a house look like this:</p>
+<pre data-lang="html" style="background-color:#2b303b;color:#c0c5ce;" class="language-html "><code class="language-html" data-lang="html"><span>&lt;</span><span style="color:#bf616a;">a </span><span style="color:#d08770;">href</span><span>=&quot;</span><span style="color:#a3be8c;">/property-house-vic-reservoir-3092468912</span><span>&quot; </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">name</span><span>&quot; </span><span style="color:#d08770;">rel</span><span>=&quot;</span><span style="color:#a3be8c;">listingName</span><span>&quot;&gt;18 Fake Street, Reservoir, Vic 3073&lt;/</span><span style="color:#bf616a;">a</span><span>&gt;
+</span></code></pre>
+<p>All we need to do is to extract the URL from that link (the <code>/property-house-vic-reservoir-3092468912</code>), which can be done with a simple regular expression:</p>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>&lt;a href=&#39;/(.+?)&#39; class=&#39;name&#39; rel=&#39;listingName&#39;&gt;
+</span></code></pre>
+<p>After storing all the results from the above regular expression, we can then use another regular expression to extract the next page link (which looks like <code>&lt;li class=&quot;nextLink&quot;&gt;&lt;a href=&quot;/buy/omitted-for-clarity&quot; rel=&quot;newSearchPage&quot;&gt;Next&lt;/a&gt;</code>):</p>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>&lt;li class=</span><span style="color:#a3be8c;">&quot;nextLink&quot;</span><span>&gt;&lt;a href=</span><span style="color:#a3be8c;">&quot;(.+?)&quot;
+</span></code></pre>
+<p>Repeat the above two steps for each page and before long, we'll have a complete list of URLs to houses that satisfy the basic criteria. That's the easy part done.</p>
+<h1 id="step-2-basic-data">Step 2: Basic Data</h1>
+<p>Now that we've got our fancy list of house URLs, how do we turn this into something useful? Why, it's just as simple as Step 1: we visit each house URL, and extract all the relevant data.</p>
+<p>The page for each house contains vital information that we can collect and use for our needs. A sample page can be seen <a href="https://philpax.me/blog/heady-house-hunting-with-d/house1.html">here</a>; its structure is similar to the real page, but I've simplified it in order to highlight the core data (images courtesy of <a href="http://placekitten.com/">placekitten</a>). Some analysis of the HTML later, and we can create simple regular expressions that can be used to extract all the relevant data points on the page, including, but not limited to, the address, suburb, post code, land size, price, and more.</p>
+<p>Since most of these are presented in the same way, the resulting regular expressions are quite similar. They all function in the same fashion: they extract the contents of a given HTML tag. For example, here are two of the expressions:</p>
+<p>Getting the description of the house (Example: <code>&lt;p class=&quot;body&quot;&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p&gt;</code>):</p>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>&lt;p class=</span><span style="color:#a3be8c;">&quot;body&quot;</span><span>&gt;(.*?)&lt;/p&gt;
+</span></code></pre>
+<p>Getting the number of bedrooms (Example: <code>&lt;li&gt;Bedrooms:&lt;span&gt;4&lt;/span&gt;&lt;/li&gt;</code>):</p>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>&lt;li&gt;</span><span style="color:#bf616a;">Bedrooms</span><span>:&lt;span&gt;([</span><span style="color:#d08770;">0</span><span>-</span><span style="color:#d08770;">9</span><span>]+?)&lt;/span&gt;&lt;/li&gt;
+</span></code></pre>
+<p>Once all is well and done, we now have basic data about each house. Not enough to finish our quest, but enough to start with.</p>
+<p>We take all of the data pertaining to a single house, and store it in a D structure. This process is then repeated for each house, with the resulting structs being placed in a list. This forms the basis of our database of houses, but we're not done yet.</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#b48ead;">struct </span><span>Suburb
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">postCode</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">name</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">enum </span><span>HomeBroadband
+</span><span>{
+</span><span>    None,
+</span><span>    NBN,
+</span><span>    Cable,
+</span><span>    ADSL2,
+</span><span>    Unknown
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">enum </span><span>HomeTelephone
+</span><span>{
+</span><span>    None,
+</span><span>    Landline,
+</span><span>    NBNLandline,
+</span><span>    Unknown
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>House
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">name</span><span>;
+</span><span>    </span><span style="color:#b48ead;">Suburb </span><span style="color:#bf616a;">suburb</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">price</span><span>; </span><span style="color:#65737e;">// Price is not always a number (see auctions, etc)
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">landSize </span><span>= </span><span style="color:#d08770;">0</span><span>;
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">travelTime </span><span>= </span><span style="color:#d08770;">0</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">url</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">imageUrl</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">description</span><span>;
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">agencyName</span><span>;
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">bedrooms</span><span>;
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">bathrooms</span><span>;
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">toilets</span><span>;
+</span><span>    </span><span style="color:#b48ead;">uint </span><span style="color:#bf616a;">garageSpaces</span><span>;
+</span><span>    </span><span style="color:#b48ead;">HomeBroadband </span><span style="color:#bf616a;">broadband </span><span>= </span><span style="color:#bf616a;">HomeBroadband</span><span>.</span><span style="color:#bf616a;">Unknown</span><span>;
+</span><span>    </span><span style="color:#b48ead;">HomeTelephone </span><span style="color:#bf616a;">telephone </span><span>= </span><span style="color:#bf616a;">HomeTelephone</span><span>.</span><span style="color:#bf616a;">Unknown</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#bf616a;">House</span><span>[] </span><span style="color:#bf616a;">houses</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">housePageResults</span><span>(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">url</span><span>, </span><span style="color:#b48ead;">scope HTTPClientResponse </span><span style="color:#bf616a;">response</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">text </span><span>= </span><span style="color:#bf616a;">response</span><span>.</span><span style="color:#bf616a;">bodyReader</span><span>.</span><span style="color:#bf616a;">readAllUTF8</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">House </span><span style="color:#bf616a;">house</span><span>;
+</span><span>    </span><span style="color:#bf616a;">house</span><span>.</span><span style="color:#bf616a;">name </span><span>=
+</span><span>        </span><span style="color:#bf616a;">text</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!`</span><span style="color:#a3be8c;">&lt;span itemprop=&quot;streetAddress&quot;&gt;(.*?)&lt;/span&gt;</span><span>`;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">suburb </span><span>=
+</span><span>        </span><span style="color:#bf616a;">text</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!`</span><span style="color:#a3be8c;">&lt;span itemprop=&quot;addressLocality&quot;&gt;(.+?)&lt;/span&gt;</span><span>`;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">postCode </span><span>=
+</span><span>        </span><span style="color:#bf616a;">text</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!(`</span><span style="color:#a3be8c;">&lt;span itemprop=&quot;postalCode&quot;&gt;([0-9]+?)&lt;/span&gt;</span><span>`, </span><span style="color:#b48ead;">uint</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#bf616a;">house</span><span>.</span><span style="color:#bf616a;">suburb </span><span>= </span><span style="color:#bf616a;">Suburb</span><span>(</span><span style="color:#bf616a;">postCode</span><span>, </span><span style="color:#bf616a;">suburb</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#bf616a;">house</span><span>.</span><span style="color:#bf616a;">price </span><span>=
+</span><span>        </span><span style="color:#bf616a;">text</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!`</span><span style="color:#a3be8c;">&lt;span class=&quot;priceText&quot;&gt;(.+?)&lt;/span&gt;</span><span>`;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Repeat the above for the remaining fields
+</span><span>
+</span><span>    </span><span style="color:#bf616a;">houses </span><span>~= </span><span style="color:#bf616a;">house</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Get additional data here
+</span><span>}
+</span></code></pre>
+<h1 id="step-3-additional-data">Step 3: Additional Data</h1>
+<p>When it comes to searching for a house, it's what the real estate agent <em>isn't</em> telling you that could make or break your final decision. Of importance to us was availability of public transport and internet/landline services - for obvious reasons, an agent (or the listing they prepare) won't tell you whether either of these two are lacking.</p>
+<p>What can we do to help inform our decision making process and ensure we're seeing the full picture? As it turns out, these two criteria can be checked online via other services. The basic data we collected before provides us the address of each house - we simply automatically submit it to these external services, and get the information we need.</p>
+<p>For my use case, I needed to automatically check the length of a public transport journey from a given address to the city using the <a href="http://ptv.vic.gov.au/journey#jpsearch%5Baction%5D=showPlanner">Public Transport of Victoria Journey Planner</a>, as well as checking telecommunications availability via the <a href="http://www.optus.com.au/shop/broadband/home-broadband">Optus website</a>.</p>
+<p>There's a general approach that can be taken to automating both of these - use a web debugging proxy, such as <a href="http://www.telerik.com/fiddler">Fiddler</a>, send a request to the service with sample data, observe the communication between the website and the service via Fiddler, and then replicate the communication in our program.</p>
+<p>To demonstrate this, here's what I did for the journey planner:</p>
+<ol>
+<li>
+<p>Launch Fiddler, and have it capture web traffic:</p>
+<p><img src="https://philpax.me/blog/heady-house-hunting-with-d/fiddler-1.png" alt="Image of just-opened Fiddler window" /></p>
+</li>
+<li>
+<p>Fill out the Journey Planner form with sample data (in this case, the address of a shopping centre), and submit the request to the service by pressing Show Journey.</p>
+<p><img src="https://philpax.me/blog/heady-house-hunting-with-d/fiddler-2.png" alt="Image of completed Journey Planner form, including results" /></p>
+</li>
+<li>
+<p>Stop capturing in Fiddler, and look at the resulting request and response for the form that was just submitted.</p>
+<p><img src="https://philpax.me/blog/heady-house-hunting-with-d/fiddler-3.png" alt="Image of Fiddler, showing the request and response" /></p>
+</li>
+</ol>
+<p>From the resulting Fiddler dump, we can begin to divine what we need to know for automating this service. First, we can see that the request (the text under TextView in the top-half) submitted is <a href="http://en.wikipedia.org/wiki/Percent-encoding#The_application.2Fx-www-form-urlencoded_type">URL-encoded</a>; this lets us know <em>how</em> to send the data to the service. After that, we can break down the request data; the names of each field in the request are fairly self-explanatory, giving us everything we need to construct our very own request.</p>
+<p>Next up, understanding the response (bottom-half of the window). Looking at the response in Raw view, something becomes apparent: this is actually more HTML! Since we only need <em>one</em> thing from this response, the travel time (<code>&lt;span&gt;54min&lt;/span&gt;</code>), this is a problem easily solved with, you guessed it, regular expressions:</p>
+<p>Extract the time span from the response:</p>
+<pre data-lang="html" style="background-color:#2b303b;color:#c0c5ce;" class="language-html "><code class="language-html" data-lang="html"><span>&lt;</span><span style="color:#bf616a;">div </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">timespan</span><span>&quot;&gt;.*?&lt;</span><span style="color:#bf616a;">span</span><span>&gt;(.*?)&lt;/</span><span style="color:#bf616a;">span</span><span>&gt;&lt;/</span><span style="color:#bf616a;">div</span><span>&gt;
+</span></code></pre>
+<p>Extract the number of hours and minutes from the time span:</p>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>([</span><span style="color:#d08770;">0</span><span>-</span><span style="color:#d08770;">9</span><span>]+)h
+</span></code></pre>
+<pre data-lang="re" style="background-color:#2b303b;color:#c0c5ce;" class="language-re "><code class="language-re" data-lang="re"><span>([</span><span style="color:#d08770;">0</span><span>-</span><span style="color:#d08770;">9</span><span>]+)min
+</span></code></pre>
+<p>Finally, we need to combine what we know in order to automate the process. We know what the request is composed of, and how to interpret the response - so what's left is automation busywork. We take the URL from Fiddler (which can be seen in the left half) and then write some code that will submit a <a href="http://en.wikipedia.org/wiki/POST_%28HTTP%29">POST request</a> with URL-encoded data that conforms to the aforementioned format, applies our regular expression to the response to extract the travel time, and then adds this to the house's entry in our database. Congratulations - we've successfully automated the process of finding out the travel time to a given destination (in this case, the city) for a given house.</p>
+<p>I implemented this as an asynchronous process so that multiple houses could be updated at once. To this end, the function takes in a result handler that gets called once the website provides a result; in hindsight, this was not the ideal way to implement this as it led to code cleanliness issues.</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">getJourneyToFlinders</span><span>(
+</span><span>    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">origin</span><span>, </span><span style="color:#b48ead;">SysTime </span><span style="color:#bf616a;">time</span><span>, </span><span style="color:#b48ead;">void delegate</span><span>(</span><span style="color:#b48ead;">uint</span><span>) </span><span style="color:#bf616a;">resultHandler</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">string</span><span>[</span><span style="color:#b48ead;">string</span><span>] </span><span style="color:#bf616a;">vars</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">sessionID</span><span>&quot;] = &quot;</span><span style="color:#a3be8c;">0</span><span>&quot;;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">type_origin</span><span>&quot;] = &quot;</span><span style="color:#a3be8c;">any</span><span>&quot;;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">name_origin</span><span>&quot;] = </span><span style="color:#bf616a;">origin</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">type_destination</span><span>&quot;] = &quot;</span><span style="color:#a3be8c;">any</span><span>&quot;;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">name_destination</span><span>&quot;] = &quot;</span><span style="color:#a3be8c;">Flinders Street Railway Station</span><span>&quot;;
+</span><span>    </span><span style="color:#65737e;">// Many, many more variables removed for readability - default values
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">bool </span><span style="color:#bf616a;">pm </span><span>= (</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">hour </span><span>&gt;= </span><span style="color:#d08770;">12</span><span>);
+</span><span>    </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">hour </span><span>= </span><span style="color:#bf616a;">pm </span><span>? </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">hour </span><span>- </span><span style="color:#d08770;">12 </span><span>: </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">hour</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">itdDateDay</span><span>&quot;] = </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">day</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">string</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">itdDateYearMonth</span><span>&quot;] =
+</span><span>        </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">year</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">string </span><span>~ </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">month</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">ubyte</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">string</span><span>.</span><span style="color:#bf616a;">rightJustify</span><span>(</span><span style="color:#d08770;">2</span><span>, </span><span style="color:#a3be8c;">&#39;0&#39;</span><span>);
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">itdTimeHour</span><span>&quot;] = </span><span style="color:#bf616a;">hour</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">string</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">itdTimeMinute</span><span>&quot;] = </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">minute</span><span>.</span><span style="color:#bf616a;">to</span><span>!</span><span style="color:#b48ead;">string</span><span>;
+</span><span>    </span><span style="color:#bf616a;">vars</span><span>[&quot;</span><span style="color:#a3be8c;">itdTimeAMPM</span><span>&quot;] = </span><span style="color:#bf616a;">pm </span><span>? &quot;</span><span style="color:#a3be8c;">pm</span><span>&quot; : &quot;</span><span style="color:#a3be8c;">am</span><span>&quot;;
+</span><span>
+</span><span>    </span><span style="color:#bf616a;">httpPost</span><span>(`</span><span style="color:#a3be8c;">http://ptv.vic.gov.au/transport/direct/journey-planner.php</span><span>`, </span><span style="color:#bf616a;">vars</span><span>,
+</span><span>        (</span><span style="color:#b48ead;">scope </span><span style="color:#bf616a;">HTTPClientResponse response</span><span>)
+</span><span>        {
+</span><span>            </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">text </span><span>= </span><span style="color:#bf616a;">response</span><span>.</span><span style="color:#bf616a;">bodyReader</span><span>.</span><span style="color:#bf616a;">readAllUTF8</span><span>();
+</span><span>
+</span><span>            </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">timeString </span><span>=
+</span><span>                </span><span style="color:#bf616a;">text</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!(`</span><span style="color:#a3be8c;">&lt;div class=&quot;timespan&quot;&gt;.*?&lt;span&gt;(.*?)&lt;/span&gt;&lt;/div&gt;</span><span>`);
+</span><span>
+</span><span>            </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">timeString</span><span>.</span><span style="color:#bf616a;">empty</span><span>)
+</span><span>                </span><span style="color:#b48ead;">return</span><span>;
+</span><span>
+</span><span>            </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">minutes </span><span>= </span><span style="color:#bf616a;">timeString</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!(`</span><span style="color:#a3be8c;">([0-9]+)min</span><span>`, </span><span style="color:#b48ead;">uint</span><span>);
+</span><span>            </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">hour </span><span>= </span><span style="color:#bf616a;">timeString</span><span>.</span><span style="color:#bf616a;">getRegexMatch</span><span>!(`</span><span style="color:#a3be8c;">([0-9]+)h</span><span>`, </span><span style="color:#b48ead;">uint</span><span>);
+</span><span>
+</span><span>            </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">hour </span><span>!= </span><span style="color:#b48ead;">uint</span><span>.</span><span style="color:#bf616a;">init</span><span>)
+</span><span>                </span><span style="color:#bf616a;">minutes </span><span>+= </span><span style="color:#bf616a;">hour </span><span>* </span><span style="color:#d08770;">60</span><span>;
+</span><span>
+</span><span>            </span><span style="color:#bf616a;">resultHandler</span><span>(</span><span style="color:#bf616a;">minutes</span><span>);
+</span><span>        });
+</span><span>}
+</span></code></pre>
+<p>That's an application of the general process. I did much the same thing for the Optus website; the biggest difference was that the response was in JSON, which allowed me to easily interpret it and extract the relevant information about connectivity. Of note is that this technique could be applied to <em>any</em> service - by taking what we already know (i.e. the address, the suburb, etc) and plugging it into another service, we can rapidly collect more data of use.</p>
+<h1 id="step-4-filter-and-score">Step 4: Filter and Score</h1>
+<p>Alright! We've collected all the data we need. There's always more data available, but this is enough for our purposes. Now, to the fun part: using what we have to deliver judgement upon each house. Currently, we have our 400+ strong database of houses - each fully decked out with relevant information - but no way of trawling through them and sorting out the gems from the lost causes.</p>
+<p>We start off with the basics: an elementary filter, designed to eliminate houses that simply won't do, other criteria be damned. For us, this meant filtering out everything with a public transport travel time of over 70 minutes, wrongly categorized homes (naughty real estate agents putting certain properties under the wrong category means we have to detect them via keywords in the description), and houses with a price (if available) over a certain threshold. This filter could be arbitrarily tightened, but I chose to keep it relatively loose in order to ensure only the worst of the worst were being removed from consideration.</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">checkHouse</span><span>(</span><span style="color:#b48ead;">House </span><span style="color:#bf616a;">a</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">a</span><span>.</span><span style="color:#bf616a;">travelTime </span><span>&gt; </span><span style="color:#d08770;">70</span><span>)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Filter out units
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">a</span><span>.</span><span style="color:#bf616a;">description</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">unit development</span><span>&quot;))
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Repeat the above for &quot;under construction&quot; and &quot;town planning&quot; so that non-existent properties are filtered out
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">priceThousands </span><span>= </span><span style="color:#bf616a;">a</span><span>.</span><span style="color:#bf616a;">attemptedPriceInThousands</span><span>;
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">priceThousands </span><span>&gt; </span><span style="color:#d08770;">450</span><span>)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#bf616a;">houses </span><span>= </span><span style="color:#bf616a;">houses</span><span>.</span><span style="color:#bf616a;">filter</span><span>!(</span><span style="color:#bf616a;">checkHouse</span><span>).</span><span style="color:#bf616a;">array</span><span>();
+</span></code></pre>
+<p>This eliminates most of the garbage, but it doesn't help us with our fundamental problem: how do we sort through what's left? As you may have guessed from the title of this section, the solution is quite simple, and rather elegant: we numerically score each house based on the data we have available.</p>
+<p>This scoring system is completely arbitrary - the value is meaningless out of context, and solely exists to act as sorting criteria. With that out of the way, we begin with 1000 as a starting score. This number can be whatever we like - remember, the end user doesn't have to see it.</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#b48ead;">@property auto </span><span style="color:#8fa1b3;">score</span><span>()
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">score </span><span>= </span><span style="color:#d08770;">1000</span><span>;
+</span></code></pre>
+<p>After that, boost the score based on the number of bedrooms, bathrooms, toilets and garage spaces:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#bf616a;">bedrooms </span><span>* </span><span style="color:#d08770;">10</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#bf616a;">bathrooms </span><span>* </span><span style="color:#d08770;">10</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#bf616a;">toilets </span><span>* </span><span style="color:#d08770;">10</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#bf616a;">garageSpaces </span><span>* </span><span style="color:#d08770;">20</span><span>;
+</span></code></pre>
+<p>Since we want a land size of around 550 square metres - any smaller and it'd get claustrophobic, any larger and it'd be troublesome to maintain - we utilize a clamped quadratic curve to prioritize houses with around that land size:</p>
+<p><img src="https://philpax.me/blog/heady-house-hunting-with-d/landsize-coefficient.png" alt="Graph of the landsize coefficient" /></p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#b48ead;">float </span><span style="color:#8fa1b3;">landsizeCoefficient</span><span>(</span><span style="color:#b48ead;">float </span><span style="color:#bf616a;">x</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">auto </span><span style="color:#bf616a;">quadratic </span><span>= </span><span style="color:#d08770;">1</span><span>/</span><span style="color:#d08770;">100.0</span><span style="color:#b48ead;">f </span><span>* (</span><span style="color:#bf616a;">x </span><span>- </span><span style="color:#d08770;">550.0</span><span style="color:#b48ead;">f</span><span>);
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">max</span><span>(</span><span style="color:#bf616a;">min</span><span>(</span><span style="color:#d08770;">1.15 </span><span>* (</span><span style="color:#d08770;">1 </span><span>- (</span><span style="color:#bf616a;">quadratic </span><span>* </span><span style="color:#bf616a;">quadratic</span><span>)), </span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">0</span><span>);
+</span><span>    }
+</span><span>    </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">500 </span><span>* </span><span style="color:#bf616a;">landsizeCoefficient</span><span>(</span><span style="color:#bf616a;">landSize</span><span>);
+</span></code></pre>
+<p>We apply a series of penalties to push back undesirable qualities. The first penalty is simple: the longer the travel time, the higher the penalty (a travel time of 50 minutes drops 500 points, in comparison to 68 minutes, which drops 680 points). The other two penalties push back homes which are inconvenient to investigate / purchase so that more convenient options are presented first:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#bf616a;">travelTime </span><span>* </span><span style="color:#d08770;">10</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#bf616a;">price</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">auction</span><span>&quot;) * </span><span style="color:#d08770;">500</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#bf616a;">price</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">price upon application</span><span>&quot;) * </span><span style="color:#d08770;">500</span><span>;
+</span></code></pre>
+<p>Another series of simple penalties - we don't want a fireplace or a carport, and if it doesn't have a garage, drop it a thousand points:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#bf616a;">description</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">fireplace</span><span>&quot;) * </span><span style="color:#d08770;">250</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#bf616a;">description</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">carport</span><span>&quot;) * </span><span style="color:#d08770;">250</span><span>;
+</span><span>    </span><span style="color:#bf616a;">score </span><span>-= !</span><span style="color:#bf616a;">description</span><span>.</span><span style="color:#bf616a;">canFindLowercase</span><span>(&quot;</span><span style="color:#a3be8c;">garage</span><span>&quot;) * </span><span style="color:#d08770;">1000</span><span>;
+</span></code></pre>
+<p>The final criteria to be considered is telecommunications availability. Very important, so any deficiencies are harshly punished. As a result of the variability of the Optus service checker, definitive results were not always available, so unknown connectivity is handled as a special case:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">broadband </span><span>== </span><span style="color:#bf616a;">HomeBroadband</span><span>.</span><span style="color:#bf616a;">NBN</span><span>)
+</span><span>        </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">400</span><span>;
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(</span><span style="color:#bf616a;">broadband </span><span>== </span><span style="color:#bf616a;">HomeBroadband</span><span>.</span><span style="color:#bf616a;">Cable</span><span>)
+</span><span>        </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">100</span><span>;
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(</span><span style="color:#bf616a;">broadband </span><span>== </span><span style="color:#bf616a;">HomeBroadband</span><span>.</span><span style="color:#bf616a;">ADSL2</span><span>)
+</span><span>        </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">50</span><span>;
+</span><span>    </span><span style="color:#b48ead;">else
+</span><span>        </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#d08770;">800</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">telephone </span><span>== </span><span style="color:#bf616a;">HomeTelephone</span><span>.</span><span style="color:#bf616a;">Unknown</span><span>)
+</span><span>        </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">25</span><span>;
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(</span><span style="color:#bf616a;">telephone </span><span>!= </span><span style="color:#bf616a;">HomeTelephone</span><span>.</span><span style="color:#bf616a;">None</span><span>)
+</span><span>        </span><span style="color:#bf616a;">score </span><span>+= </span><span style="color:#d08770;">100</span><span>;
+</span><span>    </span><span style="color:#b48ead;">else
+</span><span>        </span><span style="color:#bf616a;">score </span><span>-= </span><span style="color:#d08770;">800</span><span>;
+</span></code></pre>
+<p>To finish, we return our calculated score:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">score</span><span>;
+</span><span style="background-color:#bf616a;color:#2b303b;">}</span><span>
+</span></code></pre>
+<p>There were additional criteria in the original code - for example, certain suburbs were penalized - but I've elided them in the interest of simplicity of demonstration.</p>
+<p>Now that we've defined a scoring function, we simply sort by each house's score, and we're done:</p>
+<pre data-lang="d" style="background-color:#2b303b;color:#c0c5ce;" class="language-d "><code class="language-d" data-lang="d"><span style="color:#bf616a;">houses</span><span>.</span><span style="color:#bf616a;">sort</span><span>!((</span><span style="color:#bf616a;">a</span><span>,</span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a</span><span>.</span><span style="color:#bf616a;">score </span><span>&gt; </span><span style="color:#bf616a;">b</span><span>.</span><span style="color:#bf616a;">score</span><span>);
+</span></code></pre>
+<h1 id="step-5-present-with-seasoning">Step 5: Present with Seasoning</h1>
+<p>The last step remains: presenting all of the data. The use of vibe.d makes this easy; <a href="http://vibed.org/templates/diet">Diet templates</a> allow us to quickly assemble a content-rich layout. As Diet templates allow for the combination of D code with layout, all I had to do was write a function to render a house, and then loop over the list of houses (which was passed in as a parameter to the template).</p>
+<p>Using <a href="http://getbootstrap.com/">Bootstrap</a> allowed me to concentrate on presenting the content without having to worry about styling concerns. Its grid system ensured that I could easily use more complicated layouts, such as the two-column layout used by the list of houses.</p>
+<p>The function to render a house is quite simple: we define our basic layout - heading and body - and then fill it with data. A few helper functions (unshown), such as <code>renderTableRow</code>, are used to ensure that adding new data to the layout is easy. In the interest of showing the basic concept, only a few data points are shown in the code below.</p>
+<pre data-lang="pug" style="background-color:#2b303b;color:#c0c5ce;" class="language-pug "><code class="language-pug" data-lang="pug"><span>- void renderHouse(T)(ref T house)
+</span><span>    div(class=&quot;panel panel-primary&quot;)
+</span><span>        div.panel-heading
+</span><span>            h3.panel-title= house.address ~ &quot; &quot; ~ house.suburb.postCode.to!string
+</span><span>            b= house.price
+</span><span>            i Calculated score: #{house.score}
+</span><span>        div.panel-body
+</span><span>            a(href=house.url)
+</span><span>                img.img-responsive(src=house.imageUrl, style=&quot;margin: auto;&quot;)
+</span><span>            h4 General
+</span><span>            table.table
+</span><span>                tbody
+</span><span>                    - renderTableRow(&quot;Agency name&quot;, house.agencyName);
+</span><span>                    - renderTableRow(&quot;Land size&quot;, house.landSize, &quot;%s m²&quot;);
+</span><span>            ...
+</span><span>
+</span><span>            p!= house.description
+</span></code></pre>
+<p>D's <a href="http://dlang.org/phobos/std_range.html">ranges</a> make it easy to iterate over the list two at a time. We zip together two ranges, both of which provide a view of the original list with a stride of 2, and then render each house in the resulting zipped range. This is a quick and easy way to produce the desired result, and lets us easily tweak the layout in future.</p>
+<pre data-lang="pug" style="background-color:#2b303b;color:#c0c5ce;" class="language-pug "><code class="language-pug" data-lang="pug"><span>div.container-fluid
+</span><span>    - foreach (e; zip(StoppingPolicy.longest, houses.stride(2), houses.dropOne().stride(2)))
+</span><span>        div.row
+</span><span>            - foreach (house; e)
+</span><span>                div.col-md-6
+</span><span>                    - renderHouse(house);
+</span></code></pre>
+<p>The final result, with two sample houses, can be seen <a href="https://philpax.me/blog/heady-house-hunting-with-d/houselist.html">here</a>. With real data, this produced a list of ~40 houses with all relevant information included - a definite improvement over the original 400 houses!</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>There's still much that can be done to improve the quality of the results. More data can be pulled in from other sources; for example, publically accessible property reports could be accessed to determine the age of the property, as well as potentially missing data like the land size. The sky's the limit when it comes to pulling in data and coming up with new heuristics; I chose to leave it here because the results were good enough, but someone interested in further developing the concept could improve it considerably.</p>
+<p>Of note is that these techniques are not restricted to this particular use case. They can be used for much more than this; whenever dealing with a large number of potential choices, one could utilize a similar strategy to reduce the size of the list of candidates. For example, this could be applied to searching for cars - the same bag of tricks can be used to great effect.</p>
+<p>In the end, I was able to successfully use this to narrow the deluge of houses into something manageable; from there, we found a house that met our needs. I was surprised at how easy it was to produce decent results with limited effort; with only a few hours of work, I'd managed to vastly cut down on the number of houses that had to be investigated. With all of this in mind, this experiment worked beautifully despite its flaws.</p>
+
+
+        
+    
+
+        
+        
+    </article></div>
+    <div class="pagination">
+        <div class="pagination__buttons">
+            </div>
+    </div>
+<footer class="footer">
+                    <div class="footer__inner"><div class="copyright copyright--user">© philpax</div>
+    <script type="text/javascript" src="https://philpax.me/assets/js/main.js"></script>
+</div>
+                    
+
+                </footer></div>
+    </body>
+</html>
