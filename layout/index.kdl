@@ -1,0 +1,16 @@
+html {
+    head {
+        title {
+            "Philpax"
+        }
+        link rel="stylesheet" href="/stylesheets/style.css"
+    }
+    body {
+        h1 {
+            "Philpax"
+        }
+        p {
+            "Testing!"
+        }
+    }
+}
