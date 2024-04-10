@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use std::path::Path;
 
 fn main() -> anyhow::Result<()> {
@@ -5,18 +6,44 @@ fn main() -> anyhow::Result<()> {
     std::fs::remove_dir_all(public).ok();
     std::fs::create_dir_all(public)?;
 
+    let layouts = templating::Layouts::new()?;
+
     let content = content::read()?;
-    dbg!(content);
-    templating::generate(public)?;
+    for (post_id, doc) in content.blog {
+        let output_path = public.join("blog").join(post_id);
+        std::fs::create_dir_all(&output_path)?;
+
+        let html = layouts.generate(&doc.content);
+        html.write_to_path(&output_path.join("index.html"))?;
+    }
 
     Ok(())
+}
+
+#[derive(Debug, Deserialize)]
+pub struct DocumentMetadata {
+    pub title: String,
+    pub date: toml::value::Datetime,
+    pub taxonomies: DocumentTaxonomies,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct DocumentTaxonomies {
+    pub tags: Vec<String>,
+}
+
+#[derive(Debug)]
+pub struct Document {
+    pub metadata: DocumentMetadata,
+    pub content: markdown::mdast::Node,
 }
 
 mod content {
     use std::{collections::HashMap, path::Path};
 
     use anyhow::Context;
-    use serde::Deserialize;
+
+    use super::{Document, DocumentMetadata};
 
     #[derive(Debug)]
     pub struct Content {
@@ -61,60 +88,180 @@ mod content {
             return Err(anyhow::anyhow!("invalid markdown file"));
         }
 
-        let metadata = parts[1];
-        let content = parts[2];
+        let metadata: DocumentMetadata = toml::from_str(parts[1])?;
+        let content = markdown::to_mdast(parts[2], &markdown::ParseOptions::gfm()).unwrap();
 
-        let metadata: DocumentMetadata = toml::from_str(metadata)?;
-        Ok(Document {
-            metadata,
-            content: content.to_string(),
-        })
-    }
-
-    #[derive(Debug, Deserialize)]
-    pub struct DocumentMetadata {
-        pub title: String,
-        pub date: toml::value::Datetime,
-        pub taxonomies: DocumentTaxonomies,
-    }
-
-    #[derive(Debug, Deserialize)]
-    pub struct DocumentTaxonomies {
-        pub tags: Vec<String>,
-    }
-
-    #[derive(Debug)]
-    pub struct Document {
-        pub metadata: DocumentMetadata,
-        pub content: String,
+        Ok(Document { metadata, content })
     }
 }
 
 mod templating {
     use std::{io::Write, path::Path};
 
-    pub fn generate(public: &Path) -> anyhow::Result<()> {
-        let file = std::fs::read_to_string("layout/index.kdl")?;
-        let doc: kdl::KdlDocument = file.parse()?;
+    pub struct Layouts {
+        pub index: kdl::KdlDocument,
+    }
+    impl Layouts {
+        pub fn new() -> anyhow::Result<Layouts> {
+            let file = std::fs::read_to_string("layout/index.kdl")?;
+            let index: kdl::KdlDocument = file.parse()?;
 
-        let html_doc = HtmlDocument {
-            children: doc.nodes().iter().map(convert_kdl_to_tag).collect(),
-        };
-        html_doc.write_to_path(&public.join("index.html"))?;
-        Ok(())
+            Ok(Layouts { index })
+        }
+
+        pub fn generate(&self, document: &markdown::mdast::Node) -> HtmlDocument {
+            HtmlDocument {
+                children: self
+                    .index
+                    .nodes()
+                    .iter()
+                    .flat_map(|n| convert_kdl_to_tag(n, document))
+                    .collect(),
+            }
+        }
     }
 
-    pub fn convert_kdl_to_tag(node: &kdl::KdlNode) -> HtmlElement {
+    pub fn convert_markdown_to_tag(node: &markdown::mdast::Node) -> Vec<HtmlElement> {
+        fn tag(name: &str, children: &[markdown::mdast::Node]) -> HtmlElement {
+            HtmlElement::Tag {
+                name: name.to_string(),
+                attributes: vec![],
+                children: children.iter().flat_map(convert_markdown_to_tag).collect(),
+            }
+        }
+
+        fn tag_with_text(name: &str, text: &str) -> HtmlElement {
+            HtmlElement::Tag {
+                name: name.to_string(),
+                attributes: vec![],
+                children: vec![HtmlElement::Text {
+                    text: text.to_string(),
+                }],
+            }
+        }
+
+        use markdown::mdast::Node;
+
+        match node {
+            Node::Root(r) => r
+                .children
+                .iter()
+                .flat_map(convert_markdown_to_tag)
+                .collect(),
+
+            Node::Heading(h) => {
+                vec![tag(&format!("h{}", h.depth), &h.children)]
+            }
+            Node::Text(t) => {
+                vec![HtmlElement::Text {
+                    text: t.value.to_string(),
+                }]
+            }
+            Node::Paragraph(p) => {
+                vec![tag("p", &p.children)]
+            }
+            Node::Strong(s) => {
+                vec![tag("strong", &s.children)]
+            }
+            Node::Emphasis(e) => {
+                vec![tag("em", &e.children)]
+            }
+            Node::List(l) => {
+                vec![tag(if l.ordered { "ol" } else { "ul" }, &l.children)]
+            }
+            Node::ListItem(li) => {
+                vec![tag("li", &li.children)]
+            }
+            Node::Code(c) => {
+                vec![HtmlElement::Tag {
+                    name: "pre".into(),
+                    attributes: vec![],
+                    children: vec![tag_with_text("code", &c.value)],
+                }]
+            }
+            Node::BlockQuote(b) => {
+                vec![tag("blockquote", &b.children)]
+            }
+            Node::Break(_) => {
+                vec![tag("br", &[])]
+            }
+            Node::InlineCode(c) => {
+                vec![tag_with_text("code", &c.value)]
+            }
+            Node::Image(i) => {
+                vec![HtmlElement::Tag {
+                    name: "img".into(),
+                    attributes: vec![
+                        ("src".into(), Some(i.url.to_string())),
+                        ("alt".into(), Some(i.alt.to_string())),
+                    ],
+                    children: vec![],
+                }]
+            }
+            Node::Link(l) => {
+                let mut attributes = vec![("href".into(), Some(l.url.to_string()))];
+                if let Some(title) = l.title.clone() {
+                    attributes.push(("title".into(), Some(title)))
+                }
+                vec![HtmlElement::Tag {
+                    name: "a".into(),
+                    attributes,
+                    children: l
+                        .children
+                        .iter()
+                        .flat_map(convert_markdown_to_tag)
+                        .collect(),
+                }]
+            }
+
+            // Not supported yet
+            Node::FootnoteDefinition(_)
+            | Node::InlineMath(_)
+            | Node::Delete(_)
+            | Node::FootnoteReference(_)
+            | Node::Html(_)
+            | Node::ImageReference(_)
+            | Node::LinkReference(_)
+            | Node::Math(_)
+            | Node::Table(_)
+            | Node::ThematicBreak(_)
+            | Node::TableRow(_)
+            | Node::TableCell(_)
+            | Node::Definition(_) => {
+                vec![]
+            }
+
+            // Never supported
+            markdown::mdast::Node::Toml(_)
+            | markdown::mdast::Node::Yaml(_)
+            | markdown::mdast::Node::MdxJsxFlowElement(_)
+            | markdown::mdast::Node::MdxjsEsm(_)
+            | markdown::mdast::Node::MdxTextExpression(_)
+            | markdown::mdast::Node::MdxJsxTextElement(_)
+            | markdown::mdast::Node::MdxFlowExpression(_) => {
+                vec![]
+            }
+        }
+    }
+
+    pub fn convert_kdl_to_tag(
+        node: &kdl::KdlNode,
+        document: &markdown::mdast::Node,
+    ) -> Vec<HtmlElement> {
         // This is an awful hack because KDL doesn't expose whether this is
         // a plain identifier
         let node_name = node.name().to_string();
         if node_name.contains('"') {
-            return HtmlElement::Text {
+            return vec![HtmlElement::Text {
                 text: strip_surrounding_quotes(&node_name).to_string(),
-            };
+            }];
         }
 
-        HtmlElement::Tag {
+        if node_name == "block" {
+            return convert_markdown_to_tag(document);
+        }
+
+        vec![HtmlElement::Tag {
             name: node_name,
             attributes: node
                 .entries()
@@ -129,9 +276,15 @@ mod templating {
                 .collect(),
             children: node
                 .children()
-                .map(|children| children.nodes().iter().map(convert_kdl_to_tag).collect())
+                .map(|children| {
+                    children
+                        .nodes()
+                        .iter()
+                        .flat_map(|n| convert_kdl_to_tag(n, document))
+                        .collect()
+                })
                 .unwrap_or_default(),
-        }
+        }]
     }
 
     #[derive(Debug)]
@@ -191,7 +344,8 @@ mod templating {
 
                     // children
                     for child in children {
-                        child.write(writer, depth + 1)?;
+                        let new_depth = if name == "code" { 0 } else { depth + 1 };
+                        child.write(writer, new_depth)?;
                     }
 
                     // end tag
@@ -199,7 +353,11 @@ mod templating {
                     Ok(())
                 }
                 HtmlElement::Text { text } => {
-                    Ok(writeln!(writer, "{}{}", "  ".repeat(depth), text)?)
+                    let text = html_escape::encode_text(text);
+                    for line in text.lines() {
+                        writeln!(writer, "{}{}", "  ".repeat(depth), line)?;
+                    }
+                    Ok(())
                 }
             }
         }
