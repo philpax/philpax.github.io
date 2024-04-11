@@ -123,25 +123,13 @@ mod templating {
 
     pub fn convert_markdown_to_tag(node: &markdown::mdast::Node) -> Vec<HtmlElement> {
         fn tag(name: &str, children: &[markdown::mdast::Node]) -> HtmlElement {
-            HtmlElement::Tag {
-                name: name.to_string(),
-                attributes: vec![],
-                children: children.iter().flat_map(convert_markdown_to_tag).collect(),
-            }
-        }
-
-        fn tag_with_text(name: &str, text: &str) -> HtmlElement {
-            HtmlElement::Tag {
-                name: name.to_string(),
-                attributes: vec![],
-                children: vec![HtmlElement::Text {
-                    text: text.to_string(),
-                }],
-            }
+            HtmlElement::tag(
+                name,
+                children.iter().flat_map(convert_markdown_to_tag).collect(),
+            )
         }
 
         use markdown::mdast::Node;
-
         match node {
             Node::Root(r) => r
                 .children
@@ -176,7 +164,7 @@ mod templating {
                 vec![HtmlElement::Tag {
                     name: "pre".into(),
                     attributes: vec![],
-                    children: vec![tag_with_text("code", &c.value)],
+                    children: vec![HtmlElement::tag_with_text("code", &c.value)],
                 }]
             }
             Node::BlockQuote(b) => {
@@ -186,7 +174,7 @@ mod templating {
                 vec![tag("br", &[])]
             }
             Node::InlineCode(c) => {
-                vec![tag_with_text("code", &c.value)]
+                vec![HtmlElement::tag_with_text("code", &c.value)]
             }
             Node::Image(i) => {
                 vec![HtmlElement::Tag {
@@ -298,7 +286,7 @@ mod templating {
 
             writeln!(writer, "<!DOCTYPE html>")?;
             for child in &self.children {
-                child.write(&mut writer, 0)?;
+                child.write(&mut writer)?;
             }
 
             Ok(())
@@ -316,8 +304,15 @@ mod templating {
             text: String,
         },
     }
+    #[allow(dead_code)]
     impl HtmlElement {
-        pub fn write(&self, writer: &mut dyn Write, depth: usize) -> anyhow::Result<()> {
+        pub fn write_to_string(&self) -> anyhow::Result<String> {
+            let mut output = vec![];
+            self.write(&mut output)?;
+            Ok(String::from_utf8(output)?)
+        }
+
+        pub fn write(&self, writer: &mut dyn Write) -> anyhow::Result<()> {
             match self {
                 HtmlElement::Tag {
                     name,
@@ -325,7 +320,7 @@ mod templating {
                     children,
                 } => {
                     // start tag
-                    write!(writer, "{}<{}", "  ".repeat(depth), name)?;
+                    write!(writer, "<{name}")?;
                     if !attributes.is_empty() {
                         write!(writer, " ")?;
                     }
@@ -336,29 +331,55 @@ mod templating {
                         }
                     }
                     if children.is_empty() {
-                        writeln!(writer, "/>")?;
+                        write!(writer, "/>")?;
                         return Ok(());
                     } else {
-                        writeln!(writer, ">")?;
+                        write!(writer, ">")?;
                     }
 
                     // children
                     for child in children {
-                        let new_depth = if name == "code" { 0 } else { depth + 1 };
-                        child.write(writer, new_depth)?;
+                        child.write(writer)?;
                     }
 
                     // end tag
-                    writeln!(writer, "{}</{}>", "  ".repeat(depth), name)?;
+                    write!(writer, "</{name}>")?;
                     Ok(())
                 }
                 HtmlElement::Text { text } => {
                     let text = html_escape::encode_text(text);
-                    for line in text.lines() {
-                        writeln!(writer, "{}{}", "  ".repeat(depth), line)?;
+                    for (idx, line) in text.lines().enumerate() {
+                        if idx > 0 {
+                            writeln!(writer)?;
+                        }
+                        write!(writer, "{}", line)?;
                     }
                     Ok(())
                 }
+            }
+        }
+
+        pub fn tag(name: &str, children: Vec<HtmlElement>) -> HtmlElement {
+            HtmlElement::Tag {
+                name: name.to_string(),
+                attributes: vec![],
+                children,
+            }
+        }
+
+        pub fn tag_with_text(name: &str, text: &str) -> HtmlElement {
+            HtmlElement::Tag {
+                name: name.to_string(),
+                attributes: vec![],
+                children: vec![HtmlElement::Text {
+                    text: text.to_string(),
+                }],
+            }
+        }
+
+        pub fn text(text: &str) -> HtmlElement {
+            HtmlElement::Text {
+                text: text.to_string(),
             }
         }
     }
@@ -371,5 +392,29 @@ mod templating {
             s = &s[..s.len() - 1];
         }
         s
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::templating;
+    use templating::HtmlElement as HE;
+
+    #[test]
+    fn test_inline_code() {
+        let input = HE::tag(
+            "p",
+            vec![
+                HE::text("This is an example of "),
+                HE::tag("code", vec![HE::text("inline code")]),
+                HE::text(" in a paragraph."),
+            ],
+        );
+
+        let output = input.write_to_string().unwrap();
+        assert_eq!(
+            output,
+            "<p>This is an example of <code>inline code</code> in a paragraph.</p>"
+        );
     }
 }
