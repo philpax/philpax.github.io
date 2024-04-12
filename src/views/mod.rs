@@ -1,6 +1,6 @@
 use crate::{html, markdown};
 
-pub fn blog_post(document: &markdown::Node) -> html::Document {
+pub fn post(document: &markdown::Node) -> html::Document {
     layout(markdown::convert_to_html(document))
 }
 

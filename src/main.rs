@@ -10,12 +10,17 @@ fn main() -> anyhow::Result<()> {
     std::fs::create_dir_all(public)?;
 
     let content = content::Content::read()?;
-    for (post_id, doc) in content.blog {
-        let output_path = public.join("blog").join(post_id);
-        std::fs::create_dir_all(&output_path)?;
+    for (collection_id, collection) in content.collections {
+        for (post_id, doc) in collection.documents {
+            let mut output_path = public.join(&collection_id);
+            if post_id != "index" {
+                output_path = output_path.join(post_id);
+            }
+            std::fs::create_dir_all(&output_path)?;
 
-        let html = views::blog_post(&doc.content);
-        html.write_to_path(&output_path.join("index.html"))?;
+            let html = views::post(&doc.content);
+            html.write_to_path(&output_path.join("index.html"))?;
+        }
     }
 
     Ok(())
