@@ -17,6 +17,7 @@ pub struct DocumentTaxonomies {
 
 #[derive(Debug)]
 pub struct Document {
+    pub id: String,
     pub metadata: DocumentMetadata,
     pub content: markdown::mdast::Node,
 }
@@ -25,20 +26,31 @@ pub struct Document {
 pub struct Content {
     pub blog: HashMap<String, Document>,
 }
+impl Content {
+    pub fn read() -> anyhow::Result<Self> {
+        let content_path = Path::new("content");
+        let blog_path = content_path.join("blog");
 
-pub fn read() -> anyhow::Result<Content> {
-    let content_path = Path::new("content");
-    let blog_path = content_path.join("blog");
+        let mut blog = HashMap::new();
+        for entry in std::fs::read_dir(blog_path)? {
+            let path = entry?.path();
+            if !path.is_dir() {
+                continue;
+            }
 
-    let mut blog = HashMap::new();
-    for entry in std::fs::read_dir(blog_path)? {
-        let entry = entry?;
-        let path = entry.path();
-        if !path.is_dir() {
-            continue;
+            let doc = Self::read_document_dir(&path)?;
+            blog.insert(doc.id.clone(), doc);
         }
 
-        let post_id = path
+        Ok(Self { blog })
+    }
+
+    fn read_document_dir(path: &Path) -> anyhow::Result<Document> {
+        if !path.is_dir() {
+            anyhow::bail!("{path:?} not a directory");
+        }
+
+        let id = path
             .file_name()
             .context("no post id for directory")?
             .to_string_lossy()
@@ -46,26 +58,23 @@ pub fn read() -> anyhow::Result<Content> {
 
         let index = path.join("index.md");
         if !index.exists() {
-            continue;
+            anyhow::bail!("no index.md for post {id}");
         }
 
         let file = std::fs::read_to_string(&index)?;
-        let doc = parse_markdown_file(&file)?;
-        blog.insert(post_id, doc);
+        let parts: Vec<_> = file.splitn(3, "+++").collect();
+
+        if parts.len() != 3 {
+            return Err(anyhow::anyhow!("invalid markdown file"));
+        }
+
+        let metadata: DocumentMetadata = toml::from_str(parts[1])?;
+        let content = markdown::to_mdast(parts[2], &markdown::ParseOptions::gfm()).unwrap();
+
+        Ok(Document {
+            id,
+            metadata,
+            content,
+        })
     }
-
-    Ok(Content { blog })
-}
-
-pub fn parse_markdown_file(file: &str) -> anyhow::Result<Document> {
-    let parts: Vec<_> = file.splitn(3, "+++").collect();
-
-    if parts.len() != 3 {
-        return Err(anyhow::anyhow!("invalid markdown file"));
-    }
-
-    let metadata: DocumentMetadata = toml::from_str(parts[1])?;
-    let content = markdown::to_mdast(parts[2], &markdown::ParseOptions::gfm()).unwrap();
-
-    Ok(Document { metadata, content })
 }

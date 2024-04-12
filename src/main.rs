@@ -9,7 +9,7 @@ fn main() -> anyhow::Result<()> {
     std::fs::remove_dir_all(public).ok();
     std::fs::create_dir_all(public)?;
 
-    let content = content::read()?;
+    let content = content::Content::read()?;
     for (post_id, doc) in content.blog {
         let output_path = public.join("blog").join(post_id);
         std::fs::create_dir_all(&output_path)?;
