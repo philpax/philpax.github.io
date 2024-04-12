@@ -38,6 +38,10 @@ pub fn title(text: &str) -> Element {
     tag_with_text("title", [], text)
 }
 
+pub fn meta(attributes: impl Into<Vec<Attribute>>) -> Element {
+    tag("meta", attributes, [])
+}
+
 pub fn link(rel: &str, href: &str) -> Element {
     tag(
         "link",
