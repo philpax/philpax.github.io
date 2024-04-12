@@ -20,6 +20,10 @@ fn main() -> anyhow::Result<()> {
 
             let html = views::post(&doc.content);
             html.write_to_path(&output_path.join("index.html"))?;
+
+            for path in doc.files {
+                std::fs::copy(&path, &output_path.join(path.file_name().unwrap()))?;
+            }
         }
     }
 

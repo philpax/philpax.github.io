@@ -89,10 +89,20 @@ impl Collection {
         let metadata: DocumentMetadata = toml::from_str(parts[1])?;
         let content = markdown::to_mdast(parts[2], &markdown::ParseOptions::gfm()).unwrap();
 
+        let mut files = vec![];
+        for entry in std::fs::read_dir(path.parent().unwrap())? {
+            let path = entry?.path();
+            if path.extension().is_some_and(|e| e == "md") {
+                continue;
+            }
+            files.push(path);
+        }
+
         let doc = Document {
             id,
             metadata,
             content,
+            files,
         };
 
         self.documents.insert(doc.id.clone(), doc);
@@ -106,6 +116,7 @@ pub struct Document {
     pub id: String,
     pub metadata: DocumentMetadata,
     pub content: markdown::mdast::Node,
+    pub files: Vec<PathBuf>,
 }
 
 #[derive(Debug, Deserialize)]
