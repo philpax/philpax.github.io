@@ -6,7 +6,6 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.81"
 html-escape = "0.2.13"
-kdl = "4.6"
 markdown = "1.0.0-alpha.16"
 serde = { version = "1.0.197", features = ["derive"] }
 toml = "0.8.12"

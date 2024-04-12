@@ -6,14 +6,12 @@ fn main() -> anyhow::Result<()> {
     std::fs::remove_dir_all(public).ok();
     std::fs::create_dir_all(public)?;
 
-    let layouts = templating::Layouts::new()?;
-
     let content = content::read()?;
     for (post_id, doc) in content.blog {
         let output_path = public.join("blog").join(post_id);
         std::fs::create_dir_all(&output_path)?;
 
-        let html = layouts.generate(&doc.content);
+        let html = templating::blog_post(&doc.content);
         html.write_to_path(&output_path.join("index.html"))?;
     }
 
@@ -98,34 +96,28 @@ mod content {
 mod templating {
     use std::{io::Write, path::Path};
 
-    pub struct Layouts {
-        pub index: kdl::KdlDocument,
-    }
-    impl Layouts {
-        pub fn new() -> anyhow::Result<Layouts> {
-            let file = std::fs::read_to_string("layout/index.kdl")?;
-            let index: kdl::KdlDocument = file.parse()?;
-
-            Ok(Layouts { index })
-        }
-
-        pub fn generate(&self, document: &markdown::mdast::Node) -> HtmlDocument {
-            HtmlDocument {
-                children: self
-                    .index
-                    .nodes()
-                    .iter()
-                    .flat_map(|n| convert_kdl_to_tag(n, document))
-                    .collect(),
-            }
-        }
+    pub fn blog_post(document: &markdown::mdast::Node) -> HtmlDocument {
+        layout(convert_markdown_to_tag(document))
     }
 
-    pub fn convert_markdown_to_tag(node: &markdown::mdast::Node) -> Vec<HtmlElement> {
+    fn layout(inner: Vec<HtmlElement>) -> HtmlDocument {
+        use builder::*;
+
+        HtmlDocument::new([html([
+            head([title("Philpax"), link("stylesheet", "/styles.css")]),
+            body([h(1, [], [text("Philpax")]), div([], inner)]),
+        ])])
+    }
+
+    fn convert_markdown_to_tag(node: &markdown::mdast::Node) -> Vec<HtmlElement> {
         fn tag(name: &str, children: &[markdown::mdast::Node]) -> HtmlElement {
-            HtmlElement::tag(
+            builder::tag(
                 name,
-                children.iter().flat_map(convert_markdown_to_tag).collect(),
+                [],
+                children
+                    .iter()
+                    .flat_map(convert_markdown_to_tag)
+                    .collect::<Vec<_>>(),
             )
         }
 
@@ -164,7 +156,7 @@ mod templating {
                 vec![HtmlElement::Tag {
                     name: "pre".into(),
                     attributes: vec![],
-                    children: vec![HtmlElement::tag_with_text("code", &c.value)],
+                    children: vec![builder::tag_with_text("code", [], &c.value)],
                 }]
             }
             Node::BlockQuote(b) => {
@@ -174,7 +166,7 @@ mod templating {
                 vec![tag("br", &[])]
             }
             Node::InlineCode(c) => {
-                vec![HtmlElement::tag_with_text("code", &c.value)]
+                vec![builder::tag_with_text("code", [], &c.value)]
             }
             Node::Image(i) => {
                 vec![HtmlElement::Tag {
@@ -232,54 +224,17 @@ mod templating {
         }
     }
 
-    pub fn convert_kdl_to_tag(
-        node: &kdl::KdlNode,
-        document: &markdown::mdast::Node,
-    ) -> Vec<HtmlElement> {
-        // This is an awful hack because KDL doesn't expose whether this is
-        // a plain identifier
-        let node_name = node.name().to_string();
-        if node_name.contains('"') {
-            return vec![HtmlElement::Text {
-                text: strip_surrounding_quotes(&node_name).to_string(),
-            }];
-        }
-
-        if node_name == "block" {
-            return convert_markdown_to_tag(document);
-        }
-
-        vec![HtmlElement::Tag {
-            name: node_name,
-            attributes: node
-                .entries()
-                .iter()
-                .map(|entry| {
-                    let value = strip_surrounding_quotes(&entry.value().to_string()).to_string();
-                    match entry.name() {
-                        Some(key) => (key.to_string(), Some(value)),
-                        None => (value, None),
-                    }
-                })
-                .collect(),
-            children: node
-                .children()
-                .map(|children| {
-                    children
-                        .nodes()
-                        .iter()
-                        .flat_map(|n| convert_kdl_to_tag(n, document))
-                        .collect()
-                })
-                .unwrap_or_default(),
-        }]
-    }
-
     #[derive(Debug)]
     pub struct HtmlDocument {
         pub children: Vec<HtmlElement>,
     }
     impl HtmlDocument {
+        pub fn new(children: impl Into<Vec<HtmlElement>>) -> Self {
+            HtmlDocument {
+                children: children.into(),
+            }
+        }
+
         pub fn write_to_path(&self, path: &Path) -> anyhow::Result<()> {
             let file = std::fs::File::create(path)?;
             let mut writer = std::io::BufWriter::new(file);
@@ -293,11 +248,13 @@ mod templating {
         }
     }
 
+    type Attribute = (String, Option<String>);
+
     #[derive(Debug)]
     pub enum HtmlElement {
         Tag {
             name: String,
-            attributes: Vec<(String, Option<String>)>,
+            attributes: Vec<Attribute>,
             children: Vec<HtmlElement>,
         },
         Text {
@@ -358,19 +315,32 @@ mod templating {
                 }
             }
         }
+    }
 
-        pub fn tag(name: &str, children: Vec<HtmlElement>) -> HtmlElement {
+    #[allow(dead_code)]
+    pub mod builder {
+        use super::{Attribute, HtmlElement};
+
+        pub fn tag(
+            name: &str,
+            attributes: impl Into<Vec<Attribute>>,
+            children: impl Into<Vec<HtmlElement>>,
+        ) -> HtmlElement {
             HtmlElement::Tag {
                 name: name.to_string(),
-                attributes: vec![],
-                children,
+                attributes: attributes.into(),
+                children: children.into(),
             }
         }
 
-        pub fn tag_with_text(name: &str, text: &str) -> HtmlElement {
+        pub fn tag_with_text(
+            name: &str,
+            attributes: impl Into<Vec<Attribute>>,
+            text: &str,
+        ) -> HtmlElement {
             HtmlElement::Tag {
                 name: name.to_string(),
-                attributes: vec![],
+                attributes: attributes.into(),
                 children: vec![HtmlElement::Text {
                     text: text.to_string(),
                 }],
@@ -382,32 +352,96 @@ mod templating {
                 text: text.to_string(),
             }
         }
-    }
 
-    fn strip_surrounding_quotes(mut s: &str) -> &str {
-        if s.starts_with('"') {
-            s = &s[1..];
+        pub fn html(children: impl Into<Vec<HtmlElement>>) -> HtmlElement {
+            HtmlElement::Tag {
+                name: "html".to_string(),
+                attributes: vec![],
+                children: children.into(),
+            }
         }
-        if s.ends_with('"') {
-            s = &s[..s.len() - 1];
+
+        pub fn head(children: impl Into<Vec<HtmlElement>>) -> HtmlElement {
+            HtmlElement::Tag {
+                name: "head".to_string(),
+                attributes: vec![],
+                children: children.into(),
+            }
         }
-        s
+
+        pub fn title(text: &str) -> HtmlElement {
+            HtmlElement::Tag {
+                name: "title".to_string(),
+                attributes: vec![],
+                children: vec![HtmlElement::Text {
+                    text: text.to_string(),
+                }],
+            }
+        }
+
+        pub fn link(rel: &str, href: &str) -> HtmlElement {
+            HtmlElement::Tag {
+                name: "link".to_string(),
+                attributes: vec![
+                    ("rel".to_string(), Some(rel.to_string())),
+                    ("href".to_string(), Some(href.to_string())),
+                ],
+                children: vec![],
+            }
+        }
+
+        pub fn body(children: impl Into<Vec<HtmlElement>>) -> HtmlElement {
+            HtmlElement::Tag {
+                name: "body".to_string(),
+                attributes: vec![],
+                children: children.into(),
+            }
+        }
+
+        pub fn h(
+            depth: u8,
+            attributes: impl Into<Vec<Attribute>>,
+            children: impl Into<Vec<HtmlElement>>,
+        ) -> HtmlElement {
+            tag(&format!("h{}", depth), attributes, children)
+        }
+
+        pub fn p(
+            attributes: impl Into<Vec<Attribute>>,
+            children: impl Into<Vec<HtmlElement>>,
+        ) -> HtmlElement {
+            tag("p", attributes, children)
+        }
+
+        pub fn code(
+            attributes: impl Into<Vec<Attribute>>,
+            children: impl Into<Vec<HtmlElement>>,
+        ) -> HtmlElement {
+            tag("code", attributes, children)
+        }
+
+        pub fn div(
+            attributes: impl Into<Vec<Attribute>>,
+            children: impl Into<Vec<HtmlElement>>,
+        ) -> HtmlElement {
+            tag("div", attributes, children)
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::templating;
-    use templating::HtmlElement as HE;
+    use templating::builder::*;
 
     #[test]
     fn test_inline_code() {
-        let input = HE::tag(
-            "p",
-            vec![
-                HE::text("This is an example of "),
-                HE::tag("code", vec![HE::text("inline code")]),
-                HE::text(" in a paragraph."),
+        let input = p(
+            [],
+            [
+                text("This is an example of "),
+                code([], [text("inline code")]),
+                text(" in a paragraph."),
             ],
         );
 
