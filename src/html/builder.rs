@@ -123,10 +123,10 @@ pub fn section(
     tag("section", attributes, children)
 }
 
-pub fn datetime(date: chrono::NaiveDate) -> Element {
+pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     tag_with_text(
         "time",
-        [("datetime".to_string(), Some(date.to_string()))],
-        &date.to_string(),
+        [("datetime".to_string(), Some(date.to_rfc3339()))],
+        &date.date_naive().to_string(),
     )
 }

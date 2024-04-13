@@ -72,11 +72,7 @@ fn build_rss_channel(content: &content::Content) -> anyhow::Result<rss::Channel>
                     html::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap()
                 }))
                 .author(RSS_AUTHOR.to_string())
-                .pub_date(doc.metadata.date().map(|d| {
-                    d.and_time(chrono::NaiveTime::default())
-                        .and_utc()
-                        .to_rfc2822()
-                }))
+                .pub_date(doc.metadata.datetime().map(|d| d.to_rfc2822()))
                 .build()
         })
         .collect::<Vec<_>>();

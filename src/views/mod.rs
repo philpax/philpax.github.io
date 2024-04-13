@@ -28,7 +28,11 @@ mod partials {
                     [],
                     [
                         h(1, [], [text(&document.metadata.title)]),
-                        document.metadata.date().map(datetime).unwrap_or_default(),
+                        document
+                            .metadata
+                            .datetime()
+                            .map(datetime)
+                            .unwrap_or_default(),
                     ],
                 ),
                 section(

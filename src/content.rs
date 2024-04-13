@@ -75,7 +75,7 @@ impl Collection {
             collection.read_document(&index_path, "index".to_string())?;
         }
 
-        collection.documents.sort_by_key(|d| d.metadata.date());
+        collection.documents.sort_by_key(|d| d.metadata.datetime());
         collection.documents.reverse();
 
         Ok(collection)
@@ -145,8 +145,9 @@ pub struct DocumentMetadata {
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 impl DocumentMetadata {
-    pub fn date(&self) -> Option<chrono::NaiveDate> {
-        self.date.map(|d| d.0)
+    pub fn datetime(&self) -> Option<chrono::DateTime<chrono::Utc>> {
+        self.date
+            .map(|d| d.0.and_time(Default::default()).and_utc())
     }
 }
 
