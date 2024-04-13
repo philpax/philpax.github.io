@@ -35,7 +35,7 @@ impl Content {
 #[derive(Debug)]
 pub struct Collection {
     pub id: String,
-    pub documents: HashMap<String, Document>,
+    pub documents: Vec<Document>,
 }
 impl Collection {
     pub fn read(content_path: &Path, id: &str) -> anyhow::Result<Self> {
@@ -43,7 +43,7 @@ impl Collection {
 
         let mut collection = Collection {
             id: id.to_string(),
-            documents: HashMap::new(),
+            documents: vec![],
         };
 
         for entry in std::fs::read_dir(&collection_path)? {
@@ -105,7 +105,7 @@ impl Collection {
             files,
         };
 
-        self.documents.insert(doc.id.clone(), doc);
+        self.documents.push(doc);
 
         Ok(())
     }

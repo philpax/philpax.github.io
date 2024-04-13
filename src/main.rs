@@ -11,10 +11,10 @@ fn main() -> anyhow::Result<()> {
 
     let content = content::Content::read()?;
     for (collection_id, collection) in content.collections {
-        for (post_id, doc) in collection.documents {
+        for doc in collection.documents {
             let mut output_path = public.join(&collection_id);
-            if post_id != "index" {
-                output_path = output_path.join(post_id);
+            if doc.id != "index" {
+                output_path = output_path.join(doc.id);
             }
             std::fs::create_dir_all(&output_path)?;
 
