@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()> {
             }
             std::fs::create_dir_all(&output_path)?;
 
-            let html = views::post(doc);
+            let html = views::post(collection, doc);
             html.write_to_path(&output_path.join("index.html"))?;
 
             for path in &doc.files {
