@@ -61,6 +61,7 @@ impl Collection {
         }
 
         collection.documents.sort_by_key(|d| d.metadata.date());
+        collection.documents.reverse();
 
         Ok(collection)
     }
