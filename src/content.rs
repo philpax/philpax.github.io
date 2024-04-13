@@ -56,7 +56,18 @@ impl Collection {
                 continue;
             }
 
-            collection.read_document_dir(&path)?;
+            let id = path
+                .file_name()
+                .context("no post id for directory")?
+                .to_string_lossy()
+                .to_string();
+
+            let index = path.join("index.md");
+            if !index.exists() {
+                anyhow::bail!("no index.md for {}/{id}", collection.id);
+            }
+
+            collection.read_document(&index, id)?;
         }
 
         let index_path = collection_path.join("index.md");
@@ -70,22 +81,24 @@ impl Collection {
         Ok(collection)
     }
 
-    fn read_document_dir(&mut self, path: &Path) -> anyhow::Result<()> {
-        let id = path
-            .file_name()
-            .context("no post id for directory")?
-            .to_string_lossy()
-            .to_string();
+    fn read_document(&mut self, path: &Path, id: String) -> anyhow::Result<()> {
+        let document = Document::read(path, id)?;
+        self.documents.push(document);
 
-        let index = path.join("index.md");
-        if !index.exists() {
-            anyhow::bail!("no index.md for {}/{id}", self.id);
-        }
-
-        self.read_document(&index, id)
+        Ok(())
     }
+}
 
-    fn read_document(&mut self, path: &Path, id: String) -> Result<(), anyhow::Error> {
+#[derive(Debug)]
+pub struct Document {
+    pub id: String,
+    pub metadata: DocumentMetadata,
+    pub description: Option<markdown::mdast::Node>,
+    pub content: markdown::mdast::Node,
+    pub files: Vec<PathBuf>,
+}
+impl Document {
+    fn read(path: &Path, id: String) -> anyhow::Result<Self> {
         let file = std::fs::read_to_string(path)?;
         let parts: Vec<_> = file.splitn(3, "+++").collect();
 
@@ -111,27 +124,14 @@ impl Collection {
             files.push(path);
         }
 
-        let doc = Document {
+        Ok(Document {
             id,
             metadata,
             description,
             content,
             files,
-        };
-
-        self.documents.push(doc);
-
-        Ok(())
+        })
     }
-}
-
-#[derive(Debug)]
-pub struct Document {
-    pub id: String,
-    pub metadata: DocumentMetadata,
-    pub description: Option<markdown::mdast::Node>,
-    pub content: markdown::mdast::Node,
-    pub files: Vec<PathBuf>,
 }
 
 #[derive(Debug, Deserialize, Clone, Copy)]
