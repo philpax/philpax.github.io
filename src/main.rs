@@ -26,7 +26,7 @@ fn main() -> anyhow::Result<()> {
             }
             std::fs::create_dir_all(&output_path)?;
 
-            let html = views::post(&doc.content);
+            let html = views::post(&doc);
             html.write_to_path(&output_path.join("index.html"))?;
 
             for path in &doc.files {

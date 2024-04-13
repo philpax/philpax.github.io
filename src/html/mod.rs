@@ -29,8 +29,10 @@ impl Document {
 
 type Attribute = (String, Option<String>);
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub enum Element {
+    #[default]
+    Empty,
     Tag {
         name: String,
         attributes: Vec<Attribute>,
@@ -50,6 +52,7 @@ impl Element {
 
     pub fn write(&self, writer: &mut dyn Write) -> anyhow::Result<()> {
         match self {
+            Element::Empty => Ok(()),
             Element::Tag {
                 name,
                 attributes,

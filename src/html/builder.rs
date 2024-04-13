@@ -104,3 +104,29 @@ pub fn a(href: &str, title: Option<&str>, children: impl Into<Vec<Element>>) -> 
 pub fn br() -> Element {
     tag("br", [], [])
 }
+
+pub fn article(
+    attributes: impl Into<Vec<Attribute>>,
+    children: impl Into<Vec<Element>>,
+) -> Element {
+    tag("article", attributes, children)
+}
+
+pub fn header(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
+    tag("header", attributes, children)
+}
+
+pub fn section(
+    attributes: impl Into<Vec<Attribute>>,
+    children: impl Into<Vec<Element>>,
+) -> Element {
+    tag("section", attributes, children)
+}
+
+pub fn datetime(date: chrono::NaiveDate) -> Element {
+    tag_with_text(
+        "time",
+        [("datetime".to_string(), Some(date.to_string()))],
+        &date.to_string(),
+    )
+}

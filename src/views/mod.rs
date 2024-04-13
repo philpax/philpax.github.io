@@ -1,10 +1,46 @@
-use crate::{html, markdown};
+use crate::{content, html};
 
-pub fn post(document: &markdown::Node) -> html::Document {
-    layout(markdown::convert_to_html(document))
+pub fn post(document: &content::Document) -> html::Document {
+    layout([partials::post(document, false)])
 }
 
-fn layout(inner: Vec<html::Element>) -> html::Document {
+
+mod partials {
+    use crate::{content, html, markdown};
+
+    pub fn post(document: &content::Document, use_description: bool) -> html::Element {
+        use html::builder::*;
+
+        article(
+            [],
+            [
+                header(
+                    [],
+                    [
+                        h(1, [], [text(&document.metadata.title)]),
+                        document
+                            .metadata
+                            .date()
+                            .map(|d| datetime(d))
+                            .unwrap_or_default(),
+                    ],
+                ),
+                section(
+                    [],
+                    markdown::convert_to_html(
+                        document
+                            .description
+                            .as_ref()
+                            .filter(|_| use_description)
+                            .unwrap_or(&document.content),
+                    ),
+                ),
+            ],
+        )
+    }
+}
+
+fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
     use html::builder::*;
 
     html::Document::new([html([
