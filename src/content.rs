@@ -144,8 +144,10 @@ impl Document {
 
         url.push('/');
         url.push_str(&collection.id);
-        url.push('/');
-        url.push_str(&self.id);
+        if self.id != "index" {
+            url.push('/');
+            url.push_str(&self.id);
+        }
         url.push('/');
 
         url
