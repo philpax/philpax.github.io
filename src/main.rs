@@ -1,14 +1,10 @@
 use std::path::Path;
 
+mod config;
 mod content;
 mod html;
 mod markdown;
 mod views;
-
-const RSS_TITLE: &str = "Philpax's Blog";
-const RSS_AUTHOR: &str = "Philpax";
-const RSS_LINK: &str = "https://philpax.me";
-const RSS_DESCRIPTION: &str = "The blog of Philpax, your friendly neighbourhood polyglot programmer/engineer, cursed with more projects than time.";
 
 fn main() -> anyhow::Result<()> {
     let public = Path::new("public");
@@ -52,45 +48,45 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn build_rss_channel(content: &content::Content) -> anyhow::Result<rss::Channel> {
-    let items = content
-        .blog()
+    let blog = content.blog();
+    let items = blog
         .documents
         .iter()
         .map(|doc| {
-            let link = format!("{RSS_LINK}/blog/{}/", doc.id);
+            let url = doc.url(blog, true);
 
             rss::ItemBuilder::default()
                 .title(doc.metadata.title.clone())
-                .link(link.clone())
+                .link(url.clone())
                 .guid(
                     rss::GuidBuilder::default()
-                        .value(link)
+                        .value(url)
                         .permalink(false)
                         .build(),
                 )
                 .description(doc.description.as_ref().map(|d| {
                     html::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap()
                 }))
-                .author(RSS_AUTHOR.to_string())
+                .author(config::RSS_AUTHOR.to_string())
                 .pub_date(doc.metadata.datetime().map(|d| d.to_rfc2822()))
                 .build()
         })
         .collect::<Vec<_>>();
 
     Ok(rss::ChannelBuilder::default()
-        .title(RSS_TITLE)
-        .link(RSS_LINK)
+        .title(config::RSS_TITLE)
+        .link(config::BASE_URL)
         .atom_ext(
             rss::extension::atom::AtomExtensionBuilder::default()
                 .link(rss::extension::atom::Link {
                     rel: "self".into(),
-                    href: format!("{RSS_LINK}/blog.rss"),
+                    href: format!("{}/blog.rss", config::BASE_URL),
                     mime_type: Some("application/rss+xml".to_string()),
                     ..Default::default()
                 })
                 .build(),
         )
-        .description(RSS_DESCRIPTION)
+        .description(config::RSS_DESCRIPTION)
         .language("en-AU".to_string())
         .last_build_date(chrono::Utc::now().to_rfc2822())
         .generator("paxsite".to_string())

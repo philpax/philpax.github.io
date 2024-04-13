@@ -6,6 +6,8 @@ use std::{
 use anyhow::Context;
 use serde::Deserialize;
 
+use crate::config;
+
 #[derive(Debug)]
 pub struct Content {
     pub path: PathBuf,
@@ -131,6 +133,22 @@ impl Document {
             content,
             files,
         })
+    }
+
+    pub fn url(&self, collection: &Collection, absolute_url: bool) -> String {
+        let mut url = String::new();
+
+        if absolute_url {
+            url.push_str(config::BASE_URL);
+        }
+
+        url.push('/');
+        url.push_str(&collection.id);
+        url.push('/');
+        url.push_str(&self.id);
+        url.push('/');
+
+        url
     }
 }
 
