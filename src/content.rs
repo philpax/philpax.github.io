@@ -60,6 +60,8 @@ impl Collection {
             collection.read_document(&index_path, "index".to_string())?;
         }
 
+        collection.documents.sort_by_key(|d| d.metadata.date());
+
         Ok(collection)
     }
 
@@ -119,11 +121,20 @@ pub struct Document {
     pub files: Vec<PathBuf>,
 }
 
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(transparent)]
+pub struct NaiveDate(#[serde(with = "toml_datetime_compat")] chrono::NaiveDate);
+
 #[derive(Debug, Deserialize)]
 pub struct DocumentMetadata {
     pub title: String,
-    pub date: Option<toml::value::Datetime>,
+    date: Option<NaiveDate>,
     pub taxonomies: Option<DocumentTaxonomies>,
+}
+impl DocumentMetadata {
+    pub fn date(&self) -> Option<chrono::NaiveDate> {
+        self.date.map(|d| d.0)
+    }
 }
 
 #[derive(Debug, Deserialize)]
