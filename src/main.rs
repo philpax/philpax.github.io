@@ -62,7 +62,9 @@ fn build_rss_channel(content: &content::Content) -> anyhow::Result<rss::Channel>
                         .permalink(false)
                         .build(),
                 )
-                .description(doc.description.clone())
+                .description(doc.description.as_ref().map(|d| {
+                    html::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap()
+                }))
                 .author(RSS_AUTHOR.to_string())
                 .pub_date(doc.metadata.date().map(|d| {
                     d.and_time(chrono::NaiveTime::default())

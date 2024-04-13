@@ -90,7 +90,13 @@ impl Collection {
         }
 
         let metadata: DocumentMetadata = toml::from_str(parts[1])?;
-        let content = markdown::to_mdast(parts[2], &markdown::ParseOptions::gfm()).unwrap();
+        let content_raw = parts[2];
+
+        let description = content_raw
+            .split("<!-- more -->")
+            .next()
+            .map(|s| parse_markdown(s.trim()));
+        let content = parse_markdown(content_raw);
 
         let mut files = vec![];
         for entry in std::fs::read_dir(path.parent().unwrap())? {
@@ -104,7 +110,7 @@ impl Collection {
         let doc = Document {
             id,
             metadata,
-            description: None,
+            description,
             content,
             files,
         };
@@ -119,7 +125,7 @@ impl Collection {
 pub struct Document {
     pub id: String,
     pub metadata: DocumentMetadata,
-    pub description: Option<String>,
+    pub description: Option<markdown::mdast::Node>,
     pub content: markdown::mdast::Node,
     pub files: Vec<PathBuf>,
 }
@@ -143,4 +149,8 @@ impl DocumentMetadata {
 #[derive(Debug, Deserialize)]
 pub struct DocumentTaxonomies {
     pub tags: Vec<String>,
+}
+
+fn parse_markdown(md: &str) -> markdown::mdast::Node {
+    markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
 }

@@ -94,6 +94,17 @@ impl Element {
             }
         }
     }
+
+    pub fn write_many_to_string(elements: &[Element]) -> anyhow::Result<String> {
+        let mut output = vec![];
+        for (idx, element) in elements.iter().enumerate() {
+            if idx > 0 {
+                writeln!(output)?;
+            }
+            element.write(&mut output)?;
+        }
+        Ok(String::from_utf8(output)?)
+    }
 }
 
 #[cfg(test)]
