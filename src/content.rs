@@ -104,6 +104,7 @@ impl Collection {
         let doc = Document {
             id,
             metadata,
+            description: None,
             content,
             files,
         };
@@ -118,6 +119,7 @@ impl Collection {
 pub struct Document {
     pub id: String,
     pub metadata: DocumentMetadata,
+    pub description: Option<String>,
     pub content: markdown::mdast::Node,
     pub files: Vec<PathBuf>,
 }
