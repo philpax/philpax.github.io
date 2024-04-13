@@ -4,6 +4,16 @@ pub fn post(document: &content::Document) -> html::Document {
     layout([partials::post(document, false)])
 }
 
+pub fn index(content: &content::Content) -> html::Document {
+    layout(
+        content
+            .blog()
+            .documents
+            .iter()
+            .map(|doc| partials::post(doc, true))
+            .collect::<Vec<_>>(),
+    )
+}
 
 mod partials {
     use crate::{content, html, markdown};

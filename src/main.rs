@@ -8,7 +8,7 @@ mod views;
 const RSS_TITLE: &str = "Philpax's Blog";
 const RSS_AUTHOR: &str = "Philpax";
 const RSS_LINK: &str = "https://philpax.me";
-const RSS_DESCRIPTION: &str = "The blog of Philpax, your friendly friendly neighbourhood polyglot programmer/engineer, cursed with more projects than time.";
+const RSS_DESCRIPTION: &str = "The blog of Philpax, your friendly neighbourhood polyglot programmer/engineer, cursed with more projects than time.";
 
 fn main() -> anyhow::Result<()> {
     let public = Path::new("public");
@@ -35,6 +35,12 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
+    // Write out index
+    {
+        let html = views::index(&content);
+        html.write_to_path(&public.join("index.html"))?;
+    }
+
     // Write out RSS feed
     {
         let rss_channel = build_rss_channel(&content)?;
@@ -46,8 +52,8 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn build_rss_channel(content: &content::Content) -> anyhow::Result<rss::Channel> {
-    let blog_posts = content.collections.get("blog").unwrap();
-    let items = blog_posts
+    let items = content
+        .blog()
         .documents
         .iter()
         .map(|doc| {

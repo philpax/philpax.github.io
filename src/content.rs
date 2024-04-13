@@ -30,6 +30,10 @@ impl Content {
 
         Ok(())
     }
+
+    pub fn blog(&self) -> &Collection {
+        self.collections.get("blog").unwrap()
+    }
 }
 
 #[derive(Debug)]
