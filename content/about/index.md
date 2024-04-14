@@ -17,5 +17,3 @@ During the day, I work in the game development industry, but my moonlight callin
 - computer architecture and design
 
 If you'd like to know more about what I've worked on or built, why not check out my [GitHub](https://github.com/philpax)?
-
-This website was made possible by [zola](https://www.getzola.org/) and [zerm](https://github.com/ejmg/zerm).
