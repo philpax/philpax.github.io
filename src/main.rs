@@ -5,11 +5,23 @@ mod content;
 mod html;
 mod markdown;
 mod rss;
+mod util;
 mod views;
 
 fn main() -> anyhow::Result<()> {
     let public = Path::new("public");
-    std::fs::remove_dir_all(public).ok();
+
+    if public.is_dir() {
+        // Remove everything in the public directory
+        for entry in std::fs::read_dir(public)? {
+            let path = entry?.path();
+            if path.is_dir() {
+                std::fs::remove_dir_all(&path)?;
+            } else {
+                std::fs::remove_file(&path)?;
+            }
+        }
+    }
     std::fs::create_dir_all(public)?;
 
     let content = content::Content::read()?;
