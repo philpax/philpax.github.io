@@ -60,13 +60,10 @@ impl Element {
             } => {
                 // start tag
                 write!(writer, "<{name}")?;
-                if !attributes.is_empty() {
-                    write!(writer, " ")?;
-                }
                 for (key, value) in attributes {
                     match value {
-                        Some(value) => write!(writer, "{key}=\"{value}\" ")?,
-                        None => write!(writer, "{key} ")?,
+                        Some(value) => write!(writer, " {key}=\"{value}\"")?,
+                        None => write!(writer, " {key}")?,
                     }
                 }
                 if children.is_empty() {
