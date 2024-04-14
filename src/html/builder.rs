@@ -105,6 +105,10 @@ pub fn a(href: &str, title: Option<&str>, children: impl Into<Vec<Element>>) -> 
     tag("a", attributes, children)
 }
 
+pub fn a_simple(href: &str, txt: &str) -> Element {
+    a(href, Some(txt), [text(txt)])
+}
+
 pub fn br() -> Element {
     tag("br", [], [])
 }

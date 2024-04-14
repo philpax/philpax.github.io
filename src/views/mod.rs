@@ -25,7 +25,7 @@ pub fn tags(content: &content::Content) -> html::Document {
     layout([article(
         [],
         [
-            header([], [h(2, [], [a("/tags", Some("Tags"), [text("Tags")])])]),
+            header([], [h(2, [], [a_simple("/tags", "Tags")])]),
             div(
                 [],
                 [ul(
@@ -48,10 +48,9 @@ pub fn tags(content: &content::Content) -> html::Document {
 
                                                 li(
                                                     [],
-                                                    [a(
+                                                    [a_simple(
                                                         &document.url(collection, false),
-                                                        Some(&document.metadata.title),
-                                                        [text(&document.metadata.title)],
+                                                        &document.metadata.title,
                                                     )],
                                                 )
                                             })
@@ -123,7 +122,7 @@ fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
                             links
                                 .iter()
                                 .copied()
-                                .map(|(url, label)| li([], [a(url, None, [text(label)])]))
+                                .map(|(url, label)| li([], [a_simple(url, label)]))
                                 .collect::<Vec<_>>(),
                         )],
                     ),

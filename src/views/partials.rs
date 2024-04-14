@@ -18,11 +18,7 @@ pub fn post(
     if use_description {
         post_body.push(p(
             [],
-            [a(
-                &document.url(collection, false),
-                Some("Read more"),
-                [text("Read more")],
-            )],
+            [a_simple(&document.url(collection, false), "Read more")],
         ));
     }
 
@@ -45,10 +41,9 @@ pub fn post(
                     h(
                         2,
                         [],
-                        [a(
+                        [a_simple(
                             &document.url(collection, false),
-                            Some(&document.metadata.title),
-                            [text(&document.metadata.title)],
+                            &document.metadata.title,
                         )],
                     ),
                     document
