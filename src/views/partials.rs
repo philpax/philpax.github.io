@@ -18,7 +18,7 @@ pub fn post(
     if use_description {
         post_body.push(p(
             [],
-            [a_simple(&document.url(collection, false), "Read more")],
+            [a_simple(document.url(collection, false), "Read more")],
         ));
     }
 
@@ -26,7 +26,7 @@ pub fn post(
         Some(tags) => ul(
             [("class".into(), Some("tags".into()))],
             tags.iter()
-                .map(|tag| li([], [a_simple(&format!("/tags/{tag}"), &format!("#{tag}"))]))
+                .map(|tag| li([], [a_simple(format!("/tags/{tag}"), format!("#{tag}"))]))
                 .collect::<Vec<_>>(),
         ),
         None => html::Element::Empty,
@@ -42,8 +42,8 @@ pub fn post(
                         2,
                         [],
                         [a_simple(
-                            &document.url(collection, false),
-                            &document.metadata.title,
+                            document.url(collection, false),
+                            document.metadata.title.clone(),
                         )],
                     ),
                     document

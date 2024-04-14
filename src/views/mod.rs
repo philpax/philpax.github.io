@@ -37,7 +37,7 @@ pub fn tags(content: &content::Content) -> html::Document {
                             li(
                                 [],
                                 [
-                                    a_simple(&format!("/tags/{tag}"), &format!("#{tag}")),
+                                    a_simple(format!("/tags/{tag}"), format!("#{tag}")),
                                     text(format!(
                                         " ({} {})",
                                         post_count,
@@ -65,8 +65,8 @@ pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
                     2,
                     [],
                     [a_simple(
-                        &format!("/tags/{tag_id}"),
-                        &format!("Tags - #{tag_id}"),
+                        format!("/tags/{tag_id}"),
+                        format!("Tags - #{tag_id}"),
                     )],
                 )],
             ),
@@ -83,8 +83,8 @@ pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
                             li(
                                 [],
                                 [a_simple(
-                                    &document.url(collection, false),
-                                    &document.metadata.title,
+                                    document.url(collection, false),
+                                    document.metadata.title.clone(),
                                 )],
                             )
                         })

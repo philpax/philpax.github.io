@@ -1,24 +1,26 @@
 use super::{Attribute, Element};
 
 pub fn tag(
-    name: &str,
+    name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
     children: impl Into<Vec<Element>>,
 ) -> Element {
     Element::Tag {
-        name: name.to_string(),
+        name: name.into(),
         attributes: attributes.into(),
         children: children.into(),
     }
 }
 
-pub fn tag_with_text(name: &str, attributes: impl Into<Vec<Attribute>>, text: &str) -> Element {
+pub fn tag_with_text(
+    name: impl Into<String>,
+    attributes: impl Into<Vec<Attribute>>,
+    text: impl Into<String>,
+) -> Element {
     Element::Tag {
-        name: name.to_string(),
+        name: name.into(),
         attributes: attributes.into(),
-        children: vec![Element::Text {
-            text: text.to_string(),
-        }],
+        children: vec![Element::Text { text: text.into() }],
     }
 }
 
@@ -30,16 +32,16 @@ pub fn html(children: impl Into<Vec<Element>>) -> Element {
     tag("html", [("lang".into(), Some("en-AU".into()))], children)
 }
 
-pub fn title(text: &str) -> Element {
+pub fn title(text: impl Into<String>) -> Element {
     tag_with_text("title", [], text)
 }
 
-pub fn link(rel: &str, href: &str) -> Element {
+pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
     tag(
         "link",
         [
-            ("rel".to_string(), Some(rel.to_string())),
-            ("href".to_string(), Some(href.to_string())),
+            ("rel".into(), Some(rel.into())),
+            ("href".into(), Some(href.into())),
         ],
         [],
     )
@@ -50,31 +52,36 @@ pub fn h(
     attributes: impl Into<Vec<Attribute>>,
     children: impl Into<Vec<Element>>,
 ) -> Element {
-    tag(&format!("h{}", depth), attributes, children)
+    tag(format!("h{}", depth), attributes, children)
 }
 
-pub fn img(src: &str, alt: &str) -> Element {
+pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
     tag(
         "img",
         [
-            ("src".to_string(), Some(src.to_string())),
-            ("alt".to_string(), Some(alt.to_string())),
+            ("src".into(), Some(src.into())),
+            ("alt".into(), Some(alt.into())),
         ],
         [],
     )
 }
 
-pub fn a(href: &str, title: Option<&str>, children: impl Into<Vec<Element>>) -> Element {
-    let mut attributes = vec![("href".to_string(), Some(href.to_string()))];
+pub fn a(
+    href: impl Into<String>,
+    title: Option<impl Into<String>>,
+    children: impl Into<Vec<Element>>,
+) -> Element {
+    let mut attributes = vec![("href".into(), Some(href.into()))];
     if let Some(title) = title {
-        attributes.push(("title".to_string(), Some(title.to_string())));
+        attributes.push(("title".into(), Some(title.into())));
     }
 
     tag("a", attributes, children)
 }
 
-pub fn a_simple(href: &str, txt: &str) -> Element {
-    a(href, Some(txt), [text(txt)])
+pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
+    let txt = txt.into();
+    a(href, Some(txt.clone()), [text(txt)])
 }
 
 pub fn br() -> Element {
@@ -84,8 +91,8 @@ pub fn br() -> Element {
 pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     tag_with_text(
         "time",
-        [("datetime".to_string(), Some(date.to_rfc3339()))],
-        &date.date_naive().to_string(),
+        [("datetime".into(), Some(date.to_rfc3339()))],
+        date.date_naive().to_string(),
     )
 }
 
