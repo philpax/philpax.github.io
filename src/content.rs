@@ -6,7 +6,7 @@ use std::{
 use anyhow::Context;
 use serde::Deserialize;
 
-use crate::config;
+use crate::{config, util};
 
 #[derive(Debug)]
 pub struct Content {
@@ -94,6 +94,7 @@ impl Collection {
 #[derive(Debug)]
 pub struct Document {
     pub id: String,
+    pub alternate_id: Option<String>,
     pub metadata: DocumentMetadata,
     pub description: Option<markdown::mdast::Node>,
     pub content: markdown::mdast::Node,
@@ -126,8 +127,16 @@ impl Document {
             files.push(path);
         }
 
+        let alternate_id = util::slugify(&metadata.title);
+        let alternate_id = if alternate_id == id {
+            None
+        } else {
+            Some(alternate_id)
+        };
+
         Ok(Document {
             id,
+            alternate_id,
             metadata,
             description,
             content,

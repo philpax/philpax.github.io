@@ -16,6 +16,32 @@ pub fn index(content: &content::Content) -> html::Document {
     )
 }
 
+pub fn redirect(to_url: &str) -> html::Document {
+    use html::builder::*;
+
+    html::Document::new([html([
+        head([
+            title("Redirecting..."),
+            meta([("charset".into(), Some("utf-8".into()))]),
+            meta([
+                ("http-equiv".into(), Some("refresh".into())),
+                ("content".into(), Some(format!("0; url={}", to_url))),
+            ]),
+        ]),
+        body([
+            p([], [text("Redirecting...")]),
+            p(
+                [],
+                [a(
+                    to_url,
+                    Some("Click here if you are not redirected"),
+                    [text("Click here")],
+                )],
+            ),
+        ]),
+    ])])
+}
+
 fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
     use html::builder::*;
 

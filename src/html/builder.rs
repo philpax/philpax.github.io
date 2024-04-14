@@ -27,7 +27,7 @@ pub fn text(text: impl Into<String>) -> Element {
 }
 
 pub fn html(children: impl Into<Vec<Element>>) -> Element {
-    tag("html", [], children)
+    tag("html", [("lang".into(), Some("en-AU".into()))], children)
 }
 
 pub fn head(children: impl Into<Vec<Element>>) -> Element {

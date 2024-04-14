@@ -16,8 +16,9 @@ fn main() -> anyhow::Result<()> {
 
     // Write out content
     for (collection_id, collection) in &content.collections {
+        let collection_path = public.join(collection_id);
         for doc in &collection.documents {
-            let mut output_path = public.join(collection_id);
+            let mut output_path = collection_path.clone();
             if doc.id != "index" {
                 output_path = output_path.join(&doc.id);
             }
@@ -28,6 +29,15 @@ fn main() -> anyhow::Result<()> {
 
             for path in &doc.files {
                 std::fs::copy(path, &output_path.join(path.file_name().unwrap()))?;
+            }
+
+            // Write redirect for alternate_id if it exists
+            if let Some(alternate_id) = doc.alternate_id.as_ref() {
+                let alternate_path = collection_path.join(alternate_id);
+                std::fs::create_dir_all(&alternate_path)?;
+
+                let html = &views::redirect(&doc.url(collection, false));
+                html.write_to_path(&alternate_path.join("index.html"))?;
             }
         }
     }
