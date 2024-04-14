@@ -45,6 +45,8 @@ pub fn redirect(to_url: &str) -> html::Document {
 fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
     use html::builder::*;
 
+    let links = [("/", "Blog"), ("/tags", "Tags"), ("/about", "About")];
+
     html::Document::new([html([
         head([
             title("Philpax"),
@@ -59,7 +61,23 @@ fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
             link("stylesheet", "/styles.css"),
         ]),
         body([
-            header([], [h(1, [], [text("Philpax")])]),
+            header(
+                [],
+                [
+                    h(1, [], [text("Philpax")]),
+                    nav(
+                        [],
+                        [ul(
+                            [],
+                            links
+                                .iter()
+                                .copied()
+                                .map(|(url, label)| li([], [a(url, None, [text(label)])]))
+                                .collect::<Vec<_>>(),
+                        )],
+                    ),
+                ],
+            ),
             main(inner.into()),
         ]),
     ])])

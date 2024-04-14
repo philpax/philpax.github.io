@@ -134,3 +134,15 @@ pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
         &date.date_naive().to_string(),
     )
 }
+
+pub fn nav(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
+    tag("nav", attributes, children)
+}
+
+pub fn ul(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
+    tag("ul", attributes, children)
+}
+
+pub fn li(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
+    tag("li", attributes, children)
+}
