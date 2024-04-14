@@ -112,5 +112,8 @@ macro_rules! aliased_builders {
 
 aliased_builders! {
     plain: [meta],
-    children: [head, body, main, p, code, div, pre, header, nav, ul, li, article, section],
+    children: [
+        head, body, main, p, code, div, pre, header, nav,
+        ol, ul, li, strong, em, blockquote, article, section
+    ],
 }

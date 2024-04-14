@@ -7,45 +7,50 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
         Node::Heading(h) => {
-            vec![tag(&format!("h{}", (h.depth + 2).min(6)), &h.children)]
+            vec![b::h((h.depth + 2).min(6), convert_many(&h.children))]
         }
         Node::Text(t) => {
             vec![b::text(t.value.to_string())]
         }
         Node::Paragraph(p) => {
-            vec![tag("p", &p.children)]
+            vec![b::p(convert_many(&p.children))]
         }
         Node::Strong(s) => {
-            vec![tag("strong", &s.children)]
+            vec![b::strong(convert_many(&s.children))]
         }
         Node::Emphasis(e) => {
-            vec![tag("em", &e.children)]
+            vec![b::em(convert_many(&e.children))]
         }
         Node::List(l) => {
-            vec![tag(if l.ordered { "ol" } else { "ul" }, &l.children)]
+            let children = convert_many(&l.children);
+            vec![if l.ordered {
+                b::ol(children)
+            } else {
+                b::ul(children)
+            }]
         }
         Node::ListItem(li) => {
             // hack: if the only child of this list item is a paragraph, drop the paragraph
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![tag("li", &p.children)];
+                    return vec![b::li(convert_many(&p.children))];
                 }
             }
 
-            vec![tag("li", &li.children)]
+            vec![b::li(convert_many(&li.children))]
         }
         Node::Code(c) => {
             vec![b::pre([b::code([b::text(&c.value)])])]
         }
         Node::BlockQuote(b) => {
-            vec![tag("blockquote", &b.children)]
+            vec![b::blockquote(convert_many(&b.children))]
         }
         Node::Break(_) => {
             vec![b::br()]
         }
         Node::InlineCode(c) => {
-            vec![b::tag_with_text("code", [], &c.value)]
+            vec![b::code([b::text(&c.value)])]
         }
         Node::Image(i) => {
             vec![b::img(&i.url, &i.alt)]
@@ -93,13 +98,6 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
     }
 }
 
-fn tag(name: &str, children: &[Node]) -> html::Element {
-    b::tag(
-        name,
-        [],
-        children
-            .iter()
-            .flat_map(convert_to_html)
-            .collect::<Vec<_>>(),
-    )
+fn convert_many(nodes: &[Node]) -> Vec<html::Element> {
+    nodes.iter().flat_map(convert_to_html).collect()
 }
