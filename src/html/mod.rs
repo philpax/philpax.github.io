@@ -8,9 +8,9 @@ pub struct Document {
     pub children: Vec<Element>,
 }
 impl Document {
-    pub fn new(children: impl Into<Vec<Element>>) -> Self {
+    pub fn new(children: impl builder::ToElements) -> Self {
         Document {
-            children: children.into(),
+            children: children.to_elements(),
         }
     }
 
@@ -29,7 +29,7 @@ impl Document {
 
 type Attribute = (String, Option<String>);
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub enum Element {
     #[default]
     Empty,
@@ -137,7 +137,7 @@ mod tests {
     fn test_inline_code() {
         let input = p([
             text("This is an example of "),
-            code([text("inline code")]),
+            code(text("inline code")),
             text(" in a paragraph."),
         ]);
 

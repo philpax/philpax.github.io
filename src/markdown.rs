@@ -41,7 +41,7 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
             vec![b::li(convert_many(&li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre([b::code([b::text(&c.value)])])]
+            vec![b::pre(b::code(b::text(&c.value)))]
         }
         Node::BlockQuote(b) => {
             vec![b::blockquote(convert_many(&b.children))]
@@ -50,7 +50,7 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
             vec![b::br()]
         }
         Node::InlineCode(c) => {
-            vec![b::code([b::text(&c.value)])]
+            vec![b::code(b::text(&c.value))]
         }
         Node::Image(i) => {
             vec![b::img(&i.url, &i.alt)]

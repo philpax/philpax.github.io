@@ -1,14 +1,46 @@
 use super::{Attribute, Element};
 
+pub trait ToElements {
+    fn to_elements(self) -> Vec<Element>;
+}
+impl<T: Into<Element>> ToElements for T {
+    fn to_elements(self) -> Vec<Element> {
+        vec![self.into()]
+    }
+}
+impl<T: Into<Element>> ToElements for Vec<T> {
+    fn to_elements(self) -> Vec<Element> {
+        self.into_iter().map(Into::into).collect()
+    }
+}
+impl<T: Into<Element> + Clone> ToElements for &[T] {
+    fn to_elements(self) -> Vec<Element> {
+        self.iter().cloned().map(|e| e.into()).collect()
+    }
+}
+impl<T: Into<Element> + Clone, const N: usize> ToElements for [T; N] {
+    fn to_elements(self) -> Vec<Element> {
+        self.iter().cloned().map(|e| e.into()).collect()
+    }
+}
+pub struct NoChildren;
+impl ToElements for NoChildren {
+    fn to_elements(self) -> Vec<Element> {
+        vec![]
+    }
+}
+
+const EMPTY: NoChildren = NoChildren;
+
 pub fn tag(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
-    children: impl Into<Vec<Element>>,
+    children: impl ToElements,
 ) -> Element {
     Element::Tag {
         name: name.into(),
         attributes: attributes.into(),
-        children: children.into(),
+        children: children.to_elements(),
     }
 }
 
@@ -28,7 +60,7 @@ pub fn text(text: impl Into<String>) -> Element {
     Element::Text { text: text.into() }
 }
 
-pub fn html(children: impl Into<Vec<Element>>) -> Element {
+pub fn html(children: impl ToElements) -> Element {
     tag("html", [("lang".into(), Some("en-AU".into()))], children)
 }
 
@@ -43,11 +75,11 @@ pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
             ("rel".into(), Some(rel.into())),
             ("href".into(), Some(href.into())),
         ],
-        [],
+        EMPTY,
     )
 }
 
-pub fn h(depth: u8, children: impl Into<Vec<Element>>) -> Element {
+pub fn h(depth: u8, children: impl ToElements) -> Element {
     tag(format!("h{}", depth), [], children)
 }
 
@@ -58,14 +90,14 @@ pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
             ("src".into(), Some(src.into())),
             ("alt".into(), Some(alt.into())),
         ],
-        [],
+        EMPTY,
     )
 }
 
 pub fn a(
     href: impl Into<String>,
     title: Option<impl Into<String>>,
-    children: impl Into<Vec<Element>>,
+    children: impl ToElements,
 ) -> Element {
     let mut attributes = vec![("href".into(), Some(href.into()))];
     if let Some(title) = title {
@@ -77,11 +109,11 @@ pub fn a(
 
 pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
     let txt = txt.into();
-    a(href, Some(txt.clone()), [text(txt)])
+    a(href, Some(txt.clone()), text(txt))
 }
 
 pub fn br() -> Element {
-    tag("br", [], [])
+    tag("br", [], EMPTY)
 }
 
 pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
@@ -99,11 +131,11 @@ macro_rules! aliased_builders {
     ) => {
         $(
             pub fn $plain_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
-                tag(stringify!($plain_ident), attributes, [])
+                tag(stringify!($plain_ident), attributes, EMPTY)
             }
         )*
         $(
-            pub fn $children_ident(children: impl Into<Vec<Element>>) -> Element {
+            pub fn $children_ident(children: impl ToElements) -> Element {
                 tag(stringify!($children_ident), [], children)
             }
         )*
