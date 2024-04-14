@@ -36,7 +36,7 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
             vec![tag("li", &li.children)]
         }
         Node::Code(c) => {
-            vec![b::pre([], [b::code([], [b::text(&c.value)])])]
+            vec![b::pre([b::code([b::text(&c.value)])])]
         }
         Node::BlockQuote(b) => {
             vec![tag("blockquote", &b.children)]

@@ -47,12 +47,8 @@ pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
     )
 }
 
-pub fn h(
-    depth: u8,
-    attributes: impl Into<Vec<Attribute>>,
-    children: impl Into<Vec<Element>>,
-) -> Element {
-    tag(format!("h{}", depth), attributes, children)
+pub fn h(depth: u8, children: impl Into<Vec<Element>>) -> Element {
+    tag(format!("h{}", depth), [], children)
 }
 
 pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
@@ -98,33 +94,23 @@ pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
 
 macro_rules! aliased_builders {
     (
+        plain: [$($plain_ident:ident),*],
         children: [$($children_ident:ident),*],
-        attribute: [$($attribute_ident:ident),*],
-        attribute_and_children: [$($attribute_and_children_ident:ident),*],
     ) => {
+        $(
+            pub fn $plain_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
+                tag(stringify!($plain_ident), attributes, [])
+            }
+        )*
         $(
             pub fn $children_ident(children: impl Into<Vec<Element>>) -> Element {
                 tag(stringify!($children_ident), [], children)
-            }
-        )*
-        $(
-            pub fn $attribute_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
-                tag(stringify!($attribute_ident), attributes, [])
-            }
-        )*
-        $(
-            pub fn $attribute_and_children_ident(
-                attributes: impl Into<Vec<Attribute>>,
-                children: impl Into<Vec<Element>>,
-            ) -> Element {
-                tag(stringify!($attribute_and_children_ident), attributes, children)
             }
         )*
     };
 }
 
 aliased_builders! {
-    children: [head, body, main],
-    attribute: [meta],
-    attribute_and_children: [p, code, div, pre, header, nav, ul, li, article, section],
+    plain: [meta],
+    children: [head, body, main, p, code, div, pre, header, nav, ul, li, article, section],
 }

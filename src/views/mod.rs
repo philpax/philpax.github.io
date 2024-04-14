@@ -22,77 +22,49 @@ pub fn tags(content: &content::Content) -> html::Document {
     let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
-    layout([article(
-        [],
-        [
-            header([], [h(2, [], [a_simple("/tags", "Tags")])]),
-            div(
-                [],
-                [ul(
-                    [],
-                    tag_keys
-                        .iter()
-                        .map(|tag| {
-                            let post_count = content.tags[*tag].len();
-                            li(
-                                [],
-                                [
-                                    a_simple(format!("/tags/{tag}"), format!("#{tag}")),
-                                    text(format!(
-                                        " ({} {})",
-                                        post_count,
-                                        util::pluralize("post", post_count)
-                                    )),
-                                ],
-                            )
-                        })
-                        .collect::<Vec<_>>(),
-                )],
-            ),
-        ],
-    )])
+    layout([article([
+        header([h(2, [a_simple("/tags", "Tags")])]),
+        div([ul(tag_keys
+            .iter()
+            .map(|tag| {
+                let post_count = content.tags[*tag].len();
+                li([
+                    a_simple(format!("/tags/{tag}"), format!("#{tag}")),
+                    text(format!(
+                        " ({} {})",
+                        post_count,
+                        util::pluralize("post", post_count)
+                    )),
+                ])
+            })
+            .collect::<Vec<_>>())]),
+    ])])
 }
 
 pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
     use html::builder::*;
 
-    layout([article(
-        [],
-        [
-            header(
-                [],
-                [h(
-                    2,
-                    [],
-                    [a_simple(
-                        format!("/tags/{tag_id}"),
-                        format!("Tags - #{tag_id}"),
-                    )],
-                )],
-            ),
-            div(
-                [],
-                [ul(
-                    [],
-                    content.tags[tag_id]
-                        .iter()
-                        .map(|t| {
-                            let collection = &content.collections[&t.0];
-                            let document = collection.document_by_id(&t.1).unwrap();
+    layout([article([
+        header([h(
+            2,
+            [a_simple(
+                format!("/tags/{tag_id}"),
+                format!("Tags - #{tag_id}"),
+            )],
+        )]),
+        div([ul(content.tags[tag_id]
+            .iter()
+            .map(|t| {
+                let collection = &content.collections[&t.0];
+                let document = collection.document_by_id(&t.1).unwrap();
 
-                            li(
-                                [],
-                                [a_simple(
-                                    document.url(collection, false),
-                                    document.metadata.title.clone(),
-                                )],
-                            )
-                        })
-                        .collect::<Vec<_>>(),
-                )],
-            ),
-        ],
-    )])
+                li([a_simple(
+                    document.url(collection, false),
+                    document.metadata.title.clone(),
+                )])
+            })
+            .collect::<Vec<_>>())]),
+    ])])
 }
 
 pub fn redirect(to_url: &str) -> html::Document {
@@ -108,15 +80,12 @@ pub fn redirect(to_url: &str) -> html::Document {
             ]),
         ]),
         body([
-            p([], [text("Redirecting...")]),
-            p(
-                [],
-                [a(
-                    to_url,
-                    Some("Click here if you are not redirected"),
-                    [text("Click here")],
-                )],
-            ),
+            p([text("Redirecting...")]),
+            p([a(
+                to_url,
+                Some("Click here if you are not redirected"),
+                [text("Click here")],
+            )]),
         ]),
     ])])
 }
@@ -140,23 +109,14 @@ fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
             link("stylesheet", "/styles.css"),
         ]),
         body([
-            header(
-                [],
-                [
-                    h(1, [], [text("Philpax")]),
-                    nav(
-                        [],
-                        [ul(
-                            [],
-                            links
-                                .iter()
-                                .copied()
-                                .map(|(url, label)| li([], [a_simple(url, label)]))
-                                .collect::<Vec<_>>(),
-                        )],
-                    ),
-                ],
-            ),
+            header([
+                h(1, [text("Philpax")]),
+                nav([ul(links
+                    .iter()
+                    .copied()
+                    .map(|(url, label)| li([a_simple(url, label)]))
+                    .collect::<Vec<_>>())]),
+            ]),
             main(inner.into()),
         ]),
     ])])

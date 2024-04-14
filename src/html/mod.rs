@@ -112,6 +112,21 @@ impl Element {
         }
         Ok(String::from_utf8(output)?)
     }
+
+    pub fn with_attrs(self, attributes: impl IntoIterator<Item = Attribute>) -> Self {
+        match self {
+            Element::Tag {
+                name,
+                attributes: old_attrs,
+                children,
+            } => Element::Tag {
+                name,
+                attributes: old_attrs.into_iter().chain(attributes).collect(),
+                children,
+            },
+            _ => panic!("Cannot add attributes to non-tag element {self:?}"),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -120,14 +135,11 @@ mod tests {
 
     #[test]
     fn test_inline_code() {
-        let input = p(
-            [],
-            [
-                text("This is an example of "),
-                code([], [text("inline code")]),
-                text(" in a paragraph."),
-            ],
-        );
+        let input = p([
+            text("This is an example of "),
+            code([text("inline code")]),
+            text(" in a paragraph."),
+        ]);
 
         let output = input.write_to_string().unwrap();
         assert_eq!(

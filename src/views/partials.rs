@@ -16,45 +16,34 @@ pub fn post(
     );
 
     if use_description {
-        post_body.push(p(
-            [],
-            [a_simple(document.url(collection, false), "Read more")],
-        ));
+        post_body.push(p([a_simple(document.url(collection, false), "Read more")]));
     }
 
     let tag_list = match document.metadata.taxonomies.as_ref().map(|t| &t.tags) {
-        Some(tags) => ul(
-            [("class".into(), Some("tags".into()))],
-            tags.iter()
-                .map(|tag| li([], [a_simple(format!("/tags/{tag}"), format!("#{tag}"))]))
-                .collect::<Vec<_>>(),
-        ),
+        Some(tags) => ul(tags
+            .iter()
+            .map(|tag| li([a_simple(format!("/tags/{tag}"), format!("#{tag}"))]))
+            .collect::<Vec<_>>())
+        .with_attrs([("class".into(), Some("tags".into()))]),
         None => html::Element::Empty,
     };
 
-    article(
-        [],
-        [
-            header(
-                [],
-                [
-                    h(
-                        2,
-                        [],
-                        [a_simple(
-                            document.url(collection, false),
-                            document.metadata.title.clone(),
-                        )],
-                    ),
-                    document
-                        .metadata
-                        .datetime()
-                        .map(datetime)
-                        .unwrap_or_default(),
-                    tag_list,
-                ],
+    article([
+        header([
+            h(
+                2,
+                [a_simple(
+                    document.url(collection, false),
+                    document.metadata.title.clone(),
+                )],
             ),
-            div([], post_body),
-        ],
-    )
+            document
+                .metadata
+                .datetime()
+                .map(datetime)
+                .unwrap_or_default(),
+            tag_list,
+        ]),
+        div(post_body),
+    ])
 }
