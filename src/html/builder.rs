@@ -1,3 +1,5 @@
+use crate::util;
+
 use super::{Attribute, Element};
 
 pub trait ToElements {
@@ -79,8 +81,18 @@ pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
     )
 }
 
-pub fn h(depth: u8, children: impl ToElements) -> Element {
-    tag(format!("h{}", depth), [], children)
+pub fn h(depth: u8, with_link: bool, children: impl ToElements) -> Element {
+    let children = children.to_elements();
+    let inner_text = children.iter().map(|c| c.inner_text()).collect::<String>();
+    let id = util::slugify(&inner_text);
+
+    let children = if with_link {
+        vec![a(format!("#{}", id), None::<String>, children)]
+    } else {
+        children
+    };
+
+    tag(format!("h{}", depth), [("id".into(), Some(id))], children)
 }
 
 pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {

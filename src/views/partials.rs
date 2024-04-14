@@ -32,6 +32,7 @@ pub fn post(
         header([
             h(
                 2,
+                false,
                 a_simple(
                     document.url(collection, false),
                     document.metadata.title.clone(),

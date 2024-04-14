@@ -127,6 +127,15 @@ impl Element {
             _ => panic!("Cannot add attributes to non-tag element {self:?}"),
         }
     }
+
+    pub fn inner_text(&self) -> String {
+        match self {
+            Element::Empty => String::new(),
+            Element::Tag { children, .. } => children.iter().map(Element::inner_text).collect(),
+            Element::Text { text } => text.clone(),
+            Element::Raw { .. } => String::new(),
+        }
+    }
 }
 
 #[cfg(test)]

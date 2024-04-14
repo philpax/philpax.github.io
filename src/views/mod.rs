@@ -23,7 +23,7 @@ pub fn tags(content: &content::Content) -> html::Document {
     tag_keys.sort();
 
     layout(article([
-        header(h(2, a_simple("/tags", "Tags"))),
+        header(h(2, false, a_simple("/tags", "Tags"))),
         div(ul(tag_keys
             .iter()
             .map(|tag| {
@@ -47,6 +47,7 @@ pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
     layout(article([
         header(h(
             2,
+            false,
             a_simple(format!("/tags/{tag_id}"), format!("Tags - #{tag_id}")),
         )),
         div(ul(content.tags[tag_id]
@@ -108,7 +109,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
         body([
             header([
                 img("/icon.png", "Philpax icon"),
-                h(1, text("Philpax")),
+                h(1, false, a_simple("/", "Philpax")),
                 nav(ul(links
                     .iter()
                     .copied()
