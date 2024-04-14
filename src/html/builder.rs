@@ -57,6 +57,10 @@ pub fn body(children: impl Into<Vec<Element>>) -> Element {
     tag("body", [], children)
 }
 
+pub fn main(children: impl Into<Vec<Element>>) -> Element {
+    tag("main", [], children)
+}
+
 pub fn h(
     depth: u8,
     attributes: impl Into<Vec<Attribute>>,

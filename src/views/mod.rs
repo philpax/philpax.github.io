@@ -49,8 +49,18 @@ fn layout(inner: impl Into<Vec<html::Element>>) -> html::Document {
         head([
             title("Philpax"),
             meta([("charset".into(), Some("utf-8".into()))]),
+            meta([
+                ("name".into(), Some("viewport".into())),
+                (
+                    "content".into(),
+                    Some("width=device-width, initial-scale=1".into()),
+                ),
+            ]),
             link("stylesheet", "/styles.css"),
         ]),
-        body([h(1, [], [text("Philpax")]), div([], inner)]),
+        body([
+            header([], [h(1, [], [text("Philpax")])]),
+            main(inner.into()),
+        ]),
     ])])
 }

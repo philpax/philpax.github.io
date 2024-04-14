@@ -48,7 +48,7 @@ pub fn post(
                         .unwrap_or_default(),
                 ],
             ),
-            section([], post_body),
+            div([], post_body),
         ],
     )
 }
