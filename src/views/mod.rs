@@ -16,6 +16,57 @@ pub fn index(content: &content::Content) -> html::Document {
     )
 }
 
+pub fn tags(content: &content::Content) -> html::Document {
+    use html::builder::*;
+
+    let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
+    tag_keys.sort();
+
+    layout([article(
+        [],
+        [
+            header([], [h(2, [], [a("/tags", Some("Tags"), [text("Tags")])])]),
+            div(
+                [],
+                [ul(
+                    [],
+                    tag_keys
+                        .iter()
+                        .map(|tag| {
+                            li(
+                                [],
+                                [
+                                    text(format!("#{tag}")),
+                                    ul(
+                                        [],
+                                        content.tags[*tag]
+                                            .iter()
+                                            .map(|t| {
+                                                let collection = &content.collections[&t.0];
+                                                let document =
+                                                    collection.document_by_id(&t.1).unwrap();
+
+                                                li(
+                                                    [],
+                                                    [a(
+                                                        &document.url(collection, false),
+                                                        Some(&document.metadata.title),
+                                                        [text(&document.metadata.title)],
+                                                    )],
+                                                )
+                                            })
+                                            .collect::<Vec<_>>(),
+                                    ),
+                                ],
+                            )
+                        })
+                        .collect::<Vec<_>>(),
+                )],
+            ),
+        ],
+    )])
+}
+
 pub fn redirect(to_url: &str) -> html::Document {
     use html::builder::*;
 

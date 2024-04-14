@@ -66,6 +66,13 @@ fn main() -> anyhow::Result<()> {
         html.write_to_path(&public.join("index.html"))?;
     }
 
+    // Write out tags
+    {
+        let html = views::tags(&content);
+        std::fs::create_dir_all(public.join("tags"))?;
+        html.write_to_path(&public.join("tags").join("index.html"))?;
+    }
+
     // Write out RSS feed
     {
         let rss_channel = rss::build_channel(&content)?;

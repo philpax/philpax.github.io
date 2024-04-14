@@ -26,6 +26,16 @@ pub fn post(
         ));
     }
 
+    let tag_list = match document.metadata.taxonomies.as_ref().map(|t| &t.tags) {
+        Some(tags) => ul(
+            [("class".into(), Some("tags".into()))],
+            tags.iter()
+                .map(|tag| li([], [text(format!("#{tag}"))]))
+                .collect::<Vec<_>>(),
+        ),
+        None => html::Element::Empty,
+    };
+
     article(
         [],
         [
@@ -46,6 +56,7 @@ pub fn post(
                         .datetime()
                         .map(datetime)
                         .unwrap_or_default(),
+                    tag_list,
                 ],
             ),
             div([], post_body),

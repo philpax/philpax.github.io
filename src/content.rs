@@ -8,20 +8,40 @@ use serde::Deserialize;
 
 use crate::{config, util};
 
+pub type CollectionId = String;
+pub type DocumentId = String;
+pub type Tag = String;
+
 #[derive(Debug)]
 pub struct Content {
     pub path: PathBuf,
-    pub collections: HashMap<String, Collection>,
+    pub collections: HashMap<CollectionId, Collection>,
+    pub tags: HashMap<Tag, Vec<(CollectionId, DocumentId)>>,
 }
 impl Content {
     pub fn read() -> anyhow::Result<Self> {
         let mut content = Content {
             path: Path::new("content").to_path_buf(),
             collections: HashMap::new(),
+            tags: HashMap::new(),
         };
 
         content.read_collection("about")?;
         content.read_collection("blog")?;
+
+        for (collection_id, collection) in &content.collections {
+            for document in &collection.documents {
+                if let Some(taxonomies) = &document.metadata.taxonomies {
+                    for tag in &taxonomies.tags {
+                        content
+                            .tags
+                            .entry(tag.clone())
+                            .or_default()
+                            .push((collection_id.clone(), document.id.clone()));
+                    }
+                }
+            }
+        }
 
         Ok(content)
     }
@@ -40,8 +60,9 @@ impl Content {
 
 #[derive(Debug)]
 pub struct Collection {
-    pub id: String,
+    pub id: CollectionId,
     pub documents: Vec<Document>,
+    pub document_key_to_id: HashMap<DocumentId, usize>,
 }
 impl Collection {
     pub fn read(content_path: &Path, id: &str) -> anyhow::Result<Self> {
@@ -50,6 +71,7 @@ impl Collection {
         let mut collection = Collection {
             id: id.to_string(),
             documents: vec![],
+            document_key_to_id: HashMap::new(),
         };
 
         for entry in std::fs::read_dir(&collection_path)? {
@@ -80,6 +102,15 @@ impl Collection {
         collection.documents.sort_by_key(|d| d.metadata.datetime());
         collection.documents.reverse();
 
+        for (i, document) in collection.documents.iter().enumerate() {
+            collection.document_key_to_id.insert(document.id.clone(), i);
+            if let Some(alternate_id) = &document.alternate_id {
+                collection
+                    .document_key_to_id
+                    .insert(alternate_id.clone(), i);
+            }
+        }
+
         Ok(collection)
     }
 
@@ -89,12 +120,18 @@ impl Collection {
 
         Ok(())
     }
+
+    pub fn document_by_id(&self, id: &str) -> Option<&Document> {
+        self.document_key_to_id
+            .get(id)
+            .and_then(|&i| self.documents.get(i))
+    }
 }
 
 #[derive(Debug)]
 pub struct Document {
-    pub id: String,
-    pub alternate_id: Option<String>,
+    pub id: DocumentId,
+    pub alternate_id: Option<DocumentId>,
     pub metadata: DocumentMetadata,
     pub description: Option<markdown::mdast::Node>,
     pub content: markdown::mdast::Node,
@@ -182,7 +219,7 @@ impl DocumentMetadata {
 
 #[derive(Debug, Deserialize)]
 pub struct DocumentTaxonomies {
-    pub tags: Vec<String>,
+    pub tags: Vec<Tag>,
 }
 
 fn parse_markdown(md: &str) -> markdown::mdast::Node {
