@@ -88,5 +88,18 @@ fn main() -> anyhow::Result<()> {
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
     }
 
+    // Write out icon
+    {
+        let small_icon = content
+            .icon
+            .resize(128, 128, image::imageops::FilterType::Lanczos3);
+        small_icon.save(public.join("icon.png"))?;
+
+        let favicon = content
+            .icon
+            .resize(32, 32, image::imageops::FilterType::Lanczos3);
+        favicon.save(public.join("favicon.ico"))?;
+    }
+
     Ok(())
 }

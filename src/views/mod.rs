@@ -107,6 +107,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
         ]),
         body([
             header([
+                img("/icon.png", "Philpax icon"),
                 h(1, text("Philpax")),
                 nav(ul(links
                     .iter()
