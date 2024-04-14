@@ -26,7 +26,7 @@ pub fn post(
         Some(tags) => ul(
             [("class".into(), Some("tags".into()))],
             tags.iter()
-                .map(|tag| li([], [text(format!("#{tag}"))]))
+                .map(|tag| li([], [a_simple(&format!("/tags/{tag}"), &format!("#{tag}"))]))
                 .collect::<Vec<_>>(),
         ),
         None => html::Element::Empty,

@@ -9,3 +9,11 @@ pub fn slugify(s: &str) -> String {
         .filter(|c| *c != ' ')
         .collect()
 }
+
+pub fn pluralize(s: &str, count: usize) -> String {
+    if count == 1 {
+        s.to_string()
+    } else {
+        format!("{}s", s)
+    }
+}

@@ -1,4 +1,4 @@
-use crate::{content, html};
+use crate::{content, html, util};
 
 mod partials;
 
@@ -33,30 +33,59 @@ pub fn tags(content: &content::Content) -> html::Document {
                     tag_keys
                         .iter()
                         .map(|tag| {
+                            let post_count = content.tags[*tag].len();
                             li(
                                 [],
                                 [
-                                    text(format!("#{tag}")),
-                                    ul(
-                                        [],
-                                        content.tags[*tag]
-                                            .iter()
-                                            .map(|t| {
-                                                let collection = &content.collections[&t.0];
-                                                let document =
-                                                    collection.document_by_id(&t.1).unwrap();
-
-                                                li(
-                                                    [],
-                                                    [a_simple(
-                                                        &document.url(collection, false),
-                                                        &document.metadata.title,
-                                                    )],
-                                                )
-                                            })
-                                            .collect::<Vec<_>>(),
-                                    ),
+                                    a_simple(&format!("/tags/{tag}"), &format!("#{tag}")),
+                                    text(format!(
+                                        " ({} {})",
+                                        post_count,
+                                        util::pluralize("post", post_count)
+                                    )),
                                 ],
+                            )
+                        })
+                        .collect::<Vec<_>>(),
+                )],
+            ),
+        ],
+    )])
+}
+
+pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
+    use html::builder::*;
+
+    layout([article(
+        [],
+        [
+            header(
+                [],
+                [h(
+                    2,
+                    [],
+                    [a_simple(
+                        &format!("/tags/{tag_id}"),
+                        &format!("Tags - #{tag_id}"),
+                    )],
+                )],
+            ),
+            div(
+                [],
+                [ul(
+                    [],
+                    content.tags[tag_id]
+                        .iter()
+                        .map(|t| {
+                            let collection = &content.collections[&t.0];
+                            let document = collection.document_by_id(&t.1).unwrap();
+
+                            li(
+                                [],
+                                [a_simple(
+                                    &document.url(collection, false),
+                                    &document.metadata.title,
+                                )],
                             )
                         })
                         .collect::<Vec<_>>(),
