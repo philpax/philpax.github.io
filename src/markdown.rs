@@ -52,13 +52,15 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
                     .collect::<Vec<_>>(),
             )]
         }
+        Node::Html(h) => vec![html::Element::Raw {
+            html: h.value.clone(),
+        }],
 
         // Not supported yet
         Node::FootnoteDefinition(_)
         | Node::InlineMath(_)
         | Node::Delete(_)
         | Node::FootnoteReference(_)
-        | Node::Html(_)
         | Node::ImageReference(_)
         | Node::LinkReference(_)
         | Node::Math(_)

@@ -41,6 +41,9 @@ pub enum Element {
     Text {
         text: String,
     },
+    Raw {
+        html: String,
+    },
 }
 impl Element {
     #[allow(dead_code)]
@@ -90,6 +93,10 @@ impl Element {
                     }
                     write!(writer, "{}", line)?;
                 }
+                Ok(())
+            }
+            Element::Raw { html } => {
+                write!(writer, "{html}")?;
                 Ok(())
             }
         }
