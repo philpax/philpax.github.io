@@ -54,6 +54,12 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
+    // Write out a redirect on blog/index.html
+    {
+        let html = views::redirect("/");
+        html.write_to_path(&public.join("blog").join("index.html"))?;
+    }
+
     // Write out index
     {
         let html = views::index(&content);
