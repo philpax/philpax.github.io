@@ -109,7 +109,7 @@ pub fn a(
 
 pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
     let txt = txt.into();
-    a(href, Some(txt.clone()), text(txt))
+    a(href, None::<String>, text(txt))
 }
 
 pub fn br() -> Element {
