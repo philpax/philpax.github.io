@@ -25,6 +25,14 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
             vec![tag(if l.ordered { "ol" } else { "ul" }, &l.children)]
         }
         Node::ListItem(li) => {
+            // hack: if the only child of this list item is a paragraph, drop the paragraph
+            // and use the raw content instead
+            if li.children.len() == 1 {
+                if let Node::Paragraph(p) = &li.children[0] {
+                    return vec![tag("li", &p.children)];
+                }
+            }
+
             vec![tag("li", &li.children)]
         }
         Node::Code(c) => {
