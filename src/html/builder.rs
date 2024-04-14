@@ -30,16 +30,8 @@ pub fn html(children: impl Into<Vec<Element>>) -> Element {
     tag("html", [("lang".into(), Some("en-AU".into()))], children)
 }
 
-pub fn head(children: impl Into<Vec<Element>>) -> Element {
-    tag("head", [], children)
-}
-
 pub fn title(text: &str) -> Element {
     tag_with_text("title", [], text)
-}
-
-pub fn meta(attributes: impl Into<Vec<Attribute>>) -> Element {
-    tag("meta", attributes, [])
 }
 
 pub fn link(rel: &str, href: &str) -> Element {
@@ -53,36 +45,12 @@ pub fn link(rel: &str, href: &str) -> Element {
     )
 }
 
-pub fn body(children: impl Into<Vec<Element>>) -> Element {
-    tag("body", [], children)
-}
-
-pub fn main(children: impl Into<Vec<Element>>) -> Element {
-    tag("main", [], children)
-}
-
 pub fn h(
     depth: u8,
     attributes: impl Into<Vec<Attribute>>,
     children: impl Into<Vec<Element>>,
 ) -> Element {
     tag(&format!("h{}", depth), attributes, children)
-}
-
-pub fn p(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("p", attributes, children)
-}
-
-pub fn code(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("code", attributes, children)
-}
-
-pub fn div(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("div", attributes, children)
-}
-
-pub fn pre(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("pre", attributes, children)
 }
 
 pub fn img(src: &str, alt: &str) -> Element {
@@ -113,24 +81,6 @@ pub fn br() -> Element {
     tag("br", [], [])
 }
 
-pub fn article(
-    attributes: impl Into<Vec<Attribute>>,
-    children: impl Into<Vec<Element>>,
-) -> Element {
-    tag("article", attributes, children)
-}
-
-pub fn header(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("header", attributes, children)
-}
-
-pub fn section(
-    attributes: impl Into<Vec<Attribute>>,
-    children: impl Into<Vec<Element>>,
-) -> Element {
-    tag("section", attributes, children)
-}
-
 pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     tag_with_text(
         "time",
@@ -139,14 +89,35 @@ pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     )
 }
 
-pub fn nav(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("nav", attributes, children)
+macro_rules! aliased_builders {
+    (
+        children: [$($children_ident:ident),*],
+        attribute: [$($attribute_ident:ident),*],
+        attribute_and_children: [$($attribute_and_children_ident:ident),*],
+    ) => {
+        $(
+            pub fn $children_ident(children: impl Into<Vec<Element>>) -> Element {
+                tag(stringify!($children_ident), [], children)
+            }
+        )*
+        $(
+            pub fn $attribute_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
+                tag(stringify!($attribute_ident), attributes, [])
+            }
+        )*
+        $(
+            pub fn $attribute_and_children_ident(
+                attributes: impl Into<Vec<Attribute>>,
+                children: impl Into<Vec<Element>>,
+            ) -> Element {
+                tag(stringify!($attribute_and_children_ident), attributes, children)
+            }
+        )*
+    };
 }
 
-pub fn ul(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("ul", attributes, children)
-}
-
-pub fn li(attributes: impl Into<Vec<Attribute>>, children: impl Into<Vec<Element>>) -> Element {
-    tag("li", attributes, children)
+aliased_builders! {
+    children: [head, body, main],
+    attribute: [meta],
+    attribute_and_children: [p, code, div, pre, header, nav, ul, li, article, section],
 }
