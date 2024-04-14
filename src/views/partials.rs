@@ -33,7 +33,7 @@ pub fn post(
                 [],
                 [
                     h(
-                        1,
+                        2,
                         [],
                         [a(
                             &document.url(collection, false),

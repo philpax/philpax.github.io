@@ -7,7 +7,7 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
         Node::Heading(h) => {
-            vec![tag(&format!("h{}", h.depth), &h.children)]
+            vec![tag(&format!("h{}", (h.depth + 2).min(6)), &h.children)]
         }
         Node::Text(t) => {
             vec![b::text(t.value.to_string())]
