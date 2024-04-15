@@ -8,4 +8,4 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      # TODO: Build website and deploy it
+      # TODO: Build website and deploy it (with no default features)

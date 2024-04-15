@@ -108,5 +108,15 @@ fn main() -> anyhow::Result<()> {
         favicon.save(public.join("favicon.ico"))?;
     }
 
+    #[cfg(feature = "serve")]
+    {
+        let server = file_serve::ServerBuilder::new(public).port(8192).build();
+
+        println!("Serving at http://{}", server.addr());
+        println!("Hit CTRL-C to stop");
+
+        server.serve()?;
+    }
+
     Ok(())
 }
