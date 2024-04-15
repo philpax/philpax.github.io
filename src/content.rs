@@ -227,6 +227,6 @@ pub struct DocumentTaxonomies {
     pub tags: Vec<Tag>,
 }
 
-fn parse_markdown(md: &str) -> markdown::mdast::Node {
+pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
     markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
 }

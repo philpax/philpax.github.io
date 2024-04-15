@@ -97,7 +97,103 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
         }
     }
 }
+#[derive(Debug, PartialEq, Clone)]
+pub struct HeadingHierarchy(pub String, pub Vec<HeadingHierarchy>);
+
+pub fn heading_hierarchy(node: &Node) -> Vec<HeadingHierarchy> {
+    let mut headings = Vec::new();
+    collect_headings(node, &mut headings);
+
+    let mut result = Vec::new();
+    let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
+
+    for (depth, text) in headings {
+        while let Some((prev_depth, _)) = stack.last() {
+            if *prev_depth >= depth {
+                let (_prev_depth, finished_heading) = stack.pop().unwrap();
+                if let Some((_, parent_heading)) = stack.last_mut() {
+                    parent_heading.1.push(finished_heading);
+                } else {
+                    // If there's no parent, this is a root-level heading
+                    result.push(finished_heading);
+                }
+            } else {
+                break;
+            }
+        }
+        stack.push((depth, HeadingHierarchy(text, Vec::new())));
+    }
+
+    // Clear any remaining headings in the stack
+    while let Some((_, finished_heading)) = stack.pop() {
+        if let Some((_, parent_heading)) = stack.last_mut() {
+            parent_heading.1.push(finished_heading);
+        } else {
+            result.push(finished_heading);
+        }
+    }
+
+    fn collect_headings(node: &Node, headings: &mut Vec<(u8, String)>) {
+        if let Some(children) = node.children() {
+            for child in children {
+                if let Node::Heading(heading) = child {
+                    headings.push((heading.depth, inner_text(child)));
+                }
+                collect_headings(child, headings); // Recurse into all children
+            }
+        }
+    }
+
+    result
+}
+
+fn inner_text(node: &Node) -> String {
+    if let Node::Text(text) = node {
+        text.value.clone()
+    } else {
+        node.children()
+            .map(|c| c.iter().map(inner_text).collect())
+            .unwrap_or_default()
+    }
+}
 
 fn convert_many(nodes: &[Node]) -> Vec<html::Element> {
     nodes.iter().flat_map(convert_to_html).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::parse_markdown;
+
+    #[test]
+    fn test_heading_hierarchy() {
+        let input = r#"
+# test
+## test123
+### test456
+## test789
+# test2
+"#
+        .trim();
+
+        let ast = parse_markdown(input);
+
+        assert_eq!(
+            heading_hierarchy(&ast),
+            vec![
+                HeadingHierarchy(
+                    "test".into(),
+                    vec![
+                        HeadingHierarchy(
+                            "test123".into(),
+                            vec![HeadingHierarchy("test456".into(), vec![])]
+                        ),
+                        HeadingHierarchy("test789".into(), vec![])
+                    ]
+                ),
+                HeadingHierarchy("test2".into(), vec![])
+            ]
+        )
+    }
 }

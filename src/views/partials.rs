@@ -1,10 +1,10 @@
-use crate::{content, html, markdown};
+use crate::{content, html, markdown, util};
 
 pub fn post(
     collection: &content::Collection,
     document: &content::Document,
     use_description: bool,
-) -> html::Element {
+) -> Vec<html::Element> {
     use html::builder::*;
 
     let mut post_body = markdown::convert_to_html(
@@ -28,7 +28,7 @@ pub fn post(
         None => html::Element::Empty,
     };
 
-    article([
+    let article = article([
         header([
             h(
                 2,
@@ -46,5 +46,33 @@ pub fn post(
             tag_list,
         ]),
         div(post_body),
-    ])
+    ]);
+
+    if use_description {
+        vec![article]
+    } else {
+        let heading_hierarchy = markdown::heading_hierarchy(&document.content);
+        if heading_hierarchy.is_empty() {
+            return vec![article];
+        }
+
+        fn build_list(hierarchy: &markdown::HeadingHierarchy) -> html::Element {
+            let markdown::HeadingHierarchy(text, children) = hierarchy;
+            let link = a_simple(format!("#{}", util::slugify(text)), text);
+
+            li(if children.is_empty() {
+                vec![link]
+            } else {
+                let children = children.iter().map(build_list).collect::<Vec<_>>();
+                vec![link, ul(children)]
+            })
+        }
+
+        let aside = aside([
+            h(2, false, text("Contents")),
+            ul(heading_hierarchy.iter().map(build_list).collect::<Vec<_>>()),
+        ]);
+
+        vec![article, aside]
+    }
 }

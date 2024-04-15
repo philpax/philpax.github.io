@@ -158,6 +158,7 @@ aliased_builders! {
     plain: [meta],
     children: [
         head, body, main, p, code, div, pre, header, nav,
-        ol, ul, li, strong, em, blockquote, article, section
+        ol, ul, li, strong, em, blockquote, article, section,
+        aside
     ],
 }

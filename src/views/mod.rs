@@ -3,7 +3,7 @@ use crate::{content, html, util};
 mod partials;
 
 pub fn post(collection: &content::Collection, document: &content::Document) -> html::Document {
-    layout([partials::post(collection, document, false)])
+    layout(partials::post(collection, document, false))
 }
 
 pub fn index(content: &content::Content) -> html::Document {
@@ -11,7 +11,7 @@ pub fn index(content: &content::Content) -> html::Document {
     layout(
         blog.documents
             .iter()
-            .map(|doc| partials::post(blog, doc, true))
+            .flat_map(|doc| partials::post(blog, doc, true))
             .collect::<Vec<_>>(),
     )
 }
