@@ -12,7 +12,9 @@ fn main() -> anyhow::Result<()> {
     let public = Path::new("public");
 
     if public.is_dir() {
-        // Remove everything in the public directory
+        // Remove everything in the public directory; this is done manually
+        // to ensure that you can continue serving from the directory while
+        // the build is running.
         for entry in std::fs::read_dir(public)? {
             let path = entry?.path();
             if path.is_dir() {
@@ -86,6 +88,11 @@ fn main() -> anyhow::Result<()> {
         let rss_channel = rss::build_channel(&content)?;
         let mut file = std::fs::File::create(public.join("blog.rss"))?;
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
+    }
+
+    // Write out styles
+    {
+        std::fs::write(public.join("styles.css"), &content.styles)?;
     }
 
     // Write out icon

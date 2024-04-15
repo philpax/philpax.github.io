@@ -18,17 +18,20 @@ pub struct Content {
     pub collections: HashMap<CollectionId, Collection>,
     pub tags: HashMap<Tag, Vec<(CollectionId, DocumentId)>>,
     pub icon: image::DynamicImage,
+    pub styles: String,
 }
 impl Content {
     pub fn read() -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
         let icon = image::open(path.join("icon.png"))?;
+        let styles = std::fs::read_to_string(path.join("styles.css"))?;
 
         let mut content = Content {
             path,
             collections: HashMap::new(),
             tags: HashMap::new(),
             icon,
+            styles,
         };
 
         content.read_collection("about")?;
