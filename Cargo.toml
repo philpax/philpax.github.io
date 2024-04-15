@@ -7,7 +7,10 @@ edition = "2021"
 anyhow = "1.0.81"
 chrono = "0.4.37"
 html-escape = "0.2.13"
-image = "0.25.1"
+image = { version = "0.25.1", features = [
+    "png",
+    "ico",
+], default-features = false }
 markdown = "1.0.0-alpha.16"
 rss = { version = "2.0.7", features = ["atom"] }
 serde = { version = "1.0.197", features = ["derive"] }
