@@ -69,11 +69,9 @@ impl Element {
                         None => write!(writer, " {key}")?,
                     }
                 }
+                write!(writer, ">")?;
                 if children.is_empty() {
-                    write!(writer, "/>")?;
                     return Ok(());
-                } else {
-                    write!(writer, ">")?;
                 }
 
                 // children
