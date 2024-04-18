@@ -119,6 +119,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
                 .with_id("header-links")),
             ]),
             main(inner.to_elements()),
+            script("/font-picker.js"),
         ]),
     ]))
 }
