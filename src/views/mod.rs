@@ -1,4 +1,4 @@
-use crate::{content, html, util};
+use crate::{config, content, html, util};
 
 mod partials;
 
@@ -119,7 +119,11 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
                 .with_id("header-links")),
             ]),
             main(inner.to_elements()),
-            script("/font-picker.js"),
+            if config::ENABLE_STYLE_DEBUGGER {
+                script("/style-debugger.js")
+            } else {
+                html::Element::Empty
+            },
         ]),
     ]))
 }
