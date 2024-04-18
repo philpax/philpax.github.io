@@ -24,9 +24,10 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-    std::fs::create_dir_all(public)?;
-
     let content = content::Content::read()?;
+
+    // Copy all static content first
+    util::copy_dir(Path::new("static"), public)?;
 
     // Write out content
     for (collection_id, collection) in &content.collections {
@@ -88,11 +89,6 @@ fn main() -> anyhow::Result<()> {
         let rss_channel = rss::build_channel(&content)?;
         let mut file = std::fs::File::create(public.join("blog.rss"))?;
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
-    }
-
-    // Write out styles
-    {
-        std::fs::write(public.join("styles.css"), &content.styles)?;
     }
 
     // Write out icon
