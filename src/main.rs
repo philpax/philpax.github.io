@@ -92,12 +92,10 @@ fn main() -> anyhow::Result<()> {
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
     }
 
-    // Write out custom themes
+    // Write out bundled styles
     {
-        let themes = styles::generate_themes()?;
-        let styles_path = public.join("styles");
-        std::fs::create_dir_all(&styles_path)?;
-        std::fs::write(styles_path.join("themes.css"), themes)?;
+        let styles = styles::generate()?;
+        std::fs::write(public.join("styles.css"), styles)?;
     }
 
     // Write out icon

@@ -104,9 +104,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
                     Some("width=device-width, initial-scale=1".into()),
                 ),
             ]),
-            link("stylesheet", "/styles/reset.css"),
-            link("stylesheet", "/styles/themes.css"),
-            link("stylesheet", "/styles/website.css"),
+            link("stylesheet", "/styles.css"),
         ]),
         body([
             header([
