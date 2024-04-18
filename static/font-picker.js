@@ -66,3 +66,14 @@ document.body.onload = () => {
   body.style.fontFamily = fontPicker.value;
   body.prepend(fontPicker);
 };
+
+setInterval(() => {
+  let isLight = document.documentElement.classList.contains("light-theme");
+  if (isLight) {
+    document.documentElement.classList.remove("light-theme");
+    document.documentElement.classList.add("dark-theme");
+  } else {
+    document.documentElement.classList.remove("dark-theme");
+    document.documentElement.classList.add("light-theme");
+  }
+}, 1000);
