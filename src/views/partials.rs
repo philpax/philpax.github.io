@@ -38,15 +38,16 @@ pub fn post(
                     document.metadata.title.clone(),
                 ),
             ),
+            tag_list,
             document
                 .metadata
                 .datetime()
                 .map(datetime)
                 .unwrap_or_default(),
-            tag_list,
         ]),
-        div(post_body),
-    ]);
+        div(post_body).with_class("post-body"),
+    ])
+    .with_class("post");
 
     if use_description {
         vec![article]
