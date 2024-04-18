@@ -1,29 +1,43 @@
 function createThemeSwitcher() {
-  var themeSwitcher = document.getElementById("theme-switch");
-  if (!themeSwitcher) {
-    console.log("Theme switcher not found");
+  var headerLinks = document.getElementById("header-links");
+  if (!headerLinks) {
+    console.log("Header links not found");
     return;
   }
 
-  var label = document.createElement("label");
+  var li = document.createElement("li");
   {
-    var input = document.createElement("input");
-    input.type = "checkbox";
+    var a = document.createElement("a");
+    updateSwitcherInnerText(a, isLightMode());
+    a.href = "#";
 
-    input.addEventListener("change", function () {
-      if (this.checked) {
-        document.documentElement.classList.remove("dark-theme");
-        document.documentElement.classList.add("light-theme");
-      } else {
+    a.addEventListener("click", function () {
+      var isLight = isLightMode();
+      if (isLight) {
         document.documentElement.classList.remove("light-theme");
         document.documentElement.classList.add("dark-theme");
+      } else {
+        document.documentElement.classList.remove("dark-theme");
+        document.documentElement.classList.add("light-theme");
       }
+      updateSwitcherInnerText(a, !isLight);
     });
 
-    label.appendChild(input);
+    li.appendChild(a);
   }
 
-  themeSwitcher.appendChild(label);
+  headerLinks.prepend(li);
+
+  function updateSwitcherInnerText(a, isLightMode) {
+    a.innerText = isLightMode ? "🌙" : "🌞";
+  }
+
+  function isLightMode() {
+    return (
+      window.matchMedia("(prefers-color-scheme: light)").matches ||
+      document.documentElement.classList.contains("light-theme")
+    );
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

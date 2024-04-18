@@ -111,14 +111,12 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
             header([
                 img("/icon.png", "Philpax icon"),
                 h(1, false, a_simple("/", "Philpax")),
-                nav([
-                    ul(links
-                        .iter()
-                        .copied()
-                        .map(|(url, label)| li(a_simple(url, label)))
-                        .collect::<Vec<_>>()),
-                    span(EMPTY).with_id("theme-switch"),
-                ]),
+                nav(ul(links
+                    .iter()
+                    .copied()
+                    .map(|(url, label)| li(a_simple(url, label)))
+                    .collect::<Vec<_>>())
+                .with_id("header-links")),
             ]),
             main(inner.to_elements()),
         ]),
