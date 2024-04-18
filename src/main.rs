@@ -5,6 +5,7 @@ mod content;
 mod html;
 mod markdown;
 mod rss;
+mod styles;
 mod util;
 mod views;
 
@@ -89,6 +90,14 @@ fn main() -> anyhow::Result<()> {
         let rss_channel = rss::build_channel(&content)?;
         let mut file = std::fs::File::create(public.join("blog.rss"))?;
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
+    }
+
+    // Write out custom themes
+    {
+        let themes = styles::generate_themes()?;
+        let styles_path = public.join("styles");
+        std::fs::create_dir_all(&styles_path)?;
+        std::fs::write(styles_path.join("themes.css"), themes)?;
     }
 
     // Write out icon
