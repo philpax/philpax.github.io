@@ -32,7 +32,7 @@ impl ToElements for NoChildren {
     }
 }
 
-const EMPTY: NoChildren = NoChildren;
+pub const EMPTY: NoChildren = NoChildren;
 
 pub fn tag(
     name: impl Into<String>,
@@ -78,6 +78,16 @@ pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
             ("href".into(), Some(href.into())),
         ],
         EMPTY,
+    )
+}
+
+pub fn script(src: impl Into<String>) -> Element {
+    tag(
+        "script",
+        [("src".into(), Some(src.into()))],
+        [Element::Text {
+            text: "".to_string(),
+        }],
     )
 }
 
@@ -159,6 +169,6 @@ aliased_builders! {
     children: [
         head, body, main, p, code, div, pre, header, nav,
         ol, ul, li, strong, em, blockquote, article, section,
-        aside
+        aside, span
     ],
 }

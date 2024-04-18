@@ -105,16 +105,20 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
                 ),
             ]),
             link("stylesheet", "/styles.css"),
+            script("/website.js"),
         ]),
         body([
             header([
                 img("/icon.png", "Philpax icon"),
                 h(1, false, a_simple("/", "Philpax")),
-                nav(ul(links
-                    .iter()
-                    .copied()
-                    .map(|(url, label)| li(a_simple(url, label)))
-                    .collect::<Vec<_>>())),
+                nav([
+                    ul(links
+                        .iter()
+                        .copied()
+                        .map(|(url, label)| li(a_simple(url, label)))
+                        .collect::<Vec<_>>()),
+                    span(EMPTY).with_id("theme-switch"),
+                ]),
             ]),
             main(inner.to_elements()),
         ]),
