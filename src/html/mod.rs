@@ -45,8 +45,8 @@ pub enum Element {
         html: String,
     },
 }
+#[allow(dead_code)]
 impl Element {
-    #[allow(dead_code)]
     pub fn write_to_string(&self) -> anyhow::Result<String> {
         let mut output = vec![];
         self.write(&mut output)?;
@@ -111,6 +111,13 @@ impl Element {
         Ok(String::from_utf8(output)?)
     }
 
+    pub fn attrs(&self) -> Option<&[Attribute]> {
+        match self {
+            Element::Tag { attributes, .. } => Some(attributes),
+            _ => None,
+        }
+    }
+
     pub fn with_attrs(self, attributes: impl IntoIterator<Item = Attribute>) -> Self {
         match self {
             Element::Tag {
@@ -124,6 +131,24 @@ impl Element {
             },
             _ => panic!("Cannot add attributes to non-tag element {self:?}"),
         }
+    }
+
+    pub fn with_id(self, id: impl Into<String>) -> Self {
+        self.with_attrs([("id".into(), Some(id.into()))])
+    }
+
+    pub fn with_class(self, class: impl Into<String>) -> Self {
+        let mut existing_class = self
+            .attrs()
+            .and_then(|attrs| attrs.iter().find(|(key, _)| key == "class"))
+            .and_then(|(_, value)| value.clone())
+            .unwrap_or_default();
+        if !existing_class.is_empty() {
+            existing_class.push(' ');
+        }
+        existing_class.push_str(&class.into());
+
+        self.with_attrs([("class".into(), Some(existing_class))])
     }
 
     pub fn inner_text(&self) -> String {
