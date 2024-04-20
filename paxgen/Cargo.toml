@@ -12,7 +12,10 @@ image = { version = "0.25.1", features = [
     "png",
     "ico",
 ], default-features = false }
-chrono = "0.4.37"
+chrono = { version = "0.4.37", default-features = false, features = [
+    "std",
+    "now",
+] }
 
 html-escape = "0.2.13"
 markdown = "1.0.0-alpha.16"
