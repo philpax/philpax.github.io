@@ -7,90 +7,70 @@ mod partials;
 
 const ENABLE_STYLE_DEBUGGER: bool = true;
 
-pub fn post(collection: &Collection, document: &Document) -> html::Document {
-    layout(partials::post(collection, document, false))
-}
+pub struct Views;
+impl paxgen::views::Views for Views {
+    fn post(&self, collection: &Collection, document: &Document) -> html::Document {
+        layout(partials::post(collection, document, false))
+    }
 
-pub fn index(content: &Content) -> html::Document {
-    let blog = content.blog();
-    layout(
-        blog.documents
-            .iter()
-            .flat_map(|doc| partials::post(blog, doc, true))
-            .collect::<Vec<_>>(),
-    )
-}
+    fn index(&self, content: &Content) -> html::Document {
+        let blog = content.blog();
+        layout(
+            blog.documents
+                .iter()
+                .flat_map(|doc| partials::post(blog, doc, true))
+                .collect::<Vec<_>>(),
+        )
+    }
 
-pub fn tags(content: &Content) -> html::Document {
-    use html::builder::*;
+    fn tags(&self, content: &Content) -> html::Document {
+        use html::builder::*;
 
-    let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
-    tag_keys.sort();
+        let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
+        tag_keys.sort();
 
-    layout(article([
-        header(h(2, false, a_simple("/tags", "Tags"))),
-        div(ul(tag_keys
-            .iter()
-            .map(|tag| {
-                let post_count = content.tags[*tag].len();
-                li([
-                    a_simple(format!("/tags/{tag}"), format!("#{tag}")),
-                    text(format!(
-                        " ({} {})",
-                        post_count,
-                        util::pluralize("post", post_count)
-                    )),
-                ])
-            })
-            .collect::<Vec<_>>())),
-    ]))
-}
+        layout(article([
+            header(h(2, false, a_simple("/tags", "Tags"))),
+            div(ul(tag_keys
+                .iter()
+                .map(|tag| {
+                    let post_count = content.tags[*tag].len();
+                    li([
+                        a_simple(format!("/tags/{tag}"), format!("#{tag}")),
+                        text(format!(
+                            " ({} {})",
+                            post_count,
+                            util::pluralize("post", post_count)
+                        )),
+                    ])
+                })
+                .collect::<Vec<_>>())),
+        ]))
+    }
 
-pub fn tag(content: &Content, tag_id: &str) -> html::Document {
-    use html::builder::*;
+    fn tag(&self, content: &Content, tag_id: &str) -> html::Document {
+        use html::builder::*;
 
-    layout(article([
-        header(h(
-            2,
-            false,
-            a_simple(format!("/tags/{tag_id}"), format!("Tags - #{tag_id}")),
-        )),
-        div(ul(content.tags[tag_id]
-            .iter()
-            .map(|t| {
-                let collection = &content.collections[&t.0];
-                let document = collection.document_by_id(&t.1).unwrap();
-
-                li(a_simple(
-                    document.url(collection, false),
-                    document.metadata.title.clone(),
-                ))
-            })
-            .collect::<Vec<_>>())),
-    ]))
-}
-
-pub fn redirect(to_url: &str) -> html::Document {
-    use html::builder::*;
-
-    html::Document::new(html([
-        head([
-            title("Redirecting..."),
-            meta([("charset".into(), Some("utf-8".into()))]),
-            meta([
-                ("http-equiv".into(), Some("refresh".into())),
-                ("content".into(), Some(format!("0; url={}", to_url))),
-            ]),
-        ]),
-        body([
-            p(text("Redirecting...")),
-            p(a(
-                to_url,
-                Some("Click here if you are not redirected"),
-                text("Click here"),
+        layout(article([
+            header(h(
+                2,
+                false,
+                a_simple(format!("/tags/{tag_id}"), format!("Tags - #{tag_id}")),
             )),
-        ]),
-    ]))
+            div(ul(content.tags[tag_id]
+                .iter()
+                .map(|t| {
+                    let collection = &content.collections[&t.0];
+                    let document = collection.document_by_id(&t.1).unwrap();
+
+                    li(a_simple(
+                        document.url(collection, false),
+                        document.metadata.title.clone(),
+                    ))
+                })
+                .collect::<Vec<_>>())),
+        ]))
+    }
 }
 
 fn layout(inner: impl html::builder::ToElements) -> html::Document {
