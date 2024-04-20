@@ -1,8 +1,11 @@
-use crate::{content, html, markdown, util};
+use paxgen::{
+    content::{Collection, Document},
+    html, markdown, util,
+};
 
 pub fn post(
-    collection: &content::Collection,
-    document: &content::Document,
+    collection: &Collection,
+    document: &Document,
     use_description: bool,
 ) -> Vec<html::Element> {
     use html::builder::*;

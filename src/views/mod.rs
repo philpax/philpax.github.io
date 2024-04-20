@@ -1,14 +1,17 @@
-use crate::{content, html, util};
+use paxgen::{
+    content::{Collection, Content, Document},
+    html, util,
+};
 
 mod partials;
 
 const ENABLE_STYLE_DEBUGGER: bool = true;
 
-pub fn post(collection: &content::Collection, document: &content::Document) -> html::Document {
+pub fn post(collection: &Collection, document: &Document) -> html::Document {
     layout(partials::post(collection, document, false))
 }
 
-pub fn index(content: &content::Content) -> html::Document {
+pub fn index(content: &Content) -> html::Document {
     let blog = content.blog();
     layout(
         blog.documents
@@ -18,7 +21,7 @@ pub fn index(content: &content::Content) -> html::Document {
     )
 }
 
-pub fn tags(content: &content::Content) -> html::Document {
+pub fn tags(content: &Content) -> html::Document {
     use html::builder::*;
 
     let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
@@ -43,7 +46,7 @@ pub fn tags(content: &content::Content) -> html::Document {
     ]))
 }
 
-pub fn tag(content: &content::Content, tag_id: &str) -> html::Document {
+pub fn tag(content: &Content, tag_id: &str) -> html::Document {
     use html::builder::*;
 
     layout(article([

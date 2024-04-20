@@ -3,10 +3,8 @@ use std::path::Path;
 mod styles;
 mod views;
 
-pub use paxgen::{config, content, html, markdown, rss, util};
-
 fn main() -> anyhow::Result<()> {
-    config::Config::initialize(config::Config {
+    paxgen::config::Config::initialize(paxgen::config::Config {
         base_url: "https://philpax.me".into(),
 
         rss_title: "Philpax's Blog".into(),
@@ -29,10 +27,10 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-    let content = content::Content::read()?;
+    let content = paxgen::content::Content::read()?;
 
     // Copy all static content first
-    util::copy_dir(Path::new("static"), public)?;
+    paxgen::util::copy_dir(Path::new("static"), public)?;
 
     // Write out content
     for (collection_id, collection) in &content.collections {
@@ -91,7 +89,7 @@ fn main() -> anyhow::Result<()> {
 
     // Write out RSS feed
     {
-        let rss_channel = rss::build_channel(&content)?;
+        let rss_channel = paxgen::rss::build_channel(&content)?;
         let mut file = std::fs::File::create(public.join("blog.rss"))?;
         rss_channel.pretty_write_to(&mut file, b' ', 2)?;
     }
