@@ -1,15 +1,19 @@
 use std::path::Path;
 
-mod config;
-mod content;
-mod html;
-mod markdown;
-mod rss;
 mod styles;
-mod util;
 mod views;
 
+pub use paxgen::{config, content, html, markdown, rss, util};
+
 fn main() -> anyhow::Result<()> {
+    config::Config::initialize(config::Config {
+        base_url: "https://philpax.me".into(),
+
+        rss_title: "Philpax's Blog".into(),
+        rss_author: "Philpax".into(),
+        rss_description: "The blog of Philpax, your friendly neighbourhood polyglot programmer/engineer, cursed with more projects than time.".into(),
+    });
+
     let public = Path::new("public");
 
     if public.is_dir() {

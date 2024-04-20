@@ -1,35 +1,37 @@
-use crate::{config, content, html, markdown};
+use crate::{config::Config, content, html, markdown};
 
 pub fn build_channel(content: &content::Content) -> anyhow::Result<rss::Channel> {
+    let config = Config::get();
+
     let blog = content.blog();
     let items = blog
         .documents
         .iter()
-        .map(|doc| build_item(blog, doc))
+        .map(|doc| build_item(blog, &config.rss_author, doc))
         .collect::<Vec<_>>();
 
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
         .link(rss::extension::atom::Link {
             rel: "self".into(),
-            href: format!("{}/blog.rss", config::BASE_URL),
+            href: format!("{}/blog.rss", &config.base_url),
             mime_type: Some("application/rss+xml".to_string()),
             ..Default::default()
         })
         .build();
 
     Ok(rss::ChannelBuilder::default()
-        .title(config::RSS_TITLE)
-        .link(config::BASE_URL)
+        .title(&config.rss_title)
+        .link(&config.base_url)
         .atom_ext(atom_ext)
-        .description(config::RSS_DESCRIPTION)
+        .description(&config.rss_description)
         .language("en-AU".to_string())
         .last_build_date(chrono::Utc::now().to_rfc2822())
-        .generator("paxsite".to_string())
+        .generator("paxgen".to_string())
         .items(items)
         .build())
 }
 
-fn build_item(blog: &content::Collection, doc: &content::Document) -> rss::Item {
+fn build_item(blog: &content::Collection, author: &str, doc: &content::Document) -> rss::Item {
     let url = doc.url(blog, true);
 
     let guid = rss::GuidBuilder::default()
@@ -47,7 +49,7 @@ fn build_item(blog: &content::Collection, doc: &content::Document) -> rss::Item 
         .link(url)
         .guid(guid)
         .description(description)
-        .author(config::RSS_AUTHOR.to_string())
+        .author(author.to_string())
         .pub_date(doc.metadata.datetime().map(|d| d.to_rfc2822()))
         .build()
 }

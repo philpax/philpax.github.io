@@ -6,7 +6,7 @@ use std::{
 use anyhow::Context;
 use serde::Deserialize;
 
-use crate::{config, util};
+use crate::{config::Config, util};
 
 pub type CollectionId = String;
 pub type DocumentId = String;
@@ -190,7 +190,7 @@ impl Document {
         let mut url = String::new();
 
         if absolute_url {
-            url.push_str(config::BASE_URL);
+            url.push_str(&Config::get().base_url);
         }
 
         url.push('/');

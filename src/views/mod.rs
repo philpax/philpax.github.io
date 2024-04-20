@@ -1,6 +1,8 @@
-use crate::{config, content, html, util};
+use crate::{content, html, util};
 
 mod partials;
+
+const ENABLE_STYLE_DEBUGGER: bool = true;
 
 pub fn post(collection: &content::Collection, document: &content::Document) -> html::Document {
     layout(partials::post(collection, document, false))
@@ -119,7 +121,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
                 .with_id("header-links")),
             ]),
             main(inner.to_elements()),
-            if config::ENABLE_STYLE_DEBUGGER {
+            if ENABLE_STYLE_DEBUGGER {
                 script("/style-debugger.js")
             } else {
                 html::Element::Empty
