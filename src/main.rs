@@ -4,11 +4,12 @@ mod styles;
 mod views;
 
 fn main() -> anyhow::Result<()> {
-    let public = Path::new("public");
     paxgen::run(
         paxgen::Config {
-            output_directory: public.into(),
+            output_directory: Path::new("public").into(),
             static_directory: Path::new("static").into(),
+            #[cfg(feature = "serve")]
+            port: 8192,
 
             base_url: "https://philpax.me".into(),
 
@@ -23,17 +24,5 @@ fn main() -> anyhow::Result<()> {
             std::fs::write(output.join("styles.css"), styles)?;
             Ok(())
         },
-    )?;
-
-    #[cfg(feature = "serve")]
-    {
-        let server = file_serve::ServerBuilder::new(public).port(8192).build();
-
-        println!("Serving at http://{}", server.addr());
-        println!("Hit CTRL-C to stop");
-
-        server.serve()?;
-    }
-
-    Ok(())
+    )
 }

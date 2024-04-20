@@ -6,6 +6,9 @@ pub struct Config {
     pub output_directory: PathBuf,
     /// The directory containing static files to copy to the output directory.
     pub static_directory: PathBuf,
+    /// The port to serve on
+    #[cfg(feature = "serve")]
+    pub port: u16,
 
     /// The base URL to use for generated links.
     pub base_url: String,

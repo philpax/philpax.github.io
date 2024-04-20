@@ -116,5 +116,17 @@ pub fn run(
     // Do post-write
     post_write(output)?;
 
+    #[cfg(feature = "serve")]
+    {
+        let server = file_serve::ServerBuilder::new(output)
+            .port(config.port)
+            .build();
+
+        println!("Serving at http://{}", server.addr());
+        println!("Hit CTRL-C to stop");
+
+        server.serve()?;
+    }
+
     Ok(())
 }

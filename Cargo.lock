@@ -412,6 +412,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
+ "file-serve",
  "html-escape",
  "image",
  "markdown",
@@ -426,9 +427,6 @@ name = "paxsite"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "chrono",
- "file-serve",
- "image",
  "paxgen",
 ]
 
