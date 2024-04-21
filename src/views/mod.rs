@@ -8,7 +8,7 @@ mod partials;
 const ENABLE_STYLE_DEBUGGER: bool = true;
 
 pub struct Views;
-impl paxgen::views::Views for Views {
+impl paxgen::Views for Views {
     fn post(&self, collection: &Collection, document: &Document) -> html::Document {
         layout(partials::post(collection, document, false))
     }

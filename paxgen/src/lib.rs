@@ -1,11 +1,11 @@
 pub mod content;
 pub mod html;
 pub mod markdown;
-pub mod rss;
 pub mod util;
 pub mod views;
 
 mod config;
+mod rss;
 pub use config::Config;
 pub use views::Views;
 
