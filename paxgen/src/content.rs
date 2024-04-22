@@ -205,20 +205,16 @@ impl Document {
     }
 }
 
-#[derive(Debug, Deserialize, Clone, Copy)]
-#[serde(transparent)]
-pub struct NaiveDate(#[serde(with = "toml_datetime_compat")] chrono::NaiveDate);
-
 #[derive(Debug, Deserialize)]
 pub struct DocumentMetadata {
     pub title: String,
-    date: Option<NaiveDate>,
+    #[serde(with = "toml_datetime_compat", default)]
+    date: Option<chrono::NaiveDate>,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 impl DocumentMetadata {
     pub fn datetime(&self) -> Option<chrono::DateTime<chrono::Utc>> {
-        self.date
-            .map(|d| d.0.and_time(Default::default()).and_utc())
+        self.date.map(|d| d.and_time(Default::default()).and_utc())
     }
 }
 
