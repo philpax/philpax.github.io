@@ -95,9 +95,7 @@ pub fn run(
 
     // Write out RSS feed
     {
-        let rss_channel = rss::build_channel(&content)?;
-        let mut file = std::fs::File::create(output.join("blog.rss"))?;
-        rss_channel.pretty_write_to(&mut file, b' ', 2)?;
+        rss::write_all(&content, output)?;
     }
 
     // Write out icon

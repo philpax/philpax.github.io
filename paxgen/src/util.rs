@@ -47,3 +47,7 @@ pub fn copy_dir(source: &Path, destination: &Path) -> std::io::Result<()> {
 
     Ok(())
 }
+
+pub fn normalize_path(path: &Path) -> String {
+    path.to_string_lossy().replace("\\", "/")
+}
