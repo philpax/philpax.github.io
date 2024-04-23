@@ -51,7 +51,7 @@ impl Content {
         Ok(content)
     }
 
-    pub fn read_collection(&mut self, id: &str) -> anyhow::Result<()> {
+    fn read_collection(&mut self, id: &str) -> anyhow::Result<()> {
         let collection = Collection::read(&self.path, id)?;
         self.collections.insert(collection.id.clone(), collection);
 
@@ -66,7 +66,7 @@ pub struct Collection {
     pub document_key_to_id: HashMap<DocumentId, usize>,
 }
 impl Collection {
-    pub fn read(content_path: &Path, id: &str) -> anyhow::Result<Self> {
+    fn read(content_path: &Path, id: &str) -> anyhow::Result<Self> {
         let collection_path = content_path.join(id);
 
         let mut collection = Collection {

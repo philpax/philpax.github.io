@@ -1,6 +1,5 @@
 use std::{io::Write, path::Path};
 
-#[allow(dead_code)]
 pub mod builder;
 
 #[derive(Debug)]
@@ -45,7 +44,6 @@ pub enum Element {
         html: String,
     },
 }
-#[allow(dead_code)]
 impl Element {
     pub fn write_to_string(&self) -> anyhow::Result<String> {
         let mut output = vec![];
