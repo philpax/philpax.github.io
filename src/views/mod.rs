@@ -14,7 +14,7 @@ impl paxgen::Views for Views {
     }
 
     fn index(&self, content: &Content) -> html::Document {
-        let blog = content.blog();
+        let blog = content.collections.get("blog").unwrap();
         layout(
             blog.documents
                 .iter()
