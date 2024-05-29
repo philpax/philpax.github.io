@@ -17,3 +17,9 @@ paxgen = { path = "paxgen" }
 [features]
 default = ["serve"]
 serve = ["paxgen/serve"]
+
+[profile.dev.package]
+image.opt-level = 3
+crc32fast.opt-level = 3
+miniz_oxide.opt-level = 3
+png.opt-level = 3
