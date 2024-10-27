@@ -138,11 +138,25 @@ pub fn br() -> Element {
     tag("br", [], EMPTY)
 }
 
+pub fn date(date: chrono::NaiveDate) -> Element {
+    tag_with_text(
+        "time",
+        [
+            ("datetime".into(), Some(date.to_string())),
+            ("title".into(), Some(date.to_string())),
+        ],
+        date.to_string(),
+    )
+}
+
 pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     tag_with_text(
         "time",
-        [("datetime".into(), Some(date.to_rfc3339()))],
-        date.date_naive().to_string(),
+        [
+            ("datetime".into(), Some(date.to_rfc3339())),
+            ("title".into(), Some(date.to_rfc2822())),
+        ],
+        date.to_rfc2822(),
     )
 }
 

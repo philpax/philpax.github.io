@@ -45,7 +45,8 @@ pub fn post(
             document
                 .metadata
                 .datetime()
-                .map(datetime)
+                .map(|dt| dt.date_naive())
+                .map(date)
                 .unwrap_or_default(),
         ]),
         div(post_body).with_class("post-body"),
