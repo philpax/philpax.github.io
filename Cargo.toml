@@ -14,9 +14,15 @@ anyhow = { workspace = true }
 
 paxgen = { path = "paxgen" }
 
+reqwest = { version = "0.12", default-features = false, features = [
+    "blocking",
+    "default-tls",
+], optional = true }
+
 [features]
-default = ["serve"]
+default = ["serve", "fonts"]
 serve = ["paxgen/serve"]
+fonts = ["dep:reqwest"]
 
 [profile.dev.package]
 image.opt-level = 3

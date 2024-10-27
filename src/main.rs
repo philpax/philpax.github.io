@@ -1,9 +1,14 @@
 use std::path::Path;
 
+#[cfg(feature = "fonts")]
+mod fonts;
 mod styles;
 mod views;
 
 fn main() -> anyhow::Result<()> {
+    #[cfg(feature = "fonts")]
+    fonts::download_if_required()?;
+
     paxgen::run(
         paxgen::Config {
             output_directory: Path::new("public").into(),
