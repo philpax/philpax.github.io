@@ -2,6 +2,7 @@ use std::path::Path;
 
 #[cfg(feature = "fonts")]
 mod fonts;
+mod js;
 mod styles;
 mod views;
 
@@ -27,6 +28,11 @@ fn main() -> anyhow::Result<()> {
             // Write out bundled styles
             let styles = styles::generate()?;
             std::fs::write(output.join("styles.css"), styles)?;
+
+            // Write out bundled JavaScript
+            let js = js::generate()?;
+            std::fs::write(output.join("scripts.js"), js)?;
+
             Ok(())
         },
     )

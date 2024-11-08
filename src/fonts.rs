@@ -2,26 +2,26 @@ use anyhow::Context;
 use std::fs;
 use std::path::Path;
 
-pub fn download_if_required() -> anyhow::Result<()> {
-    let fonts = vec![
-        "Coda",
-        "K2D",
-        "Noto+Sans+Display",
-        "Saira+Semi+Condensed",
-        "Titillium+Web",
-        "Alike+Angular",
-        "Gilda+Display",
-        "Inria+Serif",
-        "Mate",
-        "Piazzolla",
-        "Port+Lligat+Slab",
-        "Sedan",
-    ];
+pub const FONTS: &[&str; 12] = &[
+    "Coda",
+    "K2D",
+    "Noto Sans Display",
+    "Saira Semi Condensed",
+    "Titillium Web",
+    "Alike Angular",
+    "Gilda Display",
+    "Inria Serif",
+    "Mate",
+    "Piazzolla",
+    "Port Lligat Slab",
+    "Sedan",
+];
 
+pub fn download_if_required() -> anyhow::Result<()> {
     let output_dir = Path::new("static/fonts");
     fs::create_dir_all(output_dir).context("Failed to create output directory")?;
 
-    for font in fonts {
+    for font in FONTS {
         download_font(output_dir, font)
             .with_context(|| format!("Failed to download font {}", font))?;
     }
@@ -30,12 +30,15 @@ pub fn download_if_required() -> anyhow::Result<()> {
 }
 
 fn download_font(output_dir: &Path, font_name: &str) -> anyhow::Result<()> {
-    let path = output_dir.join(format!("{}.woff2", font_name.replace("+", "")));
+    let path = output_dir.join(format!("{}.woff2", font_name.replace(" ", "")));
     if path.exists() {
         return Ok(());
     }
 
-    let url = format!("https://fonts.googleapis.com/css2?family={}", font_name);
+    let url = format!(
+        "https://fonts.googleapis.com/css2?family={}",
+        font_name.replace(" ", "+")
+    );
     let css_text = reqwest::blocking::get(&url)
         .context("Failed to fetch CSS")?
         .text()

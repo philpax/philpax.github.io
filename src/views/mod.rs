@@ -5,8 +5,6 @@ use paxgen::{
 
 mod partials;
 
-const ENABLE_STYLE_DEBUGGER: bool = true;
-
 pub struct Views;
 impl paxgen::Views for Views {
     fn post(&self, collection: &Collection, document: &Document) -> paxhtml::Document {
@@ -90,6 +88,7 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
             ]),
             link("stylesheet", "/styles.css"),
             script("/website.js"),
+            script("/scripts.js"),
         ]),
         body([
             header([
@@ -103,11 +102,6 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
                 .with_id("header-links")),
             ]),
             main(inner.to_elements()),
-            if ENABLE_STYLE_DEBUGGER {
-                script("/style-debugger.js")
-            } else {
-                paxhtml::Element::Empty
-            },
         ]),
     ]))
 }
