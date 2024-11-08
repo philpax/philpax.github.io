@@ -30,7 +30,7 @@ impl paxgen::Views for Views {
         tag_keys.sort();
 
         layout(article([
-            header(h(2, false, a_simple("/tags", "Tags"))),
+            header(h2(false, a_simple("/tags", "Tags"))),
             div(ul(tag_keys
                 .iter()
                 .map(|tag| {
@@ -52,8 +52,7 @@ impl paxgen::Views for Views {
         use paxhtml::builder::*;
 
         layout(article([
-            header(h(
-                2,
+            header(h2(
                 false,
                 a_simple(format!("/tags/{tag_id}"), format!("Tags - #{tag_id}")),
             )),
@@ -95,7 +94,7 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
         body([
             header([
                 img("/icon.png", "Philpax icon"),
-                h(1, false, a_simple("/", "Philpax")),
+                h1(false, a_simple("/", "Philpax")),
                 nav(ul(links
                     .iter()
                     .copied()

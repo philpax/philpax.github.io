@@ -104,6 +104,24 @@ pub fn h(depth: u8, with_link: bool, children: impl ToElements) -> Element {
 
     tag(format!("h{}", depth), [("id".into(), Some(id))], children)
 }
+pub fn h1(with_link: bool, children: impl ToElements) -> Element {
+    h(1, with_link, children)
+}
+pub fn h2(with_link: bool, children: impl ToElements) -> Element {
+    h(2, with_link, children)
+}
+pub fn h3(with_link: bool, children: impl ToElements) -> Element {
+    h(3, with_link, children)
+}
+pub fn h4(with_link: bool, children: impl ToElements) -> Element {
+    h(4, with_link, children)
+}
+pub fn h5(with_link: bool, children: impl ToElements) -> Element {
+    h(5, with_link, children)
+}
+pub fn h6(with_link: bool, children: impl ToElements) -> Element {
+    h(6, with_link, children)
+}
 
 pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
     tag(
