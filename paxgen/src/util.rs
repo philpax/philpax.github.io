@@ -1,16 +1,6 @@
 use std::path::Path;
 
-pub fn slugify(s: &str) -> String {
-    s.to_lowercase()
-        .chars()
-        .map(|c| match c {
-            'a'..='z' | '0'..='9' => c,
-            ' ' | '-' => '-',
-            _ => ' ',
-        })
-        .filter(|c| *c != ' ')
-        .collect()
-}
+pub use paxhtml::util::slugify;
 
 pub fn pluralize(s: &str, count: usize) -> String {
     if count == 1 {

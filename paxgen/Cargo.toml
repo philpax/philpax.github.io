@@ -7,17 +7,16 @@ edition = "2021"
 
 [dependencies]
 anyhow = { workspace = true }
+chrono = { workspace = true }
+
+paxhtml = { path = "../paxhtml" }
+
 serde = { version = "1.0", features = ["derive"] }
 image = { version = "0.25.1", features = [
     "png",
     "ico",
 ], default-features = false }
-chrono = { version = "0.4.37", default-features = false, features = [
-    "std",
-    "now",
-] }
 
-html-escape = "0.2.13"
 markdown = "1.0.0-alpha.16"
 toml = "0.8.12"
 toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }

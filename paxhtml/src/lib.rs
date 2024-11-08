@@ -1,6 +1,7 @@
 use std::{io::Write, path::Path};
 
 pub mod builder;
+pub mod util;
 
 #[derive(Debug)]
 pub struct Document {
@@ -13,7 +14,7 @@ impl Document {
         }
     }
 
-    pub fn write_to_path(&self, path: &Path) -> anyhow::Result<()> {
+    pub fn write_to_path(&self, path: &Path) -> std::io::Result<()> {
         let file = std::fs::File::create(path)?;
         let mut writer = std::io::BufWriter::new(file);
 
@@ -45,13 +46,13 @@ pub enum Element {
     },
 }
 impl Element {
-    pub fn write_to_string(&self) -> anyhow::Result<String> {
+    pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];
         self.write(&mut output)?;
-        Ok(String::from_utf8(output)?)
+        Ok(String::from_utf8(output).unwrap())
     }
 
-    pub fn write(&self, writer: &mut dyn Write) -> anyhow::Result<()> {
+    pub fn write(&self, writer: &mut dyn Write) -> std::io::Result<()> {
         match self {
             Element::Empty => Ok(()),
             Element::Tag {
@@ -98,7 +99,7 @@ impl Element {
         }
     }
 
-    pub fn write_many_to_string(elements: &[Element]) -> anyhow::Result<String> {
+    pub fn write_many_to_string(elements: &[Element]) -> std::io::Result<String> {
         let mut output = vec![];
         for (idx, element) in elements.iter().enumerate() {
             if idx > 0 {
@@ -106,7 +107,7 @@ impl Element {
             }
             element.write(&mut output)?;
         }
-        Ok(String::from_utf8(output)?)
+        Ok(String::from_utf8(output).unwrap())
     }
 
     pub fn attrs(&self) -> Option<&[Attribute]> {

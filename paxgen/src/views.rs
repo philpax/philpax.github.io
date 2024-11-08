@@ -1,19 +1,16 @@
-use crate::{
-    content::{Collection, Content, Document},
-    html,
-};
+use crate::content::{Collection, Content, Document};
 
 pub trait Views {
-    fn post(&self, collection: &Collection, document: &Document) -> html::Document;
-    fn index(&self, content: &Content) -> html::Document;
-    fn tags(&self, content: &Content) -> html::Document;
-    fn tag(&self, content: &Content, tag_id: &str) -> html::Document;
+    fn post(&self, collection: &Collection, document: &Document) -> paxhtml::Document;
+    fn index(&self, content: &Content) -> paxhtml::Document;
+    fn tags(&self, content: &Content) -> paxhtml::Document;
+    fn tag(&self, content: &Content, tag_id: &str) -> paxhtml::Document;
 }
 
-pub fn redirect(to_url: &str) -> html::Document {
-    use html::builder::*;
+pub fn redirect(to_url: &str) -> paxhtml::Document {
+    use paxhtml::builder::*;
 
-    html::Document::new(html([
+    paxhtml::Document::new(html([
         head([
             title("Redirecting..."),
             meta([("charset".into(), Some("utf-8".into()))]),

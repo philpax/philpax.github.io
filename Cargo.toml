@@ -4,15 +4,20 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = ["paxgen", "."]
+members = ["paxgen", ".", "paxhtml"]
 
 [workspace.dependencies]
 anyhow = "1.0"
+chrono = { version = "0.4.37", default-features = false, features = [
+    "std",
+    "now",
+] }
 
 [dependencies]
 anyhow = { workspace = true }
 
 paxgen = { path = "paxgen" }
+paxhtml = { path = "paxhtml" }
 
 reqwest = { version = "0.12", default-features = false, features = [
     "blocking",

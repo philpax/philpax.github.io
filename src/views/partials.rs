@@ -1,14 +1,14 @@
 use paxgen::{
     content::{Collection, Document},
-    html, markdown, util,
+    markdown, util,
 };
 
 pub fn post(
     collection: &Collection,
     document: &Document,
     use_description: bool,
-) -> Vec<html::Element> {
-    use html::builder::*;
+) -> Vec<paxhtml::Element> {
+    use paxhtml::builder::*;
 
     let mut post_body = markdown::convert_to_html(
         document
@@ -28,7 +28,7 @@ pub fn post(
             .map(|tag| li(a_simple(format!("/tags/{tag}"), format!("#{tag}"))))
             .collect::<Vec<_>>())
         .with_attrs([("class".into(), Some("tags".into()))]),
-        None => html::Element::Empty,
+        None => paxhtml::Element::Empty,
     };
 
     let article = article([
@@ -61,7 +61,7 @@ pub fn post(
             return vec![article];
         }
 
-        fn build_list(hierarchy: &markdown::HeadingHierarchy) -> html::Element {
+        fn build_list(hierarchy: &markdown::HeadingHierarchy) -> paxhtml::Element {
             let markdown::HeadingHierarchy(text, children) = hierarchy;
             let link = a_simple(format!("#{}", util::slugify(text)), text);
 

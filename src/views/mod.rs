@@ -1,6 +1,6 @@
 use paxgen::{
     content::{Collection, Content, Document},
-    html, util,
+    util,
 };
 
 mod partials;
@@ -9,11 +9,11 @@ const ENABLE_STYLE_DEBUGGER: bool = true;
 
 pub struct Views;
 impl paxgen::Views for Views {
-    fn post(&self, collection: &Collection, document: &Document) -> html::Document {
+    fn post(&self, collection: &Collection, document: &Document) -> paxhtml::Document {
         layout(partials::post(collection, document, false))
     }
 
-    fn index(&self, content: &Content) -> html::Document {
+    fn index(&self, content: &Content) -> paxhtml::Document {
         let blog = content.collections.get("blog").unwrap();
         layout(
             blog.documents
@@ -23,8 +23,8 @@ impl paxgen::Views for Views {
         )
     }
 
-    fn tags(&self, content: &Content) -> html::Document {
-        use html::builder::*;
+    fn tags(&self, content: &Content) -> paxhtml::Document {
+        use paxhtml::builder::*;
 
         let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
         tag_keys.sort();
@@ -48,8 +48,8 @@ impl paxgen::Views for Views {
         ]))
     }
 
-    fn tag(&self, content: &Content, tag_id: &str) -> html::Document {
-        use html::builder::*;
+    fn tag(&self, content: &Content, tag_id: &str) -> paxhtml::Document {
+        use paxhtml::builder::*;
 
         layout(article([
             header(h(
@@ -73,12 +73,12 @@ impl paxgen::Views for Views {
     }
 }
 
-fn layout(inner: impl html::builder::ToElements) -> html::Document {
-    use html::builder::*;
+fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
+    use paxhtml::builder::*;
 
     let links = [("/", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
-    html::Document::new(html([
+    paxhtml::Document::new(html([
         head([
             title("Philpax"),
             meta([("charset".into(), Some("utf-8".into()))]),
@@ -107,7 +107,7 @@ fn layout(inner: impl html::builder::ToElements) -> html::Document {
             if ENABLE_STYLE_DEBUGGER {
                 script("/style-debugger.js")
             } else {
-                html::Element::Empty
+                paxhtml::Element::Empty
             },
         ]),
     ]))

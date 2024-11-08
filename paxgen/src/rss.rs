@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::{config::Config, content, html, markdown, util};
+use crate::{config::Config, content, markdown, util};
 
 pub fn write_all(content: &content::Content, output: &Path) -> anyhow::Result<()> {
     let config = Config::get();
@@ -65,7 +65,7 @@ fn build_item(
     let description = doc
         .description
         .as_ref()
-        .map(|d| html::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap());
+        .map(|d| paxhtml::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap());
 
     rss::ItemBuilder::default()
         .title(doc.metadata.title.clone())

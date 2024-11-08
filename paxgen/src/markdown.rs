@@ -1,8 +1,8 @@
-use crate::html::{self, builder as b};
+use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 
-pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
+pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
     match node {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
@@ -65,7 +65,7 @@ pub fn convert_to_html(node: &Node) -> Vec<html::Element> {
                     .collect::<Vec<_>>(),
             )]
         }
-        Node::Html(h) => vec![html::Element::Raw {
+        Node::Html(h) => vec![paxhtml::Element::Raw {
             html: h.value.clone(),
         }],
 
@@ -157,7 +157,7 @@ fn inner_text(node: &Node) -> String {
     }
 }
 
-fn convert_many(nodes: &[Node]) -> Vec<html::Element> {
+fn convert_many(nodes: &[Node]) -> Vec<paxhtml::Element> {
     nodes.iter().flat_map(convert_to_html).collect()
 }
 

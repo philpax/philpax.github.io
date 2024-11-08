@@ -1,5 +1,4 @@
 pub mod content;
-pub mod html;
 pub mod markdown;
 pub mod util;
 pub mod views;

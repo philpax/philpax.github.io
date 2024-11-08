@@ -746,13 +746,21 @@ dependencies = [
  "anyhow",
  "chrono",
  "file-serve",
- "html-escape",
  "image",
  "markdown",
+ "paxhtml",
  "rss",
  "serde",
  "toml",
  "toml-datetime-compat",
+]
+
+[[package]]
+name = "paxhtml"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "html-escape",
 ]
 
 [[package]]
@@ -761,6 +769,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "paxgen",
+ "paxhtml",
  "reqwest",
 ]
 
