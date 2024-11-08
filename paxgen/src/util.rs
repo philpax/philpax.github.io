@@ -28,10 +28,11 @@ pub fn copy_dir(source: &Path, destination: &Path) -> std::io::Result<()> {
         let file_name = entry.file_name();
         let destination = destination.join(file_name);
 
+        let path = entry.path();
         if file_type.is_dir() {
-            copy_dir(&entry.path(), &destination)?;
+            copy_dir(&path, &destination)?;
         } else {
-            std::fs::copy(&entry.path(), &destination)?;
+            std::fs::copy(&path, &destination)?;
         }
     }
 

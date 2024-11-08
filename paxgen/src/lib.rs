@@ -51,7 +51,7 @@ pub fn run(
             html.write_to_path(&output_path.join("index.html"))?;
 
             for path in &doc.files {
-                std::fs::copy(path, &output_path.join(path.file_name().unwrap()))?;
+                std::fs::copy(path, output_path.join(path.file_name().unwrap()))?;
             }
 
             // Write redirect for alternate_id if it exists
