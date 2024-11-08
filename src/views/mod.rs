@@ -87,7 +87,6 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
                 ),
             ]),
             link("stylesheet", "/styles.css"),
-            script("/website.js"),
             script("/scripts.js"),
         ]),
         body([

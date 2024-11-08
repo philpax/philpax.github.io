@@ -15,6 +15,7 @@ pub fn generate() -> anyhow::Result<String> {
     Ok([
         #[cfg(feature = "fonts")]
         style_debugger()?,
+        include_str!("website.js").to_string(),
     ]
     .join("\n"))
 }
