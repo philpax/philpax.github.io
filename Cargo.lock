@@ -740,22 +740,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "paxgen"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "file-serve",
- "image",
- "markdown",
- "paxhtml",
- "rss",
- "serde",
- "toml",
- "toml-datetime-compat",
-]
-
-[[package]]
 name = "paxhtml"
 version = "0.1.0"
 dependencies = [
@@ -768,9 +752,16 @@ name = "paxsite"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "paxgen",
+ "chrono",
+ "file-serve",
+ "image",
+ "markdown",
  "paxhtml",
  "reqwest",
+ "rss",
+ "serde",
+ "toml",
+ "toml-datetime-compat",
 ]
 
 [[package]]

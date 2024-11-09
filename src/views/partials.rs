@@ -1,4 +1,4 @@
-use paxgen::{
+use crate::{
     content::{Collection, Document},
     markdown, util,
 };
