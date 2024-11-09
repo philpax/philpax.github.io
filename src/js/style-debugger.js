@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (font) => `
 @font-face {
   font-family: '${font}';
-  src: url('fonts/${font.replace(/ /g, "")}.woff2') format('woff2');
+  src: url('/fonts/${font.replace(/ /g, "")}.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
