@@ -19,7 +19,7 @@ pub fn post(
     );
 
     if use_description {
-        post_body.push(p(a_simple(document.url(collection, false), "Read more")));
+        post_body.push(p(a_simple(document.url(collection, None), "Read more")));
     }
 
     let tag_list = match document.metadata.taxonomies.as_ref().map(|t| &t.tags) {
@@ -36,7 +36,7 @@ pub fn post(
             h2(
                 false,
                 a_simple(
-                    document.url(collection, false),
+                    document.url(collection, None),
                     document.metadata.title.clone(),
                 ),
             ),

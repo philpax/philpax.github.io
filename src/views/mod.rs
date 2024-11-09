@@ -98,7 +98,7 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
                 let document = collection.document_by_id(&t.1).unwrap();
 
                 li(a_simple(
-                    document.url(collection, false),
+                    document.url(collection, None),
                     document.metadata.title.clone(),
                 ))
             })

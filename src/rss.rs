@@ -1,9 +1,25 @@
 use std::path::Path;
 
-use crate::{config::Config, content, markdown, util};
+use crate::{content, markdown, util};
 
-pub fn write_all(content: &content::Content, output: &Path) -> anyhow::Result<()> {
-    let config = Config::get();
+pub struct RssConfig<'a> {
+    pub base_url: &'a str,
+    pub rss_title: &'a str,
+    pub rss_author: &'a str,
+    pub rss_description: &'a str,
+}
+
+pub fn write_all(
+    config: RssConfig,
+    content: &content::Content,
+    output: &Path,
+) -> anyhow::Result<()> {
+    let RssConfig {
+        base_url,
+        rss_title,
+        rss_author,
+        rss_description,
+    } = config;
 
     let rss_output_dir = output.join("rss");
     std::fs::create_dir_all(&rss_output_dir)?;
@@ -16,27 +32,23 @@ pub fn write_all(content: &content::Content, output: &Path) -> anyhow::Result<()
         let items = collection
             .documents
             .iter()
-            .map(|doc| build_item(collection, &config.rss_author, doc))
+            .map(|doc| build_item(base_url, collection, rss_author, doc))
             .collect::<Vec<_>>();
 
         let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
             .link(rss::extension::atom::Link {
                 rel: "self".into(),
-                href: format!(
-                    "{}/{}",
-                    &config.base_url,
-                    util::normalize_path(relative_path)
-                ),
+                href: format!("{}/{}", base_url, util::normalize_path(relative_path)),
                 mime_type: Some("application/rss+xml".to_string()),
                 ..Default::default()
             })
             .build();
 
         let rss_channel = rss::ChannelBuilder::default()
-            .title(&config.rss_title)
-            .link(&config.base_url)
+            .title(rss_title)
+            .link(base_url)
             .atom_ext(atom_ext)
-            .description(&config.rss_description)
+            .description(rss_description)
             .language("en-AU".to_string())
             .last_build_date(chrono::Utc::now().to_rfc2822())
             .generator("paxgen".to_string())
@@ -51,11 +63,12 @@ pub fn write_all(content: &content::Content, output: &Path) -> anyhow::Result<()
 }
 
 fn build_item(
+    base_url: &str,
     collection: &content::Collection,
     author: &str,
     doc: &content::Document,
 ) -> rss::Item {
-    let url = doc.url(collection, true);
+    let url = doc.url(collection, Some(base_url));
 
     let guid = rss::GuidBuilder::default()
         .value(url.clone())
