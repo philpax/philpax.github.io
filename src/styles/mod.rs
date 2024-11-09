@@ -1,17 +1,13 @@
 const RESET: &str = include_str!("reset.css");
 
 const DARK_MODE: &str = r#"
-background-image: url('/backgrounds/dark/20190902_225741.jpg');
-
 --color: white;
---background-color: rgba(0, 0, 0, 0.4);
+--background-color: #3C2954;
 "#;
 
 const LIGHT_MODE: &str = r#"
-background-image: url('/backgrounds/light/20230610_105204.jpg');
-
 --color: black;
---background-color: rgba(255, 255, 255, 0.4);
+--background-color: #C5B4DB;
 "#;
 
 const WEBSITE: &str = include_str!("website.css");

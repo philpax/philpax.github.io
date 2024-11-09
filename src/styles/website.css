@@ -1,100 +1,98 @@
 :root {
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center center;
-    background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
 
-    --header-height: 64px;
+  --header-height: 64px;
 }
 
 body {
-    max-width: 1100px;
-    margin: auto;
-    color: var(--color);
+  max-width: 1100px;
+  margin: auto;
+  color: var(--color);
+  background-color: var(--background-color);
 }
 
-body>header {
-    background-color: var(--background-color);
-
-    height: var(--header-height);
-    display: flex;
+body > header {
+  height: var(--header-height);
+  display: flex;
 }
 
-body>header img {
-    display: inline-block;
-    height: 100%;
-    margin-right: 20px;
+body > header img {
+  display: inline-block;
+  height: 100%;
+  margin-right: 20px;
 }
 
-body>header h1 {
-    margin-right: auto;
-    flex-grow: 1;
+body > header h1 {
+  margin-right: auto;
+  flex-grow: 1;
 }
 
-body>header h1 a {
-    height: 100%;
-    line-height: var(--header-height);
+body > header h1 a {
+  height: 100%;
+  line-height: var(--header-height);
 }
 
-body>header nav {
-    display: flex;
-    height: 100%;
+body > header nav {
+  display: flex;
+  height: 100%;
 }
 
-body>header nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
+body > header nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-body>header nav ul li {
-    display: inline-block;
-    margin-right: 10px;
-    height: 100%;
+body > header nav ul li {
+  display: inline-block;
+  margin-right: 10px;
+  height: 100%;
 }
 
-body>header nav ul li a {
-    line-height: var(--header-height);
+body > header nav ul li a {
+  line-height: var(--header-height);
 }
 
 a {
-    color: var(--color);
-    text-decoration: none;
+  color: var(--color);
+  text-decoration: none;
 }
 
 a:visited {
-    color: var(--color);
+  color: var(--color);
 }
 
 article {
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 
 article header {
-    display: flex;
+  display: flex;
 }
 
 article header h2 {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 article header ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 article header ul li {
-    display: inline-block;
-    margin-right: 10px;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 article div.post-body {
-    padding: 20px;
-    background-color: var(--background-color);
+  padding: 20px;
 }
 
-article div.post-body>*:not(:first-child) {
-    margin-top: 20px;
+article div.post-body > *:not(:first-child) {
+  margin-top: 20px;
 }
