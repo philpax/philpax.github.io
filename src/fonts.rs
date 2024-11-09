@@ -2,7 +2,7 @@ use anyhow::Context;
 use std::fs;
 use std::path::Path;
 
-pub const FONTS: &[&str; 12] = &[
+pub const FONTS: &[&str] = &[
     "Coda",
     "K2D",
     "Noto Sans Display",
@@ -15,6 +15,12 @@ pub const FONTS: &[&str; 12] = &[
     "Piazzolla",
     "Port Lligat Slab",
     "Sedan",
+    "Roboto",
+    "Mona Sans",
+    "Host Grotesk",
+    "Schibsted Grotesk",
+    "Hanken Grotesk",
+    "Familjen Grotesk",
 ];
 
 pub fn download_if_required() -> anyhow::Result<()> {
