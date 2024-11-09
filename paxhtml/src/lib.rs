@@ -27,7 +27,7 @@ impl Document {
     }
 }
 
-type Attribute = (String, Option<String>);
+pub type Attribute = (String, Option<String>);
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub enum Element {

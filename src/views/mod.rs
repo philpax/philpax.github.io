@@ -86,6 +86,10 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
                     Some("width=device-width, initial-scale=1".into()),
                 ),
             ]),
+            link("alternate", "/rss/blog.rss").with_attrs([
+                ("type".into(), Some("application/rss+xml".into())),
+                ("title".into(), Some("Philpax's Blog".into())),
+            ]),
             link("stylesheet", "/styles.css"),
             script("/scripts.js"),
         ]),
