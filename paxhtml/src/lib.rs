@@ -15,13 +15,13 @@ impl Document {
     }
 
     pub fn write_to_path(&self, path: &Path) -> std::io::Result<()> {
-        let file = std::fs::File::create(path)?;
-        let mut writer = std::io::BufWriter::new(file);
-
-        for child in &self.children {
-            child.write(&mut writer)?;
+        let mut writer = std::io::BufWriter::new(std::fs::File::create(path)?);
+        for (idx, child) in self.children.iter().enumerate() {
+            if idx > 0 {
+                writeln!(writer)?;
+            }
+            child.write(&mut writer, 0)?;
         }
-
         Ok(())
     }
 }
@@ -48,11 +48,11 @@ pub enum Element {
 impl Element {
     pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];
-        self.write(&mut output)?;
+        self.write(&mut output, 0)?;
         Ok(String::from_utf8(output).unwrap())
     }
 
-    pub fn write(&self, writer: &mut dyn Write) -> std::io::Result<()> {
+    pub fn write(&self, writer: &mut dyn Write, depth: usize) -> std::io::Result<()> {
         match self {
             Element::Empty => Ok(()),
             Element::Tag {
@@ -82,11 +82,33 @@ impl Element {
                 }
 
                 // children
+                let children_started_with_text = children
+                    .first()
+                    .is_some_and(|c| matches!(c, Element::Text { .. }));
+                let should_indent = !children.is_empty() && !children_started_with_text;
+                let mut did_indent = false;
                 for child in children {
-                    child.write(writer)?;
+                    let depth = depth + 1;
+                    let should_indent_this_child = should_indent
+                        && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
+                        && !child.is_empty();
+                    if should_indent_this_child {
+                        writeln!(writer)?;
+                        for _ in 0..depth {
+                            write!(writer, "  ")?;
+                        }
+                        did_indent = true;
+                    }
+                    child.write(writer, depth)?;
                 }
 
                 // end tag
+                if did_indent {
+                    writeln!(writer)?;
+                    for _ in 0..depth {
+                        write!(writer, "  ")?;
+                    }
+                }
                 write!(writer, "</{name}>")?;
                 Ok(())
             }
@@ -113,9 +135,16 @@ impl Element {
             if idx > 0 {
                 writeln!(output)?;
             }
-            element.write(&mut output)?;
+            element.write(&mut output, 0)?;
         }
         Ok(String::from_utf8(output).unwrap())
+    }
+
+    pub fn tag(&self) -> Option<&str> {
+        match self {
+            Element::Tag { name, .. } => Some(name),
+            _ => None,
+        }
     }
 
     pub fn attrs(&self) -> Option<&[Attribute]> {
@@ -132,6 +161,14 @@ impl Element {
             Element::Text { text } => text.clone(),
             Element::Raw { .. } => String::new(),
         }
+    }
+
+    /// Returns `true` if the element is [`Empty`].
+    ///
+    /// [`Empty`]: Element::Empty
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        matches!(self, Self::Empty)
     }
 }
 
