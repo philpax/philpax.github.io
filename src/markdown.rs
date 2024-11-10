@@ -3,6 +3,7 @@ use paxhtml::builder as b;
 pub use markdown::mdast::Node;
 
 pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
+    use b::Empty;
     match node {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
@@ -13,20 +14,20 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::text(t.value.as_str())]
         }
         Node::Paragraph(p) => {
-            vec![b::p([])(convert_many(&p.children))]
+            vec![b::p(Empty)(convert_many(&p.children))]
         }
         Node::Strong(s) => {
-            vec![b::strong([])(convert_many(&s.children))]
+            vec![b::strong(Empty)(convert_many(&s.children))]
         }
         Node::Emphasis(e) => {
-            vec![b::em([])(convert_many(&e.children))]
+            vec![b::em(Empty)(convert_many(&e.children))]
         }
         Node::List(l) => {
             let children = convert_many(&l.children);
             vec![if l.ordered {
-                b::ol([])(children)
+                b::ol(Empty)(children)
             } else {
-                b::ul([])(children)
+                b::ul(Empty)(children)
             }]
         }
         Node::ListItem(li) => {
@@ -34,23 +35,23 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![b::li([])(convert_many(&p.children))];
+                    return vec![b::li(Empty)(convert_many(&p.children))];
                 }
             }
 
-            vec![b::li([])(convert_many(&li.children))]
+            vec![b::li(Empty)(convert_many(&li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre([])(b::code([])(c.value.as_str()))]
+            vec![b::pre(Empty)(b::code(Empty)(c.value.as_str()))]
         }
         Node::BlockQuote(b) => {
-            vec![b::blockquote([])(convert_many(&b.children))]
+            vec![b::blockquote(Empty)(convert_many(&b.children))]
         }
         Node::Break(_) => {
-            vec![b::br([])]
+            vec![b::br(Empty)]
         }
         Node::InlineCode(c) => {
-            vec![b::code([])(c.value.as_str())]
+            vec![b::code(Empty)(c.value.as_str())]
         }
         Node::Image(i) => {
             vec![b::img(&i.url, &i.alt)]

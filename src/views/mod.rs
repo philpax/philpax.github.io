@@ -11,43 +11,37 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new([
-        doctype([("html".into(), None)]),
+        doctype("html"),
         html([
-            head([])([
-                title([])("Philpax"),
-                meta([("charset".into(), Some("utf-8".into()))]),
+            head(Empty)([
+                title(Empty)("Philpax"),
+                meta(("charset", "utf-8")),
                 meta([
-                    ("name".into(), Some("viewport".into())),
-                    (
-                        "content".into(),
-                        Some("width=device-width, initial-scale=1".into()),
-                    ),
+                    ("name", "viewport"),
+                    ("content", "width=device-width, initial-scale=1"),
                 ]),
                 link([
-                    ("rel".into(), Some("alternate".into())),
-                    ("href".into(), Some("/rss/blog.rss".into())),
-                    ("type".into(), Some("application/rss+xml".into())),
-                    ("title".into(), Some("Philpax's Blog".into())),
+                    ("rel", "alternate"),
+                    ("href", "/rss/blog.rss"),
+                    ("type", "application/rss+xml"),
+                    ("title", "Philpax's Blog"),
                 ]),
-                link([
-                    ("rel".into(), Some("stylesheet".into())),
-                    ("href".into(), Some("/styles.css".into())),
-                ]),
-                script([("src".into(), Some("/scripts.js".into()))])(NC),
+                link([("rel", "stylesheet"), ("href", "/styles.css")]),
+                script(("src", "/scripts.js"))(Empty),
             ]),
-            body([])([
-                header([])([
+            body(Empty)([
+                header(Empty)([
                     img("/icon.png", "Philpax icon"),
                     h1(a_simple("/", "Philpax")),
-                    nav([])(ul([("id".into(), Some("header-links".into()))])(
+                    nav(Empty)(ul(("id", "header-links"))(
                         links
                             .iter()
                             .copied()
-                            .map(|(url, label)| li([])(a_simple(url, label)))
+                            .map(|(url, label)| li(Empty)(a_simple(url, label)))
                             .collect::<Vec<_>>(),
                     )),
                 ]),
-                main([])(inner.to_elements()),
+                main(Empty)(inner.to_elements()),
             ]),
         ]),
     ])
@@ -95,14 +89,14 @@ pub fn tags(content: &Content) -> paxhtml::Document {
     let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
-    layout(article([])([
-        header([])(h2(a_simple("/tags", "Tags"))),
-        div([])(ul([])(
+    layout(article(Empty)([
+        header(Empty)(h2(a_simple("/tags", "Tags"))),
+        div(Empty)(ul(Empty)(
             tag_keys
                 .iter()
                 .map(|tag| {
                     let post_count = content.tags[*tag].len();
-                    li([])([
+                    li(Empty)([
                         a_simple(format!("/tags/{tag}"), format!("#{tag}")),
                         text(format!(
                             " ({} {})",
@@ -119,19 +113,19 @@ pub fn tags(content: &Content) -> paxhtml::Document {
 pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
 
-    layout(article([])([
-        header([])(h2(a_simple(
+    layout(article(Empty)([
+        header(Empty)(h2(a_simple(
             format!("/tags/{tag_id}"),
             format!("Tags - #{tag_id}"),
         ))),
-        div([])(ul([])(
+        div(Empty)(ul(Empty)(
             content.tags[tag_id]
                 .iter()
                 .map(|t| {
                     let collection = &content.collections[&t.0];
                     let document = collection.document_by_id(&t.1).unwrap();
 
-                    li([])(a_simple(
+                    li(Empty)(a_simple(
                         document.url(collection, None),
                         document.metadata.title.clone(),
                     ))
@@ -143,22 +137,25 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
 
 pub fn redirect(to_url: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
-    paxhtml::Document::new(html([
-        head([])([
-            title([])("Redirecting..."),
-            meta([("charset".into(), Some("utf-8".into()))]),
-            meta([
-                ("http-equiv".into(), Some("refresh".into())),
-                ("content".into(), Some(format!("0; url={}", to_url))),
+    paxhtml::Document::new([
+        doctype("html"),
+        html([
+            head(Empty)([
+                title(Empty)("Redirecting..."),
+                meta(("charset", "utf-8")),
+                meta([
+                    ("http-equiv", "refresh"),
+                    ("content", &format!("0; url={to_url}")),
+                ]),
+            ]),
+            body(Empty)([
+                p(Empty)("Redirecting..."),
+                p(Empty)(a(
+                    to_url,
+                    Some("Click here if you are not redirected"),
+                    "Click here",
+                )),
             ]),
         ]),
-        body([])([
-            p([])("Redirecting..."),
-            p([])(a(
-                to_url,
-                Some("Click here if you are not redirected"),
-                "Click here",
-            )),
-        ]),
-    ]))
+    ])
 }

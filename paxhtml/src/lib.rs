@@ -26,7 +26,67 @@ impl Document {
     }
 }
 
-pub type Attribute = (String, Option<String>);
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+pub struct Attribute {
+    pub key: String,
+    pub value: Option<String>,
+}
+pub fn attr(value: impl Into<Attribute>) -> Attribute {
+    value.into()
+}
+impl From<&str> for Attribute {
+    fn from(s: &str) -> Self {
+        Attribute {
+            key: s.to_string(),
+            value: None,
+        }
+    }
+}
+impl From<String> for Attribute {
+    fn from(s: String) -> Self {
+        Attribute {
+            key: s,
+            value: None,
+        }
+    }
+}
+impl From<Attribute> for (String, Option<String>) {
+    fn from(a: Attribute) -> Self {
+        (a.key, a.value)
+    }
+}
+impl From<(&str, &str)> for Attribute {
+    fn from((key, value): (&str, &str)) -> Self {
+        Attribute {
+            key: key.to_string(),
+            value: Some(value.to_string()),
+        }
+    }
+}
+impl From<(&str, String)> for Attribute {
+    fn from((key, value): (&str, String)) -> Self {
+        Attribute {
+            key: key.to_string(),
+            value: Some(value),
+        }
+    }
+}
+impl From<(String, &str)> for Attribute {
+    fn from((key, value): (String, &str)) -> Self {
+        Attribute {
+            key,
+            value: Some(value.to_string()),
+        }
+    }
+}
+impl From<(String, String)> for Attribute {
+    fn from((key, value): (String, String)) -> Self {
+        Attribute {
+            key,
+            value: Some(value),
+        }
+    }
+}
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub enum Element {
@@ -73,7 +133,7 @@ impl Element {
             } => {
                 // start tag
                 write!(writer, "<{name}")?;
-                for (key, value) in attributes {
+                for Attribute { key, value } in attributes {
                     match value {
                         Some(value) => write!(writer, " {key}=\"{value}\"")?,
                         None => write!(writer, " {key}")?,
@@ -188,9 +248,9 @@ mod tests {
 
     #[test]
     fn test_inline_code() {
-        let input = p([])([
+        let input = p(Empty)([
             text("This is an example of "),
-            code([])("inline code"),
+            code(Empty)("inline code"),
             text(" in a paragraph."),
         ]);
 
@@ -203,14 +263,14 @@ mod tests {
 
     #[test]
     fn test_empty_ul_with_tags_class() {
-        let input = ul([("class".into(), Some("tags".into()))])(NC);
+        let input = ul(("class", "tags"))(Empty);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<ul class=\"tags\"></ul>");
     }
 
     #[test]
     fn test_void_element() {
-        let input = br([]);
+        let input = br(Empty);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<br>");
     }
