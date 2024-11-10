@@ -21,11 +21,16 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
                     Some("width=device-width, initial-scale=1".into()),
                 ),
             ])(NoChildren),
-            link("alternate", "/rss/blog.rss").with_attrs([
+            link([
+                ("rel".into(), Some("alternate".into())),
+                ("href".into(), Some("/rss/blog.rss".into())),
                 ("type".into(), Some("application/rss+xml".into())),
                 ("title".into(), Some("Philpax's Blog".into())),
-            ]),
-            link("stylesheet", "/styles.css"),
+            ])(NoChildren),
+            link([
+                ("rel".into(), Some("stylesheet".into())),
+                ("href".into(), Some("/styles.css".into())),
+            ])(NoChildren),
             script("/scripts.js"),
         ]),
         body([])([

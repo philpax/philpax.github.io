@@ -117,21 +117,6 @@ impl Element {
         }
     }
 
-    pub fn with_attrs(self, attributes: impl IntoIterator<Item = Attribute>) -> Self {
-        match self {
-            Element::Tag {
-                name,
-                attributes: old_attrs,
-                children,
-            } => Element::Tag {
-                name,
-                attributes: old_attrs.into_iter().chain(attributes).collect(),
-                children,
-            },
-            _ => panic!("Cannot add attributes to non-tag element {self:?}"),
-        }
-    }
-
     pub fn inner_text(&self) -> String {
         match self {
             Element::Empty => String::new(),

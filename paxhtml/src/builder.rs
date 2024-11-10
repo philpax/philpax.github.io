@@ -32,8 +32,6 @@ impl ToElements for NoChildren {
     }
 }
 
-pub const EMPTY: NoChildren = NoChildren;
-
 pub fn tag(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
@@ -75,17 +73,6 @@ pub fn html(children: impl ToElements) -> Element {
 
 pub fn title(text: impl Into<String>) -> Element {
     tag_with_text("title", [], text)
-}
-
-pub fn link(rel: impl Into<String>, href: impl Into<String>) -> Element {
-    tag(
-        "link",
-        [
-            ("rel".into(), Some(rel.into())),
-            ("href".into(), Some(href.into())),
-        ],
-        EMPTY,
-    )
 }
 
 pub fn script(src: impl Into<String>) -> Element {
@@ -137,7 +124,7 @@ pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
             ("src".into(), Some(src.into())),
             ("alt".into(), Some(alt.into())),
         ],
-        EMPTY,
+        NoChildren,
     )
 }
 
@@ -160,7 +147,7 @@ pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
 }
 
 pub fn br() -> Element {
-    tag("br", [], EMPTY)
+    tag("br", [], NoChildren)
 }
 
 pub fn date(date: chrono::NaiveDate) -> Element {
@@ -200,5 +187,5 @@ macro_rules! aliased_builders {
 aliased_builders! {
     meta, head, body, main, p, code, div, pre, header, nav,
     ol, ul, li, strong, em, blockquote, article, section,
-    aside, span
+    aside, span, link
 }
