@@ -11,16 +11,16 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new(html([
-        head([
+        head([])([
             title("Philpax"),
-            meta([("charset".into(), Some("utf-8".into()))]),
+            meta([("charset".into(), Some("utf-8".into()))])(NoChildren),
             meta([
                 ("name".into(), Some("viewport".into())),
                 (
                     "content".into(),
                     Some("width=device-width, initial-scale=1".into()),
                 ),
-            ]),
+            ])(NoChildren),
             link("alternate", "/rss/blog.rss").with_attrs([
                 ("type".into(), Some("application/rss+xml".into())),
                 ("title".into(), Some("Philpax's Blog".into())),
@@ -28,18 +28,19 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
             link("stylesheet", "/styles.css"),
             script("/scripts.js"),
         ]),
-        body([
-            header([
+        body([])([
+            header([])([
                 img("/icon.png", "Philpax icon"),
                 h1(a_simple("/", "Philpax")),
-                nav(ul(links
-                    .iter()
-                    .copied()
-                    .map(|(url, label)| li(a_simple(url, label)))
-                    .collect::<Vec<_>>())
-                .with_id("header-links")),
+                nav([])(ul([("id".into(), Some("header-links".into()))])(
+                    links
+                        .iter()
+                        .copied()
+                        .map(|(url, label)| li([])(a_simple(url, label)))
+                        .collect::<Vec<_>>(),
+                )),
             ]),
-            main(inner.to_elements()),
+            main([])(inner.to_elements()),
         ]),
     ]))
 }
@@ -86,45 +87,49 @@ pub fn tags(content: &Content) -> paxhtml::Document {
     let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
-    layout(article([
-        header(h2(a_simple("/tags", "Tags"))),
-        div(ul(tag_keys
-            .iter()
-            .map(|tag| {
-                let post_count = content.tags[*tag].len();
-                li([
-                    a_simple(format!("/tags/{tag}"), format!("#{tag}")),
-                    text(format!(
-                        " ({} {})",
-                        post_count,
-                        util::pluralize("post", post_count)
-                    )),
-                ])
-            })
-            .collect::<Vec<_>>())),
+    layout(article([])([
+        header([])(h2(a_simple("/tags", "Tags"))),
+        div([])(ul([])(
+            tag_keys
+                .iter()
+                .map(|tag| {
+                    let post_count = content.tags[*tag].len();
+                    li([])([
+                        a_simple(format!("/tags/{tag}"), format!("#{tag}")),
+                        text(format!(
+                            " ({} {})",
+                            post_count,
+                            util::pluralize("post", post_count)
+                        )),
+                    ])
+                })
+                .collect::<Vec<_>>(),
+        )),
     ]))
 }
 
 pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
 
-    layout(article([
-        header(h2(a_simple(
+    layout(article([])([
+        header([])(h2(a_simple(
             format!("/tags/{tag_id}"),
             format!("Tags - #{tag_id}"),
         ))),
-        div(ul(content.tags[tag_id]
-            .iter()
-            .map(|t| {
-                let collection = &content.collections[&t.0];
-                let document = collection.document_by_id(&t.1).unwrap();
+        div([])(ul([])(
+            content.tags[tag_id]
+                .iter()
+                .map(|t| {
+                    let collection = &content.collections[&t.0];
+                    let document = collection.document_by_id(&t.1).unwrap();
 
-                li(a_simple(
-                    document.url(collection, None),
-                    document.metadata.title.clone(),
-                ))
-            })
-            .collect::<Vec<_>>())),
+                    li([])(a_simple(
+                        document.url(collection, None),
+                        document.metadata.title.clone(),
+                    ))
+                })
+                .collect::<Vec<_>>(),
+        )),
     ]))
 }
 
@@ -132,17 +137,17 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
 
     paxhtml::Document::new(html([
-        head([
+        head([])([
             title("Redirecting..."),
-            meta([("charset".into(), Some("utf-8".into()))]),
+            meta([("charset".into(), Some("utf-8".into()))])(NoChildren),
             meta([
                 ("http-equiv".into(), Some("refresh".into())),
                 ("content".into(), Some(format!("0; url={}", to_url))),
-            ]),
+            ])(NoChildren),
         ]),
-        body([
-            p(text("Redirecting...")),
-            p(a(
+        body([])([
+            p([])(text("Redirecting...")),
+            p([])(a(
                 to_url,
                 Some("Click here if you are not redirected"),
                 text("Click here"),

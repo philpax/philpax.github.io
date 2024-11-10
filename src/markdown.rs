@@ -13,20 +13,20 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::text(t.value.to_string())]
         }
         Node::Paragraph(p) => {
-            vec![b::p(convert_many(&p.children))]
+            vec![b::p([])(convert_many(&p.children))]
         }
         Node::Strong(s) => {
-            vec![b::strong(convert_many(&s.children))]
+            vec![b::strong([])(convert_many(&s.children))]
         }
         Node::Emphasis(e) => {
-            vec![b::em(convert_many(&e.children))]
+            vec![b::em([])(convert_many(&e.children))]
         }
         Node::List(l) => {
             let children = convert_many(&l.children);
             vec![if l.ordered {
-                b::ol(children)
+                b::ol([])(children)
             } else {
-                b::ul(children)
+                b::ul([])(children)
             }]
         }
         Node::ListItem(li) => {
@@ -34,23 +34,23 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![b::li(convert_many(&p.children))];
+                    return vec![b::li([])(convert_many(&p.children))];
                 }
             }
 
-            vec![b::li(convert_many(&li.children))]
+            vec![b::li([])(convert_many(&li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre(b::code(b::text(&c.value)))]
+            vec![b::pre([])(b::code([])(b::text(&c.value)))]
         }
         Node::BlockQuote(b) => {
-            vec![b::blockquote(convert_many(&b.children))]
+            vec![b::blockquote([])(convert_many(&b.children))]
         }
         Node::Break(_) => {
             vec![b::br()]
         }
         Node::InlineCode(c) => {
-            vec![b::code(b::text(&c.value))]
+            vec![b::code([])(b::text(&c.value))]
         }
         Node::Image(i) => {
             vec![b::img(&i.url, &i.alt)]

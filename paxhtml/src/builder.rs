@@ -46,6 +46,13 @@ pub fn tag(
     }
 }
 
+pub fn tag_curried<E: ToElements>(
+    name: impl Into<String>,
+    attributes: impl Into<Vec<Attribute>>,
+) -> impl FnOnce(E) -> Element {
+    move |children: E| tag(name, attributes, children)
+}
+
 pub fn tag_with_text(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
@@ -180,27 +187,18 @@ pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
 
 macro_rules! aliased_builders {
     (
-        plain: [$($plain_ident:ident),*],
-        children: [$($children_ident:ident),*],
+        $($tag_ident:ident),*
     ) => {
         $(
-            pub fn $plain_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
-                tag(stringify!($plain_ident), attributes, EMPTY)
-            }
-        )*
-        $(
-            pub fn $children_ident(children: impl ToElements) -> Element {
-                tag(stringify!($children_ident), [], children)
+            pub fn $tag_ident<E: ToElements>(attributes: impl Into<Vec<Attribute>>) -> impl FnOnce(E) -> Element {
+                tag_curried(stringify!($tag_ident), attributes)
             }
         )*
     };
 }
 
 aliased_builders! {
-    plain: [meta],
-    children: [
-        head, body, main, p, code, div, pre, header, nav,
-        ol, ul, li, strong, em, blockquote, article, section,
-        aside, span
-    ],
+    meta, head, body, main, p, code, div, pre, header, nav,
+    ol, ul, li, strong, em, blockquote, article, section,
+    aside, span
 }

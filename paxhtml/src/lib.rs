@@ -132,24 +132,6 @@ impl Element {
         }
     }
 
-    pub fn with_id(self, id: impl Into<String>) -> Self {
-        self.with_attrs([("id".into(), Some(id.into()))])
-    }
-
-    pub fn with_class(self, class: impl Into<String>) -> Self {
-        let mut existing_class = self
-            .attrs()
-            .and_then(|attrs| attrs.iter().find(|(key, _)| key == "class"))
-            .and_then(|(_, value)| value.clone())
-            .unwrap_or_default();
-        if !existing_class.is_empty() {
-            existing_class.push(' ');
-        }
-        existing_class.push_str(&class.into());
-
-        self.with_attrs([("class".into(), Some(existing_class))])
-    }
-
     pub fn inner_text(&self) -> String {
         match self {
             Element::Empty => String::new(),
@@ -166,9 +148,9 @@ mod tests {
 
     #[test]
     fn test_inline_code() {
-        let input = p([
+        let input = p([])([
             text("This is an example of "),
-            code(text("inline code")),
+            code([])(text("inline code")),
             text(" in a paragraph."),
         ]);
 
