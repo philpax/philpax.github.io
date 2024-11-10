@@ -14,7 +14,7 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
         doctype([("html".into(), None)]),
         html([
             head([])([
-                title("Philpax"),
+                title([])("Philpax"),
                 meta([("charset".into(), Some("utf-8".into()))]),
                 meta([
                     ("name".into(), Some("viewport".into())),
@@ -33,7 +33,7 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
                     ("rel".into(), Some("stylesheet".into())),
                     ("href".into(), Some("/styles.css".into())),
                 ]),
-                script("/scripts.js"),
+                script([("src".into(), Some("/scripts.js".into()))])(NC),
             ]),
             body([])([
                 header([])([
@@ -145,7 +145,7 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
     paxhtml::Document::new(html([
         head([])([
-            title("Redirecting..."),
+            title([])("Redirecting..."),
             meta([("charset".into(), Some("utf-8".into()))]),
             meta([
                 ("http-equiv".into(), Some("refresh".into())),

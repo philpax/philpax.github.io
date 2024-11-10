@@ -81,21 +81,6 @@ pub fn html(children: impl ToElements) -> Element {
     )
 }
 
-pub fn title(text: impl Into<String>) -> Element {
-    tag_with_text("title", [], text)
-}
-
-pub fn script(src: impl Into<String>) -> Element {
-    tag(
-        "script",
-        [("src".into(), Some(src.into()))],
-        [Element::Text {
-            text: "".to_string(),
-        }],
-        false,
-    )
-}
-
 pub fn h(depth: u8, with_link: bool, children: impl ToElements) -> Element {
     let children = children.to_elements();
     let inner_text = children.iter().map(|c| c.inner_text()).collect::<String>();
@@ -194,7 +179,7 @@ macro_rules! non_void_builders {
 non_void_builders! {
     head, body, main, p, code, div, pre, header, nav,
     ol, ul, li, strong, em, blockquote, article, section,
-    aside, span
+    aside, span, script, title
 }
 
 macro_rules! void_builders {
