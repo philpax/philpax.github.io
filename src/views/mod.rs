@@ -31,7 +31,7 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
         body([
             header([
                 img("/icon.png", "Philpax icon"),
-                h1(false, a_simple("/", "Philpax")),
+                h1(a_simple("/", "Philpax")),
                 nav(ul(links
                     .iter()
                     .copied()
@@ -87,7 +87,7 @@ pub fn tags(content: &Content) -> paxhtml::Document {
     tag_keys.sort();
 
     layout(article([
-        header(h2(false, a_simple("/tags", "Tags"))),
+        header(h2(a_simple("/tags", "Tags"))),
         div(ul(tag_keys
             .iter()
             .map(|tag| {
@@ -109,10 +109,10 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
 
     layout(article([
-        header(h2(
-            false,
-            a_simple(format!("/tags/{tag_id}"), format!("Tags - #{tag_id}")),
-        )),
+        header(h2(a_simple(
+            format!("/tags/{tag_id}"),
+            format!("Tags - #{tag_id}"),
+        ))),
         div(ul(content.tags[tag_id]
             .iter()
             .map(|t| {

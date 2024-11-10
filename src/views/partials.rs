@@ -41,13 +41,10 @@ pub fn post(
 
     let article = article([
         header([
-            h2(
-                false,
-                a_simple(
-                    document.url(collection, None),
-                    document.metadata.title.clone(),
-                ),
-            ),
+            h2(a_simple(
+                document.url(collection, None),
+                document.metadata.title.clone(),
+            )),
             tag_list,
             document
                 .metadata
@@ -81,7 +78,7 @@ pub fn post(
         }
 
         let aside = aside([
-            h2(false, text("Contents")),
+            h2(text("Contents")),
             ul(heading_hierarchy.iter().map(build_list).collect::<Vec<_>>()),
         ]);
 
