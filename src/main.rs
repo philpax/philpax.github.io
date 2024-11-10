@@ -58,7 +58,7 @@ fn main() -> anyhow::Result<()> {
             }
             std::fs::create_dir_all(&output_path)?;
 
-            let html = views::post(collection, doc);
+            let html = views::collection::post(collection, doc);
             html.write_to_path(&output_path.join("index.html"))?;
 
             for path in &doc.files {
@@ -76,13 +76,13 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    // Write out a redirect on blog/index.html
+    // Write out blog index
     {
-        let html = views::redirect("/");
+        let html = views::blog::index(&content);
         html.write_to_path(&output_dir.join("blog").join("index.html"))?;
     }
 
-    // Write out index
+    // Write out main index
     {
         let html = views::index(&content);
         html.write_to_path(&output_dir.join("index.html"))?;

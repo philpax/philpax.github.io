@@ -3,23 +3,31 @@ use crate::{
     markdown, util,
 };
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum PostBody {
+    Full,
+    Description,
+    Short,
+}
+
 pub fn post(
     collection: &Collection,
     document: &Document,
-    use_description: bool,
+    post_body: PostBody,
 ) -> Vec<paxhtml::Element> {
     use paxhtml::builder::*;
 
-    let mut post_body = markdown::convert_to_html(
-        document
-            .description
-            .as_ref()
-            .filter(|_| use_description)
-            .unwrap_or(&document.content),
+    let mut post_body_html = markdown::convert_to_html(
+        &(match post_body {
+            PostBody::Full => None,
+            PostBody::Description => document.description.clone(),
+            PostBody::Short => document.metadata.short(),
+        })
+        .unwrap_or(document.content.clone()),
     );
 
-    if use_description {
-        post_body.push(p(a_simple(document.url(collection, None), "Read more")));
+    if post_body == PostBody::Description {
+        post_body_html.push(p(a_simple(document.url(collection, None), "Read more")));
     }
 
     let tag_list = match document.metadata.taxonomies.as_ref().map(|t| &t.tags) {
@@ -48,11 +56,11 @@ pub fn post(
                 .map(date)
                 .unwrap_or_default(),
         ]),
-        div(post_body).with_class("post-body"),
+        div(post_body_html).with_class("post-body"),
     ])
     .with_class("post");
 
-    if use_description {
+    if post_body != PostBody::Full {
         vec![article]
     } else {
         let heading_hierarchy = markdown::heading_hierarchy(&document.content);

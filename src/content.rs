@@ -204,11 +204,16 @@ impl Document {
 #[derive(Debug, Deserialize)]
 pub struct DocumentMetadata {
     pub title: String,
+    short: Option<String>,
     #[serde(with = "toml_datetime_compat", default)]
     date: Option<chrono::NaiveDate>,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 impl DocumentMetadata {
+    pub fn short(&self) -> Option<markdown::mdast::Node> {
+        self.short.as_deref().map(parse_markdown)
+    }
+
     pub fn datetime(&self) -> Option<chrono::DateTime<chrono::Utc>> {
         self.date.map(|d| d.and_time(Default::default()).and_utc())
     }

@@ -8,7 +8,7 @@ mod partials;
 fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
     use paxhtml::builder::*;
 
-    let links = [("/", "Blog"), ("/tags", "Tags"), ("/about", "About")];
+    let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new(html([
         head([
@@ -44,8 +44,30 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
     ]))
 }
 
-pub fn post(collection: &Collection, document: &Document) -> paxhtml::Document {
-    layout(partials::post(collection, document, false))
+pub mod collection {
+    use super::*;
+
+    pub fn post(collection: &Collection, document: &Document) -> paxhtml::Document {
+        layout(partials::post(
+            collection,
+            document,
+            partials::PostBody::Full,
+        ))
+    }
+}
+
+pub mod blog {
+    use super::*;
+
+    pub fn index(content: &Content) -> paxhtml::Document {
+        let blog = content.collections.get("blog").unwrap();
+        layout(
+            blog.documents
+                .iter()
+                .flat_map(|doc| partials::post(blog, doc, partials::PostBody::Description))
+                .collect::<Vec<_>>(),
+        )
+    }
 }
 
 pub fn index(content: &Content) -> paxhtml::Document {
@@ -53,7 +75,7 @@ pub fn index(content: &Content) -> paxhtml::Document {
     layout(
         blog.documents
             .iter()
-            .flat_map(|doc| partials::post(blog, doc, true))
+            .flat_map(|doc| partials::post(blog, doc, partials::PostBody::Short))
             .collect::<Vec<_>>(),
     )
 }
