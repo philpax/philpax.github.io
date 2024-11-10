@@ -25,8 +25,9 @@ impl<T: Into<Element> + Clone, const N: usize> ToElements for [T; N] {
         self.iter().cloned().map(|e| e.into()).collect()
     }
 }
-pub struct NoChildren;
-impl ToElements for NoChildren {
+/// A type that represents no children.
+pub struct NC;
+impl ToElements for NC {
     fn to_elements(self) -> Vec<Element> {
         vec![]
     }
@@ -124,7 +125,7 @@ pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
             ("src".into(), Some(src.into())),
             ("alt".into(), Some(alt.into())),
         ],
-        NoChildren,
+        NC,
     )
 }
 
@@ -147,7 +148,7 @@ pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
 }
 
 pub fn br() -> Element {
-    tag("br", [], NoChildren)
+    tag("br", [], NC)
 }
 
 pub fn date(date: chrono::NaiveDate) -> Element {
