@@ -189,9 +189,9 @@ mod tests {
     #[test]
     fn test_inline_code() {
         let input = p([])([
-            Element::from("This is an example of "),
+            text("This is an example of "),
             code([])("inline code"),
-            Element::from(" in a paragraph."),
+            text(" in a paragraph."),
         ]);
 
         let output = input.write_to_string().unwrap();

@@ -10,7 +10,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::h((h.depth + 2).min(6), true, convert_many(&h.children))]
         }
         Node::Text(t) => {
-            vec![paxhtml::Element::from(t.value.as_str())]
+            vec![b::text(t.value.as_str())]
         }
         Node::Paragraph(p) => {
             vec![b::p([])(convert_many(&p.children))]

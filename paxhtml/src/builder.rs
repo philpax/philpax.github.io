@@ -33,6 +33,10 @@ impl ToElements for NC {
     }
 }
 
+pub fn text(text: impl Into<String>) -> Element {
+    Element::from(text.into())
+}
+
 pub fn tag(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,

@@ -104,7 +104,7 @@ pub fn tags(content: &Content) -> paxhtml::Document {
                     let post_count = content.tags[*tag].len();
                     li([])([
                         a_simple(format!("/tags/{tag}"), format!("#{tag}")),
-                        Element::from(format!(
+                        text(format!(
                             " ({} {})",
                             post_count,
                             util::pluralize("post", post_count)
