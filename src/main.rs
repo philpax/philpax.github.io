@@ -58,8 +58,8 @@ fn main() -> anyhow::Result<()> {
             }
             std::fs::create_dir_all(&output_path)?;
 
-            let html = views::collection::post(collection, doc);
-            html.write_to_path(&output_path.join("index.html"))?;
+            views::collection::post(collection, doc)
+                .write_to_path(&output_path.join("index.html"))?;
 
             for path in &doc.files {
                 std::fs::copy(path, output_path.join(path.file_name().unwrap()))?;
@@ -70,64 +70,52 @@ fn main() -> anyhow::Result<()> {
                 let alternate_path = collection_path.join(alternate_id);
                 std::fs::create_dir_all(&alternate_path)?;
 
-                let html = &views::redirect(&doc.url(collection, None));
-                html.write_to_path(&alternate_path.join("index.html"))?;
+                views::redirect(&doc.url(collection, None))
+                    .write_to_path(&alternate_path.join("index.html"))?;
             }
         }
     }
 
     // Write out blog index
-    {
-        let html = views::blog::index(&content);
-        html.write_to_path(&output_dir.join("blog").join("index.html"))?;
-    }
+    views::blog::index(&content).write_to_path(&output_dir.join("blog").join("index.html"))?;
 
     // Write out main index
-    {
-        let html = views::index(&content);
-        html.write_to_path(&output_dir.join("index.html"))?;
-    }
+    views::index(&content).write_to_path(&output_dir.join("index.html"))?;
 
     // Write out tags
     {
-        let html = views::tags(&content);
         let tags_path = output_dir.join("tags");
         std::fs::create_dir_all(&tags_path)?;
-        html.write_to_path(&tags_path.join("index.html"))?;
+        views::tags(&content).write_to_path(&tags_path.join("index.html"))?;
 
         for tag_id in content.tags.keys() {
-            let html = views::tag(&content, tag_id);
             let tag_path = tags_path.join(tag_id);
             std::fs::create_dir_all(&tag_path)?;
-            html.write_to_path(&tag_path.join("index.html"))?;
+            views::tag(&content, tag_id).write_to_path(&tag_path.join("index.html"))?;
         }
     }
 
     // Write out RSS feed
-    {
-        rss::write_all(rss_config, &content, output_dir)?;
-    }
+    rss::write_all(rss_config, &content, output_dir)?;
 
     // Write out icon
     {
-        let small_icon = content
+        content
             .icon
-            .resize(128, 128, image::imageops::FilterType::Lanczos3);
-        small_icon.save(output_dir.join("icon.png"))?;
+            .resize(128, 128, image::imageops::FilterType::Lanczos3)
+            .save(output_dir.join("icon.png"))?;
 
-        let favicon = content
+        content
             .icon
-            .resize(32, 32, image::imageops::FilterType::Lanczos3);
-        favicon.save(output_dir.join("favicon.ico"))?;
+            .resize(32, 32, image::imageops::FilterType::Lanczos3)
+            .save(output_dir.join("favicon.ico"))?;
     }
 
     // Write out bundled styles
-    let styles = styles::generate()?;
-    std::fs::write(output_dir.join("styles.css"), styles)?;
+    std::fs::write(output_dir.join("styles.css"), styles::generate()?)?;
 
     // Write out bundled JavaScript
-    let js = js::generate()?;
-    std::fs::write(output_dir.join("scripts.js"), js)?;
+    std::fs::write(output_dir.join("scripts.js"), js::generate()?)?;
 
     #[cfg(feature = "serve")]
     {
