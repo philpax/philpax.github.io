@@ -37,6 +37,7 @@ pub enum Element {
         name: String,
         attributes: Vec<Attribute>,
         children: Vec<Element>,
+        void: bool,
     },
     Text {
         text: String,
@@ -59,6 +60,7 @@ impl Element {
                 name,
                 attributes,
                 children,
+                void,
             } => {
                 // start tag
                 write!(writer, "<{name}")?;
@@ -69,7 +71,14 @@ impl Element {
                     }
                 }
                 write!(writer, ">")?;
-                if children.is_empty() {
+
+                if *void {
+                    if !children.is_empty() {
+                        return Err(std::io::Error::new(
+                            std::io::ErrorKind::InvalidInput,
+                            format!("Void element ({self:?}) has children"),
+                        ));
+                    }
                     return Ok(());
                 }
 
@@ -144,5 +153,19 @@ mod tests {
             output,
             "<p>This is an example of <code>inline code</code> in a paragraph.</p>"
         );
+    }
+
+    #[test]
+    fn test_empty_ul_with_tags_class() {
+        let input = ul([("class".into(), Some("tags".into()))])(NC);
+        let output = input.write_to_string().unwrap();
+        assert_eq!(output, "<ul class=\"tags\"></ul>");
+    }
+
+    #[test]
+    fn test_void_element() {
+        let input = br([])(NC);
+        let output = input.write_to_string().unwrap();
+        assert_eq!(output, "<br>");
     }
 }

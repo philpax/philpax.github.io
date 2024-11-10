@@ -37,19 +37,22 @@ pub fn tag(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
     children: impl ToElements,
+    void: bool,
 ) -> Element {
     Element::Tag {
         name: name.into(),
         attributes: attributes.into(),
         children: children.to_elements(),
+        void,
     }
 }
 
 pub fn tag_curried<E: ToElements>(
     name: impl Into<String>,
     attributes: impl Into<Vec<Attribute>>,
+    void: bool,
 ) -> impl FnOnce(E) -> Element {
-    move |children: E| tag(name, attributes, children)
+    move |children: E| tag(name, attributes, children, void)
 }
 
 pub fn tag_with_text(
@@ -61,6 +64,7 @@ pub fn tag_with_text(
         name: name.into(),
         attributes: attributes.into(),
         children: vec![Element::Text { text: text.into() }],
+        void: false,
     }
 }
 
@@ -69,7 +73,12 @@ pub fn text(text: impl Into<String>) -> Element {
 }
 
 pub fn html(children: impl ToElements) -> Element {
-    tag("html", [("lang".into(), Some("en-AU".into()))], children)
+    tag(
+        "html",
+        [("lang".into(), Some("en-AU".into()))],
+        children,
+        false,
+    )
 }
 
 pub fn title(text: impl Into<String>) -> Element {
@@ -83,6 +92,7 @@ pub fn script(src: impl Into<String>) -> Element {
         [Element::Text {
             text: "".to_string(),
         }],
+        false,
     )
 }
 
@@ -97,7 +107,12 @@ pub fn h(depth: u8, with_link: bool, children: impl ToElements) -> Element {
         children
     };
 
-    tag(format!("h{}", depth), [("id".into(), Some(id))], children)
+    tag(
+        format!("h{}", depth),
+        [("id".into(), Some(id))],
+        children,
+        false,
+    )
 }
 pub fn h1(children: impl ToElements) -> Element {
     h(1, false, children)
@@ -126,6 +141,7 @@ pub fn img(src: impl Into<String>, alt: impl Into<String>) -> Element {
             ("alt".into(), Some(alt.into())),
         ],
         NC,
+        true,
     )
 }
 
@@ -139,16 +155,12 @@ pub fn a(
         attributes.push(("title".into(), Some(title.into())));
     }
 
-    tag("a", attributes, children)
+    tag("a", attributes, children, false)
 }
 
 pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
     let txt = txt.into();
     a(href, None::<String>, text(txt))
-}
-
-pub fn br() -> Element {
-    tag("br", [], NC)
 }
 
 pub fn date(date: chrono::NaiveDate) -> Element {
@@ -173,20 +185,27 @@ pub fn datetime<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     )
 }
 
-macro_rules! aliased_builders {
-    (
-        $($tag_ident:ident),*
-    ) => {
-        $(
-            pub fn $tag_ident<E: ToElements>(attributes: impl Into<Vec<Attribute>>) -> impl FnOnce(E) -> Element {
-                tag_curried(stringify!($tag_ident), attributes)
-            }
-        )*
-    };
+macro_rules! non_void_builders {
+    ($($tag_ident:ident),*) => { $(
+        pub fn $tag_ident<E: ToElements>(attributes: impl Into<Vec<Attribute>>) -> impl FnOnce(E) -> Element {
+            tag_curried(stringify!($tag_ident), attributes, false)
+        }
+    )* };
+}
+non_void_builders! {
+    head, body, main, p, code, div, pre, header, nav,
+    ol, ul, li, strong, em, blockquote, article, section,
+    aside, span
 }
 
-aliased_builders! {
-    meta, head, body, main, p, code, div, pre, header, nav,
-    ol, ul, li, strong, em, blockquote, article, section,
-    aside, span, link
+macro_rules! void_builders {
+    ($($tag_ident:ident),*) => { $(
+        pub fn $tag_ident<E: ToElements>(attributes: impl Into<Vec<Attribute>>) -> impl FnOnce(E) -> Element {
+            tag_curried(stringify!($tag_ident), attributes, true)
+        }
+    )* };
+}
+void_builders! {
+    area, base, br, col, embed, hr, input, link, meta,
+    param, source, track, wbr
 }
