@@ -104,7 +104,7 @@ pub fn tags(content: &Content) -> paxhtml::Document {
                     let post_count = content.tags[*tag].len();
                     li([])([
                         a_simple(format!("/tags/{tag}"), format!("#{tag}")),
-                        text(format!(
+                        Element::from(format!(
                             " ({} {})",
                             post_count,
                             util::pluralize("post", post_count)
@@ -143,7 +143,6 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
 
 pub fn redirect(to_url: &str) -> paxhtml::Document {
     use paxhtml::builder::*;
-
     paxhtml::Document::new(html([
         head([])([
             title("Redirecting..."),
@@ -154,11 +153,11 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
             ]),
         ]),
         body([])([
-            p([])(text("Redirecting...")),
+            p([])("Redirecting..."),
             p([])(a(
                 to_url,
                 Some("Click here if you are not redirected"),
-                text("Click here"),
+                "Click here",
             )),
         ]),
     ]))

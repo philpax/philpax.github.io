@@ -45,6 +45,16 @@ pub enum Element {
         html: String,
     },
 }
+impl From<String> for Element {
+    fn from(s: String) -> Self {
+        Element::Text { text: s }
+    }
+}
+impl From<&str> for Element {
+    fn from(s: &str) -> Self {
+        s.to_string().into()
+    }
+}
 impl Element {
     pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];
@@ -179,9 +189,9 @@ mod tests {
     #[test]
     fn test_inline_code() {
         let input = p([])([
-            text("This is an example of "),
-            code([])(text("inline code")),
-            text(" in a paragraph."),
+            Element::from("This is an example of "),
+            code([])("inline code"),
+            Element::from(" in a paragraph."),
         ]);
 
         let output = input.write_to_string().unwrap();

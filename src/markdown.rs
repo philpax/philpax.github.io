@@ -10,7 +10,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::h((h.depth + 2).min(6), true, convert_many(&h.children))]
         }
         Node::Text(t) => {
-            vec![b::text(t.value.to_string())]
+            vec![paxhtml::Element::from(t.value.as_str())]
         }
         Node::Paragraph(p) => {
             vec![b::p([])(convert_many(&p.children))]
@@ -41,7 +41,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::li([])(convert_many(&li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre([])(b::code([])(b::text(&c.value)))]
+            vec![b::pre([])(b::code([])(c.value.as_str()))]
         }
         Node::BlockQuote(b) => {
             vec![b::blockquote([])(convert_many(&b.children))]
@@ -50,7 +50,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::br([])]
         }
         Node::InlineCode(c) => {
-            vec![b::code([])(b::text(&c.value))]
+            vec![b::code([])(c.value.as_str())]
         }
         Node::Image(i) => {
             vec![b::img(&i.url, &i.alt)]

@@ -82,7 +82,7 @@ pub fn post(
         }
 
         let aside = aside([])([
-            h2(text("Contents")),
+            h2("Contents"),
             ul([])(heading_hierarchy.iter().map(build_list).collect::<Vec<_>>()),
         ]);
 

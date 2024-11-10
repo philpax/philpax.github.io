@@ -1,6 +1,6 @@
 use crate::util;
 
-use super::{Attribute, Element};
+pub use super::{Attribute, Element};
 
 pub trait ToElements {
     fn to_elements(self) -> Vec<Element>;
@@ -66,10 +66,6 @@ pub fn tag_with_text(
         children: vec![Element::Text { text: text.into() }],
         void: false,
     }
-}
-
-pub fn text(text: impl Into<String>) -> Element {
-    Element::Text { text: text.into() }
 }
 
 pub fn doctype(attributes: impl Into<Vec<Attribute>>) -> Element {
@@ -163,8 +159,7 @@ pub fn a(
 }
 
 pub fn a_simple(href: impl Into<String>, txt: impl Into<String>) -> Element {
-    let txt = txt.into();
-    a(href, None::<String>, text(txt))
+    a(href, None::<String>, txt.into())
 }
 
 pub fn date(date: chrono::NaiveDate) -> Element {
