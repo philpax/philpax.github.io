@@ -18,11 +18,11 @@ pub fn post(
     use paxhtml::builder::*;
 
     let mut post_body_html = markdown::convert_to_html(
-        &(match post_body {
+        &match post_body {
             PostBody::Full => None,
             PostBody::Description => document.description.clone(),
             PostBody::Short => document.metadata.short(),
-        })
+        }
         .unwrap_or(document.content.clone()),
     );
 
@@ -30,14 +30,19 @@ pub fn post(
         post_body_html.push(p([])(a_simple(document.url(collection, None), "Read more")));
     }
 
-    let tag_list = match document.metadata.taxonomies.as_ref().map(|t| &t.tags) {
-        Some(tags) => ul([("class".into(), Some("tags".into()))])(
-            tags.iter()
-                .map(|tag| li([])(a_simple(format!("/tags/{tag}"), format!("#{tag}"))))
-                .collect::<Vec<_>>(),
-        ),
-        None => paxhtml::Element::Empty,
-    };
+    let tag_list = document
+        .metadata
+        .taxonomies
+        .as_ref()
+        .map(|t| &t.tags)
+        .map(|tags| {
+            ul([("class".into(), Some("tags".into()))])(
+                tags.iter()
+                    .map(|tag| li([])(a_simple(format!("/tags/{tag}"), format!("#{tag}"))))
+                    .collect::<Vec<_>>(),
+            )
+        })
+        .unwrap_or_default();
 
     let article = article([("class".into(), Some("post".into()))])([
         header([])([
