@@ -18,7 +18,6 @@ impl Document {
         let file = std::fs::File::create(path)?;
         let mut writer = std::io::BufWriter::new(file);
 
-        writeln!(writer, "<!DOCTYPE html>")?;
         for child in &self.children {
             child.write(&mut writer)?;
         }

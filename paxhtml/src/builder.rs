@@ -72,6 +72,10 @@ pub fn text(text: impl Into<String>) -> Element {
     Element::Text { text: text.into() }
 }
 
+pub fn doctype(attributes: impl Into<Vec<Attribute>>) -> Element {
+    tag("!DOCTYPE", attributes, NC, true)
+}
+
 pub fn html(children: impl ToElements) -> Element {
     tag(
         "html",

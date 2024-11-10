@@ -10,44 +10,47 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
 
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
-    paxhtml::Document::new(html([
-        head([])([
-            title("Philpax"),
-            meta([("charset".into(), Some("utf-8".into()))])(NC),
-            meta([
-                ("name".into(), Some("viewport".into())),
-                (
-                    "content".into(),
-                    Some("width=device-width, initial-scale=1".into()),
-                ),
-            ])(NC),
-            link([
-                ("rel".into(), Some("alternate".into())),
-                ("href".into(), Some("/rss/blog.rss".into())),
-                ("type".into(), Some("application/rss+xml".into())),
-                ("title".into(), Some("Philpax's Blog".into())),
-            ])(NC),
-            link([
-                ("rel".into(), Some("stylesheet".into())),
-                ("href".into(), Some("/styles.css".into())),
-            ])(NC),
-            script("/scripts.js"),
-        ]),
-        body([])([
-            header([])([
-                img("/icon.png", "Philpax icon"),
-                h1(a_simple("/", "Philpax")),
-                nav([])(ul([("id".into(), Some("header-links".into()))])(
-                    links
-                        .iter()
-                        .copied()
-                        .map(|(url, label)| li([])(a_simple(url, label)))
-                        .collect::<Vec<_>>(),
-                )),
+    paxhtml::Document::new([
+        doctype([("html".into(), None)]),
+        html([
+            head([])([
+                title("Philpax"),
+                meta([("charset".into(), Some("utf-8".into()))])(NC),
+                meta([
+                    ("name".into(), Some("viewport".into())),
+                    (
+                        "content".into(),
+                        Some("width=device-width, initial-scale=1".into()),
+                    ),
+                ])(NC),
+                link([
+                    ("rel".into(), Some("alternate".into())),
+                    ("href".into(), Some("/rss/blog.rss".into())),
+                    ("type".into(), Some("application/rss+xml".into())),
+                    ("title".into(), Some("Philpax's Blog".into())),
+                ])(NC),
+                link([
+                    ("rel".into(), Some("stylesheet".into())),
+                    ("href".into(), Some("/styles.css".into())),
+                ])(NC),
+                script("/scripts.js"),
             ]),
-            main([])(inner.to_elements()),
+            body([])([
+                header([])([
+                    img("/icon.png", "Philpax icon"),
+                    h1(a_simple("/", "Philpax")),
+                    nav([])(ul([("id".into(), Some("header-links".into()))])(
+                        links
+                            .iter()
+                            .copied()
+                            .map(|(url, label)| li([])(a_simple(url, label)))
+                            .collect::<Vec<_>>(),
+                    )),
+                ]),
+                main([])(inner.to_elements()),
+            ]),
         ]),
-    ]))
+    ])
 }
 
 pub mod collection {
