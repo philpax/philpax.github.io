@@ -15,24 +15,24 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
         html([
             head([])([
                 title("Philpax"),
-                meta([("charset".into(), Some("utf-8".into()))])(NC),
+                meta([("charset".into(), Some("utf-8".into()))]),
                 meta([
                     ("name".into(), Some("viewport".into())),
                     (
                         "content".into(),
                         Some("width=device-width, initial-scale=1".into()),
                     ),
-                ])(NC),
+                ]),
                 link([
                     ("rel".into(), Some("alternate".into())),
                     ("href".into(), Some("/rss/blog.rss".into())),
                     ("type".into(), Some("application/rss+xml".into())),
                     ("title".into(), Some("Philpax's Blog".into())),
-                ])(NC),
+                ]),
                 link([
                     ("rel".into(), Some("stylesheet".into())),
                     ("href".into(), Some("/styles.css".into())),
-                ])(NC),
+                ]),
                 script("/scripts.js"),
             ]),
             body([])([
@@ -147,11 +147,11 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
     paxhtml::Document::new(html([
         head([])([
             title("Redirecting..."),
-            meta([("charset".into(), Some("utf-8".into()))])(NC),
+            meta([("charset".into(), Some("utf-8".into()))]),
             meta([
                 ("http-equiv".into(), Some("refresh".into())),
                 ("content".into(), Some(format!("0; url={}", to_url))),
-            ])(NC),
+            ]),
         ]),
         body([])([
             p([])(text("Redirecting...")),

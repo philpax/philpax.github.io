@@ -163,7 +163,7 @@ mod tests {
 
     #[test]
     fn test_void_element() {
-        let input = br([])(NC);
+        let input = br([]);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<br>");
     }

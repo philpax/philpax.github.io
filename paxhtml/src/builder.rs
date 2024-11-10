@@ -204,8 +204,8 @@ non_void_builders! {
 
 macro_rules! void_builders {
     ($($tag_ident:ident),*) => { $(
-        pub fn $tag_ident<E: ToElements>(attributes: impl Into<Vec<Attribute>>) -> impl FnOnce(E) -> Element {
-            tag_curried(stringify!($tag_ident), attributes, true)
+        pub fn $tag_ident(attributes: impl Into<Vec<Attribute>>) -> Element {
+            tag(stringify!($tag_ident), attributes, NC, true)
         }
     )* };
 }

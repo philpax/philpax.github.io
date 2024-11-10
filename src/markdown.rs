@@ -47,7 +47,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::blockquote([])(convert_many(&b.children))]
         }
         Node::Break(_) => {
-            vec![b::br([])(b::NC)]
+            vec![b::br([])]
         }
         Node::InlineCode(c) => {
             vec![b::code([])(b::text(&c.value))]
