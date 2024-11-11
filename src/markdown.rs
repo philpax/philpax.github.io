@@ -1,6 +1,7 @@
-use paxhtml::builder as b;
+use crate::elements as b;
 
 pub use markdown::mdast::Node;
+use paxhtml::builder::ToAttributes;
 
 pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
     use b::Empty;
@@ -8,7 +9,9 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
         Node::Heading(h) => {
-            vec![b::h((h.depth + 2).min(6), true, convert_many(&h.children))]
+            vec![b::h_with_id((h.depth + 2).min(6), "with_link")(
+                convert_many(&h.children),
+            )]
         }
         Node::Text(t) => {
             vec![b::text(t.value.as_str())]
@@ -54,12 +57,15 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::code(Empty)(c.value.as_str())]
         }
         Node::Image(i) => {
-            vec![b::img(&i.url, &i.alt)]
+            vec![b::img([("src", i.url.clone()), ("alt", i.alt.clone())])]
         }
         Node::Link(l) => {
-            vec![b::a(
-                &l.url,
-                l.title.as_deref(),
+            let mut attrs = ("href", l.url.clone()).to_attributes();
+            if let Some(title) = &l.title {
+                attrs.push(("title", title.clone()).into());
+            }
+
+            vec![b::a(attrs)(
                 l.children
                     .iter()
                     .flat_map(convert_to_html)

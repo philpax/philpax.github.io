@@ -3,6 +3,7 @@ use std::path::Path;
 use paxhtml::RoutePath;
 
 mod content;
+mod elements;
 #[cfg(feature = "fonts")]
 mod fonts;
 mod js;

@@ -1,5 +1,6 @@
 use crate::{
     content::{Collection, Document},
+    elements::*,
     markdown, util,
 };
 
@@ -15,8 +16,6 @@ pub fn post(
     document: &Document,
     post_body: PostBody,
 ) -> Vec<paxhtml::Element> {
-    use paxhtml::builder::*;
-
     let mut post_body_html = markdown::convert_to_html(
         &match post_body {
             PostBody::Full => None,
@@ -27,10 +26,10 @@ pub fn post(
     );
 
     if post_body == PostBody::Description {
-        post_body_html.push(p(Empty)(a_simple(
+        post_body_html.push(p(Empty)(a((
+            "href",
             document.route_path(collection).url_path(),
-            "Read more",
-        )));
+        ))("Read more")));
     }
 
     let tag_list = document
@@ -41,7 +40,7 @@ pub fn post(
             ul(("class", "tags"))(
                 t.tags
                     .iter()
-                    .map(|tag| li(Empty)(a_simple(format!("/tags/{tag}"), format!("#{tag}"))))
+                    .map(|tag| li(Empty)(a(("href", format!("/tags/{tag}")))(format!("#{tag}"))))
                     .collect::<Vec<_>>(),
             )
         })
@@ -49,8 +48,7 @@ pub fn post(
 
     let article = article(("class", "post"))([
         header(Empty)([
-            h2(a_simple(
-                document.route_path(collection).url_path(),
+            h2_with_id(Empty)(a(("href", document.route_path(collection).url_path()))(
                 document.metadata.title.clone(),
             )),
             tag_list,
@@ -58,37 +56,46 @@ pub fn post(
                 .metadata
                 .datetime()
                 .map(|dt| dt.date_naive())
-                .map(date)
+                .map(date_with_chrono)
                 .unwrap_or_default(),
         ]),
         div(("class", "post-body"))(post_body_html),
     ]);
 
     if post_body != PostBody::Full {
-        vec![article]
-    } else {
-        let heading_hierarchy = markdown::heading_hierarchy(&document.content);
-        if heading_hierarchy.is_empty() {
-            return vec![article];
-        }
-
-        fn build_list(hierarchy: &markdown::HeadingHierarchy) -> paxhtml::Element {
-            let markdown::HeadingHierarchy(text, children) = hierarchy;
-            let link = a_simple(format!("#{}", util::slugify(text)), text);
-
-            li(Empty)(if children.is_empty() {
-                vec![link]
-            } else {
-                let children = children.iter().map(build_list).collect::<Vec<_>>();
-                vec![link, ul(Empty)(children)]
-            })
-        }
-
-        let aside = aside(Empty)([
-            h2("Contents"),
-            ul(Empty)(heading_hierarchy.iter().map(build_list).collect::<Vec<_>>()),
-        ]);
-
-        vec![article, aside]
+        return vec![article];
     }
+
+    let heading_hierarchy = markdown::heading_hierarchy(&document.content);
+    if heading_hierarchy.is_empty() {
+        return vec![article];
+    }
+
+    fn build_list_recursively(hierarchy: &markdown::HeadingHierarchy) -> paxhtml::Element {
+        let markdown::HeadingHierarchy(text, children) = hierarchy;
+        let link = a(("href", format!("#{}", util::slugify(text))))(text.as_str());
+
+        let mut body = vec![link];
+        if !children.is_empty() {
+            body.push(ul(Empty)(
+                children
+                    .iter()
+                    .map(build_list_recursively)
+                    .collect::<Vec<_>>(),
+            ));
+        }
+        li(Empty)(body)
+    }
+
+    let aside = aside(Empty)([
+        h2_with_id(Empty)("Contents"),
+        ul(Empty)(
+            heading_hierarchy
+                .iter()
+                .map(build_list_recursively)
+                .collect::<Vec<_>>(),
+        ),
+    ]);
+
+    vec![article, aside]
 }

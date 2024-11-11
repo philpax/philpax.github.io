@@ -1,18 +1,17 @@
 use crate::{
     content::{Collection, Content, Document},
+    elements::*,
     util,
 };
 
 mod partials;
 
 fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
-    use paxhtml::builder::*;
-
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new([
         doctype("html"),
-        html([
+        html(("lang", "en-AU"))([
             head(Empty)([
                 title(Empty)("Philpax"),
                 meta(("charset", "utf-8")),
@@ -31,13 +30,13 @@ fn layout(inner: impl paxhtml::builder::ToElements) -> paxhtml::Document {
             ]),
             body(Empty)([
                 header(Empty)([
-                    img("/icon.png", "Philpax icon"),
-                    h1(a_simple("/", "Philpax")),
+                    img([("src", "/icon.png"), ("alt", "Philpax icon")]),
+                    h1_with_id(Empty)(a(("href", "/"))("Philpax")),
                     nav(Empty)(ul(("id", "header-links"))(
                         links
                             .iter()
                             .copied()
-                            .map(|(url, label)| li(Empty)(a_simple(url, label)))
+                            .map(|(url, label)| li(Empty)(a(("href", url))(label)))
                             .collect::<Vec<_>>(),
                     )),
                 ]),
@@ -84,20 +83,18 @@ pub fn index(content: &Content) -> paxhtml::Document {
 }
 
 pub fn tags(content: &Content) -> paxhtml::Document {
-    use paxhtml::builder::*;
-
     let mut tag_keys = content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
     layout(article(Empty)([
-        header(Empty)(h2(a_simple("/tags", "Tags"))),
+        header(Empty)(h2_with_id(Empty)(a(("href", "/tags"))("Tags"))),
         div(Empty)(ul(Empty)(
             tag_keys
                 .iter()
                 .map(|tag| {
                     let post_count = content.tags[*tag].len();
                     li(Empty)([
-                        a_simple(format!("/tags/{tag}"), format!("#{tag}")),
+                        a(("href", format!("/tags/{tag}")))(format!("#{tag}")),
                         text(format!(
                             " ({} {})",
                             post_count,
@@ -111,11 +108,8 @@ pub fn tags(content: &Content) -> paxhtml::Document {
 }
 
 pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
-    use paxhtml::builder::*;
-
     layout(article(Empty)([
-        header(Empty)(h2(a_simple(
-            format!("/tags/{tag_id}"),
+        header(Empty)(h2_with_id(Empty)(a(("href", format!("/tags/{tag_id}")))(
             format!("Tags - #{tag_id}"),
         ))),
         div(Empty)(ul(Empty)(
@@ -125,8 +119,7 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
                     let collection = &content.collections[&t.0];
                     let document = collection.document_by_id(&t.1).unwrap();
 
-                    li(Empty)(a_simple(
-                        document.route_path(collection).url_path(),
+                    li(Empty)(a(("href", document.route_path(collection).url_path()))(
                         document.metadata.title.clone(),
                     ))
                 })
@@ -136,10 +129,9 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
 }
 
 pub fn redirect(to_url: &str) -> paxhtml::Document {
-    use paxhtml::builder::*;
     paxhtml::Document::new([
         doctype("html"),
-        html([
+        html(("lang", "en-AU"))([
             head(Empty)([
                 title(Empty)("Redirecting..."),
                 meta(("charset", "utf-8")),
@@ -150,11 +142,10 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
             ]),
             body(Empty)([
                 p(Empty)("Redirecting..."),
-                p(Empty)(a(
-                    to_url,
-                    Some("Click here if you are not redirected"),
-                    "Click here",
-                )),
+                p(Empty)(a([
+                    ("href", to_url),
+                    ("title", "Click here if you are not redirected"),
+                ])("Click here")),
             ]),
         ]),
     ])
