@@ -2,11 +2,13 @@ const RESET: &str = include_str!("reset.css");
 
 const DARK_MODE: &str = r#"
 --color: white;
+--color-secondary: #CCC;
 --background-color: #3C2954;
 "#;
 
 const LIGHT_MODE: &str = r#"
 --color: black;
+--color-secondary: #333;
 --background-color: #C5B4DB;
 "#;
 
