@@ -126,7 +126,7 @@ pub fn tag(content: &Content, tag_id: &str) -> paxhtml::Document {
                     let document = collection.document_by_id(&t.1).unwrap();
 
                     li(Empty)(a_simple(
-                        document.url(collection, None),
+                        document.route_path(collection).url_path(),
                         document.metadata.title.clone(),
                     ))
                 })

@@ -6,7 +6,7 @@ use std::{
 use anyhow::Context;
 use serde::Deserialize;
 
-use crate::util;
+use crate::{util, Route, RoutePath};
 
 pub type CollectionId = String;
 pub type DocumentId = String;
@@ -182,22 +182,27 @@ impl Document {
         })
     }
 
-    pub fn url(&self, collection: &Collection, base_url: Option<&str>) -> String {
-        let mut url = String::new();
-
-        if let Some(base_url) = base_url {
-            url.push_str(base_url);
+    pub fn route_path(&self, collection: &Collection) -> RoutePath {
+        let collection_id = &collection.id;
+        if self.id == "index" {
+            Route::Collection { collection_id }
+        } else {
+            Route::CollectionPost {
+                collection_id,
+                post_id: &self.id,
+            }
         }
+        .route_path()
+    }
 
-        url.push('/');
-        url.push_str(&collection.id);
-        if self.id != "index" {
-            url.push('/');
-            url.push_str(&self.id);
-        }
-        url.push('/');
-
-        url
+    pub fn alternate_route_path(&self, collection: &Collection) -> Option<RoutePath> {
+        self.alternate_id.as_ref().map(|post_id| {
+            Route::CollectionPost {
+                collection_id: &collection.id,
+                post_id,
+            }
+            .route_path()
+        })
     }
 }
 

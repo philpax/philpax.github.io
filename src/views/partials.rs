@@ -28,7 +28,7 @@ pub fn post(
 
     if post_body == PostBody::Description {
         post_body_html.push(p(Empty)(a_simple(
-            document.url(collection, None),
+            document.route_path(collection).url_path(),
             "Read more",
         )));
     }
@@ -50,7 +50,7 @@ pub fn post(
     let article = article(("class", "post"))([
         header(Empty)([
             h2(a_simple(
-                document.url(collection, None),
+                document.route_path(collection).url_path(),
                 document.metadata.title.clone(),
             )),
             tag_list,

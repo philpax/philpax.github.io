@@ -1,5 +1,7 @@
 use std::path::Path;
 
+use paxhtml::RoutePath;
+
 mod content;
 #[cfg(feature = "fonts")]
 mod fonts;
@@ -9,6 +11,41 @@ mod rss;
 mod styles;
 mod util;
 mod views;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum Route<'a> {
+    Index,
+    Collection {
+        collection_id: &'a str,
+    },
+    CollectionPost {
+        collection_id: &'a str,
+        post_id: &'a str,
+    },
+    Tags,
+    Tag {
+        tag_id: &'a str,
+    },
+}
+impl<'a> From<Route<'a>> for RoutePath {
+    fn from(route: Route<'a>) -> Self {
+        route.route_path()
+    }
+}
+impl<'a> Route<'a> {
+    pub fn route_path(&self) -> RoutePath {
+        match *self {
+            Route::Index => RoutePath::new([]),
+            Route::Collection { collection_id } => RoutePath::new([collection_id]),
+            Route::CollectionPost {
+                collection_id,
+                post_id,
+            } => RoutePath::new([collection_id, post_id]),
+            Route::Tags => RoutePath::new(["tags"]),
+            Route::Tag { tag_id } => RoutePath::new(["tags", tag_id]),
+        }
+    }
+}
 
 fn main() -> anyhow::Result<()> {
     #[cfg(feature = "fonts")]
@@ -49,49 +86,43 @@ fn main() -> anyhow::Result<()> {
     util::copy_dir(static_dir, output_dir)?;
 
     // Write out content
-    for (collection_id, collection) in &content.collections {
-        let collection_path = output_dir.join(collection_id);
+    for collection in content.collections.values() {
         for doc in &collection.documents {
-            let mut output_path = collection_path.clone();
-            if doc.id != "index" {
-                output_path = output_path.join(&doc.id);
-            }
-            std::fs::create_dir_all(&output_path)?;
+            let post_route_path = doc.route_path(collection);
 
             views::collection::post(collection, doc)
-                .write_to_path(&output_path.join("index.html"))?;
-
-            for path in &doc.files {
-                std::fs::copy(path, output_path.join(path.file_name().unwrap()))?;
+                .write_to_route(output_dir, post_route_path.clone())?;
+            {
+                let post_output_dir = post_route_path.dir_path(output_dir);
+                for path in &doc.files {
+                    std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
+                }
             }
 
             // Write redirect for alternate_id if it exists
-            if let Some(alternate_id) = doc.alternate_id.as_ref() {
-                let alternate_path = collection_path.join(alternate_id);
-                std::fs::create_dir_all(&alternate_path)?;
-
-                views::redirect(&doc.url(collection, None))
-                    .write_to_path(&alternate_path.join("index.html"))?;
+            if let Some(alternate_route_path) = doc.alternate_route_path(collection) {
+                views::redirect(&post_route_path.url_path())
+                    .write_to_route(output_dir, alternate_route_path)?;
             }
         }
     }
 
     // Write out blog index
-    views::blog::index(&content).write_to_path(&output_dir.join("blog").join("index.html"))?;
+    views::blog::index(&content).write_to_route(
+        output_dir,
+        Route::Collection {
+            collection_id: "blog",
+        },
+    )?;
 
     // Write out main index
-    views::index(&content).write_to_path(&output_dir.join("index.html"))?;
+    views::index(&content).write_to_route(output_dir, Route::Index)?;
 
     // Write out tags
     {
-        let tags_path = output_dir.join("tags");
-        std::fs::create_dir_all(&tags_path)?;
-        views::tags(&content).write_to_path(&tags_path.join("index.html"))?;
-
+        views::tags(&content).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
-            let tag_path = tags_path.join(tag_id);
-            std::fs::create_dir_all(&tag_path)?;
-            views::tag(&content, tag_id).write_to_path(&tag_path.join("index.html"))?;
+            views::tag(&content, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
         }
     }
 

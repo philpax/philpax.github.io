@@ -68,7 +68,7 @@ fn build_item(
     author: &str,
     doc: &content::Document,
 ) -> rss::Item {
-    let url = doc.url(collection, Some(base_url));
+    let url = format!("{base_url}{}", doc.route_path(collection).url_path());
 
     let guid = rss::GuidBuilder::default()
         .value(url.clone())

@@ -1,7 +1,40 @@
-use std::{io::Write, path::Path};
+use std::{
+    io::Write,
+    path::{Path, PathBuf},
+};
 
 pub mod builder;
 pub mod util;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RoutePath {
+    segments: Vec<String>,
+}
+impl RoutePath {
+    pub fn new<'a>(segments: impl IntoIterator<Item = &'a str>) -> Self {
+        Self {
+            segments: segments.into_iter().map(|s| s.to_string()).collect(),
+        }
+    }
+    pub fn dir_path(&self, out_dir: &Path) -> PathBuf {
+        let mut path = out_dir.to_path_buf();
+        for segment in &self.segments {
+            path.push(segment);
+        }
+        path
+    }
+    pub fn index_path(&self, out_dir: &Path) -> PathBuf {
+        self.dir_path(out_dir).join("index.html")
+    }
+    /// Always starts and ends with a `/`
+    pub fn url_path(&self) -> String {
+        let mut path = format!("/{}", self.segments.join("/"));
+        if !path.ends_with('/') {
+            path.push('/');
+        }
+        path
+    }
+}
 
 #[derive(Debug)]
 pub struct Document {
@@ -14,7 +47,15 @@ impl Document {
         }
     }
 
-    pub fn write_to_path(&self, path: &Path) -> std::io::Result<()> {
+    pub fn write_to_route(
+        &self,
+        output_dir: &Path,
+        route_path: impl Into<RoutePath>,
+    ) -> std::io::Result<()> {
+        let path = route_path.into().index_path(output_dir);
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
         let mut writer = std::io::BufWriter::new(std::fs::File::create(path)?);
         for (idx, child) in self.children.iter().enumerate() {
             if idx > 0 {
