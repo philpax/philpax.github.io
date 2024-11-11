@@ -1,9 +1,16 @@
-:root {
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
-  background-repeat: no-repeat;
+--dark-mode {
+  --color: white;
+  --color-secondary: #ccc;
+  --background-color: #3c2954;
+}
 
+--light-mode {
+  --color: black;
+  --color-secondary: #333;
+  --background-color: #c5b4db;
+}
+
+:root {
   --header-height: 64px;
 }
 
