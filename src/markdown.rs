@@ -1,4 +1,5 @@
-use crate::elements as b;
+use crate::elements as e;
+use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 use paxhtml::builder::ToAttributes;
@@ -9,9 +10,9 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
         Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
 
         Node::Heading(h) => {
-            vec![b::h_with_id((h.depth + 2).min(6), "with_link")(
-                convert_many(&h.children),
-            )]
+            vec![e::h_with_id((h.depth + 2).min(6), true)(convert_many(
+                &h.children,
+            ))]
         }
         Node::Text(t) => {
             vec![b::text(t.value.as_str())]

@@ -5,3 +5,9 @@ edition = "2021"
 
 [dependencies]
 html-escape = "0.2.13"
+
+paxhtml_macro = { path = "../paxhtml_macro", optional = true }
+
+[features]
+default = ["macros"]
+macros = ["paxhtml_macro"]
