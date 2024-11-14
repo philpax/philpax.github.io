@@ -6,6 +6,9 @@ use std::{
 pub mod builder;
 pub mod util;
 
+#[cfg(feature = "macros")]
+pub use paxhtml_macro::html;
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RoutePath {
     segments: Vec<String>,
@@ -139,6 +142,9 @@ pub enum Element {
         children: Vec<Element>,
         void: bool,
     },
+    Fragment {
+        children: Vec<Element>,
+    },
     Text {
         text: String,
     },
@@ -154,6 +160,11 @@ impl From<String> for Element {
 impl From<&str> for Element {
     fn from(s: &str) -> Self {
         s.to_string().into()
+    }
+}
+impl From<Vec<Element>> for Element {
+    fn from(children: Vec<Element>) -> Self {
+        Element::Fragment { children }
     }
 }
 impl Element {
@@ -223,6 +234,12 @@ impl Element {
                 write!(writer, "</{name}>")?;
                 Ok(())
             }
+            Element::Fragment { children } => {
+                for child in children {
+                    child.write(writer, depth)?;
+                }
+                Ok(())
+            }
             Element::Text { text } => {
                 let text = html_escape::encode_text(text);
                 for (idx, line) in text.lines().enumerate() {
@@ -269,6 +286,7 @@ impl Element {
         match self {
             Element::Empty => String::new(),
             Element::Tag { children, .. } => children.iter().map(Element::inner_text).collect(),
+            Element::Fragment { children } => children.iter().map(Element::inner_text).collect(),
             Element::Text { text } => text.clone(),
             Element::Raw { .. } => String::new(),
         }

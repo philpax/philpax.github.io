@@ -8,11 +8,6 @@ impl<T: Into<Element>> ToElements for T {
         vec![self.into()]
     }
 }
-impl<T: Into<Element>> ToElements for Vec<T> {
-    fn to_elements(self) -> Vec<Element> {
-        self.into_iter().map(Into::into).collect()
-    }
-}
 impl<T: Into<Element> + Clone> ToElements for &[T] {
     fn to_elements(self) -> Vec<Element> {
         self.iter().cloned().map(|e| e.into()).collect()
