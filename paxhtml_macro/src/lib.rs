@@ -35,9 +35,10 @@ mod kw {
 // Implement parsing for attributes
 impl Parse for HtmlAttribute {
     fn parse(input: ParseStream) -> Result<Self> {
-        let name = input
-            .parse::<Ident>()?
-            .to_string()
+        let name = input.parse::<Ident>()?.to_string();
+        let name = name
+            .strip_prefix("r#")
+            .unwrap_or(&name)
             .to_case(convert_case::Case::Kebab);
 
         // Handle valueless attributes
@@ -70,12 +71,8 @@ impl Parse for HtmlNode {
         if input.peek(token::Lt) {
             // Parse element
             input.parse::<Token![<]>()?;
-            let exclamation = input.peek(Token![!]);
-            if exclamation {
-                input.parse::<Token![!]>()?;
-            }
-            let name = input.parse::<Ident>()?;
-            let name = format!("{}{}", if exclamation { "!" } else { "" }, name);
+            let name = input.parse::<Ident>()?.to_string();
+            let name = name.strip_prefix("r#").unwrap_or(&name).to_string();
 
             // Parse attributes
             let mut attributes = Vec::new();
