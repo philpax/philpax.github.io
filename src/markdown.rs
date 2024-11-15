@@ -73,9 +73,17 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
                     .collect::<Vec<_>>(),
             )]
         }
-        Node::Html(h) => vec![paxhtml::Element::Raw {
-            html: h.value.clone(),
-        }],
+        Node::Html(h) => {
+            // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
+            // in the middle of the string and actual content follows, but it's good enough for now.
+            if h.value.starts_with("<!--") && h.value.ends_with("-->") {
+                return vec![];
+            }
+
+            vec![paxhtml::Element::Raw {
+                html: h.value.clone(),
+            }]
+        }
 
         // Not supported yet
         Node::FootnoteDefinition(_)
