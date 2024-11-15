@@ -33,6 +33,7 @@ paxhtml = { path = "paxhtml" }
 default = ["serve", "fonts"]
 serve = ["dep:file-serve"]
 fonts = ["dep:reqwest"]
+dump_tree = ["paxhtml/dump_tree"]
 
 [profile.dev.package]
 image.opt-level = 3

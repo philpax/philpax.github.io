@@ -754,6 +754,8 @@ version = "0.1.0"
 dependencies = [
  "html-escape",
  "paxhtml_macro",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

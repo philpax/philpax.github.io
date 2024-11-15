@@ -40,6 +40,7 @@ impl RoutePath {
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Document {
     pub children: Vec<Element>,
 }
@@ -59,6 +60,13 @@ impl Document {
         if let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent)?;
         }
+        #[cfg(feature = "dump_tree")]
+        {
+            std::fs::write(
+                path.with_extension("json"),
+                serde_json::to_string_pretty(&self).unwrap(),
+            )?;
+        }
         let mut writer = std::io::BufWriter::new(std::fs::File::create(path)?);
         for (idx, child) in self.children.iter().enumerate() {
             if idx > 0 {
@@ -71,6 +79,7 @@ impl Document {
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Attribute {
     pub key: String,
     pub value: Option<String>,
@@ -133,6 +142,7 @@ impl From<(String, String)> for Attribute {
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Element {
     #[default]
     Empty,
