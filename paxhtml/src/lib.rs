@@ -174,7 +174,13 @@ impl From<&str> for Element {
 }
 impl From<Vec<Element>> for Element {
     fn from(children: Vec<Element>) -> Self {
-        Element::Fragment { children }
+        if children.is_empty() {
+            Element::Empty
+        } else if children.len() == 1 {
+            children[0].clone()
+        } else {
+            Element::Fragment { children }
+        }
     }
 }
 impl Element {
