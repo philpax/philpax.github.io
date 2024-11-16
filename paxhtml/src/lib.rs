@@ -187,6 +187,11 @@ impl From<&str> for Element {
         s.to_string().into()
     }
 }
+impl From<&String> for Element {
+    fn from(s: &String) -> Self {
+        s.clone().into()
+    }
+}
 impl From<Vec<Element>> for Element {
     fn from(children: Vec<Element>) -> Self {
         if children.is_empty() {

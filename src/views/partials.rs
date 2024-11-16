@@ -93,7 +93,7 @@ pub fn post(
     fn build_list_recursively(hierarchy: &markdown::HeadingHierarchy) -> paxhtml::Element {
         let markdown::HeadingHierarchy(text, children) = hierarchy;
         let link = html! {
-            <a href={format!("#{}", util::slugify(text))}>{text.as_str()}</a>
+            <a href={format!("#{}", util::slugify(text))}>{text}</a>
         };
 
         let mut body = vec![link];

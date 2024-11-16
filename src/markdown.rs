@@ -20,7 +20,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
             ))]
         }
         Node::Text(t) => {
-            vec![b::text(t.value.as_str())]
+            vec![b::text(&t.value)]
         }
         Node::Paragraph(p) => {
             vec![b::p(Empty)(convert_many(syntax, &p.children))]
@@ -55,7 +55,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
                 c.lang
                     .as_ref()
                     .map(|l| syntax.highlight_code(l, &c.value).unwrap())
-                    .unwrap_or(b::text(c.value.as_str())),
+                    .unwrap_or(b::text(&c.value)),
             ))]
         }
         Node::BlockQuote(b) => {
@@ -65,7 +65,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
             vec![b::br(Empty)]
         }
         Node::InlineCode(c) => {
-            vec![b::code(Empty)(c.value.as_str())]
+            vec![b::code(Empty)(&c.value)]
         }
         Node::Image(i) => {
             vec![b::img([("src", i.url.clone()), ("alt", i.alt.clone())])]
