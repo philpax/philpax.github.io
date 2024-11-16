@@ -255,8 +255,9 @@ impl Element {
                 let mut did_indent = false;
                 for child in children {
                     let depth = depth + 1;
-                    let should_indent_this_child =
-                        should_indent && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t));
+                    let should_indent_this_child = should_indent
+                        && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
+                        && !child.is_raw();
                     if should_indent_this_child {
                         writeln!(writer)?;
                         for _ in 0..depth {
@@ -338,6 +339,38 @@ impl Element {
     #[must_use]
     pub fn is_empty(&self) -> bool {
         matches!(self, Self::Empty)
+    }
+
+    /// Returns `true` if the element is [`Tag`].
+    ///
+    /// [`Tag`]: Element::Tag
+    #[must_use]
+    pub fn is_tag(&self) -> bool {
+        matches!(self, Self::Tag { .. })
+    }
+
+    /// Returns `true` if the element is [`Fragment`].
+    ///
+    /// [`Fragment`]: Element::Fragment
+    #[must_use]
+    pub fn is_fragment(&self) -> bool {
+        matches!(self, Self::Fragment { .. })
+    }
+
+    /// Returns `true` if the element is [`Text`].
+    ///
+    /// [`Text`]: Element::Text
+    #[must_use]
+    pub fn is_text(&self) -> bool {
+        matches!(self, Self::Text { .. })
+    }
+
+    /// Returns `true` if the element is [`Raw`].
+    ///
+    /// [`Raw`]: Element::Raw
+    #[must_use]
+    pub fn is_raw(&self) -> bool {
+        matches!(self, Self::Raw { .. })
     }
 }
 
