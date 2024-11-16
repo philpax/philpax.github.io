@@ -1,12 +1,13 @@
 use std::path::Path;
 
-use crate::{content, markdown, util};
+use crate::{content, markdown, syntax::SyntaxHighlighter, util};
 
 pub struct RssConfig<'a> {
     pub base_url: &'a str,
     pub rss_title: &'a str,
     pub rss_author: &'a str,
     pub rss_description: &'a str,
+    pub syntax: &'a SyntaxHighlighter,
 }
 
 pub fn write_all(
@@ -19,6 +20,7 @@ pub fn write_all(
         rss_title,
         rss_author,
         rss_description,
+        syntax,
     } = config;
 
     let rss_output_dir = output.join("rss");
@@ -32,7 +34,7 @@ pub fn write_all(
         let items = collection
             .documents
             .iter()
-            .map(|doc| build_item(base_url, collection, rss_author, doc))
+            .map(|doc| build_item(base_url, collection, rss_author, doc, syntax))
             .collect::<Vec<_>>();
 
         let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
@@ -67,6 +69,7 @@ fn build_item(
     collection: &content::Collection,
     author: &str,
     doc: &content::Document,
+    syntax: &SyntaxHighlighter,
 ) -> rss::Item {
     let url = format!("{base_url}{}", doc.route_path(collection).url_path());
 
@@ -75,10 +78,9 @@ fn build_item(
         .permalink(false)
         .build();
 
-    let description = doc
-        .description
-        .as_ref()
-        .map(|d| paxhtml::Element::write_many_to_string(&markdown::convert_to_html(d)).unwrap());
+    let description = doc.description.as_ref().map(|d| {
+        paxhtml::Element::write_many_to_string(&markdown::convert_to_html(syntax, d)).unwrap()
+    });
 
     rss::ItemBuilder::default()
         .title(doc.metadata.title.clone())

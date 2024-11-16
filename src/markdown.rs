@@ -1,16 +1,21 @@
-use crate::elements as e;
+use crate::{elements as e, syntax::SyntaxHighlighter};
 use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 use paxhtml::builder::ToAttributes;
 
-pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
+pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::Element> {
     use b::Empty;
     match node {
-        Node::Root(r) => r.children.iter().flat_map(convert_to_html).collect(),
+        Node::Root(r) => r
+            .children
+            .iter()
+            .flat_map(|n| convert_to_html(syntax, n))
+            .collect(),
 
         Node::Heading(h) => {
             vec![e::h_with_id((h.depth + 2).min(6), true)(convert_many(
+                syntax,
                 &h.children,
             ))]
         }
@@ -18,16 +23,16 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::text(t.value.as_str())]
         }
         Node::Paragraph(p) => {
-            vec![b::p(Empty)(convert_many(&p.children))]
+            vec![b::p(Empty)(convert_many(syntax, &p.children))]
         }
         Node::Strong(s) => {
-            vec![b::strong(Empty)(convert_many(&s.children))]
+            vec![b::strong(Empty)(convert_many(syntax, &s.children))]
         }
         Node::Emphasis(e) => {
-            vec![b::em(Empty)(convert_many(&e.children))]
+            vec![b::em(Empty)(convert_many(syntax, &e.children))]
         }
         Node::List(l) => {
-            let children = convert_many(&l.children);
+            let children = convert_many(syntax, &l.children);
             vec![if l.ordered {
                 b::ol(Empty)(children)
             } else {
@@ -39,17 +44,22 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![b::li(Empty)(convert_many(&p.children))];
+                    return vec![b::li(Empty)(convert_many(syntax, &p.children))];
                 }
             }
 
-            vec![b::li(Empty)(convert_many(&li.children))]
+            vec![b::li(Empty)(convert_many(syntax, &li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre(Empty)(b::code(Empty)(c.value.as_str()))]
+            vec![b::pre(("class", "code"))(b::code(Empty)(
+                c.lang
+                    .as_ref()
+                    .map(|l| syntax.highlight_code(l, &c.value).unwrap())
+                    .unwrap_or(b::text(c.value.as_str())),
+            ))]
         }
         Node::BlockQuote(b) => {
-            vec![b::blockquote(Empty)(convert_many(&b.children))]
+            vec![b::blockquote(Empty)(convert_many(syntax, &b.children))]
         }
         Node::Break(_) => {
             vec![b::br(Empty)]
@@ -69,7 +79,7 @@ pub fn convert_to_html(node: &Node) -> Vec<paxhtml::Element> {
             vec![b::a(attrs)(
                 l.children
                     .iter()
-                    .flat_map(convert_to_html)
+                    .flat_map(|n| convert_to_html(syntax, n))
                     .collect::<Vec<_>>(),
             )]
         }
@@ -173,8 +183,11 @@ fn inner_text(node: &Node) -> String {
     }
 }
 
-fn convert_many(nodes: &[Node]) -> Vec<paxhtml::Element> {
-    nodes.iter().flat_map(convert_to_html).collect()
+fn convert_many(syntax: &SyntaxHighlighter, nodes: &[Node]) -> Vec<paxhtml::Element> {
+    nodes
+        .iter()
+        .flat_map(|n| convert_to_html(syntax, n))
+        .collect()
 }
 
 #[cfg(test)]

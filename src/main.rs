@@ -10,6 +10,7 @@ mod js;
 mod markdown;
 mod rss;
 mod styles;
+mod syntax;
 mod util;
 mod views;
 
@@ -60,13 +61,13 @@ impl Timer {
         }
     }
     pub fn step<R>(&mut self, label: &str, f: impl FnOnce() -> R) -> R {
-    let now = std::time::Instant::now();
-    let result = f();
+        let now = std::time::Instant::now();
+        let result = f();
         let elapsed = now.elapsed();
         println!("{}. {} in {:?}", self.step, label, elapsed);
         self.step += 1;
         self.accumulated += elapsed;
-    result
+        result
     }
     pub fn finish(self) {
         println!("Total time: {:?}", self.accumulated);
@@ -84,6 +85,11 @@ fn main() -> anyhow::Result<()> {
     #[cfg(feature = "serve")]
     let port = 8192;
 
+    let syntax = timer.step(
+        "Loaded syntax highlighter",
+        syntax::SyntaxHighlighter::default,
+    );
+
     let rss_config = rss::RssConfig {
         base_url: "https://philpax.me",
         rss_title: "Philpax's Blog",
@@ -93,73 +99,75 @@ fn main() -> anyhow::Result<()> {
             "your friendly neighbourhood polyglot programmer/engineer, ",
             "cursed with more projects than time."
         ),
+        syntax: &syntax,
     };
 
     timer.step("Cleared output directory", || {
-    if output_dir.is_dir() {
-        // Remove everything in the public directory; this is done manually
-        // to ensure that you can continue serving from the directory while
-        // the build is running.
-        for entry in std::fs::read_dir(output_dir)? {
-            let path = entry?.path();
-            if path.is_dir() {
-                std::fs::remove_dir_all(&path)?;
-            } else {
-                std::fs::remove_file(&path)?;
+        if output_dir.is_dir() {
+            // Remove everything in the public directory; this is done manually
+            // to ensure that you can continue serving from the directory while
+            // the build is running.
+            for entry in std::fs::read_dir(output_dir)? {
+                let path = entry?.path();
+                if path.is_dir() {
+                    std::fs::remove_dir_all(&path)?;
+                } else {
+                    std::fs::remove_file(&path)?;
+                }
             }
         }
-    }
         anyhow::Ok(())
     })?;
 
     let content = timer.step("Read content", content::Content::read)?;
 
     timer.step("Copied static content", || {
-    // Copy all static content first
+        // Copy all static content first
         util::copy_dir(static_dir, output_dir)
     })?;
 
     timer.step("Wrote content", || {
-    // Write out content
-    for collection in content.collections.values() {
-        for doc in &collection.documents {
-            let post_route_path = doc.route_path(collection);
+        // Write out content
+        for collection in content.collections.values() {
+            for doc in &collection.documents {
+                let post_route_path = doc.route_path(collection);
 
-            views::collection::post(collection, doc)
-                .write_to_route(output_dir, post_route_path.clone())?;
-            {
-                let post_output_dir = post_route_path.dir_path(output_dir);
-                for path in &doc.files {
-                    std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
+                views::collection::post(collection, doc, &syntax)
+                    .write_to_route(output_dir, post_route_path.clone())?;
+                {
+                    let post_output_dir = post_route_path.dir_path(output_dir);
+                    for path in &doc.files {
+                        std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
+                    }
+                }
+
+                // Write redirect for alternate_id if it exists
+                if let Some(alternate_route_path) = doc.alternate_route_path(collection) {
+                    views::redirect(&post_route_path.url_path())
+                        .write_to_route(output_dir, alternate_route_path)?;
                 }
             }
-
-            // Write redirect for alternate_id if it exists
-            if let Some(alternate_route_path) = doc.alternate_route_path(collection) {
-                views::redirect(&post_route_path.url_path())
-                    .write_to_route(output_dir, alternate_route_path)?;
-            }
         }
-    }
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote blog index", || {
-    // Write out blog index
-    views::blog::index(&content).write_to_route(
-        output_dir,
-        Route::Collection {
-            collection_id: "blog",
-        },
+        // Write out blog index
+        views::blog::index(&content, &syntax).write_to_route(
+            output_dir,
+            Route::Collection {
+                collection_id: "blog",
+            },
         )
     })?;
 
     timer.step("Wrote main index", || {
-    // Write out main index
+        // Write out main index
+        views::index(&content, &syntax).write_to_route(output_dir, Route::Index)
     })?;
 
     timer.step("Wrote tags", || {
-    // Write out tags
+        // Write out tags
         views::tags(&content).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
             views::tag(&content, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
@@ -168,7 +176,7 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote RSS feed", || {
-    // Write out RSS feed
+        // Write out RSS feed
         rss::write_all(rss_config, &content, output_dir)
     })?;
 
@@ -187,15 +195,15 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-    // Write out bundled styles
+        // Write out bundled styles
         anyhow::Ok(std::fs::write(
             output_dir.join("styles.css"),
-            styles::generate()?,
+            styles::generate(&syntax)?,
         )?)
     })?;
 
     timer.step("Wrote bundled JavaScript", || {
-    // Write out bundled JavaScript
+        // Write out bundled JavaScript
         anyhow::Ok(std::fs::write(
             output_dir.join("scripts.js"),
             js::generate()?,

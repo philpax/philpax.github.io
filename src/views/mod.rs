@@ -1,6 +1,7 @@
 use crate::{
     content::{Collection, Content, Document},
     elements::*,
+    syntax::SyntaxHighlighter,
     util,
 };
 
@@ -51,11 +52,16 @@ fn layout(inner: paxhtml::Element) -> paxhtml::Document {
 pub mod collection {
     use super::*;
 
-    pub fn post(collection: &Collection, document: &Document) -> paxhtml::Document {
+    pub fn post(
+        collection: &Collection,
+        document: &Document,
+        syntax_highlighter: &SyntaxHighlighter,
+    ) -> paxhtml::Document {
         layout(partials::post(
             collection,
             document,
             partials::PostBody::Full,
+            syntax_highlighter,
         ))
     }
 }
@@ -63,24 +69,31 @@ pub mod collection {
 pub mod blog {
     use super::*;
 
-    pub fn index(content: &Content) -> paxhtml::Document {
+    pub fn index(content: &Content, syntax_highlighter: &SyntaxHighlighter) -> paxhtml::Document {
         let blog = content.collections.get("blog").unwrap();
         layout(
             blog.documents
                 .iter()
-                .map(|doc| partials::post(blog, doc, partials::PostBody::Description))
+                .map(|doc| {
+                    partials::post(
+                        blog,
+                        doc,
+                        partials::PostBody::Description,
+                        syntax_highlighter,
+                    )
+                })
                 .collect::<Vec<_>>()
                 .into(),
         )
     }
 }
 
-pub fn index(content: &Content) -> paxhtml::Document {
+pub fn index(content: &Content, syntax_highlighter: &SyntaxHighlighter) -> paxhtml::Document {
     let blog = content.collections.get("blog").unwrap();
     layout(
         blog.documents
             .iter()
-            .map(|doc| partials::post(blog, doc, partials::PostBody::Short))
+            .map(|doc| partials::post(blog, doc, partials::PostBody::Short, syntax_highlighter))
             .collect::<Vec<_>>()
             .into(),
     )

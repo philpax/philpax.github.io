@@ -1,7 +1,9 @@
 use crate::{
     content::{Collection, Document},
     elements::*,
-    markdown, util,
+    markdown,
+    syntax::SyntaxHighlighter,
+    util,
 };
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -11,8 +13,14 @@ pub enum PostBody {
     Short,
 }
 
-pub fn post(collection: &Collection, document: &Document, post_body: PostBody) -> paxhtml::Element {
+pub fn post(
+    collection: &Collection,
+    document: &Document,
+    post_body: PostBody,
+    syntax_highlighter: &SyntaxHighlighter,
+) -> paxhtml::Element {
     let mut post_body_html = markdown::convert_to_html(
+        syntax_highlighter,
         &match post_body {
             PostBody::Full => None,
             PostBody::Description => document.description.clone(),
