@@ -1,8 +1,6 @@
 use std::collections::HashMap;
 
-use crate::syntax::SyntaxHighlighter;
-
-pub fn generate(syntax: &SyntaxHighlighter) -> anyhow::Result<String> {
+pub fn generate() -> anyhow::Result<String> {
     const RESET: &str = include_str!("reset.css");
     let (dark_mode, light_mode, remaining) = extract_css_modes(include_str!("website.css"));
     Ok(format!(
@@ -28,11 +26,7 @@ pub fn generate(syntax: &SyntaxHighlighter) -> anyhow::Result<String> {
 
 /* --- WEBSITE --- */
 {remaining}
-
-/* --- SYNTAX HIGHLIGHTER --- */
-{}
 "#,
-        syntax.theme_css()
     )
     .trim()
     .to_string())

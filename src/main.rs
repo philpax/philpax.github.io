@@ -121,6 +121,11 @@ fn main() -> anyhow::Result<()> {
 
     let content = timer.step("Read content", content::Content::read)?;
 
+    let view_context = views::ViewContext {
+        content: &content,
+        syntax: &syntax,
+    };
+
     timer.step("Copied static content", || {
         // Copy all static content first
         util::copy_dir(static_dir, output_dir)
@@ -132,7 +137,7 @@ fn main() -> anyhow::Result<()> {
             for doc in &collection.documents {
                 let post_route_path = doc.route_path(collection);
 
-                views::collection::post(collection, doc, &syntax)
+                views::collection::post(view_context, collection, doc)
                     .write_to_route(output_dir, post_route_path.clone())?;
                 {
                     let post_output_dir = post_route_path.dir_path(output_dir);
@@ -153,7 +158,7 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote blog index", || {
         // Write out blog index
-        views::blog::index(&content, &syntax).write_to_route(
+        views::blog::index(view_context).write_to_route(
             output_dir,
             Route::Collection {
                 collection_id: "blog",
@@ -163,14 +168,14 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote main index", || {
         // Write out main index
-        views::index(&content, &syntax).write_to_route(output_dir, Route::Index)
+        views::index(view_context).write_to_route(output_dir, Route::Index)
     })?;
 
     timer.step("Wrote tags", || {
         // Write out tags
-        views::tags(&content).write_to_route(output_dir, Route::Tags)?;
+        views::tags(view_context).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
-            views::tag(&content, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
+            views::tag(view_context, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
         }
         anyhow::Ok(())
     })?;
@@ -195,10 +200,16 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
+        let syntax_dir = output_dir.join("syntax");
+        std::fs::create_dir_all(&syntax_dir)?;
+        for (name, css) in syntax.themes_css() {
+            std::fs::write(syntax_dir.join(format!("{name}.css")), css)?;
+        }
+
         // Write out bundled styles
         anyhow::Ok(std::fs::write(
             output_dir.join("styles.css"),
-            styles::generate(&syntax)?,
+            styles::generate()?,
         )?)
     })?;
 

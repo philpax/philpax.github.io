@@ -1,9 +1,8 @@
+use super::ViewContext;
 use crate::{
     content::{Collection, Document},
     elements::*,
-    markdown,
-    syntax::SyntaxHighlighter,
-    util,
+    markdown, util,
 };
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -14,13 +13,13 @@ pub enum PostBody {
 }
 
 pub fn post(
+    context: ViewContext,
     collection: &Collection,
     document: &Document,
     post_body: PostBody,
-    syntax_highlighter: &SyntaxHighlighter,
 ) -> paxhtml::Element {
     let mut post_body_html = markdown::convert_to_html(
-        syntax_highlighter,
+        context.syntax,
         &match post_body {
             PostBody::Full => None,
             PostBody::Description => document.description.clone(),

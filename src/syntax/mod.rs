@@ -45,12 +45,21 @@ impl Default for SyntaxHighlighter {
     }
 }
 impl SyntaxHighlighter {
-    pub fn theme_css(&self) -> String {
-        css_for_theme_with_class_style(
-            &self.theme_set.themes["Solarized (dark)"],
-            ClassStyle::Spaced,
-        )
-        .unwrap()
+    pub fn themes(&self) -> Vec<String> {
+        self.theme_set.themes.keys().cloned().collect()
+    }
+
+    pub fn themes_css(&self) -> Vec<(String, String)> {
+        self.theme_set
+            .themes
+            .iter()
+            .map(|(name, theme)| {
+                (
+                    name.to_string(),
+                    css_for_theme_with_class_style(theme, ClassStyle::Spaced).unwrap(),
+                )
+            })
+            .collect()
     }
 
     pub fn highlight_code(
