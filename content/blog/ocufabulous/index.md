@@ -69,7 +69,7 @@ It serves as a good introduction to the DK2’s new capabilities, especially pos
 
 ## Experience/Japan Teaser Trailer
 ![Unwarped screenshot of the first scene from Experience/Japan overlooking a terminus](experiencejapan1-unwarp.jpg)
-![Unwarped screenshot of the last scene from Experience/Japan, overlooking a canal"](experiencejapan3-unwarp.jpg)
+![Unwarped screenshot of the last scene from Experience/Japan, overlooking a canal](experiencejapan3-unwarp.jpg)
 
 I’ve always had an interest in going to Japan for a variety of reasons. While I’m quite a ways off from being able to do this for real, Experience/Japan, or at least its teaser trailer, gave me a taste of what it might be like in a very interesting, immersive experience that's practically sold the concept of virtual tourism to me.
 
