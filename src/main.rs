@@ -48,6 +48,13 @@ impl<'a> Route<'a> {
     }
 }
 
+fn timed<R>(label: &str, f: impl FnOnce() -> R) -> R {
+    let now = std::time::Instant::now();
+    let result = f();
+    println!("{} in {:?}", label, now.elapsed());
+    result
+}
+
 fn main() -> anyhow::Result<()> {
     #[cfg(feature = "fonts")]
     fonts::download_if_required()?;
@@ -68,6 +75,7 @@ fn main() -> anyhow::Result<()> {
         ),
     };
 
+    timed("Cleared output directory", || {
     if output_dir.is_dir() {
         // Remove everything in the public directory; this is done manually
         // to ensure that you can continue serving from the directory while
@@ -81,11 +89,17 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-    let content = content::Content::read()?;
+        anyhow::Ok(())
+    })?;
 
+    let content = timed("Read content", content::Content::read)?;
+
+    timed("Copied static content", || {
     // Copy all static content first
-    util::copy_dir(static_dir, output_dir)?;
+        util::copy_dir(static_dir, output_dir)
+    })?;
 
+    timed("Wrote content", || {
     // Write out content
     for collection in content.collections.values() {
         for doc in &collection.documents {
@@ -107,31 +121,38 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
+        anyhow::Ok(())
+    })?;
 
+    timed("Wrote blog index", || {
     // Write out blog index
     views::blog::index(&content).write_to_route(
         output_dir,
         Route::Collection {
             collection_id: "blog",
         },
-    )?;
+        )
+    })?;
 
+    timed("Wrote main index", || {
     // Write out main index
-    views::index(&content).write_to_route(output_dir, Route::Index)?;
+    })?;
 
+    timed("Wrote tags", || {
     // Write out tags
-    {
         views::tags(&content).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
             views::tag(&content, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
         }
-    }
+        anyhow::Ok(())
+    })?;
 
+    timed("Wrote RSS feed", || {
     // Write out RSS feed
-    rss::write_all(rss_config, &content, output_dir)?;
+        rss::write_all(rss_config, &content, output_dir)
+    })?;
 
-    // Write out icon
-    {
+    timed("Wrote icon", || {
         content
             .icon
             .resize(128, 128, image::imageops::FilterType::Lanczos3)
@@ -141,13 +162,25 @@ fn main() -> anyhow::Result<()> {
             .icon
             .resize(32, 32, image::imageops::FilterType::Lanczos3)
             .save(output_dir.join("favicon.ico"))?;
-    }
 
+        anyhow::Ok(())
+    })?;
+
+    timed("Wrote bundled styles", || {
     // Write out bundled styles
-    std::fs::write(output_dir.join("styles.css"), styles::generate()?)?;
+        anyhow::Ok(std::fs::write(
+            output_dir.join("styles.css"),
+            styles::generate()?,
+        )?)
+    })?;
 
+    timed("Wrote bundled JavaScript", || {
     // Write out bundled JavaScript
-    std::fs::write(output_dir.join("scripts.js"), js::generate()?)?;
+        anyhow::Ok(std::fs::write(
+            output_dir.join("scripts.js"),
+            js::generate()?,
+        )?)
+    })?;
 
     #[cfg(feature = "serve")]
     {
