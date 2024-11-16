@@ -236,14 +236,18 @@ impl Element {
 
                 // children - we flatten them to simplify the logic below,
                 // which ensures that fragments are not indented
-                let children = children
-                    .iter()
-                    .flat_map(|c| match c {
-                        Element::Empty => vec![],
-                        Element::Fragment { children } => children.clone(),
-                        _ => vec![c.clone()],
-                    })
-                    .collect::<Vec<_>>();
+                fn flatten_children(children: &[Element]) -> Vec<Element> {
+                    children
+                        .iter()
+                        .flat_map(|c| match c {
+                            Element::Empty => vec![],
+                            Element::Text { text } if text == "\n" => vec![],
+                            Element::Fragment { children } => flatten_children(children),
+                            _ => vec![c.clone()],
+                        })
+                        .collect::<Vec<_>>()
+                }
+                let children = flatten_children(children);
                 let children_started_with_text = children
                     .first()
                     .is_some_and(|c| matches!(c, Element::Text { .. }));
