@@ -48,16 +48,36 @@ impl<'a> Route<'a> {
     }
 }
 
-fn timed<R>(label: &str, f: impl FnOnce() -> R) -> R {
+struct Timer {
+    step: usize,
+    accumulated: std::time::Duration,
+}
+impl Timer {
+    pub fn new() -> Self {
+        Self {
+            step: 1,
+            accumulated: std::time::Duration::ZERO,
+        }
+    }
+    pub fn step<R>(&mut self, label: &str, f: impl FnOnce() -> R) -> R {
     let now = std::time::Instant::now();
     let result = f();
-    println!("{} in {:?}", label, now.elapsed());
+        let elapsed = now.elapsed();
+        println!("{}. {} in {:?}", self.step, label, elapsed);
+        self.step += 1;
+        self.accumulated += elapsed;
     result
+    }
+    pub fn finish(self) {
+        println!("Total time: {:?}", self.accumulated);
+    }
 }
 
 fn main() -> anyhow::Result<()> {
     #[cfg(feature = "fonts")]
     fonts::download_if_required()?;
+
+    let mut timer = Timer::new();
 
     let output_dir = Path::new("public");
     let static_dir = Path::new("static");
@@ -75,7 +95,7 @@ fn main() -> anyhow::Result<()> {
         ),
     };
 
-    timed("Cleared output directory", || {
+    timer.step("Cleared output directory", || {
     if output_dir.is_dir() {
         // Remove everything in the public directory; this is done manually
         // to ensure that you can continue serving from the directory while
@@ -92,14 +112,14 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    let content = timed("Read content", content::Content::read)?;
+    let content = timer.step("Read content", content::Content::read)?;
 
-    timed("Copied static content", || {
+    timer.step("Copied static content", || {
     // Copy all static content first
         util::copy_dir(static_dir, output_dir)
     })?;
 
-    timed("Wrote content", || {
+    timer.step("Wrote content", || {
     // Write out content
     for collection in content.collections.values() {
         for doc in &collection.documents {
@@ -124,7 +144,7 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timed("Wrote blog index", || {
+    timer.step("Wrote blog index", || {
     // Write out blog index
     views::blog::index(&content).write_to_route(
         output_dir,
@@ -134,11 +154,11 @@ fn main() -> anyhow::Result<()> {
         )
     })?;
 
-    timed("Wrote main index", || {
+    timer.step("Wrote main index", || {
     // Write out main index
     })?;
 
-    timed("Wrote tags", || {
+    timer.step("Wrote tags", || {
     // Write out tags
         views::tags(&content).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
@@ -147,12 +167,12 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timed("Wrote RSS feed", || {
+    timer.step("Wrote RSS feed", || {
     // Write out RSS feed
         rss::write_all(rss_config, &content, output_dir)
     })?;
 
-    timed("Wrote icon", || {
+    timer.step("Wrote icon", || {
         content
             .icon
             .resize(128, 128, image::imageops::FilterType::Lanczos3)
@@ -166,7 +186,7 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timed("Wrote bundled styles", || {
+    timer.step("Wrote bundled styles", || {
     // Write out bundled styles
         anyhow::Ok(std::fs::write(
             output_dir.join("styles.css"),
@@ -174,13 +194,15 @@ fn main() -> anyhow::Result<()> {
         )?)
     })?;
 
-    timed("Wrote bundled JavaScript", || {
+    timer.step("Wrote bundled JavaScript", || {
     // Write out bundled JavaScript
         anyhow::Ok(std::fs::write(
             output_dir.join("scripts.js"),
             js::generate()?,
         )?)
     })?;
+
+    timer.finish();
 
     #[cfg(feature = "serve")]
     {
