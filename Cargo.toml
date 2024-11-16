@@ -20,10 +20,6 @@ image = { version = "0.25.1", features = [
     "ico",
 ], default-features = false }
 markdown = "1.0.0-alpha.16"
-reqwest = { version = "0.12", default-features = false, features = [
-    "blocking",
-    "default-tls",
-], optional = true }
 rss = { version = "2.0.7", features = ["atom"] }
 serde = { version = "1.0", features = ["derive"] }
 syntect = { workspace = true }
@@ -36,10 +32,16 @@ http = { version = "1.1", optional = true }
 tokio = { version = "1.41", features = ["rt-multi-thread"], optional = true }
 tower-http = { version = "0.6", features = ["fs"], optional = true }
 
+# fonts
+reqwest = { version = "0.12", default-features = false, features = [
+    "blocking",
+    "default-tls",
+], optional = true }
+
 paxhtml = { path = "paxhtml" }
 
 [features]
-default = ["serve", "fonts"]
+development = ["serve", "fonts", "dump_tree"]
 serve = ["dep:axum", "dep:http", "dep:tokio", "dep:tower-http"]
 fonts = ["dep:reqwest"]
 dump_tree = ["paxhtml/dump_tree"]
