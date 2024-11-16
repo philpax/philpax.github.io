@@ -44,11 +44,26 @@ impl RoutePath {
 pub struct Document {
     pub children: Vec<Element>,
 }
+impl From<Vec<Element>> for Document {
+    fn from(children: Vec<Element>) -> Self {
+        Document { children }
+    }
+}
 impl Document {
     pub fn new(children: impl builder::ToElements) -> Self {
         Document {
             children: children.to_elements(),
         }
+    }
+
+    pub fn write(&self, writer: &mut impl std::io::Write) -> std::io::Result<()> {
+        for (idx, child) in self.children.iter().enumerate() {
+            if idx > 0 {
+                writeln!(writer)?;
+            }
+            child.write(writer, 0)?;
+        }
+        Ok(())
     }
 
     pub fn write_to_route(
@@ -68,13 +83,13 @@ impl Document {
             )?;
         }
         let mut writer = std::io::BufWriter::new(std::fs::File::create(path)?);
-        for (idx, child) in self.children.iter().enumerate() {
-            if idx > 0 {
-                writeln!(writer)?;
-            }
-            child.write(&mut writer, 0)?;
-        }
-        Ok(())
+        self.write(&mut writer)
+    }
+
+    pub fn write_to_string(&self) -> std::io::Result<String> {
+        let mut output = vec![];
+        self.write(&mut output)?;
+        Ok(String::from_utf8(output).unwrap())
     }
 }
 
@@ -219,7 +234,16 @@ impl Element {
                     return Ok(());
                 }
 
-                // children
+                // children - we flatten them to simplify the logic below,
+                // which ensures that fragments are not indented
+                let children = children
+                    .iter()
+                    .flat_map(|c| match c {
+                        Element::Empty => vec![],
+                        Element::Fragment { children } => children.clone(),
+                        _ => vec![c.clone()],
+                    })
+                    .collect::<Vec<_>>();
                 let children_started_with_text = children
                     .first()
                     .is_some_and(|c| matches!(c, Element::Text { .. }));
@@ -227,9 +251,8 @@ impl Element {
                 let mut did_indent = false;
                 for child in children {
                     let depth = depth + 1;
-                    let should_indent_this_child = should_indent
-                        && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
-                        && !child.is_empty();
+                    let should_indent_this_child =
+                        should_indent && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t));
                     if should_indent_this_child {
                         writeln!(writer)?;
                         for _ in 0..depth {
@@ -250,11 +273,8 @@ impl Element {
                 write!(writer, "</{name}>")?;
                 Ok(())
             }
-            Element::Fragment { children } => {
-                for child in children {
-                    child.write(writer, depth)?;
-                }
-                Ok(())
+            Element::Fragment { children: _ } => {
+                unreachable!()
             }
             Element::Text { text } => {
                 let text = html_escape::encode_text(text);
@@ -348,5 +368,23 @@ mod tests {
         let input = br(Empty);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<br>");
+    }
+
+    #[test]
+    fn should_indent_successive_p_tags_in_a_fragment() {
+        let input_elements = vec![div(Empty)(Element::from(vec![
+            p(Empty)(text("Hello")),
+            p(Empty)(text("World")),
+        ]))];
+
+        let desired_output = "<div>\n  <p>Hello</p>\n  <p>World</p>\n</div>";
+
+        let input_document: Document = input_elements.clone().into();
+        let output = input_document.write_to_string().unwrap();
+        assert_eq!(output, desired_output);
+
+        let input_element: Element = input_elements.into();
+        let output = input_element.write_to_string().unwrap();
+        assert_eq!(output, desired_output);
     }
 }

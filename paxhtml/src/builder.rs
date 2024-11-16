@@ -1,4 +1,4 @@
-pub use super::{Attribute, Element};
+pub use super::{Attribute, Document, Element};
 
 pub trait ToElements {
     fn to_elements(self) -> Vec<Element>;
