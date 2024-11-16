@@ -15,7 +15,6 @@ chrono = { version = "0.4.37", default-features = false, features = [
     "std",
     "now",
 ] }
-file-serve = { version = "0.3.2", optional = true }
 image = { version = "0.25.1", features = [
     "png",
     "ico",
@@ -31,11 +30,17 @@ syntect = { workspace = true }
 toml = "0.8.12"
 toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
 
+# serve
+axum = { version = "0.7", optional = true }
+http = { version = "1.1", optional = true }
+tokio = { version = "1.41", features = ["rt-multi-thread"], optional = true }
+tower-http = { version = "0.6", features = ["fs"], optional = true }
+
 paxhtml = { path = "paxhtml" }
 
 [features]
 default = ["serve", "fonts"]
-serve = ["dep:file-serve"]
+serve = ["dep:axum", "dep:http", "dep:tokio", "dep:tower-http"]
 fonts = ["dep:reqwest"]
 dump_tree = ["paxhtml/dump_tree"]
 

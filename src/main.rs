@@ -213,16 +213,35 @@ fn main() -> anyhow::Result<()> {
     timer.finish();
 
     #[cfg(feature = "serve")]
-    {
-        let server = file_serve::ServerBuilder::new(output_dir)
-            .port(port)
-            .build();
-
-        println!("Serving at http://{}", server.addr());
-        println!("Hit CTRL-C to stop");
-
-        server.serve()?;
-    }
+    serve(output_dir, port)?;
 
     Ok(())
+}
+
+#[cfg(feature = "serve")]
+fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
+    let app = axum::Router::new().nest_service(
+        "/",
+        axum::routing::get_service(tower_http::services::ServeDir::new(
+            std::path::PathBuf::from(output_dir),
+        ))
+        .handle_error(|error| async move {
+            (
+                http::StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Unhandled internal error: {}", error),
+            )
+        }),
+    );
+
+    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], port));
+    println!("Serving at http://{}", addr);
+    println!("Hit CTRL-C to stop");
+
+    tokio::runtime::Runtime::new()
+        .unwrap()
+        .block_on(async move {
+            let listener = tokio::net::TcpListener::bind(addr).await?;
+            axum::serve(listener, app).await?;
+            anyhow::Ok(())
+        })
 }
