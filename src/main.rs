@@ -74,6 +74,12 @@ impl Timer {
     }
 }
 
+#[derive(Copy, Clone)]
+pub struct ViewContext<'a> {
+    pub syntax: &'a syntax::SyntaxHighlighter,
+    pub content: &'a content::Content,
+}
+
 fn main() -> anyhow::Result<()> {
     #[cfg(feature = "fonts")]
     fonts::download_if_required()?;
@@ -121,7 +127,7 @@ fn main() -> anyhow::Result<()> {
 
     let content = timer.step("Read content", content::Content::read)?;
 
-    let view_context = views::ViewContext {
+    let view_context = ViewContext {
         content: &content,
         syntax: &syntax,
     };

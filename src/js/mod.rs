@@ -22,7 +22,7 @@ pub fn generate() -> anyhow::Result<String> {
         style_debugger()?,
         #[cfg(feature = "serve")]
         reload()?,
-        include_str!("syntax.js").to_string(),
+        crate::syntax::js(),
         include_str!("website.js").to_string(),
     ]
     .join("\n"))

@@ -1,11 +1,14 @@
 use std::{collections::HashMap, sync::OnceLock};
 
+use paxhtml::html;
 use syntect::{
     highlighting::ThemeSet,
     html::{css_for_theme_with_class_style, ClassStyle, ClassedHTMLGenerator},
     parsing::SyntaxSet,
     util::LinesWithEndings,
 };
+
+use crate::ViewContext;
 
 #[derive(Debug)]
 pub enum SyntaxError {
@@ -106,5 +109,27 @@ impl SyntaxHighlighter {
         Ok(paxhtml::Element::Raw {
             html: html_generator.finalize(),
         })
+    }
+}
+
+pub fn js() -> String {
+    include_str!("syntax.js").to_string()
+}
+
+pub fn style_link(_context: ViewContext) -> paxhtml::Element {
+    html! {
+        <link rel="stylesheet" href="/syntax/base16-ocean.dark.css" id="syntax-theme" />
+    }
+}
+
+pub fn selector(context: ViewContext) -> paxhtml::Element {
+    html! {
+        <select id="syntax-theme-selector" style="visibility: hidden;">
+            {
+                context.syntax.theme_names_and_keys().iter().map(|(name, key)| html! {
+                    <option value={key}>{name}</option>
+                }).collect::<Vec<_>>()
+            }
+        </select>
     }
 }

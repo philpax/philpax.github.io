@@ -1,17 +1,10 @@
 use crate::{
-    content::{Collection, Content, Document},
+    content::{Collection, Document},
     elements::*,
-    syntax::SyntaxHighlighter,
-    util,
+    syntax, util, ViewContext,
 };
 
 mod partials;
-
-#[derive(Copy, Clone)]
-pub struct ViewContext<'a> {
-    pub syntax: &'a SyntaxHighlighter,
-    pub content: &'a Content,
-}
 
 fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
@@ -26,7 +19,7 @@ fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="alternate" href="/rss/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
                     <link rel="stylesheet" href="/styles.css" />
-                    <link rel="stylesheet" href="/syntax/base16-ocean.dark.css" id="syntax-theme" />
+                    {syntax::style_link(context)}
                     <script src="/scripts.js"></script>
                 </head>
                 <body>
@@ -34,13 +27,7 @@ fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
                         <img src="/icon.png" alt="Philpax icon" />
                         <h1><a href="/">"Philpax"</a></h1>
                         <nav>
-                            <select id="syntax-theme-selector" style="visibility: hidden;">
-                                {
-                                    context.syntax.theme_names_and_keys().iter().map(|(name, key)| html! {
-                                        <option value={key}>{name}</option>
-                                    }).collect::<Vec<_>>()
-                                }
-                            </select>
+                            {syntax::selector(context)}
                             <ul id="header-links">
                                 {
                                     links
