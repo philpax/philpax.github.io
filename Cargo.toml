@@ -4,13 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [".", "build_syntect_syntaxset", "paxhtml", "paxhtml_macro"]
+members = [".", "build_syntect_assets", "paxhtml", "paxhtml_macro"]
 
 [workspace.dependencies]
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
 syntect = "5.2"
 
 [dependencies]
-anyhow = "1.0"
+anyhow = { workspace = true }
 chrono = { version = "0.4.37", default-features = false, features = [
     "std",
     "now",
@@ -21,7 +23,7 @@ image = { version = "0.25.1", features = [
 ], default-features = false }
 markdown = "1.0.0-alpha.16"
 rss = { version = "2.0.7", features = ["atom"] }
-serde = { version = "1.0", features = ["derive"] }
+serde = { workspace = true }
 syntect = { workspace = true }
 toml = "0.8.12"
 toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }

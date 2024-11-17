@@ -1,6 +1,5 @@
 %YAML 1.2
 ---
-# <https://github.com/davidrios/pug-tmbundle/blob/e165db8b4cd292acb4160875b5622db9298fbc57/Syntaxes/Pug.sublime-syntax>
 # http://www.sublimetext.com/docs/syntax.html
 name: Pug
 file_extensions:

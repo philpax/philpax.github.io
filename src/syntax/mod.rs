@@ -45,19 +45,20 @@ impl Default for SyntaxHighlighter {
     fn default() -> Self {
         Self {
             syntax_set: syntect::dumps::from_binary(include_bytes!("syntax_set.packdump")),
-            theme_set: ThemeSet::load_defaults(),
+            theme_set: syntect::dumps::from_binary(include_bytes!("theme_set.packdump")),
         }
     }
 }
 impl SyntaxHighlighter {
     pub fn default_theme(&self) -> &str {
-        "base16-ocean.dark"
+        "ayu-dark"
     }
 
     pub fn theme_names_and_keys(&self) -> &'static [(String, String)] {
         static THEME_NAMES_AND_KEYS: OnceLock<Vec<(String, String)>> = OnceLock::new();
         THEME_NAMES_AND_KEYS.get_or_init(|| {
             let mapping: HashMap<&str, &str> = HashMap::from_iter([
+                ("ayu-dark", "Ayu Dark"),
                 ("InspiredGitHub", "Inspired GitHub"),
                 ("Solarized (dark)", "Solarized (dark)"),
                 ("Solarized (light)", "Solarized (light)"),
