@@ -50,6 +50,10 @@ impl Default for SyntaxHighlighter {
     }
 }
 impl SyntaxHighlighter {
+    pub fn default_theme(&self) -> &str {
+        "base16-ocean.dark"
+    }
+
     pub fn theme_names_and_keys(&self) -> &'static [(String, String)] {
         static THEME_NAMES_AND_KEYS: OnceLock<Vec<(String, String)>> = OnceLock::new();
         THEME_NAMES_AND_KEYS.get_or_init(|| {
@@ -116,9 +120,9 @@ pub fn js() -> String {
     include_str!("syntax.js").to_string()
 }
 
-pub fn style_link(_context: ViewContext) -> paxhtml::Element {
+pub fn style_link(context: ViewContext) -> paxhtml::Element {
     html! {
-        <link rel="stylesheet" href="/syntax/base16-ocean.dark.css" id="syntax-theme" />
+        <link rel="stylesheet" href={format!("/syntax/{}.css", context.syntax.default_theme())} id="syntax-theme" />
     }
 }
 
