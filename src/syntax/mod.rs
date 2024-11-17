@@ -1,3 +1,5 @@
+use std::{collections::HashMap, sync::OnceLock};
+
 use syntect::{
     highlighting::ThemeSet,
     html::{css_for_theme_with_class_style, ClassStyle, ClassedHTMLGenerator},
@@ -45,8 +47,30 @@ impl Default for SyntaxHighlighter {
     }
 }
 impl SyntaxHighlighter {
-    pub fn themes(&self) -> Vec<String> {
-        self.theme_set.themes.keys().cloned().collect()
+    pub fn theme_names_and_keys(&self) -> &'static [(String, String)] {
+        static THEME_NAMES_AND_KEYS: OnceLock<Vec<(String, String)>> = OnceLock::new();
+        THEME_NAMES_AND_KEYS.get_or_init(|| {
+            let mapping: HashMap<&str, &str> = HashMap::from_iter([
+                ("InspiredGitHub", "Inspired GitHub"),
+                ("Solarized (dark)", "Solarized (dark)"),
+                ("Solarized (light)", "Solarized (light)"),
+                ("base16-eighties.dark", "Base16 Eighties (dark)"),
+                ("base16-mocha.dark", "Base16 Mocha (dark)"),
+                ("base16-ocean.dark", "Base16 Ocean (dark)"),
+                ("base16-ocean.light", "Base16 Ocean (light)"),
+            ]);
+
+            self.theme_set
+                .themes
+                .keys()
+                .map(|k| {
+                    (
+                        mapping.get(k.as_str()).unwrap_or(&k.as_str()).to_string(),
+                        k.clone(),
+                    )
+                })
+                .collect()
+        })
     }
 
     pub fn themes_css(&self) -> Vec<(String, String)> {

@@ -36,8 +36,8 @@ fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
                         <nav>
                             <select id="syntax-theme-selector" style="visibility: hidden;">
                                 {
-                                    context.syntax.themes().iter().map(|theme| html! {
-                                        <option value={theme}>{theme}</option>
+                                    context.syntax.theme_names_and_keys().iter().map(|(name, key)| html! {
+                                        <option value={key}>{name}</option>
                                     }).collect::<Vec<_>>()
                                 }
                             </select>
