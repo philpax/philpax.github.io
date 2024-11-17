@@ -103,3 +103,9 @@ article div.post-body {
 article div.post-body > *:not(:first-child) {
   margin-top: 20px;
 }
+
+pre.code {
+  padding: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+}
