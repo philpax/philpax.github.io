@@ -10,33 +10,6 @@ use syntect::{
 
 use crate::ViewContext;
 
-#[derive(Debug)]
-pub enum SyntaxError {
-    Syntect(syntect::Error),
-    SyntaxNotFound(String),
-}
-impl std::fmt::Display for SyntaxError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Syntect(err) => write!(f, "{}", err),
-            Self::SyntaxNotFound(language) => write!(f, "Syntax not found for {}", language),
-        }
-    }
-}
-impl std::error::Error for SyntaxError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Syntect(err) => Some(err),
-            Self::SyntaxNotFound(_) => None,
-        }
-    }
-}
-impl From<syntect::Error> for SyntaxError {
-    fn from(err: syntect::Error) -> Self {
-        Self::Syntect(err)
-    }
-}
-
 pub struct SyntaxHighlighter {
     pub syntax_set: SyntaxSet,
     pub theme_set: ThemeSet,
@@ -96,13 +69,12 @@ impl SyntaxHighlighter {
 
     pub fn highlight_code(
         &self,
-        language: &str,
+        language: Option<&str>,
         code: &str,
-    ) -> Result<paxhtml::Element, SyntaxError> {
-        let syntax = self
-            .syntax_set
-            .find_syntax_by_token(language)
-            .ok_or(SyntaxError::SyntaxNotFound(language.to_string()))?;
+    ) -> Result<paxhtml::Element, syntect::Error> {
+        let syntax = language
+            .and_then(|l| self.syntax_set.find_syntax_by_token(l))
+            .unwrap_or_else(|| self.syntax_set.find_syntax_by_name("plaintext").unwrap());
         let mut html_generator = ClassedHTMLGenerator::new_with_class_style(
             syntax,
             &self.syntax_set,

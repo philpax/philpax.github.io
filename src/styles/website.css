@@ -109,3 +109,7 @@ pre.code {
   overflow-x: auto;
   max-width: 100%;
 }
+
+code.code {
+  padding: 4px;
+}

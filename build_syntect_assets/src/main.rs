@@ -1,8 +1,8 @@
-use std::{path::Path, str::FromStr};
+use std::{collections::HashMap, path::Path, str::FromStr};
 
 use syntect::{
     highlighting::ThemeSet,
-    parsing::{SyntaxDefinition, SyntaxSet},
+    parsing::{syntax_definition::Context, Scope, SyntaxDefinition, SyntaxSet},
 };
 
 fn main() -> anyhow::Result<()> {
@@ -19,6 +19,15 @@ fn build_syntax_set(output_dir: &Path) -> anyhow::Result<()> {
         true,
         None,
     )?);
+    builder.add(SyntaxDefinition {
+        name: "plaintext".to_string(),
+        file_extensions: vec![],
+        scope: Scope::new("text.plain")?,
+        first_line_match: None,
+        hidden: false,
+        variables: Default::default(),
+        contexts: HashMap::from_iter([("__start".to_string(), Context::new(false))]),
+    });
     let set = builder.build();
     syntect::dumps::dump_to_file(&set, output_dir.join("syntax_set.packdump"))?;
     Ok(())
