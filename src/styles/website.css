@@ -67,10 +67,20 @@ body > header nav ul li a {
 a {
   color: var(--color);
   text-decoration: underline var(--color-secondary) solid 3px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--color-secondary);
 }
 
 a:visited {
   color: var(--color);
+}
+
+a:visited:hover {
+  color: var(--color-secondary);
 }
 
 article {
