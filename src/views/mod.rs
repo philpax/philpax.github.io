@@ -27,7 +27,6 @@ fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
                         <img src="/icon.png" alt="Philpax icon" />
                         <h1><a href="/">"Philpax"</a></h1>
                         <nav>
-                            {syntax::selector(context)}
                             <ul id="header-links">
                                 {
                                     links

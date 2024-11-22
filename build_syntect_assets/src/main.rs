@@ -34,7 +34,7 @@ fn build_syntax_set(output_dir: &Path) -> anyhow::Result<()> {
 }
 
 fn build_theme_set(output_dir: &Path) -> anyhow::Result<()> {
-    let mut set = ThemeSet::load_defaults();
+    let mut set = ThemeSet::new();
     let ayu_dark =
         sublime_color_scheme::ColorScheme::from_str(include_str!("ayu-dark.sublime-color-scheme"))?;
     set.themes
