@@ -43,16 +43,13 @@ pub fn post(
         .map(|t| {
             html! {
                 <ul class="tags">
-                    {
-                        t.tags
-                            .iter()
-                            .map(|tag| html! {
-                                <li>
-                                    <a href={format!("/tags/{tag}")}>{format!("#{tag}")}</a>
-                                </li>
-                            })
-                            .collect::<Vec<_>>()
-                    }
+                {
+                    Element::from_iter(t.tags.iter().map(|tag| { html! {
+                        <li>
+                            <a href={format!("/tags/{tag}")}>{format!("#{tag}")}</a>
+                        </li>
+                    }}))
+                }
                 </ul>
             }
         })
@@ -99,7 +96,7 @@ pub fn post(
         if !children.is_empty() {
             body.push(html! {
                 <ul>
-                    {children.iter().map(build_list_recursively).collect::<Vec<_>>()}
+                    {children.iter().map(build_list_recursively).into_element()}
                 </ul>
             });
         }
@@ -114,12 +111,7 @@ pub fn post(
         <aside>
             {h2_with_id("Contents")}
             <ul>
-                {
-                    heading_hierarchy
-                    .iter()
-                    .map(build_list_recursively)
-                    .collect::<Vec<_>>()
-                }
+                {heading_hierarchy.iter().map(build_list_recursively).into_element()}
             </ul>
         </aside>
     };

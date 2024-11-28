@@ -203,6 +203,27 @@ impl From<Vec<Element>> for Element {
         }
     }
 }
+impl FromIterator<Element> for Element {
+    fn from_iter<I: IntoIterator<Item = Element>>(iter: I) -> Self {
+        iter.into_iter().collect::<Vec<_>>().into()
+    }
+}
+/// A trait for converting an iterator of elements into a single [`Element`].
+///
+/// This trait is implemented for any iterator that yields [`Element`]s, making it
+/// easier to construct a single element from multiple elements. The resulting
+/// element will be:
+/// - [`Element::Empty`] if the iterator is empty
+/// - The single element if the iterator contains exactly one element
+/// - [`Element::Fragment`] containing all elements if the iterator contains multiple elements
+pub trait IntoElement {
+    fn into_element(self) -> Element;
+}
+impl<T: Iterator<Item = Element>> IntoElement for T {
+    fn into_element(self) -> Element {
+        Element::from_iter(self)
+    }
+}
 impl Element {
     pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];

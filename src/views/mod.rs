@@ -6,7 +6,7 @@ use crate::{
 
 mod partials;
 
-fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
+fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new([
@@ -28,17 +28,13 @@ fn layout(context: ViewContext, inner: paxhtml::Element) -> paxhtml::Document {
                         <h1><a href="/">"Philpax"</a></h1>
                         <nav>
                             <ul id="header-links">
-                                {
-                                    links
-                                        .iter()
-                                        .copied()
-                                        .map(|(url, label)| html! {
-                                            <li>
-                                                <a href={url}>{label}</a>
-                                            </li>
-                                        })
-                                        .collect::<Vec<_>>()
-                                }
+                            {
+                                Element::from_iter(links.iter().copied().map(|(url, label)| { html! {
+                                    <li>
+                                        <a href={url}>{label}</a>
+                                    </li>
+                                }}))
+                            }
                             </ul>
                         </nav>
                     </header>
@@ -74,8 +70,7 @@ pub mod blog {
             blog.documents
                 .iter()
                 .map(|doc| partials::post(context, blog, doc, partials::PostBody::Description))
-                .collect::<Vec<_>>()
-                .into(),
+                .into_element(),
         )
     }
 }
@@ -87,8 +82,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         blog.documents
             .iter()
             .map(|doc| partials::post(context, blog, doc, partials::PostBody::Short))
-            .collect::<Vec<_>>()
-            .into(),
+            .into_element(),
     )
 }
 
@@ -105,24 +99,21 @@ pub fn tags(context: ViewContext) -> paxhtml::Document {
                 </header>
                 <div>
                     <ul>
-                        {
-                            tag_keys
-                                .iter()
-                                .map(|tag| {
-                                    let post_count = context.content.tags[*tag].len();
-                                    html! {
-                                        <li>
-                                            <a href={format!("/tags/{tag}")}>{format!("#{tag}")}</a>
-                                            {format!(
-                                                " ({} {})",
-                                                post_count,
-                                                util::pluralize("post", post_count)
-                                            )}
-                                        </li>
-                                    }
-                                })
-                                .collect::<Vec<_>>()
-                        }
+                    {
+                        Element::from_iter(tag_keys.iter().map(|tag| {
+                            let post_count = context.content.tags[*tag].len();
+                            html! {
+                                <li>
+                                    <a href={format!("/tags/{tag}")}>{format!("#{tag}")}</a>
+                                    {format!(
+                                        " ({} {})",
+                                        post_count,
+                                        util::pluralize("post", post_count)
+                                    )}
+                                </li>
+                            }
+                        }))
+                    }
                     </ul>
                 </div>
             </article>
@@ -140,23 +131,19 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                 </header>
                 <div>
                     <ul>
-                        {
-                            context.content.tags[tag_id]
-                                .iter()
-                                .map(|t| {
-                                    let collection = &context.content.collections[&t.0];
-                                    let document = collection.document_by_id(&t.1).unwrap();
-
-                                    html! {
-                                        <li>
-                                            <a href={document.route_path(collection).url_path()}>
-                                                {document.metadata.title.clone()}
-                                            </a>
-                                        </li>
-                                    }
-                                })
-                                .collect::<Vec<_>>()
-                        }
+                    {
+                        Element::from_iter(context.content.tags[tag_id].iter().map(|t| {
+                            let collection = &context.content.collections[&t.0];
+                            let document = collection.document_by_id(&t.1).unwrap();
+                            html! {
+                                <li>
+                                    <a href={document.route_path(collection).url_path()}>
+                                        {document.metadata.title.clone()}
+                                    </a>
+                                </li>
+                            }
+                        }))
+                    }
                     </ul>
                 </div>
             </article>
