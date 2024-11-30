@@ -160,9 +160,7 @@ impl Element {
                 write!(writer, "</{name}>")?;
                 Ok(())
             }
-            Element::Fragment { children: _ } => {
-                unreachable!()
-            }
+            Element::Fragment { children } => Element::write_many(writer, children, depth),
             Element::Text { text } => {
                 let text = html_escape::encode_text(text);
                 for (idx, line) in text.lines().enumerate() {
@@ -180,14 +178,23 @@ impl Element {
         }
     }
 
-    pub fn write_many_to_string(elements: &[Element]) -> std::io::Result<String> {
-        let mut output = vec![];
+    pub fn write_many(
+        writer: &mut dyn Write,
+        elements: &[Element],
+        depth: usize,
+    ) -> std::io::Result<()> {
         for (idx, element) in elements.iter().enumerate() {
             if idx > 0 {
-                writeln!(output)?;
+                writeln!(writer)?;
             }
-            element.write(&mut output, 0)?;
+            element.write(writer, depth)?;
         }
+        Ok(())
+    }
+
+    pub fn write_many_to_string(elements: &[Element]) -> std::io::Result<String> {
+        let mut output = vec![];
+        Self::write_many(&mut output, elements, 0)?;
         Ok(String::from_utf8(output).unwrap())
     }
 

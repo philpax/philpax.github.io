@@ -20,13 +20,7 @@ impl Document {
     }
 
     pub fn write(&self, writer: &mut impl std::io::Write) -> std::io::Result<()> {
-        for (idx, child) in self.children.iter().enumerate() {
-            if idx > 0 {
-                writeln!(writer)?;
-            }
-            child.write(writer, 0)?;
-        }
-        Ok(())
+        Element::write_many(writer, &self.children, 0)
     }
 
     pub fn write_to_route(
