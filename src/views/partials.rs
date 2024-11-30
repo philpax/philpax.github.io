@@ -81,7 +81,7 @@ pub fn post(
         return vec![article].into();
     }
 
-    let heading_hierarchy = markdown::heading_hierarchy(&document.content);
+    let heading_hierarchy = markdown::HeadingHierarchy::from_node(&document.content);
     if heading_hierarchy.is_empty() {
         return vec![article].into();
     }

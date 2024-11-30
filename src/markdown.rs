@@ -121,52 +121,53 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
 }
 #[derive(Debug, PartialEq, Clone)]
 pub struct HeadingHierarchy(pub String, pub Vec<HeadingHierarchy>);
+impl HeadingHierarchy {
+    pub fn from_node(node: &Node) -> Vec<HeadingHierarchy> {
+        let mut headings = Vec::new();
+        collect_headings(node, &mut headings);
 
-pub fn heading_hierarchy(node: &Node) -> Vec<HeadingHierarchy> {
-    let mut headings = Vec::new();
-    collect_headings(node, &mut headings);
+        let mut result = Vec::new();
+        let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
 
-    let mut result = Vec::new();
-    let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
-
-    for (depth, text) in headings {
-        while let Some((prev_depth, _)) = stack.last() {
-            if *prev_depth >= depth {
-                let (_prev_depth, finished_heading) = stack.pop().unwrap();
-                if let Some((_, parent_heading)) = stack.last_mut() {
-                    parent_heading.1.push(finished_heading);
+        for (depth, text) in headings {
+            while let Some((prev_depth, _)) = stack.last() {
+                if *prev_depth >= depth {
+                    let (_prev_depth, finished_heading) = stack.pop().unwrap();
+                    if let Some((_, parent_heading)) = stack.last_mut() {
+                        parent_heading.1.push(finished_heading);
+                    } else {
+                        // If there's no parent, this is a root-level heading
+                        result.push(finished_heading);
+                    }
                 } else {
-                    // If there's no parent, this is a root-level heading
-                    result.push(finished_heading);
+                    break;
                 }
+            }
+            stack.push((depth, HeadingHierarchy(text, Vec::new())));
+        }
+
+        // Clear any remaining headings in the stack
+        while let Some((_, finished_heading)) = stack.pop() {
+            if let Some((_, parent_heading)) = stack.last_mut() {
+                parent_heading.1.push(finished_heading);
             } else {
-                break;
+                result.push(finished_heading);
             }
         }
-        stack.push((depth, HeadingHierarchy(text, Vec::new())));
-    }
 
-    // Clear any remaining headings in the stack
-    while let Some((_, finished_heading)) = stack.pop() {
-        if let Some((_, parent_heading)) = stack.last_mut() {
-            parent_heading.1.push(finished_heading);
-        } else {
-            result.push(finished_heading);
-        }
-    }
-
-    fn collect_headings(node: &Node, headings: &mut Vec<(u8, String)>) {
-        if let Some(children) = node.children() {
-            for child in children {
-                if let Node::Heading(heading) = child {
-                    headings.push((heading.depth, inner_text(child)));
+        fn collect_headings(node: &Node, headings: &mut Vec<(u8, String)>) {
+            if let Some(children) = node.children() {
+                for child in children {
+                    if let Node::Heading(heading) = child {
+                        headings.push((heading.depth, inner_text(child)));
+                    }
+                    collect_headings(child, headings); // Recurse into all children
                 }
-                collect_headings(child, headings); // Recurse into all children
             }
         }
-    }
 
-    result
+        result
+    }
 }
 
 fn inner_text(node: &Node) -> String {
@@ -205,7 +206,7 @@ mod tests {
         let ast = parse_markdown(input);
 
         assert_eq!(
-            heading_hierarchy(&ast),
+            HeadingHierarchy::from_node(&ast),
             vec![
                 HeadingHierarchy(
                     "test".into(),
