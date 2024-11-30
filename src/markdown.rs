@@ -120,8 +120,20 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
     }
 }
 #[derive(Debug, PartialEq, Clone)]
-pub struct HeadingHierarchy(pub String, pub Vec<HeadingHierarchy>);
+pub struct HeadingHierarchy {
+    pub heading: String,
+    pub children: Vec<HeadingHierarchy>,
+}
 impl HeadingHierarchy {
+    pub fn new(
+        heading: impl Into<String>,
+        children: impl IntoIterator<Item = HeadingHierarchy>,
+    ) -> Self {
+        Self {
+            heading: heading.into(),
+            children: children.into_iter().collect(),
+        }
+    }
     pub fn from_node(node: &Node) -> Vec<HeadingHierarchy> {
         let mut headings = Vec::new();
         collect_headings(node, &mut headings);
@@ -129,12 +141,12 @@ impl HeadingHierarchy {
         let mut result = Vec::new();
         let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
 
-        for (depth, text) in headings {
+        for (depth, heading) in headings {
             while let Some((prev_depth, _)) = stack.last() {
                 if *prev_depth >= depth {
                     let (_prev_depth, finished_heading) = stack.pop().unwrap();
                     if let Some((_, parent_heading)) = stack.last_mut() {
-                        parent_heading.1.push(finished_heading);
+                        parent_heading.children.push(finished_heading);
                     } else {
                         // If there's no parent, this is a root-level heading
                         result.push(finished_heading);
@@ -143,13 +155,13 @@ impl HeadingHierarchy {
                     break;
                 }
             }
-            stack.push((depth, HeadingHierarchy(text, Vec::new())));
+            stack.push((depth, HeadingHierarchy::new(heading, [])));
         }
 
         // Clear any remaining headings in the stack
         while let Some((_, finished_heading)) = stack.pop() {
             if let Some((_, parent_heading)) = stack.last_mut() {
-                parent_heading.1.push(finished_heading);
+                parent_heading.children.push(finished_heading);
             } else {
                 result.push(finished_heading);
             }
@@ -194,6 +206,8 @@ mod tests {
 
     #[test]
     fn test_heading_hierarchy() {
+        use HeadingHierarchy as HH;
+
         let input = r#"
 # test
 ## test123
@@ -206,19 +220,16 @@ mod tests {
         let ast = parse_markdown(input);
 
         assert_eq!(
-            HeadingHierarchy::from_node(&ast),
+            HH::from_node(&ast),
             vec![
-                HeadingHierarchy(
-                    "test".into(),
-                    vec![
-                        HeadingHierarchy(
-                            "test123".into(),
-                            vec![HeadingHierarchy("test456".into(), vec![])]
-                        ),
-                        HeadingHierarchy("test789".into(), vec![]),
+                HH::new(
+                    "test",
+                    [
+                        HH::new("test123", [HH::new("test456", [])]),
+                        HH::new("test789", []),
                     ],
                 ),
-                HeadingHierarchy("test2".into(), vec![]),
+                HH::new("test2", []),
             ]
         )
     }
