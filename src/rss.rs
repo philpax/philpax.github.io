@@ -79,7 +79,9 @@ fn build_item(
         .build();
 
     let description = doc.description.as_ref().map(|d| {
-        paxhtml::Element::write_many_to_string(&markdown::convert_to_html(syntax, d)).unwrap()
+        markdown::convert_to_html(syntax, d)
+            .write_to_string()
+            .unwrap()
     });
 
     rss::ItemBuilder::default()

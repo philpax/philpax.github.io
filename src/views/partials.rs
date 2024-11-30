@@ -18,7 +18,7 @@ pub fn post(
     document: &Document,
     post_body: PostBody,
 ) -> paxhtml::Element {
-    let mut post_body_html = markdown::convert_to_html(
+    let mut post_body_html = vec![markdown::convert_to_html(
         context.syntax,
         &match post_body {
             PostBody::Full => None,
@@ -26,7 +26,7 @@ pub fn post(
             PostBody::Short => document.metadata.short(),
         }
         .unwrap_or(document.content.clone()),
-    );
+    )];
 
     if post_body == PostBody::Description {
         post_body_html.push(html! {

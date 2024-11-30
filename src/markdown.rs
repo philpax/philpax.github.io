@@ -1,98 +1,74 @@
 use crate::{elements as e, syntax::SyntaxHighlighter};
-use paxhtml::builder as b;
+use paxhtml::{builder as b, IntoElement};
 
 pub use markdown::mdast::Node;
 
-pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::Element> {
+pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> paxhtml::Element {
     match node {
         Node::Root(r) => r
             .children
             .iter()
-            .flat_map(|n| convert_to_html(syntax, n))
-            .collect(),
+            .map(|n| convert_to_html(syntax, n))
+            .into_element(),
 
         Node::Heading(h) => {
-            vec![e::h_with_id((h.depth + 2).min(6), true)(convert_many(
-                syntax,
-                &h.children,
-            ))]
+            e::h_with_id((h.depth + 2).min(6), true)(convert_many(syntax, &h.children))
         }
-        Node::Text(t) => {
-            vec![b::text(&t.value)]
-        }
-        Node::Paragraph(p) => {
-            vec![b::p([])(convert_many(syntax, &p.children))]
-        }
-        Node::Strong(s) => {
-            vec![b::strong([])(convert_many(syntax, &s.children))]
-        }
-        Node::Emphasis(e) => {
-            vec![b::em([])(convert_many(syntax, &e.children))]
-        }
+        Node::Text(t) => b::text(&t.value),
+        Node::Paragraph(p) => b::p([])(convert_many(syntax, &p.children)),
+        Node::Strong(s) => b::strong([])(convert_many(syntax, &s.children)),
+        Node::Emphasis(e) => b::em([])(convert_many(syntax, &e.children)),
         Node::List(l) => {
             let children = convert_many(syntax, &l.children);
-            vec![if l.ordered {
+            if l.ordered {
                 b::ol([])(children)
             } else {
                 b::ul([])(children)
-            }]
+            }
         }
         Node::ListItem(li) => {
             // hack: if the only child of this list item is a paragraph, drop the paragraph
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![b::li([])(convert_many(syntax, &p.children))];
+                    return b::li([])(convert_many(syntax, &p.children));
                 }
             }
 
-            vec![b::li([])(convert_many(syntax, &li.children))]
+            b::li([])(convert_many(syntax, &li.children))
         }
-        Node::Code(c) => {
-            vec![b::pre([("class", "code").into()])(b::code([])(
-                syntax.highlight_code(c.lang.as_deref(), &c.value).unwrap(),
-            ))]
-        }
-        Node::BlockQuote(b) => {
-            vec![b::blockquote([])(convert_many(syntax, &b.children))]
-        }
-        Node::Break(_) => {
-            vec![b::br([])]
-        }
+        Node::Code(c) => b::pre([("class", "code").into()])(b::code([])(
+            syntax.highlight_code(c.lang.as_deref(), &c.value).unwrap(),
+        )),
+        Node::BlockQuote(b) => b::blockquote([])(convert_many(syntax, &b.children)),
+        Node::Break(_) => b::br([]),
         Node::InlineCode(c) => {
-            vec![b::code([("class", "code").into()])(
-                syntax.highlight_code(None, &c.value).unwrap(),
-            )]
+            b::code([("class", "code").into()])(syntax.highlight_code(None, &c.value).unwrap())
         }
-        Node::Image(i) => {
-            vec![b::img([
-                ("src", i.url.clone()).into(),
-                ("alt", i.alt.clone()).into(),
-            ])]
-        }
+        Node::Image(i) => b::img([("src", i.url.clone()).into(), ("alt", i.alt.clone()).into()]),
         Node::Link(l) => {
             let mut attrs = vec![("href", l.url.clone()).into()];
             if let Some(title) = &l.title {
                 attrs.push(("title", title.clone()).into());
             }
 
-            vec![b::a(attrs)(
+            b::a(attrs)(
                 l.children
                     .iter()
-                    .flat_map(|n| convert_to_html(syntax, n))
-                    .collect::<Vec<_>>(),
-            )]
+                    .map(|n| convert_to_html(syntax, n))
+                    .into_element(),
+            )
         }
         Node::Html(h) => {
             // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
             // in the middle of the string and actual content follows, but it's good enough for now.
             if h.value.starts_with("<!--") && h.value.ends_with("-->") {
-                return vec![];
+                return paxhtml::Element::Empty;
             }
 
-            vec![paxhtml::Element::Raw {
+            paxhtml::Element::Raw {
                 html: h.value.clone(),
-            }]
+            }
         }
 
         // Not supported yet
@@ -107,7 +83,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
         | Node::ThematicBreak(_)
         | Node::TableRow(_)
         | Node::TableCell(_)
-        | Node::Definition(_) => vec![],
+        | Node::Definition(_) => paxhtml::Element::Empty,
 
         // Never supported
         Node::Toml(_)
@@ -116,7 +92,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
         | Node::MdxjsEsm(_)
         | Node::MdxTextExpression(_)
         | Node::MdxJsxTextElement(_)
-        | Node::MdxFlowExpression(_) => vec![],
+        | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
     }
 }
 #[derive(Debug, PartialEq, Clone)]
@@ -192,11 +168,11 @@ fn inner_text(node: &Node) -> String {
     }
 }
 
-fn convert_many(syntax: &SyntaxHighlighter, nodes: &[Node]) -> Vec<paxhtml::Element> {
+fn convert_many(syntax: &SyntaxHighlighter, nodes: &[Node]) -> paxhtml::Element {
     nodes
         .iter()
-        .flat_map(|n| convert_to_html(syntax, n))
-        .collect()
+        .map(|n| convert_to_html(syntax, n))
+        .into_element()
 }
 
 #[cfg(test)]
