@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::{builder, routing::RoutePath, Element};
+use crate::{routing::RoutePath, Element};
 
 #[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -13,9 +13,9 @@ impl From<Vec<Element>> for Document {
     }
 }
 impl Document {
-    pub fn new(children: impl builder::ToElements) -> Self {
+    pub fn new(children: impl IntoIterator<Item = Element>) -> Self {
         Document {
-            children: children.to_elements(),
+            children: children.into_iter().collect(),
         }
     }
 
@@ -58,14 +58,11 @@ impl Document {
 
 #[cfg(test)]
 mod tests {
-    use super::builder::*;
+    use crate::builder::*;
 
     #[test]
     fn should_indent_successive_p_tags_in_a_fragment() {
-        let input_elements = vec![div(Empty)(Element::from(vec![
-            p(Empty)(text("Hello")),
-            p(Empty)(text("World")),
-        ]))];
+        let input_elements = vec![div([])([p([])(text("Hello")), p([])(text("World"))])];
 
         let desired_output = "<div>\n  <p>Hello</p>\n  <p>World</p>\n</div>";
 

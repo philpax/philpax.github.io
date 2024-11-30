@@ -1,90 +1,44 @@
 pub use super::{Attribute, Document, Element, IntoElement};
 
-pub trait ToElements {
-    fn to_elements(self) -> Vec<Element>;
-}
-impl<T: Into<Element>> ToElements for T {
-    fn to_elements(self) -> Vec<Element> {
-        vec![self.into()]
-    }
-}
-impl<T: Into<Element> + Clone> ToElements for &[T] {
-    fn to_elements(self) -> Vec<Element> {
-        self.iter().cloned().map(|e| e.into()).collect()
-    }
-}
-impl<T: Into<Element> + Clone, const N: usize> ToElements for [T; N] {
-    fn to_elements(self) -> Vec<Element> {
-        self.iter().cloned().map(|e| e.into()).collect()
-    }
-}
-
-pub trait ToAttributes {
-    fn to_attributes(self) -> Vec<Attribute>;
-}
-impl<T: Into<Attribute>> ToAttributes for T {
-    fn to_attributes(self) -> Vec<Attribute> {
-        vec![self.into()]
-    }
-}
-impl<T: Into<Attribute>> ToAttributes for Vec<T> {
-    fn to_attributes(self) -> Vec<Attribute> {
-        self.into_iter().map(Into::into).collect()
-    }
-}
-impl<T: Into<Attribute> + Clone> ToAttributes for &[T] {
-    fn to_attributes(self) -> Vec<Attribute> {
-        self.iter().cloned().map(|e| e.into()).collect()
-    }
-}
-impl<T: Into<Attribute> + Clone, const N: usize> ToAttributes for [T; N] {
-    fn to_attributes(self) -> Vec<Attribute> {
-        self.iter().cloned().map(|e| e.into()).collect()
-    }
-}
-
-/// A type that represents no attributes or elements.
-pub struct Empty;
-impl ToAttributes for Empty {
-    fn to_attributes(self) -> Vec<Attribute> {
-        vec![]
-    }
-}
-impl ToElements for Empty {
-    fn to_elements(self) -> Vec<Element> {
-        vec![]
-    }
-}
-
 pub fn text(text: impl Into<String>) -> Element {
     Element::from(text.into())
 }
 
-pub fn tag<E: ToElements>(
+pub fn tag<E: Into<Element>>(
     name: impl Into<String>,
-    attributes: impl ToAttributes,
+    attributes: impl IntoIterator<Item = Attribute>,
     void: bool,
 ) -> impl FnOnce(E) -> Element {
-    move |children: E| Element::Tag {
-        name: name.into(),
-        attributes: attributes.to_attributes(),
-        children: children.to_elements(),
-        void,
+    move |children: E| {
+        let children = children.into();
+        let children = if let Element::Fragment { children } = children {
+            children
+        } else if !children.is_empty() {
+            vec![children]
+        } else {
+            vec![]
+        };
+        Element::Tag {
+            name: name.into(),
+            attributes: attributes.into_iter().collect(),
+            children,
+            void,
+        }
     }
 }
 
-pub fn doctype(attributes: impl ToAttributes) -> Element {
+pub fn doctype(attributes: impl IntoIterator<Item = Attribute>) -> Element {
     Element::Tag {
         name: "!DOCTYPE".into(),
-        attributes: attributes.to_attributes(),
-        children: Empty.to_elements(),
+        attributes: attributes.into_iter().collect(),
+        children: vec![],
         void: true,
     }
 }
 
 macro_rules! non_void_builders {
     ($($tag_ident:ident),*) => { $(
-        pub fn $tag_ident<E: ToElements>(attributes: impl ToAttributes) -> impl FnOnce(E) -> Element {
+        pub fn $tag_ident<E: Into<Element>>(attributes: impl IntoIterator<Item = Attribute>) -> impl FnOnce(E) -> Element {
             tag(stringify!($tag_ident), attributes, false)
         }
     )* };
@@ -98,8 +52,8 @@ non_void_builders! {
 
 macro_rules! void_builders {
     ($($tag_ident:ident),*) => { $(
-        pub fn $tag_ident(attributes: impl ToAttributes) -> Element {
-            tag(stringify!($tag_ident), attributes, true)(Empty)
+        pub fn $tag_ident(attributes: impl IntoIterator<Item = Attribute>) -> Element {
+            tag(stringify!($tag_ident), attributes, true)([])
         }
     )* };
 }

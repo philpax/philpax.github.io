@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 pub use paxhtml::{
-    builder::{Element, Empty, IntoElement},
+    builder::{Element, IntoElement},
     html,
 };
 
@@ -9,37 +9,39 @@ use paxhtml::builder::*;
 
 pub fn date_with_chrono(date: chrono::NaiveDate) -> Element {
     let date = date.to_string();
-    time([("datetime", date.as_str()), ("title", date.as_str())])(date.clone())
+    time([
+        ("datetime", date.as_str()).into(),
+        ("title", date.as_str()).into(),
+    ])(date.clone())
 }
 
 pub fn datetime_with_chrono<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
     time([
-        ("datetime", date.to_rfc3339()),
-        ("title", date.to_rfc2822()),
+        ("datetime", date.to_rfc3339()).into(),
+        ("title", date.to_rfc2822()).into(),
     ])(date.to_rfc2822())
 }
 
 /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-pub fn h_with_id<E: ToElements>(depth: u8, with_link: bool) -> impl FnOnce(E) -> Element {
+pub fn h_with_id<E: Into<Element>>(depth: u8, with_link: bool) -> impl FnOnce(E) -> Element {
     move |children: E| {
-        let children = children.to_elements();
-        let inner_text = children.iter().map(|c| c.inner_text()).collect::<String>();
-        let id = crate::util::slugify(&inner_text);
+        let children = children.into();
+        let id = crate::util::slugify(&children.inner_text());
 
         let children = if with_link {
-            vec![a(("href", format!("#{id}")))(children)]
+            a([("href", format!("#{id}")).into()])(children)
         } else {
             children
         };
 
-        tag(format!("h{depth}"), Empty, false)(children)
+        tag(format!("h{depth}"), vec![("id", id).into()], false)(children)
     }
 }
 macro_rules! generate_hs_with_id {
     ($(($fn_ident:ident, $depth:literal)),*) => {
         $(
         /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-        pub fn $fn_ident(element: impl ToElements) -> Element {
+        pub fn $fn_ident(element: impl Into<Element>) -> Element {
             h_with_id($depth, false)(element)
         }
         )*

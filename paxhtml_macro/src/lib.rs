@@ -173,13 +173,13 @@ impl ToTokens for HtmlNode {
                     })
                     .collect::<Vec<_>>();
                 let attrs = if attrs.is_empty() {
-                    quote! { paxhtml::builder::Empty }
+                    quote! { vec![] }
                 } else {
                     quote! { [#(#attrs),*] }
                 };
 
                 let children = if children.is_empty() {
-                    quote! { paxhtml::builder::Empty }
+                    quote! { vec![] }
                 } else {
                     quote! { [#(#children),*] }
                 };
@@ -205,6 +205,7 @@ impl ToTokens for HtmlNode {
 }
 
 #[proc_macro]
+/// Constructs a tree of [`paxhtml::Element`]s from (X)HTML-like syntax, similar to JSX.
 pub fn html(input: TokenStream) -> TokenStream {
     let node = parse_macro_input!(input as HtmlNode);
     quote! { #node }.into()

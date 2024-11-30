@@ -10,7 +10,7 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
 
     paxhtml::Document::new([
-        paxhtml::builder::doctype("html"),
+        paxhtml::builder::doctype(["html".into()]),
         html! {
             <html lang="en-AU">
                 <head>
@@ -153,7 +153,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
 
 pub fn redirect(to_url: &str) -> paxhtml::Document {
     paxhtml::Document::new([
-        paxhtml::builder::doctype("html"),
+        paxhtml::builder::doctype(["html".into()]),
         html! {
             <html lang="en-AU">
                 <head>

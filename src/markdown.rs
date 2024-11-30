@@ -2,10 +2,8 @@ use crate::{elements as e, syntax::SyntaxHighlighter};
 use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
-use paxhtml::builder::ToAttributes;
 
 pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::Element> {
-    use b::Empty;
     match node {
         Node::Root(r) => r
             .children
@@ -23,20 +21,20 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
             vec![b::text(&t.value)]
         }
         Node::Paragraph(p) => {
-            vec![b::p(Empty)(convert_many(syntax, &p.children))]
+            vec![b::p([])(convert_many(syntax, &p.children))]
         }
         Node::Strong(s) => {
-            vec![b::strong(Empty)(convert_many(syntax, &s.children))]
+            vec![b::strong([])(convert_many(syntax, &s.children))]
         }
         Node::Emphasis(e) => {
-            vec![b::em(Empty)(convert_many(syntax, &e.children))]
+            vec![b::em([])(convert_many(syntax, &e.children))]
         }
         Node::List(l) => {
             let children = convert_many(syntax, &l.children);
             vec![if l.ordered {
-                b::ol(Empty)(children)
+                b::ol([])(children)
             } else {
-                b::ul(Empty)(children)
+                b::ul([])(children)
             }]
         }
         Node::ListItem(li) => {
@@ -44,33 +42,36 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
             // and use the raw content instead
             if li.children.len() == 1 {
                 if let Node::Paragraph(p) = &li.children[0] {
-                    return vec![b::li(Empty)(convert_many(syntax, &p.children))];
+                    return vec![b::li([])(convert_many(syntax, &p.children))];
                 }
             }
 
-            vec![b::li(Empty)(convert_many(syntax, &li.children))]
+            vec![b::li([])(convert_many(syntax, &li.children))]
         }
         Node::Code(c) => {
-            vec![b::pre(("class", "code"))(b::code(Empty)(
+            vec![b::pre([("class", "code").into()])(b::code([])(
                 syntax.highlight_code(c.lang.as_deref(), &c.value).unwrap(),
             ))]
         }
         Node::BlockQuote(b) => {
-            vec![b::blockquote(Empty)(convert_many(syntax, &b.children))]
+            vec![b::blockquote([])(convert_many(syntax, &b.children))]
         }
         Node::Break(_) => {
-            vec![b::br(Empty)]
+            vec![b::br([])]
         }
         Node::InlineCode(c) => {
-            vec![b::code(("class", "code"))(
+            vec![b::code([("class", "code").into()])(
                 syntax.highlight_code(None, &c.value).unwrap(),
             )]
         }
         Node::Image(i) => {
-            vec![b::img([("src", i.url.clone()), ("alt", i.alt.clone())])]
+            vec![b::img([
+                ("src", i.url.clone()).into(),
+                ("alt", i.alt.clone()).into(),
+            ])]
         }
         Node::Link(l) => {
-            let mut attrs = ("href", l.url.clone()).to_attributes();
+            let mut attrs = vec![("href", l.url.clone()).into()];
             if let Some(title) = &l.title {
                 attrs.push(("title", title.clone()).into());
             }
@@ -106,9 +107,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
         | Node::ThematicBreak(_)
         | Node::TableRow(_)
         | Node::TableCell(_)
-        | Node::Definition(_) => {
-            vec![]
-        }
+        | Node::Definition(_) => vec![],
 
         // Never supported
         Node::Toml(_)
@@ -117,9 +116,7 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> Vec<paxhtml::
         | Node::MdxjsEsm(_)
         | Node::MdxTextExpression(_)
         | Node::MdxJsxTextElement(_)
-        | Node::MdxFlowExpression(_) => {
-            vec![]
-        }
+        | Node::MdxFlowExpression(_) => vec![],
     }
 }
 #[derive(Debug, PartialEq, Clone)]
@@ -217,10 +214,10 @@ mod tests {
                             "test123".into(),
                             vec![HeadingHierarchy("test456".into(), vec![])]
                         ),
-                        HeadingHierarchy("test789".into(), vec![])
-                    ]
+                        HeadingHierarchy("test789".into(), vec![]),
+                    ],
                 ),
-                HeadingHierarchy("test2".into(), vec![])
+                HeadingHierarchy("test2".into(), vec![]),
             ]
         )
     }

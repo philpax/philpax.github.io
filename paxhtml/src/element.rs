@@ -49,6 +49,16 @@ impl From<Vec<Element>> for Element {
         }
     }
 }
+impl From<&[Element]> for Element {
+    fn from(children: &[Element]) -> Self {
+        children.to_vec().into()
+    }
+}
+impl<const N: usize> From<[Element; N]> for Element {
+    fn from(children: [Element; N]) -> Self {
+        children.to_vec().into()
+    }
+}
 impl FromIterator<Element> for Element {
     fn from_iter<I: IntoIterator<Item = Element>>(iter: I) -> Self {
         iter.into_iter().collect::<Vec<_>>().into()
@@ -252,9 +262,9 @@ mod tests {
 
     #[test]
     fn test_inline_code() {
-        let input = p(Empty)([
+        let input = p([])([
             text("This is an example of "),
-            code(Empty)("inline code"),
+            code([])("inline code"),
             text(" in a paragraph."),
         ]);
 
@@ -267,14 +277,14 @@ mod tests {
 
     #[test]
     fn test_empty_ul_with_tags_class() {
-        let input = ul(("class", "tags"))(Empty);
+        let input = ul([("class", "tags").into()])([]);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<ul class=\"tags\"></ul>");
     }
 
     #[test]
     fn test_void_element() {
-        let input = br(Empty);
+        let input = br([]);
         let output = input.write_to_string().unwrap();
         assert_eq!(output, "<br>");
     }
