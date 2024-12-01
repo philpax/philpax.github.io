@@ -79,7 +79,7 @@ fn build_item(
         .build();
 
     let description = doc.description.as_ref().map(|d| {
-        markdown::convert_to_html(syntax, d)
+        paxhtml::Document::new([markdown::convert_to_html(syntax, d)])
             .write_to_string()
             .unwrap()
     });

@@ -10,6 +10,9 @@ pub use document::Document;
 mod element;
 pub use element::{Element, IntoElement};
 
+mod render_element;
+pub use render_element::RenderElement;
+
 mod routing;
 pub use routing::RoutePath;
 

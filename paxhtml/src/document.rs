@@ -1,26 +1,28 @@
 use std::path::Path;
 
-use crate::{routing::RoutePath, Element};
+use crate::{routing::RoutePath, Element, RenderElement};
 
 #[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Document {
-    pub children: Vec<Element>,
+    pub children: Vec<RenderElement>,
 }
 impl From<Vec<Element>> for Document {
     fn from(children: Vec<Element>) -> Self {
-        Document { children }
+        Document {
+            children: RenderElement::from_elements(children),
+        }
     }
 }
 impl Document {
     pub fn new(children: impl IntoIterator<Item = Element>) -> Self {
         Document {
-            children: children.into_iter().collect(),
+            children: RenderElement::from_elements(children),
         }
     }
 
     pub fn write(&self, writer: &mut impl std::io::Write) -> std::io::Result<()> {
-        Element::write_many(writer, &self.children, 0)
+        RenderElement::write_many(writer, &self.children, 0)
     }
 
     pub fn write_to_route(
@@ -55,17 +57,38 @@ mod tests {
     use crate::builder::*;
 
     #[test]
+    fn test_inline_code() {
+        let input = Document::new([p([])([
+            text("This is an example of "),
+            code([])("inline code"),
+            text(" in a paragraph."),
+        ])]);
+
+        let output = input.write_to_string().unwrap();
+        assert_eq!(
+            output,
+            "<p>This is an example of <code>inline code</code> in a paragraph.</p>"
+        );
+    }
+
+    #[test]
+    fn test_empty_ul_with_tags_class() {
+        let input = Document::new([ul([("class", "tags").into()])([])]);
+        let output = input.write_to_string().unwrap();
+        assert_eq!(output, "<ul class=\"tags\"></ul>");
+    }
+
+    #[test]
+    fn test_void_element() {
+        let input = Document::new([br([])]);
+        let output = input.write_to_string().unwrap();
+        assert_eq!(output, "<br>");
+    }
+
+    #[test]
     fn should_indent_successive_p_tags_in_a_fragment() {
-        let input_elements = vec![div([])([p([])(text("Hello")), p([])(text("World"))])];
-
-        let desired_output = "<div>\n  <p>Hello</p>\n  <p>World</p>\n</div>";
-
-        let input_document: Document = input_elements.clone().into();
-        let output = input_document.write_to_string().unwrap();
-        assert_eq!(output, desired_output);
-
-        let input_element: Element = input_elements.into();
-        let output = input_element.write_to_string().unwrap();
-        assert_eq!(output, desired_output);
+        let input_elements = Document::new([div([])([p([])(text("Hello")), p([])(text("World"))])]);
+        let output = input_elements.write_to_string().unwrap();
+        assert_eq!(output, "<div>\n  <p>Hello</p>\n  <p>World</p>\n</div>");
     }
 }

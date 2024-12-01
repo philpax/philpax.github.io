@@ -1,5 +1,3 @@
-use std::io::Write;
-
 use crate::Attribute;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
@@ -81,123 +79,6 @@ impl<T: Iterator<Item = Element>> IntoElement for T {
     }
 }
 impl Element {
-    pub fn write_to_string(&self) -> std::io::Result<String> {
-        let mut output = vec![];
-        self.write(&mut output, 0)?;
-        Ok(String::from_utf8(output).unwrap())
-    }
-
-    pub fn write(&self, writer: &mut dyn Write, depth: usize) -> std::io::Result<()> {
-        match self {
-            Element::Empty => Ok(()),
-            Element::Tag {
-                name,
-                attributes,
-                children,
-                void,
-            } => {
-                // start tag
-                write!(writer, "<{name}")?;
-                for Attribute { key, value } in attributes {
-                    match value {
-                        Some(value) => write!(writer, " {key}=\"{value}\"")?,
-                        None => write!(writer, " {key}")?,
-                    }
-                }
-                write!(writer, ">")?;
-
-                if *void {
-                    if !children.is_empty() {
-                        return Err(std::io::Error::new(
-                            std::io::ErrorKind::InvalidInput,
-                            format!("Void element ({self:?}) has children"),
-                        ));
-                    }
-                    return Ok(());
-                }
-
-                // children - we flatten them to simplify the logic below,
-                // which ensures that fragments are not indented
-                fn flatten_children(children: &[Element]) -> Vec<Element> {
-                    children
-                        .iter()
-                        .flat_map(|c| match c {
-                            Element::Empty => vec![],
-                            Element::Text { text } if text == "\n" => vec![],
-                            Element::Fragment { children } => flatten_children(children),
-                            _ => vec![c.clone()],
-                        })
-                        .collect::<Vec<_>>()
-                }
-                let children = flatten_children(children);
-                let children_started_with_text = children
-                    .first()
-                    .is_some_and(|c| matches!(c, Element::Text { .. }));
-                let should_indent = !children.is_empty() && !children_started_with_text;
-                let mut did_indent = false;
-                for child in children {
-                    let depth = depth + 1;
-                    let should_indent_this_child = should_indent
-                        && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
-                        && !child.is_raw();
-                    if should_indent_this_child {
-                        writeln!(writer)?;
-                        for _ in 0..depth {
-                            write!(writer, "  ")?;
-                        }
-                        did_indent = true;
-                    }
-                    child.write(writer, depth)?;
-                }
-
-                // end tag
-                if did_indent {
-                    writeln!(writer)?;
-                    for _ in 0..depth {
-                        write!(writer, "  ")?;
-                    }
-                }
-                write!(writer, "</{name}>")?;
-                Ok(())
-            }
-            Element::Fragment { children } => Element::write_many(writer, children, depth),
-            Element::Text { text } => {
-                let text = html_escape::encode_text(text);
-                for (idx, line) in text.lines().enumerate() {
-                    if idx > 0 {
-                        writeln!(writer)?;
-                    }
-                    write!(writer, "{}", line)?;
-                }
-                Ok(())
-            }
-            Element::Raw { html } => {
-                write!(writer, "{html}")?;
-                Ok(())
-            }
-        }
-    }
-
-    pub fn write_many(
-        writer: &mut dyn Write,
-        elements: &[Element],
-        depth: usize,
-    ) -> std::io::Result<()> {
-        for (idx, element) in elements.iter().enumerate() {
-            if idx > 0 {
-                writeln!(writer)?;
-            }
-            element.write(writer, depth)?;
-        }
-        Ok(())
-    }
-
-    pub fn write_many_to_string(elements: &[Element]) -> std::io::Result<String> {
-        let mut output = vec![];
-        Self::write_many(&mut output, elements, 0)?;
-        Ok(String::from_utf8(output).unwrap())
-    }
-
     pub fn tag(&self) -> Option<&str> {
         match self {
             Element::Tag { name, .. } => Some(name),
@@ -260,39 +141,5 @@ impl Element {
     #[must_use]
     pub fn is_raw(&self) -> bool {
         matches!(self, Self::Raw { .. })
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::builder::*;
-
-    #[test]
-    fn test_inline_code() {
-        let input = p([])([
-            text("This is an example of "),
-            code([])("inline code"),
-            text(" in a paragraph."),
-        ]);
-
-        let output = input.write_to_string().unwrap();
-        assert_eq!(
-            output,
-            "<p>This is an example of <code>inline code</code> in a paragraph.</p>"
-        );
-    }
-
-    #[test]
-    fn test_empty_ul_with_tags_class() {
-        let input = ul([("class", "tags").into()])([]);
-        let output = input.write_to_string().unwrap();
-        assert_eq!(output, "<ul class=\"tags\"></ul>");
-    }
-
-    #[test]
-    fn test_void_element() {
-        let input = br([]);
-        let output = input.write_to_string().unwrap();
-        assert_eq!(output, "<br>");
     }
 }
