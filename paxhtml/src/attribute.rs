@@ -1,9 +1,13 @@
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+/// A key-value pair for an HTML attribute.
 pub struct Attribute {
+    /// The key of the attribute.
     pub key: String,
+    /// The value of the attribute.
     pub value: Option<String>,
 }
+/// Create an attribute from a value that implements [Into<Attribute>].
 pub fn attr(value: impl Into<Attribute>) -> Attribute {
     value.into()
 }

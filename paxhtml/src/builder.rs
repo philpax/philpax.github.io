@@ -1,9 +1,16 @@
+//! Implements a builder DSL for creating HTML documents through a series of functions.
+
 pub use super::{Attribute, Document, Element, IntoElement};
 
+/// Create a text element from a value that implements [Into<String>].
 pub fn text(text: impl Into<String>) -> Element {
     Element::from(text.into())
 }
 
+/// Create a tag element from a name, attributes, and a boolean indicating whether the tag is a void
+/// element (i.e. doesn't have a closing tag).
+///
+/// The children are passed in as a single argument to the returned function.
 pub fn tag<E: Into<Element>>(
     name: impl Into<String>,
     attributes: impl IntoIterator<Item = Attribute>,
@@ -26,7 +33,7 @@ pub fn tag<E: Into<Element>>(
         }
     }
 }
-
+/// Create a doctype element with a list of attributes.
 pub fn doctype(attributes: impl IntoIterator<Item = Attribute>) -> Element {
     Element::Tag {
         name: "!DOCTYPE".into(),
@@ -38,6 +45,7 @@ pub fn doctype(attributes: impl IntoIterator<Item = Attribute>) -> Element {
 
 macro_rules! non_void_builders {
     ($($tag_ident:ident),*) => { $(
+        #[doc = concat!("Create a non-void element with the tag name `", stringify!($tag_ident), "` and a list of attributes.\n\nThe children are passed in as a single argument to the returned function.")]
         pub fn $tag_ident<E: Into<Element>>(attributes: impl IntoIterator<Item = Attribute>) -> impl FnOnce(E) -> Element {
             tag(stringify!($tag_ident), attributes, false)
         }
@@ -52,6 +60,7 @@ non_void_builders! {
 
 macro_rules! void_builders {
     ($($tag_ident:ident),*) => { $(
+        #[doc = concat!("Create a void element with the tag name `", stringify!($tag_ident), "` and a list of attributes.")]
         pub fn $tag_ident(attributes: impl IntoIterator<Item = Attribute>) -> Element {
             tag(stringify!($tag_ident), attributes, true)([])
         }

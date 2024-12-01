@@ -4,7 +4,10 @@ use crate::{routing::RoutePath, Element, RenderElement};
 
 #[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+/// A document is a collection of elements that will be rendered to HTML.
 pub struct Document {
+    /// The children of the document. [Element]s are converted to [RenderElement]s when the document
+    /// is created.
     pub children: Vec<RenderElement>,
 }
 impl From<Vec<Element>> for Document {
@@ -15,16 +18,23 @@ impl From<Vec<Element>> for Document {
     }
 }
 impl Document {
+    /// Create a new document with a list of children. [Element]s are converted to [RenderElement]s
+    /// when the document is created.
     pub fn new(children: impl IntoIterator<Item = Element>) -> Self {
         Document {
             children: RenderElement::from_elements(children),
         }
     }
 
+    /// Write the document to a writer.
     pub fn write(&self, writer: &mut impl std::io::Write) -> std::io::Result<()> {
         RenderElement::write_many(writer, &self.children, 0)
     }
 
+    /// Write the document to a file in the given route.
+    ///
+    /// If `dump_tree` is enabled, the document's element tree will also be written to a JSON file
+    /// in the same directory.
     pub fn write_to_route(
         &self,
         output_dir: &Path,
@@ -45,6 +55,7 @@ impl Document {
         self.write(&mut writer)
     }
 
+    /// Write the document to a string.
     pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];
         self.write(&mut output)?;

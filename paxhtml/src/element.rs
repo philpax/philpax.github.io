@@ -2,22 +2,38 @@ use crate::Attribute;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+/// An element in an HTML document. This is optimised for authoring, and supports both
+/// [Element::Empty] and [Element::Fragment] for convenience.
+///
+/// These will be removed when converted to [crate::RenderElement]s.
 pub enum Element {
     #[default]
+    /// An empty element.
     Empty,
+    /// A tag element.
     Tag {
+        /// The name of the tag.
         name: String,
+        /// The attributes of the tag.
         attributes: Vec<Attribute>,
+        /// The children of the tag.
         children: Vec<Element>,
+        /// Whether the tag is void.
         void: bool,
     },
+    /// A fragment element.
     Fragment {
+        /// The children of the fragment.
         children: Vec<Element>,
     },
+    /// A text element.
     Text {
+        /// The text of the element.
         text: String,
     },
+    /// A raw element.
     Raw {
+        /// The raw HTML of the element.
         html: String,
     },
 }
@@ -71,6 +87,7 @@ impl FromIterator<Element> for Element {
 /// - The single element if the iterator contains exactly one element
 /// - [`Element::Fragment`] containing all elements if the iterator contains multiple elements
 pub trait IntoElement {
+    /// Convert the iterator into a single [`Element`].
     fn into_element(self) -> Element;
 }
 impl<T: Iterator<Item = Element>> IntoElement for T {
@@ -79,6 +96,7 @@ impl<T: Iterator<Item = Element>> IntoElement for T {
     }
 }
 impl Element {
+    /// Get the tag name of the element if it is a [`Tag`].
     pub fn tag(&self) -> Option<&str> {
         match self {
             Element::Tag { name, .. } => Some(name),
@@ -86,6 +104,7 @@ impl Element {
         }
     }
 
+    /// Get the attributes of the element if it is a [`Tag`].
     pub fn attrs(&self) -> Option<&[Attribute]> {
         match self {
             Element::Tag { attributes, .. } => Some(attributes),
@@ -93,6 +112,9 @@ impl Element {
         }
     }
 
+    /// Get the inner text of the element.
+    ///
+    /// This will return an empty string if no inner text exists.
     pub fn inner_text(&self) -> String {
         match self {
             Element::Empty => String::new(),

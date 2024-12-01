@@ -4,21 +4,37 @@ use crate::{Attribute, Element};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+/// A renderable element in an HTML document.
+///
+/// These are constructed from [`Element`]s using [`RenderElement::from_elements`].
+/// This will process the tree to remove any extraneous nodes during conversion.
 pub enum RenderElement {
+    /// A tag element.
     Tag {
+        /// The name of the tag.
         name: String,
+        /// The attributes of the tag.
         attributes: Vec<Attribute>,
+        /// The children of the tag.
         children: Vec<RenderElement>,
+        /// Whether the tag is void.
         void: bool,
     },
+    /// A text element.
     Text {
+        /// The text of the element.
         text: String,
     },
+    /// A raw element.
     Raw {
+        /// The raw HTML of the element.
         html: String,
     },
 }
 impl RenderElement {
+    /// Convert a list of [`Element`]s into a list of [`RenderElement`]s.
+    ///
+    /// This will process the tree to remove any extraneous nodes during conversion.
     pub fn from_elements(elements: impl IntoIterator<Item = Element>) -> Vec<Self> {
         elements
             .into_iter()
@@ -43,12 +59,14 @@ impl RenderElement {
             .collect()
     }
 
+    /// Write the element to a string.
     pub fn write_to_string(&self) -> std::io::Result<String> {
         let mut output = vec![];
         self.write(&mut output, 0)?;
         Ok(String::from_utf8(output).unwrap())
     }
 
+    /// Write the element to a writer.
     pub fn write(&self, writer: &mut dyn Write, depth: usize) -> std::io::Result<()> {
         match self {
             RenderElement::Tag {
@@ -124,6 +142,7 @@ impl RenderElement {
         }
     }
 
+    /// Write a list of [`RenderElement`]s to a writer.
     pub fn write_many(
         writer: &mut dyn Write,
         elements: &[RenderElement],
@@ -138,12 +157,14 @@ impl RenderElement {
         Ok(())
     }
 
+    /// Write a list of [`RenderElement`]s to a string.
     pub fn write_many_to_string(elements: &[RenderElement]) -> std::io::Result<String> {
         let mut output = vec![];
         Self::write_many(&mut output, elements, 0)?;
         Ok(String::from_utf8(output).unwrap())
     }
 
+    /// Get the tag name of the element if it is a [`Tag`].
     pub fn tag(&self) -> Option<&str> {
         match self {
             RenderElement::Tag { name, .. } => Some(name),
