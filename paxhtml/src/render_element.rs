@@ -95,14 +95,14 @@ impl RenderElement {
                     return Ok(());
                 }
 
-                let children_started_with_text = children
-                    .first()
-                    .is_some_and(|c| matches!(c, RenderElement::Text { .. }));
-                let should_indent = !children.is_empty() && !children_started_with_text;
+                let should_indent = !children.is_empty();
                 let mut did_indent = false;
+                let mut encountered_text_element = false;
                 for child in children {
                     let depth = depth + 1;
+                    encountered_text_element |= matches!(child, Self::Text { .. });
                     let should_indent_this_child = should_indent
+                        && !encountered_text_element
                         && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
                         && !child.is_raw();
                     if should_indent_this_child {
@@ -178,5 +178,27 @@ impl RenderElement {
     #[must_use]
     pub fn is_raw(&self) -> bool {
         matches!(self, Self::Raw { .. })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::builder::*;
+
+    #[test]
+    pub fn wont_indent_text_surrounded_by_tags() {
+        let element = h3([])([small([])("test "), text("tested"), small([])("!")]);
+        let render_elements = RenderElement::from_elements([element]);
+        let output = RenderElement::write_many_to_string(&render_elements).unwrap();
+        assert_eq!(
+            output,
+            r#"
+<h3>
+  <small>test </small>tested<small>!</small>
+</h3>
+"#
+            .trim()
+        );
     }
 }
