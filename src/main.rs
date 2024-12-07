@@ -174,14 +174,15 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote main index", || {
         // Write out main index
-        views::index(view_context).write_to_route(output_dir, Route::Index)
+        views::main::index(view_context).write_to_route(output_dir, Route::Index)
     })?;
 
     timer.step("Wrote tags", || {
         // Write out tags
-        views::tags(view_context).write_to_route(output_dir, Route::Tags)?;
+        views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
         for tag_id in content.tags.keys() {
-            views::tag(view_context, tag_id).write_to_route(output_dir, Route::Tag { tag_id })?;
+            views::tags::tag(view_context, tag_id)
+                .write_to_route(output_dir, Route::Tag { tag_id })?;
         }
         anyhow::Ok(())
     })?;

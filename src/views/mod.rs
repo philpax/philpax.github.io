@@ -1,10 +1,15 @@
 use crate::{
     content::{Collection, Document},
     elements::*,
-    syntax, util, ViewContext,
+    syntax, ViewContext,
 };
 
 mod partials;
+
+pub mod blog;
+pub mod collection;
+pub mod main;
+pub mod tags;
 
 fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
@@ -43,112 +48,6 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
             </html>
         },
     ])
-}
-
-pub mod collection {
-    use super::*;
-
-    pub fn post(
-        context: ViewContext,
-        collection: &Collection,
-        document: &Document,
-    ) -> paxhtml::Document {
-        layout(
-            context,
-            partials::post(context, collection, document, partials::PostBody::Full),
-        )
-    }
-}
-
-pub mod blog {
-    use super::*;
-
-    pub fn index(context: ViewContext) -> paxhtml::Document {
-        let blog = context.content.collections.get("blog").unwrap();
-        layout(
-            context,
-            blog.documents
-                .iter()
-                .map(|doc| partials::post(context, blog, doc, partials::PostBody::Description))
-                .into_element(),
-        )
-    }
-}
-
-pub fn index(context: ViewContext) -> paxhtml::Document {
-    let blog = context.content.collections.get("blog").unwrap();
-    layout(
-        context,
-        blog.documents
-            .iter()
-            .map(|doc| partials::post(context, blog, doc, partials::PostBody::Short))
-            .into_element(),
-    )
-}
-
-pub fn tags(context: ViewContext) -> paxhtml::Document {
-    let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
-    tag_keys.sort();
-
-    layout(
-        context,
-        html! {
-            <article>
-                <header>
-                    {h2_with_id(html!{<a href="/tags">"Tags"</a>})}
-                </header>
-                <div>
-                    <ul>
-                    {
-                        Element::from_iter(tag_keys.iter().map(|tag| {
-                            let post_count = context.content.tags[*tag].len();
-                            html! {
-                                <li>
-                                    <a href={format!("/tags/{tag}")}>{format!("#{tag}")}</a>
-                                    {format!(
-                                        " ({} {})",
-                                        post_count,
-                                        util::pluralize("post", post_count)
-                                    )}
-                                </li>
-                            }
-                        }))
-                    }
-                    </ul>
-                </div>
-            </article>
-        },
-    )
-}
-
-pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
-    layout(
-        context,
-        html! {
-            <article>
-                <header>
-                    {h2_with_id(html!{<a href="/tags">"Tags"</a>})}
-                </header>
-                <div>
-                    <ul>
-                    {
-                        Element::from_iter(context.content.tags[tag_id].iter().map(|t| {
-                            let collection = &context.content.collections[&t.0];
-                            let document = collection.document_by_id(&t.1).unwrap();
-                            html! {
-                                <li>
-                                    <a href={document.route_path(collection).url_path()}>
-                                        {document.metadata.title.clone()}
-                                    </a>
-                                </li>
-                            }
-                        }))
-                    }
-                    </ul>
-                </div>
-            </article>
-        },
-    )
 }
 
 pub fn redirect(to_url: &str) -> paxhtml::Document {
