@@ -4,8 +4,6 @@ use crate::{
     syntax, ViewContext,
 };
 
-mod partials;
-
 pub mod blog;
 pub mod collection;
 pub mod main;

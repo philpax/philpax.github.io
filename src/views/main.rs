@@ -6,7 +6,14 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         context,
         blog.documents
             .iter()
-            .map(|doc| partials::post(context, blog, doc, partials::PostBody::Short))
+            .map(|doc| {
+                collection::partials::post(
+                    context,
+                    blog,
+                    doc,
+                    collection::partials::PostBody::Short,
+                )
+            })
             .into_element(),
     )
 }
