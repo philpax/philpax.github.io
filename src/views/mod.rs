@@ -10,7 +10,7 @@ pub mod main;
 pub mod tags;
 
 fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
-    let links = [("/blog", "Blog"), ("/tags", "Tags"), ("/about", "About")];
+    let links = [("/blog", "Blog"), ("/tags", "Tags")];
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),

@@ -16,6 +16,7 @@ pub type Tag = String;
 pub struct Content {
     pub path: PathBuf,
     pub collections: HashMap<CollectionId, Collection>,
+    pub about: Document,
     pub tags: HashMap<Tag, Vec<(CollectionId, DocumentId)>>,
     pub icon: image::DynamicImage,
 }
@@ -25,13 +26,13 @@ impl Content {
         let icon = image::open(path.join("icon.png"))?;
 
         let mut content = Content {
-            path,
+            path: path.clone(),
             collections: HashMap::new(),
+            about: Document::read(&path.join("about.md"), "about".to_string())?,
             tags: HashMap::new(),
             icon,
         };
 
-        content.read_collection("about")?;
         content.read_collection("blog")?;
 
         for (collection_id, collection) in &content.collections {
