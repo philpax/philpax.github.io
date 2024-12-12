@@ -26,52 +26,51 @@ pub fn write_all(
     let rss_output_dir = output.join("rss");
     std::fs::create_dir_all(&rss_output_dir)?;
 
-    for (collection_id, collection) in &content.collections {
-        let rss_output = rss_output_dir.join(format!("{collection_id}.rss"));
-        let relative_path = rss_output.strip_prefix(output)?;
-        let relative_path = relative_path.strip_prefix("/").unwrap_or(relative_path);
+    let blog = &content.blog;
+    let rss_output = rss_output_dir.join("blog.rss");
+    let relative_path = rss_output.strip_prefix(output)?;
+    let relative_path = relative_path.strip_prefix("/").unwrap_or(relative_path);
 
-        let items = collection
-            .documents
-            .iter()
-            .map(|doc| build_item(base_url, collection, rss_author, doc, syntax))
-            .collect::<Vec<_>>();
+    let items = blog
+        .documents
+        .iter()
+        .map(|doc| build_item(base_url, blog, rss_author, doc, syntax))
+        .collect::<Vec<_>>();
 
-        let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
-            .link(rss::extension::atom::Link {
-                rel: "self".into(),
-                href: format!("{}/{}", base_url, util::normalize_path(relative_path)),
-                mime_type: Some("application/rss+xml".to_string()),
-                ..Default::default()
-            })
-            .build();
+    let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
+        .link(rss::extension::atom::Link {
+            rel: "self".into(),
+            href: format!("{}/{}", base_url, util::normalize_path(relative_path)),
+            mime_type: Some("application/rss+xml".to_string()),
+            ..Default::default()
+        })
+        .build();
 
-        let rss_channel = rss::ChannelBuilder::default()
-            .title(rss_title)
-            .link(base_url)
-            .atom_ext(atom_ext)
-            .description(rss_description)
-            .language("en-AU".to_string())
-            .last_build_date(chrono::Utc::now().to_rfc2822())
-            .generator("paxgen".to_string())
-            .items(items)
-            .build();
+    let rss_channel = rss::ChannelBuilder::default()
+        .title(rss_title)
+        .link(base_url)
+        .atom_ext(atom_ext)
+        .description(rss_description)
+        .language("en-AU".to_string())
+        .last_build_date(chrono::Utc::now().to_rfc2822())
+        .generator("paxgen".to_string())
+        .items(items)
+        .build();
 
-        let mut file = std::fs::File::create(rss_output)?;
-        rss_channel.pretty_write_to(&mut file, b' ', 2)?;
-    }
+    let mut file = std::fs::File::create(rss_output)?;
+    rss_channel.pretty_write_to(&mut file, b' ', 2)?;
 
     Ok(())
 }
 
 fn build_item(
     base_url: &str,
-    collection: &content::Collection,
+    blog: &content::Blog,
     author: &str,
     doc: &content::Document,
     syntax: &SyntaxHighlighter,
 ) -> rss::Item {
-    let url = format!("{base_url}{}", doc.route_path(collection).url_path());
+    let url = format!("{base_url}{}", blog.route_path(doc).url_path());
 
     let guid = rss::GuidBuilder::default()
         .value(url.clone())

@@ -8,16 +8,14 @@ use serde::Deserialize;
 
 use crate::{util, Route, RoutePath};
 
-pub type CollectionId = String;
 pub type DocumentId = String;
 pub type Tag = String;
 
 #[derive(Debug)]
 pub struct Content {
     pub path: PathBuf,
-    pub collections: HashMap<CollectionId, Collection>,
+    pub blog: Blog,
     pub about: Document,
-    pub tags: HashMap<Tag, Vec<(CollectionId, DocumentId)>>,
     pub icon: image::DynamicImage,
 }
 impl Content {
@@ -25,58 +23,36 @@ impl Content {
         let path = PathBuf::from("content");
         let icon = image::open(path.join("icon.png"))?;
 
-        let mut content = Content {
+        Ok(Content {
             path: path.clone(),
-            collections: HashMap::new(),
+            blog: Blog::read(&path.join("blog"))?,
             about: Document::read(&path.join("about.md"), "about".to_string())?,
-            tags: HashMap::new(),
             icon,
-        };
-
-        content.read_collection("blog")?;
-
-        for (collection_id, collection) in &content.collections {
-            for document in &collection.documents {
-                if let Some(taxonomies) = &document.metadata.taxonomies {
-                    for tag in &taxonomies.tags {
-                        content
-                            .tags
-                            .entry(tag.clone())
-                            .or_default()
-                            .push((collection_id.clone(), document.id.clone()));
-                    }
-                }
-            }
-        }
-
-        Ok(content)
-    }
-
-    fn read_collection(&mut self, id: &str) -> anyhow::Result<()> {
-        let collection = Collection::read(&self.path, id)?;
-        self.collections.insert(collection.id.clone(), collection);
-
-        Ok(())
+        })
     }
 }
 
 #[derive(Debug)]
-pub struct Collection {
-    pub id: CollectionId,
+pub struct Blog {
+    pub tags: HashMap<Tag, Vec<DocumentId>>,
     pub documents: Vec<Document>,
     pub document_key_to_id: HashMap<DocumentId, usize>,
 }
-impl Collection {
-    fn read(content_path: &Path, id: &str) -> anyhow::Result<Self> {
-        let collection_path = content_path.join(id);
-
-        let mut collection = Collection {
-            id: id.to_string(),
+impl Blog {
+    fn read(blog_path: &Path) -> anyhow::Result<Self> {
+        let mut blog = Blog {
+            tags: HashMap::new(),
             documents: vec![],
             document_key_to_id: HashMap::new(),
         };
 
-        for entry in std::fs::read_dir(&collection_path)? {
+        fn read_document(blog: &mut Blog, path: &Path, id: String) -> anyhow::Result<()> {
+            let document = Document::read(path, id)?;
+            blog.documents.push(document);
+            Ok(())
+        }
+
+        for entry in std::fs::read_dir(blog_path)? {
             let path = entry?.path();
             if !path.is_dir() {
                 continue;
@@ -90,43 +66,60 @@ impl Collection {
 
             let index = path.join("index.md");
             if !index.exists() {
-                anyhow::bail!("no index.md for {}/{id}", collection.id);
+                anyhow::bail!("{index:?} does not exist");
             }
 
-            collection.read_document(&index, id)?;
+            read_document(&mut blog, &index, id)?;
         }
 
-        let index_path = collection_path.join("index.md");
+        let index_path = blog_path.join("index.md");
         if index_path.exists() {
-            collection.read_document(&index_path, "index".to_string())?;
+            read_document(&mut blog, &index_path, "index".to_string())?;
         }
 
-        collection.documents.sort_by_key(|d| d.metadata.datetime());
-        collection.documents.reverse();
+        blog.documents.sort_by_key(|d| d.metadata.datetime());
+        blog.documents.reverse();
 
-        for (i, document) in collection.documents.iter().enumerate() {
-            collection.document_key_to_id.insert(document.id.clone(), i);
+        for (i, document) in blog.documents.iter().enumerate() {
+            blog.document_key_to_id.insert(document.id.clone(), i);
             if let Some(alternate_id) = &document.alternate_id {
-                collection
-                    .document_key_to_id
-                    .insert(alternate_id.clone(), i);
+                blog.document_key_to_id.insert(alternate_id.clone(), i);
             }
         }
 
-        Ok(collection)
-    }
+        for document in &blog.documents {
+            let Some(taxonomies) = &document.metadata.taxonomies else {
+                continue;
+            };
+            for tag in &taxonomies.tags {
+                blog.tags
+                    .entry(tag.clone())
+                    .or_default()
+                    .push(document.id.clone());
+            }
+        }
 
-    fn read_document(&mut self, path: &Path, id: String) -> anyhow::Result<()> {
-        let document = Document::read(path, id)?;
-        self.documents.push(document);
-
-        Ok(())
+        Ok(blog)
     }
 
     pub fn document_by_id(&self, id: &str) -> Option<&Document> {
         self.document_key_to_id
             .get(id)
             .and_then(|&i| self.documents.get(i))
+    }
+
+    pub fn route_path(&self, document: &Document) -> RoutePath {
+        Route::BlogPost {
+            post_id: &document.id,
+        }
+        .route_path()
+    }
+
+    pub fn alternate_route_path(&self, document: &Document) -> Option<RoutePath> {
+        document
+            .alternate_id
+            .as_ref()
+            .map(|post_id| Route::BlogPost { post_id }.route_path())
     }
 }
 
@@ -180,29 +173,6 @@ impl Document {
             description,
             content,
             files,
-        })
-    }
-
-    pub fn route_path(&self, collection: &Collection) -> RoutePath {
-        let collection_id = &collection.id;
-        if self.id == "index" {
-            Route::Collection { collection_id }
-        } else {
-            Route::CollectionPost {
-                collection_id,
-                post_id: &self.id,
-            }
-        }
-        .route_path()
-    }
-
-    pub fn alternate_route_path(&self, collection: &Collection) -> Option<RoutePath> {
-        self.alternate_id.as_ref().map(|post_id| {
-            Route::CollectionPost {
-                collection_id: &collection.id,
-                post_id,
-            }
-            .route_path()
         })
     }
 }

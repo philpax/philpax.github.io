@@ -17,17 +17,10 @@ mod views;
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Route<'a> {
     Index,
-    Collection {
-        collection_id: &'a str,
-    },
-    CollectionPost {
-        collection_id: &'a str,
-        post_id: &'a str,
-    },
-    Tags,
-    Tag {
-        tag_id: &'a str,
-    },
+    Blog,
+    BlogPost { post_id: &'a str },
+    BlogTags,
+    BlogTag { tag_id: &'a str },
 }
 impl<'a> From<Route<'a>> for RoutePath {
     fn from(route: Route<'a>) -> Self {
@@ -38,13 +31,10 @@ impl<'a> Route<'a> {
     pub fn route_path(&self) -> RoutePath {
         match *self {
             Route::Index => RoutePath::new([]),
-            Route::Collection { collection_id } => RoutePath::new([collection_id]),
-            Route::CollectionPost {
-                collection_id,
-                post_id,
-            } => RoutePath::new([collection_id, post_id]),
-            Route::Tags => RoutePath::new(["tags"]),
-            Route::Tag { tag_id } => RoutePath::new(["tags", tag_id]),
+            Route::Blog => RoutePath::new(["blog"]),
+            Route::BlogPost { post_id } => RoutePath::new(["blog", post_id]),
+            Route::BlogTags => RoutePath::new(["blog", "tags"]),
+            Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id]),
         }
     }
 }
@@ -139,52 +129,46 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote content", || {
         // Write out content
-        for collection in content.collections.values() {
-            for doc in &collection.documents {
-                let post_route_path = doc.route_path(collection);
+        for doc in &content.blog.documents {
+            let post_route_path = content.blog.route_path(doc);
 
-                views::collection::post(view_context, collection, doc)
-                    .write_to_route(output_dir, post_route_path.clone())?;
-                {
-                    let post_output_dir = post_route_path.dir_path(output_dir);
-                    for path in &doc.files {
-                        std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
-                    }
-                }
-
-                // Write redirect for alternate_id if it exists
-                if let Some(alternate_route_path) = doc.alternate_route_path(collection) {
-                    views::redirect(&post_route_path.url_path())
-                        .write_to_route(output_dir, alternate_route_path)?;
+            views::blog::post(view_context, doc)
+                .write_to_route(output_dir, post_route_path.clone())?;
+            {
+                let post_output_dir = post_route_path.dir_path(output_dir);
+                for path in &doc.files {
+                    std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
                 }
             }
+
+            // Write redirect for alternate_id if it exists
+            if let Some(alternate_route_path) = content.blog.alternate_route_path(doc) {
+                views::redirect(&post_route_path.url_path())
+                    .write_to_route(output_dir, alternate_route_path)?;
+            }
         }
+
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote blog index", || {
         // Write out blog index
-        views::blog::index(view_context).write_to_route(
-            output_dir,
-            Route::Collection {
-                collection_id: "blog",
-            },
-        )
+        views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
+    })?;
+
+    timer.step("Wrote blog tags", || {
+        // Write out tags
+        views::blog::tags::index(view_context).write_to_route(output_dir, Route::BlogTags)?;
+        for tag_id in content.blog.tags.keys() {
+            views::blog::tags::tag(view_context, tag_id)
+                .write_to_route(output_dir, Route::BlogTag { tag_id })?;
+        }
+        anyhow::Ok(())
     })?;
 
     timer.step("Wrote main index", || {
         // Write out main index
         views::main::index(view_context).write_to_route(output_dir, Route::Index)
-    })?;
-
-    timer.step("Wrote tags", || {
-        // Write out tags
-        views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
-        for tag_id in content.tags.keys() {
-            views::tags::tag(view_context, tag_id)
-                .write_to_route(output_dir, Route::Tag { tag_id })?;
-        }
-        anyhow::Ok(())
     })?;
 
     timer.step("Wrote RSS feed", || {

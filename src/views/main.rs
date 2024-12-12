@@ -3,7 +3,7 @@ use super::*;
 use crate::markdown;
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
-    let blog = context.content.collections.get("blog").unwrap();
+    let blog = &context.content.blog;
     let about_body = markdown::convert_to_html(context.syntax, &context.content.about.content);
 
     layout(
@@ -19,11 +19,10 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     blog.documents
                         .iter()
                         .map(|doc| {
-                            collection::partials::post(
+                            blog::partials::post(
                                 context,
-                                blog,
                                 doc,
-                                collection::partials::PostBody::Short,
+                                blog::partials::PostBody::Short,
                             )
                         })
                         .into_element()

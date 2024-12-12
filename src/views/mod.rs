@@ -1,16 +1,13 @@
-use crate::{
-    content::{Collection, Document},
-    elements::*,
-    syntax, ViewContext,
-};
+use crate::{content::Document, elements::*, syntax, Route, ViewContext};
 
 pub mod blog;
-pub mod collection;
 pub mod main;
-pub mod tags;
 
 fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
-    let links = [("/blog", "Blog"), ("/tags", "Tags")];
+    let links = [
+        (Route::Blog.route_path().url_path(), "Blog"),
+        (Route::BlogTags.route_path().url_path(), "Tags"),
+    ];
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
@@ -32,9 +29,9 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
                         <nav>
                             <ul id="header-links">
                             {
-                                Element::from_iter(links.iter().copied().map(|(url, label)| { html! {
+                                Element::from_iter(links.iter().map(|(url, label)| { html! {
                                     <li>
-                                        <a href={url}>{label}</a>
+                                        <a href={url}>{*label}</a>
                                     </li>
                                 }}))
                             }
