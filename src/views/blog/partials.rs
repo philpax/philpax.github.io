@@ -37,7 +37,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 {
                     Element::from_iter(t.tags.iter().map(|tag| { html! {
                         <li>
-                            <a href={Route::BlogTag { tag_id: tag }.route_path().url_path()}>{format!("#{tag}")}</a>
+                            <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                         </li>
                     }}))
                 }

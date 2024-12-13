@@ -5,8 +5,8 @@ pub mod main;
 
 fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [
-        (Route::Blog.route_path().url_path(), "Blog"),
-        (Route::BlogTags.route_path().url_path(), "Tags"),
+        (Route::Blog.url_path(), "Blog"),
+        (Route::BlogTags.url_path(), "Tags"),
     ];
 
     paxhtml::Document::new([

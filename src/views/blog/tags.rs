@@ -10,7 +10,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         html! {
             <article>
                 <header>
-                    {h2_with_id(html!{<a href={Route::BlogTags.route_path().url_path()}>"Tags"</a>})}
+                    {h2_with_id(html!{<a href={Route::BlogTags.url_path()}>"Tags"</a>})}
                 </header>
                 <div>
                     <ul>
@@ -19,7 +19,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                             let post_count = context.content.blog.tags[*tag].len();
                             html! {
                                 <li>
-                                    <a href={Route::BlogTag { tag_id: tag }.route_path().url_path()}>{format!("#{tag}")}</a>
+                                    <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                                     {format!(
                                         " ({} {})",
                                         post_count,
@@ -43,7 +43,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
         html! {
             <article>
                 <header>
-                    {h2_with_id(html!{<a href={Route::BlogTags.route_path().url_path()}>"Tags"</a>})}
+                    {h2_with_id(html!{<a href={Route::BlogTags.url_path()}>"Tags"</a>})}
                 </header>
                 <div>
                     <ul>

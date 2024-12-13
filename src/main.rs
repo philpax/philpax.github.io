@@ -37,6 +37,9 @@ impl<'a> Route<'a> {
             Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id]),
         }
     }
+    pub fn url_path(&self) -> String {
+        self.route_path().url_path()
+    }
 }
 
 struct Timer {
