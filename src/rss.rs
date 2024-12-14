@@ -1,6 +1,8 @@
-use std::path::Path;
-
-use crate::{content, markdown, syntax::SyntaxHighlighter, util};
+use crate::{
+    content::{Blog, Document},
+    markdown,
+    syntax::SyntaxHighlighter,
+};
 
 pub struct RssConfig<'a> {
     pub base_url: &'a str,
@@ -10,11 +12,7 @@ pub struct RssConfig<'a> {
     pub syntax: &'a SyntaxHighlighter,
 }
 
-pub fn write_all(
-    config: RssConfig,
-    content: &content::Content,
-    output: &Path,
-) -> anyhow::Result<()> {
+pub fn generate(config: RssConfig, blog: &Blog, relative_path: &str) -> anyhow::Result<String> {
     let RssConfig {
         base_url,
         rss_title,
@@ -22,14 +20,6 @@ pub fn write_all(
         rss_description,
         syntax,
     } = config;
-
-    let rss_output_dir = output.join("rss");
-    std::fs::create_dir_all(&rss_output_dir)?;
-
-    let blog = &content.blog;
-    let rss_output = rss_output_dir.join("blog.rss");
-    let relative_path = rss_output.strip_prefix(output)?;
-    let relative_path = relative_path.strip_prefix("/").unwrap_or(relative_path);
 
     let items = blog
         .documents
@@ -40,7 +30,7 @@ pub fn write_all(
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
         .link(rss::extension::atom::Link {
             rel: "self".into(),
-            href: format!("{}/{}", base_url, util::normalize_path(relative_path)),
+            href: format!("{base_url}/{relative_path}"),
             mime_type: Some("application/rss+xml".to_string()),
             ..Default::default()
         })
@@ -57,17 +47,18 @@ pub fn write_all(
         .items(items)
         .build();
 
-    let mut file = std::fs::File::create(rss_output)?;
-    rss_channel.pretty_write_to(&mut file, b' ', 2)?;
-
-    Ok(())
+    Ok(String::from_utf8(rss_channel.pretty_write_to(
+        Vec::new(),
+        b' ',
+        2,
+    )?)?)
 }
 
 fn build_item(
     base_url: &str,
-    blog: &content::Blog,
+    blog: &Blog,
     author: &str,
-    doc: &content::Document,
+    doc: &Document,
     syntax: &SyntaxHighlighter,
 ) -> rss::Item {
     let url = format!("{base_url}{}", blog.route_path(doc).url_path());

@@ -176,7 +176,10 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote RSS feed", || {
         // Write out RSS feed
-        rss::write_all(rss_config, &content, output_dir)
+        anyhow::Ok(std::fs::write(
+            output_dir.join("blog.rss"),
+            rss::generate(rss_config, &content.blog, "blog.rss")?,
+        )?)
     })?;
 
     timer.step("Wrote icon", || {
@@ -194,9 +197,6 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-        let syntax_dir = output_dir.join("syntax");
-        std::fs::create_dir_all(&syntax_dir)?;
-
         // Write out bundled styles
         anyhow::Ok(std::fs::write(
             output_dir.join("styles.css"),

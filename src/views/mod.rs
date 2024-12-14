@@ -17,7 +17,7 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                     <title>"Philpax"</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="alternate" href="/rss/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
+                    <link rel="alternate" href="/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
                     <link rel="stylesheet" href="/styles.css" />
                     <script src="/scripts.js"></script>
                 </head>
