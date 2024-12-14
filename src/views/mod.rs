@@ -17,13 +17,13 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                     <title>"Philpax"</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="alternate" href="/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
-                    <link rel="stylesheet" href="/styles.css" />
-                    <script src="/scripts.js"></script>
+                    <link rel="alternate" href={Route::BlogRss.url_path()} r#type="application/rss+xml" title="Philpax's Blog" />
+                    <link rel="stylesheet" href={Route::Styles.url_path()} />
+                    <script src={Route::Scripts.url_path()}></script>
                 </head>
                 <body>
                     <header>
-                        <img src="/icon.png" alt="Philpax icon" />
+                        <img src={Route::Icon.url_path()} alt="Philpax icon" />
                         <h1><a href="/">"Philpax"</a></h1>
                         <nav>
                             <ul id="header-links">

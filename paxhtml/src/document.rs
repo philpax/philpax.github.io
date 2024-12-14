@@ -40,19 +40,15 @@ impl Document {
         output_dir: &Path,
         route_path: impl Into<RoutePath>,
     ) -> std::io::Result<()> {
-        let path = route_path.into().index_path(output_dir);
-        if let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent)?;
-        }
+        let route_path: RoutePath = route_path.into();
         #[cfg(feature = "dump_tree")]
         {
-            std::fs::write(
-                path.with_extension("json"),
-                serde_json::to_string_pretty(&self).unwrap(),
-            )?;
+            route_path
+                .clone()
+                .with_filename(route_path.filename().replace(".html", ".json"))
+                .write(output_dir, serde_json::to_string_pretty(&self).unwrap())?;
         }
-        let mut writer = std::io::BufWriter::new(std::fs::File::create(path)?);
-        self.write(&mut writer)
+        self.write(&mut route_path.writer(output_dir)?)
     }
 
     /// Write the document to a string.

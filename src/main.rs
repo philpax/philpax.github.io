@@ -21,6 +21,11 @@ pub enum Route<'a> {
     BlogPost { post_id: &'a str },
     BlogTags,
     BlogTag { tag_id: &'a str },
+    BlogRss,
+    Styles,
+    Scripts,
+    Icon,
+    Favicon,
 }
 impl<'a> From<Route<'a>> for RoutePath {
     fn from(route: Route<'a>) -> Self {
@@ -30,11 +35,16 @@ impl<'a> From<Route<'a>> for RoutePath {
 impl<'a> Route<'a> {
     pub fn route_path(&self) -> RoutePath {
         match *self {
-            Route::Index => RoutePath::new([]),
-            Route::Blog => RoutePath::new(["blog"]),
-            Route::BlogPost { post_id } => RoutePath::new(["blog", post_id]),
-            Route::BlogTags => RoutePath::new(["blog", "tags"]),
-            Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id]),
+            Route::Index => RoutePath::new([], None),
+            Route::Blog => RoutePath::new(["blog"], None),
+            Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
+            Route::BlogTags => RoutePath::new(["blog", "tags"], None),
+            Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
+            Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
+            Route::Styles => RoutePath::new([], "styles.css".to_string()),
+            Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
+            Route::Icon => RoutePath::new([], "icon.png".to_string()),
+            Route::Favicon => RoutePath::new([], "favicon.ico".to_string()),
         }
     }
     pub fn url_path(&self) -> String {
@@ -176,9 +186,10 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote RSS feed", || {
         // Write out RSS feed
-        anyhow::Ok(std::fs::write(
-            output_dir.join("blog.rss"),
-            rss::generate(rss_config, &content.blog, "blog.rss")?,
+        let route_path = Route::BlogRss.route_path();
+        anyhow::Ok(route_path.write(
+            output_dir,
+            rss::generate(rss_config, &content.blog, route_path.filename())?,
         )?)
     })?;
 
@@ -186,30 +197,32 @@ fn main() -> anyhow::Result<()> {
         content
             .icon
             .resize(128, 128, image::imageops::FilterType::Lanczos3)
-            .save(output_dir.join("icon.png"))?;
+            .save(Route::Icon.route_path().file_path(output_dir))?;
 
         content
             .icon
             .resize(32, 32, image::imageops::FilterType::Lanczos3)
-            .save(output_dir.join("favicon.ico"))?;
+            .save(Route::Favicon.route_path().file_path(output_dir))?;
 
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled styles", || {
         // Write out bundled styles
-        anyhow::Ok(std::fs::write(
-            output_dir.join("styles.css"),
-            styles::generate(view_context)?,
-        )?)
+        anyhow::Ok(
+            Route::Styles
+                .route_path()
+                .write(output_dir, styles::generate(view_context)?)?,
+        )
     })?;
 
     timer.step("Wrote bundled JavaScript", || {
         // Write out bundled JavaScript
-        anyhow::Ok(std::fs::write(
-            output_dir.join("scripts.js"),
-            js::generate()?,
-        )?)
+        anyhow::Ok(
+            Route::Scripts
+                .route_path()
+                .write(output_dir, js::generate()?)?,
+        )
     })?;
 
     timer.finish();
