@@ -196,9 +196,7 @@ fn main() -> anyhow::Result<()> {
     timer.step("Wrote bundled styles", || {
         let syntax_dir = output_dir.join("syntax");
         std::fs::create_dir_all(&syntax_dir)?;
-        for (name, css) in syntax.themes_css() {
-            std::fs::write(syntax_dir.join(format!("{name}.css")), css)?;
-        }
+        std::fs::write(syntax_dir.join("theme.css"), syntax.theme_css())?;
 
         // Write out bundled styles
         anyhow::Ok(std::fs::write(

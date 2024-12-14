@@ -1,9 +1,9 @@
-use crate::{content::Document, elements::*, syntax, Route, ViewContext};
+use crate::{content::Document, elements::*, Route, ViewContext};
 
 pub mod blog;
 pub mod main;
 
-fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
+fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [
         (Route::Blog.url_path(), "Blog"),
         (Route::BlogTags.url_path(), "Tags"),
@@ -19,7 +19,7 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="alternate" href="/rss/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
                     <link rel="stylesheet" href="/styles.css" />
-                    {syntax::style_link(context)}
+                    <link rel="stylesheet" href="/syntax/theme.css" />
                     <script src="/scripts.js"></script>
                 </head>
                 <body>
