@@ -40,55 +40,63 @@ pub struct Blog {
 }
 impl Blog {
     fn read(blog_path: &Path) -> anyhow::Result<Self> {
-        let mut blog = Blog {
-            tags: HashMap::new(),
-            documents: vec![],
-            document_key_to_id: HashMap::new(),
+        let documents = {
+            let mut documents = vec![];
+            for entry in std::fs::read_dir(blog_path)? {
+                let path = entry?.path();
+                if !path.is_dir() {
+                    continue;
+                }
+
+                let id = path
+                    .file_name()
+                    .context("no post id for directory")?
+                    .to_string_lossy()
+                    .to_string();
+
+                let index = path.join("index.md");
+                if !index.exists() {
+                    anyhow::bail!("{index:?} does not exist");
+                }
+
+                documents.push(Document::read(&index, id)?);
+            }
+            documents.sort_by_key(|d| d.metadata.datetime());
+            documents.reverse();
+            documents
         };
 
-        for entry in std::fs::read_dir(blog_path)? {
-            let path = entry?.path();
-            if !path.is_dir() {
-                continue;
+        let document_key_to_id = {
+            let mut document_key_to_id = HashMap::new();
+            for (i, document) in documents.iter().enumerate() {
+                document_key_to_id.insert(document.id.clone(), i);
+                if let Some(alternate_id) = &document.alternate_id {
+                    document_key_to_id.insert(alternate_id.clone(), i);
+                }
             }
+            document_key_to_id
+        };
 
-            let id = path
-                .file_name()
-                .context("no post id for directory")?
-                .to_string_lossy()
-                .to_string();
-
-            let index = path.join("index.md");
-            if !index.exists() {
-                anyhow::bail!("{index:?} does not exist");
+        let tags = {
+            let mut tags = HashMap::new();
+            for document in &documents {
+                let Some(taxonomies) = &document.metadata.taxonomies else {
+                    continue;
+                };
+                for tag in &taxonomies.tags {
+                    tags.entry(tag.clone())
+                        .or_insert_with(Vec::new)
+                        .push(document.id.clone());
+                }
             }
+            tags
+        };
 
-            blog.documents.push(Document::read(&index, id)?);
-        }
-
-        blog.documents.sort_by_key(|d| d.metadata.datetime());
-        blog.documents.reverse();
-
-        for (i, document) in blog.documents.iter().enumerate() {
-            blog.document_key_to_id.insert(document.id.clone(), i);
-            if let Some(alternate_id) = &document.alternate_id {
-                blog.document_key_to_id.insert(alternate_id.clone(), i);
-            }
-        }
-
-        for document in &blog.documents {
-            let Some(taxonomies) = &document.metadata.taxonomies else {
-                continue;
-            };
-            for tag in &taxonomies.tags {
-                blog.tags
-                    .entry(tag.clone())
-                    .or_default()
-                    .push(document.id.clone());
-            }
-        }
-
-        Ok(blog)
+        Ok(Blog {
+            tags,
+            documents,
+            document_key_to_id,
+        })
     }
 
     pub fn document_by_id(&self, id: &str) -> Option<&Document> {
