@@ -19,7 +19,6 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="alternate" href="/rss/blog.rss" r#type="application/rss+xml" title="Philpax's Blog" />
                     <link rel="stylesheet" href="/styles.css" />
-                    <link rel="stylesheet" href="/syntax/theme.css" />
                     <script src="/scripts.js"></script>
                 </head>
                 <body>

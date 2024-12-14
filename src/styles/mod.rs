@@ -1,8 +1,11 @@
 use std::collections::HashMap;
 
-pub fn generate() -> anyhow::Result<String> {
+use crate::ViewContext;
+
+pub fn generate(context: ViewContext) -> anyhow::Result<String> {
     const RESET: &str = include_str!("reset.css");
     let (dark_mode, light_mode, remaining) = extract_css_modes(include_str!("website.css"));
+    let syntax = context.syntax.theme_css();
     Ok(format!(
         r#"
 {RESET}
@@ -26,6 +29,9 @@ pub fn generate() -> anyhow::Result<String> {
 
 /* --- WEBSITE --- */
 {remaining}
+
+/* --- SYNTAX HIGHLIGHTING --- */
+{syntax}
 "#,
     )
     .trim()
