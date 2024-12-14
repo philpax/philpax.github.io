@@ -46,12 +46,6 @@ impl Blog {
             document_key_to_id: HashMap::new(),
         };
 
-        fn read_document(blog: &mut Blog, path: &Path, id: String) -> anyhow::Result<()> {
-            let document = Document::read(path, id)?;
-            blog.documents.push(document);
-            Ok(())
-        }
-
         for entry in std::fs::read_dir(blog_path)? {
             let path = entry?.path();
             if !path.is_dir() {
@@ -69,12 +63,7 @@ impl Blog {
                 anyhow::bail!("{index:?} does not exist");
             }
 
-            read_document(&mut blog, &index, id)?;
-        }
-
-        let index_path = blog_path.join("index.md");
-        if index_path.exists() {
-            read_document(&mut blog, &index_path, "index".to_string())?;
+            blog.documents.push(Document::read(&index, id)?);
         }
 
         blog.documents.sort_by_key(|d| d.metadata.datetime());
