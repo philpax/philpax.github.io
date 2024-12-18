@@ -1,6 +1,6 @@
 +++
 title = "Heady House Hunting with D"
-short = "in which I scrape `realestate.com.au` to find a house for my family"
+short = "Scraping `realestate.com.au` and other services to find a house for my family."
 date = 2015-01-13
 
 [taxonomies]

@@ -1,6 +1,6 @@
 +++
 title = "Ocufabulous: An Oculus Rift DK2 Review"
-short = "in which I review the second Oculus Rift developer kit and predict the future for VR"
+short = "Reviewing the second Oculus Rift developer kit and predicting the future for VR."
 date = 2014-10-12
 
 [taxonomies]

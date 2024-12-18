@@ -1,6 +1,6 @@
 +++
 title = "Abusing The C Preprocessor: Writing A 4-Bit Adder"
-short = "in which I discover that String Interpolation Is All You Need"
+short = "String Interpolation Is All You Need."
 date = 2013-10-01
 
 [taxonomies]
