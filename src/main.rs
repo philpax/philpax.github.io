@@ -4,8 +4,6 @@ use paxhtml::RoutePath;
 
 mod content;
 mod elements;
-#[cfg(feature = "fonts")]
-mod fonts;
 mod js;
 mod markdown;
 mod rss;
@@ -84,9 +82,6 @@ pub struct ViewContext<'a> {
 }
 
 fn main() -> anyhow::Result<()> {
-    #[cfg(feature = "fonts")]
-    fonts::download_if_required()?;
-
     let mut timer = Timer::new();
 
     let output_dir = Path::new("public");

@@ -14,11 +14,19 @@
   --header-height: 64px;
 }
 
+@font-face {
+  font-family: 'Alike Angular';
+  src: url('/fonts/AlikeAngular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   max-width: 1100px;
   margin: auto;
   color: var(--color);
   background-color: var(--background-color);
+  font-family: 'Alike Angular', serif;
 }
 
 body > header {

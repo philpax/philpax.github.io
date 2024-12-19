@@ -1,9 +1,2 @@
 public
-
-# Added by cargo
-
 /target
-
-
-# temp: delete once we decide on font
-static/fonts
