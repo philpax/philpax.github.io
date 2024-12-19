@@ -11,6 +11,8 @@ mod styles;
 mod syntax;
 mod util;
 mod views;
+#[cfg(feature = "serve")]
+mod serve;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Route<'a> {
@@ -223,40 +225,7 @@ fn main() -> anyhow::Result<()> {
     timer.finish();
 
     #[cfg(feature = "serve")]
-    serve(output_dir, port)?;
+    serve::serve(output_dir, port)?;
 
     Ok(())
-}
-
-#[cfg(feature = "serve")]
-fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
-    let app = axum::Router::new()
-        .route(
-            "/__poll_for_liveness",
-            axum::routing::get(|| async { http::StatusCode::OK }),
-        )
-        .nest_service(
-            "/",
-            axum::routing::get_service(tower_http::services::ServeDir::new(
-                std::path::PathBuf::from(output_dir),
-            ))
-            .handle_error(|error| async move {
-                (
-                    http::StatusCode::INTERNAL_SERVER_ERROR,
-                    format!("Unhandled internal error: {}", error),
-                )
-            }),
-        );
-
-    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], port));
-    println!("Serving at http://{}", addr);
-    println!("Hit CTRL-C to stop");
-
-    tokio::runtime::Runtime::new()
-        .unwrap()
-        .block_on(async move {
-            let listener = tokio::net::TcpListener::bind(addr).await?;
-            axum::serve(listener, app).await?;
-            anyhow::Ok(())
-        })
 }
