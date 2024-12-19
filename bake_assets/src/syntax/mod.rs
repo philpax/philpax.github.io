@@ -5,8 +5,9 @@ use syntect::{
     parsing::{syntax_definition::Context, Scope, SyntaxDefinition, SyntaxSet},
 };
 
-fn main() -> anyhow::Result<()> {
-    let output_dir = Path::new("src/syntax");
+mod sublime_color_scheme;
+
+pub fn build(output_dir: &Path) -> anyhow::Result<()> {
     build_syntax_set(output_dir)?;
     build_theme_set(output_dir)?;
     Ok(())
@@ -42,5 +43,3 @@ fn build_theme_set(output_dir: &Path) -> anyhow::Result<()> {
     syntect::dumps::dump_to_file(&set, output_dir.join("theme_set.packdump"))?;
     Ok(())
 }
-
-mod sublime_color_scheme;

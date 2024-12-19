@@ -7,12 +7,12 @@ mod elements;
 mod js;
 mod markdown;
 mod rss;
+#[cfg(feature = "serve")]
+mod serve;
 mod styles;
 mod syntax;
 mod util;
 mod views;
-#[cfg(feature = "serve")]
-mod serve;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Route<'a> {
@@ -188,20 +188,6 @@ fn main() -> anyhow::Result<()> {
             output_dir,
             rss::generate(rss_config, &content.blog, route_path.filename())?,
         )?)
-    })?;
-
-    timer.step("Wrote icon", || {
-        content
-            .icon
-            .resize(128, 128, image::imageops::FilterType::Lanczos3)
-            .save(Route::Icon.route_path().file_path(output_dir))?;
-
-        content
-            .icon
-            .resize(32, 32, image::imageops::FilterType::Lanczos3)
-            .save(Route::Favicon.route_path().file_path(output_dir))?;
-
-        anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled styles", || {

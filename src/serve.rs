@@ -1,12 +1,17 @@
-use std::{io::{Read, Write}, net::{TcpListener, TcpStream}, path::{Path, PathBuf}, fs::File};
+use std::{
+    fs::File,
+    io::{Read, Write},
+    net::{TcpListener, TcpStream},
+    path::{Path, PathBuf},
+};
 
 pub fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
     let addr = format!("127.0.0.1:{}", port);
     println!("Serving at http://{}", addr);
     println!("Hit CTRL-C to stop");
 
-    let listener = TcpListener::bind(addr)
-        .map_err(|e| anyhow::anyhow!("Failed to bind to address: {}", e))?;
+    let listener =
+        TcpListener::bind(addr).map_err(|e| anyhow::anyhow!("Failed to bind to address: {}", e))?;
 
     for stream in listener.incoming() {
         match stream {
@@ -21,7 +26,6 @@ pub fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
 
     Ok(())
 }
-
 
 fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<()> {
     let mut buffer = [0; 1024];
@@ -73,8 +77,9 @@ fn decode_percent_encoding(path: &str) -> PathBuf {
 
     while let Some(c) = chars.next() {
         if c == '%' {
-            let hex = chars.next().and_then(|c1|
-                chars.next().map(|c2| format!("{}{}", c1, c2)));
+            let hex = chars
+                .next()
+                .and_then(|c1| chars.next().map(|c2| format!("{}{}", c1, c2)));
 
             if let Some(hex) = hex {
                 if let Ok(byte) = u8::from_str_radix(&hex, 16) {
@@ -123,7 +128,7 @@ fn send_404(stream: &mut TcpStream) -> std::io::Result<()> {
         stream,
         "HTTP/1.1 404 NOT FOUND",
         "text/plain",
-        b"404 Not Found"
+        b"404 Not Found",
     )
 }
 fn send_400(stream: &mut TcpStream) -> std::io::Result<()> {
@@ -131,7 +136,7 @@ fn send_400(stream: &mut TcpStream) -> std::io::Result<()> {
         stream,
         "HTTP/1.1 400 BAD REQUEST",
         "text/plain",
-        b"400 Bad Request"
+        b"400 Bad Request",
     )
 }
 fn send_403(stream: &mut TcpStream) -> std::io::Result<()> {
@@ -139,10 +144,15 @@ fn send_403(stream: &mut TcpStream) -> std::io::Result<()> {
         stream,
         "HTTP/1.1 403 FORBIDDEN",
         "text/plain",
-        b"403 Forbidden"
+        b"403 Forbidden",
     )
 }
-fn send_response(stream: &mut TcpStream, status_line: &str, content_type: &str, content: &[u8]) -> std::io::Result<()> {
+fn send_response(
+    stream: &mut TcpStream,
+    status_line: &str,
+    content_type: &str,
+    content: &[u8],
+) -> std::io::Result<()> {
     let response = format!(
         "{}\r\nContent-Type: {}\r\nContent-Length: {}\r\n\r\n",
         status_line,

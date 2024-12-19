@@ -16,18 +16,15 @@ pub struct Content {
     pub path: PathBuf,
     pub blog: Blog,
     pub about: Document,
-    pub icon: image::DynamicImage,
 }
 impl Content {
     pub fn read() -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
-        let icon = image::open(path.join("icon.png"))?;
 
         Ok(Content {
             path: path.clone(),
             blog: Blog::read(&path.join("blog"))?,
             about: Document::read(&path.join("about.md"), "about".to_string())?,
-            icon,
         })
     }
 }
