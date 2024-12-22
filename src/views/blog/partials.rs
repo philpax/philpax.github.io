@@ -112,7 +112,11 @@ pub fn frontpage_post(context: ViewContext, document: &Document) -> paxhtml::Ele
     let post_url = context.content.blog.route_path(document).url_path();
     let post_body_html = vec![markdown::convert_to_html(
         context.syntax,
-        document.metadata.short().as_ref().unwrap_or(&document.content),
+        document
+            .metadata
+            .short()
+            .as_ref()
+            .unwrap_or(&document.content),
     )];
 
     let tag_list = document

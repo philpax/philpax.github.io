@@ -105,7 +105,8 @@ impl Parse for HtmlNode {
             // Parse children
             let mut children = Vec::new();
             while !input.peek(Token![<]) || !input.peek2(Token![/]) {
-                if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)){
+                if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace))
+                {
                     // Parse interpolated Rust expression
                     let iterator = if input.peek(Token![#]) {
                         input.parse::<Token![#]>()?;
@@ -115,7 +116,10 @@ impl Parse for HtmlNode {
                     };
                     let content;
                     syn::braced!(content in input);
-                    children.push(HtmlNode::Expression { body: Box::new(content.parse::<Expr>()?), iterator });
+                    children.push(HtmlNode::Expression {
+                        body: Box::new(content.parse::<Expr>()?),
+                        iterator,
+                    });
                 } else if input.peek(Token![<]) {
                     // Parse nested element
                     children.push(input.parse::<HtmlNode>()?);
@@ -145,7 +149,7 @@ impl Parse for HtmlNode {
                 children,
                 void: false,
             })
-        } else if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)){
+        } else if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)) {
             // Parse interpolated Rust expression
             let iterator = if input.peek(Token![#]) {
                 input.parse::<Token![#]>()?;
@@ -155,7 +159,10 @@ impl Parse for HtmlNode {
             };
             let content;
             syn::braced!(content in input);
-            Ok(HtmlNode::Expression { body: Box::new(content.parse::<Expr>()?), iterator })
+            Ok(HtmlNode::Expression {
+                body: Box::new(content.parse::<Expr>()?),
+                iterator,
+            })
         } else {
             // Parse text content
             Ok(HtmlNode::Text(input.parse::<LitStr>()?.value()))
