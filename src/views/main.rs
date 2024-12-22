@@ -9,11 +9,12 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     layout(
         context,
         html! {
-            <div>
-                <div>
-                    <h3><small>"Hi, I'm "</small>"Philpax"<small>"."</small></h3>
-                    {about_body}
-                </div>
+            <div id="home-page-columns">
+                <article>
+                    <div class="post-body">
+                        {about_body}
+                    </div>
+                </article>
                 <div>
                 {
                     blog.documents

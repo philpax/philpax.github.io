@@ -27,8 +27,15 @@ body {
   color: var(--color);
   background-color: var(--background-color);
   font-family: 'Alike Angular', serif;
+  padding: 0.5rem 1rem;
+}
+@media (max-width: 768px) {
+  body {
+    padding: 0rem 0.5rem;
+  }
 }
 
+/* Header */
 body > header {
   height: var(--header-height);
   display: flex;
@@ -72,6 +79,7 @@ body > header nav ul li a {
   line-height: var(--header-height);
 }
 
+/* Links */
 a {
   color: var(--color);
   text-decoration: underline var(--color-secondary) solid 3px;
@@ -91,6 +99,7 @@ a:visited:hover {
   color: var(--color-secondary);
 }
 
+/* Article */
 article {
   margin: 20px 0px;
 }
@@ -114,14 +123,7 @@ article header ul li {
   margin-right: 10px;
 }
 
-article div.post-body {
-  padding: 20px;
-}
-
-article div.post-body > *:not(:first-child) {
-  margin-top: 20px;
-}
-
+/* Code */
 pre.code {
   padding: 8px;
   overflow-x: auto;
@@ -130,4 +132,30 @@ pre.code {
 
 code.code {
   padding: 4px;
+}
+
+/* Post */
+div.post-body {
+  padding: 20px;
+}
+
+div.post-body > *:not(:first-child) {
+  margin-top: 20px;
+}
+
+/* Home page */
+#home-page-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  #home-page-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+#home-page-columns div.post-body {
+  padding: 0px;
 }

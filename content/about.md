@@ -3,7 +3,7 @@ title = "About"
 path = "about"
 +++
 
-G'day! I'm Philpax <sup>(he/him)</sup>, your friendly neighbourhood polyglot programmer/engineer, and I'm passionate about computers, how we interact with them, and how we can make them work for us.
+G'day! I'm a polyglot programmer/engineer with a creative bent, and I'm passionate about computers, how we interact with them, and how we can make them work for us.
 
 I've worked with every layer of the stack - from the little electrons racing around my workbench, to software riding high enough for Snoop Dogg to call for advice - and this is my humble website.
 
