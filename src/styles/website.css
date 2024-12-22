@@ -85,10 +85,14 @@ a {
   text-decoration: underline var(--color-secondary) solid 3px;
   text-decoration-skip-ink: none;
   text-underline-offset: 4px;
+  transition: all 0.2s;
 }
 
 a:hover {
   color: var(--color-secondary);
+  text-decoration-color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
+  text-decoration-thickness: 7px;
+  text-underline-offset: 0px;
 }
 
 a:visited {
