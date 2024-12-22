@@ -28,6 +28,7 @@ body {
   background-color: var(--background-color);
   font-family: 'Alike Angular', serif;
   padding: 0.5rem 1rem;
+  transition: all 0.2s;
 }
 @media (max-width: 768px) {
   body {
