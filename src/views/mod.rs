@@ -27,12 +27,12 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                         <h1><a href="/">"Philpax"</a></h1>
                         <nav>
                             <ul id="header-links">
-                            {
-                                Element::from_iter(links.iter().map(|(url, label)| { html! {
+                            #{
+                                links.iter().map(|(url, label)| { html! {
                                     <li>
                                         <a href={url}>{*label}</a>
                                     </li>
-                                }}))
+                                }})
                             }
                             </ul>
                         </nav>

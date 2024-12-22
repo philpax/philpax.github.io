@@ -14,8 +14,8 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                 </header>
                 <div>
                     <ul>
-                    {
-                        Element::from_iter(tag_keys.iter().map(|tag| {
+                    #{
+                        tag_keys.iter().map(|tag| {
                             let post_count = context.content.blog.tags[*tag].len();
                             html! {
                                 <li>
@@ -27,7 +27,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                                     )}
                                 </li>
                             }
-                        }))
+                        })
                     }
                     </ul>
                 </div>
@@ -47,8 +47,8 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                 </header>
                 <div>
                     <ul>
-                    {
-                        Element::from_iter(blog.tags[tag_id].iter().map(|t| {
+                    #{
+                        blog.tags[tag_id].iter().map(|t| {
                             let document = blog.document_by_id(t).unwrap();
                             html! {
                                 <li>
@@ -57,7 +57,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                                     </a>
                                 </li>
                             }
-                        }))
+                        })
                     }
                     </ul>
                 </div>

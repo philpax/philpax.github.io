@@ -21,7 +21,10 @@ enum HtmlNode {
         children: Vec<HtmlNode>,
         void: bool,
     },
-    Expression(Box<Expr>),
+    Expression {
+        body: Box<Expr>,
+        iterator: bool,
+    },
     Text(String),
 }
 
@@ -102,11 +105,17 @@ impl Parse for HtmlNode {
             // Parse children
             let mut children = Vec::new();
             while !input.peek(Token![<]) || !input.peek2(Token![/]) {
-                if input.peek(token::Brace) {
+                if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)){
                     // Parse interpolated Rust expression
+                    let iterator = if input.peek(Token![#]) {
+                        input.parse::<Token![#]>()?;
+                        true
+                    } else {
+                        false
+                    };
                     let content;
                     syn::braced!(content in input);
-                    children.push(HtmlNode::Expression(Box::new(content.parse::<Expr>()?)));
+                    children.push(HtmlNode::Expression { body: Box::new(content.parse::<Expr>()?), iterator });
                 } else if input.peek(Token![<]) {
                     // Parse nested element
                     children.push(input.parse::<HtmlNode>()?);
@@ -136,11 +145,17 @@ impl Parse for HtmlNode {
                 children,
                 void: false,
             })
-        } else if input.peek(token::Brace) {
+        } else if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)){
             // Parse interpolated Rust expression
+            let iterator = if input.peek(Token![#]) {
+                input.parse::<Token![#]>()?;
+                true
+            } else {
+                false
+            };
             let content;
             syn::braced!(content in input);
-            Ok(HtmlNode::Expression(Box::new(content.parse::<Expr>()?)))
+            Ok(HtmlNode::Expression { body: Box::new(content.parse::<Expr>()?), iterator })
         } else {
             // Parse text content
             Ok(HtmlNode::Text(input.parse::<LitStr>()?.value()))
@@ -188,10 +203,16 @@ impl ToTokens for HtmlNode {
                     paxhtml::builder::tag(#name, #attrs, #void)(#children)
                 });
             }
-            HtmlNode::Expression(expr) => {
-                tokens.extend(quote! {
-                    paxhtml::Element::from(#expr)
-                });
+            HtmlNode::Expression { body, iterator } => {
+                if *iterator {
+                    tokens.extend(quote! {
+                        paxhtml::Element::from_iter(#body)
+                    });
+                } else {
+                    tokens.extend(quote! {
+                        paxhtml::Element::from(#body)
+                    });
+                }
             }
             HtmlNode::Text(text) => {
                 tokens.extend(quote! {

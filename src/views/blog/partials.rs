@@ -32,12 +32,12 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         .map(|t| {
             html! {
                 <ul class="tags">
-                {
-                    Element::from_iter(t.tags.iter().map(|tag| { html! {
+                #{
+                    t.tags.iter().map(|tag| { html! {
                         <li>
                             <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                         </li>
-                    }}))
+                    }})
                 }
                 </ul>
             }
@@ -122,12 +122,12 @@ pub fn frontpage_post(context: ViewContext, document: &Document) -> paxhtml::Ele
         .map(|t| {
             html! {
                 <ul class="tags">
-                {
-                    Element::from_iter(t.tags.iter().map(|tag| { html! {
+                #{
+                    t.tags.iter().map(|tag| { html! {
                         <li>
                             <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                         </li>
-                    }}))
+                    }})
                 }
                 </ul>
             }
