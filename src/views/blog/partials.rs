@@ -5,7 +5,6 @@ use crate::{markdown, util};
 pub enum PostBody {
     Full,
     Description,
-    Short,
 }
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
     let post_url = context.content.blog.route_path(document).url_path();
@@ -14,7 +13,6 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         &match post_body {
             PostBody::Full => None,
             PostBody::Description => document.description.clone(),
-            PostBody::Short => document.metadata.short(),
         }
         .unwrap_or(document.content.clone()),
     )];
@@ -108,4 +106,53 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     };
 
     vec![article, aside].into()
+}
+
+pub fn frontpage_post(context: ViewContext, document: &Document) -> paxhtml::Element {
+    let post_url = context.content.blog.route_path(document).url_path();
+    let post_body_html = vec![markdown::convert_to_html(
+        context.syntax,
+        document.metadata.short().as_ref().unwrap_or(&document.content),
+    )];
+
+    let tag_list = document
+        .metadata
+        .taxonomies
+        .as_ref()
+        .map(|t| {
+            html! {
+                <ul class="tags">
+                {
+                    Element::from_iter(t.tags.iter().map(|tag| { html! {
+                        <li>
+                            <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                        </li>
+                    }}))
+                }
+                </ul>
+            }
+        })
+        .unwrap_or_default();
+
+    html! {
+        <article class="post">
+            <header>
+                {h2_with_id(html! {
+                    <a href={post_url}>
+                        {document.metadata.title.clone()}
+                    </a>
+                })}
+                {tag_list}
+                {document
+                    .metadata
+                    .datetime()
+                    .map(|dt| dt.date_naive())
+                    .map(crate::elements::date_with_chrono)
+                    .unwrap_or_default()}
+            </header>
+            <div class="post-body">
+                {post_body_html}
+            </div>
+        </article>
+    }
 }

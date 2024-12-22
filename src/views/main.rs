@@ -20,11 +20,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     blog.documents
                         .iter()
                         .map(|doc| {
-                            blog::partials::post(
-                                context,
-                                doc,
-                                blog::partials::PostBody::Short,
-                            )
+                            blog::partials::frontpage_post(context, doc)
                         })
                         .into_element()
                 }
