@@ -146,14 +146,17 @@ pub fn frontpage_post(context: ViewContext, document: &Document) -> paxhtml::Ele
                         {document.metadata.title.clone()}
                     </a>
                 })}
-                {tag_list}
+            </header>
+            <span>
                 {document
                     .metadata
                     .datetime()
                     .map(|dt| dt.date_naive())
                     .map(crate::elements::date_with_chrono)
                     .unwrap_or_default()}
-            </header>
+                " · "
+                {tag_list}
+            </span>
             <div class="post-body">
                 {post_body_html}
             </div>

@@ -117,17 +117,6 @@ article header h2 {
   flex-grow: 1;
 }
 
-article header ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-article header ul li {
-  display: inline-block;
-  margin-right: 10px;
-}
-
 /* Code */
 pre.code {
   padding: 8px;
@@ -146,6 +135,18 @@ div.post-body {
 
 div.post-body > *:not(:first-child) {
   margin-top: 20px;
+}
+
+ul.tags {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+ul.tags li {
+  display: inline-block;
+  margin-right: 4px;
 }
 
 /* Home page */
