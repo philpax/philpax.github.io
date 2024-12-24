@@ -4,10 +4,7 @@ pub mod blog;
 pub mod frontpage;
 
 fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
-    let links = [
-        (Route::Blog.url_path(), "Blog"),
-        (Route::BlogTags.url_path(), "Tags"),
-    ];
+    let links = [(Route::Blog.url_path(), "Blog")];
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),

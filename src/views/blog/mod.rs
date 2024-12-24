@@ -5,15 +5,20 @@ pub mod partials;
 pub mod tags;
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
+    let all_posts = context
+        .content
+        .blog
+        .documents
+        .iter()
+        .map(|doc| partials::post(context, doc, partials::PostBody::Description));
     layout(
         context,
-        context
-            .content
-            .blog
-            .documents
-            .iter()
-            .map(|doc| partials::post(context, doc, partials::PostBody::Description))
-            .into_element(),
+        html! {
+            <fragment>
+                <a href={Route::BlogTags.url_path()}>"Tags"</a>
+                #{all_posts}
+            </fragment>
+        },
     )
 }
 

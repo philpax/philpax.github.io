@@ -21,19 +21,21 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     blog.documents
                         .iter()
                         .take(5)
-                        .map(|doc| {
-                            post(context, doc)
-                        })
+                        .map(|doc| post(context, doc))
                         .into_element()
                 }
-                <a href={Route::Blog.url_path()}>"View all posts"</a>
+                <span>
+                    <a href={Route::Blog.url_path()}>"All posts"</a>
+                    " · "
+                    <a href={Route::BlogTags.url_path()}>"Tags"</a>
+                </span>
                 </div>
             </div>
         },
     )
 }
 
-pub fn post(context: ViewContext, document: &Document) -> paxhtml::Element {
+fn post(context: ViewContext, document: &Document) -> paxhtml::Element {
     let post_url = document.route_path().url_path();
     let post_body_html = vec![markdown::convert_to_html(
         context.syntax,
