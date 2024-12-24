@@ -21,6 +21,7 @@ enum HtmlNode {
         children: Vec<HtmlNode>,
         void: bool,
     },
+    Fragment(Vec<HtmlNode>),
     Expression {
         body: Box<Expr>,
         iterator: bool,
@@ -77,10 +78,16 @@ impl Parse for HtmlNode {
             let name = input.parse::<Ident>()?.to_string();
             let name = name.strip_prefix("r#").unwrap_or(&name).to_string();
 
+            let is_fragment = name == "fragment";
+
             // Parse attributes
             let mut attributes = Vec::new();
             while !input.peek(Token![>]) && !input.peek(Token![/]) {
                 attributes.push(input.parse::<HtmlAttribute>()?);
+            }
+
+            if is_fragment && !attributes.is_empty() {
+                return Err(input.error("Fragment cannot have attributes"));
             }
 
             // Handle void elements
@@ -94,6 +101,9 @@ impl Parse for HtmlNode {
             };
 
             if void {
+                if is_fragment {
+                    return Err(input.error("Fragment cannot be void"));
+                }
                 return Ok(HtmlNode::Element {
                     name,
                     attributes,
@@ -143,12 +153,16 @@ impl Parse for HtmlNode {
             }
             input.parse::<Token![>]>()?;
 
-            Ok(HtmlNode::Element {
-                name,
-                attributes,
-                children,
-                void: false,
-            })
+            if is_fragment {
+                Ok(HtmlNode::Fragment(children))
+            } else {
+                Ok(HtmlNode::Element {
+                    name,
+                    attributes,
+                    children,
+                    void: false,
+                })
+            }
         } else if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)) {
             // Parse interpolated Rust expression
             let iterator = if input.peek(Token![#]) {
@@ -208,6 +222,11 @@ impl ToTokens for HtmlNode {
 
                 tokens.extend(quote! {
                     paxhtml::builder::tag(#name, #attrs, #void)(#children)
+                });
+            }
+            HtmlNode::Fragment(children) => {
+                tokens.extend(quote! {
+                    paxhtml::Element::from_iter([#(#children),*])
                 });
             }
             HtmlNode::Expression { body, iterator } => {
