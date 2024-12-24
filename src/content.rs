@@ -101,20 +101,6 @@ impl Blog {
             .get(id)
             .and_then(|&i| self.documents.get(i))
     }
-
-    pub fn route_path(&self, document: &Document) -> RoutePath {
-        Route::BlogPost {
-            post_id: &document.id,
-        }
-        .route_path()
-    }
-
-    pub fn alternate_route_path(&self, document: &Document) -> Option<RoutePath> {
-        document
-            .alternate_id
-            .as_ref()
-            .map(|post_id| Route::BlogPost { post_id }.route_path())
-    }
 }
 
 #[derive(Debug)]
@@ -168,6 +154,16 @@ impl Document {
             content,
             files,
         })
+    }
+
+    pub fn route_path(&self) -> RoutePath {
+        Route::BlogPost { post_id: &self.id }.route_path()
+    }
+
+    pub fn alternate_route_path(&self) -> Option<RoutePath> {
+        self.alternate_id
+            .as_ref()
+            .map(|post_id| Route::BlogPost { post_id }.route_path())
     }
 }
 

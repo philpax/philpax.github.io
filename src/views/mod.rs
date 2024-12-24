@@ -1,7 +1,7 @@
 use crate::{content::Document, elements::*, Route, ViewContext};
 
 pub mod blog;
-pub mod main;
+pub mod frontpage;
 
 fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
     let links = [

@@ -24,7 +24,7 @@ pub fn generate(config: RssConfig, blog: &Blog, relative_path: &str) -> anyhow::
     let items = blog
         .documents
         .iter()
-        .map(|doc| build_item(base_url, blog, rss_author, doc, syntax))
+        .map(|doc| build_item(base_url, rss_author, doc, syntax))
         .collect::<Vec<_>>();
 
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
@@ -56,12 +56,11 @@ pub fn generate(config: RssConfig, blog: &Blog, relative_path: &str) -> anyhow::
 
 fn build_item(
     base_url: &str,
-    blog: &Blog,
     author: &str,
     doc: &Document,
     syntax: &SyntaxHighlighter,
 ) -> rss::Item {
-    let url = format!("{base_url}{}", blog.route_path(doc).url_path());
+    let url = format!("{base_url}{}", doc.route_path().url_path());
 
     let guid = rss::GuidBuilder::default()
         .value(url.clone())

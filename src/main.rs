@@ -133,14 +133,12 @@ fn main() -> anyhow::Result<()> {
     };
 
     timer.step("Copied static content", || {
-        // Copy all static content first
         util::copy_dir(static_dir, output_dir)
     })?;
 
     timer.step("Wrote content", || {
-        // Write out content
         for doc in &content.blog.documents {
-            let post_route_path = content.blog.route_path(doc);
+            let post_route_path = doc.route_path();
 
             views::blog::post(view_context, doc)
                 .write_to_route(output_dir, post_route_path.clone())?;
@@ -152,7 +150,7 @@ fn main() -> anyhow::Result<()> {
             }
 
             // Write redirect for alternate_id if it exists
-            if let Some(alternate_route_path) = content.blog.alternate_route_path(doc) {
+            if let Some(alternate_route_path) = doc.alternate_route_path() {
                 views::redirect(&post_route_path.url_path())
                     .write_to_route(output_dir, alternate_route_path)?;
             }
@@ -162,12 +160,10 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote blog index", || {
-        // Write out blog index
         views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
     })?;
 
     timer.step("Wrote blog tags", || {
-        // Write out tags
         views::blog::tags::index(view_context).write_to_route(output_dir, Route::BlogTags)?;
         for tag_id in content.blog.tags.keys() {
             views::blog::tags::tag(view_context, tag_id)
@@ -176,13 +172,11 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote main index", || {
-        // Write out main index
-        views::main::index(view_context).write_to_route(output_dir, Route::Index)
+    timer.step("Wrote frontpage", || {
+        views::frontpage::index(view_context).write_to_route(output_dir, Route::Index)
     })?;
 
     timer.step("Wrote RSS feed", || {
-        // Write out RSS feed
         let route_path = Route::BlogRss.route_path();
         anyhow::Ok(route_path.write(
             output_dir,
@@ -191,7 +185,6 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-        // Write out bundled styles
         anyhow::Ok(
             Route::Styles
                 .route_path()
@@ -200,7 +193,6 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled JavaScript", || {
-        // Write out bundled JavaScript
         anyhow::Ok(
             Route::Scripts
                 .route_path()

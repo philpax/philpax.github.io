@@ -52,7 +52,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                             let document = blog.document_by_id(t).unwrap();
                             html! {
                                 <li>
-                                    <a href={blog.route_path(document).url_path()}>
+                                    <a href={document.route_path().url_path()}>
                                         {document.metadata.title.clone()}
                                     </a>
                                 </li>
