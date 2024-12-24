@@ -19,11 +19,13 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                 {
                     blog.documents
                         .iter()
+                        .take(5)
                         .map(|doc| {
                             blog::partials::frontpage_post(context, doc)
                         })
                         .into_element()
                 }
+                <a href={Route::Blog.url_path()}>"View all posts"</a>
                 </div>
             </div>
         },

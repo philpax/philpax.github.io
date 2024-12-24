@@ -174,10 +174,14 @@ ul.tags li {
 
   #home-page-columns > *:first-child {
     border-right: none;
+    border-bottom: 2px dotted var(--color);
     padding-right: 0;
+    padding-bottom: 20px;
+    margin-bottom: 0;
   }
 
   #home-page-columns > *:last-child {
+    margin-top: 0;
     padding-left: 0;
   }
 }
