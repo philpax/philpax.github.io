@@ -75,19 +75,32 @@ impl Parse for HtmlNode {
         if input.peek(token::Lt) {
             // Parse element
             input.parse::<Token![<]>()?;
-            let name = input.parse::<Ident>()?.to_string();
-            let name = name.strip_prefix("r#").unwrap_or(&name).to_string();
-
-            let is_fragment = name == "fragment";
+            enum TagType {
+                Fragment,
+                Name(String),
+            }
+            impl TagType {
+                pub fn is_fragment(&self) -> bool {
+                    matches!(self, TagType::Fragment)
+                }
+                pub fn unwrap_name_as_ref(&self) -> &str {
+                    match self {
+                        TagType::Name(name) => name,
+                        TagType::Fragment => panic!("Fragment cannot have a name"),
+                    }
+                }
+            }
+            let tag = if input.peek(Token![>]) {
+                TagType::Fragment
+            } else {
+                let name = input.parse::<Ident>()?.to_string();
+                TagType::Name(name.strip_prefix("r#").unwrap_or(&name).to_string())
+            };
 
             // Parse attributes
             let mut attributes = Vec::new();
             while !input.peek(Token![>]) && !input.peek(Token![/]) {
                 attributes.push(input.parse::<HtmlAttribute>()?);
-            }
-
-            if is_fragment && !attributes.is_empty() {
-                return Err(input.error("Fragment cannot have attributes"));
             }
 
             // Handle void elements
@@ -101,15 +114,17 @@ impl Parse for HtmlNode {
             };
 
             if void {
-                if is_fragment {
-                    return Err(input.error("Fragment cannot be void"));
+                match tag {
+                    TagType::Name(name) => {
+                        return Ok(HtmlNode::Element {
+                            name,
+                            attributes,
+                            children: vec![],
+                            void: true,
+                        });
+                    }
+                    _ => return Err(input.error("Fragment cannot be void")),
                 }
-                return Ok(HtmlNode::Element {
-                    name,
-                    attributes,
-                    children: vec![],
-                    void: true,
-                });
             }
 
             // Parse children
@@ -147,21 +162,22 @@ impl Parse for HtmlNode {
             // Parse closing tag
             input.parse::<Token![<]>()?;
             input.parse::<Token![/]>()?;
-            let close_name = input.parse::<Ident>()?.to_string();
-            if close_name != name {
-                return Err(input.error("Mismatched opening and closing tags"));
+            if !tag.is_fragment() {
+                let close_name = input.parse::<Ident>()?.to_string();
+                if close_name != tag.unwrap_name_as_ref() {
+                    return Err(input.error("Mismatched opening and closing tags"));
+                }
             }
             input.parse::<Token![>]>()?;
 
-            if is_fragment {
-                Ok(HtmlNode::Fragment(children))
-            } else {
-                Ok(HtmlNode::Element {
+            match tag {
+                TagType::Fragment => Ok(HtmlNode::Fragment(children)),
+                TagType::Name(name) => Ok(HtmlNode::Element {
                     name,
                     attributes,
                     children,
                     void: false,
-                })
+                }),
             }
         } else if input.peek(token::Brace) || (input.peek(Token![#]) && input.peek2(token::Brace)) {
             // Parse interpolated Rust expression

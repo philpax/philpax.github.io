@@ -14,10 +14,10 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     layout(
         context,
         html! {
-            <fragment>
+            <>
                 <a href={Route::BlogTags.url_path()}>"Tags"</a>
                 #{all_posts}
-            </fragment>
+            </>
         },
     )
 }
