@@ -12,7 +12,9 @@
 
 :root {
   --header-height: 64px;
+  --header-item-spacing: 16px;
   --header-link-height: 32px;
+  --header-link-item-spacing: 8px;
 }
 
 @font-face {
@@ -55,19 +57,18 @@ body > header div#top-bar div.flair {
 
 body > header div#top-bar div#flair-left {
   background: linear-gradient(to left, var(--color), transparent);
-  margin-right: 16px;
+  margin-right: var(--header-item-spacing);
 }
 
 body > header div#top-bar div#flair-right {
   background: linear-gradient(to right, var(--color), transparent);
-  margin-left: 16px;
+  margin-left: var(--header-item-spacing);
 }
-
 
 body > header div#top-bar img {
   display: inline-block;
   height: 100%;
-  margin-right: 20px;
+  margin-right: var(--header-item-spacing);
   border-radius: 50%;
   border: 3px solid white;
 }
@@ -93,7 +94,7 @@ body > header nav ul {
 
 body > header nav ul li {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: var(--header-link-item-spacing);
   height: 100%;
   background-color: var(--color);
 }
