@@ -4,7 +4,10 @@ pub mod blog;
 pub mod frontpage;
 
 fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
-    let links = [(Route::Blog.url_path(), "Blog")];
+    let links = [
+        (Route::Index.url_path(), "Home"),
+        (Route::Blog.url_path(), "Blog"),
+    ];
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
@@ -23,7 +26,7 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                         <div id="top-bar">
                             <div class="flair" id="flair-left"></div>
                             <img src={Route::Icon.url_path()} alt="Philpax icon" />
-                            <h1><a href="/">"Philpax"</a></h1>
+                            <h1>"Philpax"</h1>
                             <div class="flair" id="flair-right"></div>
                         </div>
                         <nav>
