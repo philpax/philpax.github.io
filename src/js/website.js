@@ -26,10 +26,10 @@ function createThemeSwitcher() {
     li.appendChild(a);
   }
 
-  headerLinks.prepend(li);
+  headerLinks.append(li);
 
   function updateSwitcherInnerText(a, isLightMode) {
-    a.innerText = isLightMode ? "🌙" : "🌞";
+    a.innerText = isLightMode ? "Light Mode" : "Dark Mode";
   }
 
   function isLightMode() {

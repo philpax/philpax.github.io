@@ -20,8 +20,12 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                 </head>
                 <body>
                     <header>
-                        <img src={Route::Icon.url_path()} alt="Philpax icon" />
-                        <h1><a href="/">"Philpax"</a></h1>
+                        <div id="top-bar">
+                            <div class="flair" id="flair-left"></div>
+                            <img src={Route::Icon.url_path()} alt="Philpax icon" />
+                            <h1><a href="/">"Philpax"</a></h1>
+                            <div class="flair" id="flair-right"></div>
+                        </div>
                         <nav>
                             <ul id="header-links">
                             #{

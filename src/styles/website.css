@@ -12,6 +12,7 @@
 
 :root {
   --header-height: 64px;
+  --header-link-height: 32px;
 }
 
 @font-face {
@@ -37,30 +38,50 @@ body {
 }
 
 /* Header */
-body > header {
-  height: var(--header-height);
+body > header div#top-bar {
   display: flex;
+  height: var(--header-height);
+  justify-content: center;
+  position: relative;
+  align-items: center;
 }
 
-body > header img {
+body > header div#top-bar div.flair {
+  height: 4px;
+  max-width: 200px;
+  width: 20%;
+  transform: translateY(-50%);
+}
+
+body > header div#top-bar div#flair-left {
+  background: linear-gradient(to left, var(--color), transparent);
+  margin-right: 16px;
+}
+
+body > header div#top-bar div#flair-right {
+  background: linear-gradient(to right, var(--color), transparent);
+  margin-left: 16px;
+}
+
+
+body > header div#top-bar img {
   display: inline-block;
   height: 100%;
   margin-right: 20px;
+  border-radius: 50%;
+  border: 3px solid white;
 }
 
-body > header h1 {
-  margin-right: auto;
-  flex-grow: 1;
-}
-
-body > header h1 a {
+body > header div#top-bar h1 a {
   height: 100%;
   line-height: var(--header-height);
 }
 
 body > header nav {
   display: flex;
-  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 body > header nav ul {
@@ -74,10 +95,26 @@ body > header nav ul li {
   display: inline-block;
   margin-right: 10px;
   height: 100%;
+  background-color: var(--color);
 }
-
+body > header nav ul li:hover {
+  background-color: var(--color-secondary);
+}
 body > header nav ul li a {
-  line-height: var(--header-height);
+  color: var(--background-color);
+  padding: 8px;
+  text-decoration: none;
+  height: var(--header-link-height);
+  line-height: var(--header-link-height);
+}
+body > header nav ul li a:visited {
+  color: var(--background-color);
+}
+body > header nav ul li a:hover {
+  color: var(--background-color);
+}
+body > header nav ul li a:visited:hover {
+  color: var(--background-color);
 }
 
 /* Links */
