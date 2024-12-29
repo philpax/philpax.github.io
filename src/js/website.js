@@ -5,11 +5,13 @@ function createThemeSwitcher() {
     return;
   }
   var li = document.createElement("li");
+  var a = document.createElement("a");
   var img = document.createElement("img");
   updateSwitcherIcon(img, isLightMode());
-  img.style.cursor = "pointer";
+  a.href = "#";
 
-  img.addEventListener("click", function () {
+  a.addEventListener("click", function (e) {
+    e.preventDefault();
     var isLight = isLightMode();
     if (isLight) {
       document.documentElement.classList.remove("light-theme");
@@ -21,7 +23,8 @@ function createThemeSwitcher() {
     updateSwitcherIcon(img, !isLight);
   });
 
-  li.appendChild(img);
+  a.appendChild(img);
+  li.appendChild(a);
   headerLinks.append(li);
 
   function updateSwitcherIcon(img, isLightMode) {
