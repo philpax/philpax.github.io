@@ -26,6 +26,8 @@ pub enum Route<'a> {
     Scripts,
     Icon,
     Favicon,
+    DarkModeIcon,
+    LightModeIcon,
 }
 impl<'a> From<Route<'a>> for RoutePath {
     fn from(route: Route<'a>) -> Self {
@@ -45,6 +47,8 @@ impl<'a> Route<'a> {
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
             Route::Favicon => RoutePath::new([], "favicon.ico".to_string()),
+            Route::DarkModeIcon => RoutePath::new(["phosphor"], "moon.svg".to_string()),
+            Route::LightModeIcon => RoutePath::new(["phosphor"], "sun.svg".to_string()),
         }
     }
     pub fn url_path(&self) -> String {
@@ -188,11 +192,15 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-        anyhow::Ok(
-            Route::Styles
-                .route_path()
-                .write(output_dir, styles::generate(view_context)?)?,
-        )
+        let output = styles::generate(view_context)?;
+        Route::Styles.route_path().write(output_dir, output.css)?;
+        Route::DarkModeIcon
+            .route_path()
+            .write(output_dir, output.dark_mode_icon)?;
+        Route::LightModeIcon
+            .route_path()
+            .write(output_dir, output.light_mode_icon)?;
+        anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled JavaScript", || {

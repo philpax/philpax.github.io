@@ -45,6 +45,25 @@ pub fn extract_prefixed_property_sets(css: &str) -> (HashMap<String, String>, St
     (property_sets, remaining_css.trim().to_string())
 }
 
+/// Parses CSS rules into a HashMap of property names to values.
+/// Each rule should be in the format "property-name: value;"
+///
+/// Note that it will not handle comments correctly.
+pub fn parse_rules(rules: &str) -> HashMap<String, String> {
+    rules
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+        .filter_map(|line| line.split_once(':'))
+        .map(|(property, value)| {
+            (
+                property.trim().to_string(),
+                value.trim().trim_end_matches(';').trim().to_string(),
+            )
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -104,5 +123,19 @@ body {
             Some(expected_light_mode)
         );
         assert_eq!(remaining, expected_remaining);
+    }
+
+    #[test]
+    fn test_parse_rules() {
+        let input = r#"  --color: black;
+  --color-secondary: #333;
+  --background-color: #C5B4DB;
+"#;
+
+        let rules = parse_rules(input);
+
+        assert_eq!(rules.get("--color").unwrap(), "black");
+        assert_eq!(rules.get("--color-secondary").unwrap(), "#333");
+        assert_eq!(rules.get("--background-color").unwrap(), "#C5B4DB");
     }
 }
