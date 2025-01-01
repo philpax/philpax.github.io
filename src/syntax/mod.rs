@@ -12,8 +12,12 @@ pub struct SyntaxHighlighter {
 impl Default for SyntaxHighlighter {
     fn default() -> Self {
         Self {
-            syntax_set: syntect::dumps::from_binary(include_bytes!("syntax_set.packdump")),
-            theme_set: syntect::dumps::from_binary(include_bytes!("theme_set.packdump")),
+            syntax_set: syntect::dumps::from_binary(include_bytes!(
+                "../../assets/baked/syntax/syntax_set.packdump"
+            )),
+            theme_set: syntect::dumps::from_binary(include_bytes!(
+                "../../assets/baked/syntax/theme_set.packdump"
+            )),
         }
     }
 }

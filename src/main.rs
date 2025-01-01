@@ -87,7 +87,6 @@ fn main() -> anyhow::Result<()> {
     let mut timer = Timer::new();
 
     let output_dir = Path::new("public");
-    let static_dir = Path::new("static");
     #[cfg(feature = "serve")]
     let port = 8192;
 
@@ -132,8 +131,12 @@ fn main() -> anyhow::Result<()> {
         syntax: &syntax,
     };
 
+    timer.step("Copied baked static content", || {
+        util::copy_dir(Path::new("assets/baked/static"), output_dir)
+    })?;
+
     timer.step("Copied static content", || {
-        util::copy_dir(static_dir, output_dir)
+        util::copy_dir(Path::new("static"), output_dir)
     })?;
 
     timer.step("Wrote content", || {
