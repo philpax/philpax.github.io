@@ -5,6 +5,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use base64::Engine;
+use sha1::Digest;
+
 pub fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
     let addr = format!("127.0.0.1:{}", port);
     println!("Serving at http://{}", addr);
@@ -16,9 +19,12 @@ pub fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
-                if let Err(e) = handle_connection(stream, output_dir) {
-                    eprintln!("Error handling connection: {e:?}");
-                }
+                let output_dir = output_dir.to_owned();
+                std::thread::spawn(move || {
+                    if let Err(e) = handle_connection(stream, &output_dir) {
+                        eprintln!("Error handling connection: {e:?}");
+                    }
+                });
             }
             Err(e) => eprintln!("Connection failed: {e:?}"),
         }
@@ -41,8 +47,43 @@ fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<
 
     let path = parts[1];
 
+    // Handle WebSocket upgrade for liveness check
     if path == "/__poll_for_liveness" {
-        return send_200_empty(&mut stream);
+        if !request.lines().any(|l| l.starts_with("Upgrade: websocket")) {
+            return send_400(&mut stream);
+        }
+
+        let key = request
+            .lines()
+            .find(|l| l.starts_with("Sec-WebSocket-Key:"))
+            .and_then(|l| l.split(':').nth(1))
+            .map(|s| s.trim());
+
+        let Some(key) = key else {
+            return send_400(&mut stream);
+        };
+
+        let mut hasher = sha1::Sha1::new();
+        hasher.update(format!("{key}258EAFA5-E914-47DA-95CA-C5AB0DC85B11"));
+        let accept = base64::engine::general_purpose::STANDARD.encode(&hasher.finalize());
+
+        // Send WebSocket upgrade response
+        let response = format!(
+            "HTTP/1.1 101 Switching Protocols\r\n\
+                     Upgrade: websocket\r\n\
+                     Connection: Upgrade\r\n\
+                     Sec-WebSocket-Accept: {}\r\n\r\n",
+            accept
+        );
+        stream.write_all(response.as_bytes())?;
+        stream.flush()?;
+
+        // Keep connection alive until client disconnects
+        let mut ping_buffer = [0; 2];
+        while stream.read_exact(&mut ping_buffer).is_ok() {
+            // Simply keep the connection open
+        }
+        return Ok(());
     }
 
     // Remove leading slash and decode percent-encoded characters
@@ -119,9 +160,6 @@ fn guess_mime_type(path: &Path) -> &'static str {
 
 fn send_200(stream: &mut TcpStream, content: &[u8], content_type: &str) -> std::io::Result<()> {
     send_response(stream, "HTTP/1.1 200 OK", content_type, content)
-}
-fn send_200_empty(stream: &mut TcpStream) -> std::io::Result<()> {
-    send_response(stream, "HTTP/1.1 200 OK", "text/plain", b"")
 }
 fn send_404(stream: &mut TcpStream) -> std::io::Result<()> {
     send_response(
