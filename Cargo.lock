@@ -443,6 +443,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "paxcss"
+version = "0.1.0"
+
+[[package]]
 name = "paxhtml"
 version = "0.1.0"
 dependencies = [
@@ -470,6 +474,7 @@ dependencies = [
  "base64",
  "chrono",
  "markdown",
+ "paxcss",
  "paxhtml",
  "rss",
  "serde",

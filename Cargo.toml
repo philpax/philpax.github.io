@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [".", "bake_assets", "paxhtml", "paxhtml_macro"]
+members = [".", "bake_assets", "paxcss", "paxhtml", "paxhtml_macro"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -33,6 +33,7 @@ base64 = { version = "0.22.1", optional = true }
 sha1 = { version = "0.10.6", optional = true }
 
 paxhtml = { path = "paxhtml" }
+paxcss = { path = "paxcss" }
 
 [features]
 development = ["serve"]
