@@ -78,7 +78,6 @@ body > header div#top-bar h1 a {
   height: 100%;
   line-height: var(--header-height);
 }
-
 body > header nav {
   display: flex;
   justify-content: center;
@@ -94,6 +93,20 @@ body > header nav ul {
   justify-content: space-between;
   width: 100%;
   max-width: 600px;
+}
+
+@media (max-width: 768px) {
+  body > header nav ul {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  body > header nav ul li {
+    margin-right: 0;
+    margin-bottom: var(--header-link-item-spacing);
+  }
+  body > header nav ul li:last-child {
+    margin-bottom: 0;
+  }
 }
 
 body > header nav ul li {
