@@ -1,14 +1,17 @@
 /* Theme modes */
 --dark-mode {
-  --color: white;
-  --color-secondary: #ccc;
+  --color: #ffffff;
+  --color-secondary: #cccccc;
   --background-color: #3c2954;
+  --background-color-secondary: #6f4c9a;
+
 }
 
 --light-mode {
   --color: black;
   --color-secondary: #333;
   --background-color: #c5b4db;
+  --background-color-secondary: #8f6eb9;
 }
 
 /* Root variables */
@@ -190,10 +193,32 @@ article {
 
 article header {
   display: flex;
+  align-items: center;
+  background-color: var(--color);
+  color: var(--background-color);
+  padding: 0.5rem;
 }
 
 article header h2 {
   flex-grow: 1;
+}
+
+article header a {
+  color: var(--background-color);
+  text-decoration: underline var(--background-color-secondary) solid 3px;
+}
+
+article header a:hover {
+  color: var(--background-color-secondary);
+  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
+}
+
+article header a:visited {
+  color: var(--background-color);
+}
+
+article header a:visited:hover {
+  color: var(--background-color-secondary);
 }
 
 /* Code blocks */
@@ -226,6 +251,38 @@ ul.tags {
 ul.tags li {
   display: inline-block;
   margin-right: 4px;
+}
+
+.post-body h3 { --heading-level: 3; }
+.post-body h4 { --heading-level: 4; }
+.post-body h5 { --heading-level: 5; }
+.post-body h6 { --heading-level: 6; }
+
+.post-body :is(h3, h4, h5, h6) {
+  background-color: var(--color);
+  padding: 0.5rem;
+}
+
+.post-body :is(h3, h4, h5, h6) {
+  padding-left: calc(0.5rem + (var(--heading-level) - 3) * 0.2rem);
+}
+
+.post-body :is(h3, h4, h5, h6) a {
+  color: var(--background-color);
+  text-decoration: underline var(--background-color-secondary) solid 3px;
+}
+
+.post-body :is(h3, h4, h5, h6) a:hover {
+  color: var(--background-color-secondary);
+  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
+}
+
+.post-body :is(h3, h4, h5, h6) a:visited {
+  color: var(--background-color);
+}
+
+.post-body :is(h3, h4, h5, h6) a:visited:hover {
+  color: var(--background-color-secondary);
 }
 
 /* Homepage layout */
