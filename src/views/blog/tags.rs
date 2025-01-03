@@ -10,7 +10,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         html! {
             <article>
                 <header>
-                    {h2_with_id(html!{<a href={Route::BlogTags.url_path()}>"Tags"</a>})}
+                    <h2><a href={Route::BlogTags.url_path()}>"Tags"</a></h2>
                 </header>
                 <div>
                     <ul>
@@ -43,7 +43,13 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
         html! {
             <article>
                 <header>
-                    {h2_with_id(html!{<a href={Route::BlogTags.url_path()}>"Tags"</a>})}
+                    <h2>
+                        <a href={Route::BlogTags.url_path()}>"Tags"</a>
+                        " · "
+                        <a href={Route::BlogTag { tag_id }.url_path()}>
+                            "#"{tag_id}
+                        </a>
+                    </h2>
                 </header>
                 <div>
                     <ul>
