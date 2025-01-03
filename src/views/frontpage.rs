@@ -49,17 +49,15 @@ fn post(context: ViewContext, document: &Document) -> paxhtml::Element {
     html! {
         <article class="post">
             <header>
-                {h2_with_id(html! {
-                    <a href={post_url}>
-                        {document.metadata.title.clone()}
-                    </a>
-                })}
+                <a href={post_url} class="post-title">
+                    <h2>{document.metadata.title.clone()}</h2>
+                </a>
+                <div class="post-meta">
+                    {date(document)}
+                    " · "
+                    {tags(document)}
+                </div>
             </header>
-            <span>
-                {date(document)}
-                " · "
-                {tags(document)}
-            </span>
             <div class="post-body">
                 {post_body_html}
             </div>

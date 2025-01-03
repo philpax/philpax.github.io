@@ -43,13 +43,14 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     html! {
         <article class="post">
             <header>
-                {h2_with_id(html! {
-                    <a href={url}>
-                        {document.metadata.title.clone()}
-                    </a>
-                })}
-                {tags(document)}
-                {date(document)}
+                <a href={url} class="post-title">
+                    {h2_with_id(document.metadata.title.clone())}
+                </a>
+                <div class="post-meta">
+                    {date(document)}
+                    " · "
+                    {tags(document)}
+                </div>
             </header>
             <div class="post-body">
                 {markdown::convert_to_html(context.syntax, body)}

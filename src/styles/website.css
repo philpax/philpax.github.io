@@ -188,41 +188,31 @@ a:visited:hover {
 
 /* Article */
 article {
-  margin: 20px 0px;
+  margin: 2em 0;
 }
 
 article header {
+  margin-bottom: 0.25em;
+}
+
+article header a.post-title {
   display: flex;
   align-items: center;
   background-color: var(--color);
   color: var(--background-color);
   padding: 0.5rem;
-}
-
-article header h2 {
-  flex-grow: 1;
-}
-
-article header h2 a {
   text-decoration: none;
 }
-
-article header a {
-  color: var(--background-color);
-  text-decoration: underline var(--background-color-secondary) solid 3px;
-}
-
-article header a:hover {
+article header a.post-title:hover {
   color: var(--background-color-secondary);
-  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
 }
-
-article header a:visited {
-  color: var(--background-color);
-}
-
-article header a:visited:hover {
-  color: var(--background-color-secondary);
+article header div.post-meta {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color-secondary);
+  color: var(--color-secondary);
+  padding: 0.25em 0.5em;
+  gap: 0.25em;
 }
 
 /* Code blocks */
