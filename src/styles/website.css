@@ -198,21 +198,41 @@ article header {
 article header a.post-title {
   display: flex;
   align-items: center;
-  background-color: var(--color);
-  color: var(--background-color);
+  background-color: var(--background-color-secondary);
+  color: var(--color);
   padding: 0.5rem;
   text-decoration: none;
 }
 article header a.post-title:hover {
-  color: var(--background-color-secondary);
+  color: var(--color-secondary);
 }
 article header div.post-meta {
   display: flex;
   align-items: center;
-  background-color: var(--background-color-secondary);
-  color: var(--color-secondary);
+  background-color: var(--color);
+  color: var(--background-color);
   padding: 0.25em 0.5em;
   gap: 0.25em;
+}
+
+article header div.post-meta a {
+  color: var(--background-color);
+  text-decoration: underline var(--background-color) solid 3px;
+}
+
+article header div.post-meta a:hover {
+  color: var(--background-color-secondary);
+  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
+  text-decoration-thickness: 7px;
+  text-underline-offset: 0px;
+}
+
+article header div.post-meta a:visited {
+  color: var(--background-color);
+}
+
+article header div.post-meta a:visited:hover {
+  color: var(--background-color-secondary);
 }
 
 /* Code blocks */
