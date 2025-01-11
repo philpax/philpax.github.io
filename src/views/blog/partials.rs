@@ -10,7 +10,7 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.tags.iter().map(|tag| {
                 html! {
                     <li>
-                        <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                        <a class="no-underline" href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                     </li>
                 }
             });
