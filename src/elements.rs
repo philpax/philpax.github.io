@@ -22,6 +22,20 @@ pub fn datetime_with_chrono<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) ->
     ])(date.to_rfc2822())
 }
 
+pub fn break_on_colon(value: &str) -> Element {
+    Element::from_iter(value.split(": ").enumerate().map(|(i, s)| {
+        let s = s.replace("-", "\u{2011}");
+        if i > 0 {
+            Element::from([
+                text(": "),
+                span([("style", "display: inline-block").into()])(s),
+            ])
+        } else {
+            span([("style", "display: inline-block").into()])(s)
+        }
+    }))
+}
+
 /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
 pub fn h_with_id<E: Into<Element>>(depth: u8, with_link: bool) -> impl FnOnce(E) -> Element {
     move |children: E| {

@@ -44,7 +44,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         <article class="post">
             <header>
                 <a href={url} class="post-title">
-                    {h2_with_id(document.metadata.title.clone())}
+                    <h2>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
                 <div class="post-meta">
                     {date(document)}

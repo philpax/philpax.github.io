@@ -50,7 +50,7 @@ fn post(context: ViewContext, document: &Document) -> paxhtml::Element {
         <article class="post">
             <header>
                 <a href={post_url} class="post-title">
-                    <h2>{document.metadata.title.clone()}</h2>
+                    <h2>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
                 <div class="post-meta">
                     {date(document)}
