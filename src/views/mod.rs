@@ -34,7 +34,7 @@ fn layout(_context: ViewContext, inner: Element) -> paxhtml::Document {
                             #{
                                 links.iter().map(|(url, label)| { html! {
                                     <li>
-                                        <a href={url}>{*label}</a>
+                                        <a class="no-underline" href={url}>{*label}</a>
                                     </li>
                                 }})
                             }

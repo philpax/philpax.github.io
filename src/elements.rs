@@ -43,7 +43,10 @@ pub fn h_with_id<E: Into<Element>>(depth: u8, with_link: bool) -> impl FnOnce(E)
         let id = crate::util::slugify(&children.inner_text());
 
         let children = if with_link {
-            a([("href", format!("#{id}")).into()])(children)
+            a([
+                ("href", format!("#{id}")).into(),
+                ("class", "no-underline").into(),
+            ])(children)
         } else {
             children
         };
