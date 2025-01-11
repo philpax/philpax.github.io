@@ -1,7 +1,6 @@
 use super::*;
 
-use crate::markdown;
-use crate::views::blog::partials::{date, tags};
+use crate::{markdown, views::blog::partials};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let blog = &context.content.blog;
@@ -21,7 +20,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     blog.documents
                         .iter()
                         .take(5)
-                        .map(|doc| post(context, doc))
+                        .map(|doc| partials::post(context, doc, partials::PostBody::Short))
                         .into_element()
                 }
                 <span>
@@ -33,34 +32,4 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             </div>
         },
     )
-}
-
-fn post(context: ViewContext, document: &Document) -> paxhtml::Element {
-    let post_url = document.route_path().url_path();
-    let post_body_html = vec![markdown::convert_to_html(
-        context.syntax,
-        document
-            .metadata
-            .short()
-            .as_ref()
-            .unwrap_or(&document.content),
-    )];
-
-    html! {
-        <article class="post">
-            <header>
-                <a href={post_url} class="post-title">
-                    <h2>{break_on_colon(&document.metadata.title)}</h2>
-                </a>
-                <div class="post-meta">
-                    {date(document)}
-                    " · "
-                    {tags(document)}
-                </div>
-            </header>
-            <div class="post-body">
-                {post_body_html}
-            </div>
-        </article>
-    }
 }

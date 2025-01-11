@@ -32,14 +32,17 @@ pub fn date(document: &Document) -> paxhtml::Element {
 pub enum PostBody {
     Full,
     Description,
+    Short,
 }
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
     let url = document.route_path().url_path();
-    let body = document
-        .description
-        .as_ref()
-        .filter(|_| post_body != PostBody::Full)
-        .unwrap_or(&document.content);
+    let short = document.metadata.short();
+    let body = match post_body {
+        PostBody::Full => &document.content,
+        PostBody::Description => document.description.as_ref().unwrap_or(&document.content),
+        PostBody::Short => short.as_ref().unwrap_or(&document.content),
+    };
+
     html! {
         <article class="post">
             <header>
