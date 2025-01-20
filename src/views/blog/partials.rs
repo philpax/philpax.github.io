@@ -46,14 +46,14 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     html! {
         <article class="post">
             <header>
-                <a href={url} class="post-title no-underline">
-                    <h2>{break_on_colon(&document.metadata.title)}</h2>
-                </a>
                 <div class="post-meta">
                     {date(document)}
                     " · "
                     {tags(document)}
                 </div>
+                <a href={url} class="post-title no-underline">
+                    <h2>{break_on_colon(&document.metadata.title)}</h2>
+                </a>
             </header>
             <div class="post-body">
                 {markdown::convert_to_html(context.syntax, body)}

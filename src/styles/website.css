@@ -198,13 +198,12 @@ a:visited:hover {
 
 /* Article */
 article {
-  margin: 0 0 2em 0;
+  margin: 0 0 3em 0;
 }
 
 article header {
-  padding-bottom: 0.25em;
-  margin-bottom: 0.25em;
-  border-bottom: 0.25em solid var(--color);
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 article header a.post-title {
@@ -218,6 +217,7 @@ article header div.post-meta {
   align-items: center;
   padding: 0;
   gap: 0.25em;
+  color: var(--color-secondary);
 }
 
 /* Code blocks */
@@ -233,11 +233,7 @@ code.code {
 
 /* Blog post */
 div.post-body > * {
-  margin-top: 1em;
-}
-
-div.post-body > *:first-child {
-  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 ul.tags {
@@ -260,6 +256,7 @@ ul.tags li {
 .post-body :is(h3, h4, h5, h6) {
   background-color: var(--color);
   padding: 0.5em;
+  margin-bottom: 0;
 }
 
 .post-body :is(h3, h4, h5, h6) a {
@@ -302,6 +299,10 @@ ul.tags li {
 
 #home-page-columns div.post-body {
   padding: 0;
+}
+
+#home-page-columns article {
+  margin-bottom: 1.5em;
 }
 
 #home-page-columns article header h2 {
