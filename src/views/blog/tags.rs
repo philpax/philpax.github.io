@@ -51,22 +51,12 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                         </a>
                     </h2>
                 </header>
-                <div>
-                    <ul>
-                    #{
-                        blog.tags[tag_id].iter().map(|t| {
-                            let document = blog.document_by_id(t).unwrap();
-                            html! {
-                                <li>
-                                    <a href={document.route_path().url_path()}>
-                                        {document.metadata.title.clone()}
-                                    </a>
-                                </li>
-                            }
-                        })
-                    }
-                    </ul>
-                </div>
+                #{
+                    blog.tags[tag_id].iter().map(|t| {
+                        let doc = blog.document_by_id(t).unwrap();
+                        partials::post(context, doc, partials::PostBody::Description)
+                    })
+                }
             </article>
         },
     )
