@@ -15,7 +15,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         context,
         html! {
             <>
-                <a href={Route::BlogTags.url_path()}>"Tags"</a>
+                {partials::header(partials::HeaderFocus::AllPosts)}
                 #{all_posts}
             </>
         },

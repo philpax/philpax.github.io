@@ -231,6 +231,23 @@ code.code {
   padding: 0.125em;
 }
 
+/* Blog header */
+#posts-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#posts-header a:not(.active) {
+  color: var(--color-secondary);
+}
+#posts-header a:not(.active):hover {
+  color: var(--color);
+}
+
 /* Blog post */
 div.post-body > * {
   margin-bottom: 1em;

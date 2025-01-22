@@ -8,10 +8,8 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     layout(
         context,
         html! {
-            <article>
-                <header>
-                    <h2><a href={Route::BlogTags.url_path()}>"Tags"</a></h2>
-                </header>
+            <>
+                {partials::header(partials::HeaderFocus::Tags)}
                 <div>
                     <ul>
                     #{
@@ -31,7 +29,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     }
                     </ul>
                 </div>
-            </article>
+            </>
         },
     )
 }
@@ -41,23 +39,15 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
     layout(
         context,
         html! {
-            <article>
-                <header>
-                    <h2>
-                        <a href={Route::BlogTags.url_path()}>"Tags"</a>
-                        " · "
-                        <a href={Route::BlogTag { tag_id }.url_path()}>
-                            "#"{tag_id}
-                        </a>
-                    </h2>
-                </header>
+            <>
+                {partials::header(partials::HeaderFocus::Tag(tag_id))}
                 #{
                     blog.tags[tag_id].iter().map(|t| {
                         let doc = blog.document_by_id(t).unwrap();
                         partials::post(context, doc, partials::PostBody::Description)
                     })
                 }
-            </article>
+            </>
         },
     )
 }

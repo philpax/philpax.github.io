@@ -1,6 +1,41 @@
 use super::*;
 use crate::markdown;
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum HeaderFocus<'a> {
+    AllPosts,
+    Tags,
+    Tag(&'a str),
+}
+pub fn header(focus: HeaderFocus) -> paxhtml::Element {
+    fn class(is_active: bool) -> &'static str {
+        if is_active {
+            "no-underline active"
+        } else {
+            "no-underline"
+        }
+    }
+
+    html! {
+        <header id="posts-header">
+            <a href={Route::Blog.url_path()} class={class(focus == HeaderFocus::AllPosts)}>"All posts"</a>
+            " · "
+            <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
+            {match focus {
+                HeaderFocus::Tag(tag) => html! {
+                    <>
+                        " · "
+                        <a href={Route::BlogTag { tag_id: tag }.url_path()} class={class(true)}>
+                            "#"{tag}
+                        </a>
+                    </>
+                },
+                _ => paxhtml::Element::Empty,
+            }}
+        </header>
+    }
+}
+
 pub fn tags(document: &Document) -> paxhtml::Element {
     document
         .metadata
