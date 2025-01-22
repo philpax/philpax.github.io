@@ -16,12 +16,11 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     </div>
                 </article>
                 <div>
-                {
+                #{
                     blog.documents
                         .iter()
                         .take(5)
                         .map(|doc| partials::post(context, doc, partials::PostBody::Short))
-                        .into_element()
                 }
                 <span>
                     <a href={Route::Blog.url_path()}>"All posts"</a>

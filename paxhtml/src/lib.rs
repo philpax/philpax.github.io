@@ -15,7 +15,7 @@ mod document;
 pub use document::Document;
 
 mod element;
-pub use element::{Element, IntoElement};
+pub use element::Element;
 
 mod render_element;
 pub use render_element::RenderElement;

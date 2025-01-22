@@ -1,9 +1,6 @@
 #![allow(unused)]
 
-pub use paxhtml::{
-    builder::{Element, IntoElement},
-    html,
-};
+pub use paxhtml::{builder::Element, html};
 
 use paxhtml::builder::*;
 

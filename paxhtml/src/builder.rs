@@ -1,6 +1,6 @@
 //! Implements a builder DSL for creating HTML documents through a series of functions.
 
-pub use super::{Attribute, Document, Element, IntoElement};
+pub use super::{Attribute, Document, Element};
 
 /// Create a text element from a value that implements [Into<String>].
 pub fn text(text: impl Into<String>) -> Element {

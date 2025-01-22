@@ -1,15 +1,13 @@
 use crate::{elements as e, syntax::SyntaxHighlighter};
-use paxhtml::{builder as b, IntoElement};
+use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 
 pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> paxhtml::Element {
     match node {
-        Node::Root(r) => r
-            .children
-            .iter()
-            .map(|n| convert_to_html(syntax, n))
-            .into_element(),
+        Node::Root(r) => {
+            paxhtml::Element::from_iter(r.children.iter().map(|n| convert_to_html(syntax, n)))
+        }
 
         Node::Heading(h) => {
             e::h_with_id((h.depth + 2).min(6), true)(convert_many(syntax, &h.children))
@@ -52,12 +50,9 @@ pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> paxhtml::Elem
                 attrs.push(("title", title.clone()).into());
             }
 
-            b::a(attrs)(
-                l.children
-                    .iter()
-                    .map(|n| convert_to_html(syntax, n))
-                    .into_element(),
-            )
+            b::a(attrs)(paxhtml::Element::from_iter(
+                l.children.iter().map(|n| convert_to_html(syntax, n)),
+            ))
         }
         Node::Html(h) => {
             // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
@@ -169,10 +164,7 @@ fn inner_text(node: &Node) -> String {
 }
 
 fn convert_many(syntax: &SyntaxHighlighter, nodes: &[Node]) -> paxhtml::Element {
-    nodes
-        .iter()
-        .map(|n| convert_to_html(syntax, n))
-        .into_element()
+    paxhtml::Element::from_iter(nodes.iter().map(|n| convert_to_html(syntax, n)))
 }
 
 #[cfg(test)]

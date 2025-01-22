@@ -269,6 +269,10 @@ impl ToTokens for HtmlNode {
 
 #[proc_macro]
 /// Constructs a tree of [`paxhtml::Element`]s from (X)HTML-like syntax, similar to JSX.
+///
+/// Interpolation is supported using `{}` for expressions and `#{...}` for iterators.
+///
+/// Fragments are supported using `<>...</>` syntax.
 pub fn html(input: TokenStream) -> TokenStream {
     let node = parse_macro_input!(input as HtmlNode);
     quote! { #node }.into()

@@ -53,7 +53,7 @@ fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
 
         html! {
             <ul>
-                {children.iter().map(build_list_item_recursively).into_element()}
+                #{children.iter().map(build_list_item_recursively)}
             </ul>
         }
     }
