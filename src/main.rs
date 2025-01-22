@@ -85,6 +85,7 @@ impl Timer {
 pub struct ViewContext<'a> {
     pub syntax: &'a syntax::SyntaxHighlighter,
     pub content: &'a content::Content,
+    pub generation_date: chrono::DateTime<chrono::Utc>,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -133,6 +134,7 @@ fn main() -> anyhow::Result<()> {
     let view_context = ViewContext {
         content: &content,
         syntax: &syntax,
+        generation_date: chrono::Utc::now(),
     };
 
     timer.step("Copied baked static content", || {

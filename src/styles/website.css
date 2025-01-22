@@ -165,6 +165,14 @@ body > header nav ul li a:visited:hover {
   }
 }
 
+/* Footer */
+body > footer {
+  margin-top: 1em;
+  text-align: center;
+  font-size: 0.75em;
+  color: var(--color-secondary);
+}
+
 /* Links */
 a {
   color: var(--color);
