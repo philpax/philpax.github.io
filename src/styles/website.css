@@ -271,25 +271,20 @@ ul.tags li {
 .post-body h6 { --heading-level: 6; }
 
 .post-body :is(h3, h4, h5, h6) {
-  background-color: var(--color);
-  padding: 0.5em;
+  padding: 0;
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
 }
 
-.post-body :is(h3, h4, h5, h6) a {
-  color: var(--background-color);
-}
-
-.post-body :is(h3, h4, h5, h6) a:hover {
-  color: var(--background-color-secondary);
-}
-
-.post-body :is(h3, h4, h5, h6) a:visited {
-  color: var(--background-color);
-}
-
-.post-body :is(h3, h4, h5, h6) a:visited:hover {
-  color: var(--background-color-secondary);
+.post-body :is(h3, h4, h5, h6)::before {
+  content: '';
+  display: block;
+  width: calc((var(--heading-level) - 3) * 2em);
+  height: 0.125em;
+  background-color: var(--color);
+  margin-right: clamp(0em, calc((var(--heading-level) - 3) * 0.5em), 0.5em);
+  background: linear-gradient(to left, var(--color), transparent);
 }
 
 /* Homepage layout */
