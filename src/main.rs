@@ -23,6 +23,8 @@ pub enum Route<'a> {
     BlogTag { tag_id: &'a str },
     BlogRss,
     Styles,
+    SyntaxDark,
+    SyntaxLight,
     Scripts,
     Icon,
     Favicon,
@@ -43,7 +45,9 @@ impl<'a> Route<'a> {
             Route::BlogTags => RoutePath::new(["blog", "tags"], None),
             Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
-            Route::Styles => RoutePath::new([], "styles.css".to_string()),
+            Route::Styles => RoutePath::new(["css"], "styles.css".to_string()),
+            Route::SyntaxDark => RoutePath::new(["css"], "syntax-dark.css".to_string()),
+            Route::SyntaxLight => RoutePath::new(["css"], "syntax-light.css".to_string()),
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
             Route::Favicon => RoutePath::new([], "favicon.ico".to_string()),
@@ -196,6 +200,12 @@ fn main() -> anyhow::Result<()> {
     timer.step("Wrote bundled styles", || {
         let output = styles::generate(view_context)?;
         Route::Styles.route_path().write(output_dir, output.css)?;
+        Route::SyntaxDark
+            .route_path()
+            .write(output_dir, output.syntax_dark_css)?;
+        Route::SyntaxLight
+            .route_path()
+            .write(output_dir, output.syntax_light_css)?;
         Route::DarkModeIcon
             .route_path()
             .write(output_dir, output.dark_mode_icon)?;

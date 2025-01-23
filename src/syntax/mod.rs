@@ -22,13 +22,24 @@ impl Default for SyntaxHighlighter {
     }
 }
 impl SyntaxHighlighter {
-    pub fn theme(&self) -> &str {
+    pub fn theme_dark(&self) -> &str {
         "ayu-dark"
     }
 
-    pub fn theme_css(&self) -> String {
-        css_for_theme_with_class_style(&self.theme_set.themes[self.theme()], ClassStyle::Spaced)
-            .unwrap()
+    pub fn theme_light(&self) -> &str {
+        "ayu-light"
+    }
+
+    fn theme_css_for(&self, theme: &str) -> String {
+        css_for_theme_with_class_style(&self.theme_set.themes[theme], ClassStyle::Spaced).unwrap()
+    }
+
+    pub fn theme_dark_css(&self) -> String {
+        self.theme_css_for(self.theme_dark())
+    }
+
+    pub fn theme_light_css(&self) -> String {
+        self.theme_css_for(self.theme_light())
     }
 
     pub fn highlight_code(

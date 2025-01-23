@@ -19,6 +19,7 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="alternate" href={Route::BlogRss.url_path()} r#type="application/rss+xml" title="Philpax's Blog" />
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
+                    <link rel="stylesheet" href={Route::SyntaxDark.url_path()}/>
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
                 <body>

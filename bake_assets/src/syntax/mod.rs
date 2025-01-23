@@ -37,11 +37,12 @@ fn build_syntax_set(source_dir: &Path, output_dir: &Path) -> anyhow::Result<()> 
 
 fn build_theme_set(source_dir: &Path, output_dir: &Path) -> anyhow::Result<()> {
     let mut set = ThemeSet::new();
-    let ayu_dark = sublime_color_scheme::ColorScheme::from_str(&std::fs::read_to_string(
-        &source_dir.join("ayu-dark.sublime-color-scheme"),
-    )?)?;
-    set.themes
-        .insert("ayu-dark".to_string(), ayu_dark.try_into()?);
+    for name in ["ayu-dark", "ayu-light"] {
+        let theme = sublime_color_scheme::ColorScheme::from_str(&std::fs::read_to_string(
+            &source_dir.join(format!("{}.sublime-color-scheme", name)),
+        )?)?;
+        set.themes.insert(name.to_string(), theme.try_into()?);
+    }
     syntect::dumps::dump_to_file(&set, output_dir.join("theme_set.packdump"))?;
     Ok(())
 }

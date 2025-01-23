@@ -2,6 +2,8 @@ use crate::ViewContext;
 
 pub struct GenerateOutput {
     pub css: String,
+    pub syntax_dark_css: String,
+    pub syntax_light_css: String,
     pub dark_mode_icon: String,
     pub light_mode_icon: String,
 }
@@ -12,7 +14,6 @@ pub fn generate(context: ViewContext) -> anyhow::Result<GenerateOutput> {
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
     let light_mode = property_sets.get(paxcss::LIGHT_MODE).unwrap();
-    let syntax = context.syntax.theme_css();
     let css = format!(
         r#"
 {RESET}
@@ -36,9 +37,6 @@ pub fn generate(context: ViewContext) -> anyhow::Result<GenerateOutput> {
 
 /* --- WEBSITE --- */
 {remaining}
-
-/* --- SYNTAX HIGHLIGHTING --- */
-{syntax}
 "#,
     )
     .trim()
@@ -65,6 +63,8 @@ pub fn generate(context: ViewContext) -> anyhow::Result<GenerateOutput> {
 
     Ok(GenerateOutput {
         css,
+        syntax_dark_css: context.syntax.theme_dark_css(),
+        syntax_light_css: context.syntax.theme_light_css(),
         dark_mode_icon,
         light_mode_icon,
     })
