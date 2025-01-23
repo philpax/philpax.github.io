@@ -73,37 +73,37 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     let url = document.route_path().url_path();
     let post_body = match post_body {
         PostBody::Full => {
+            let mut elements = vec![];
+
             let toc = document_to_html_list(document);
-            paxhtml::Element::from_iter(
-                toc.clone()
-                    .map(|hierarchy_list| {
-                        html! {
-                            <aside id="toc-sticky" hidden>
-                                <h3>"Table of Contents"</h3>
-                                {hierarchy_list}
-                            </aside>
-                        }
-                    })
-                    .into_iter()
-                    .chain([markdown::convert_to_html(
-                        context.syntax,
-                        &document.description,
-                    )])
-                    .chain(toc.map(|hierarchy_list| {
-                        html! {
-                            <aside id="toc-inline">
-                                <h3>"Table of Contents"</h3>
-                                {hierarchy_list}
-                            </aside>
-                        }
-                    }))
-                    .chain(
-                        document
-                            .rest_of_content
-                            .as_ref()
-                            .map(|c| markdown::convert_to_html(context.syntax, c)),
-                    ),
-            )
+            if let Some(hierarchy_list) = toc.clone() {
+                elements.push(html! {
+                    <aside id="toc-sticky" hidden>
+                        <h3>"Table of Contents"</h3>
+                        {hierarchy_list}
+                    </aside>
+                });
+            }
+
+            elements.push(markdown::convert_to_html(
+                context.syntax,
+                &document.description,
+            ));
+
+            if let Some(hierarchy_list) = toc {
+                elements.push(html! {
+                    <aside id="toc-inline">
+                        <h3>"Table of Contents"</h3>
+                        {hierarchy_list}
+                    </aside>
+                });
+            }
+
+            if let Some(content) = document.rest_of_content.as_ref() {
+                elements.push(markdown::convert_to_html(context.syntax, content));
+            }
+
+            paxhtml::Element::from(elements)
         }
         PostBody::Description => html! {
             <>
