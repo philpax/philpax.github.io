@@ -63,9 +63,9 @@ pub fn date(document: &Document) -> paxhtml::Element {
         .unwrap_or_default()
 }
 
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum PostBody {
-    Full,
+    Full { toc: Option<paxhtml::Element> },
     Description,
     Short,
 }
@@ -86,8 +86,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             </header>
             <div class="post-body">
                 {match post_body {
-                    PostBody::Full => paxhtml::Element::from_iter(
+                    PostBody::Full { toc }=> paxhtml::Element::from_iter(
                         std::iter::once(markdown::convert_to_html(context.syntax, &document.description))
+                            .chain(toc.into_iter())
                             .chain(document.rest_of_content.as_ref().map(|c|
                                 markdown::convert_to_html(context.syntax, c)
                             ))

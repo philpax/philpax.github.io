@@ -23,24 +23,18 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 }
 
 pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
-    let article = partials::post(context, document, partials::PostBody::Full);
-    let view = if let Some(hierarchy_list) = document_to_html_list(document) {
-        paxhtml::Element::from_iter([
-            article,
-            html! {
-                <aside>
-                    {h2_with_id("Contents")}
-                    <ul>
-                        {hierarchy_list}
-                    </ul>
-                </aside>
-            },
-        ])
-    } else {
-        article
-    };
-
-    layout(context, view)
+    let toc = document_to_html_list(document).map(|hierarchy_list| {
+        html! {
+            <aside id="toc">
+                <h3>"Table of Contents"</h3>
+                {hierarchy_list}
+            </aside>
+        }
+    });
+    layout(
+        context,
+        partials::post(context, document, partials::PostBody::Full { toc }),
+    )
 }
 
 fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
