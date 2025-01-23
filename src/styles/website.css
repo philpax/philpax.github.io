@@ -48,7 +48,12 @@ body {
 }
 
 main {
-  margin-top: 1em;
+  margin-top: 1.5em;
+}
+@media (max-width: 768px) {
+  main {
+    margin-top: 1em;
+  }
 }
 
 /* Header */
@@ -206,7 +211,7 @@ a:visited:hover {
 
 /* Article */
 article {
-  margin: 0 0 3em 0;
+  margin: 0 0 2em 0;
 }
 
 article header {
@@ -242,11 +247,13 @@ code.code {
 /* Blog header */
 #posts-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 0.25em;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: bold;
+  margin-bottom: 0.5em;
 }
 
 #posts-header a:not(.active) {
