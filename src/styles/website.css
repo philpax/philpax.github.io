@@ -295,7 +295,7 @@ ul.tags li {
   background: linear-gradient(to left, var(--color), transparent);
 }
 
-#toc {
+#toc-sticky {
   position: sticky;
   top: 1em;
   float: left;
@@ -304,13 +304,12 @@ ul.tags li {
   max-width: 15em;
 }
 
-@media (max-width: 1536px) {
-  #toc {
-    position: static;
-    float: none;
-    margin-left: 0;
-    margin-top: 0;
-    max-width: none;
+@media (min-width: 1536px) {
+  #toc-sticky {
+    display: block;
+  }
+  #toc-inline {
+    display: none;
   }
 }
 

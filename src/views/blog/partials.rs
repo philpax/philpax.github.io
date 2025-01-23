@@ -65,12 +65,63 @@ pub fn date(document: &Document) -> paxhtml::Element {
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum PostBody {
-    Full { toc: Option<paxhtml::Element> },
+    Full,
     Description,
     Short,
 }
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
     let url = document.route_path().url_path();
+    let post_body = match post_body {
+        PostBody::Full => {
+            let toc = document_to_html_list(document);
+            paxhtml::Element::from_iter(
+                toc.clone()
+                    .map(|hierarchy_list| {
+                        html! {
+                            <aside id="toc-sticky" hidden>
+                                <h3>"Table of Contents"</h3>
+                                {hierarchy_list}
+                            </aside>
+                        }
+                    })
+                    .into_iter()
+                    .chain([markdown::convert_to_html(
+                        context.syntax,
+                        &document.description,
+                    )])
+                    .chain(toc.map(|hierarchy_list| {
+                        html! {
+                            <aside id="toc-inline">
+                                <h3>"Table of Contents"</h3>
+                                {hierarchy_list}
+                            </aside>
+                        }
+                    }))
+                    .chain(
+                        document
+                            .rest_of_content
+                            .as_ref()
+                            .map(|c| markdown::convert_to_html(context.syntax, c)),
+                    ),
+            )
+        }
+        PostBody::Description => html! {
+            <>
+                {markdown::convert_to_html(context.syntax, &document.description)}
+                <p>
+                    <a href={url}>"Read more"</a>
+                </p>
+            </>
+        },
+        PostBody::Short => markdown::convert_to_html(
+            context.syntax,
+            document
+                .metadata
+                .short()
+                .as_ref()
+                .unwrap_or(&document.description),
+        ),
+    };
 
     html! {
         <article class="post">
@@ -85,28 +136,38 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 </a>
             </header>
             <div class="post-body">
-                {match post_body {
-                    PostBody::Full { toc }=> paxhtml::Element::from_iter(
-                        std::iter::once(markdown::convert_to_html(context.syntax, &document.description))
-                            .chain(toc.into_iter())
-                            .chain(document.rest_of_content.as_ref().map(|c|
-                                markdown::convert_to_html(context.syntax, c)
-                            ))
-                    ),
-                    PostBody::Description => html! {
-                        <>
-                            {markdown::convert_to_html(context.syntax, &document.description)}
-                            <p>
-                                <a href={url}>"Read more"</a>
-                            </p>
-                        </>
-                    },
-                    PostBody::Short => markdown::convert_to_html(
-                        context.syntax,
-                        document.metadata.short().as_ref().unwrap_or(&document.description),
-                    ),
-                }}
+                {post_body}
             </div>
         </article>
     }
+}
+
+fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
+    let heading_hierarchy =
+        markdown::HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
+
+    fn build_list_recursively(children: &[markdown::HeadingHierarchy]) -> paxhtml::Element {
+        if children.is_empty() {
+            return paxhtml::Element::Empty;
+        }
+
+        html! {
+            <ul>
+                #{children.iter().map(build_list_item_recursively)}
+            </ul>
+        }
+    }
+
+    fn build_list_item_recursively(
+        markdown::HeadingHierarchy { heading, children }: &markdown::HeadingHierarchy,
+    ) -> paxhtml::Element {
+        html! {
+            <li>
+                <a href={format!("#{}", util::slugify(heading))}>{heading}</a>
+                {build_list_recursively(children)}
+            </li>
+        }
+    }
+
+    Some(build_list_recursively(&heading_hierarchy)).filter(|e| !e.is_empty())
 }
