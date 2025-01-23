@@ -83,18 +83,21 @@ function initScrollSpy() {
   const tocSticky = document.getElementById("toc-sticky");
   if (!tocSticky) return;
 
-  const headings = document.querySelectorAll(".post-body :is(h3, h4, h5, h6)");
+  // Include both headings and bare anchors
+  const elements = document.querySelectorAll(
+    ".post-body :is(h3[id], h4[id], h5[id], h6[id]), .post-body a[id]"
+  );
   const tocLinks = tocSticky.querySelectorAll("a");
 
   function updateActiveLink() {
     // Get current scroll position, accounting for some offset
     const scrollPos = window.scrollY + 100;
 
-    // Find the heading that's currently in view
-    let currentHeading = null;
-    headings.forEach((heading) => {
-      if (heading.offsetTop <= scrollPos) {
-        currentHeading = heading;
+    // Find the element that's currently in view
+    let currentElement = null;
+    elements.forEach((element) => {
+      if (element.offsetTop <= scrollPos) {
+        currentElement = element;
       }
     });
 
@@ -104,13 +107,15 @@ function initScrollSpy() {
     });
 
     // Add active class to corresponding link
-    if (currentHeading) {
+    if (currentElement) {
       const correspondingLink = tocSticky.querySelector(
-        `a[href="#${currentHeading.id}"]`
+        `a[href="#${currentElement.id}"]`
       );
       if (correspondingLink) {
         correspondingLink.classList.add("active");
       }
+    } else {
+      tocLinks[0].classList.add("active");
     }
   }
 

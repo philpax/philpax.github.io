@@ -146,13 +146,23 @@ fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
     let heading_hierarchy =
         markdown::HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
 
-    fn build_list_recursively(children: &[markdown::HeadingHierarchy]) -> paxhtml::Element {
+    fn build_list_recursively(
+        children: &[markdown::HeadingHierarchy],
+        toplevel: bool,
+    ) -> paxhtml::Element {
         if children.is_empty() {
             return paxhtml::Element::Empty;
         }
 
         html! {
             <ul>
+                {if toplevel {
+                    html! {
+                        <li><a href="#">"Introduction"</a></li>
+                    }
+                } else {
+                    paxhtml::Element::Empty
+                }}
                 #{children.iter().map(build_list_item_recursively)}
             </ul>
         }
@@ -164,10 +174,10 @@ fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
         html! {
             <li>
                 <a href={format!("#{}", util::slugify(heading))}>{heading}</a>
-                {build_list_recursively(children)}
+                {build_list_recursively(children, false)}
             </li>
         }
     }
 
-    Some(build_list_recursively(&heading_hierarchy)).filter(|e| !e.is_empty())
+    Some(build_list_recursively(&heading_hierarchy, true)).filter(|e| !e.is_empty())
 }
