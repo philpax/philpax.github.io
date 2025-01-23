@@ -108,8 +108,8 @@ pub struct Document {
     pub id: DocumentId,
     pub alternate_id: Option<DocumentId>,
     pub metadata: DocumentMetadata,
-    pub description: Option<markdown::mdast::Node>,
-    pub content: markdown::mdast::Node,
+    pub description: markdown::mdast::Node,
+    pub rest_of_content: Option<markdown::mdast::Node>,
     pub files: Vec<PathBuf>,
 }
 impl Document {
@@ -124,11 +124,13 @@ impl Document {
         let metadata: DocumentMetadata = toml::from_str(parts[1])?;
         let content_raw = parts[2];
 
-        let description = content_raw
-            .split("<!-- more -->")
-            .next()
-            .map(|s| parse_markdown(s.trim()));
-        let content = parse_markdown(content_raw);
+        let (description, rest_of_content) = match content_raw.split_once("<!-- more -->") {
+            Some((description, rest_of_content)) => (
+                parse_markdown(description.trim()),
+                Some(parse_markdown(rest_of_content.trim())),
+            ),
+            None => (parse_markdown(content_raw), None),
+        };
 
         let mut files = vec![];
         for entry in std::fs::read_dir(path.parent().unwrap())? {
@@ -151,7 +153,7 @@ impl Document {
             alternate_id,
             metadata,
             description,
-            content,
+            rest_of_content,
             files,
         })
     }

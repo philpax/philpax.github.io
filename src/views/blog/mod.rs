@@ -44,7 +44,8 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
 }
 
 fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
-    let heading_hierarchy = markdown::HeadingHierarchy::from_node(&document.content);
+    let heading_hierarchy =
+        markdown::HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
 
     fn build_list_recursively(children: &[markdown::HeadingHierarchy]) -> paxhtml::Element {
         if children.is_empty() {

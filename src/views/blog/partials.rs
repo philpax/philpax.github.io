@@ -71,12 +71,6 @@ pub enum PostBody {
 }
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
     let url = document.route_path().url_path();
-    let short = document.metadata.short();
-    let body = match post_body {
-        PostBody::Full => &document.content,
-        PostBody::Description => document.description.as_ref().unwrap_or(&document.content),
-        PostBody::Short => short.as_ref().unwrap_or(&document.content),
-    };
 
     html! {
         <article class="post">
@@ -91,15 +85,25 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 </a>
             </header>
             <div class="post-body">
-                {markdown::convert_to_html(context.syntax, body)}
-                {if post_body == PostBody::Description {
-                    html! {
-                        <p>
-                            <a href={url}>"Read more"</a>
-                        </p>
-                    }
-                } else {
-                    paxhtml::Element::Empty
+                {match post_body {
+                    PostBody::Full => paxhtml::Element::from_iter(
+                        std::iter::once(markdown::convert_to_html(context.syntax, &document.description))
+                            .chain(document.rest_of_content.as_ref().map(|c|
+                                markdown::convert_to_html(context.syntax, c)
+                            ))
+                    ),
+                    PostBody::Description => html! {
+                        <>
+                            {markdown::convert_to_html(context.syntax, &document.description)}
+                            <p>
+                                <a href={url}>"Read more"</a>
+                            </p>
+                        </>
+                    },
+                    PostBody::Short => markdown::convert_to_html(
+                        context.syntax,
+                        document.metadata.short().as_ref().unwrap_or(&document.description),
+                    ),
                 }}
             </div>
         </article>

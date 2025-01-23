@@ -67,11 +67,9 @@ fn build_item(
         .permalink(false)
         .build();
 
-    let description = doc.description.as_ref().map(|d| {
-        paxhtml::Document::new([markdown::convert_to_html(syntax, d)])
-            .write_to_string()
-            .unwrap()
-    });
+    let description = paxhtml::Document::new([markdown::convert_to_html(syntax, &doc.description)])
+        .write_to_string()
+        .unwrap();
 
     rss::ItemBuilder::default()
         .title(doc.metadata.title.clone())
