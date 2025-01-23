@@ -313,6 +313,14 @@ ul.tags li {
   }
 }
 
+#toc-sticky a:not(.active) {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+#toc-sticky a:not(.active):hover {
+  color: var(--color);
+}
+
 /* Homepage layout */
 #home-page-columns {
   display: grid;

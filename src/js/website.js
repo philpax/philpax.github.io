@@ -79,6 +79,49 @@ function createThemeSwitcher() {
   }
 }
 
+function initScrollSpy() {
+  const tocSticky = document.getElementById("toc-sticky");
+  if (!tocSticky) return;
+
+  const headings = document.querySelectorAll(".post-body :is(h3, h4, h5, h6)");
+  const tocLinks = tocSticky.querySelectorAll("a");
+
+  function updateActiveLink() {
+    // Get current scroll position, accounting for some offset
+    const scrollPos = window.scrollY + 100;
+
+    // Find the heading that's currently in view
+    let currentHeading = null;
+    headings.forEach((heading) => {
+      if (heading.offsetTop <= scrollPos) {
+        currentHeading = heading;
+      }
+    });
+
+    // Remove active class from all links
+    tocLinks.forEach((link) => {
+      link.classList.remove("active");
+    });
+
+    // Add active class to corresponding link
+    if (currentHeading) {
+      const correspondingLink = tocSticky.querySelector(
+        `a[href="#${currentHeading.id}"]`
+      );
+      if (correspondingLink) {
+        correspondingLink.classList.add("active");
+      }
+    }
+  }
+
+  // Update on scroll
+  window.addEventListener("scroll", updateActiveLink);
+
+  // Initial update
+  updateActiveLink();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   createThemeSwitcher();
+  initScrollSpy();
 });
