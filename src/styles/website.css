@@ -231,6 +231,7 @@ article header div.post-meta {
   padding: 0;
   gap: 0.25em;
   color: var(--color-secondary);
+  margin-bottom: -0.125em;
 }
 
 /* Footnotes */
@@ -411,7 +412,6 @@ ul.tags li {
   flex-wrap: wrap;
   gap: 0.25em;
 }
-
 
 @media (max-width: 768px) {
   #home-page-columns {
