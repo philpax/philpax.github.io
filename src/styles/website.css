@@ -265,6 +265,7 @@ pre.code {
 
 code.code {
   padding: 0.25em;
+  margin: 0 0.1em;
 }
 
 /* Blog header */
@@ -394,6 +395,16 @@ ul.tags li {
   font-size: 1.25em;
 }
 
+#home-page-columns #list-88x31 {
+  margin-top: 1em;
+  border-top: 0.125em dotted var(--color);
+  padding-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+}
+
+
 @media (max-width: 768px) {
   #home-page-columns {
     display: block;
@@ -410,13 +421,8 @@ ul.tags li {
   #home-page-columns > *:last-child {
     padding-left: 0;
   }
-}
 
-#home-page-columns #list-88x31 {
-  margin-top: 1em;
-  border-top: 0.125em dotted var(--color);
-  padding-top: 1em;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25em;
+  #home-page-columns #list-88x31 {
+    justify-content: center;
+  }
 }
