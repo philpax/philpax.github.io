@@ -1,6 +1,6 @@
 use crate::{
     content::{Blog, Document},
-    markdown,
+    markdown::MarkdownConverter,
     syntax::SyntaxHighlighter,
 };
 
@@ -67,9 +67,10 @@ fn build_item(
         .permalink(false)
         .build();
 
-    let description = paxhtml::Document::new([markdown::convert_to_html(syntax, &doc.description)])
-        .write_to_string()
-        .unwrap();
+    let description =
+        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description)])
+            .write_to_string()
+            .unwrap();
 
     rss::ItemBuilder::default()
         .title(doc.metadata.title.clone())

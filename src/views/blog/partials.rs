@@ -1,5 +1,8 @@
 use super::*;
-use crate::markdown;
+use crate::{
+    markdown::{HeadingHierarchy, MarkdownConverter},
+    util,
+};
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum HeaderFocus<'a> {
@@ -93,10 +96,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 });
             }
 
-            elements.push(markdown::convert_to_html(
-                context.syntax,
-                &document.description,
-            ));
+            elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
@@ -108,21 +108,20 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             }
 
             if let Some(content) = document.rest_of_content.as_ref() {
-                elements.push(markdown::convert_to_html(context.syntax, content));
+                elements.push(MarkdownConverter::new(context.syntax).convert(content));
             }
 
             paxhtml::Element::from(elements)
         }
         PostBody::Description => html! {
             <>
-                {markdown::convert_to_html(context.syntax, &document.description)}
+                {MarkdownConverter::new(context.syntax).convert(&document.description)}
                 <p>
                     <a href={url}>"Read more"</a>
                 </p>
             </>
         },
-        PostBody::Short => markdown::convert_to_html(
-            context.syntax,
+        PostBody::Short => MarkdownConverter::new(context.syntax).convert(
             document
                 .metadata
                 .short()
@@ -151,13 +150,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 }
 
 fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
-    let heading_hierarchy =
-        markdown::HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
+    let heading_hierarchy = HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
 
-    fn build_list_recursively(
-        children: &[markdown::HeadingHierarchy],
-        toplevel: bool,
-    ) -> paxhtml::Element {
+    fn build_list_recursively(children: &[HeadingHierarchy], toplevel: bool) -> paxhtml::Element {
         if children.is_empty() {
             return paxhtml::Element::Empty;
         }
@@ -177,7 +172,7 @@ fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
     }
 
     fn build_list_item_recursively(
-        markdown::HeadingHierarchy { heading, children }: &markdown::HeadingHierarchy,
+        HeadingHierarchy { heading, children }: &HeadingHierarchy,
     ) -> paxhtml::Element {
         html! {
             <li>

@@ -1,6 +1,6 @@
 use super::*;
 
-use crate::{markdown, views::blog::partials};
+use crate::{markdown::MarkdownConverter, views::blog::partials};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let content = &context.content;
@@ -21,7 +21,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             <div id="home-page-columns">
                 <article>
                     <div class="post-body">
-                        {markdown::convert_to_html(context.syntax, &content.about.description)}
+                        {MarkdownConverter::new(context.syntax).convert(&content.about.description)}
                     </div>
                 </article>
                 <div>

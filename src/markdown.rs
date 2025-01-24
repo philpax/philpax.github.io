@@ -3,93 +3,121 @@ use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 
-pub fn convert_to_html(syntax: &SyntaxHighlighter, node: &Node) -> paxhtml::Element {
-    match node {
-        Node::Root(r) => {
-            paxhtml::Element::from_iter(r.children.iter().map(|n| convert_to_html(syntax, n)))
-        }
+pub struct MarkdownConverter<'a> {
+    pub syntax: &'a SyntaxHighlighter,
+}
+impl<'a> MarkdownConverter<'a> {
+    pub fn new(syntax: &'a SyntaxHighlighter) -> Self {
+        Self { syntax }
+    }
 
-        Node::Heading(h) => {
-            e::h_with_id((h.depth + 2).min(6), true)(convert_many(syntax, &h.children))
-        }
-        Node::Text(t) => b::text(&t.value),
-        Node::Paragraph(p) => b::p([])(convert_many(syntax, &p.children)),
-        Node::Strong(s) => b::strong([])(convert_many(syntax, &s.children)),
-        Node::Emphasis(e) => b::em([])(convert_many(syntax, &e.children)),
-        Node::List(l) => {
-            let children = convert_many(syntax, &l.children);
-            if l.ordered {
-                b::ol([])(children)
-            } else {
-                b::ul([])(children)
+    pub fn convert(&self, node: &Node) -> paxhtml::Element {
+        match node {
+            Node::Root(r) => {
+                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n)))
             }
-        }
-        Node::ListItem(li) => {
-            // hack: if the only child of this list item is a paragraph, drop the paragraph
-            // and use the raw content instead
-            if li.children.len() == 1 {
-                if let Node::Paragraph(p) = &li.children[0] {
-                    return b::li([])(convert_many(syntax, &p.children));
+
+            Node::Heading(h) => {
+                e::h_with_id((h.depth + 2).min(6), true)(self.convert_many(&h.children))
+            }
+            Node::Text(t) => b::text(&t.value),
+            Node::Paragraph(p) => b::p([])(self.convert_many(&p.children)),
+            Node::Strong(s) => b::strong([])(self.convert_many(&s.children)),
+            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children)),
+            Node::List(l) => {
+                let children = self.convert_many(&l.children);
+                if l.ordered {
+                    b::ol([])(children)
+                } else {
+                    b::ul([])(children)
+                }
+            }
+            Node::ListItem(li) => {
+                // hack: if the only child of this list item is a paragraph, drop the paragraph
+                // and use the raw content instead
+                if li.children.len() == 1 {
+                    if let Node::Paragraph(p) = &li.children[0] {
+                        return b::li([])(self.convert_many(&p.children));
+                    }
+                }
+
+                b::li([])(self.convert_many(&li.children))
+            }
+            Node::Code(c) => b::pre([("class", "code").into()])(b::code([])(
+                self.syntax
+                    .highlight_code(c.lang.as_deref(), &c.value)
+                    .unwrap(),
+            )),
+            Node::BlockQuote(b) => b::blockquote([])(self.convert_many(&b.children)),
+            Node::Break(_) => b::br([]),
+            Node::InlineCode(c) => b::code([("class", "code").into()])(
+                self.syntax.highlight_code(None, &c.value).unwrap(),
+            ),
+            Node::Image(i) => {
+                b::img([("src", i.url.clone()).into(), ("alt", i.alt.clone()).into()])
+            }
+            Node::Link(l) => {
+                let mut attrs = vec![("href", l.url.clone()).into()];
+                if let Some(title) = &l.title {
+                    attrs.push(("title", title.clone()).into());
+                }
+
+                b::a(attrs)(paxhtml::Element::from_iter(
+                    l.children.iter().map(|n| self.convert(n)),
+                ))
+            }
+            Node::Html(h) => {
+                // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
+                // in the middle of the string and actual content follows, but it's good enough for now.
+                if h.value.starts_with("<!--") && h.value.ends_with("-->") {
+                    return paxhtml::Element::Empty;
+                }
+
+                paxhtml::Element::Raw {
+                    html: h.value.clone(),
                 }
             }
 
-            b::li([])(convert_many(syntax, &li.children))
-        }
-        Node::Code(c) => b::pre([("class", "code").into()])(b::code([])(
-            syntax.highlight_code(c.lang.as_deref(), &c.value).unwrap(),
-        )),
-        Node::BlockQuote(b) => b::blockquote([])(convert_many(syntax, &b.children)),
-        Node::Break(_) => b::br([]),
-        Node::InlineCode(c) => {
-            b::code([("class", "code").into()])(syntax.highlight_code(None, &c.value).unwrap())
-        }
-        Node::Image(i) => b::img([("src", i.url.clone()).into(), ("alt", i.alt.clone()).into()]),
-        Node::Link(l) => {
-            let mut attrs = vec![("href", l.url.clone()).into()];
-            if let Some(title) = &l.title {
-                attrs.push(("title", title.clone()).into());
-            }
+            // Not supported yet
+            Node::FootnoteDefinition(_)
+            | Node::InlineMath(_)
+            | Node::Delete(_)
+            | Node::FootnoteReference(_)
+            | Node::ImageReference(_)
+            | Node::LinkReference(_)
+            | Node::Math(_)
+            | Node::Table(_)
+            | Node::ThematicBreak(_)
+            | Node::TableRow(_)
+            | Node::TableCell(_)
+            | Node::Definition(_) => paxhtml::Element::Empty,
 
-            b::a(attrs)(paxhtml::Element::from_iter(
-                l.children.iter().map(|n| convert_to_html(syntax, n)),
-            ))
+            // Never supported
+            Node::Toml(_)
+            | Node::Yaml(_)
+            | Node::MdxJsxFlowElement(_)
+            | Node::MdxjsEsm(_)
+            | Node::MdxTextExpression(_)
+            | Node::MdxJsxTextElement(_)
+            | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
         }
-        Node::Html(h) => {
-            // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
-            // in the middle of the string and actual content follows, but it's good enough for now.
-            if h.value.starts_with("<!--") && h.value.ends_with("-->") {
-                return paxhtml::Element::Empty;
-            }
+    }
 
-            paxhtml::Element::Raw {
-                html: h.value.clone(),
-            }
-        }
-
-        // Not supported yet
-        Node::FootnoteDefinition(_)
-        | Node::InlineMath(_)
-        | Node::Delete(_)
-        | Node::FootnoteReference(_)
-        | Node::ImageReference(_)
-        | Node::LinkReference(_)
-        | Node::Math(_)
-        | Node::Table(_)
-        | Node::ThematicBreak(_)
-        | Node::TableRow(_)
-        | Node::TableCell(_)
-        | Node::Definition(_) => paxhtml::Element::Empty,
-
-        // Never supported
-        Node::Toml(_)
-        | Node::Yaml(_)
-        | Node::MdxJsxFlowElement(_)
-        | Node::MdxjsEsm(_)
-        | Node::MdxTextExpression(_)
-        | Node::MdxJsxTextElement(_)
-        | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
+    fn convert_many(&self, nodes: &[Node]) -> paxhtml::Element {
+        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n)))
     }
 }
+
+fn inner_text(node: &Node) -> String {
+    if let Node::Text(text) = node {
+        text.value.clone()
+    } else {
+        node.children()
+            .map(|c| c.iter().map(inner_text).collect())
+            .unwrap_or_default()
+    }
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct HeadingHierarchy {
     pub heading: String,
@@ -151,20 +179,6 @@ impl HeadingHierarchy {
 
         result
     }
-}
-
-fn inner_text(node: &Node) -> String {
-    if let Node::Text(text) = node {
-        text.value.clone()
-    } else {
-        node.children()
-            .map(|c| c.iter().map(inner_text).collect())
-            .unwrap_or_default()
-    }
-}
-
-fn convert_many(syntax: &SyntaxHighlighter, nodes: &[Node]) -> paxhtml::Element {
-    paxhtml::Element::from_iter(nodes.iter().map(|n| convert_to_html(syntax, n)))
 }
 
 #[cfg(test)]
