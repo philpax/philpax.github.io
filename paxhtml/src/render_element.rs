@@ -103,7 +103,9 @@ impl RenderElement {
                     encountered_text_element |= matches!(child, Self::Text { .. });
                     let should_indent_this_child = should_indent
                         && !encountered_text_element
-                        && !child.tag().is_some_and(|t| ["code", "pre"].contains(&t))
+                        && !child
+                            .tag()
+                            .is_some_and(|t| ["code", "pre", "sup", "sub"].contains(&t))
                         && !child.is_raw();
                     if should_indent_this_child {
                         writeln!(writer)?;
