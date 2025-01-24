@@ -22,6 +22,14 @@ pub fn header(focus: HeaderFocus) -> paxhtml::Element {
             " · "
             <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
             {match focus {
+                HeaderFocus::AllPosts => html! {
+                    <>
+                        " · "
+                        <a href={Route::BlogRss.url_path()} class={class(false)}>
+                            "RSS"
+                        </a>
+                    </>
+                },
                 HeaderFocus::Tag(tag) => html! {
                     <>
                         " · "
