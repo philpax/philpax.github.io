@@ -299,7 +299,6 @@ ul.tags li {
   height: 0.125em;
   background-color: var(--color);
   margin-right: clamp(0em, calc((var(--heading-level) - 3) * 0.5em), 0.5em);
-  background: linear-gradient(to left, var(--color), transparent);
 }
 
 #toc-sticky {
