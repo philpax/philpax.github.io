@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{elements as e, syntax::SyntaxHighlighter};
 use paxhtml::builder as b;
 
@@ -5,23 +7,50 @@ pub use markdown::mdast::Node;
 
 pub struct MarkdownConverter<'a> {
     pub syntax: &'a SyntaxHighlighter,
+    pub footnotes: HashMap<String, Vec<Node>>,
+    pub without_blocking_elements: bool,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(syntax: &'a SyntaxHighlighter) -> Self {
-        Self { syntax }
+        Self {
+            syntax,
+            footnotes: HashMap::new(),
+            without_blocking_elements: false,
+        }
     }
 
-    pub fn convert(&self, node: &Node) -> paxhtml::Element {
+    /// Don't generate any elements that would otherwise cause a `<p>` to self-close;
+    /// instead, just return their children.
+    pub fn without_blocking_elements(mut self) -> Self {
+        self.without_blocking_elements = true;
+        self
+    }
+
+    pub fn convert(&mut self, node: &Node) -> paxhtml::Element {
+        self.gather_footnote_definitions(node);
+
         match node {
             Node::Root(r) => {
                 paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n)))
             }
 
             Node::Heading(h) => {
-                e::h_with_id((h.depth + 2).min(6), true)(self.convert_many(&h.children))
+                let children = self.convert_many(&h.children);
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    e::h_with_id((h.depth + 2).min(6), true)(children)
+                }
             }
             Node::Text(t) => b::text(&t.value),
-            Node::Paragraph(p) => b::p([])(self.convert_many(&p.children)),
+            Node::Paragraph(p) => {
+                let children = self.convert_many(&p.children);
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b::p([])(children)
+                }
+            }
             Node::Strong(s) => b::strong([])(self.convert_many(&s.children)),
             Node::Emphasis(e) => b::em([])(self.convert_many(&e.children)),
             Node::List(l) => {
@@ -48,7 +77,14 @@ impl<'a> MarkdownConverter<'a> {
                     .highlight_code(c.lang.as_deref(), &c.value)
                     .unwrap(),
             )),
-            Node::BlockQuote(b) => b::blockquote([])(self.convert_many(&b.children)),
+            Node::BlockQuote(b) => {
+                let children = self.convert_many(&b.children);
+                if self.without_blocking_elements {
+                    b::q([])(children)
+                } else {
+                    b::blockquote([])(children)
+                }
+            }
             Node::Break(_) => b::br([]),
             Node::InlineCode(c) => b::code([("class", "code").into()])(
                 self.syntax.highlight_code(None, &c.value).unwrap(),
@@ -77,12 +113,37 @@ impl<'a> MarkdownConverter<'a> {
                     html: h.value.clone(),
                 }
             }
+            Node::FootnoteReference(r) => {
+                let definition = self
+                    .footnotes
+                    .get(&r.identifier)
+                    .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
+                    .clone();
+
+                let id = format!("footnote-{}", r.identifier);
+                paxhtml::Element::from_iter([
+                    b::input([
+                        ("type", "checkbox").into(),
+                        ("id", id.clone()).into(),
+                        ("class", "footnote-checkbox").into(),
+                        ("autocomplete", "off").into(),
+                    ]),
+                    b::label([("for", id.clone()).into()])(b::sup([])(format!(
+                        "[{}]",
+                        r.identifier
+                    ))),
+                    b::span([])(
+                        MarkdownConverter::new(self.syntax)
+                            .without_blocking_elements()
+                            .convert_many(&definition),
+                    ),
+                ])
+            }
 
             // Not supported yet
             Node::FootnoteDefinition(_)
             | Node::InlineMath(_)
             | Node::Delete(_)
-            | Node::FootnoteReference(_)
             | Node::ImageReference(_)
             | Node::LinkReference(_)
             | Node::Math(_)
@@ -103,8 +164,23 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    fn convert_many(&self, nodes: &[Node]) -> paxhtml::Element {
+    fn convert_many(&mut self, nodes: &[Node]) -> paxhtml::Element {
         paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n)))
+    }
+
+    /// We use a pre-pass to gather footnote definitions, so that we can render them in the correct
+    /// context.
+    fn gather_footnote_definitions(&mut self, node: &Node) {
+        if let Node::FootnoteDefinition(f) = node {
+            self.footnotes
+                .insert(f.identifier.clone(), f.children.clone());
+        }
+
+        if let Some(children) = node.children() {
+            for child in children {
+                self.gather_footnote_definitions(child);
+            }
+        }
     }
 }
 

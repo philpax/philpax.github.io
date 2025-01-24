@@ -3,9 +3,13 @@ title = "About"
 path = "about"
 +++
 
-G'day! I'm a creative polyglot programmer/engineer, and I'm passionate about computers, how we interact with them, and how they can be used to enable creativity. Welcome to my humble website!
+G'day! I'm Philpax[^1], a creative polyglot programmer/engineer, and I'm passionate about computers, how we interact with them, and how they can be used to enable creativity. Welcome to my humble website!
 
-My real name is Mithun, but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden. (Yes, the temperature differential makes me sick every time I switch hemispheres.)
+[^1]: IPA `/ˈfɪl.pæks/`. he/him.
+
+My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden. (Yes, the temperature differential makes me sick every time I switch hemispheres.)
+
+[^2]: IPA `/mɪθʌn/`. also, unbelievably, he/him.
 
 I've worked with every layer of the stack - from the little electrons racing around my workbench, to software riding high enough for Snoop Dogg to call for advice - and I can be found doing any number of things, including but certainly not limited to:
 

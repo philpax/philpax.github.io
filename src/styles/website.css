@@ -233,6 +233,29 @@ article header div.post-meta {
   color: var(--color-secondary);
 }
 
+/* Footnotes */
+input.footnote-checkbox[type=checkbox] {
+  display: none;
+}
+
+input.footnote-checkbox[type=checkbox] ~ label {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+input.footnote-checkbox[type=checkbox] ~ span {
+  display: none;
+  background-color: var(--color);
+  color: var(--background-color);
+  padding: 0.5em;
+  margin: 0.25em 0;
+}
+
+input.footnote-checkbox[type=checkbox]:checked ~ span {
+  display: block;
+}
+
 /* Code blocks */
 pre.code {
   padding: 0.5em;
