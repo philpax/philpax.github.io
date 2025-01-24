@@ -238,13 +238,13 @@ input.footnote-checkbox[type=checkbox] {
   display: none;
 }
 
-input.footnote-checkbox[type=checkbox] ~ label {
+input.footnote-checkbox[type=checkbox] + label {
   display: inline-block;
   cursor: pointer;
   user-select: none;
 }
 
-input.footnote-checkbox[type=checkbox] ~ span {
+input.footnote-checkbox[type=checkbox] + label + span {
   display: none;
   background-color: var(--color);
   color: var(--background-color);
@@ -252,7 +252,7 @@ input.footnote-checkbox[type=checkbox] ~ span {
   margin: 0.25em 0;
 }
 
-input.footnote-checkbox[type=checkbox]:checked ~ span {
+input.footnote-checkbox[type=checkbox]:checked + label + span {
   display: block;
 }
 

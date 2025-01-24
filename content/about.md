@@ -7,9 +7,10 @@ G'day! I'm Philpax[^1], a creative polyglot programmer/engineer, and I'm passion
 
 [^1]: IPA `/ˈfɪl.pæks/`. he/him.
 
-My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden. (Yes, the temperature differential makes me sick every time I switch hemispheres.)
+My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden.[^3]
 
 [^2]: IPA `/mɪθʌn/`. also, unbelievably, he/him.
+[^3]: Yes, the temperature differential makes me sick every time I switch hemispheres.
 
 I've worked with every layer of the stack - from the little electrons racing around my workbench, to software riding high enough for Snoop Dogg to call for advice - and I can be found doing any number of things, including but certainly not limited to:
 
