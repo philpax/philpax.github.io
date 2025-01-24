@@ -380,11 +380,20 @@ ul.tags li {
     border-right: none;
     border-bottom: 0.125em dotted var(--color);
     padding-right: 0;
-    padding-bottom: 1em;
+    padding-bottom: 0; /* we already have padding from the p in the article */
     margin-bottom: 1em;
   }
 
   #home-page-columns > *:last-child {
     padding-left: 0;
   }
+}
+
+#home-page-columns #list-88x31 {
+  margin-top: 1em;
+  border-top: 0.125em dotted var(--color);
+  padding-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
 }
