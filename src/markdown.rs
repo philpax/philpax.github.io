@@ -89,9 +89,10 @@ impl<'a> MarkdownConverter<'a> {
             Node::InlineCode(c) => b::code([("class", "code").into()])(
                 self.syntax.highlight_code(None, &c.value).unwrap(),
             ),
-            Node::Image(i) => {
-                b::img([("src", i.url.clone()).into(), ("alt", i.alt.clone()).into()])
-            }
+            Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
+                ("src", i.url.clone()).into(),
+                ("alt", i.alt.clone()).into(),
+            ])),
             Node::Link(l) => {
                 let mut attrs = vec![("href", l.url.clone()).into()];
                 if let Some(title) = &l.title {
