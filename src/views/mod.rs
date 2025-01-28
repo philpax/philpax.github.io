@@ -1,23 +1,84 @@
 use crate::{content::Document, elements::*, Route, ViewContext};
+use std::collections::HashMap;
 
 pub mod blog;
 pub mod frontpage;
 
-fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
+#[derive(Default)]
+/// Metadata for social media platforms like Twitter and OpenGraph
+struct SocialMeta {
+    /// The title of the page for OpenGraph
+    title: Option<String>,
+    /// The description of the page for OpenGraph
+    description: Option<String>,
+    /// The image URL to display for OpenGraph
+    image: Option<String>,
+    /// The canonical URL of the page for OpenGraph
+    url: Option<String>,
+    /// The type of content for OpenGraph (e.g. "article", "website")
+    type_: Option<String>,
+    /// The Twitter card type (e.g. "summary", "summary_large_image")
+    twitter_card: Option<String>,
+    /// The image URL to display for Twitter
+    twitter_image: Option<String>,
+    /// When the article was published (for OpenGraph article type)
+    article_published_time: Option<chrono::DateTime<chrono::Utc>>,
+    /// A tag describing the article (for OpenGraph article type)
+    article_tag: Option<String>,
+}
+impl From<SocialMeta> for HashMap<String, String> {
+    fn from(meta: SocialMeta) -> Self {
+        HashMap::from_iter(
+            [
+                ("og:title", meta.title.clone()),
+                ("og:description", meta.description.clone()),
+                ("og:image", meta.image),
+                ("og:url", meta.url),
+                ("og:type", meta.type_),
+                ("twitter:card", meta.twitter_card),
+                ("twitter:title", meta.title),
+                ("twitter:description", meta.description),
+                ("twitter:image", meta.twitter_image),
+                (
+                    "article:published_time",
+                    meta.article_published_time.map(|t| t.to_rfc3339()),
+                ),
+                ("article:tag", meta.article_tag),
+            ]
+            .into_iter()
+            .filter_map(|(k, v)| Some((k.to_string(), v?))),
+        )
+    }
+}
+
+fn layout(
+    context: ViewContext,
+    meta: impl Into<HashMap<String, String>>,
+    inner: Element,
+) -> paxhtml::Document {
     let links = [
         (Route::Index.url_path(), "Home"),
         (Route::Blog.url_path(), "Blog"),
     ];
+
+    let mut meta = meta.into();
+    meta.insert("og:site_name".into(), context.website_name.into());
+    meta.insert("article:author".into(), context.website_author.into());
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
         html! {
             <html lang="en-AU">
                 <head>
-                    <title>"Philpax"</title>
+                    <title>{context.website_name}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="alternate" href={Route::BlogRss.url_path()} r#type="application/rss+xml" title="Philpax's Blog" />
+                    #{meta.into_iter().map(|(k, v)| {
+                        html! {
+                            <meta property={k} content={v} />
+                        }
+                    })}
+                    <link rel="alternate" href={Route::BlogRss.url_path()} r#type="application/rss+xml" title={context.website_name} />
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
@@ -25,8 +86,8 @@ fn layout(context: ViewContext, inner: Element) -> paxhtml::Document {
                     <header>
                         <div id="top-bar">
                             <div class="flair" id="flair-left"></div>
-                            <img src={Route::Icon.url_path()} alt="Philpax icon" />
-                            <h1>"Philpax"</h1>
+                            <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} />
+                            <h1>{context.website_author}</h1>
                             <div class="flair" id="flair-right"></div>
                         </div>
                         <nav>

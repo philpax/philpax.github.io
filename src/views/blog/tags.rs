@@ -7,6 +7,17 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 
     layout(
         context,
+        SocialMeta {
+            title: Some(format!("{} - Tags", context.website_name)),
+            description: Some(format!("All tags on {}", context.website_name)),
+            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            url: Some(Route::BlogTags.abs_url(context.website_base_url)),
+            type_: Some("website".to_string()),
+            twitter_card: None,
+            twitter_image: None,
+            article_published_time: None,
+            article_tag: None,
+        },
         html! {
             <>
                 {partials::header(partials::HeaderFocus::Tags)}
@@ -38,6 +49,17 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
     let blog = &context.content.blog;
     layout(
         context,
+        SocialMeta {
+            title: Some(format!("{} - #{tag_id}", context.website_name)),
+            description: Some(format!("All posts tagged with {tag_id}")),
+            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            url: Some(Route::BlogTag { tag_id }.abs_url(context.website_base_url)),
+            type_: Some("website".to_string()),
+            twitter_card: None,
+            twitter_image: None,
+            article_published_time: None,
+            article_tag: Some(tag_id.to_string()),
+        },
         html! {
             <>
                 {partials::header(partials::HeaderFocus::Tag(tag_id))}
