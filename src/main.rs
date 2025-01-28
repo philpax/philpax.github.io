@@ -86,6 +86,10 @@ impl Timer {
 
 #[derive(Copy, Clone)]
 pub struct ViewContext<'a> {
+    pub website_author: &'a str,
+    pub website_name: &'a str,
+    pub website_description: &'a str,
+    pub website_base_url: &'a str,
     pub syntax: &'a syntax::SyntaxHighlighter,
     pub content: &'a content::Content,
     pub generation_date: chrono::DateTime<chrono::Utc>,
@@ -102,18 +106,6 @@ fn main() -> anyhow::Result<()> {
         "Loaded syntax highlighter",
         syntax::SyntaxHighlighter::default,
     );
-
-    let rss_config = rss::RssConfig {
-        base_url: "https://philpax.me",
-        rss_title: "Philpax's Blog",
-        rss_author: "Philpax",
-        rss_description: concat!(
-            "The blog of Philpax, ",
-            "your friendly neighbourhood polyglot programmer/engineer, ",
-            "cursed with more projects than time."
-        ),
-        syntax: &syntax,
-    };
 
     timer.step("Cleared output directory", || {
         if output_dir.is_dir() {
@@ -132,14 +124,6 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    let content = timer.step("Read content", content::Content::read)?;
-
-    let view_context = ViewContext {
-        content: &content,
-        syntax: &syntax,
-        generation_date: chrono::Utc::now(),
-    };
-
     timer.step("Copied baked static content", || {
         util::copy_dir(Path::new("assets/baked/static"), output_dir)
     })?;
@@ -147,6 +131,21 @@ fn main() -> anyhow::Result<()> {
     timer.step("Copied static content", || {
         util::copy_dir(Path::new("static"), output_dir)
     })?;
+
+    let content = timer.step("Read content", content::Content::read)?;
+    let view_context = ViewContext {
+        website_author: "Philpax",
+        website_name: "Philpax's Abode",
+        website_description: concat!(
+            "The blog of Philpax, ",
+            "your friendly neighbourhood polyglot programmer/engineer, ",
+            "cursed with more projects than time."
+        ),
+        website_base_url: "https://philpax.me",
+        content: &content,
+        syntax: &syntax,
+        generation_date: chrono::Utc::now(),
+    };
 
     timer.step("Wrote content", || {
         for doc in &content.blog.documents {
@@ -190,10 +189,7 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote RSS feed", || {
         let route_path = Route::BlogRss.route_path();
-        anyhow::Ok(route_path.write(
-            output_dir,
-            rss::generate(rss_config, &content.blog, route_path.filename())?,
-        )?)
+        anyhow::Ok(route_path.write(output_dir, rss::generate(view_context, &content.blog)?)?)
     })?;
 
     timer.step("Wrote bundled styles", || {

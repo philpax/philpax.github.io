@@ -2,45 +2,37 @@ use crate::{
     content::{Blog, Document},
     markdown::MarkdownConverter,
     syntax::SyntaxHighlighter,
+    Route, ViewContext,
 };
 
-pub struct RssConfig<'a> {
-    pub base_url: &'a str,
-    pub rss_title: &'a str,
-    pub rss_author: &'a str,
-    pub rss_description: &'a str,
-    pub syntax: &'a SyntaxHighlighter,
-}
-
-pub fn generate(config: RssConfig, blog: &Blog, relative_path: &str) -> anyhow::Result<String> {
-    let RssConfig {
-        base_url,
-        rss_title,
-        rss_author,
-        rss_description,
-        syntax,
-    } = config;
-
+pub fn generate(context: ViewContext, blog: &Blog) -> anyhow::Result<String> {
     let items = blog
         .documents
         .iter()
-        .map(|doc| build_item(base_url, rss_author, doc, syntax))
+        .map(|doc| {
+            build_item(
+                context.website_base_url,
+                context.website_author,
+                doc,
+                context.syntax,
+            )
+        })
         .collect::<Vec<_>>();
 
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
         .link(rss::extension::atom::Link {
             rel: "self".into(),
-            href: format!("{base_url}/{relative_path}"),
+            href: Route::BlogRss.abs_url(context.website_base_url),
             mime_type: Some("application/rss+xml".to_string()),
             ..Default::default()
         })
         .build();
 
     let rss_channel = rss::ChannelBuilder::default()
-        .title(rss_title)
-        .link(base_url)
+        .title(context.website_name)
+        .link(context.website_base_url)
         .atom_ext(atom_ext)
-        .description(rss_description)
+        .description(context.website_description)
         .language("en-AU".to_string())
         .last_build_date(chrono::Utc::now().to_rfc2822())
         .generator("paxgen".to_string())
