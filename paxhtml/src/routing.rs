@@ -78,4 +78,9 @@ impl RoutePath {
         }
         path
     }
+    /// Get the absolute URL for the route (i.e. the URL that points to this
+    /// route).
+    pub fn abs_url(&self, domain: &str) -> String {
+        format!("{domain}{}", self.url_path())
+    }
 }

@@ -54,6 +54,9 @@ impl<'a> Route<'a> {
     pub fn url_path(&self) -> String {
         self.route_path().url_path()
     }
+    pub fn abs_url(&self, domain: &str) -> String {
+        self.route_path().abs_url(domain)
+    }
 }
 
 struct Timer {
