@@ -79,7 +79,11 @@ impl RenderElement {
                 write!(writer, "<{name}")?;
                 for Attribute { key, value } in attributes {
                     match value {
-                        Some(value) => write!(writer, " {key}=\"{value}\"")?,
+                        Some(value) => write!(
+                            writer,
+                            " {key}=\"{}\"",
+                            html_escape::encode_quoted_attribute(value)
+                        )?,
                         None => write!(writer, " {key}")?,
                     }
                 }
