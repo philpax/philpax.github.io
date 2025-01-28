@@ -1,7 +1,7 @@
 use syntect::{
     highlighting::ThemeSet,
     html::{css_for_theme_with_class_style, ClassStyle, ClassedHTMLGenerator},
-    parsing::SyntaxSet,
+    parsing::{SyntaxReference, SyntaxSet},
     util::LinesWithEndings,
 };
 
@@ -31,14 +31,17 @@ impl SyntaxHighlighter {
             .unwrap()
     }
 
+    pub fn lookup_language(&self, language: Option<&str>) -> &SyntaxReference {
+        language
+            .and_then(|l| self.syntax_set.find_syntax_by_token(l))
+            .unwrap_or_else(|| self.syntax_set.find_syntax_by_name("plaintext").unwrap())
+    }
     pub fn highlight_code(
         &self,
         language: Option<&str>,
         code: &str,
     ) -> Result<paxhtml::Element, syntect::Error> {
-        let syntax = language
-            .and_then(|l| self.syntax_set.find_syntax_by_token(l))
-            .unwrap_or_else(|| self.syntax_set.find_syntax_by_name("plaintext").unwrap());
+        let syntax = self.lookup_language(language);
         let mut html_generator = ClassedHTMLGenerator::new_with_class_style(
             syntax,
             &self.syntax_set,

@@ -264,6 +264,17 @@ pre.code {
   max-width: 100%;
 }
 
+.code-language {
+  background-color: hsl(220, 27%, 35%);
+  color: white;
+  margin-bottom: 0.25em;
+  padding: 0.125em 0.25em;
+  border-radius: 0.25em;
+  width: fit-content;
+  text-transform: lowercase;
+  font-size: 0.75em;
+}
+
 code.code {
   padding: 0.25em;
   margin: 0 0.1em;
