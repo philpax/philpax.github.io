@@ -215,7 +215,11 @@ fn main() -> anyhow::Result<()> {
     timer.finish();
 
     #[cfg(feature = "serve")]
-    serve::serve(output_dir, port)?;
+    serve::serve(
+        output_dir,
+        port,
+        std::env::args().any(|arg| arg == "--public" || arg == "-p"),
+    )?;
 
     Ok(())
 }

@@ -8,9 +8,9 @@ use std::{
 use base64::Engine;
 use sha1::Digest;
 
-pub fn serve(output_dir: &Path, port: u16) -> anyhow::Result<()> {
-    let addr = format!("127.0.0.1:{}", port);
-    println!("Serving at http://{}", addr);
+pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
+    let addr = format!("{}:{}", if public { "0.0.0.0" } else { "127.0.0.1" }, port);
+    println!("Serving at http://{addr}");
     println!("Hit CTRL-C to stop");
 
     let listener =
