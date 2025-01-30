@@ -35,7 +35,7 @@ pub fn generate(context: ViewContext, blog: &Blog) -> anyhow::Result<String> {
         .description(context.website_description)
         .language("en-AU".to_string())
         .last_build_date(chrono::Utc::now().to_rfc2822())
-        .generator("paxgen".to_string())
+        .generator("paxsite".to_string())
         .items(items)
         .build();
 

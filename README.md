@@ -1,5 +1,7 @@
 # paxsite
 
+A custom SSG backed by `paxhtml`, a HTML templating library.
+
 Use
 
     cargo watch -x clippy -x 'test --workspace' -x 'run -F development' --poll

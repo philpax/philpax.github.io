@@ -34,7 +34,7 @@ impl<'a> From<Route<'a>> for RoutePath {
         route.route_path()
     }
 }
-impl<'a> Route<'a> {
+impl Route<'_> {
     pub fn route_path(&self) -> RoutePath {
         match *self {
             Route::Index => RoutePath::new([], None),
