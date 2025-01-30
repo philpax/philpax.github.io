@@ -41,12 +41,6 @@ body {
   transition: all 0.2s;
 }
 
-@media (max-width: 768px) {
-  body {
-    padding: 0.5em 0.5em;
-  }
-}
-
 main {
   margin-top: 1.5em;
 }
