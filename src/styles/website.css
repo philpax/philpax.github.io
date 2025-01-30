@@ -225,7 +225,7 @@ article header div.post-meta {
   padding: 0;
   gap: 0.25em;
   color: var(--color-secondary);
-  margin-bottom: -0.125em;
+  margin-bottom: -0.25em;
 }
 
 /* Footnotes */
