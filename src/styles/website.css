@@ -353,10 +353,10 @@ ul.tags li {
 #toc-sticky {
   position: sticky;
   top: 1em;
-  float: left;
-  margin-left: -16em;
+  float: right;
+  margin-right: -16em;
   margin-top: 0;
-  max-width: 15em;
+  width: 15em;
 }
 
 @media (min-width: 1536px) {
