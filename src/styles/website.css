@@ -326,6 +326,7 @@ code.code {
   #posts-header > *:not(:last-child)::after {
     content: "·";
     margin-left: 0.5em;
+    color: var(--color-secondary);
   }
 }
 
