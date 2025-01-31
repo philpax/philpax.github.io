@@ -251,6 +251,22 @@ input.footnote-checkbox[type=checkbox]:checked + label + span {
   display: block;
 }
 
+input.footnote-checkbox[type=checkbox]:checked + label + span a {
+  color: var(--background-color);
+}
+
+input.footnote-checkbox[type=checkbox]:checked + label + span a:not(.no-underline) {
+  text-decoration-color: var(--background-color-secondary);
+}
+
+input.footnote-checkbox[type=checkbox]:checked + label + span a:hover {
+  color: var(--background-color-secondary);
+}
+
+input.footnote-checkbox[type=checkbox]:checked + label + span a:not(.no-underline):hover {
+  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
+}
+
 /* Code blocks */
 pre.code {
   padding: 0.5em;
