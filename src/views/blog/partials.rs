@@ -98,7 +98,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 elements.push(html! {
-                    <img src={route_path.with_filename(filename).url_path()} alt={alt} />
+                    <img src={route_path.with_filename(filename).url_path()} alt={alt} class="hero-image" />
                 });
             }
             elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
