@@ -111,7 +111,7 @@ pub struct Document {
     pub description: markdown::mdast::Node,
     pub rest_of_content: Option<markdown::mdast::Node>,
     pub files: Vec<PathBuf>,
-    pub hero_filename: Option<String>,
+    pub hero_filename_and_alt: Option<(String, String)>,
 }
 impl Document {
     fn read(path: &Path, id: String) -> anyhow::Result<Self> {
@@ -135,6 +135,7 @@ impl Document {
 
         let mut files = vec![];
         let mut hero_filename = None;
+        let mut hero_alt = None;
         for entry in std::fs::read_dir(path.parent().unwrap())? {
             let path = entry?.path();
             if path.extension().is_some_and(|e| e == "md") {
@@ -142,11 +143,17 @@ impl Document {
             }
             if let Some(filename) = path.file_name() {
                 let filename = filename.to_string_lossy();
-                if filename.starts_with("hero.") {
+                if filename == "hero.jpg" {
                     hero_filename = Some(filename.to_string());
+                } else if filename == "hero.txt" {
+                    hero_alt = Some(std::fs::read_to_string(&path)?);
                 }
             }
             files.push(path);
+        }
+
+        if hero_filename.is_some() && hero_alt.is_none() {
+            anyhow::bail!("hero.txt is missing for {id}");
         }
 
         let alternate_id = util::slugify(&metadata.title);
@@ -163,7 +170,7 @@ impl Document {
             description,
             rest_of_content,
             files,
-            hero_filename,
+            hero_filename_and_alt: hero_filename.zip(hero_alt),
         })
     }
 
