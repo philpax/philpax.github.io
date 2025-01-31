@@ -200,27 +200,30 @@ fn inner_text(node: &Node) -> String {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HeadingHierarchy {
-    pub heading: String,
+    pub heading: paxhtml::Element,
+    pub heading_text: String,
     pub children: Vec<HeadingHierarchy>,
 }
 impl HeadingHierarchy {
     pub fn new(
-        heading: impl Into<String>,
+        heading: impl Into<paxhtml::Element>,
+        heading_text: impl Into<String>,
         children: impl IntoIterator<Item = HeadingHierarchy>,
     ) -> Self {
         Self {
             heading: heading.into(),
+            heading_text: heading_text.into(),
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(node: &Node) -> Vec<HeadingHierarchy> {
+    pub fn from_node(syntax: &SyntaxHighlighter, node: &Node) -> Vec<HeadingHierarchy> {
         let mut headings = Vec::new();
-        collect_headings(node, &mut headings);
+        collect_headings(syntax, node, &mut headings);
 
         let mut result = Vec::new();
         let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
 
-        for (depth, heading) in headings {
+        for (depth, heading, heading_text) in headings {
             while let Some((prev_depth, _)) = stack.last() {
                 if *prev_depth >= depth {
                     let (_prev_depth, finished_heading) = stack.pop().unwrap();
@@ -234,7 +237,7 @@ impl HeadingHierarchy {
                     break;
                 }
             }
-            stack.push((depth, HeadingHierarchy::new(heading, [])));
+            stack.push((depth, HeadingHierarchy::new(heading, heading_text, [])));
         }
 
         // Clear any remaining headings in the stack
@@ -246,13 +249,23 @@ impl HeadingHierarchy {
             }
         }
 
-        fn collect_headings(node: &Node, headings: &mut Vec<(u8, String)>) {
+        fn collect_headings(
+            syntax: &SyntaxHighlighter,
+            node: &Node,
+            headings: &mut Vec<(u8, paxhtml::Element, String)>,
+        ) {
             if let Some(children) = node.children() {
                 for child in children {
                     if let Node::Heading(heading) = child {
-                        headings.push((heading.depth, inner_text(child)));
+                        headings.push((
+                            heading.depth,
+                            MarkdownConverter::new(syntax)
+                                .without_blocking_elements()
+                                .convert(child),
+                            inner_text(child),
+                        ));
                     }
-                    collect_headings(child, headings); // Recurse into all children
+                    collect_headings(syntax, child, headings); // Recurse into all children
                 }
             }
         }
@@ -280,18 +293,21 @@ mod tests {
         .trim();
 
         let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+
+        fn hh(heading: impl Into<String>, children: impl IntoIterator<Item = HH>) -> HH {
+            let heading = heading.into();
+            HH::new(heading.clone(), heading, children)
+        }
 
         assert_eq!(
-            HH::from_node(&ast),
+            HH::from_node(&syntax, &ast),
             vec![
-                HH::new(
+                hh(
                     "test",
-                    [
-                        HH::new("test123", [HH::new("test456", [])]),
-                        HH::new("test789", []),
-                    ],
+                    [hh("test123", [hh("test456", [])]), hh("test789", []),],
                 ),
-                HH::new("test2", []),
+                hh("test2", []),
             ]
         )
     }

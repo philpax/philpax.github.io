@@ -1,6 +1,7 @@
 use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
+    syntax::SyntaxHighlighter,
     util,
 };
 
@@ -86,7 +87,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         PostBody::Full => {
             let mut elements = vec![];
 
-            let toc = document_to_html_list(document);
+            let toc = document_to_html_list(context.syntax, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
                     <aside id="toc-sticky" hidden>
@@ -149,8 +150,11 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     }
 }
 
-fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
-    let heading_hierarchy = HeadingHierarchy::from_node(document.rest_of_content.as_ref()?);
+fn document_to_html_list(
+    syntax: &SyntaxHighlighter,
+    document: &Document,
+) -> Option<paxhtml::Element> {
+    let heading_hierarchy = HeadingHierarchy::from_node(syntax, document.rest_of_content.as_ref()?);
 
     fn build_list_recursively(children: &[HeadingHierarchy], toplevel: bool) -> paxhtml::Element {
         if children.is_empty() {
@@ -172,11 +176,15 @@ fn document_to_html_list(document: &Document) -> Option<paxhtml::Element> {
     }
 
     fn build_list_item_recursively(
-        HeadingHierarchy { heading, children }: &HeadingHierarchy,
+        HeadingHierarchy {
+            heading,
+            heading_text,
+            children,
+        }: &HeadingHierarchy,
     ) -> paxhtml::Element {
         html! {
             <li>
-                <a href={format!("#{}", util::slugify(heading))}>{heading}</a>
+                <a href={format!("#{}", util::slugify(heading_text))}>{heading.clone()}</a>
                 {build_list_recursively(children, false)}
             </li>
         }
