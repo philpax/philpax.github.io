@@ -176,11 +176,14 @@ body > footer {
 a {
   color: var(--color);
   transition: all 0.2s;
-  text-decoration: none;
+  text-decoration-line: none;
 }
 
 a:not(.no-underline) {
-  text-decoration: underline var(--color-secondary) solid 3px;
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-secondary);
+  text-decoration-style: solid;
+  text-decoration-thickness: 3px;
   text-decoration-skip-ink: none;
   text-underline-offset: 4px;
 }
@@ -370,7 +373,7 @@ ul.tags li {
 
 .toc a:not(.active) {
   color: var(--color-secondary);
-  text-decoration: none;
+  text-decoration-line: none;
 }
 .toc a:not(.active):hover {
   color: var(--color);
