@@ -8,7 +8,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     layout(
         context,
         SocialMeta {
-            title: Some(format!("{} - Tags", context.website_name)),
+            title: Some("Tags".to_string()),
             description: Some(format!("All tags on {}", context.website_name)),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
             url: Some(Route::BlogTags.abs_url(context.website_base_url)),
@@ -48,7 +48,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
     layout(
         context,
         SocialMeta {
-            title: Some(format!("{} - #{tag_id}", context.website_name)),
+            title: Some(format!("#{tag_id}")),
             description: Some(format!("All posts tagged with {tag_id}")),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
             url: Some(Route::BlogTag { tag_id }.abs_url(context.website_base_url)),

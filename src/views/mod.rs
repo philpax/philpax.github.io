@@ -26,24 +26,35 @@ struct SocialMeta {
     /// A tag describing the article (for OpenGraph article type)
     article_tag: Option<String>,
 }
-impl From<SocialMeta> for HashMap<String, String> {
-    fn from(meta: SocialMeta) -> Self {
+impl SocialMeta {
+    /// The full title of the page, including the website name
+    pub fn full_title(&self, context: ViewContext) -> String {
+        let mut title = context.website_name.to_string();
+        if let Some(meta_title) = &self.title {
+            title = format!("{title}: {meta_title}");
+        }
+        title
+    }
+
+    pub fn into_social_meta(self, context: ViewContext) -> HashMap<String, String> {
         HashMap::from_iter(
             [
-                ("og:title", meta.title.clone()),
-                ("og:description", meta.description.clone()),
-                ("og:image", meta.image),
-                ("og:url", meta.url),
-                ("og:type", meta.type_),
-                ("twitter:card", meta.twitter_card),
-                ("twitter:title", meta.title),
-                ("twitter:description", meta.description),
-                ("twitter:image", meta.twitter_image),
+                ("og:title", Some(self.full_title(context))),
+                ("og:description", self.description.clone()),
+                ("og:image", self.image),
+                ("og:site_name", Some(context.website_name.into())),
+                ("og:url", self.url),
+                ("og:type", self.type_),
+                ("twitter:card", self.twitter_card),
+                ("twitter:title", self.title),
+                ("twitter:description", self.description),
+                ("twitter:image", self.twitter_image),
                 (
                     "article:published_time",
-                    meta.article_published_time.map(|t| t.to_rfc3339()),
+                    self.article_published_time.map(|t| t.to_rfc3339()),
                 ),
-                ("article:tag", meta.article_tag),
+                ("article:author", Some(context.website_author.into())),
+                ("article:tag", self.article_tag),
             ]
             .into_iter()
             .filter_map(|(k, v)| Some((k.to_string(), v?))),
@@ -51,29 +62,21 @@ impl From<SocialMeta> for HashMap<String, String> {
     }
 }
 
-fn layout(
-    context: ViewContext,
-    meta: impl Into<HashMap<String, String>>,
-    inner: Element,
-) -> paxhtml::Document {
+fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Document {
     let links = [
         (Route::Index.url_path(), "Home"),
         (Route::Blog.url_path(), "Blog"),
     ];
-
-    let mut meta = meta.into();
-    meta.insert("og:site_name".into(), context.website_name.into());
-    meta.insert("article:author".into(), context.website_author.into());
 
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
         html! {
             <html lang="en-AU">
                 <head>
-                    <title>{context.website_name}</title>
+                    <title>{meta.full_title(context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    #{meta.into_iter().map(|(k, v)| {
+                    #{meta.into_social_meta(context).into_iter().map(|(k, v)| {
                         html! {
                             <meta property={k} content={v} />
                         }

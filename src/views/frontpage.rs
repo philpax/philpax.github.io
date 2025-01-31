@@ -18,7 +18,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     layout(
         context,
         SocialMeta {
-            title: Some(context.website_name.to_string()),
+            title: None,
             description: Some(context.website_description.to_string()),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
             url: Some(Route::Index.abs_url(context.website_base_url)),
