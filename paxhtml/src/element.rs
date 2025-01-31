@@ -73,6 +73,11 @@ impl<const N: usize> From<[Element; N]> for Element {
         children.to_vec().into()
     }
 }
+impl From<Option<Element>> for Element {
+    fn from(element: Option<Element>) -> Self {
+        element.unwrap_or(Element::Empty)
+    }
+}
 impl FromIterator<Element> for Element {
     fn from_iter<I: IntoIterator<Item = Element>>(iter: I) -> Self {
         iter.into_iter().collect::<Vec<_>>().into()
