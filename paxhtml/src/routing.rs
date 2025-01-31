@@ -23,8 +23,8 @@ impl RoutePath {
         }
     }
     /// Set the `filename` of this [`RoutePath`].
-    pub fn with_filename(mut self, filename: String) -> Self {
-        self.filename = Some(filename);
+    pub fn with_filename(mut self, filename: impl Into<String>) -> Self {
+        self.filename = Some(filename.into());
         self
     }
     /// Get the `filename` of this [`RoutePath`].
