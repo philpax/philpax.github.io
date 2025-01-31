@@ -90,7 +90,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             let toc = document_to_html_list(context.syntax, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
-                    <aside id="toc-sticky" hidden>
+                    <aside class="toc" id="toc-sticky" hidden>
                         <h3>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
@@ -101,7 +101,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
-                    <aside id="toc-inline">
+                    <aside class="toc" id="toc-inline">
                         <h3>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
