@@ -298,19 +298,41 @@ code.code {
 /* Blog header */
 #posts-header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25em;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1em;
   font-size: 2em;
   font-weight: bold;
+  margin-left: -6em;
+  width: 5em;
+  float: left;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  #posts-header {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    margin-left: 0;
+    width: auto;
+    float: none;
+    text-align: center;
   margin-bottom: 0.5em;
+  }
+
+  #posts-header > *:not(:last-child)::after {
+    content: "·";
+    margin-left: 0.5em;
+  }
 }
 
 #posts-header a:not(.active) {
   color: var(--color-secondary);
 }
-#posts-header a:not(.active):hover {
+#posts-header a:hover {
   color: var(--color);
 }
 
@@ -452,4 +474,12 @@ ul.tags li {
   #home-page-columns #list-88x31 {
     justify-content: center;
   }
+}
+
+/* Misc */
+#tags-list-index {
+  /* Ensure that the tag list has no margin or padding, so that the header nav doesn't look out of place */
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
 }

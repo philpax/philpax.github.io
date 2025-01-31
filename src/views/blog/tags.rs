@@ -21,25 +21,23 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         html! {
             <>
                 {partials::header(partials::HeaderFocus::Tags)}
-                <div>
-                    <ul>
-                    #{
-                        tag_keys.iter().map(|tag| {
-                            let post_count = context.content.blog.tags[*tag].len();
-                            html! {
-                                <li>
-                                    <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
-                                    {format!(
-                                        " ({} {})",
-                                        post_count,
-                                        util::pluralize("post", post_count)
-                                    )}
-                                </li>
-                            }
-                        })
-                    }
-                    </ul>
-                </div>
+                <ul id="tags-list-index">
+                #{
+                    tag_keys.iter().map(|tag| {
+                        let post_count = context.content.blog.tags[*tag].len();
+                        html! {
+                            <li>
+                                <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                                {format!(
+                                    " ({} {})",
+                                    post_count,
+                                    util::pluralize("post", post_count)
+                                )}
+                            </li>
+                        }
+                    })
+                }
+                </ul>
             </>
         },
     )
