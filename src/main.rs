@@ -135,7 +135,7 @@ fn main() -> anyhow::Result<()> {
     let content = timer.step("Read content", content::Content::read)?;
     let view_context = ViewContext {
         website_author: "Philpax",
-        website_name: "Philpax's Abode",
+        website_name: "Philpax",
         website_description: concat!(
             "The blog of Philpax, ",
             "your friendly neighbourhood polyglot programmer/engineer, ",
