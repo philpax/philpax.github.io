@@ -79,7 +79,9 @@ pub enum PostBody {
     Short,
 }
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
-    let url = document.route_path().url_path();
+    let route_path = document.route_path();
+    let url = route_path.url_path();
+
     let post_body = match post_body {
         PostBody::Full => {
             let mut elements = vec![];
@@ -94,6 +96,11 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 });
             }
 
+            if let Some(filename) = &document.hero_filename {
+                elements.push(html! {
+                    <img src={route_path.with_filename(filename).url_path()} alt="Hero image" />
+                });
+            }
             elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
 
             if let Some(hierarchy_list) = toc {
