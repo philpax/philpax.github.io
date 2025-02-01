@@ -327,15 +327,15 @@ code.code {
   gap: 0.1em;
   font-size: 2em;
   font-weight: bold;
-  margin-left: -6em;
-  width: 5em;
+  margin-left: -10rem;
+  width: 9rem;
   float: left;
   text-align: right;
   position: sticky;
   top: 1em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   #posts-header {
     flex-wrap: wrap;
     flex-direction: row;
@@ -418,7 +418,7 @@ div.post-body > img.hero-image {
   margin-left: var(--post-contents-padding);
 }
 
-@media (min-width: 1536px) {
+@media (min-width: 1400px) {
   #toc-sticky {
     display: block;
   }
