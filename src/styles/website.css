@@ -20,6 +20,7 @@
   --header-item-spacing: 1em;
   --header-link-height: 2em;
   --header-link-item-spacing: 0.5em;
+  --post-contents-padding: 0.5em;
 }
 
 /* Fonts */
@@ -380,6 +381,14 @@ ul.tags li {
   margin-right: clamp(0em, calc((var(--heading-level) - 3) * 0.5em), 0.5em);
 }
 
+.post-body p {
+  margin-left: var(--post-contents-padding);
+}
+
+.post-body pre.code {
+  margin-left: var(--post-contents-padding);
+}
+
 /* Table of contents */
 #toc-sticky {
   position: sticky;
@@ -388,6 +397,10 @@ ul.tags li {
   margin-right: -16em;
   margin-top: 0;
   width: 15em;
+}
+
+#toc-inline > ul {
+  margin-left: var(--post-contents-padding);
 }
 
 @media (min-width: 1536px) {
@@ -449,6 +462,10 @@ ul.tags li {
 
 #home-page-columns article header h2 {
   font-size: 1.25em;
+}
+
+#home-page-columns article p {
+  margin-left: 0;
 }
 
 #home-page-columns #list-88x31 {
