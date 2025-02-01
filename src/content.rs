@@ -112,6 +112,7 @@ pub struct Document {
     pub rest_of_content: Option<markdown::mdast::Node>,
     pub files: Vec<PathBuf>,
     pub hero_filename_and_alt: Option<(String, String)>,
+    pub word_count: usize,
 }
 impl Document {
     fn read(path: &Path, id: String) -> anyhow::Result<Self> {
@@ -163,6 +164,27 @@ impl Document {
             Some(alternate_id)
         };
 
+        let ignore_node = |node: &markdown::mdast::Node| {
+            matches!(
+                node,
+                markdown::mdast::Node::Code(_)
+                    | markdown::mdast::Node::FootnoteReference(_)
+                    | markdown::mdast::Node::FootnoteDefinition(_)
+            )
+        };
+
+        let inner_text = format!(
+            "{}\n{}",
+            super::markdown::inner_text(&description, Some(ignore_node)),
+            rest_of_content
+                .as_ref()
+                .map(|n| super::markdown::inner_text(n, Some(ignore_node)))
+                .unwrap_or_default()
+        )
+        .trim()
+        .to_string();
+        let word_count = inner_text.split_whitespace().count();
+
         Ok(Document {
             id,
             alternate_id,
@@ -171,6 +193,7 @@ impl Document {
             rest_of_content,
             files,
             hero_filename_and_alt: hero_filename.zip(hero_alt),
+            word_count,
         })
     }
 

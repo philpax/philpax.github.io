@@ -188,13 +188,29 @@ impl<'a> MarkdownConverter<'a> {
     }
 }
 
-fn inner_text(node: &Node) -> String {
+pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {
+    if let Some(ignore_node) = ignore_node {
+        if ignore_node(node) {
+            return String::new();
+        }
+    }
+
     if let Node::Text(text) = node {
         text.value.clone()
+    } else if let Node::InlineCode(code) = node {
+        code.value.clone()
     } else {
-        node.children()
-            .map(|c| c.iter().map(inner_text).collect())
-            .unwrap_or_default()
+        let mut output: String = node
+            .children()
+            .map(|c| c.iter().map(|n| inner_text(n, ignore_node)).collect())
+            .unwrap_or_default();
+        if matches!(
+            node,
+            Node::Paragraph(_) | Node::Heading(_) | Node::BlockQuote(_)
+        ) {
+            output.push('\n');
+        }
+        output
     }
 }
 
@@ -262,7 +278,7 @@ impl HeadingHierarchy {
                             MarkdownConverter::new(syntax)
                                 .without_blocking_elements()
                                 .convert(child),
-                            inner_text(child),
+                            inner_text(child, None).trim().to_string(),
                         ));
                     }
                     collect_headings(syntax, child, headings); // Recurse into all children

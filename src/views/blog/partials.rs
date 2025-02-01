@@ -142,6 +142,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     {date(document)}
                     " · "
                     {tags(document)}
+                    " · "
+                    {document.word_count.to_string()}
+                    " words"
                 </div>
                 <a href={url} class="post-title no-underline">
                     <h2>{break_on_colon(&document.metadata.title)}</h2>
