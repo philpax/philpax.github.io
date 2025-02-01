@@ -25,10 +25,17 @@
 
 /* Fonts */
 @font-face {
-  font-family: 'Alike Angular';
-  src: url('/fonts/AlikeAngular.woff2') format('woff2');
+  font-family: 'Literata';
+  src: url('/fonts/Literata.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata';
+  src: url('/fonts/Literata-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
 }
 
 /* Base styles */
@@ -37,7 +44,7 @@ body {
   margin: auto;
   color: var(--color);
   background-color: var(--background-color);
-  font-family: 'Alike Angular', serif;
+  font-family: 'Literata', serif;
   padding: 0.5em 1em;
   transition: all 0.2s;
 }
@@ -321,7 +328,7 @@ code.code {
     width: auto;
     float: none;
     text-align: center;
-  margin-bottom: 0.5em;
+    margin-bottom: 0.5em;
   }
 
   #posts-header > *:not(:last-child)::after {
