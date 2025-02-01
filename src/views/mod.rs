@@ -2,6 +2,7 @@ use crate::{content::Document, elements::*, Route, ViewContext};
 use std::collections::HashMap;
 
 pub mod blog;
+pub mod credits;
 pub mod frontpage;
 
 #[derive(Default)]
@@ -113,7 +114,8 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                             "."
                         </div>
                         <div>
-                            "cc0 / public domain. do whatever you like!"
+                            "cc0 / public domain. do whatever you like! "
+                            <a href={Route::Credits.url_path()}>"credits"</a>"."
                         </div>
                     </footer>
                 </body>

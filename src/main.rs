@@ -22,6 +22,7 @@ pub enum Route<'a> {
     BlogTags,
     BlogTag { tag_id: &'a str },
     BlogRss,
+    Credits,
     Styles,
     Scripts,
     Icon,
@@ -43,6 +44,7 @@ impl Route<'_> {
             Route::BlogTags => RoutePath::new(["blog", "tags"], None),
             Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
+            Route::Credits => RoutePath::new(["credits"], None),
             Route::Styles => RoutePath::new([], "styles.css".to_string()),
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
@@ -180,6 +182,11 @@ fn main() -> anyhow::Result<()> {
             views::blog::tags::tag(view_context, tag_id)
                 .write_to_route(output_dir, Route::BlogTag { tag_id })?;
         }
+        anyhow::Ok(())
+    })?;
+
+    timer.step("Wrote credits", || {
+        views::credits::index(view_context).write_to_route(output_dir, Route::Credits)?;
         anyhow::Ok(())
     })?;
 

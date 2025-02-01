@@ -16,6 +16,7 @@ pub struct Content {
     pub path: PathBuf,
     pub blog: Blog,
     pub about: Document,
+    pub credits: Document,
 }
 impl Content {
     pub fn read() -> anyhow::Result<Self> {
@@ -25,6 +26,7 @@ impl Content {
             path: path.clone(),
             blog: Blog::read(&path.join("blog"))?,
             about: Document::read(&path.join("about.md"), "about".to_string())?,
+            credits: Document::read(&path.join("credits.md"), "credits".to_string())?,
         })
     }
 }
@@ -116,7 +118,8 @@ pub struct Document {
 }
 impl Document {
     fn read(path: &Path, id: String) -> anyhow::Result<Self> {
-        let file = std::fs::read_to_string(path)?;
+        let file =
+            std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
         let parts: Vec<_> = file.splitn(3, "+++").collect();
 
         if parts.len() != 3 {
