@@ -41,7 +41,7 @@
 
 /* Base styles */
 body {
-  max-width: 960px;
+  max-width: 860px;
   margin: auto;
   color: var(--color);
   background-color: var(--background-color);
