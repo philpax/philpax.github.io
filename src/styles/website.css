@@ -176,6 +176,7 @@ body > header nav ul li a:visited:hover {
 /* Footer */
 body > footer {
   margin-top: 1em;
+  margin-bottom: 1em;
   text-align: center;
   font-size: 0.75em;
   color: var(--color-secondary);
@@ -471,6 +472,7 @@ div.post-body > img.hero-image {
   word-break: break-word;
   hyphens: auto;
   height: 100%;
+  margin-bottom: 0;
 }
 
 #home-page-columns > *:last-child {
