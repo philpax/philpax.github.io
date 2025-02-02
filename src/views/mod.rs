@@ -114,7 +114,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                             "."
                         </div>
                         <div>
-                            "cc0 / public domain. do whatever you like! "
+                            <a href="https://creativecommons.org/public-domain/cc0/">"cc0"</a>" / public domain. do whatever you like! "
                             <a href={Route::Credits.url_path()}>"credits"</a>"."
                         </div>
                     </footer>
