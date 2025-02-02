@@ -132,10 +132,11 @@ impl<'a> MarkdownConverter<'a> {
                         ("class", "footnote-checkbox").into(),
                         ("autocomplete", "off").into(),
                     ]),
-                    b::label([("for", id.clone()).into()])(b::sup([])(format!(
-                        "[{}]",
-                        r.identifier
-                    ))),
+                    b::label([("for", id.clone()).into()])(b::sup([
+                        ("class", "footnote-number").into()
+                    ])(
+                        r.identifier.to_string()
+                    )),
                     b::span([])(
                         MarkdownConverter::new(self.syntax)
                             .without_blocking_elements()
