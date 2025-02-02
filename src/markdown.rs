@@ -53,6 +53,7 @@ impl<'a> MarkdownConverter<'a> {
             }
             Node::Strong(s) => b::strong([])(self.convert_many(&s.children)),
             Node::Emphasis(e) => b::em([])(self.convert_many(&e.children)),
+            Node::Delete(d) => b::s([])(self.convert_many(&d.children)),
             Node::List(l) => {
                 let children = self.convert_many(&l.children);
                 if l.ordered {
@@ -148,7 +149,6 @@ impl<'a> MarkdownConverter<'a> {
             // Not supported yet
             Node::FootnoteDefinition(_)
             | Node::InlineMath(_)
-            | Node::Delete(_)
             | Node::ImageReference(_)
             | Node::LinkReference(_)
             | Node::Math(_)
