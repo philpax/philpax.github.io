@@ -394,25 +394,9 @@ div.post-body > img.hero-image {
   border: 0.25em solid var(--color);
 }
 
-.post-body h3 { --heading-level: 3; }
-.post-body h4 { --heading-level: 4; }
-.post-body h5 { --heading-level: 5; }
-.post-body h6 { --heading-level: 6; }
-
 .post-body :is(h3, h4, h5, h6) {
   padding: 0;
   margin-bottom: 0;
-  display: flex;
-  align-items: center;
-}
-
-.post-body :is(h3, h4, h5, h6)::before {
-  content: '';
-  display: block;
-  width: calc((var(--heading-level) - 3) * 2em);
-  height: 0.125em;
-  background-color: var(--color);
-  margin-right: clamp(0em, calc((var(--heading-level) - 3) * 0.5em), 0.5em);
 }
 
 .post-body p {
