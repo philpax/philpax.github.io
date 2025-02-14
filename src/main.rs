@@ -18,9 +18,19 @@ mod views;
 pub enum Route<'a> {
     Index,
     Blog,
-    BlogPost { post_id: &'a str },
+    BlogPost {
+        post_id: &'a str,
+    },
+    /// Not prefixed with /blog/
+    OriginalBlogTags,
+    /// Not prefixed with /blog/
+    OriginalBlogTag {
+        tag_id: &'a str,
+    },
     BlogTags,
-    BlogTag { tag_id: &'a str },
+    BlogTag {
+        tag_id: &'a str,
+    },
     BlogRss,
     Credits,
     Styles,
@@ -41,6 +51,8 @@ impl Route<'_> {
             Route::Index => RoutePath::new([], None),
             Route::Blog => RoutePath::new(["blog"], None),
             Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
+            Route::OriginalBlogTags => RoutePath::new(["tags"], None),
+            Route::OriginalBlogTag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::BlogTags => RoutePath::new(["blog", "tags"], None),
             Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
@@ -178,9 +190,14 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote blog tags", || {
         views::blog::tags::index(view_context).write_to_route(output_dir, Route::BlogTags)?;
+        views::redirect(&Route::BlogTags.url_path())
+            .write_to_route(output_dir, Route::OriginalBlogTags)?;
+
         for tag_id in content.blog.tags.keys() {
-            views::blog::tags::tag(view_context, tag_id)
-                .write_to_route(output_dir, Route::BlogTag { tag_id })?;
+            let route = Route::BlogTag { tag_id };
+            views::blog::tags::tag(view_context, tag_id).write_to_route(output_dir, route)?;
+            views::redirect(&route.url_path())
+                .write_to_route(output_dir, Route::OriginalBlogTag { tag_id })?;
         }
         anyhow::Ok(())
     })?;
