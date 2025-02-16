@@ -4,7 +4,6 @@
   --color-secondary: #cccccc;
   --background-color: #3c2954;
   --background-color-secondary: #6f4c9a;
-
 }
 
 --light-mode {
@@ -26,15 +25,15 @@
 
 /* Fonts */
 @font-face {
-  font-family: 'Literata';
-  src: url('/fonts/Literata.woff2') format('woff2');
+  font-family: "Literata";
+  src: url("/fonts/Literata.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Literata';
-  src: url('/fonts/Literata-Italic.woff2') format('woff2');
+  font-family: "Literata";
+  src: url("/fonts/Literata-Italic.woff2") format("woff2");
   font-weight: normal;
   font-style: italic;
 }
@@ -45,7 +44,7 @@ body {
   margin: auto;
   color: var(--color);
   background-color: var(--background-color);
-  font-family: 'Literata', serif;
+  font-family: "Literata", serif;
   padding: 0.5em 1em;
   transition: all 0.2s;
 }
@@ -203,7 +202,11 @@ a:hover {
 }
 
 a:not(.no-underline):hover {
-  text-decoration-color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--color-secondary) 80%,
+    transparent
+  );
   text-decoration-thickness: 7px;
   text-underline-offset: 0px;
 }
@@ -265,7 +268,7 @@ ul.tags li:not(:last-child) {
   font-size: 0.75em;
 }
 .footnote-number::before {
-  content: 'fn';
+  content: "fn";
   font-style: italic;
   font-size: 0.6em;
   margin-right: 0.3em;
@@ -275,17 +278,17 @@ ul.tags li:not(:last-child) {
   background-color: var(--color-secondary);
 }
 
-input.footnote-checkbox[type=checkbox] {
+input.footnote-checkbox[type="checkbox"] {
   display: none;
 }
 
-input.footnote-checkbox[type=checkbox] + label {
+input.footnote-checkbox[type="checkbox"] + label {
   display: inline-block;
   cursor: pointer;
   user-select: none;
 }
 
-input.footnote-checkbox[type=checkbox] + label + span {
+input.footnote-checkbox[type="checkbox"] + label + span {
   display: none;
   background-color: var(--color);
   color: var(--background-color);
@@ -293,24 +296,34 @@ input.footnote-checkbox[type=checkbox] + label + span {
   margin: 0.25em 0;
 }
 
-input.footnote-checkbox[type=checkbox]:checked + label + span {
+input.footnote-checkbox[type="checkbox"]:checked + label + span {
   display: block;
 }
 
-input.footnote-checkbox[type=checkbox]:checked + label + span a {
+input.footnote-checkbox[type="checkbox"]:checked + label + span a {
   color: var(--background-color);
 }
 
-input.footnote-checkbox[type=checkbox]:checked + label + span a:not(.no-underline) {
+input.footnote-checkbox[type="checkbox"]:checked
+  + label
+  + span
+  a:not(.no-underline) {
   text-decoration-color: var(--background-color-secondary);
 }
 
-input.footnote-checkbox[type=checkbox]:checked + label + span a:hover {
+input.footnote-checkbox[type="checkbox"]:checked + label + span a:hover {
   color: var(--background-color-secondary);
 }
 
-input.footnote-checkbox[type=checkbox]:checked + label + span a:not(.no-underline):hover {
-  text-decoration-color: color-mix(in srgb, var(--background-color-secondary) 80%, transparent);
+input.footnote-checkbox[type="checkbox"]:checked
+  + label
+  + span
+  a:not(.no-underline):hover {
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--background-color-secondary) 80%,
+    transparent
+  );
 }
 
 /* Code blocks */
@@ -494,6 +507,7 @@ div.post-body > img.hero-image {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25em;
+  image-rendering: pixelated;
 }
 
 @media (max-width: 768px) {
