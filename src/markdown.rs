@@ -63,15 +63,34 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::ListItem(li) => {
-                // hack: if the only child of this list item is a paragraph, drop the paragraph
-                // and use the raw content instead
-                if li.children.len() == 1 {
-                    if let Node::Paragraph(p) = &li.children[0] {
-                        return b::li([])(self.convert_many(&p.children));
+                // hack: if we only have one paragraph as a child, drop the paragraph and use the
+                // inner context instead. previously, this hack only applied to
+                //      li(children:[paragraph(children:[content])])
+                // to
+                //      li(children:[content])
+                // but I realised that this is a more general problem:
+                //      li(children:[paragraph(children:[content]), ul(children:[...])])
+                // should be
+                //      li(children:[content, ul(children:[...])])
+                let has_one_paragraph = li
+                    .children
+                    .iter()
+                    .filter(|c| matches!(c, Node::Paragraph(_)))
+                    .count()
+                    == 1;
+                if has_one_paragraph {
+                    let mut children = Vec::new();
+                    for child in &li.children {
+                        if let Node::Paragraph(p) = child {
+                            children.extend(p.children.iter().map(|n| self.convert(n)));
+                        } else {
+                            children.push(self.convert(child));
+                        }
                     }
+                    b::li([])(children)
+                } else {
+                    b::li([])(self.convert_many(&li.children))
                 }
-
-                b::li([])(self.convert_many(&li.children))
             }
             Node::Code(c) => b::pre([("class", "code").into()])(b::code([])([
                 b::pre([("class", "code-language").into()])(
