@@ -21,10 +21,12 @@ pub enum Route<'a> {
     BlogPost {
         post_id: &'a str,
     },
+    /// No longer in use: just the home page
+    DeprecatedAbout,
     /// Not prefixed with /blog/
-    OriginalBlogTags,
+    DeprecatedTags,
     /// Not prefixed with /blog/
-    OriginalBlogTag {
+    DeprecatedTag {
         tag_id: &'a str,
     },
     BlogTags,
@@ -51,8 +53,9 @@ impl Route<'_> {
             Route::Index => RoutePath::new([], None),
             Route::Blog => RoutePath::new(["blog"], None),
             Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
-            Route::OriginalBlogTags => RoutePath::new(["tags"], None),
-            Route::OriginalBlogTag { tag_id } => RoutePath::new(["tags", tag_id], None),
+            Route::DeprecatedAbout => RoutePath::new(["about"], None),
+            Route::DeprecatedTags => RoutePath::new(["tags"], None),
+            Route::DeprecatedTag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::BlogTags => RoutePath::new(["blog", "tags"], None),
             Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
@@ -191,13 +194,13 @@ fn main() -> anyhow::Result<()> {
     timer.step("Wrote blog tags", || {
         views::blog::tags::index(view_context).write_to_route(output_dir, Route::BlogTags)?;
         views::redirect(&Route::BlogTags.url_path())
-            .write_to_route(output_dir, Route::OriginalBlogTags)?;
+            .write_to_route(output_dir, Route::DeprecatedTags)?;
 
         for tag_id in content.blog.tags.keys() {
             let route = Route::BlogTag { tag_id };
             views::blog::tags::tag(view_context, tag_id).write_to_route(output_dir, route)?;
             views::redirect(&route.url_path())
-                .write_to_route(output_dir, Route::OriginalBlogTag { tag_id })?;
+                .write_to_route(output_dir, Route::DeprecatedTag { tag_id })?;
         }
         anyhow::Ok(())
     })?;
@@ -208,7 +211,10 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote frontpage", || {
-        views::frontpage::index(view_context).write_to_route(output_dir, Route::Index)
+        views::frontpage::index(view_context).write_to_route(output_dir, Route::Index)?;
+        views::redirect(&Route::Index.url_path())
+            .write_to_route(output_dir, Route::DeprecatedAbout)?;
+        anyhow::Ok(())
     })?;
 
     timer.step("Wrote RSS feed", || {
