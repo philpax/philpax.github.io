@@ -33,6 +33,7 @@ base64 = { version = "0.22.1", optional = true }
 sha1 = { version = "0.10.6", optional = true }
 
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
+# paxhtml = { path = "../paxhtml/paxhtml" }
 paxcss = { path = "paxcss" }
 
 [features]
