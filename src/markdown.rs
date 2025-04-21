@@ -100,7 +100,7 @@ impl<'a> MarkdownConverter<'a> {
                     .highlight_code(c.lang.as_deref(), &c.value)
                     .unwrap(),
             ])),
-            Node::BlockQuote(b) => {
+            Node::Blockquote(b) => {
                 let children = self.convert_many(&b.children);
                 if self.without_blocking_elements {
                     b::q([])(children)
@@ -226,7 +226,7 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
             .unwrap_or_default();
         if matches!(
             node,
-            Node::Paragraph(_) | Node::Heading(_) | Node::BlockQuote(_)
+            Node::Paragraph(_) | Node::Heading(_) | Node::Blockquote(_)
         ) {
             output.push('\n');
         }
