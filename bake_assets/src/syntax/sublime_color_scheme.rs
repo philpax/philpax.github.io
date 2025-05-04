@@ -8,16 +8,45 @@ use syntect::{
     },
     parsing::ParseScopeError,
 };
-use thiserror::Error;
 
-#[derive(Debug, Error)]
+#[derive(Debug)]
 pub enum ParseError {
-    #[error("Failed to parse JSON")]
-    Json(#[from] serde_json::Error),
-    #[error("Failed to parse scope")]
-    ParseScope(#[from] ParseScopeError),
-    #[error("Failed to parse theme")]
-    ParseTheme(#[from] ParseThemeError),
+    Json(serde_json::Error),
+    ParseScope(ParseScopeError),
+    ParseTheme(ParseThemeError),
+}
+impl std::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ParseError::Json(e) => write!(f, "Failed to parse JSON: {e}"),
+            ParseError::ParseScope(e) => write!(f, "Failed to parse scope: {e}"),
+            ParseError::ParseTheme(e) => write!(f, "Failed to parse theme: {e}"),
+        }
+    }
+}
+impl std::error::Error for ParseError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            ParseError::Json(err) => Some(err),
+            ParseError::ParseScope(err) => Some(err),
+            ParseError::ParseTheme(err) => Some(err),
+        }
+    }
+}
+impl From<serde_json::Error> for ParseError {
+    fn from(err: serde_json::Error) -> Self {
+        ParseError::Json(err)
+    }
+}
+impl From<ParseScopeError> for ParseError {
+    fn from(err: ParseScopeError) -> Self {
+        ParseError::ParseScope(err)
+    }
+}
+impl From<ParseThemeError> for ParseError {
+    fn from(err: ParseThemeError) -> Self {
+        ParseError::ParseTheme(err)
+    }
 }
 
 #[derive(Deserialize)]
