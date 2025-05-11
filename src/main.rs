@@ -124,6 +124,7 @@ fn main() -> anyhow::Result<()> {
         syntax::SyntaxHighlighter::default,
     );
 
+    if !fast {
     timer.step("Cleared output directory", || {
         if output_dir.is_dir() {
             // Remove everything in the public directory; this is done manually
@@ -140,6 +141,12 @@ fn main() -> anyhow::Result<()> {
         }
         anyhow::Ok(())
     })?;
+    } else {
+        timer.step(
+            "Fast mode enabled, skipping output directory clearing",
+            || anyhow::Ok(()),
+        )?;
+    }
 
     timer.step("Copied baked static content", || {
         util::copy_dir(Path::new("assets/baked/static"), output_dir)
