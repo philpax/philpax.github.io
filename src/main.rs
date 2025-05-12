@@ -113,6 +113,8 @@ pub struct ViewContext<'a> {
 }
 
 fn main() -> anyhow::Result<()> {
+    let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
+
     let mut timer = Timer::new();
 
     let output_dir = Path::new("public");
