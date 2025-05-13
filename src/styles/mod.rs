@@ -7,7 +7,6 @@ pub struct GenerateOutput {
 }
 
 pub fn generate(context: ViewContext, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
-    const RESET: &str = include_str!("reset.css");
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
@@ -15,8 +14,6 @@ pub fn generate(context: ViewContext, tailwind_output: &str) -> anyhow::Result<G
     let syntax = context.syntax.theme_css();
     let css = format!(
         r#"
-{RESET}
-
 /* --- THEMES --- */
 :root {{
 {dark_mode}

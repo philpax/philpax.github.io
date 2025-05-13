@@ -92,24 +92,6 @@ body > header div#top-bar h1 a {
 }
 
 /* Navigation */
-body > header nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1em;
-}
-
-body > header nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 600px;
-}
-
 body > header nav ul li {
   display: inline-block;
   margin-right: var(--header-link-item-spacing);
@@ -163,15 +145,6 @@ body > header nav ul li a:visited:hover {
   body > header nav ul li:last-child {
     margin-bottom: 0;
   }
-}
-
-/* Footer */
-body > footer {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  text-align: center;
-  font-size: 0.75em;
-  color: var(--color-secondary);
 }
 
 /* Links */
