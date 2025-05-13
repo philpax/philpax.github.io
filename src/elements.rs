@@ -34,7 +34,11 @@ pub fn break_on_colon(value: &str) -> Element {
 }
 
 /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-pub fn h_with_id<E: Into<Element>>(depth: u8, with_link: bool) -> impl FnOnce(E) -> Element {
+pub fn h_with_id<E: Into<Element>>(
+    depth: u8,
+    class: &str,
+    with_link: bool,
+) -> impl FnOnce(E) -> Element + use<'_, E> {
     move |children: E| {
         let children = children.into();
         let id = crate::util::slugify(&children.inner_text());
@@ -42,7 +46,7 @@ pub fn h_with_id<E: Into<Element>>(depth: u8, with_link: bool) -> impl FnOnce(E)
         let children = if with_link {
             a([
                 ("href", format!("#{id}")).into(),
-                ("class", "no-underline").into(),
+                ("class", format!("no-underline {class}")).into(),
             ])(children)
         } else {
             children
@@ -55,8 +59,8 @@ macro_rules! generate_hs_with_id {
     ($(($fn_ident:ident, $depth:literal)),*) => {
         $(
         /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-        pub fn $fn_ident(element: impl Into<Element>) -> Element {
-            h_with_id($depth, false)(element)
+        pub fn $fn_ident(element: impl Into<Element>, class: &str) -> Element {
+            h_with_id($depth, class, false)(element)
         }
         )*
     };

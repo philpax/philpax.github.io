@@ -39,7 +39,17 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    e::h_with_id((h.depth + 2).min(6), true)(children)
+                    let class = match (h.depth + 2).min(6) {
+                        1 => "text-2xl font-bold",
+                        2 => "text-xl font-bold",
+                        3 => "text-lg font-bold",
+                        4 => "text-base font-bold",
+                        5 => "text-sm font-bold",
+                        6 => "text-xs font-bold",
+                        _ => "",
+                    };
+
+                    e::h_with_id((h.depth + 2).min(6), class, true)(children)
                 }
             }
             Node::Text(t) => b::text(&t.value),
@@ -57,9 +67,9 @@ impl<'a> MarkdownConverter<'a> {
             Node::List(l) => {
                 let children = self.convert_many(&l.children);
                 if l.ordered {
-                    b::ol([])(children)
+                    b::ol([("class", "list-decimal pl-8").into()])(children)
                 } else {
-                    b::ul([])(children)
+                    b::ul([("class", "list-disc pl-8").into()])(children)
                 }
             }
             Node::ListItem(li) => {
@@ -92,7 +102,7 @@ impl<'a> MarkdownConverter<'a> {
                     b::li([])(self.convert_many(&li.children))
                 }
             }
-            Node::Code(c) => b::pre([("class", "code").into()])(b::code([])([
+            Node::Code(c) => b::pre([("class", "code text-sm").into()])(b::code([])([
                 b::pre([("class", "code-language").into()])(
                     self.syntax.lookup_language(c.lang.as_deref()).name.as_str(),
                 ),
@@ -109,7 +119,7 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => b::code([("class", "code").into()])(
+            Node::InlineCode(c) => b::code([("class", "code text-sm").into()])(
                 self.syntax.highlight_code(None, &c.value).unwrap(),
             ),
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([

@@ -59,13 +59,6 @@ main {
 }
 
 /* Header */
-body > header div#top-bar {
-  display: flex;
-  height: var(--header-height);
-  justify-content: center;
-  position: relative;
-  align-items: center;
-}
 
 body > header div#top-bar div.flair {
   height: 0.25em;
@@ -490,10 +483,6 @@ div.post-body > img.hero-image {
 
 #home-page-columns article {
   margin-bottom: 1.5em;
-}
-
-#home-page-columns article header h2 {
-  font-size: 1.25em;
 }
 
 #home-page-columns article p {

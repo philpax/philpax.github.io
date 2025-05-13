@@ -82,15 +82,17 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     let route_path = document.route_path();
     let url = route_path.url_path();
 
-    let post_body = match post_body {
+    let post_body_rendered = match post_body {
         PostBody::Full => {
             let mut elements = vec![];
+
+            let h3_classname = "text-lg font-bold";
 
             let toc = document_to_html_list(context.syntax, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
                     <aside class="toc" id="toc-sticky" hidden>
-                        <h3>"Table of Contents"</h3>
+                        <h3 class={h3_classname}>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
                 });
@@ -106,7 +108,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
                     <aside class="toc" id="toc-inline">
-                        <h3>"Table of Contents"</h3>
+                        <h3 class={h3_classname}>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
                 });
@@ -135,6 +137,11 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         ),
     };
 
+    let heading_size = match post_body {
+        PostBody::Full | PostBody::Description => "text-2xl",
+        PostBody::Short => "text-xl",
+    };
+
     html! {
         <article class="post">
             <header>
@@ -147,11 +154,11 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     " words"
                 </div>
                 <a href={url} class="post-title no-underline">
-                    <h2>{break_on_colon(&document.metadata.title)}</h2>
+                    <h2 class={format!("{heading_size} font-bold")}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
             <div class="post-body">
-                {post_body}
+                {post_body_rendered}
             </div>
         </article>
     }

@@ -11,6 +11,7 @@ mod rss;
 mod serve;
 mod styles;
 mod syntax;
+mod tailwind;
 mod util;
 mod views;
 
@@ -127,22 +128,22 @@ fn main() -> anyhow::Result<()> {
     );
 
     if !fast {
-    timer.step("Cleared output directory", || {
-        if output_dir.is_dir() {
-            // Remove everything in the public directory; this is done manually
-            // to ensure that you can continue serving from the directory while
-            // the build is running.
-            for entry in std::fs::read_dir(output_dir)? {
-                let path = entry?.path();
-                if path.is_dir() {
-                    std::fs::remove_dir_all(&path)?;
-                } else {
-                    std::fs::remove_file(&path)?;
+        timer.step("Cleared output directory", || {
+            if output_dir.is_dir() {
+                // Remove everything in the public directory; this is done manually
+                // to ensure that you can continue serving from the directory while
+                // the build is running.
+                for entry in std::fs::read_dir(output_dir)? {
+                    let path = entry?.path();
+                    if path.is_dir() {
+                        std::fs::remove_dir_all(&path)?;
+                    } else {
+                        std::fs::remove_file(&path)?;
+                    }
                 }
             }
-        }
-        anyhow::Ok(())
-    })?;
+            anyhow::Ok(())
+        })?;
     } else {
         timer.step(
             "Fast mode enabled, skipping output directory clearing",
@@ -231,8 +232,11 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(route_path.write(output_dir, rss::generate(view_context, &content.blog)?)?)
     })?;
 
+    let tailwind = timer.step("Prepared Tailwind", || tailwind::download(fast))?;
+
     timer.step("Wrote bundled styles", || {
-        let output = styles::generate(view_context)?;
+        let tailwind_output = tailwind::run(&tailwind)?;
+        let output = styles::generate(view_context, &tailwind_output)?;
         Route::Styles.route_path().write(output_dir, output.css)?;
         Route::DarkModeIcon
             .route_path()

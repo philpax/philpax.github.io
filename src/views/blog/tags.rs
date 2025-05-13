@@ -26,7 +26,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     tag_keys.iter().map(|tag| {
                         let post_count = context.content.blog.tags[*tag].len();
                         html! {
-                            <li>
+                            <li class="list-disc">
                                 <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                                 {format!(
                                     " ({} {})",

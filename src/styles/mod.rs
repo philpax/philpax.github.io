@@ -6,7 +6,7 @@ pub struct GenerateOutput {
     pub light_mode_icon: String,
 }
 
-pub fn generate(context: ViewContext) -> anyhow::Result<GenerateOutput> {
+pub fn generate(context: ViewContext, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
     const RESET: &str = include_str!("reset.css");
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
@@ -36,6 +36,9 @@ pub fn generate(context: ViewContext) -> anyhow::Result<GenerateOutput> {
 
 /* --- WEBSITE --- */
 {remaining}
+
+/* --- TAILWIND --- */
+{tailwind_output}
 
 /* --- SYNTAX HIGHLIGHTING --- */
 {syntax}

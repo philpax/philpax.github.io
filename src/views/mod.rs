@@ -88,10 +88,10 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                 </head>
                 <body>
                     <header>
-                        <div id="top-bar">
+                        <div id="top-bar" class="flex h-(--header-height) justify-center items-center position-relative">
                             <div class="flair" id="flair-left"></div>
                             <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} />
-                            <h1>{context.website_author}</h1>
+                            <h1 class="text-3xl font-bold h-full flex items-center">{context.website_author}</h1>
                             <div class="flair" id="flair-right"></div>
                         </div>
                         <nav>
