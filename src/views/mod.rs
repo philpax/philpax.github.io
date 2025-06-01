@@ -7,6 +7,8 @@ pub mod frontpage;
 
 pub mod components;
 
+pub const FONT_STYLE: &str = "font-['Literata',serif]";
+
 #[derive(Default)]
 /// Metadata for social media platforms like Twitter and OpenGraph
 struct SocialMeta {
@@ -88,7 +90,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class="max-w-[860px] mx-auto text-[var(--color)] bg-[var(--background-color)] font-['Literata',serif] px-4 py-2 transition-all duration-200">
+                <body class={format!("max-w-[860px] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-4 py-2 transition-all duration-200")}>
                     <header>
                         <div class="flex flex-col md:flex-row md:items-center md:mt-2">
                             <div id="top-bar" class="flex h-[var(--header-height)] items-center md:mr-4 justify-center md:flex-none">
