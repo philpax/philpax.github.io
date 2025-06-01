@@ -82,65 +82,13 @@ body > header nav ul li a:visited:hover {
 }
 
 /* Footnotes */
-.footnote-number {
-  padding: 0 0.5em;
-  margin-left: 0.25em;
-  background-color: var(--color);
+.footnote a {
   color: var(--background-color);
-  font-size: 0.75em;
-}
-.footnote-number::before {
-  content: "fn";
-  font-style: italic;
-  font-size: 0.6em;
-  margin-right: 0.3em;
-  color: var(--background-color-secondary);
-}
-.footnote-number:hover {
-  background-color: var(--color-secondary);
-}
-
-input.footnote-checkbox[type="checkbox"] {
-  display: none;
-}
-
-input.footnote-checkbox[type="checkbox"] + label {
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-}
-
-input.footnote-checkbox[type="checkbox"] + label + span {
-  display: none;
-  background-color: var(--color);
-  color: var(--background-color);
-  padding: 0.5em;
-  margin: 0.25em 0;
-}
-
-input.footnote-checkbox[type="checkbox"]:checked + label + span {
-  display: block;
-}
-
-input.footnote-checkbox[type="checkbox"]:checked + label + span a {
-  color: var(--background-color);
-}
-
-input.footnote-checkbox[type="checkbox"]:checked
-  + label
-  + span
-  a:not(.no-underline) {
   text-decoration-color: var(--background-color-secondary);
 }
 
-input.footnote-checkbox[type="checkbox"]:checked + label + span a:hover {
+.footnote a:hover {
   color: var(--background-color-secondary);
-}
-
-input.footnote-checkbox[type="checkbox"]:checked
-  + label
-  + span
-  a:not(.no-underline):hover {
   text-decoration-color: color-mix(
     in srgb,
     var(--background-color-secondary) 80%,
