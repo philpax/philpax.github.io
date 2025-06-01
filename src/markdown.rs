@@ -155,30 +155,19 @@ impl<'a> MarkdownConverter<'a> {
                     .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
                     .clone();
 
-                let id = format!("footnote-{}", r.identifier);
-                paxhtml::Element::from_iter([
-                    b::input([
-                        ("type", "checkbox").into(),
-                        ("id", id.clone()).into(),
-                        ("class", "footnote-checkbox").into(),
-                        ("autocomplete", "off").into(),
-                    ]),
-                    b::label([("for", id.clone()).into()])(b::sup([
-                        ("class", "footnote-number").into()
-                    ])(
-                        r.identifier.to_string()
-                    )),
-                    b::span([])(
-                        MarkdownConverter::new(self.syntax)
-                            .without_blocking_elements()
-                            .convert_many(&definition),
-                    ),
-                ])
+                components::footnote(
+                    &r.identifier,
+                    MarkdownConverter::new(self.syntax)
+                        .without_blocking_elements()
+                        .convert_many(&definition),
+                )
             }
 
+            // Handled elsewhere
+            Node::FootnoteDefinition(_) => paxhtml::Element::Empty,
+
             // Not supported yet
-            Node::FootnoteDefinition(_)
-            | Node::InlineMath(_)
+            Node::InlineMath(_)
             | Node::ImageReference(_)
             | Node::LinkReference(_)
             | Node::Math(_)
