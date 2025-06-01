@@ -1,5 +1,5 @@
 use super::*;
-use crate::util;
+use crate::{util, views::components};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let mut tag_keys = context.content.blog.tags.keys().collect::<Vec<_>>();
@@ -27,7 +27,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                         let post_count = context.content.blog.tags[*tag].len();
                         html! {
                             <li class="list-disc">
-                                <a href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                                {components::link(true, format!("Tag: {tag}"), Route::BlogTag { tag_id: tag }.url_path(), format!("#{tag}").into())}
                                 {format!(
                                     " ({} {})",
                                     post_count,

@@ -14,14 +14,23 @@ pub enum HeaderFocus<'a> {
 pub fn header(focus: HeaderFocus) -> paxhtml::Element {
     fn class(is_active: bool) -> &'static str {
         if is_active {
-            "no-underline active"
+            "no-underline text-[var(--color)]"
         } else {
-            "no-underline"
+            "no-underline text-[var(--color-secondary)] hover:text-[var(--color)]"
         }
     }
 
     html! {
-        <header class="flex flex-col items-end gap-0.5 text-2xl font-bold -ml-40 w-36 float-left text-right sticky top-4 lg:flex-wrap lg:flex-row lg:items-center lg:justify-center lg:text-xl lg:gap-2 lg:ml-0 lg:w-auto lg:float-none lg:text-center lg:mb-2 lg:static" id="posts-header">
+        <header
+            class="\
+            flex flex-col flex-wrap flex-row items-center justify-center items-end gap-2 \
+            text-2xl font-bold mb-4 \
+            [&>*:not(:last-child)]:after:content-['·'] \
+            [&>*:not(:last-child)]:after:ml-2 \
+            [&>*:not(:last-child)]:after:text-[var(--color-secondary)] \
+            "
+            id="posts-header"
+        >
             <a href={Route::Blog.url_path()} class={class(focus == HeaderFocus::AllPosts)}>"All posts"</a>
             <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
             {match focus {
@@ -54,7 +63,7 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.tags.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
-                        <a class="no-underline" href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                        {components::link(false, format!("Tag: {tag}"), Route::BlogTag { tag_id: tag }.url_path(), format!("#{tag}").into())}
                     </li>
                 }
             });
@@ -124,7 +133,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             <>
                 {MarkdownConverter::new(context.syntax).convert(&document.description)}
                 <p>
-                    <a href={url}>"Read more"</a>
+                    {components::link(true, None, url.clone(), "Read more".into())}
                 </p>
             </>
         },
@@ -179,7 +188,9 @@ fn document_to_html_list(
             <ul>
                 {if toplevel {
                     html! {
-                        <li><a href="#">"Introduction"</a></li>
+                        <li>
+                            {components::link(true, None, "#".to_string(), "Introduction".into())}
+                        </li>
                     }
                 } else {
                     paxhtml::Element::Empty
@@ -198,7 +209,7 @@ fn document_to_html_list(
     ) -> paxhtml::Element {
         html! {
             <li>
-                <a href={format!("#{}", util::slugify(heading_text))}>{heading.clone()}</a>
+                {components::link(true, None, format!("#{}", util::slugify(heading_text)), heading.clone())}
                 {build_list_recursively(children, false)}
             </li>
         }

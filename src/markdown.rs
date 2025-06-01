@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{elements as e, syntax::SyntaxHighlighter};
+use crate::{elements as e, syntax::SyntaxHighlighter, views::components};
 use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
@@ -127,14 +127,15 @@ impl<'a> MarkdownConverter<'a> {
                 ("alt", i.alt.clone()).into(),
             ])),
             Node::Link(l) => {
-                let mut attrs = vec![("href", l.url.clone()).into()];
-                if let Some(title) = &l.title {
-                    attrs.push(("title", title.clone()).into());
-                }
+                let target = l.url.clone();
+                let title = l.title.clone();
 
-                b::a(attrs)(paxhtml::Element::from_iter(
-                    l.children.iter().map(|n| self.convert(n)),
-                ))
+                components::link(
+                    true,
+                    title,
+                    target,
+                    paxhtml::Element::from_iter(l.children.iter().map(|n| self.convert(n))),
+                )
             }
             Node::Html(h) => {
                 // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed

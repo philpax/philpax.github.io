@@ -45,9 +45,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                             .map(|doc| partials::post(context, doc, partials::PostBody::Short))
                     }
                     <span>
-                        <a href={Route::Blog.url_path()}>"All posts"</a>
+                        {components::link(true, None, Route::Blog.url_path().to_string(), "All posts".into())}
                         " · "
-                        <a href={Route::BlogTags.url_path()}>"Tags"</a>
+                        {components::link(true, None, Route::BlogTags.url_path().to_string(), "Tags".into())}
                     </span>
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
