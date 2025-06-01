@@ -21,7 +21,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         html! {
             <>
                 {partials::header(partials::HeaderFocus::Tags)}
-                <ul id="tags-list-index">
+                <ul id="tags-list-index" class="list-none m-0 list-style-position-inside">
                 #{
                     tag_keys.iter().map(|tag| {
                         let post_count = context.content.blog.tags[*tag].len();

@@ -209,11 +209,3 @@ code.code {
 .toc ul ul {
   padding-left: 1.5em;
 }
-
-/* Misc */
-#tags-list-index {
-  /* Ensure that the tag list has no margin or padding, so that the header nav doesn't look out of place */
-  margin: 0;
-  padding: 0;
-  list-style-position: inside;
-}
