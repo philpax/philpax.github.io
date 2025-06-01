@@ -26,7 +26,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         html! {
             <>
                 {partials::header(partials::HeaderFocus::AllPosts)}
-                #{all_posts}
+                <div class="*:mb-8">
+                    #{all_posts}
+                </div>
             </>
         },
     )

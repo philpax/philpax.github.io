@@ -5,6 +5,12 @@ use crate::{
     util,
 };
 
+pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
+// uses `POST_BODY_CONTENT_MARGIN_LEFT_CLASS` for child paragraphs; can't construct dynamically
+// because tailwind looks for full class names
+pub const POST_BODY_MARGIN_CLASS: &str =
+    "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0 [&>p]:ml-4";
+
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum HeaderFocus<'a> {
     AllPosts,
@@ -118,7 +124,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 elements.push(html! {
                     <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        {hierarchy_list}
+                        <div class={POST_BODY_CONTENT_MARGIN_LEFT_CLASS}>
+                            {hierarchy_list}
+                        </div>
                     </aside>
                 });
             }
@@ -163,7 +171,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
-            <div class="post-body">
+            <div class={format!("post-body {POST_BODY_MARGIN_CLASS}")}>
                 {post_body_rendered}
             </div>
         </article>
