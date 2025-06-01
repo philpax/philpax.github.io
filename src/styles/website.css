@@ -121,6 +121,10 @@ code.code {
   margin: 0 0.1em;
 }
 
+code span {
+  display: inline-block;
+}
+
 /* Table of contents */
 .toc a:not(.active) {
   color: var(--color-secondary);
