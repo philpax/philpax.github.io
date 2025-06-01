@@ -38,24 +38,6 @@
   font-style: italic;
 }
 
-/* Flair elements (gradients) */
-body > header div#top-bar div.flair {
-  height: 0.25em;
-  max-width: 200px;
-  width: 20%;
-  transform: translateY(-50%);
-}
-
-body > header div#top-bar div#flair-left {
-  background: linear-gradient(to left, var(--color), transparent);
-  margin-right: var(--header-item-spacing);
-}
-
-body > header div#top-bar div#flair-right {
-  background: linear-gradient(to right, var(--color), transparent);
-  margin-left: var(--header-item-spacing);
-}
-
 body > header nav ul li {
   display: inline-block;
   margin-right: var(--header-link-item-spacing);
