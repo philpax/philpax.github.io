@@ -31,9 +31,10 @@ pub fn header(focus: HeaderFocus) -> paxhtml::Element {
             class="\
             flex flex-col flex-wrap flex-row items-center justify-center items-end gap-2 \
             text-2xl font-bold mb-4 \
-            [&>*:not(:last-child)]:after:content-['·'] \
-            [&>*:not(:last-child)]:after:ml-2 \
-            [&>*:not(:last-child)]:after:text-[var(--color-secondary)] \
+            xl:mb-0 xl:text-3xl xl:-ml-40 xl:w-36 xl:top-4 xl:text-right \
+            xl:flex-col xl:items-end xl:gap-1 xl:float-left xl:sticky \
+            max-xl:[&>*:not(:last-child)]:after:content-['·'] max-xl:[&>*:not(:last-child)]:after:ml-2 \
+            max-xl:[&>*:not(:last-child)]:after:text-[var(--color-secondary)] \
             "
             id="posts-header"
         >
