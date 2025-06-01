@@ -1,6 +1,6 @@
 use super::*;
 
-use crate::markdown::MarkdownConverter;
+use crate::{markdown::MarkdownConverter, views::blog};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let content = &context.content;
@@ -19,7 +19,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         },
         html! {
             <article>
-                <a href={Route::Credits.url_path()} class="post-title no-underline">
+                <a href={Route::Credits.url_path()} class={blog::partials::post_body_to_heading_class(blog::partials::PostBody::Full)}>
                     <h2>"Credits"</h2>
                 </a>
                 <div class="post-body">

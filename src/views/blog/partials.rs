@@ -146,10 +146,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         ),
     };
 
-    let heading_size = match post_body {
-        PostBody::Full | PostBody::Description => "text-2xl",
-        PostBody::Short => "text-xl",
-    };
+    let heading_class = post_body_to_heading_class(post_body);
 
     html! {
         <article class="post">
@@ -163,13 +160,21 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     " words"
                 </div>
                 <a href={url} class="flex items-center p-0 no-underline post-title">
-                    <h2 class={format!("{heading_size} font-bold")}>{break_on_colon(&document.metadata.title)}</h2>
+                    <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
             <div class="post-body">
                 {post_body_rendered}
             </div>
         </article>
+    }
+}
+
+/// Gets the class for the heading of a post body.
+pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
+    match post_body {
+        PostBody::Full | PostBody::Description => "text-2xl font-bold",
+        PostBody::Short => "text-xl font-bold",
     }
 }
 
