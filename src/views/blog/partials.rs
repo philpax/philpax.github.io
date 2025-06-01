@@ -88,7 +88,7 @@ pub fn date(document: &Document) -> paxhtml::Element {
         .unwrap_or_default()
 }
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum PostBody {
     Full,
     Description,
@@ -172,7 +172,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
-            <div class={format!("post-body {POST_BODY_MARGIN_CLASS}")}>
+            <div class={format!("post-body {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" })}>
                 {post_body_rendered}
             </div>
         </article>
