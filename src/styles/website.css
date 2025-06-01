@@ -97,32 +97,8 @@ body > header nav ul li a:visited:hover {
 }
 
 /* Code blocks */
-pre.code {
-  padding: 0.5em;
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.code-language {
-  background-color: hsl(220, 27%, 20%);
-  color: white;
-  margin: -0.5rem 0 0.25rem -0.5rem;
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
-  width: fit-content;
-  text-transform: lowercase;
-  font-size: 0.75rem;
-  position: sticky;
-  left: -0.5rem;
-}
-
-code.code {
-  padding: 0.25em;
-  margin: 0 0.1em;
-}
-
 code span {
-  display: inline-block;
+  display: inline;
 }
 
 /* Table of contents */

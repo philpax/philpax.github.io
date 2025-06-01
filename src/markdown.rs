@@ -101,14 +101,7 @@ impl<'a> MarkdownConverter<'a> {
                     b::li([])(self.convert_many(&li.children))
                 }
             }
-            Node::Code(c) => b::pre([("class", "code text-sm").into()])(b::code([])([
-                b::pre([("class", "code-language").into()])(
-                    self.syntax.lookup_language(c.lang.as_deref()).name.as_str(),
-                ),
-                self.syntax
-                    .highlight_code(c.lang.as_deref(), &c.value)
-                    .unwrap(),
-            ])),
+            Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
             Node::Blockquote(b) => {
                 let children = self.convert_many(&b.children);
                 if self.without_blocking_elements {
