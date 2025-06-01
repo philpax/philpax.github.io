@@ -79,7 +79,7 @@ pub fn download(fast: bool) -> anyhow::Result<PathBuf> {
 
 pub fn run(tailwind_executable: &Path) -> anyhow::Result<String> {
     let output = Command::new(tailwind_executable.canonicalize()?)
-        .args(["--output", "-"])
+        .args(["--input", "src/styles/tailwind.css", "--output", "-"])
         .output()
         .context("Failed to run tailwind")?;
 
