@@ -11,7 +11,6 @@ mod rss;
 mod serve;
 mod styles;
 mod syntax;
-mod tailwind;
 mod util;
 mod views;
 
@@ -232,11 +231,8 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(route_path.write(output_dir, rss::generate(view_context, &content.blog)?)?)
     })?;
 
-    let tailwind = timer.step("Prepared Tailwind", || tailwind::download(fast))?;
-
     timer.step("Wrote bundled styles", || {
-        let tailwind_output = tailwind::run(&tailwind)?;
-        let output = styles::generate(view_context, &tailwind_output)?;
+        let output = styles::generate(view_context, fast)?;
         Route::Styles.route_path().write(output_dir, output.css)?;
         Route::DarkModeIcon
             .route_path()

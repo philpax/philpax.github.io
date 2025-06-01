@@ -1,12 +1,17 @@
 use crate::ViewContext;
 
+mod tailwind;
+
 pub struct GenerateOutput {
     pub css: String,
     pub dark_mode_icon: String,
     pub light_mode_icon: String,
 }
 
-pub fn generate(context: ViewContext, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
+pub fn generate(context: ViewContext, fast: bool) -> anyhow::Result<GenerateOutput> {
+    let tailwind = tailwind::download(fast)?;
+    let tailwind_output = tailwind::run(&tailwind)?;
+
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
