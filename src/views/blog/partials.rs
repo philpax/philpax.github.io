@@ -5,6 +5,12 @@ use crate::{
     util,
 };
 
+pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
+// uses `POST_BODY_CONTENT_MARGIN_LEFT_CLASS` for child paragraphs; can't construct dynamically
+// because tailwind looks for full class names
+pub const POST_BODY_MARGIN_CLASS: &str =
+    "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0 [&>p]:ml-4";
+
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum HeaderFocus<'a> {
     AllPosts,
@@ -14,14 +20,24 @@ pub enum HeaderFocus<'a> {
 pub fn header(focus: HeaderFocus) -> paxhtml::Element {
     fn class(is_active: bool) -> &'static str {
         if is_active {
-            "no-underline active"
+            "no-underline text-[var(--color)]"
         } else {
-            "no-underline"
+            "no-underline text-[var(--color-secondary)] hover:text-[var(--color)]"
         }
     }
 
     html! {
-        <header id="posts-header">
+        <header
+            class="\
+            flex flex-col flex-wrap flex-row items-center justify-center items-end gap-2 \
+            text-2xl font-bold mb-4 \
+            xl:mb-0 xl:text-3xl xl:-ml-40 xl:w-36 xl:top-4 xl:text-right \
+            xl:flex-col xl:items-end xl:gap-1 xl:float-left xl:sticky \
+            max-xl:[&>*:not(:last-child)]:after:content-['·'] max-xl:[&>*:not(:last-child)]:after:ml-2 \
+            max-xl:[&>*:not(:last-child)]:after:text-[var(--color-secondary)] \
+            "
+            id="posts-header"
+        >
             <a href={Route::Blog.url_path()} class={class(focus == HeaderFocus::AllPosts)}>"All posts"</a>
             <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
             {match focus {
@@ -53,12 +69,12 @@ pub fn tags(document: &Document) -> paxhtml::Element {
         .map(|t| {
             let tags = t.tags.iter().map(|tag| {
                 html! {
-                    <li>
-                        <a class="no-underline" href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
+                    <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
+                        {components::link(false, format!("Tag: {tag}"), Route::BlogTag { tag_id: tag }.url_path(), format!("#{tag}").into())}
                     </li>
                 }
             });
-            html! { <ul class="tags">#{tags}</ul> }
+            html! { <ul class="list-none m-0 p-0 inline-block">#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -72,7 +88,7 @@ pub fn date(document: &Document) -> paxhtml::Element {
         .unwrap_or_default()
 }
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum PostBody {
     Full,
     Description,
@@ -91,7 +107,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             let toc = document_to_html_list(context.syntax, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
-                    <aside class="toc" id="toc-sticky" hidden>
+                    <aside class="toc sticky top-4 float-right -mr-64 mt-0 w-60 hidden 2xl:block" id="toc-sticky">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
@@ -100,16 +116,18 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 elements.push(html! {
-                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="hero-image" />
+                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
             elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
-                    <aside class="toc" id="toc-inline">
+                    <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        {hierarchy_list}
+                        <div class={POST_BODY_CONTENT_MARGIN_LEFT_CLASS}>
+                            {hierarchy_list}
+                        </div>
                     </aside>
                 });
             }
@@ -124,7 +142,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             <>
                 {MarkdownConverter::new(context.syntax).convert(&document.description)}
                 <p>
-                    <a href={url}>"Read more"</a>
+                    {components::link(true, None, url.clone(), "Read more".into())}
                 </p>
             </>
         },
@@ -137,15 +155,12 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         ),
     };
 
-    let heading_size = match post_body {
-        PostBody::Full | PostBody::Description => "text-2xl",
-        PostBody::Short => "text-xl",
-    };
+    let heading_class = post_body_to_heading_class(post_body);
 
     html! {
         <article class="post">
-            <header>
-                <div class="post-meta">
+            <header class="pb-0 mb-0">
+                <div class="flex items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     {date(document)}
                     " · "
                     {tags(document)}
@@ -153,14 +168,22 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     {document.word_count.to_string()}
                     " words"
                 </div>
-                <a href={url} class="post-title no-underline">
-                    <h2 class={format!("{heading_size} font-bold")}>{break_on_colon(&document.metadata.title)}</h2>
+                <a href={url} class="flex items-center p-0 no-underline post-title">
+                    <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
-            <div class="post-body">
+            <div class={format!("post-body {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" })}>
                 {post_body_rendered}
             </div>
         </article>
+    }
+}
+
+/// Gets the class for the heading of a post body.
+pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
+    match post_body {
+        PostBody::Full | PostBody::Description => "text-2xl font-bold",
+        PostBody::Short => "text-xl font-bold",
     }
 }
 
@@ -179,7 +202,9 @@ fn document_to_html_list(
             <ul>
                 {if toplevel {
                     html! {
-                        <li><a href="#">"Introduction"</a></li>
+                        <li>
+                            {components::link(true, None, "#".to_string(), "Introduction".into())}
+                        </li>
                     }
                 } else {
                     paxhtml::Element::Empty
@@ -198,7 +223,7 @@ fn document_to_html_list(
     ) -> paxhtml::Element {
         html! {
             <li>
-                <a href={format!("#{}", util::slugify(heading_text))}>{heading.clone()}</a>
+                {components::link(true, None, format!("#{}", util::slugify(heading_text)), heading.clone())}
                 {build_list_recursively(children, false)}
             </li>
         }

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{elements as e, syntax::SyntaxHighlighter};
+use crate::{elements as e, syntax::SyntaxHighlighter, views::components};
 use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
@@ -39,17 +39,16 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    let class = match (h.depth + 2).min(6) {
-                        1 => "text-2xl font-bold",
-                        2 => "text-xl font-bold",
+                    let resolved_depth = (h.depth + 2).min(6);
+                    let class = match resolved_depth {
                         3 => "text-lg font-bold",
                         4 => "text-base font-bold",
                         5 => "text-sm font-bold",
                         6 => "text-xs font-bold",
-                        _ => "",
+                        value => panic!("Heading depth {value} is not supported"),
                     };
 
-                    e::h_with_id((h.depth + 2).min(6), class, true)(children)
+                    e::h_with_id(resolved_depth, class, true)(children)
                 }
             }
             Node::Text(t) => b::text(&t.value),
@@ -102,14 +101,7 @@ impl<'a> MarkdownConverter<'a> {
                     b::li([])(self.convert_many(&li.children))
                 }
             }
-            Node::Code(c) => b::pre([("class", "code text-sm").into()])(b::code([])([
-                b::pre([("class", "code-language").into()])(
-                    self.syntax.lookup_language(c.lang.as_deref()).name.as_str(),
-                ),
-                self.syntax
-                    .highlight_code(c.lang.as_deref(), &c.value)
-                    .unwrap(),
-            ])),
+            Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
             Node::Blockquote(b) => {
                 let children = self.convert_many(&b.children);
                 if self.without_blocking_elements {
@@ -119,22 +111,21 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => b::code([("class", "code text-sm").into()])(
-                self.syntax.highlight_code(None, &c.value).unwrap(),
-            ),
+            Node::InlineCode(c) => components::inline_code(self.syntax, &c.value),
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
                 ("src", i.url.clone()).into(),
                 ("alt", i.alt.clone()).into(),
             ])),
             Node::Link(l) => {
-                let mut attrs = vec![("href", l.url.clone()).into()];
-                if let Some(title) = &l.title {
-                    attrs.push(("title", title.clone()).into());
-                }
+                let target = l.url.clone();
+                let title = l.title.clone();
 
-                b::a(attrs)(paxhtml::Element::from_iter(
-                    l.children.iter().map(|n| self.convert(n)),
-                ))
+                components::link(
+                    true,
+                    title,
+                    target,
+                    paxhtml::Element::from_iter(l.children.iter().map(|n| self.convert(n))),
+                )
             }
             Node::Html(h) => {
                 // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
@@ -154,30 +145,19 @@ impl<'a> MarkdownConverter<'a> {
                     .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
                     .clone();
 
-                let id = format!("footnote-{}", r.identifier);
-                paxhtml::Element::from_iter([
-                    b::input([
-                        ("type", "checkbox").into(),
-                        ("id", id.clone()).into(),
-                        ("class", "footnote-checkbox").into(),
-                        ("autocomplete", "off").into(),
-                    ]),
-                    b::label([("for", id.clone()).into()])(b::sup([
-                        ("class", "footnote-number").into()
-                    ])(
-                        r.identifier.to_string()
-                    )),
-                    b::span([])(
-                        MarkdownConverter::new(self.syntax)
-                            .without_blocking_elements()
-                            .convert_many(&definition),
-                    ),
-                ])
+                components::footnote(
+                    &r.identifier,
+                    MarkdownConverter::new(self.syntax)
+                        .without_blocking_elements()
+                        .convert_many(&definition),
+                )
             }
 
+            // Handled elsewhere
+            Node::FootnoteDefinition(_) => paxhtml::Element::Empty,
+
             // Not supported yet
-            Node::FootnoteDefinition(_)
-            | Node::InlineMath(_)
+            Node::InlineMath(_)
             | Node::ImageReference(_)
             | Node::LinkReference(_)
             | Node::Math(_)
