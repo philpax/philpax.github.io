@@ -21,7 +21,7 @@ pub fn header(focus: HeaderFocus) -> paxhtml::Element {
     }
 
     html! {
-        <header id="posts-header">
+        <header class="flex flex-col items-end gap-0.5 text-2xl font-bold -ml-40 w-36 float-left text-right sticky top-4 lg:flex-wrap lg:flex-row lg:items-center lg:justify-center lg:text-xl lg:gap-2 lg:ml-0 lg:w-auto lg:float-none lg:text-center lg:mb-2 lg:static" id="posts-header">
             <a href={Route::Blog.url_path()} class={class(focus == HeaderFocus::AllPosts)}>"All posts"</a>
             <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
             {match focus {
@@ -53,12 +53,12 @@ pub fn tags(document: &Document) -> paxhtml::Element {
         .map(|t| {
             let tags = t.tags.iter().map(|tag| {
                 html! {
-                    <li>
+                    <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
                         <a class="no-underline" href={Route::BlogTag { tag_id: tag }.url_path()}>{format!("#{tag}")}</a>
                     </li>
                 }
             });
-            html! { <ul class="tags">#{tags}</ul> }
+            html! { <ul class="list-none m-0 p-0 inline-block">#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -91,7 +91,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             let toc = document_to_html_list(context.syntax, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
-                    <aside class="toc" id="toc-sticky" hidden>
+                    <aside class="toc sticky top-4 float-right -mr-64 mt-0 w-60 hidden 2xl:block" id="toc-sticky">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
@@ -100,14 +100,14 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 elements.push(html! {
-                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="hero-image" />
+                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
             elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
-                    <aside class="toc" id="toc-inline">
+                    <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
                         {hierarchy_list}
                     </aside>
@@ -144,8 +144,8 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
     html! {
         <article class="post">
-            <header>
-                <div class="post-meta">
+            <header class="pb-0 mb-0">
+                <div class="flex items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     {date(document)}
                     " · "
                     {tags(document)}
@@ -153,7 +153,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     {document.word_count.to_string()}
                     " words"
                 </div>
-                <a href={url} class="post-title no-underline">
+                <a href={url} class="flex items-center p-0 no-underline post-title">
                     <h2 class={format!("{heading_size} font-bold")}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>

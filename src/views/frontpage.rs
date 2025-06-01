@@ -29,13 +29,13 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_tag: None,
         },
         html! {
-            <div id="home-page-columns">
-                <article>
-                    <div class="post-body">
+            <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch mt-6" id="home-page-columns">
+                <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">
+                    <div class="post-body p-0 *:mb-4">
                         {MarkdownConverter::new(context.syntax).convert(&content.about.description)}
                     </div>
                 </article>
-                <div>
+                <div class="h-full md:pl-4 *:mb-6">
                     #{
                         content
                             .blog
@@ -50,7 +50,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                         <a href={Route::BlogTags.url_path()}>"Tags"</a>
                     </span>
 
-                    <div id="list-88x31">
+                    <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{
                         list_88x31.iter().map(|(img, url)| html! {
                             <a href={url}>

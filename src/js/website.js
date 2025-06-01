@@ -31,6 +31,7 @@ function createThemeSwitcher() {
   let li = document.createElement("li");
   let a = document.createElement("a");
   let img = document.createElement("img");
+  img.className = "m-auto";
   updateSwitcherIcon(img, isLightMode());
   a.href = "#";
 
