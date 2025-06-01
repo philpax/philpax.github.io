@@ -82,23 +82,6 @@ body > header nav ul li a:visited:hover {
   }
 }
 
-/* Blog header responsive separators */
-@media (max-width: 1200px) {
-  #posts-header > *:not(:last-child)::after {
-    content: "·";
-    margin-left: 0.5em;
-    color: var(--color-secondary);
-  }
-}
-
-/* Active link styles for blog header */
-#posts-header a:not(.active) {
-  color: var(--color-secondary);
-}
-#posts-header a:hover {
-  color: var(--color);
-}
-
 /* Footnotes */
 .footnote-number {
   padding: 0 0.5em;
