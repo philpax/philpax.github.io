@@ -88,21 +88,23 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                 </head>
                 <body class="max-w-[860px] mx-auto text-[var(--color)] bg-[var(--background-color)] font-['Literata',serif] px-4 py-2 transition-all duration-200">
                     <header>
-                        <div id="top-bar" class="flex h-[var(--header-height)] justify-center items-center relative">
-                            <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square inline-block h-full mr-[var(--header-item-spacing)] rounded-full border-2 border-white" />
-                            <h1 class="text-3xl font-bold h-full flex items-center leading-[var(--header-height)]">{context.website_author}</h1>
+                        <div class="flex flex-col md:flex-row md:items-center md:mt-4">
+                            <div id="top-bar" class="flex h-[var(--header-height)] items-center md:mr-4 justify-center md:flex-none">
+                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square inline-block h-full mr-[var(--header-item-spacing)] rounded-full border-2 border-white" />
+                                <h1 class="text-3xl font-bold h-full flex items-center leading-[var(--header-height)]">{context.website_author}</h1>
+                            </div>
+                            <nav class="flex items-center mt-4 md:mt-0 md:ml-4 flex-1">
+                                <ul id="header-links" class="list-none m-0 p-0 h-full flex w-full">
+                                #{
+                                    links.iter().map(|(url, label)| { html! {
+                                        <li class="flex-1">
+                                            <a class="no-underline" href={url}>{*label}</a>
+                                        </li>
+                                    }})
+                                }
+                                </ul>
+                            </nav>
                         </div>
-                        <nav class="flex justify-center items-center mt-4">
-                            <ul id="header-links" class="list-none m-0 p-0 h-full flex justify-between w-full max-w-[600px]">
-                            #{
-                                links.iter().map(|(url, label)| { html! {
-                                    <li>
-                                        <a class="no-underline" href={url}>{*label}</a>
-                                    </li>
-                                }})
-                            }
-                            </ul>
-                        </nav>
                     </header>
                     <main class="mt-4">{inner}</main>
                     <footer class="mt-4 mb-4 text-center text-xs text-[var(--color-secondary)] leading-relaxed">
