@@ -95,7 +95,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                                 <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square inline-block h-full mr-[var(--header-item-spacing)] rounded-full border-2 border-white" />
                                 <h1 class="text-3xl font-bold h-full flex items-center leading-[var(--header-height)]">{context.website_author}</h1>
                             </div>
-                            <nav class="flex items-center mt-4 md:mt-0 md:ml-4 flex-1">
+                            <nav class="flex items-center mt-4 md:mt-0 flex-1">
                                 <ul id="header-links" class="list-none m-0 p-0 h-full flex w-full">
                                 #{
                                     links.iter().map(|(url, label)| { html! {
