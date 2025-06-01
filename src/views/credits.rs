@@ -22,7 +22,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                 <a href={Route::Credits.url_path()} class={blog::partials::post_body_to_heading_class(blog::partials::PostBody::Full)}>
                     <h2>"Credits"</h2>
                 </a>
-                <div class="post-body">
+                <div class={format!("post-body {}", blog::partials::POST_BODY_MARGIN_CLASS)}>
                     {MarkdownConverter::new(context.syntax).convert(&content.credits.description)}
                 </div>
             </article>
