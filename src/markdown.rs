@@ -39,17 +39,16 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    let class = match (h.depth + 2).min(6) {
-                        1 => "text-2xl font-bold",
-                        2 => "text-xl font-bold",
+                    let resolved_depth = (h.depth + 2).min(6);
+                    let class = match resolved_depth {
                         3 => "text-lg font-bold",
                         4 => "text-base font-bold",
                         5 => "text-sm font-bold",
                         6 => "text-xs font-bold",
-                        _ => "",
+                        value => panic!("Heading depth {value} is not supported"),
                     };
 
-                    e::h_with_id((h.depth + 2).min(6), class, true)(children)
+                    e::h_with_id(resolved_depth, class, true)(children)
                 }
             }
             Node::Text(t) => b::text(&t.value),
@@ -119,9 +118,7 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => b::code([("class", "code text-sm").into()])(
-                self.syntax.highlight_code(None, &c.value).unwrap(),
-            ),
+            Node::InlineCode(c) => components::inline_code(self.syntax, &c.value),
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
                 ("src", i.url.clone()).into(),
                 ("alt", i.alt.clone()).into(),
