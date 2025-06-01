@@ -1,5 +1,5 @@
 function getThemeCookie() {
-  var themeCookie = document.cookie
+  let themeCookie = document.cookie
     .split(";")
     .find((c) => c.trim().startsWith("theme="));
   if (themeCookie) {
@@ -9,8 +9,8 @@ function getThemeCookie() {
 }
 
 // Set initial theme from cookie immediately
-(function () {
-  var savedTheme = getThemeCookie();
+{
+  let savedTheme = getThemeCookie();
   if (savedTheme) {
     if (savedTheme === "light") {
       document.documentElement.classList.remove("dark-theme");
@@ -20,23 +20,23 @@ function getThemeCookie() {
       document.documentElement.classList.add("dark-theme");
     }
   }
-})();
+}
 
 function createThemeSwitcher() {
-  var headerLinks = document.getElementById("header-links");
+  let headerLinks = document.getElementById("header-links");
   if (!headerLinks) {
     console.log("Header links not found");
     return;
   }
-  var li = document.createElement("li");
-  var a = document.createElement("a");
-  var img = document.createElement("img");
+  let li = document.createElement("li");
+  let a = document.createElement("a");
+  let img = document.createElement("img");
   updateSwitcherIcon(img, isLightMode());
   a.href = "#";
 
   a.addEventListener("click", function (e) {
     e.preventDefault();
-    var isLight = isLightMode();
+    let isLight = isLightMode();
     if (isLight) {
       document.documentElement.classList.remove("light-theme");
       document.documentElement.classList.add("dark-theme");
@@ -54,7 +54,7 @@ function createThemeSwitcher() {
   headerLinks.append(li);
 
   // Add media query listener
-  var colorSchemeQuery = window.matchMedia("(prefers-color-scheme: light)");
+  let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: light)");
   colorSchemeQuery.addEventListener("change", function (e) {
     // Only update if no theme cookie is set
     if (!getThemeCookie()) {
@@ -63,7 +63,7 @@ function createThemeSwitcher() {
   });
 
   function isLightMode() {
-    var themeCookie = getThemeCookie();
+    let themeCookie = getThemeCookie();
     if (themeCookie) {
       return themeCookie === "light";
     }
