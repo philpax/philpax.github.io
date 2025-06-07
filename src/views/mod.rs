@@ -6,6 +6,7 @@ pub mod credits;
 pub mod frontpage;
 pub mod posts;
 pub mod tags;
+pub mod updates;
 
 pub mod components;
 
@@ -73,6 +74,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
     let links = [
         (Route::Index.url_path(), "Home"),
         (Route::Blog.url_path(), "Blog"),
+        (Route::Updates.url_path(), "Updates"),
         (Route::Tags.url_path(), "Tags"),
     ];
 

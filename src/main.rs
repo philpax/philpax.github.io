@@ -21,6 +21,10 @@ pub enum Route<'a> {
     BlogPost {
         post_id: &'a str,
     },
+    Updates,
+    UpdatePost {
+        post_id: &'a str,
+    },
     Tags,
     Tag {
         tag_id: &'a str,
@@ -47,6 +51,8 @@ impl Route<'_> {
             Route::Index => RoutePath::new([], None),
             Route::Blog => RoutePath::new(["blog"], None),
             Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
+            Route::Updates => RoutePath::new(["updates"], None),
+            Route::UpdatePost { post_id } => RoutePath::new(["updates", post_id], None),
             Route::Tags => RoutePath::new(["tags"], None),
             Route::Tag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::DeprecatedAbout => RoutePath::new(["about"], None),
@@ -166,11 +172,20 @@ fn main() -> anyhow::Result<()> {
     };
 
     timer.step("Wrote content", || {
-        for doc in &content.blog.documents {
+        for doc in content
+            .blog
+            .documents
+            .iter()
+            .chain(content.updates.documents.iter())
+        {
             let post_route_path = doc.route_path();
 
-            views::blog::post(view_context, doc)
-                .write_to_route(output_dir, post_route_path.clone())?;
+            let view = match doc.document_type {
+                content::DocumentType::Blog => views::blog::post(view_context, doc),
+                content::DocumentType::Update => views::updates::post(view_context, doc),
+            };
+
+            view.write_to_route(output_dir, post_route_path.clone())?;
             {
                 let post_output_dir = post_route_path.dir_path(output_dir);
                 for path in &doc.files {
@@ -190,6 +205,10 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote blog index", || {
         views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
+    })?;
+
+    timer.step("Wrote updates index", || {
+        views::updates::index(view_context).write_to_route(output_dir, Route::Updates)
     })?;
 
     timer.step("Wrote tags", || {

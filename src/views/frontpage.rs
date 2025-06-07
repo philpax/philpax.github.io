@@ -44,15 +44,31 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                             {components::link(false, None, Route::Blog.url_path(), "", "posts".into())}
                         </h3>
                         <div class="*:mb-6">
-                    #{
-                        content
-                            .blog
-                            .documents
-                            .iter()
-                            .take(5)
+                        #{
+                            content
+                                .blog
+                                .documents
+                                .iter()
+                                .take(5)
                                 .map(|doc| posts::post(context, doc, posts::PostBody::Short))
-                    }
+                        }
                         </div>
+                    </div>
+
+                    <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4">
+                        <h3 class="text-3xl font-bold mb-2 italic">
+                            {components::link(false, None, Route::Updates.url_path(), "", "updates".into())}
+                        </h3>
+                        <ul class="list-none m-0 p-0 space-y-1">
+                        #{
+                            content
+                                .updates
+                                .documents
+                                .iter()
+                                .take(5)
+                                .map(update_doc_item)
+                        }
+                        </ul>
                     </div>
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
@@ -68,4 +84,18 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             </div>
         },
     )
+}
+
+fn update_doc_item(doc: &Document) -> paxhtml::Element {
+    let date_str = doc
+        .metadata
+        .datetime()
+        .map(|dt| dt.date_naive().to_string())
+        .unwrap_or_default();
+    html! {
+        <li>
+            <span class="text-[var(--color-secondary)]">{date_str}": "</span>
+            {components::link(false, None, doc.route_path().url_path(), "", doc.metadata.title.clone().into())}
+        </li>
+    }
 }
