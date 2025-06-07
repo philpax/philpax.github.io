@@ -1,11 +1,11 @@
 use crate::{
-    content::{Blog, Document},
+    content::{Document, DocumentCollection},
     markdown::MarkdownConverter,
     syntax::SyntaxHighlighter,
     Route, ViewContext,
 };
 
-pub fn generate(context: ViewContext, blog: &Blog) -> anyhow::Result<String> {
+pub fn generate(context: ViewContext, blog: &DocumentCollection) -> anyhow::Result<String> {
     let items = blog
         .documents
         .iter()

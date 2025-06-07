@@ -1,6 +1,9 @@
 use super::*;
 
-use crate::{markdown::MarkdownConverter, views::blog::partials};
+use crate::{
+    markdown::MarkdownConverter,
+    views::{components, posts},
+};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let content = &context.content;
@@ -36,19 +39,21 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     </div>
                 </article>
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-2 italic">
+                            {components::link(false, None, Route::Blog.url_path(), "", "posts".into())}
+                        </h3>
+                        <div class="*:mb-6">
                     #{
                         content
                             .blog
                             .documents
                             .iter()
                             .take(5)
-                            .map(|doc| partials::post(context, doc, partials::PostBody::Short))
+                                .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                     }
-                    <span>
-                        {components::link(true, None, Route::Blog.url_path().to_string(), "All posts".into())}
-                        " · "
-                        {components::link(true, None, Route::BlogTags.url_path().to_string(), "Tags".into())}
-                    </span>
+                        </div>
+                    </div>
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{

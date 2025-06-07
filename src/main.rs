@@ -21,18 +21,12 @@ pub enum Route<'a> {
     BlogPost {
         post_id: &'a str,
     },
+    Tags,
+    Tag {
+        tag_id: &'a str,
+    },
     /// No longer in use: just the home page
     DeprecatedAbout,
-    /// Not prefixed with /blog/
-    DeprecatedTags,
-    /// Not prefixed with /blog/
-    DeprecatedTag {
-        tag_id: &'a str,
-    },
-    BlogTags,
-    BlogTag {
-        tag_id: &'a str,
-    },
     BlogRss,
     Credits,
     Styles,
@@ -53,11 +47,9 @@ impl Route<'_> {
             Route::Index => RoutePath::new([], None),
             Route::Blog => RoutePath::new(["blog"], None),
             Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
+            Route::Tags => RoutePath::new(["tags"], None),
+            Route::Tag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::DeprecatedAbout => RoutePath::new(["about"], None),
-            Route::DeprecatedTags => RoutePath::new(["tags"], None),
-            Route::DeprecatedTag { tag_id } => RoutePath::new(["tags", tag_id], None),
-            Route::BlogTags => RoutePath::new(["blog", "tags"], None),
-            Route::BlogTag { tag_id } => RoutePath::new(["blog", "tags", tag_id], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
             Route::Credits => RoutePath::new(["credits"], None),
             Route::Styles => RoutePath::new([], "styles.css".to_string()),
@@ -200,16 +192,12 @@ fn main() -> anyhow::Result<()> {
         views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
     })?;
 
-    timer.step("Wrote blog tags", || {
-        views::blog::tags::index(view_context).write_to_route(output_dir, Route::BlogTags)?;
-        views::redirect(&Route::BlogTags.url_path())
-            .write_to_route(output_dir, Route::DeprecatedTags)?;
+    timer.step("Wrote tags", || {
+        views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
 
-        for tag_id in content.blog.tags.keys() {
-            let route = Route::BlogTag { tag_id };
-            views::blog::tags::tag(view_context, tag_id).write_to_route(output_dir, route)?;
-            views::redirect(&route.url_path())
-                .write_to_route(output_dir, Route::DeprecatedTag { tag_id })?;
+        for tag_id in content.tags.keys() {
+            let route = Route::Tag { tag_id };
+            views::tags::tag(view_context, tag_id).write_to_route(output_dir, route)?;
         }
         anyhow::Ok(())
     })?;

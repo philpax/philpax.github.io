@@ -1,7 +1,5 @@
 use super::*;
-
-pub mod partials;
-pub mod tags;
+use crate::views::posts;
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let all_posts = context
@@ -9,7 +7,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         .blog
         .documents
         .iter()
-        .map(|doc| partials::post(context, doc, partials::PostBody::Description));
+        .map(|doc| posts::post(context, doc, posts::PostBody::Description));
     layout(
         context,
         SocialMeta {
@@ -25,7 +23,6 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         },
         html! {
             <>
-                {partials::header(partials::HeaderFocus::AllPosts)}
                 <div class="*:mb-8">
                     #{all_posts}
                 </div>
@@ -68,6 +65,6 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
                 .as_ref()
                 .map(|t| t.tags.join(", ")),
         },
-        partials::post(context, document, partials::PostBody::Full),
+        posts::post(context, document, posts::PostBody::Full),
     )
 }

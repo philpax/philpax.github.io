@@ -2,6 +2,7 @@ pub fn link(
     underline: bool,
     title: impl Into<Option<String>>,
     target: impl Into<String>,
+    additional_classes: impl Into<String>,
     children: paxhtml::Element,
 ) -> paxhtml::Element {
     let underline_classes = if underline {
@@ -17,9 +18,10 @@ pub fn link(
         hover:underline-offset-[0px] \
         "
     } else {
-        "no-underline"
+        "no-underline hover:underline"
     };
 
+    let additional_classes = additional_classes.into();
     let title = title.into().unwrap_or_else(|| children.inner_text());
 
     paxhtml::html! {
@@ -32,7 +34,8 @@ pub fn link(
             hover:text-[var(--color-secondary)] \
             visited:text-[var(--color)] \
             visited:hover:text-[var(--color-secondary)] \
-            {underline_classes}\
+            {underline_classes} \
+            {additional_classes}\
             ")}
         >
             {children}
