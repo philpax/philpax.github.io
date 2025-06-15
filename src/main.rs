@@ -1,5 +1,6 @@
 use std::path::Path;
 
+use anyhow::Context;
 use paxhtml::RoutePath;
 
 mod content;
@@ -184,7 +185,10 @@ fn main() -> anyhow::Result<()> {
             {
                 let post_output_dir = post_route_path.dir_path(output_dir);
                 for path in &doc.files {
-                    std::fs::copy(path, post_output_dir.join(path.file_name().unwrap()))?;
+                    let output_path = post_output_dir.join(path.file_name().unwrap());
+                    std::fs::copy(path, &output_path).with_context(|| {
+                        format!("failed to copy content file {path:?} to {output_path:?}")
+                    })?;
                 }
             }
 
