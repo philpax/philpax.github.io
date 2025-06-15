@@ -4,17 +4,17 @@ use crate::views::posts;
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let all_posts = context
         .content
-        .blog
+        .updates
         .documents
         .iter()
         .map(|doc| posts::post(context, doc, posts::PostBody::Description));
     layout(
         context,
         SocialMeta {
-            title: None,
-            description: Some(context.website_description.to_string()),
+            title: Some("Updates".to_string()),
+            description: Some(format!("All updates from {}", context.website_name)),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
-            url: Some(Route::Blog.abs_url(context.website_base_url)),
+            url: Some(Route::Updates.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: None,
             twitter_image: None,
