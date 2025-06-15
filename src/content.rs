@@ -146,7 +146,9 @@ impl Document {
         let parts: Vec<_> = file.splitn(3, "+++").collect();
 
         if parts.len() != 3 {
-            return Err(anyhow::anyhow!("invalid markdown file"));
+            return Err(anyhow::anyhow!(
+                "invalid markdown file: missing front matter"
+            ));
         }
 
         let metadata: DocumentMetadata = toml::from_str(parts[1])?;
@@ -166,6 +168,10 @@ impl Document {
         for entry in std::fs::read_dir(path.parent().unwrap())? {
             let path = entry?.path();
             if path.extension().is_some_and(|e| e == "md") {
+                continue;
+            }
+            if path.is_dir() {
+                // Boy, I hope this doesn't come back to bite me later
                 continue;
             }
             if let Some(filename) = path.file_name() {
