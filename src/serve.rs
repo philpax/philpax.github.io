@@ -18,10 +18,10 @@ pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
 
     for stream in listener.incoming() {
         match stream {
-            Ok(stream) => {
+            Ok(mut stream) => {
                 let output_dir = output_dir.to_owned();
                 std::thread::spawn(move || {
-                    if let Err(e) = handle_connection(stream, &output_dir) {
+                    if let Err(e) = handle_connection(&mut stream, &output_dir) {
                         eprintln!("Error handling connection: {e:?}");
                     }
                 });
@@ -33,7 +33,7 @@ pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<()> {
+fn handle_connection(stream: &mut TcpStream, root_dir: &Path) -> std::io::Result<()> {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer)?;
 
@@ -42,48 +42,14 @@ fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<
     let parts: Vec<&str> = request_line.split_whitespace().collect();
 
     if parts.len() < 2 {
-        return send_400(&mut stream);
+        return send_400(stream);
     }
 
     let path = parts[1];
 
     // Handle WebSocket upgrade for liveness check
     if path == "/__poll_for_liveness" {
-        if !request.lines().any(|l| l.starts_with("Upgrade: websocket")) {
-            return send_400(&mut stream);
-        }
-
-        let key = request
-            .lines()
-            .find(|l| l.starts_with("Sec-WebSocket-Key:"))
-            .and_then(|l| l.split(':').nth(1))
-            .map(|s| s.trim());
-
-        let Some(key) = key else {
-            return send_400(&mut stream);
-        };
-
-        let mut hasher = sha1::Sha1::new();
-        hasher.update(format!("{key}258EAFA5-E914-47DA-95CA-C5AB0DC85B11"));
-        let accept = base64::engine::general_purpose::STANDARD.encode(&hasher.finalize());
-
-        // Send WebSocket upgrade response
-        let response = format!(
-            "HTTP/1.1 101 Switching Protocols\r\n\
-                     Upgrade: websocket\r\n\
-                     Connection: Upgrade\r\n\
-                     Sec-WebSocket-Accept: {}\r\n\r\n",
-            accept
-        );
-        stream.write_all(response.as_bytes())?;
-        stream.flush()?;
-
-        // Keep connection alive until client disconnects
-        let mut ping_buffer = [0; 2];
-        while stream.read_exact(&mut ping_buffer).is_ok() {
-            // Simply keep the connection open
-        }
-        return Ok(());
+        return handle_poll_for_liveness(stream, &request);
     }
 
     // Remove leading slash and decode percent-encoded characters
@@ -92,7 +58,7 @@ fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<
 
     // Prevent directory traversal
     if !file_path.starts_with(root_dir) {
-        return send_403(&mut stream);
+        return send_plaintext(stream, "403 FORBIDDEN", b"403 Forbidden");
     }
 
     let file_path = if file_path.is_dir() {
@@ -102,14 +68,14 @@ fn handle_connection(mut stream: TcpStream, root_dir: &Path) -> std::io::Result<
     };
 
     let Ok(mut file) = File::open(&file_path) else {
-        return send_404(&mut stream);
+        return send_plaintext(stream, "404 NOT FOUND", b"404 Not Found");
     };
 
     let mut contents = Vec::new();
     file.read_to_end(&mut contents)?;
 
     let mime_type = guess_mime_type(&file_path);
-    send_200(&mut stream, &contents, mime_type)
+    send_200(stream, &contents, mime_type)
 }
 
 fn decode_percent_encoding(path: &str) -> PathBuf {
@@ -133,6 +99,44 @@ fn decode_percent_encoding(path: &str) -> PathBuf {
     }
 
     PathBuf::from(result)
+}
+
+fn handle_poll_for_liveness(stream: &mut TcpStream, request: &str) -> std::io::Result<()> {
+    if !request.lines().any(|l| l.starts_with("Upgrade: websocket")) {
+        return send_400(stream);
+    }
+
+    let key = request
+        .lines()
+        .find(|l| l.starts_with("Sec-WebSocket-Key:"))
+        .and_then(|l| l.split(':').nth(1))
+        .map(|s| s.trim());
+
+    let Some(key) = key else {
+        return send_400(stream);
+    };
+
+    let mut hasher = sha1::Sha1::new();
+    hasher.update(format!("{key}258EAFA5-E914-47DA-95CA-C5AB0DC85B11"));
+    let accept = base64::engine::general_purpose::STANDARD.encode(&hasher.finalize());
+
+    // Send WebSocket upgrade response
+    let response = format!(
+        "HTTP/1.1 101 Switching Protocols\r\n\
+                 Upgrade: websocket\r\n\
+                 Connection: Upgrade\r\n\
+                 Sec-WebSocket-Accept: {}\r\n\r\n",
+        accept
+    );
+    stream.write_all(response.as_bytes())?;
+    stream.flush()?;
+
+    // Keep connection alive until client disconnects
+    let mut ping_buffer = [0; 2];
+    while stream.read_exact(&mut ping_buffer).is_ok() {
+        // Simply keep the connection open
+    }
+    Ok(())
 }
 
 fn guess_mime_type(path: &Path) -> &'static str {
@@ -163,29 +167,11 @@ fn guess_mime_type(path: &Path) -> &'static str {
 fn send_200(stream: &mut TcpStream, content: &[u8], content_type: &str) -> std::io::Result<()> {
     send_response(stream, "HTTP/1.1 200 OK", content_type, content)
 }
-fn send_404(stream: &mut TcpStream) -> std::io::Result<()> {
-    send_response(
-        stream,
-        "HTTP/1.1 404 NOT FOUND",
-        "text/plain",
-        b"404 Not Found",
-    )
+fn send_plaintext(stream: &mut TcpStream, code_str: &str, body: &[u8]) -> std::io::Result<()> {
+    send_response(stream, &format!("HTTP/1.1 {code_str}"), "text/plain", body)
 }
 fn send_400(stream: &mut TcpStream) -> std::io::Result<()> {
-    send_response(
-        stream,
-        "HTTP/1.1 400 BAD REQUEST",
-        "text/plain",
-        b"400 Bad Request",
-    )
-}
-fn send_403(stream: &mut TcpStream) -> std::io::Result<()> {
-    send_response(
-        stream,
-        "HTTP/1.1 403 FORBIDDEN",
-        "text/plain",
-        b"403 Forbidden",
-    )
+    send_plaintext(stream, "400 BAD REQUEST", b"400 Bad Request")
 }
 fn send_response(
     stream: &mut TcpStream,
