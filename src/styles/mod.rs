@@ -8,9 +8,16 @@ pub struct GenerateOutput {
     pub light_mode_icon: String,
 }
 
-pub fn generate(context: ViewContext, fast: bool) -> anyhow::Result<GenerateOutput> {
-    let tailwind = tailwind::download(fast)?;
-    let tailwind_output = tailwind::run(&tailwind)?;
+pub fn generate(
+    context: ViewContext,
+    fast: bool,
+    use_global_tailwind: bool,
+) -> anyhow::Result<GenerateOutput> {
+    let tailwind_output = if use_global_tailwind {
+        tailwind::run_with_global()
+    } else {
+        tailwind::download_and_run(fast)
+    }?;
 
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));

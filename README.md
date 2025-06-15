@@ -11,5 +11,9 @@ to develop. (The `--poll` flag is needed as change detection sometimes detects c
 Consider turning on fast mode by adding `-- --fast` to `run -F serve` to skip a few slow steps (including verifying the Tailwind version matches).
 This may lead to inconsistencies in the output, so this should be used with caution and only during iteration.
 
-Also, consider running with `RUSTFLAGS="-Clink-arg=-fuse-ld=lld"` if on Linux x86-64. (The default linker is not very
-fast; a future version of Rust should default to `rust-lld` and fix this.)
+If the downloaded Tailwind installation doesn't work (this can happen with macOS ARM64 for reasons that are unclear to me), install a global version of Tailwind (e.g. `brew install tailwindcss`) and use `-- --use-global-tailwind`.
+
+## Flags
+
+- `--fast`: Skips directory cleaning and Tailwind version checking.
+- `--use-global-tailwind`: Uses a global `tailwindcss` instead of downloading one.

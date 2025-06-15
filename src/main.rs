@@ -114,6 +114,8 @@ pub struct ViewContext<'a> {
 
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
+    let use_global_tailwind =
+        std::env::args().any(|arg| arg == "--use-global-tailwind" || arg == "-u");
 
     let mut timer = Timer::new();
 
@@ -232,7 +234,7 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-        let output = styles::generate(view_context, fast)?;
+        let output = styles::generate(view_context, fast, use_global_tailwind)?;
         Route::Styles.route_path().write(output_dir, output.css)?;
         Route::DarkModeIcon
             .route_path()

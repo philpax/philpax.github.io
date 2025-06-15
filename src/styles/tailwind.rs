@@ -3,9 +3,52 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 const VERSION: &str = "4.1.6";
+const TAILWIND_CSS_INPUT: &str = "src/styles/tailwind.css";
+
+/// Downloads the requested version of Tailwind, if required, and runs it.
+pub fn download_and_run(fast: bool) -> anyhow::Result<String> {
+    run_with_local(&download(fast)?)
+}
+
+/// Run the globally-installed `tailwind` executable.
+pub fn run_with_global() -> anyhow::Result<String> {
+    let (shell, flag) = if cfg!(target_os = "windows") {
+        ("cmd", "/C")
+    } else {
+        ("sh", "-c")
+    };
+
+    run_tailwind_command(Command::new(shell).args([
+        flag,
+        &format!("tailwindcss --input {TAILWIND_CSS_INPUT} --output -"),
+    ]))
+}
+
+fn run_with_local(tailwind_executable: &Path) -> anyhow::Result<String> {
+    run_tailwind_command(Command::new(tailwind_executable.canonicalize()?).args([
+        "--input",
+        TAILWIND_CSS_INPUT,
+        "--output",
+        "-",
+    ]))
+}
+
+fn run_tailwind_command(command: &mut Command) -> anyhow::Result<String> {
+    let output = command.output().context("Failed to run tailwind")?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    if !output.status.success() {
+        anyhow::bail!(
+            "Failed to run tailwind: stdout {stdout}, stderr {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+
+    Ok(stdout.to_string())
+}
 
 /// Download a fixed version of Tailwind CSS's CLI
-pub fn download(fast: bool) -> anyhow::Result<PathBuf> {
+fn download(fast: bool) -> anyhow::Result<PathBuf> {
     let output_path = if cfg!(target_os = "windows") {
         PathBuf::from("tailwind.exe")
     } else {
@@ -75,23 +118,4 @@ pub fn download(fast: bool) -> anyhow::Result<PathBuf> {
     }
 
     Ok(output_path)
-}
-
-pub fn run(tailwind_executable: &Path) -> anyhow::Result<String> {
-    let output = Command::new(tailwind_executable.canonicalize()?)
-        .args(["--input", "src/styles/tailwind.css", "--output", "-"])
-        .output()
-        .context("Failed to run tailwind")?;
-
-    let stdout = String::from_utf8_lossy(&output.stdout);
-
-    if !output.status.success() {
-        anyhow::bail!(
-            "Failed to run tailwind: stdout {}, stderr {}",
-            stdout,
-            String::from_utf8_lossy(&output.stderr)
-        );
-    }
-
-    Ok(stdout.to_string())
 }
