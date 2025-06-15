@@ -147,6 +147,10 @@ impl Document {
             if path.extension().is_some_and(|e| e == "md") {
                 continue;
             }
+            if path.is_dir() {
+                // Boy, I hope this doesn't come back to bite me later
+                continue;
+            }
             if let Some(filename) = path.file_name() {
                 let filename = filename.to_string_lossy();
                 if filename == "hero.jpg" {

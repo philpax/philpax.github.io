@@ -1,3 +1,4 @@
 public
 /target
 /tailwind*
+/content/blog/*/uncommitted
