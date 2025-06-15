@@ -123,7 +123,9 @@ impl Document {
         let parts: Vec<_> = file.splitn(3, "+++").collect();
 
         if parts.len() != 3 {
-            return Err(anyhow::anyhow!("invalid markdown file"));
+            return Err(anyhow::anyhow!(
+                "invalid markdown file: missing front matter"
+            ));
         }
 
         let metadata: DocumentMetadata = toml::from_str(parts[1])?;
