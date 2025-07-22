@@ -46,7 +46,7 @@ pub fn h_with_id<E: Into<Element>>(
         let children = if with_link {
             a([
                 ("href", format!("#{id}")).into(),
-                ("class", format!("no-underline")).into(),
+                ("class", "no-underline".to_string()).into(),
             ])(children)
         } else {
             children
