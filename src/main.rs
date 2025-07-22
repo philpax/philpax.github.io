@@ -33,6 +33,7 @@ pub enum Route<'a> {
     /// No longer in use: just the home page
     DeprecatedAbout,
     BlogRss,
+    UpdatesRss,
     Credits,
     Styles,
     Scripts,
@@ -58,6 +59,7 @@ impl Route<'_> {
             Route::Tag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::DeprecatedAbout => RoutePath::new(["about"], None),
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
+            Route::UpdatesRss => RoutePath::new([], "updates.rss".to_string()),
             Route::Credits => RoutePath::new(["credits"], None),
             Route::Styles => RoutePath::new([], "styles.css".to_string()),
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
@@ -239,9 +241,29 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote RSS feed", || {
-        let route_path = Route::BlogRss.route_path();
-        anyhow::Ok(route_path.write(output_dir, rss::generate(view_context, &content.blog)?)?)
+    timer.step("Wrote RSS feeds", || {
+        for (route, collection, title_suffix, description) in [
+            (
+                Route::BlogRss,
+                &content.blog,
+                "blog",
+                view_context.website_description,
+            ),
+            (
+                Route::UpdatesRss,
+                &content.updates,
+                "updates",
+                concat!(
+                    "More-frequent, less-formal updates from Philpax, ",
+                    "your friendly neighbourhood polyglot programmer/engineer, ",
+                    "cursed with more projects than time."
+                ),
+            ),
+        ] {
+            let output = rss::generate(view_context, collection, title_suffix, description, route)?;
+            route.route_path().write(output_dir, output)?;
+        }
+        anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled styles", || {
