@@ -16,6 +16,11 @@ pub enum DocumentType {
     Blog,
     Update,
 }
+impl std::fmt::Display for DocumentType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
 
 #[derive(Debug)]
 pub struct Content {

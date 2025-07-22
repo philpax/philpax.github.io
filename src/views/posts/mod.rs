@@ -117,6 +117,8 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 <div class="flex items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     {date(document)}
                     " · "
+                    <em>{document.document_type.to_string().to_lowercase()}</em>
+                    " · "
                     {tags(document)}
                     " · "
                     {document.word_count.to_string()}
