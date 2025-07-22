@@ -46,13 +46,17 @@ pub fn h_with_id<E: Into<Element>>(
         let children = if with_link {
             a([
                 ("href", format!("#{id}")).into(),
-                ("class", format!("no-underline {class}")).into(),
+                ("class", format!("no-underline")).into(),
             ])(children)
         } else {
             children
         };
 
-        tag(format!("h{depth}"), vec![("id", id).into()], false)(children)
+        tag(
+            format!("h{depth}"),
+            vec![("id", id).into(), ("class", class.to_string()).into()],
+            false,
+        )(children)
     }
 }
 macro_rules! generate_hs_with_id {

@@ -26,16 +26,16 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    pub fn convert(&mut self, node: &Node) -> paxhtml::Element {
+    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element {
         self.gather_footnote_definitions(node);
 
         match node {
             Node::Root(r) => {
-                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n)))
+                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n, Some(node))))
             }
 
             Node::Heading(h) => {
-                let children = self.convert_many(&h.children);
+                let children = self.convert_many(&h.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
@@ -53,18 +53,18 @@ impl<'a> MarkdownConverter<'a> {
             }
             Node::Text(t) => b::text(&t.value),
             Node::Paragraph(p) => {
-                let children = self.convert_many(&p.children);
+                let children = self.convert_many(&p.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
                     b::p([])(children)
                 }
             }
-            Node::Strong(s) => b::strong([])(self.convert_many(&s.children)),
-            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children)),
-            Node::Delete(d) => b::s([])(self.convert_many(&d.children)),
+            Node::Strong(s) => b::strong([])(self.convert_many(&s.children, Some(node))),
+            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children, Some(node))),
+            Node::Delete(d) => b::s([])(self.convert_many(&d.children, Some(node))),
             Node::List(l) => {
-                let children = self.convert_many(&l.children);
+                let children = self.convert_many(&l.children, Some(node));
                 if l.ordered {
                     b::ol([("class", "list-decimal pl-8").into()])(children)
                 } else {
@@ -91,19 +91,19 @@ impl<'a> MarkdownConverter<'a> {
                     let mut children = Vec::new();
                     for child in &li.children {
                         if let Node::Paragraph(p) = child {
-                            children.extend(p.children.iter().map(|n| self.convert(n)));
+                            children.extend(p.children.iter().map(|n| self.convert(n, Some(node))));
                         } else {
-                            children.push(self.convert(child));
+                            children.push(self.convert(child, Some(node)));
                         }
                     }
                     b::li([])(children)
                 } else {
-                    b::li([])(self.convert_many(&li.children))
+                    b::li([])(self.convert_many(&li.children, Some(node)))
                 }
             }
             Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
             Node::Blockquote(b) => {
-                let children = self.convert_many(&b.children);
+                let children = self.convert_many(&b.children, Some(node));
                 if self.without_blocking_elements {
                     b::q([])(children)
                 } else {
@@ -111,7 +111,11 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => components::inline_code(self.syntax, &c.value),
+            Node::InlineCode(c) => components::inline_code(
+                self.syntax,
+                !matches!(parent_node, Some(Node::Heading(_))),
+                &c.value,
+            ),
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
                 ("src", i.url.clone()).into(),
                 ("alt", i.alt.clone()).into(),
@@ -125,7 +129,9 @@ impl<'a> MarkdownConverter<'a> {
                     title,
                     target,
                     "",
-                    paxhtml::Element::from_iter(l.children.iter().map(|n| self.convert(n))),
+                    paxhtml::Element::from_iter(
+                        l.children.iter().map(|n| self.convert(n, Some(node))),
+                    ),
                 )
             }
             Node::Html(h) => {
@@ -150,7 +156,7 @@ impl<'a> MarkdownConverter<'a> {
                     &r.identifier,
                     MarkdownConverter::new(self.syntax)
                         .without_blocking_elements()
-                        .convert_many(&definition),
+                        .convert_many(&definition, None),
                 )
             }
 
@@ -179,8 +185,8 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    fn convert_many(&mut self, nodes: &[Node]) -> paxhtml::Element {
-        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n)))
+    fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element {
+        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
 
     /// We use a pre-pass to gather footnote definitions, so that we can render them in the correct
@@ -288,7 +294,7 @@ impl HeadingHierarchy {
                             heading.depth,
                             MarkdownConverter::new(syntax)
                                 .without_blocking_elements()
-                                .convert(child),
+                                .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
                     }

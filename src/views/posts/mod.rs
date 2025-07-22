@@ -70,7 +70,8 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
-            elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
+            elements
+                .push(MarkdownConverter::new(context.syntax).convert(&document.description, None));
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
@@ -84,14 +85,14 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             }
 
             if let Some(content) = document.rest_of_content.as_ref() {
-                elements.push(MarkdownConverter::new(context.syntax).convert(content));
+                elements.push(MarkdownConverter::new(context.syntax).convert(content, None));
             }
 
             paxhtml::Element::from(elements)
         }
         PostBody::Description => html! {
             <>
-                {MarkdownConverter::new(context.syntax).convert(&document.description)}
+                {MarkdownConverter::new(context.syntax).convert(&document.description, None)}
                 <p>
                     {components::link(true, None, url.clone(), "", "Read more".into())}
                 </p>
@@ -103,6 +104,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 .short()
                 .as_ref()
                 .unwrap_or(&document.description),
+            None,
         ),
     };
 

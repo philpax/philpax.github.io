@@ -23,7 +23,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     <h2>"Credits"</h2>
                 </a>
                 <div class={format!("post-body {}", posts::POST_BODY_MARGIN_CLASS)}>
-                    {MarkdownConverter::new(context.syntax).convert(&content.credits.description)}
+                    {MarkdownConverter::new(context.syntax).convert(&content.credits.description, None)}
                 </div>
             </article>
         },

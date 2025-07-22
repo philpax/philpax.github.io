@@ -60,7 +60,7 @@ fn build_item(
         .build();
 
     let description =
-        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description)])
+        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description, None)])
             .write_to_string()
             .unwrap();
 
