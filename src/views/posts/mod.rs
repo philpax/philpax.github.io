@@ -11,56 +11,6 @@ pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
 pub const POST_BODY_MARGIN_CLASS: &str =
     "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0 [&>p]:ml-4";
 
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub enum HeaderFocus<'a> {
-    AllPosts,
-    Tags,
-    Tag(&'a str),
-}
-pub fn header(focus: HeaderFocus) -> paxhtml::Element {
-    fn class(is_active: bool) -> &'static str {
-        if is_active {
-            "no-underline text-[var(--color)]"
-        } else {
-            "no-underline text-[var(--color-secondary)] hover:text-[var(--color)]"
-        }
-    }
-
-    html! {
-        <header
-            class="\
-            flex flex-col flex-wrap flex-row items-center justify-center items-end gap-2 \
-            text-2xl font-bold mb-4 \
-            xl:mb-0 xl:text-3xl xl:-ml-40 xl:w-36 xl:top-4 xl:text-right \
-            xl:flex-col xl:items-end xl:gap-1 xl:float-left xl:sticky \
-            max-xl:[&>*:not(:last-child)]:after:content-['·'] max-xl:[&>*:not(:last-child)]:after:ml-2 \
-            max-xl:[&>*:not(:last-child)]:after:text-[var(--color-secondary)] \
-            "
-            id="posts-header"
-        >
-            <a href={Route::Blog.url_path()} class={class(focus == HeaderFocus::AllPosts)}>"All posts"</a>
-            <a href={Route::BlogTags.url_path()} class={class(focus == HeaderFocus::Tags)}>"Tags"</a>
-            {match focus {
-                HeaderFocus::AllPosts => html! {
-                    <>
-                        <a href={Route::BlogRss.url_path()} class={class(false)}>
-                            "RSS"
-                        </a>
-                    </>
-                },
-                HeaderFocus::Tag(tag) => html! {
-                    <>
-                        <a href={Route::BlogTag { tag_id: tag }.url_path()} class={class(true)}>
-                            "#"{tag}
-                        </a>
-                    </>
-                },
-                _ => paxhtml::Element::Empty,
-            }}
-        </header>
-    }
-}
-
 pub fn tags(document: &Document) -> paxhtml::Element {
     document
         .metadata
@@ -70,7 +20,7 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.tags.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
-                        {components::link(false, format!("Tag: {tag}"), Route::BlogTag { tag_id: tag }.url_path(), format!("#{tag}").into())}
+                        {components::link(false, format!("Tag: {tag}"), Route::Tag { tag_id: tag }.url_path(), "", format!("#{tag}").into())}
                     </li>
                 }
             });
@@ -94,6 +44,7 @@ pub enum PostBody {
     Description,
     Short,
 }
+
 pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
     let route_path = document.route_path();
     let url = route_path.url_path();
@@ -119,7 +70,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
-            elements.push(MarkdownConverter::new(context.syntax).convert(&document.description));
+
+            let mut converter = MarkdownConverter::new(context.syntax);
+            elements.push(converter.convert(&document.description, None));
 
             if let Some(hierarchy_list) = toc {
                 elements.push(html! {
@@ -133,16 +86,16 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             }
 
             if let Some(content) = document.rest_of_content.as_ref() {
-                elements.push(MarkdownConverter::new(context.syntax).convert(content));
+                elements.push(converter.convert(content, None));
             }
 
             paxhtml::Element::from(elements)
         }
         PostBody::Description => html! {
             <>
-                {MarkdownConverter::new(context.syntax).convert(&document.description)}
+                {MarkdownConverter::new(context.syntax).convert(&document.description, None)}
                 <p>
-                    {components::link(true, None, url.clone(), "Read more".into())}
+                    {components::link(true, None, url.clone(), "", "Read more".into())}
                 </p>
             </>
         },
@@ -152,6 +105,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 .short()
                 .as_ref()
                 .unwrap_or(&document.description),
+            None,
         ),
     };
 
@@ -162,6 +116,8 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             <header class="pb-0 mb-0">
                 <div class="flex items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     {date(document)}
+                    " · "
+                    <em>{document.document_type.to_string().to_lowercase()}</em>
                     " · "
                     {tags(document)}
                     " · "
@@ -203,7 +159,7 @@ fn document_to_html_list(
                 {if toplevel {
                     html! {
                         <li>
-                            {components::link(true, None, "#".to_string(), "Introduction".into())}
+                            {components::link(true, None, "#".to_string(), "", "Introduction".into())}
                         </li>
                     }
                 } else {
@@ -223,7 +179,7 @@ fn document_to_html_list(
     ) -> paxhtml::Element {
         html! {
             <li>
-                {components::link(true, None, format!("#{}", util::slugify(heading_text)), heading.clone())}
+                {components::link(true, None, format!("#{}", util::slugify(heading_text)), "", heading.clone())}
                 {build_list_recursively(children, false)}
             </li>
         }

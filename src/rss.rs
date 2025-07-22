@@ -1,12 +1,18 @@
 use crate::{
-    content::{Blog, Document},
+    content::{Document, DocumentCollection},
     markdown::MarkdownConverter,
     syntax::SyntaxHighlighter,
     Route, ViewContext,
 };
 
-pub fn generate(context: ViewContext, blog: &Blog) -> anyhow::Result<String> {
-    let items = blog
+pub fn generate(
+    context: ViewContext,
+    collection: &DocumentCollection,
+    title_suffix: &str,
+    description: &str,
+    route: Route,
+) -> anyhow::Result<String> {
+    let items = collection
         .documents
         .iter()
         .map(|doc| {
@@ -22,17 +28,17 @@ pub fn generate(context: ViewContext, blog: &Blog) -> anyhow::Result<String> {
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
         .link(rss::extension::atom::Link {
             rel: "self".into(),
-            href: Route::BlogRss.abs_url(context.website_base_url),
+            href: route.abs_url(context.website_base_url),
             mime_type: Some("application/rss+xml".to_string()),
             ..Default::default()
         })
         .build();
 
     let rss_channel = rss::ChannelBuilder::default()
-        .title(context.website_name)
+        .title(format!("{} [{}]", context.website_name, title_suffix))
         .link(context.website_base_url)
         .atom_ext(atom_ext)
-        .description(context.website_description)
+        .description(description)
         .language("en-AU".to_string())
         .last_build_date(chrono::Utc::now().to_rfc2822())
         .generator("paxsite".to_string())
@@ -60,7 +66,7 @@ fn build_item(
         .build();
 
     let description =
-        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description)])
+        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description, None)])
             .write_to_string()
             .unwrap();
 

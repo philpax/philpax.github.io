@@ -9,6 +9,8 @@ pub struct MarkdownConverter<'a> {
     pub syntax: &'a SyntaxHighlighter,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
+    pub footnote_counter: HashMap<String, usize>,
+    pub next_footnote_number: usize,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(syntax: &'a SyntaxHighlighter) -> Self {
@@ -16,6 +18,8 @@ impl<'a> MarkdownConverter<'a> {
             syntax,
             footnotes: HashMap::new(),
             without_blocking_elements: false,
+            footnote_counter: HashMap::new(),
+            next_footnote_number: 1,
         }
     }
 
@@ -26,16 +30,16 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    pub fn convert(&mut self, node: &Node) -> paxhtml::Element {
+    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element {
         self.gather_footnote_definitions(node);
 
         match node {
             Node::Root(r) => {
-                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n)))
+                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n, Some(node))))
             }
 
             Node::Heading(h) => {
-                let children = self.convert_many(&h.children);
+                let children = self.convert_many(&h.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
@@ -53,18 +57,18 @@ impl<'a> MarkdownConverter<'a> {
             }
             Node::Text(t) => b::text(&t.value),
             Node::Paragraph(p) => {
-                let children = self.convert_many(&p.children);
+                let children = self.convert_many(&p.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
                     b::p([])(children)
                 }
             }
-            Node::Strong(s) => b::strong([])(self.convert_many(&s.children)),
-            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children)),
-            Node::Delete(d) => b::s([])(self.convert_many(&d.children)),
+            Node::Strong(s) => b::strong([])(self.convert_many(&s.children, Some(node))),
+            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children, Some(node))),
+            Node::Delete(d) => b::s([])(self.convert_many(&d.children, Some(node))),
             Node::List(l) => {
-                let children = self.convert_many(&l.children);
+                let children = self.convert_many(&l.children, Some(node));
                 if l.ordered {
                     b::ol([("class", "list-decimal pl-8").into()])(children)
                 } else {
@@ -91,19 +95,19 @@ impl<'a> MarkdownConverter<'a> {
                     let mut children = Vec::new();
                     for child in &li.children {
                         if let Node::Paragraph(p) = child {
-                            children.extend(p.children.iter().map(|n| self.convert(n)));
+                            children.extend(p.children.iter().map(|n| self.convert(n, Some(node))));
                         } else {
-                            children.push(self.convert(child));
+                            children.push(self.convert(child, Some(node)));
                         }
                     }
                     b::li([])(children)
                 } else {
-                    b::li([])(self.convert_many(&li.children))
+                    b::li([])(self.convert_many(&li.children, Some(node)))
                 }
             }
             Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
             Node::Blockquote(b) => {
-                let children = self.convert_many(&b.children);
+                let children = self.convert_many(&b.children, Some(node));
                 if self.without_blocking_elements {
                     b::q([])(children)
                 } else {
@@ -111,7 +115,11 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => components::inline_code(self.syntax, &c.value),
+            Node::InlineCode(c) => components::inline_code(
+                self.syntax,
+                !matches!(parent_node, Some(Node::Heading(_))),
+                &c.value,
+            ),
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
                 ("src", i.url.clone()).into(),
                 ("alt", i.alt.clone()).into(),
@@ -124,7 +132,10 @@ impl<'a> MarkdownConverter<'a> {
                     true,
                     title,
                     target,
-                    paxhtml::Element::from_iter(l.children.iter().map(|n| self.convert(n))),
+                    "",
+                    paxhtml::Element::from_iter(
+                        l.children.iter().map(|n| self.convert(n, Some(node))),
+                    ),
                 )
             }
             Node::Html(h) => {
@@ -145,11 +156,21 @@ impl<'a> MarkdownConverter<'a> {
                     .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
                     .clone();
 
+                // Assign a numeric counter to this footnote reference
+                let footnote_number = self
+                    .footnote_counter
+                    .entry(r.identifier.clone())
+                    .or_insert_with(|| {
+                        let number = self.next_footnote_number;
+                        self.next_footnote_number += 1;
+                        number
+                    });
+
                 components::footnote(
-                    &r.identifier,
+                    &footnote_number.to_string(),
                     MarkdownConverter::new(self.syntax)
                         .without_blocking_elements()
-                        .convert_many(&definition),
+                        .convert_many(&definition, None),
                 )
             }
 
@@ -178,8 +199,8 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    fn convert_many(&mut self, nodes: &[Node]) -> paxhtml::Element {
-        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n)))
+    fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element {
+        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
 
     /// We use a pre-pass to gather footnote definitions, so that we can render them in the correct
@@ -287,7 +308,7 @@ impl HeadingHierarchy {
                             heading.depth,
                             MarkdownConverter::new(syntax)
                                 .without_blocking_elements()
-                                .convert(child),
+                                .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
                     }
@@ -336,5 +357,32 @@ mod tests {
                 hh("test2", []),
             ]
         )
+    }
+
+    #[test]
+    fn test_footnote_numbering() {
+        let input = r#"
+Here is some text with a footnote[^note1] and another[^note2].
+
+[^note1]: This is the first footnote.
+[^note2]: This is the second footnote.
+"#;
+
+        let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+        let mut converter = MarkdownConverter::new(&syntax);
+
+        let result = converter.convert(&ast, None);
+        let html = paxhtml::Document::new([result]).write_to_string().unwrap();
+
+        // Check that footnote references use numeric counters
+        assert!(html.contains("footnote-1"));
+        assert!(html.contains("footnote-2"));
+        assert!(!html.contains("footnote-note1"));
+        assert!(!html.contains("footnote-note2"));
+
+        // Check that the footnote numbers are displayed correctly
+        assert!(html.contains(">1<"));
+        assert!(html.contains(">2<"));
     }
 }

@@ -11,10 +11,23 @@ use crate::{util, Route, RoutePath};
 pub type DocumentId = String;
 pub type Tag = String;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DocumentType {
+    Blog,
+    Update,
+}
+impl std::fmt::Display for DocumentType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+
 #[derive(Debug)]
 pub struct Content {
     pub path: PathBuf,
-    pub blog: Blog,
+    pub blog: DocumentCollection,
+    pub updates: DocumentCollection,
+    pub tags: HashMap<Tag, Vec<DocumentId>>,
     pub about: Document,
     pub credits: Document,
 }
@@ -22,26 +35,56 @@ impl Content {
     pub fn read() -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
 
+        let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
+        let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update)?;
+
+        // Combine tags from both blog and updates
+        let mut tags = HashMap::new();
+        for document in blog.documents.iter().chain(updates.documents.iter()) {
+            if let Some(taxonomies) = &document.metadata.taxonomies {
+                for tag in &taxonomies.tags {
+                    tags.entry(tag.clone())
+                        .or_insert_with(Vec::new)
+                        .push(document.id.clone());
+                }
+            }
+        }
+
         Ok(Content {
             path: path.clone(),
-            blog: Blog::read(&path.join("blog"))?,
-            about: Document::read(&path.join("about.md"), "about".to_string())?,
-            credits: Document::read(&path.join("credits.md"), "credits".to_string())?,
+            blog,
+            updates,
+            tags,
+            about: Document::read(
+                &path.join("about.md"),
+                "about".to_string(),
+                DocumentType::Blog,
+            )?,
+            credits: Document::read(
+                &path.join("credits.md"),
+                "credits".to_string(),
+                DocumentType::Blog,
+            )?,
         })
+    }
+
+    pub fn document_by_id(&self, id: &str) -> Option<&Document> {
+        self.blog
+            .document_by_id(id)
+            .or_else(|| self.updates.document_by_id(id))
     }
 }
 
 #[derive(Debug)]
-pub struct Blog {
-    pub tags: HashMap<Tag, Vec<DocumentId>>,
+pub struct DocumentCollection {
     pub documents: Vec<Document>,
     pub document_key_to_id: HashMap<DocumentId, usize>,
 }
-impl Blog {
-    fn read(blog_path: &Path) -> anyhow::Result<Self> {
+impl DocumentCollection {
+    fn read(collection_path: &Path, document_type: DocumentType) -> anyhow::Result<Self> {
         let documents = {
             let mut documents = vec![];
-            for entry in std::fs::read_dir(blog_path)? {
+            for entry in std::fs::read_dir(collection_path)? {
                 let path = entry?.path();
                 if !path.is_dir() {
                     continue;
@@ -49,7 +92,7 @@ impl Blog {
 
                 let id = path
                     .file_name()
-                    .context("no post id for directory")?
+                    .context("no document id for directory")?
                     .to_string_lossy()
                     .to_string();
 
@@ -58,7 +101,7 @@ impl Blog {
                     anyhow::bail!("{index:?} does not exist");
                 }
 
-                documents.push(Document::read(&index, id)?);
+                documents.push(Document::read(&index, id, document_type)?);
             }
             documents.sort_by_key(|d| d.metadata.datetime());
             documents.reverse();
@@ -76,23 +119,7 @@ impl Blog {
             document_key_to_id
         };
 
-        let tags = {
-            let mut tags = HashMap::new();
-            for document in &documents {
-                let Some(taxonomies) = &document.metadata.taxonomies else {
-                    continue;
-                };
-                for tag in &taxonomies.tags {
-                    tags.entry(tag.clone())
-                        .or_insert_with(Vec::new)
-                        .push(document.id.clone());
-                }
-            }
-            tags
-        };
-
-        Ok(Blog {
-            tags,
+        Ok(DocumentCollection {
             documents,
             document_key_to_id,
         })
@@ -109,6 +136,7 @@ impl Blog {
 pub struct Document {
     pub id: DocumentId,
     pub alternate_id: Option<DocumentId>,
+    pub document_type: DocumentType,
     pub metadata: DocumentMetadata,
     pub description: markdown::mdast::Node,
     pub rest_of_content: Option<markdown::mdast::Node>,
@@ -117,7 +145,7 @@ pub struct Document {
     pub word_count: usize,
 }
 impl Document {
-    fn read(path: &Path, id: String) -> anyhow::Result<Self> {
+    fn read(path: &Path, id: String, document_type: DocumentType) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
         let parts: Vec<_> = file.splitn(3, "+++").collect();
@@ -197,6 +225,7 @@ impl Document {
         Ok(Document {
             id,
             alternate_id,
+            document_type,
             metadata,
             description,
             rest_of_content,
@@ -207,13 +236,19 @@ impl Document {
     }
 
     pub fn route_path(&self) -> RoutePath {
-        Route::BlogPost { post_id: &self.id }.route_path()
+        match self.document_type {
+            DocumentType::Blog => Route::BlogPost { post_id: &self.id }.route_path(),
+            DocumentType::Update => Route::UpdatePost { post_id: &self.id }.route_path(),
+        }
     }
 
     pub fn alternate_route_path(&self) -> Option<RoutePath> {
         self.alternate_id
             .as_ref()
-            .map(|post_id| Route::BlogPost { post_id }.route_path())
+            .map(|post_id| match self.document_type {
+                DocumentType::Blog => Route::BlogPost { post_id }.route_path(),
+                DocumentType::Update => Route::UpdatePost { post_id }.route_path(),
+            })
     }
 }
 

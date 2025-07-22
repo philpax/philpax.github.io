@@ -6,7 +6,7 @@ pub fn pluralize(s: &str, count: usize) -> String {
     if count == 1 {
         s.to_string()
     } else {
-        format!("{}s", s)
+        format!("{s}s")
     }
 }
 
