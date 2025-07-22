@@ -9,6 +9,8 @@ pub struct MarkdownConverter<'a> {
     pub syntax: &'a SyntaxHighlighter,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
+    pub footnote_counter: HashMap<String, usize>,
+    pub next_footnote_number: usize,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(syntax: &'a SyntaxHighlighter) -> Self {
@@ -16,6 +18,8 @@ impl<'a> MarkdownConverter<'a> {
             syntax,
             footnotes: HashMap::new(),
             without_blocking_elements: false,
+            footnote_counter: HashMap::new(),
+            next_footnote_number: 1,
         }
     }
 
@@ -152,8 +156,18 @@ impl<'a> MarkdownConverter<'a> {
                     .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
                     .clone();
 
+                // Assign a numeric counter to this footnote reference
+                let footnote_number = self
+                    .footnote_counter
+                    .entry(r.identifier.clone())
+                    .or_insert_with(|| {
+                        let number = self.next_footnote_number;
+                        self.next_footnote_number += 1;
+                        number
+                    });
+
                 components::footnote(
-                    &r.identifier,
+                    &footnote_number.to_string(),
                     MarkdownConverter::new(self.syntax)
                         .without_blocking_elements()
                         .convert_many(&definition, None),
@@ -343,5 +357,32 @@ mod tests {
                 hh("test2", []),
             ]
         )
+    }
+
+    #[test]
+    fn test_footnote_numbering() {
+        let input = r#"
+Here is some text with a footnote[^note1] and another[^note2].
+
+[^note1]: This is the first footnote.
+[^note2]: This is the second footnote.
+"#;
+
+        let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+        let mut converter = MarkdownConverter::new(&syntax);
+
+        let result = converter.convert(&ast, None);
+        let html = paxhtml::Document::new([result]).write_to_string().unwrap();
+
+        // Check that footnote references use numeric counters
+        assert!(html.contains("footnote-1"));
+        assert!(html.contains("footnote-2"));
+        assert!(!html.contains("footnote-note1"));
+        assert!(!html.contains("footnote-note2"));
+
+        // Check that the footnote numbers are displayed correctly
+        assert!(html.contains(">1<"));
+        assert!(html.contains(">2<"));
     }
 }
