@@ -17,7 +17,7 @@ Unfortunately, the work for this was complete over a month ago, and I've been ho
 
 # this website
 
-It took _much_ longer than desirable to ship the intiial version of the website by virtue of my needless desire to Rewrite It In Rust, including [my own SSG](https://github.com/philpax/philpax.github.io) and [HTML templating library](https://github.com/philpax/paxhtml) and asset baking and so on and so forth. Anyway, it was done months ago. Still haven't written anything, though.
+It took _much_ longer than desirable to ship the initial version of the website by virtue of my needless desire to Rewrite It In Rust, including [my own SSG](https://github.com/philpax/philpax.github.io) and [HTML templating library](https://github.com/philpax/paxhtml) and asset baking and so on and so forth. Anyway, it was done months ago. Still haven't written anything, though.
 
 I added an updates section. I'm about to add a notes section. The buttons on the top are not of even width. This bothers me.
 
@@ -76,7 +76,7 @@ For that, they'll need the wiki with all of the documentation for the API. We ha
 
 So, while working on both my website and GiS one day, I had a realisation: the website features a relatively-strong HTML templating mechanism ([`paxhtml`](https://github.com/philpax/paxhtml)) and GiS features a relatively-strong wikitext "parser" ([`wikitext_simplified`](https://github.com/philpax/wikitext_simplified)).[^wikitext] The usual ADHD thought spiral began: what if I combined these two and built a SSG for the wiki? The very few people who are still interested in editing this are comfortable making PRs, and it would allow them to view the content in a format quite similar to the original wiki.
 
-[^wikitext]: All of the hard work of trying to make any kind of sense out of the insane format that is wikitext is done by `parse-wiki-text-2`, which is a fork of `parse_wiki_text`. `wikitext_simplified` wraps around the token-ish interface of PWT and provides more of an AST, which is easier to work with. `parse_wiki_text` which was created by Fredrik Portström, who disappeared off the internet some time after publishing this truly beautiful crate; God's angels can't stick around after their work's done, I suppose. No, seriously, I would like to buy this man a beer. I will say as much in the eventual blog post.
+[^wikitext]: All of the hard work of actually parsing wikitext is done by `parse-wiki-text-2`, which is a fork of `parse_wiki_text`. `wikitext_simplified` wraps around the token-ish interface of PWT and provides more of an AST, which is easier to work with. `parse_wiki_text` was created by Fredrik Portström, who disappeared off the internet some time after publishing this truly beautiful crate; God's angels can't stick around after their work's done, I suppose. No, seriously, I would like to buy this man a beer. I will say as much in the eventual blog post.
 
 I made decent progress, but ran into a few issues:
 
@@ -96,7 +96,7 @@ I just don't think Lua is a great fit for this, so I've been looking at other la
 - **TypeScript**: Maybe. I could embed Deno. Not sure how difficult this would be, and it's quirky in its own way, but I know that muxing async streams is posible.
 - **Ruby**: I would love to make this work, but I'm not sure what the current state of Artichoke Ruby is, and I also don't know how well it would deal with managing streams.
 - **Rust/WASM**: I've been down this road before. It's hurt me. I know I don't have it in me to fight with the WASM Component Model and compile times again. Something about it compels me, though...
-- **C# or F#**: Embedding CoreCLR (or whatever they're calling it this year) is a pain-in-the-ass; it's very obvious that it wasn't meant for this, and there are no facilities for binding host functions for access in the guest. Still, it's compelling; C# is a bit verbose, but F# could be quite nice.
+- **C# or F#**: Embedding CoreCLR (or whatever they're calling it this year) is a pain in the arse; it's very obvious that it wasn't meant for this, and there are no facilities for binding host functions for access in the guest. Still, it's compelling; C# is a bit verbose, but F# could be quite nice.
 - **Haskell/WASM**: This would be even more miserable than Rust/WASM. Kinda sexy, though.
 - **A Lisp of some kind**: Maybe. Not sure about which Lisp or how I'd embed it, but I could imagine a future in which I embed Deno and then run a ClojureScript compiler on the side.
 - **Swift**: Is embedding this even possible? Could be quite nice if it was!
