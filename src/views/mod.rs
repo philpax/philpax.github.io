@@ -4,6 +4,7 @@ use std::collections::HashMap;
 pub mod blog;
 pub mod credits;
 pub mod frontpage;
+pub mod notes;
 pub mod posts;
 pub mod tags;
 pub mod updates;

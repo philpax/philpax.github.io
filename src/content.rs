@@ -252,7 +252,7 @@ impl Document {
             (metadata, content_raw)
         } else {
             let metadata = DocumentMetadata {
-                title: id.last().cloned().unwrap_or_else(|| "Index".to_string()),
+                title: id.last().cloned().unwrap_or_else(|| "Home".to_string()),
                 short: None,
                 date: None,
                 taxonomies: None,

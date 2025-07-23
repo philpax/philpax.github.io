@@ -235,6 +235,40 @@ fn main() -> anyhow::Result<()> {
             }
         }
 
+        fn write_note_folder(
+            output_dir: &Path,
+            context: ViewContext,
+            folder: &content::DocumentFolderNode,
+        ) -> anyhow::Result<()> {
+            if let Some(index_document) = &folder.index_document {
+                views::notes::note(context, &index_document).write_to_route(
+                    output_dir,
+                    Route::Note {
+                        note_id: index_document.id.clone(),
+                    },
+                )?;
+            }
+
+            for child in folder.children.values() {
+                match child {
+                    content::DocumentNode::Folder(folder) => {
+                        write_note_folder(output_dir, context, folder)?;
+                    }
+                    content::DocumentNode::Document { document } => {
+                        views::notes::note(context, &document).write_to_route(
+                            output_dir,
+                            Route::Note {
+                                note_id: document.id.clone(),
+                            },
+                        )?;
+                    }
+                }
+            }
+            Ok(())
+        }
+
+        write_note_folder(output_dir, view_context, &content.notes.documents)?;
+
         anyhow::Ok(())
     })?;
 
