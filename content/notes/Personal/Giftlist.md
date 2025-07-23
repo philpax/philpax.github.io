@@ -69,7 +69,7 @@ One of:
 
 ## Server
 
-- 2x 3090s or 4090s. I have one 3090 in there, but more GPUs means more VRAM and more model parallelisation.
+- another 3090 or 4090. I have two 3090s in there, but more GPUs means more VRAM and more model parallelisation.
 - 3x 24+TB hard drives. I need to set up ZFS sooner rather than later.
 
 # Misc
