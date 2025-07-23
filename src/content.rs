@@ -15,6 +15,7 @@ pub type Tag = String;
 pub enum DocumentType {
     Blog,
     Update,
+    Note,
 }
 impl std::fmt::Display for DocumentType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -27,6 +28,7 @@ pub struct Content {
     pub path: PathBuf,
     pub blog: DocumentCollection,
     pub updates: DocumentCollection,
+    pub notes: NotesCollection,
     pub tags: HashMap<Tag, Vec<DocumentId>>,
     pub about: Document,
     pub credits: Document,
@@ -37,11 +39,12 @@ impl Content {
 
         let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
         let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update)?;
+        let notes = NotesCollection::read(&path.join("notes"))?;
 
         // Combine tags from both blog and updates
         let mut tags = HashMap::new();
         for document in blog.documents.iter().chain(updates.documents.iter()) {
-            if let Some(taxonomies) = &document.metadata.taxonomies {
+            if let Some(taxonomies) = &document.metadata().taxonomies {
                 for tag in &taxonomies.tags {
                     tags.entry(tag.clone())
                         .or_insert_with(Vec::new)
@@ -54,6 +57,7 @@ impl Content {
             path: path.clone(),
             blog,
             updates,
+            notes,
             tags,
             about: Document::read(
                 &path.join("about.md"),
@@ -103,7 +107,7 @@ impl DocumentCollection {
 
                 documents.push(Document::read(&index, vec![id], document_type)?);
             }
-            documents.sort_by_key(|d| d.metadata.datetime());
+            documents.sort_by_key(|d| d.metadata().datetime());
             documents.reverse();
             documents
         };
@@ -133,11 +137,60 @@ impl DocumentCollection {
 }
 
 #[derive(Debug)]
+pub struct NotesCollection {
+    pub documents: Vec<Document>,
+}
+impl NotesCollection {
+    fn read(collection_path: &Path) -> anyhow::Result<Self> {
+        fn find_documents(collection_path: &Path, path: &Path) -> anyhow::Result<Vec<Document>> {
+            fn path_to_id(collection_path: &Path, path: &Path) -> DocumentId {
+                path.strip_prefix(collection_path)
+                    .unwrap()
+                    .iter()
+                    .map(|s| s.to_string_lossy().to_string())
+                    .collect()
+            }
+
+            let index_path = path.join("index.md");
+            if index_path.is_file() {
+                return Ok(vec![Document::read(
+                    &index_path,
+                    path_to_id(collection_path, path),
+                    DocumentType::Note,
+                )?]);
+            }
+
+            let mut documents = vec![];
+            for entry in std::fs::read_dir(path)? {
+                let path = entry?.path();
+                if path.is_dir() {
+                    documents.extend(find_documents(collection_path, &path)?);
+                    continue;
+                }
+
+                if path.extension().is_some_and(|e| e == "md") {
+                    documents.push(Document::read(
+                        &path,
+                        path_to_id(collection_path, &path),
+                        DocumentType::Note,
+                    )?);
+                }
+            }
+            Ok(documents)
+        }
+
+        Ok(NotesCollection {
+            documents: find_documents(collection_path, collection_path)?,
+        })
+    }
+}
+
+#[derive(Debug)]
 pub struct Document {
     pub id: DocumentId,
     pub alternate_id: Option<DocumentId>,
     pub document_type: DocumentType,
-    pub metadata: DocumentMetadata,
+    pub metadata: Option<DocumentMetadata>,
     pub description: markdown::mdast::Node,
     pub rest_of_content: Option<markdown::mdast::Node>,
     pub files: Vec<PathBuf>,
@@ -148,16 +201,22 @@ impl Document {
     fn read(path: &Path, id: DocumentId, document_type: DocumentType) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
-        let parts: Vec<_> = file.splitn(3, "+++").collect();
+        let (metadata, content_raw) = if document_type != DocumentType::Note {
+            let parts: Vec<_> = file.splitn(3, "+++").collect();
 
-        if parts.len() != 3 {
-            return Err(anyhow::anyhow!(
-                "invalid markdown file: missing front matter"
-            ));
-        }
+            if parts.len() != 3 {
+                return Err(anyhow::anyhow!(
+                    "invalid markdown file: missing front matter"
+                ));
+            }
 
-        let metadata: DocumentMetadata = toml::from_str(parts[1])?;
-        let content_raw = parts[2];
+            let metadata: DocumentMetadata = toml::from_str(parts[1])?;
+            let content_raw = parts[2];
+
+            (Some(metadata), content_raw)
+        } else {
+            (None, file.as_str())
+        };
 
         let (description, rest_of_content) = match content_raw.split_once("<!-- more -->") {
             Some((description, rest_of_content)) => (
@@ -194,16 +253,18 @@ impl Document {
             anyhow::bail!("hero.txt is missing for {id:?}");
         }
 
-        let alternate_id = id[0..id.len() - 1]
-            .iter()
-            .cloned()
-            .chain([util::slugify(&metadata.title)])
-            .collect::<Vec<_>>();
-        let alternate_id = if alternate_id == id {
-            None
-        } else {
-            Some(alternate_id)
-        };
+        let alternate_id = metadata.as_ref().and_then(|m| {
+            let alternate_id = id[0..id.len() - 1]
+                .iter()
+                .cloned()
+                .chain([util::slugify(&m.title)])
+                .collect::<Vec<_>>();
+            if alternate_id == id {
+                None
+            } else {
+                Some(alternate_id)
+            }
+        });
 
         let ignore_node = |node: &markdown::mdast::Node| {
             matches!(
@@ -249,6 +310,10 @@ impl Document {
                 post_id: self.id.clone(),
             }
             .route_path(),
+            DocumentType::Note => Route::Note {
+                note_id: self.id.clone(),
+            }
+            .route_path(),
         }
     }
 
@@ -264,7 +329,16 @@ impl Document {
                     post_id: post_id.clone(),
                 }
                 .route_path(),
+                DocumentType::Note => Route::Note {
+                    note_id: post_id.clone(),
+                }
+                .route_path(),
             })
+    }
+
+    /// Panics if the document is a note.
+    pub fn metadata(&self) -> &DocumentMetadata {
+        self.metadata.as_ref().unwrap()
     }
 }
 

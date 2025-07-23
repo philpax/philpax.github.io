@@ -13,7 +13,7 @@ pub const POST_BODY_MARGIN_CLASS: &str =
 
 pub fn tags(document: &Document) -> paxhtml::Element {
     document
-        .metadata
+        .metadata()
         .taxonomies
         .as_ref()
         .map(|t| {
@@ -37,7 +37,7 @@ pub fn tags(document: &Document) -> paxhtml::Element {
 
 pub fn date(document: &Document) -> paxhtml::Element {
     document
-        .metadata
+        .metadata()
         .datetime()
         .map(|dt| dt.date_naive())
         .map(crate::elements::date_with_chrono)
@@ -107,7 +107,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         },
         PostBody::Short => MarkdownConverter::new(context.syntax).convert(
             document
-                .metadata
+                .metadata()
                 .short()
                 .as_ref()
                 .unwrap_or(&document.description),
@@ -138,7 +138,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     </div>
                 </div>
                 <a href={url} class="flex items-center p-0 no-underline post-title">
-                    <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
+                    <h2 class={heading_class}>{break_on_colon(&document.metadata().title)}</h2>
                 </a>
             </header>
             <div class={format!("post-body {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" })}>

@@ -28,6 +28,10 @@ pub enum Route {
     UpdatePost {
         post_id: DocumentId,
     },
+    Notes,
+    Note {
+        note_id: DocumentId,
+    },
     Tags,
     Tag {
         tag_id: String,
@@ -67,6 +71,14 @@ impl Route {
                     .iter()
                     .copied()
                     .chain(post_id.iter().map(|s| s.as_str())),
+                None,
+            ),
+            Route::Notes => RoutePath::new(["notes"], None),
+            Route::Note { note_id } => RoutePath::new(
+                ["notes"]
+                    .iter()
+                    .copied()
+                    .chain(note_id.iter().map(|s| s.as_str())),
                 None,
             ),
             Route::Tags => RoutePath::new(["tags"], None),
@@ -202,6 +214,7 @@ fn main() -> anyhow::Result<()> {
             let view = match doc.document_type {
                 content::DocumentType::Blog => views::blog::post(view_context, doc),
                 content::DocumentType::Update => views::updates::post(view_context, doc),
+                content::DocumentType::Note => unreachable!(),
             };
 
             view.write_to_route(output_dir, post_route_path.clone())?;

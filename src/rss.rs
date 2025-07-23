@@ -71,11 +71,11 @@ fn build_item(
             .unwrap();
 
     rss::ItemBuilder::default()
-        .title(doc.metadata.title.clone())
+        .title(doc.metadata().title.clone())
         .link(url)
         .guid(guid)
         .description(description)
         .author(author.to_string())
-        .pub_date(doc.metadata.datetime().map(|d| d.to_rfc2822()))
+        .pub_date(doc.metadata().datetime().map(|d| d.to_rfc2822()))
         .build()
 }
