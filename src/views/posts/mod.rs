@@ -114,15 +114,22 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     html! {
         <article class="post">
             <header class="pb-0 mb-0">
-                <div class="flex items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
-                    {date(document)}
-                    " · "
-                    <em>{document.document_type.to_string().to_lowercase()}</em>
-                    " · "
-                    {tags(document)}
-                    " · "
-                    {document.word_count.to_string()}
-                    " words"
+                <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
+                    <div class="flex items-center gap-[var(--meta-spacing)]">
+                        {date(document)}
+                        " · "
+                        <em>{document.document_type.to_string().to_lowercase()}</em>
+                        " · "
+                        {document.word_count.to_string()}
+                        " words"
+                    </div>
+                    <div class="sm:hidden -mt-1">
+                        {tags(document)}
+                    </div>
+                    <div class="hidden sm:flex items-center gap-[var(--meta-spacing)]">
+                        " · "
+                        {tags(document)}
+                    </div>
                 </div>
                 <a href={url} class="flex items-center p-0 no-underline post-title">
                     <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
