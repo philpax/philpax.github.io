@@ -76,6 +76,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
         (Route::Index.url_path(), "Home"),
         (Route::Blog.url_path(), "Blog"),
         (Route::Updates.url_path(), "Updates"),
+        (Route::Notes.url_path(), "Notes"),
         (Route::Tags.url_path(), "Tags"),
     ];
 
