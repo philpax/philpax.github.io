@@ -8,7 +8,7 @@ use serde::Deserialize;
 
 use crate::{util, Route, RoutePath};
 
-pub type DocumentId = String;
+pub type DocumentId = Vec<String>;
 pub type Tag = String;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -57,18 +57,18 @@ impl Content {
             tags,
             about: Document::read(
                 &path.join("about.md"),
-                "about".to_string(),
+                vec!["about".to_string()],
                 DocumentType::Blog,
             )?,
             credits: Document::read(
                 &path.join("credits.md"),
-                "credits".to_string(),
+                vec!["credits".to_string()],
                 DocumentType::Blog,
             )?,
         })
     }
 
-    pub fn document_by_id(&self, id: &str) -> Option<&Document> {
+    pub fn document_by_id(&self, id: &DocumentId) -> Option<&Document> {
         self.blog
             .document_by_id(id)
             .or_else(|| self.updates.document_by_id(id))
@@ -101,7 +101,7 @@ impl DocumentCollection {
                     anyhow::bail!("{index:?} does not exist");
                 }
 
-                documents.push(Document::read(&index, id, document_type)?);
+                documents.push(Document::read(&index, vec![id], document_type)?);
             }
             documents.sort_by_key(|d| d.metadata.datetime());
             documents.reverse();
@@ -125,7 +125,7 @@ impl DocumentCollection {
         })
     }
 
-    pub fn document_by_id(&self, id: &str) -> Option<&Document> {
+    pub fn document_by_id(&self, id: &DocumentId) -> Option<&Document> {
         self.document_key_to_id
             .get(id)
             .and_then(|&i| self.documents.get(i))
@@ -145,7 +145,7 @@ pub struct Document {
     pub word_count: usize,
 }
 impl Document {
-    fn read(path: &Path, id: String, document_type: DocumentType) -> anyhow::Result<Self> {
+    fn read(path: &Path, id: DocumentId, document_type: DocumentType) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
         let parts: Vec<_> = file.splitn(3, "+++").collect();
@@ -191,10 +191,14 @@ impl Document {
         }
 
         if hero_filename.is_some() && hero_alt.is_none() {
-            anyhow::bail!("hero.txt is missing for {id}");
+            anyhow::bail!("hero.txt is missing for {id:?}");
         }
 
-        let alternate_id = util::slugify(&metadata.title);
+        let alternate_id = id[0..id.len() - 1]
+            .iter()
+            .cloned()
+            .chain([util::slugify(&metadata.title)])
+            .collect::<Vec<_>>();
         let alternate_id = if alternate_id == id {
             None
         } else {
@@ -237,8 +241,14 @@ impl Document {
 
     pub fn route_path(&self) -> RoutePath {
         match self.document_type {
-            DocumentType::Blog => Route::BlogPost { post_id: &self.id }.route_path(),
-            DocumentType::Update => Route::UpdatePost { post_id: &self.id }.route_path(),
+            DocumentType::Blog => Route::BlogPost {
+                post_id: self.id.clone(),
+            }
+            .route_path(),
+            DocumentType::Update => Route::UpdatePost {
+                post_id: self.id.clone(),
+            }
+            .route_path(),
         }
     }
 
@@ -246,8 +256,14 @@ impl Document {
         self.alternate_id
             .as_ref()
             .map(|post_id| match self.document_type {
-                DocumentType::Blog => Route::BlogPost { post_id }.route_path(),
-                DocumentType::Update => Route::UpdatePost { post_id }.route_path(),
+                DocumentType::Blog => Route::BlogPost {
+                    post_id: post_id.clone(),
+                }
+                .route_path(),
+                DocumentType::Update => Route::UpdatePost {
+                    post_id: post_id.clone(),
+                }
+                .route_path(),
             })
     }
 }

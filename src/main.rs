@@ -3,6 +3,8 @@ use std::path::Path;
 use anyhow::Context;
 use paxhtml::RoutePath;
 
+use crate::content::DocumentId;
+
 mod content;
 mod elements;
 mod js;
@@ -15,20 +17,20 @@ mod syntax;
 mod util;
 mod views;
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-pub enum Route<'a> {
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Route {
     Index,
     Blog,
     BlogPost {
-        post_id: &'a str,
+        post_id: DocumentId,
     },
     Updates,
     UpdatePost {
-        post_id: &'a str,
+        post_id: DocumentId,
     },
     Tags,
     Tag {
-        tag_id: &'a str,
+        tag_id: String,
     },
     /// No longer in use: just the home page
     DeprecatedAbout,
@@ -42,19 +44,31 @@ pub enum Route<'a> {
     DarkModeIcon,
     LightModeIcon,
 }
-impl<'a> From<Route<'a>> for RoutePath {
-    fn from(route: Route<'a>) -> Self {
+impl From<Route> for RoutePath {
+    fn from(route: Route) -> Self {
         route.route_path()
     }
 }
-impl Route<'_> {
+impl Route {
     pub fn route_path(&self) -> RoutePath {
-        match *self {
+        match self {
             Route::Index => RoutePath::new([], None),
             Route::Blog => RoutePath::new(["blog"], None),
-            Route::BlogPost { post_id } => RoutePath::new(["blog", post_id], None),
+            Route::BlogPost { post_id } => RoutePath::new(
+                ["blog"]
+                    .iter()
+                    .copied()
+                    .chain(post_id.iter().map(|s| s.as_str())),
+                None,
+            ),
             Route::Updates => RoutePath::new(["updates"], None),
-            Route::UpdatePost { post_id } => RoutePath::new(["updates", post_id], None),
+            Route::UpdatePost { post_id } => RoutePath::new(
+                ["updates"]
+                    .iter()
+                    .copied()
+                    .chain(post_id.iter().map(|s| s.as_str())),
+                None,
+            ),
             Route::Tags => RoutePath::new(["tags"], None),
             Route::Tag { tag_id } => RoutePath::new(["tags", tag_id], None),
             Route::DeprecatedAbout => RoutePath::new(["about"], None),
@@ -223,8 +237,12 @@ fn main() -> anyhow::Result<()> {
         views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
 
         for tag_id in content.tags.keys() {
-            let route = Route::Tag { tag_id };
-            views::tags::tag(view_context, tag_id).write_to_route(output_dir, route)?;
+            views::tags::tag(view_context, tag_id).write_to_route(
+                output_dir,
+                Route::Tag {
+                    tag_id: tag_id.to_string(),
+                },
+            )?;
         }
         anyhow::Ok(())
     })?;
@@ -260,7 +278,13 @@ fn main() -> anyhow::Result<()> {
                 ),
             ),
         ] {
-            let output = rss::generate(view_context, collection, title_suffix, description, route)?;
+            let output = rss::generate(
+                view_context,
+                collection,
+                title_suffix,
+                description,
+                route.clone(),
+            )?;
             route.route_path().write(output_dir, output)?;
         }
         anyhow::Ok(())

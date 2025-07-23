@@ -36,7 +36,13 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                         let item_count = context.content.tags[*tag].len();
                         html! {
                             <li class="list-disc">
-                                {components::link(true, format!("Tag: {tag}"), Route::Tag { tag_id: tag }.url_path(), "", format!("#{tag}").into())}
+                                {components::link(
+                                    true,
+                                    format!("Tag: {tag}"),
+                                    Route::Tag { tag_id: tag.to_string() }.url_path(),
+                                    "",
+                                    format!("#{tag}").into()
+                                )}
                                 {format!(
                                     " ({} {})",
                                     item_count,
@@ -73,7 +79,12 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
             title: Some(format!("#{tag_id}")),
             description: Some(format!("All content tagged with {tag_id}")),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
-            url: Some(Route::Tag { tag_id }.abs_url(context.website_base_url)),
+            url: Some(
+                Route::Tag {
+                    tag_id: tag_id.to_string(),
+                }
+                .abs_url(context.website_base_url),
+            ),
             type_: Some("website".to_string()),
             twitter_card: None,
             twitter_image: None,
@@ -83,7 +94,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
         html! {
             <>
                 <header class="text-center mb-4">
-                    <a href={Route::Tag { tag_id }.url_path()}>
+                    <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()}>
                         <h1 class="text-3xl font-bold">
                             {"#"}{tag_id}
                             <small class="text-[var(--color-secondary)]">

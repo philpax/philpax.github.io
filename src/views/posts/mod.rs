@@ -20,7 +20,13 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.tags.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
-                        {components::link(false, format!("Tag: {tag}"), Route::Tag { tag_id: tag }.url_path(), "", format!("#{tag}").into())}
+                        {components::link(
+                            false,
+                            format!("Tag: {tag}"),
+                            Route::Tag { tag_id: tag.to_string() }.url_path(),
+                            "",
+                            format!("#{tag}").into()
+                        )}
                     </li>
                 }
             });
