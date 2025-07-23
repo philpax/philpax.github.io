@@ -36,7 +36,7 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
   - [Waneella: Pixelscapes](https://www.goodreads.com/book/show/209499026-waneella)
   - [WipEout Futurism: The Graphic Archives](https://www.goodreads.com/book/show/210016015-wipeout-futurism)
 
-- [Kurisu Makise ~Reading Steiner~](https://www.goodsmile.com/en/product/11001/Kurisu+Makise+%7EReading+Steiner%7E): Okay. To be clear, I'm not a figurine guy. Don't put "Philpax is a figurine guy" in the newspaper. I just think this particular one is neat; I love its composition and how well-framed it is.
+- [Kurisu Makise \~Reading Steiner\~](https://www.goodsmile.com/en/product/11001/Kurisu+Makise+%7EReading+Steiner%7E): Okay. To be clear, I'm not a figurine guy. Don't put "Philpax is a figurine guy" in the newspaper. I just think this particular one is neat; I love its composition and how well-framed it is.
 
 # VR headsets
 
