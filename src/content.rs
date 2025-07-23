@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{BTreeMap, HashMap},
     path::{Path, PathBuf},
 };
 
@@ -137,46 +137,82 @@ impl DocumentCollection {
 }
 
 #[derive(Debug)]
+pub struct DocumentFolderNode {
+    pub index_document: Option<Document>,
+    pub folder_name: String,
+    pub children: BTreeMap<String, DocumentNode>,
+}
+
+#[derive(Debug)]
+pub enum DocumentNode {
+    Folder(DocumentFolderNode),
+    Document { document: Document },
+}
+
+#[derive(Debug)]
 pub struct NotesCollection {
-    pub documents: Vec<Document>,
+    pub documents: DocumentFolderNode,
 }
 impl NotesCollection {
     fn read(collection_path: &Path) -> anyhow::Result<Self> {
-        fn find_documents(collection_path: &Path, path: &Path) -> anyhow::Result<Vec<Document>> {
+        fn find_documents(
+            collection_path: &Path,
+            path: &Path,
+        ) -> anyhow::Result<DocumentFolderNode> {
             fn path_to_id(collection_path: &Path, path: &Path) -> DocumentId {
-                path.strip_prefix(collection_path)
+                path.with_extension("")
+                    .strip_prefix(collection_path)
                     .unwrap()
                     .iter()
                     .map(|s| s.to_string_lossy().to_string())
                     .collect()
             }
 
-            let index_path = path.join("index.md");
-            if index_path.is_file() {
-                return Ok(vec![Document::read(
-                    &index_path,
-                    path_to_id(collection_path, path),
+            let mut documents = BTreeMap::new();
+            let id = path_to_id(collection_path, &path);
+            let folder_name = id.last().cloned().unwrap_or_else(|| "Home".to_string());
+            let index_document = if path.join("index.md").exists() {
+                Some(Document::read(
+                    &path.join("index.md"),
+                    id,
                     DocumentType::Note,
-                )?]);
-            }
+                )?)
+            } else {
+                None
+            };
 
-            let mut documents = vec![];
             for entry in std::fs::read_dir(path)? {
                 let path = entry?.path();
+
+                if path.file_name().is_some_and(|f| f == "index.md") {
+                    continue;
+                }
+
+                let path_id = path_to_id(collection_path, &path);
+                let id = path_id.last().unwrap().clone();
+
                 if path.is_dir() {
-                    documents.extend(find_documents(collection_path, &path)?);
+                    documents.insert(
+                        id,
+                        DocumentNode::Folder(find_documents(collection_path, &path)?),
+                    );
                     continue;
                 }
 
                 if path.extension().is_some_and(|e| e == "md") {
-                    documents.push(Document::read(
-                        &path,
-                        path_to_id(collection_path, &path),
-                        DocumentType::Note,
-                    )?);
+                    documents.insert(
+                        id,
+                        DocumentNode::Document {
+                            document: Document::read(&path, path_id, DocumentType::Note)?,
+                        },
+                    );
                 }
             }
-            Ok(documents)
+            Ok(DocumentFolderNode {
+                index_document,
+                folder_name,
+                children: documents,
+            })
         }
 
         Ok(NotesCollection {
@@ -216,7 +252,7 @@ impl Document {
             (metadata, content_raw)
         } else {
             let metadata = DocumentMetadata {
-                title: id.last().unwrap().clone(),
+                title: id.last().cloned().unwrap_or_else(|| "Index".to_string()),
                 short: None,
                 date: None,
                 taxonomies: None,
@@ -259,7 +295,7 @@ impl Document {
             anyhow::bail!("hero.txt is missing for {id:?}");
         }
 
-        let alternate_id = {
+        let alternate_id = if !id.is_empty() {
             let alternate_id = id[0..id.len() - 1]
                 .iter()
                 .cloned()
@@ -270,6 +306,8 @@ impl Document {
             } else {
                 Some(alternate_id)
             }
+        } else {
+            None
         };
 
         let ignore_node = |node: &markdown::mdast::Node| {
