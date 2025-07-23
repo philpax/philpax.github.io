@@ -44,7 +44,7 @@ impl Content {
         // Combine tags from both blog and updates
         let mut tags = HashMap::new();
         for document in blog.documents.iter().chain(updates.documents.iter()) {
-            if let Some(taxonomies) = &document.metadata().taxonomies {
+            if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
                     tags.entry(tag.clone())
                         .or_insert_with(Vec::new)
@@ -107,7 +107,7 @@ impl DocumentCollection {
 
                 documents.push(Document::read(&index, vec![id], document_type)?);
             }
-            documents.sort_by_key(|d| d.metadata().datetime());
+            documents.sort_by_key(|d| d.metadata.datetime());
             documents.reverse();
             documents
         };
@@ -190,7 +190,7 @@ pub struct Document {
     pub id: DocumentId,
     pub alternate_id: Option<DocumentId>,
     pub document_type: DocumentType,
-    pub metadata: Option<DocumentMetadata>,
+    pub metadata: DocumentMetadata,
     pub description: markdown::mdast::Node,
     pub rest_of_content: Option<markdown::mdast::Node>,
     pub files: Vec<PathBuf>,
@@ -213,9 +213,15 @@ impl Document {
             let metadata: DocumentMetadata = toml::from_str(parts[1])?;
             let content_raw = parts[2];
 
-            (Some(metadata), content_raw)
+            (metadata, content_raw)
         } else {
-            (None, file.as_str())
+            let metadata = DocumentMetadata {
+                title: id.last().unwrap().clone(),
+                short: None,
+                date: None,
+                taxonomies: None,
+            };
+            (metadata, file.as_str())
         };
 
         let (description, rest_of_content) = match content_raw.split_once("<!-- more -->") {
@@ -253,18 +259,18 @@ impl Document {
             anyhow::bail!("hero.txt is missing for {id:?}");
         }
 
-        let alternate_id = metadata.as_ref().and_then(|m| {
+        let alternate_id = {
             let alternate_id = id[0..id.len() - 1]
                 .iter()
                 .cloned()
-                .chain([util::slugify(&m.title)])
+                .chain([util::slugify(&metadata.title)])
                 .collect::<Vec<_>>();
             if alternate_id == id {
                 None
             } else {
                 Some(alternate_id)
             }
-        });
+        };
 
         let ignore_node = |node: &markdown::mdast::Node| {
             matches!(
@@ -334,11 +340,6 @@ impl Document {
                 }
                 .route_path(),
             })
-    }
-
-    /// Panics if the document is a note.
-    pub fn metadata(&self) -> &DocumentMetadata {
-        self.metadata.as_ref().unwrap()
     }
 }
 

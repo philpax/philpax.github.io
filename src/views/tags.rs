@@ -70,7 +70,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
     }
 
     // Sort by date, newest first
-    tagged_documents.sort_by_key(|d| d.metadata().datetime());
+    tagged_documents.sort_by_key(|d| d.metadata.datetime());
     tagged_documents.reverse();
 
     layout(

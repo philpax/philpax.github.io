@@ -88,14 +88,14 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 
 fn update_doc_item(doc: &Document) -> paxhtml::Element {
     let date_str = doc
-        .metadata()
+        .metadata
         .datetime()
         .map(|dt| dt.date_naive().to_string())
         .unwrap_or_default();
     html! {
         <li>
             <span class="text-[var(--color-secondary)]">{date_str}": "</span>
-            {components::link(false, None, doc.route_path().url_path(), "", doc.metadata().title.clone().into())}
+            {components::link(false, None, doc.route_path().url_path(), "", doc.metadata.title.clone().into())}
         </li>
     }
 }

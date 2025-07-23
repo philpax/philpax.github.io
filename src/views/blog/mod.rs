@@ -41,10 +41,10 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
     layout(
         context,
         SocialMeta {
-            title: Some(document.metadata().title.clone()),
+            title: Some(document.metadata.title.clone()),
             description: Some(
                 document
-                    .metadata()
+                    .metadata
                     .short()
                     .unwrap_or_else(|| document.description.clone())
                     .to_string(),
@@ -58,9 +58,9 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
                 .as_ref()
                 .map(|_| "summary_large_image".to_string()),
             twitter_image: hero_image,
-            article_published_time: document.metadata().datetime(),
+            article_published_time: document.metadata.datetime(),
             article_tag: document
-                .metadata()
+                .metadata
                 .taxonomies
                 .as_ref()
                 .map(|t| t.tags.join(", ")),
