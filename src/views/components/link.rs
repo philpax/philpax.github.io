@@ -12,7 +12,7 @@ pub fn link(
         <a
             href={target.into()}
             title={title}
-            class={format!("{}{additional_classes}", if underline { "link-underline" } else { "link-no-underline" })}
+            class={format!("{} {additional_classes}", if underline { "link-underline" } else { "link-no-underline" })}
         >
             {children}
         </a>

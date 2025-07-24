@@ -20,6 +20,6 @@
 
   .link-no-underline {
     @apply text-[var(--color)] transition-all duration-200 visited:text-[var(--color)];
-    @apply no-underline hover:underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)];
+    @apply no-underline hover:no-underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)];
   }
 }
