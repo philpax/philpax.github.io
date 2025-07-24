@@ -7,11 +7,7 @@ use crate::{
 use super::*;
 
 pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
-    let display_note_id = if note.id.is_empty() {
-        &vec!["Home".to_string()]
-    } else {
-        &note.id
-    };
+    let display_path = &note.display_path;
 
     layout(
         context,
@@ -36,11 +32,11 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                     <h2 class="text-3xl font-bold">
                         {{
                             let mut elements = vec![];
-                            for (index, component) in display_note_id.iter().enumerate() {
+                            for (index, component) in display_path.iter().enumerate() {
                                 if index != 0 {
                                     elements.push(html! { <span class="text-[var(--color-secondary)]">{" · "}</span> });
                                 }
-                                let class = if index == display_note_id.len() - 1 {
+                                let class = if index == display_path.len() - 1 {
                                     "italic"
                                 } else {
                                     "text-[var(--color-secondary)]"

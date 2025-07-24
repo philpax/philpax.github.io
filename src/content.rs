@@ -63,11 +63,13 @@ impl Content {
             about: Document::read(
                 &path.join("about.md"),
                 vec!["about".to_string()],
+                vec!["About".to_string()],
                 DocumentType::Blog,
             )?,
             credits: Document::read(
                 &path.join("credits.md"),
                 vec!["credits".to_string()],
+                vec!["Credits".to_string()],
                 DocumentType::Blog,
             )?,
         })
@@ -106,7 +108,12 @@ impl DocumentCollection {
                     anyhow::bail!("{index:?} does not exist");
                 }
 
-                documents.push(Document::read(&index, vec![id], document_type)?);
+                documents.push(Document::read(
+                    &index,
+                    vec![id.clone()],
+                    vec![id],
+                    document_type,
+                )?);
             }
             documents.sort_by_key(|d| d.metadata.datetime);
             documents.reverse();
@@ -160,22 +167,38 @@ impl NotesCollection {
             collection_path: &Path,
             path: &Path,
         ) -> anyhow::Result<DocumentFolderNode> {
-            fn path_to_id(collection_path: &Path, path: &Path) -> DocumentId {
-                path.with_extension("")
+            const HOME_NAME: &str = "Home";
+
+            fn path_to_display_name(collection_path: &Path, path: &Path) -> Vec<String> {
+                let mut output: Vec<String> = path
+                    .with_extension("")
                     .strip_prefix(collection_path)
                     .unwrap()
                     .iter()
                     .map(|s| s.to_string_lossy().to_string())
-                    .collect()
+                    .collect();
+                if output.is_empty() {
+                    output.push(HOME_NAME.to_string());
+                }
+                output
+            }
+
+            fn display_path_to_id(display_path: &[String]) -> DocumentId {
+                if display_path.len() == 1 && display_path[0] == HOME_NAME {
+                    return vec![];
+                }
+
+                display_path.iter().map(|s| util::slugify(s)).collect()
             }
 
             let mut documents = BTreeMap::new();
-            let id = path_to_id(collection_path, path);
-            let folder_name = id.last().cloned().unwrap_or_else(|| "Home".to_string());
+            let display_name = path_to_display_name(collection_path, path);
+            let folder_name = display_name.last().cloned().unwrap();
             let index_document = if path.join("index.md").exists() {
                 Some(Document::read(
                     &path.join("index.md"),
-                    id,
+                    display_path_to_id(&display_name),
+                    display_name,
                     DocumentType::Note,
                 )?)
             } else {
@@ -189,12 +212,13 @@ impl NotesCollection {
                     continue;
                 }
 
-                let path_id = path_to_id(collection_path, &path);
-                let id = path_id.last().unwrap().clone();
+                let display_path = path_to_display_name(collection_path, &path);
+                let document_name = display_path.last().unwrap().clone();
+                let document_id = display_path_to_id(&display_path);
 
                 if path.is_dir() {
                     documents.insert(
-                        id,
+                        document_name,
                         DocumentNode::Folder(find_documents(collection_path, &path)?),
                     );
                     continue;
@@ -202,9 +226,14 @@ impl NotesCollection {
 
                 if path.extension().is_some_and(|e| e == "md") {
                     documents.insert(
-                        id,
+                        document_name,
                         DocumentNode::Document {
-                            document: Document::read(&path, path_id, DocumentType::Note)?,
+                            document: Document::read(
+                                &path,
+                                document_id,
+                                display_path,
+                                DocumentType::Note,
+                            )?,
                         },
                     );
                 }
@@ -226,6 +255,7 @@ impl NotesCollection {
 pub struct Document {
     pub id: DocumentId,
     pub alternate_id: Option<DocumentId>,
+    pub display_path: Vec<String>,
     pub document_type: DocumentType,
     pub metadata: DocumentMetadata,
     pub description: markdown::mdast::Node,
@@ -247,7 +277,12 @@ impl std::fmt::Display for Document {
     }
 }
 impl Document {
-    fn read(path: &Path, id: DocumentId, document_type: DocumentType) -> anyhow::Result<Self> {
+    fn read(
+        path: &Path,
+        id: DocumentId,
+        display_path: Vec<String>,
+        document_type: DocumentType,
+    ) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
         let (metadata, content_raw) = if document_type != DocumentType::Note {
@@ -265,7 +300,7 @@ impl Document {
             (metadata, content_raw)
         } else {
             let metadata = DocumentMetadata {
-                title: id.last().cloned().unwrap_or_else(|| "Home".to_string()),
+                title: display_path.last().cloned().unwrap(),
                 short: None,
                 datetime: Some(get_file_datetime(path)?),
                 taxonomies: None,
@@ -348,6 +383,7 @@ impl Document {
         Ok(Document {
             id,
             alternate_id,
+            display_path,
             document_type,
             metadata,
             description,
