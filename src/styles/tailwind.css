@@ -3,3 +3,23 @@
 @utility decoration-skip-ink-none {
   text-decoration-skip-ink: none;
 }
+
+@layer components {
+  .link-underline {
+    @apply text-[var(--color)] transition-all duration-200 visited:text-[var(--color)];
+    @apply underline
+      decoration-[var(--color-secondary)]
+      decoration-solid
+      decoration-[3px]
+      decoration-skip-ink-none
+      underline-offset-[4px]
+      hover:decoration-[color-mix(in_srgb,var(--color-secondary)_80%,transparent)]
+      hover:decoration-[7px]
+      hover:underline-offset-[0px];
+  }
+
+  .link-no-underline {
+    @apply text-[var(--color)] transition-all duration-200 visited:text-[var(--color)];
+    @apply no-underline hover:underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)];
+  }
+}

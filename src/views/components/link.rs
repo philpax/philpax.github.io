@@ -5,22 +5,6 @@ pub fn link(
     additional_classes: impl Into<String>,
     children: paxhtml::Element,
 ) -> paxhtml::Element {
-    let underline_classes = if underline {
-        "\
-        underline
-        decoration-[var(--color-secondary)] \
-        decoration-solid \
-        decoration-[3px] \
-        decoration-skip-ink-none \
-        underline-offset-[4px] \
-        hover:decoration-[color-mix(in_srgb,var(--color-secondary)_80%,transparent)] \
-        hover:decoration-[7px] \
-        hover:underline-offset-[0px] \
-        "
-    } else {
-        "no-underline hover:underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)]"
-    };
-
     let additional_classes = additional_classes.into();
     let title = title.into().unwrap_or_else(|| children.inner_text());
 
@@ -28,13 +12,7 @@ pub fn link(
         <a
             href={target.into()}
             title={title}
-            class={format!("\
-            text-[var(--color)] \
-            transition-all duration-200 \
-            visited:text-[var(--color)] \
-            {underline_classes} \
-            {additional_classes}\
-            ")}
+            class={format!("{}{additional_classes}", if underline { "link-underline" } else { "link-no-underline" })}
         >
             {children}
         </a>
