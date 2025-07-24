@@ -241,7 +241,7 @@ fn main() -> anyhow::Result<()> {
             folder: &content::DocumentFolderNode,
         ) -> anyhow::Result<()> {
             if let Some(index_document) = &folder.index_document {
-                views::notes::note(context, &index_document).write_to_route(
+                views::notes::note(context, index_document).write_to_route(
                     output_dir,
                     Route::Note {
                         note_id: index_document.id.clone(),
@@ -255,7 +255,7 @@ fn main() -> anyhow::Result<()> {
                         write_note_folder(output_dir, context, folder)?;
                     }
                     content::DocumentNode::Document { document } => {
-                        views::notes::note(context, &document).write_to_route(
+                        views::notes::note(context, document).write_to_route(
                             output_dir,
                             Route::Note {
                                 note_id: document.id.clone(),

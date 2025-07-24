@@ -61,16 +61,12 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
 fn notes_hierarchy(context: ViewContext, active_document: &Document) -> paxhtml::Element {
     html! {
         <ul class="list-none m-0 p-0 break-words overflow-hidden">
-            {build_tree(context, &context.content.notes.documents, active_document)}
+            {build_tree(&context.content.notes.documents, active_document)}
         </ul>
     }
 }
 
-fn build_tree(
-    context: ViewContext,
-    folder_node: &DocumentFolderNode,
-    active_document: &Document,
-) -> paxhtml::Element {
+fn build_tree(folder_node: &DocumentFolderNode, active_document: &Document) -> paxhtml::Element {
     let inactive_color = "text-[var(--color-secondary)]!";
 
     html! {
@@ -87,10 +83,9 @@ fn build_tree(
                 <span class={inactive_color}>{folder_node.folder_name.clone()}</span>
             })}
             <ul class="list-none m-0 p-0 ml-4">
-                #{folder_node.children.iter().map(|(_name, node)|
-                    match node {
+                #{folder_node.children.values().map(|node| match node {
                         DocumentNode::Folder(folder_node) => {
-                            build_tree(context, folder_node, active_document)
+                            build_tree(folder_node, active_document)
                         }
                         DocumentNode::Document { document } => {
                             html! {
@@ -105,8 +100,7 @@ fn build_tree(
                                 </li>
                             }
                         }
-                    }
-                )}
+                    })}
             </ul>
         </li>
 

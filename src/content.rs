@@ -169,7 +169,7 @@ impl NotesCollection {
             }
 
             let mut documents = BTreeMap::new();
-            let id = path_to_id(collection_path, &path);
+            let id = path_to_id(collection_path, path);
             let folder_name = id.last().cloned().unwrap_or_else(|| "Home".to_string());
             let index_document = if path.join("index.md").exists() {
                 Some(Document::read(
