@@ -29,7 +29,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
         CurrentPage::Notes,
         html! {
             <div class="flex flex-col md:flex-row">
-                <div class="border-b border-dotted border-[var(--color)] pb-4 mb-2 md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 pr-4 md:w-32 md:min-w-32 md:max-w-32">
+                <div class="mb-2 md:pb-0 md:mb-0 md:w-40 md:min-w-40 md:max-w-40">
                     {notes_hierarchy(context, note)}
                 </div>
                 <div class="md:pl-4">
@@ -75,8 +75,6 @@ fn build_tree(
     active_document: &Document,
     depth: usize,
 ) -> paxhtml::Element {
-    let inactive_color = "text-[var(--color-secondary)]!";
-    let has_children = !folder_node.children.is_empty();
     let checkbox_id = format!(
         "folder-{}-{}",
         depth,
@@ -89,9 +87,9 @@ fn build_tree(
             None,
             document.route_path().url_path(),
             if active_document.id == document.id {
-                "active"
+                "font-bold italic"
             } else {
-                inactive_color
+                ""
             },
             document.metadata.title.clone().into(),
         )
@@ -103,51 +101,36 @@ fn build_tree(
         .map(render_document)
         .unwrap_or_else(|| {
             html! {
-                <span class={inactive_color}>{folder_node.folder_name.clone()}</span>
+                <span class="text-[var(--color-secondary)]">{folder_node.folder_name.clone()}</span>
             }
         });
 
     html! {
-        <li class="break-words">
-            {if has_children {
-                html! {
-                    <>
-                        <input r#type="checkbox" id={checkbox_id} class="peer sr-only" checked autocomplete="off" />
-                        <div class="flex items-center gap-1">
-                            <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--color-secondary)] hover:text-[var(--color)] transition-colors">
-                                <span class="peer-checked:hidden">{"▶"}</span>
-                                <span class="hidden peer-checked:inline">{"▼"}</span>
-                            </label>
-                            <div class="flex-1">
-                                {index_item}
-                            </div>
-                        </div>
-                        <ul class="list-none m-0 p-0 ml-4 hidden peer-checked:block">
-                            #{folder_node.children.values().map(|node| match node {
-                                DocumentNode::Folder(folder_node) => {
-                                    build_tree(folder_node, active_document, depth + 1)
-                                }
-                                DocumentNode::Document { document } => {
-                                    html! {
-                                        <li class="break-words">
-                                            {render_document(document)}
-                                        </li>
-                                    }
-                                }
-                            })}
-                        </ul>
-                    </>
-                }
-            } else {
-                html! {
-                    <div class="flex items-center gap-1">
-                        <span class="w-3"></span>
-                        <div class="flex-1">
-                            {index_item}
-                        </div>
-                    </div>
-                }
-            }}
+        <li class="break-words list-none">
+            <input r#type="checkbox" id={checkbox_id} class="peer sr-only" checked autocomplete="off" />
+            <div class="flex items-center gap-0">
+                <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--color-secondary)] hover:text-[var(--color)] transition-colors w-4">
+                    <span class="peer-checked:hidden">{"▶"}</span>
+                    <span class="hidden peer-checked:inline">{"▼"}</span>
+                </label>
+                <div class="flex-1">
+                    {index_item}
+                </div>
+            </div>
+            <ul class="list-disc list-inside m-0 hidden peer-checked:block ml-4">
+                #{folder_node.children.values().map(|node| match node {
+                    DocumentNode::Folder(folder_node) => {
+                        build_tree(folder_node, active_document, depth + 1)
+                    }
+                    DocumentNode::Document { document } => {
+                        html! {
+                            <li class="break-words">
+                                {render_document(document)}
+                            </li>
+                        }
+                    }
+                })}
+            </ul>
         </li>
     }
 }
