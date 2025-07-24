@@ -9,7 +9,7 @@ pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
 // uses `POST_BODY_CONTENT_MARGIN_LEFT_CLASS` for child paragraphs; can't construct dynamically
 // because tailwind looks for full class names
 pub const POST_BODY_MARGIN_CLASS: &str =
-    "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0 [&>p]:ml-4";
+    "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0";
 
 pub fn tags(document: &Document) -> paxhtml::Element {
     document
