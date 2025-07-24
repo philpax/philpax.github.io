@@ -21,6 +21,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_published_time: None,
             article_tag: None,
         },
+        CurrentPage::Updates,
         html! {
             <>
                 <div class="*:mb-8">
@@ -65,6 +66,7 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
                 .as_ref()
                 .map(|t| t.tags.join(", ")),
         },
+        CurrentPage::Updates,
         posts::post(context, document, posts::PostBody::Full),
     )
 }

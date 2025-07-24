@@ -17,6 +17,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_published_time: None,
             article_tag: None,
         },
+        CurrentPage::Home,
         html! {
             <article>
                 <a href={Route::Credits.url_path()} class={posts::post_body_to_heading_class(posts::PostBody::Full)}>

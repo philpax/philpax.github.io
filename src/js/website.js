@@ -34,7 +34,7 @@ function createThemeSwitcher() {
   updateSwitcherIcon(img, isLightMode());
   a.href = "#";
   a.className =
-    "bg-[var(--color)] text-[var(--background-color)] hover:bg-[var(--color-secondary)] py-2 px-4 transition-colors duration-200 flex items-center justify-center md:mb-0";
+    "bg-[var(--color-secondary)] text-[var(--background-color)] hover:bg-[var(--color)] py-2 px-4 transition-colors duration-200 flex items-center justify-center md:mb-0";
 
   a.addEventListener("click", function (e) {
     e.preventDefault();

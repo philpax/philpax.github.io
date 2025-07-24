@@ -31,6 +31,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_published_time: None,
             article_tag: None,
         },
+        CurrentPage::Home,
         html! {
             <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch" id="home-page-columns">
                 <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">

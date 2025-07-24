@@ -25,6 +25,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
             article_published_time: None,
             article_tag: None,
         },
+        CurrentPage::Notes,
         html! {
             <div class="flex flex-col md:flex-row">
                 <div class="border-b border-dotted border-[var(--color)] pb-4 mb-2 md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 pr-4 md:w-32 md:min-w-32 md:max-w-32">

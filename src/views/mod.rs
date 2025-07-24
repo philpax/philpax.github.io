@@ -1,6 +1,44 @@
 use crate::{content::Document, elements::*, Route, ViewContext};
 use std::collections::HashMap;
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum CurrentPage {
+    Home,
+    Blog,
+    Updates,
+    Notes,
+    Tags,
+}
+impl CurrentPage {
+    pub const ALL_PAGES: &'static [CurrentPage] = &[
+        CurrentPage::Home,
+        CurrentPage::Blog,
+        CurrentPage::Updates,
+        CurrentPage::Notes,
+        CurrentPage::Tags,
+    ];
+
+    pub fn url_path(&self) -> String {
+        match self {
+            CurrentPage::Home => Route::Index.url_path(),
+            CurrentPage::Blog => Route::Blog.url_path(),
+            CurrentPage::Updates => Route::Updates.url_path(),
+            CurrentPage::Notes => Route::Notes.url_path(),
+            CurrentPage::Tags => Route::Tags.url_path(),
+        }
+    }
+
+    pub fn name(&self) -> &'static str {
+        match self {
+            CurrentPage::Home => "Home",
+            CurrentPage::Blog => "Blog",
+            CurrentPage::Updates => "Updates",
+            CurrentPage::Notes => "Notes",
+            CurrentPage::Tags => "Tags",
+        }
+    }
+}
+
 pub mod blog;
 pub mod credits;
 pub mod frontpage;
@@ -15,7 +53,7 @@ pub const FONT_STYLE: &str = "font-['Literata',serif]";
 
 #[derive(Default)]
 /// Metadata for social media platforms like Twitter and OpenGraph
-struct SocialMeta {
+pub struct SocialMeta {
     /// The title of the page for OpenGraph
     title: Option<String>,
     /// The description of the page for OpenGraph
@@ -71,15 +109,12 @@ impl SocialMeta {
     }
 }
 
-fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Document {
-    let links = [
-        (Route::Index.url_path(), "Home"),
-        (Route::Blog.url_path(), "Blog"),
-        (Route::Updates.url_path(), "Updates"),
-        (Route::Notes.url_path(), "Notes"),
-        (Route::Tags.url_path(), "Tags"),
-    ];
-
+pub fn layout(
+    context: ViewContext,
+    meta: SocialMeta,
+    current_page: CurrentPage,
+    inner: Element,
+) -> paxhtml::Document {
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
         html! {
@@ -107,9 +142,13 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                             <nav class="flex items-center mt-2 md:mt-0 flex-1">
                                 <div id="header-links" class="grid grid-cols-2 gap-2 md:flex w-full md:flex-row md:gap-0">
                                 #{
-                                    links.iter().map(|(url, label)| { html! {
-                                        <a href={url} class="text-center bg-[var(--color)] text-[var(--background-color)] lowercase hover:bg-[var(--color-secondary)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1">{*label}</a>
-                                    }})
+                                    CurrentPage::ALL_PAGES.iter().map(|page| {
+                                        let is_active = *page == current_page;
+                                        let bg_class = if is_active { "bg-[var(--color)]" } else { "bg-[var(--color-secondary)]" };
+                                        html! {
+                                            <a href={page.url_path()} class={format!("text-center {} text-[var(--background-color)] lowercase hover:bg-[var(--color)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1", bg_class)}>{page.name()}</a>
+                                        }
+                                    })
                                 }
                                 </div>
                             </nav>

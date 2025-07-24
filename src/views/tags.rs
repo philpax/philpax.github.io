@@ -21,39 +21,31 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_published_time: None,
             article_tag: None,
         },
+        CurrentPage::Tags,
         html! {
-            <>
-                <header class="text-center mb-4">
-                    <a href={Route::Tags.url_path()}>
-                        <h1 class="text-3xl font-bold">
-                            "Tags"
-                        </h1>
-                    </a>
-                </header>
-                <ul class="list-none m-0 list-inside">
-                #{
-                    tag_keys.iter().map(|tag| {
-                        let item_count = context.content.tags[*tag].len();
-                        html! {
-                            <li class="list-disc">
-                                {components::link(
-                                    true,
-                                    format!("Tag: {tag}"),
-                                    Route::Tag { tag_id: tag.to_string() }.url_path(),
-                                    "",
-                                    format!("#{tag}").into()
-                                )}
-                                {format!(
-                                    " ({} {})",
-                                    item_count,
-                                    util::pluralize("item", item_count)
-                                )}
-                            </li>
-                        }
-                    })
-                }
-                </ul>
-            </>
+            <ul class="list-none m-0 list-inside">
+            #{
+                tag_keys.iter().map(|tag| {
+                    let item_count = context.content.tags[*tag].len();
+                    html! {
+                        <li class="list-disc">
+                            {components::link(
+                                true,
+                                format!("Tag: {tag}"),
+                                Route::Tag { tag_id: tag.to_string() }.url_path(),
+                                "",
+                                format!("#{tag}").into()
+                            )}
+                            {format!(
+                                " ({} {})",
+                                item_count,
+                                util::pluralize("item", item_count)
+                            )}
+                        </li>
+                    }
+                })
+            }
+            </ul>
         },
     )
 }
@@ -91,6 +83,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
             article_published_time: None,
             article_tag: Some(tag_id.to_string()),
         },
+        CurrentPage::Tags,
         html! {
             <>
                 <header class="text-center mb-4">
