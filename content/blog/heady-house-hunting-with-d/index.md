@@ -1,7 +1,7 @@
 +++
 title = "Heady House Hunting with D"
 short = "Scraping `realestate.com.au` and other services to find a house for my family."
-date = 2015-01-13
+datetime = 2015-01-13T00:00:00Z
 
 [taxonomies]
 tags=["d"]
@@ -15,9 +15,10 @@ So with high spirits and higher expectations, we plugged in our basic criteria i
 
 We needed a more systematic approach to this problem. I compiled a list of criteria for the house - what do we need? What would be nice to have? What _don't_ we want? This let us nail down what our hypothetical house would require, and gave us a base upon which we could start investigating potential candidates. The only problem with that, of course, was that we still had to manually look at each house and determine whether they fit the criteria.
 
-As you can imagine, this was not a satisfactory solution for anyone involved. I thought about the problem at hand, and thought of a simple approach. If we know what we're looking for, why not filter the list and *automatically* find suitable houses?
+As you can imagine, this was not a satisfactory solution for anyone involved. I thought about the problem at hand, and thought of a simple approach. If we know what we're looking for, why not filter the list and _automatically_ find suitable houses?
 
 # Step 0: Getting Started
+
 To begin with, I needed to decide what I was going to write this little project in. The choice of language or framework doesn't particularly matter in the short-term, but I wanted something that I was familiar with and would make my life easier.
 
 With this in mind, I chose [D](http://dlang.org/) and [vibe.d](http://vibed.org/). I knew how to use both well, and D's ability to model strongly-typed data combined with its performance made it a winning choice for me. vibe.d allowed me to asynchronously connect to websites and collect data. I decided that I wanted the resulting houses to be displayed as a webpage, so it was a fairly straightforward task to use vibe.d to present a simple listing of houses.
@@ -38,6 +39,7 @@ void httpPost(string url, string[string] vars, scope void delegate(scope HTTPCli
 ```
 
 # Step 1: The List
+
 The first order of business is to produce a complete list of houses that we can analyze. We already have a good starting point for this: the search results that we obtained with our basic criteria.
 
 For this, I chose to [scrape](http://en.wikipedia.org/wiki/Data_scraping) realestate.com.au. The idea was simple: get the [first page of results that fit our basic criteria](http://www.realestate.com.au/buy/property-house-with-4-bedrooms-between-0-400000-in-melbourne+-+northern+region+vic/list-1?newOrEstablished=established&numParkingSpaces=2&numBaths=2&maxBeds=any), get the link to each house, head to the next page, and then repeat until complete.
@@ -49,7 +51,12 @@ vibe.d is used to request the results page; upon getting the page back, we can b
 Inspecting the source HTML of the page, we notice that links to a house look like this:
 
 ```html
-<a href="/property-house-vic-reservoir-3092468912" class="name" rel="listingName">18 Fake Street, Reservoir, Vic 3073</a>
+<a
+  href="/property-house-vic-reservoir-3092468912"
+  class="name"
+  rel="listingName"
+  >18 Fake Street, Reservoir, Vic 3073</a
+>
 ```
 
 All we need to do is to extract the URL from that link (the `/property-house-vic-reservoir-3092468912`), which can be done with a simple regular expression:
@@ -67,6 +74,7 @@ After storing all the results from the above regular expression, we can then use
 Repeat the above two steps for each page and before long, we'll have a complete list of URLs to houses that satisfy the basic criteria. That's the easy part done.
 
 # Step 2: Basic Data
+
 Now that we've got our fancy list of house URLs, how do we turn this into something useful? Why, it's just as simple as Step 1: we visit each house URL, and extract all the relevant data.
 
 The page for each house contains vital information that we can collect and use for our needs. A sample page can be seen [here](house1.html); its structure is similar to the real page, but I've simplified it in order to highlight the core data (images courtesy of [placekitten](http://placekitten.com/)). Some analysis of the HTML later, and we can create simple regular expressions that can be used to extract all the relevant data points on the page, including, but not limited to, the address, suburb, post code, land size, price, and more.
@@ -162,6 +170,7 @@ void housePageResults(string url, scope HTTPClientResponse response)
 ```
 
 # Step 3: Additional Data
+
 When it comes to searching for a house, it's what the real estate agent _isn't_ telling you that could make or break your final decision. Of importance to us was availability of public transport and internet/landline services - for obvious reasons, an agent (or the listing they prepare) won't tell you whether either of these two are lacking.
 
 What can we do to help inform our decision making process and ensure we're seeing the full picture? As it turns out, these two criteria can be checked online via other services. The basic data we collected before provides us the address of each house - we simply automatically submit it to these external services, and get the information we need.
@@ -174,19 +183,19 @@ To demonstrate this, here's what I did for the journey planner:
 
 1. Launch Fiddler, and have it capture web traffic:
 
-    ![Image of just-opened Fiddler window](fiddler-1.png)
+   ![Image of just-opened Fiddler window](fiddler-1.png)
 
 2. Fill out the Journey Planner form with sample data (in this case, the address of a shopping centre), and submit the request to the service by pressing Show Journey.
 
-    ![Image of completed Journey Planner form, including results](fiddler-2.png)
+   ![Image of completed Journey Planner form, including results](fiddler-2.png)
 
 3. Stop capturing in Fiddler, and look at the resulting request and response for the form that was just submitted.
 
-    ![Image of Fiddler, showing the request and response](fiddler-3.png)
+   ![Image of Fiddler, showing the request and response](fiddler-3.png)
 
-From the resulting Fiddler dump, we can begin to divine what we need to know for automating this service. First, we can see that the request (the text under TextView in the top-half) submitted is [URL-encoded](http://en.wikipedia.org/wiki/Percent-encoding#The_application.2Fx-www-form-urlencoded_type); this lets us know *how* to send the data to the service. After that, we can break down the request data; the names of each field in the request are fairly self-explanatory, giving us everything we need to construct our very own request.
+From the resulting Fiddler dump, we can begin to divine what we need to know for automating this service. First, we can see that the request (the text under TextView in the top-half) submitted is [URL-encoded](http://en.wikipedia.org/wiki/Percent-encoding#The_application.2Fx-www-form-urlencoded_type); this lets us know _how_ to send the data to the service. After that, we can break down the request data; the names of each field in the request are fairly self-explanatory, giving us everything we need to construct our very own request.
 
-Next up, understanding the response (bottom-half of the window). Looking at the response in Raw view, something becomes apparent: this is actually more HTML! Since we only need *one* thing from this response, the travel time (`<span>54min</span>`), this is a problem easily solved with, you guessed it, regular expressions:
+Next up, understanding the response (bottom-half of the window). Looking at the response in Raw view, something becomes apparent: this is actually more HTML! Since we only need _one_ thing from this response, the travel time (`<span>54min</span>`), this is a problem easily solved with, you guessed it, regular expressions:
 
 Extract the time span from the response:
 
@@ -251,9 +260,10 @@ void getJourneyToFlinders(
 }
 ```
 
-That's an application of the general process. I did much the same thing for the Optus website; the biggest difference was that the response was in JSON, which allowed me to easily interpret it and extract the relevant information about connectivity. Of note is that this technique could be applied to *any* service - by taking what we already know (i.e. the address, the suburb, etc) and plugging it into another service, we can rapidly collect more data of use.
+That's an application of the general process. I did much the same thing for the Optus website; the biggest difference was that the response was in JSON, which allowed me to easily interpret it and extract the relevant information about connectivity. Of note is that this technique could be applied to _any_ service - by taking what we already know (i.e. the address, the suburb, etc) and plugging it into another service, we can rapidly collect more data of use.
 
 # Step 4: Filter and Score
+
 Alright! We've collected all the data we need. There's always more data available, but this is enough for our purposes. Now, to the fun part: using what we have to deliver judgement upon each house. Currently, we have our 400+ strong database of houses - each fully decked out with relevant information - but no way of trawling through them and sorting out the gems from the lost causes.
 
 We start off with the basics: an elementary filter, designed to eliminate houses that simply won't do, other criteria be damned. For us, this meant filtering out everything with a public transport travel time of over 70 minutes, wrongly categorized homes (naughty real estate agents putting certain properties under the wrong category means we have to detect them via keywords in the description), and houses with a price (if available) over a certain threshold. This filter could be arbitrarily tightened, but I chose to keep it relatively loose in order to ensure only the worst of the worst were being removed from consideration.
@@ -364,6 +374,7 @@ houses.sort!((a,b) => a.score > b.score);
 ```
 
 # Step 5: Present with Seasoning
+
 The last step remains: presenting all of the data. The use of vibe.d makes this easy; [Diet templates](http://vibed.org/templates/diet) allow us to quickly assemble a content-rich layout. As Diet templates allow for the combination of D code with layout, all I had to do was write a function to render a house, and then loop over the list of houses (which was passed in as a parameter to the template).
 
 Using [Bootstrap](http://getbootstrap.com/) allowed me to concentrate on presenting the content without having to worry about styling concerns. Its grid system ensured that I could easily use more complicated layouts, such as the two-column layout used by the list of houses.
@@ -404,6 +415,7 @@ div.container-fluid
 The final result, with two sample houses, can be seen [here](houselist.html). With real data, this produced a list of ~40 houses with all relevant information included - a definite improvement over the original 400 houses!
 
 # Conclusion
+
 There's still much that can be done to improve the quality of the results. More data can be pulled in from other sources; for example, publically accessible property reports could be accessed to determine the age of the property, as well as potentially missing data like the land size. The sky's the limit when it comes to pulling in data and coming up with new heuristics; I chose to leave it here because the results were good enough, but someone interested in further developing the concept could improve it considerably.
 
 Of note is that these techniques are not restricted to this particular use case. They can be used for much more than this; whenever dealing with a large number of potential choices, one could utilize a similar strategy to reduce the size of the list of candidates. For example, this could be applied to searching for cars - the same bag of tricks can be used to great effect.

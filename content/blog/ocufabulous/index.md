@@ -1,7 +1,7 @@
 +++
 title = "Ocufabulous: An Oculus Rift DK2 Review"
 short = "Reviewing the second Oculus Rift developer kit and predicting the future for VR."
-date = 2014-10-12
+datetime = 2014-10-12T00:00:00Z
 
 [taxonomies]
 tags=["xr"]
@@ -14,6 +14,7 @@ My own DK2 arrived several weeks ago, giving me the chance to try out several in
 <!-- more -->
 
 # The Headset
+
 ![Photo of the DK2 box](box.jpg)
 ![Photo of the contents of the DK2 box](box-contents.jpg)
 
@@ -55,11 +56,13 @@ When in the Rift, the screen-door effect manifests as a weaving pattern over the
 Overall, the headset itself is in good form. There are still improvements to be made for the consumer version, but it’s getting closer to mass market adoption. The headset could be more comfortable to use for extended periods of time, especially around the nose and cheeks. Lens separation adjustment (preferably automated) is a necessity for the consumer version; even with my expectations well-in-check as a developer, this one issue almost made the Rift unusable for me.
 
 # Currently Released Applications
+
 Due to my graphics card problems, I haven’t had the chance to develop anything for my Rift. As a result, I’ve been spending a large amount of time trying out other people’s applications and seeing what they’ve managed to do with the Rift. There are a few other applications that I've tried out, but they have significant performance problems on my current graphics card.
 
 The screenshots were unwarped courtesy of [eVRydayVR's ffmpeg-unwarpvr](https://github.com/eVRydayVR/ffmpeg-unwarpvr/releases/tag/v0.2). Without unwarpvr, the screenshots would show barrel distortion and chromatic aberration; these artifacts are cancelled out by the artifacts of the lenses, resulting in a normal image. However, as these are screenshots of the distorted image, unwarpvr is necessary to get the original image.
 
 ## Oculus Demo Scene
+
 ![Unwarped screenshot of the Oculus Demo Scene, looking at the desk and background](demo1-unwarp.jpg)
 ![Unwarped screenshot of the Oculus Demo Scene, looking at the tower of cards](demo2-unwarp.jpg)
 
@@ -68,6 +71,7 @@ In the configuration utility, there is a demo scene you can view in order to tes
 It serves as a good introduction to the DK2’s new capabilities, especially positional tracking. To this end, there is an option that visualizes the camera tracking frustum. It served as a decent calibration experience and helped me get acclimated to the DK2; being able to look around the table and lean into the objects felt natural.
 
 ## Experience/Japan Teaser Trailer
+
 ![Unwarped screenshot of the first scene from Experience/Japan overlooking a terminus](experiencejapan1-unwarp.jpg)
 ![Unwarped screenshot of the last scene from Experience/Japan, overlooking a canal](experiencejapan3-unwarp.jpg)
 
@@ -80,6 +84,7 @@ With that being said, it's no secret that this is one of my favorite experiences
 The last two scenes (second screenshot) in the teaser trailer have you go through a city (which is presumably Tokyo) at night, lit up by bright electric banners. These two scenes were absolutely breathtaking when I first went through them; here I was, viewing a real city, with real people living their lives. It’ll be a while before anything computer-generated can get close to this.
 
 ## Proton Pulse
+
 [Proton Pulse](http://www.vanguardv.com/?page_id=5) quickly rose to attention in the VR world when it was initially released for the DK1 before being taken down for unspecified reasons. Now, a year later, it’s back for the DK2, and it’s a damned good implementation. It’s a stylized VR version of Breakout in which you use your head to control the paddle; its core gameplay mechanic is addictive and well utilizes the VR format.
 
 I found it quite entertaining, but quickly had to stop playing after about 5-10 minutes. To be fair, this was through no fault of the game itself. It relies on bouncing the ball around in your near field of view, but due to the IPD mismatch issue, this became quite painful as one of my eyes was trying to constantly focus on a blurry view.
@@ -87,6 +92,7 @@ I found it quite entertaining, but quickly had to stop playing after about 5-10 
 To get an idea of what it was like, I had other people with closer IPDs try it out, and they were able to play it for extended periods of time without issues. In any case, I look forward to revisiting it when I can resolve the IPD issue.
 
 ## SightLine - The Chair
+
 ![Unwarped screenshot of the first scene from SightLine - The Chair; cubes in a shallow sea of water](sightline1-unwarp.jpg)
 ![Unwarped screenshot of the second-last scene from SightLine - The Chair; tendrils and tubes very close to the eye](sightline5-unwarp.jpg)
 
@@ -97,6 +103,7 @@ Performance was a little lacking, but that’s to be expected considering the gr
 Generally, it was a pleasant introduction to VR; there were a few scenes that came close to legitimately inducing some kind of emotion in me. There was a scene near the end that has you in an organically growing web of wires (see second screenshot), and it felt rather constrictive - even though it was clearly not real, I felt some level of primal fear.
 
 ## Virtual Desktop
+
 ![Unwarped screenshot of the Windows desktop, as seen through Virtual Desktop](vd1-unwarp.jpg)
 ![Unwarped screenshot of Super Hexagon, as seen through Virtual Desktop](vd2-unwarp.jpg)
 
@@ -107,6 +114,7 @@ It’s one of the most flexible applications I have used, as you can consume nor
 The developer is quite active and readily fixes any bugs that get reported. In general, I’ve had a very positive experience using it, and it’s one of my favorite applications to use on the Rift, simply because it makes certain tasks (such as launching another VR application) very convenient.
 
 ## Welcome to Oculus
+
 ![Unwarped screenshot of Welcome to Oculus' first room](wto1-unwarp.jpg)
 ![Unwarped screenshot of Welcome to Oculus' living room](wto2-unwarp.jpg)
 
@@ -121,6 +129,7 @@ Its audience seems to be somewhat targeted; the middle of the demo involves a ch
 However, in general, it was an excellent demo and I’m more than happy to recommend it as a starter introduction to what’s possible in VR. Throughout the demo, it emphasizes that VR isn’t just the latest and greatest medium: it’s capable of completely consuming and replacing all previous mediums.
 
 ## Radial-G
+
 ![Unwarped screenshot of the log-in screen for Radial-G](radialg1-unwarp.jpg)
 ![Unwarped screenshot of Radial-G gameplay](radialg2-unwarp.jpg)
 
@@ -128,13 +137,14 @@ However, in general, it was an excellent demo and I’m more than happy to recom
 
 Out of the VR games I’ve tested so far, this is by far my favorite one. The demo itself is a clean, polished concept and clearly demonstrates what they’re going for; it’s an engaging experience, and it plays very well into the strengths of VR. It’s easy to lose track of time while playing this on the Rift; its core gameplay mechanic is so utterly addictive that I’d end up spending half an hour just trying to beat my lap time without ever realizing the time spent at any point.
 
-Its levels of polish are clear from the first moment you get to interact with the game. A clean, easy-to-use, *optional* log-in screen headlines the game, allowing you to store and compare lap records with others. For now, I'm playing non-competitively, so I was able to play offline without ever having to log in. Other racing games (see: TrackMania 2) could learn a thing or two from this.
+Its levels of polish are clear from the first moment you get to interact with the game. A clean, easy-to-use, _optional_ log-in screen headlines the game, allowing you to store and compare lap records with others. For now, I'm playing non-competitively, so I was able to play offline without ever having to log in. Other racing games (see: TrackMania 2) could learn a thing or two from this.
 
 Being able to look into corners and determine where I should go next is one of the essential features that I never really realized I needed in a racing game. It completely absorbs you and you begin to ignore the DK2’s flaws; it managed to distill the pure feeling of speed, and do it well. Even on the highest speed level, not once did I end up feeling motion sick.
 
 This is something I’d highly recommend trying out if you’re at all a fan of racing games and you’re ready to move on from introductory VR experiences. Even though it’s early days yet for the game, it’s a fantastic demonstration of what VR can do for gaming; it’s completely natural and it is by far one of the best VR experiences I’ve had so far.
 
 # Conclusion
+
 The DK2 is hardly perfect; in fact, it’s already been superseded by both internal and external prototypes ([Crescent Bay](http://www.oculus.com/blog/oculus-connect-2014/)). However, this is irrelevant to its purpose: to allow developers to produce and test content. In this regard, it does very well - it provides almost all of the features that developers can expect to see in the consumer version, even if they're not at their best.
 
 Virtual reality is the future. It’s the ultimate medium: it’s capable of showing everything prior to it, and there is no greater medium than being able to substitute reality itself. The DK2 is another taste of what’s to come: truly consumer-affordable, truly effective consumer virtual reality headsets that bring science fiction stories to life.

@@ -1,7 +1,7 @@
 +++
 title = "Hello, again!"
 short = "A new beginning."
-date = 2025-02-02
+datetime = 2025-02-02T00:00:00Z
 
 [taxonomies]
 tags=["personal", "meta"]

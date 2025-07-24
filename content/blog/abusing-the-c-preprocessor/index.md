@@ -1,7 +1,7 @@
 +++
 title = "Abusing The C Preprocessor: Writing A 4-Bit Adder"
 short = "String Interpolation Is All You Need."
-date = 2013-10-01
+datetime = 2013-10-01T00:00:00Z
 
 [taxonomies]
 tags=["c", "cursed"]
@@ -13,7 +13,7 @@ Of course, the best way to learn is to do, and I felt like indulging in some mas
 
 <!-- more -->
 
-Token pasting is the main (see: *only*) operation in the C preprocessor. Two tokens (input strings) are added together (concatenated); while this seems rather limited, you'll see it has plenty of potential:
+Token pasting is the main (see: _only_) operation in the C preprocessor. Two tokens (input strings) are added together (concatenated); while this seems rather limited, you'll see it has plenty of potential:
 
 ```c
 #include <stdio.h>
@@ -52,7 +52,7 @@ We use two macros here because our main `JOIN` macro needs to expand its argumen
 #define AND( a, b ) JOIN( AND_, JOIN( a, b ) )
 ```
 
-Now, we have token pasting. We know that we can add together tokens to produce new tokens. Say we have two tokens, representing bits: `0` and `1`. If we token paste them together, we get `01`. Now, if we token paste *that* with another token, say `XOR_`, we can get `XOR_01`, which is another token.
+Now, we have token pasting. We know that we can add together tokens to produce new tokens. Say we have two tokens, representing bits: `0` and `1`. If we token paste them together, we get `01`. Now, if we token paste _that_ with another token, say `XOR_`, we can get `XOR_01`, which is another token.
 
 We know that the preprocessor is all too happy to expand these - so what if we made a [truth table](http://en.wikipedia.org/wiki/Truth_table) of tokens? By defining macros which correspond to our tokens (`XOR_00`, `XOR_01`, etc), the values of these macros are substituted when we token paste `XOR_`, `0`, and `1` together - we have created an operator!
 
@@ -73,7 +73,7 @@ By defining the truth table for XOR and AND, we've set up the basic building blo
     XOR( AND( XOR( a, b ), cin ), AND( a, b ) )
 ```
 
-Here lies the core of the adder. These macros transcode the logic behind the [full adder](http://en.wikipedia.org/wiki/Adder_(electronics)#Full_adder) - the equations have been reproduced in the comments.
+Here lies the core of the adder. These macros transcode the logic behind the [full adder](<http://en.wikipedia.org/wiki/Adder_(electronics)#Full_adder>) - the equations have been reproduced in the comments.
 
 These macros basically chain together the `XOR` and `AND` operators we made before, so that we can calculate the output and `Carry Out` bits from our input (the `A`, `B` and `Carry In` bits).
 
@@ -180,6 +180,7 @@ And to round things out, here's the expanded version of the `int main()` functio
 ```bash
 philpax@morningtide:$ clang -E full_add.c -DNUMBER_1=7 -DNUMBER_2=4
 ```
+
 ```c
 /* Omitted for brevity */
 int main()
@@ -191,4 +192,4 @@ int main()
 }
 ```
 
-I hope you've enjoyed this brief look at the mysterious, powerful, and quite frankly *insane* C preprocessor. A compiling version of the full code can be found [here](https://github.com/Philpax/binarycpp/tree/ec87c09088eacc2b95ff7a8b35093cb0176afdd6). At the time of testing, this code worked in GCC and Clang, but not Visual C++.
+I hope you've enjoyed this brief look at the mysterious, powerful, and quite frankly _insane_ C preprocessor. A compiling version of the full code can be found [here](https://github.com/Philpax/binarycpp/tree/ec87c09088eacc2b95ff7a8b35093cb0176afdd6). At the time of testing, this code worked in GCC and Clang, but not Visual C++.

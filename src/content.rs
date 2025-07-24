@@ -107,7 +107,7 @@ impl DocumentCollection {
 
                 documents.push(Document::read(&index, vec![id], document_type)?);
             }
-            documents.sort_by_key(|d| d.metadata.datetime());
+            documents.sort_by_key(|d| d.metadata.datetime);
             documents.reverse();
             documents
         };
@@ -233,6 +233,18 @@ pub struct Document {
     pub hero_filename_and_alt: Option<(String, String)>,
     pub word_count: usize,
 }
+impl std::fmt::Display for Document {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}:", self.document_type.to_string().to_lowercase())?;
+        for (idx, id) in self.id.iter().enumerate() {
+            if idx > 0 {
+                write!(f, "/")?;
+            }
+            write!(f, "{id}")?;
+        }
+        Ok(())
+    }
+}
 impl Document {
     fn read(path: &Path, id: DocumentId, document_type: DocumentType) -> anyhow::Result<Self> {
         let file =
@@ -254,7 +266,7 @@ impl Document {
             let metadata = DocumentMetadata {
                 title: id.last().cloned().unwrap_or_else(|| "Home".to_string()),
                 short: None,
-                date: None,
+                datetime: None,
                 taxonomies: None,
             };
             (metadata, file.as_str())
@@ -386,16 +398,12 @@ pub struct DocumentMetadata {
     pub title: String,
     short: Option<String>,
     #[serde(with = "toml_datetime_compat", default)]
-    date: Option<chrono::NaiveDate>,
+    pub datetime: Option<chrono::DateTime<chrono::Utc>>,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 impl DocumentMetadata {
     pub fn short(&self) -> Option<markdown::mdast::Node> {
         self.short.as_deref().map(parse_markdown)
-    }
-
-    pub fn datetime(&self) -> Option<chrono::DateTime<chrono::Utc>> {
-        self.date.map(|d| d.and_time(Default::default()).and_utc())
     }
 }
 

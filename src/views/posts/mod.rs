@@ -36,12 +36,13 @@ pub fn tags(document: &Document) -> paxhtml::Element {
 }
 
 pub fn date(document: &Document) -> paxhtml::Element {
-    document
-        .metadata
-        .datetime()
-        .map(|dt| dt.date_naive())
-        .map(crate::elements::date_with_chrono)
-        .unwrap_or_default()
+    crate::elements::date_with_chrono(
+        document
+            .metadata
+            .datetime
+            .unwrap_or_else(|| panic!("No datetime for {document}"))
+            .date_naive(),
+    )
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]

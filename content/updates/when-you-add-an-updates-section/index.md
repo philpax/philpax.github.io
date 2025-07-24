@@ -1,7 +1,7 @@
 +++
 title = "when you add an updates section and then don't use it for two months"
 short = "Blog posts have a high bar associated with them. Updates should not. Unfortunately, even that is too much sometimes..."
-date = 2025-07-23
+datetime = 2025-07-23T00:00:00Z
 
 [taxonomies]
 tags=["meta", "blackbird", "genresinspace", "jc2mp"]

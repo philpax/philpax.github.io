@@ -76,6 +76,6 @@ fn build_item(
         .guid(guid)
         .description(description)
         .author(author.to_string())
-        .pub_date(doc.metadata.datetime().map(|d| d.to_rfc2822()))
+        .pub_date(doc.metadata.datetime.map(|d| d.to_rfc2822()))
         .build()
 }

@@ -90,7 +90,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 fn update_doc_item(doc: &Document) -> paxhtml::Element {
     let date_str = doc
         .metadata
-        .datetime()
+        .datetime
         .map(|dt| dt.date_naive().to_string())
         .unwrap_or_default();
     html! {

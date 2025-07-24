@@ -59,7 +59,7 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
                 .as_ref()
                 .map(|_| "summary_large_image".to_string()),
             twitter_image: hero_image,
-            article_published_time: document.metadata.datetime(),
+            article_published_time: document.metadata.datetime,
             article_tag: document
                 .metadata
                 .taxonomies
