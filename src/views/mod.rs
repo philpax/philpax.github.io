@@ -105,15 +105,13 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                                 <h1 class="text-3xl font-bold h-full flex items-center leading-[var(--header-height)]">{context.website_author}</h1>
                             </div>
                             <nav class="flex items-center mt-2 md:mt-0 flex-1">
-                                <ul id="header-links" class="list-none m-0 p-0 h-full flex w-full">
+                                <div id="header-links" class="grid grid-cols-2 gap-2 md:flex w-full md:flex-row md:gap-0">
                                 #{
                                     links.iter().map(|(url, label)| { html! {
-                                        <li class="flex-1">
-                                            <a href={url}>{*label}</a>
-                                        </li>
+                                        <a href={url} class="text-center bg-[var(--color)] text-[var(--background-color)] hover:bg-[var(--color-secondary)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1">{*label}</a>
                                     }})
                                 }
-                                </ul>
+                                </div>
                             </nav>
                         </div>
                     </header>
