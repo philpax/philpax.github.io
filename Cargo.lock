@@ -433,7 +433,7 @@ version = "0.1.0"
 [[package]]
 name = "paxhtml"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#a218cd32bb3840d98805698050d193c37e4a2654"
+source = "git+https://github.com/philpax/paxhtml.git#deb227c0981817a457f426a2c6344145d013a28e"
 dependencies = [
  "html-escape",
  "paxhtml_macro",
@@ -444,7 +444,7 @@ dependencies = [
 [[package]]
 name = "paxhtml_macro"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#a218cd32bb3840d98805698050d193c37e4a2654"
+source = "git+https://github.com/philpax/paxhtml.git#deb227c0981817a457f426a2c6344145d013a28e"
 dependencies = [
  "convert_case",
  "proc-macro2",

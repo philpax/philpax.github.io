@@ -174,6 +174,32 @@ impl<'a> MarkdownConverter<'a> {
                 )
             }
 
+            // Table
+            Node::Table(t) => {
+                let children = self.convert_many(&t.children, Some(node));
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b::table([("class", "w-full border-collapse border border-[var(--color-secondary)] rounded-lg overflow-hidden").into()])(children)
+                }
+            }
+            Node::TableRow(t) => {
+                let children = self.convert_many(&t.children, Some(node));
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b::tr([("class", "border-b border-[var(--color-secondary)]").into()])(children)
+                }
+            }
+            Node::TableCell(t) => {
+                let children = self.convert_many(&t.children, Some(node));
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b::td([("class", "px-4 py-3 text-sm text-[var(--text-color)] border-r border-[var(--color-secondary)] last:border-r-0").into()])(children)
+                }
+            }
+
             // Handled elsewhere
             Node::FootnoteDefinition(_) => paxhtml::Element::Empty,
 
@@ -182,10 +208,7 @@ impl<'a> MarkdownConverter<'a> {
             | Node::ImageReference(_)
             | Node::LinkReference(_)
             | Node::Math(_)
-            | Node::Table(_)
             | Node::ThematicBreak(_)
-            | Node::TableRow(_)
-            | Node::TableCell(_)
             | Node::Definition(_) => paxhtml::Element::Empty,
 
             // Never supported
