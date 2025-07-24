@@ -1,6 +1,7 @@
 use std::{
     collections::{BTreeMap, HashMap},
     path::{Path, PathBuf},
+    process::Command,
 };
 
 use anyhow::Context;
@@ -266,9 +267,10 @@ impl Document {
             let metadata = DocumentMetadata {
                 title: id.last().cloned().unwrap_or_else(|| "Home".to_string()),
                 short: None,
-                datetime: None,
+                datetime: Some(get_file_datetime(path)?),
                 taxonomies: None,
             };
+
             (metadata, file.as_str())
         };
 
@@ -414,4 +416,24 @@ pub struct DocumentTaxonomies {
 
 pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
     markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
+}
+
+fn get_file_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    // Try to get the last commit time from Git first
+    let git_output = Command::new("git")
+        .args(["log", "-1", "--format=%cI", "--", path.to_str().unwrap()])
+        .output();
+
+    if let Some(output) = git_output.ok().filter(|o| o.status.success()) {
+        let timestamp = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        if let Ok(datetime) = chrono::DateTime::parse_from_rfc3339(&timestamp) {
+            return Ok(datetime.with_timezone(&chrono::Utc));
+        }
+    }
+
+    // Fallback to file modification time
+    let metadata = std::fs::metadata(path)?;
+    let modified = metadata.modified()?;
+    let datetime = chrono::DateTime::from(modified);
+    Ok(datetime.with_timezone(&chrono::Utc))
 }

@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use chrono::Timelike;
 pub use paxhtml::{builder::Element, html};
 
 use paxhtml::builder::*;
@@ -16,7 +17,7 @@ pub fn datetime_with_chrono<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) ->
     time([
         ("datetime", date.to_rfc3339()).into(),
         ("title", date.to_rfc2822()).into(),
-    ])(date.to_rfc2822())
+    ])(date.with_nanosecond(0).unwrap().to_rfc3339())
 }
 
 pub fn break_on_colon(value: &str) -> Element {

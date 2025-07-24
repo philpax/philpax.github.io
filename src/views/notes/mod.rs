@@ -33,7 +33,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                     {notes_hierarchy(context, note)}
                 </div>
                 <div class="md:pl-4">
-                    <h2 class="text-3xl font-bold mb-2">
+                    <h2 class="text-3xl font-bold">
                         {{
                             let mut elements = vec![];
                             for (index, component) in display_note_id.iter().enumerate() {
@@ -50,6 +50,9 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                             elements
                         }}
                     </h2>
+                    <div class="text-[var(--color-secondary)] text-sm mb-2">
+                        {datetime_with_chrono(note.metadata.datetime.unwrap())}
+                    </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {MarkdownConverter::new(context.syntax).convert(&note.description, None)}
                     </div>
