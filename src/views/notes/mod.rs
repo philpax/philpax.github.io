@@ -1,6 +1,7 @@
 use crate::{
     content::{DocumentFolderNode, DocumentNode},
     markdown::MarkdownConverter,
+    util,
 };
 
 use super::*;
@@ -61,48 +62,89 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
 fn notes_hierarchy(context: ViewContext, active_document: &Document) -> paxhtml::Element {
     html! {
         <ul class="list-none m-0 p-0 break-words overflow-hidden">
-            {build_tree(&context.content.notes.documents, active_document)}
+            {build_tree(&context.content.notes.documents, active_document, 0)}
         </ul>
     }
 }
 
-fn build_tree(folder_node: &DocumentFolderNode, active_document: &Document) -> paxhtml::Element {
+fn build_tree(
+    folder_node: &DocumentFolderNode,
+    active_document: &Document,
+    depth: usize,
+) -> paxhtml::Element {
     let inactive_color = "text-[var(--color-secondary)]!";
+    let has_children = !folder_node.children.is_empty();
+    let checkbox_id = format!(
+        "folder-{}-{}",
+        depth,
+        util::slugify(&folder_node.folder_name)
+    );
+
+    let render_document = |document: &Document| {
+        components::link(
+            false,
+            None,
+            document.route_path().url_path(),
+            if active_document.id == document.id {
+                "active"
+            } else {
+                inactive_color
+            },
+            document.metadata.title.clone().into(),
+        )
+    };
+
+    let index_item = folder_node
+        .index_document
+        .as_ref()
+        .map(render_document)
+        .unwrap_or_else(|| {
+            html! {
+                <span class={inactive_color}>{folder_node.folder_name.clone()}</span>
+            }
+        });
 
     html! {
         <li class="break-words">
-            {folder_node.index_document.as_ref().map(|index| {
-                components::link(
-                    false,
-                    None,
-                    index.route_path().url_path(),
-                    if active_document.id == index.id { "active" } else { inactive_color },
-                    index.metadata.title.clone().into(),
-                )
-            }).unwrap_or_else(|| html! {
-                <span class={inactive_color}>{folder_node.folder_name.clone()}</span>
-            })}
-            <ul class="list-none m-0 p-0 ml-4">
-                #{folder_node.children.values().map(|node| match node {
-                        DocumentNode::Folder(folder_node) => {
-                            build_tree(folder_node, active_document)
-                        }
-                        DocumentNode::Document { document } => {
-                            html! {
-                                <li class="break-words">
-                                    {components::link(
-                                        false,
-                                        None,
-                                        document.route_path().url_path(),
-                                        if active_document.id == document.id { "active" } else { inactive_color },
-                                        document.metadata.title.clone().into()
-                                    )}
-                                </li>
-                            }
-                        }
-                    })}
-            </ul>
+            {if has_children {
+                html! {
+                    <>
+                        <input r#type="checkbox" id={checkbox_id} class="peer sr-only" checked autocomplete="off" />
+                        <div class="flex items-center gap-1">
+                            <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--color-secondary)] hover:text-[var(--color)] transition-colors">
+                                <span class="peer-checked:hidden">{"▶"}</span>
+                                <span class="hidden peer-checked:inline">{"▼"}</span>
+                            </label>
+                            <div class="flex-1">
+                                {index_item}
+                            </div>
+                        </div>
+                        <ul class="list-none m-0 p-0 ml-4 hidden peer-checked:block">
+                            #{folder_node.children.values().map(|node| match node {
+                                DocumentNode::Folder(folder_node) => {
+                                    build_tree(folder_node, active_document, depth + 1)
+                                }
+                                DocumentNode::Document { document } => {
+                                    html! {
+                                        <li class="break-words">
+                                            {render_document(document)}
+                                        </li>
+                                    }
+                                }
+                            })}
+                        </ul>
+                    </>
+                }
+            } else {
+                html! {
+                    <div class="flex items-center gap-1">
+                        <span class="w-3"></span>
+                        <div class="flex-1">
+                            {index_item}
+                        </div>
+                    </div>
+                }
+            }}
         </li>
-
     }
 }

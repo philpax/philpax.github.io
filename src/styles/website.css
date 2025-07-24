@@ -75,3 +75,16 @@ code span {
 .toc ul ul {
   padding-left: 1.5em;
 }
+
+/* Collapsible notes hierarchy */
+.peer:checked ~ .peer-checked\:hidden {
+  display: none;
+}
+
+.peer:checked ~ .peer-checked\:inline {
+  display: inline;
+}
+
+.peer:checked ~ .peer-checked\:block {
+  display: block;
+}
