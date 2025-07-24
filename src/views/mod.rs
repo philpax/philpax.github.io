@@ -108,7 +108,7 @@ fn layout(context: ViewContext, meta: SocialMeta, inner: Element) -> paxhtml::Do
                                 <div id="header-links" class="grid grid-cols-2 gap-2 md:flex w-full md:flex-row md:gap-0">
                                 #{
                                     links.iter().map(|(url, label)| { html! {
-                                        <a href={url} class="text-center bg-[var(--color)] text-[var(--background-color)] hover:bg-[var(--color-secondary)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1">{*label}</a>
+                                        <a href={url} class="text-center bg-[var(--color)] text-[var(--background-color)] lowercase hover:bg-[var(--color-secondary)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1">{*label}</a>
                                     }})
                                 }
                                 </div>
