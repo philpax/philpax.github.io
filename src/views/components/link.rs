@@ -18,7 +18,7 @@ pub fn link(
         hover:underline-offset-[0px] \
         "
     } else {
-        "no-underline hover:underline"
+        "no-underline hover:underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)]"
     };
 
     let additional_classes = additional_classes.into();
@@ -31,9 +31,7 @@ pub fn link(
             class={format!("\
             text-[var(--color)] \
             transition-all duration-200 \
-            hover:text-[var(--color-secondary)] \
             visited:text-[var(--color)] \
-            visited:hover:text-[var(--color-secondary)] \
             {underline_classes} \
             {additional_classes}\
             ")}
