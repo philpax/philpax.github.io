@@ -48,7 +48,7 @@ One of:
 
 # Media
 
-- My [Steam wishlist](https://store.steampowered.com/wishlist/id/Philpax/)
+- [My Steam wishlist](https://store.steampowered.com/wishlist/id/Philpax/)
 - Switch games (honestly, I'd buy these on Steam, but these editions appear to be Switch exclusives):
   - [The House in Fata Morgana: Dreams of the Revenants Edition](https://www.nintendo.com/us/store/products/the-house-in-fata-morgana-dreams-of-the-revenants-edition-switch/)
   - [TSUKIHIME -A piece of blue glass moon-](https://www.nintendo.com/us/store/products/tsukihime-a-piece-of-blue-glass-moon-switch/)
