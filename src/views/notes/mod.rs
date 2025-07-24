@@ -32,8 +32,22 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                     {notes_hierarchy(context, note)}
                 </div>
                 <div class="md:pl-4">
-                    <h2 class="text-3xl font-bold mb-2 italic">
-                        {format!("{}", display_note_id.join(" · "))}
+                    <h2 class="text-3xl font-bold mb-2">
+                        {{
+                            let mut elements = vec![];
+                            for (index, component) in display_note_id.iter().enumerate() {
+                                if index != 0 {
+                                    elements.push(html! { <span class="text-[var(--color-secondary)]">{" · "}</span> });
+                                }
+                                let class = if index == display_note_id.len() - 1 {
+                                    "italic"
+                                } else {
+                                    "text-[var(--color-secondary)]"
+                                };
+                                elements.push(html! { <span class={class}>{component}</span> });
+                            }
+                            elements
+                        }}
                     </h2>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {MarkdownConverter::new(context.syntax).convert(&note.description, None)}
