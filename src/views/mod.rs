@@ -118,7 +118,7 @@ pub fn layout(
     paxhtml::Document::new([
         paxhtml::builder::doctype(["html".into()]),
         html! {
-            <html lang="en-AU">
+            <html lang="en-AU" class="w-[100vw]">
                 <head>
                     <title>{meta.full_title(context)}</title>
                     <meta charset="utf-8" />
