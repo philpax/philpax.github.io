@@ -123,6 +123,11 @@ impl<'a> MarkdownConverter<'a> {
             Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
                 ("src", i.url.clone()).into(),
                 ("alt", i.alt.clone()).into(),
+                (
+                    "class",
+                    "border-2 border-[var(--color)] mx-auto block".to_string(),
+                )
+                    .into(),
             ])),
             Node::Link(l) => {
                 let target = l.url.clone();
