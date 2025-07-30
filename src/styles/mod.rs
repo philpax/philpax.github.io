@@ -1,7 +1,5 @@
 use crate::ViewContext;
 
-mod tailwind;
-
 pub struct GenerateOutput {
     pub css: String,
     pub dark_mode_icon: String,
@@ -13,10 +11,15 @@ pub fn generate(
     fast: bool,
     use_global_tailwind: bool,
 ) -> anyhow::Result<GenerateOutput> {
+    let tailwind_css = "src/styles/tailwind.css";
     let tailwind_output = if use_global_tailwind {
-        tailwind::run_with_global()
+        paxhtml_tailwind::run_with_global(tailwind_css)
     } else {
-        tailwind::download_and_run(fast)
+        paxhtml_tailwind::download_and_run(
+            paxhtml_tailwind::RECOMMENDED_VERSION,
+            fast,
+            tailwind_css,
+        )
     }?;
 
     let (property_sets, remaining) =

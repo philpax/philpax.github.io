@@ -433,7 +433,7 @@ version = "0.1.0"
 [[package]]
 name = "paxhtml"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#deb227c0981817a457f426a2c6344145d013a28e"
+source = "git+https://github.com/philpax/paxhtml.git#74408474a43095743d694ad67e917749aea96ade"
 dependencies = [
  "html-escape",
  "paxhtml_macro",
@@ -444,13 +444,18 @@ dependencies = [
 [[package]]
 name = "paxhtml_macro"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#deb227c0981817a457f426a2c6344145d013a28e"
+source = "git+https://github.com/philpax/paxhtml.git#74408474a43095743d694ad67e917749aea96ade"
 dependencies = [
  "convert_case",
  "proc-macro2",
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "paxhtml_tailwind"
+version = "0.1.0"
+source = "git+https://github.com/philpax/paxhtml.git#74408474a43095743d694ad67e917749aea96ade"
 
 [[package]]
 name = "paxsite"
@@ -462,6 +467,7 @@ dependencies = [
  "markdown",
  "paxcss",
  "paxhtml",
+ "paxhtml_tailwind",
  "rss",
  "serde",
  "sha1",
