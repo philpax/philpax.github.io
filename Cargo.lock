@@ -42,6 +42,7 @@ dependencies = [
  "serde",
  "serde_json",
  "syntect",
+ "two-face",
 ]
 
 [[package]]
@@ -805,6 +806,17 @@ name = "toml_write"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801"
+
+[[package]]
+name = "two-face"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "384eda438ddf62e2c6f39a174452d952d9d9df5a8ad5ade22198609f8dcaf852"
+dependencies = [
+ "once_cell",
+ "serde",
+ "syntect",
+]
 
 [[package]]
 name = "typenum"

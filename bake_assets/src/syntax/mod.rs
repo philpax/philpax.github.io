@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::Path, str::FromStr};
 
 use syntect::{
     highlighting::ThemeSet,
-    parsing::{syntax_definition::Context, Scope, SyntaxDefinition, SyntaxSet},
+    parsing::{syntax_definition::Context, Scope, SyntaxDefinition},
 };
 
 mod sublime_color_scheme;
@@ -15,7 +15,7 @@ pub fn build(source_dir: &Path, output_dir: &Path) -> anyhow::Result<()> {
 }
 
 fn build_syntax_set(source_dir: &Path, output_dir: &Path) -> anyhow::Result<()> {
-    let mut builder = SyntaxSet::load_defaults_newlines().into_builder();
+    let mut builder = two_face::syntax::extra_newlines().into_builder();
     builder.add(SyntaxDefinition::load_from_str(
         &std::fs::read_to_string(&source_dir.join("Pug.sublime-syntax"))?,
         true,
