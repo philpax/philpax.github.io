@@ -125,7 +125,8 @@ impl<'a> MarkdownConverter<'a> {
                 ("alt", i.alt.clone()).into(),
                 (
                     "class",
-                    "border-2 border-[var(--color)] mx-auto block".to_string(),
+                    "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
+                        .to_string(),
                 )
                     .into(),
             ])),

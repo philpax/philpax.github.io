@@ -28,7 +28,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                 <div class="mb-2 md:pb-0 md:mb-0 md:w-48 md:min-w-48 md:max-w-48">
                     {notes_hierarchy(context, note)}
                 </div>
-                <div class="md:pl-4">
+                <div class="md:pl-4" style="--centered-content-width: 600px">
                     <h2 class="text-3xl font-bold">
                         {{
                             let mut elements = vec![];
