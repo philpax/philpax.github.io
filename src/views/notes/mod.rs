@@ -25,7 +25,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
         CurrentPage::Notes,
         html! {
             <div class="flex flex-col md:flex-row">
-                <div class="mb-2 md:pb-0 md:mb-0 md:w-40 md:min-w-40 md:max-w-40">
+                <div class="mb-2 md:pb-0 md:mb-0 md:w-48 md:min-w-48 md:max-w-48">
                     {notes_hierarchy(context, note)}
                 </div>
                 <div class="md:pl-4">
