@@ -2,7 +2,8 @@ use crate::{syntax::SyntaxHighlighter, views::FONT_STYLE};
 
 pub fn code(syntax: &SyntaxHighlighter, lang: Option<&str>, code: &str) -> paxhtml::Element {
     paxhtml::html! {
-        <pre class="code text-sm p-2 overflow-x-auto max-w-full">
+        // TODO: fix this max-w thing some day; without this explicit constraint, long lines of code blow out the parent container's width
+        <pre class="code text-sm p-2 overflow-x-auto max-w-[600px]">
             <code>
                 <pre class={format!("\
                     bg-[hsl(220,27%,20%)] text-white -mt-2 mb-1 -ml-2 py-0.5 px-1 \
