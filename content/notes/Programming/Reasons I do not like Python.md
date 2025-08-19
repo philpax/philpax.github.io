@@ -14,7 +14,7 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 - following from the above, functional programming has been an [explicit anti-target](https://www.artima.com/weblogs/viewpost.jsp?thread=98196), and what exists today is perfunctory
 - the ternary syntax, in a fashion similar to comprehensions, requires parsing the code in inside-out order to understand what it will do in both the `True` and `False` cases
 - whitespace sensitivity pushes the busywork of formatting onto humans, when autoformatters can do a better, more consistent job while being more amenable to copy-and-paste + code shuffling
-- the language can be [hotpatched to be anything you want to be](https://www.youtube.com/watch?v=H2yfXnUb1S4), including, and especially, a language that doesn't work
+- the language [can be hotpatched to be anything you want it to be](https://www.youtube.com/watch?v=H2yfXnUb1S4), including, and especially, a language that doesn't work
 - the standard library may be batteries-included, but half of those batteries have expired in the last decade, and some of the batteries were malformed to begin with
   - `datetime.datetime`. No. Bad. Do not name your type the same thing as your module. I cannot count the number of times I have gotten got by trying to use `datetime.timedelta` after a `from datetime import datetime`.
 - the callstacks are full of irrelevant noise that require you to hunt for the cause of an issue
