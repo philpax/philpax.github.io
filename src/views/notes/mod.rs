@@ -12,7 +12,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
     layout(
         context,
         SocialMeta {
-            title: None,
+            title: Some(display_path.last().unwrap().to_string()),
             description: Some(context.website_description.to_string()),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
             url: Some(Route::Notes.abs_url(context.website_base_url)),
