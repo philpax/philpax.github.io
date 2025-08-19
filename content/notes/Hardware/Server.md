@@ -2,6 +2,8 @@ This is my personal server for services, AI, and more.
 
 I bought a used workstation off Blocket (the Swedish equivalent of Craigslist, let's say), and then started retooling it for server use. It's a bit loud, power-hungry, and heavy, but it is handy to have this much power on tap for computing and AI tasks.
 
+<!-- more -->
+
 | **Component**      | **Model**                                                                                                                                                                                                                                                                            |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | _CPU_              | [AMD Ryzen Threadripper 3960X]()                                                                                                                                                                                                                                                     |

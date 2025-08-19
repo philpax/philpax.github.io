@@ -2,6 +2,8 @@ This is a coarse list of the VR headsets I own. Collecting them is a hobby of mi
 
 I'd like to write a proper review of each and/or compare them (especially a comparison of the Pico 4/Lynx R-1/Quest 3/Vision Pro), but who has the time for that?
 
+<!-- more -->
+
 | **Year**    | **Manufacturer** | **Headset** | **Notes**                                                                                                                                                                                                                                                                            |
 | ----------- | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | _2023_      | Meta             | Quest 3     | My main VR headset. VRChat-via-Virtual-Desktop and portable use.                                                                                                                                                                                                                     |

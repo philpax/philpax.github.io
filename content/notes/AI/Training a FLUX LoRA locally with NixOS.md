@@ -1,5 +1,7 @@
 This is conceptually simple, but getting everything right is incredibly tedious, and even when you do, it will take a _long_ time to train. I wish I'd just paid FAL or Replicate to do it instead. Alas, I did it, and here are my rough notes.
 
+<!-- more -->
+
 Clone [sd-scripts](https://github.com/kohya-ss/sd-scripts) somewhere where you have GPU compute, preferably with at least 24GB of VRAM. You can do this with less, but it probably involves more pain. Check out the `sd3` branch.
 
 Create a folder for your dataset (hereby assumed to be `dataset`) in `sd-scripts`, then resize your images such that their longest axis is 1024 pixels, and ensure that each axis is a power of 2. I recommend 1024x1024, 1024x512, and 512x1024. You will run into problems if you do not do this. Bucket the images by their resolution, so that you have `dataset/1024x1024`, etc.

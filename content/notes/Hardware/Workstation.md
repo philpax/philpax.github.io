@@ -1,5 +1,7 @@
 This is my personal workstation.
 
+<!-- more -->
+
 | **Component**      | **Model**                                                                                                                                                                                     |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | _CPU_              | [AMD Ryzen 9950X3D](https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-9-9950x3d.html)                                                                           |

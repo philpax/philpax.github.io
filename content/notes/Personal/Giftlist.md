@@ -2,6 +2,8 @@ I have been traditionally quite difficult to buy gifts for; I usually buy what I
 
 With that being said, I am still collating this list so that I know what _I_ want, and for anyone suitably silly with it to be aware. It is incomplete and messy; I'll update it as time passes.
 
+<!-- more -->
+
 The number one thing I want is _time_, but that, unfortunately, cannot be bought. If you have a hookup for a hyperbolic time chamber or the box from Primer, let me know!
 
 # Art

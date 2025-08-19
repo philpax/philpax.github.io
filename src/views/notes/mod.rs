@@ -9,11 +9,20 @@ use super::*;
 pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
     let display_path = &note.display_path;
 
+    let description = if note.rest_of_content.is_none() {
+        panic!(
+            "Can't extract description; no rest of content for {:?}",
+            note.id
+        )
+    } else {
+        note.description.to_string()
+    };
+
     layout(
         context,
         SocialMeta {
             title: Some(display_path.last().unwrap().to_string()),
-            description: Some(context.website_description.to_string()),
+            description: Some(description),
             image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
             url: Some(Route::Notes.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
@@ -50,7 +59,13 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                         {datetime_with_chrono(note.metadata.datetime.unwrap())}
                     </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
-                        {MarkdownConverter::new(context.syntax).convert(&note.description, None)}
+                        {{
+                            let mut converter = MarkdownConverter::new(context.syntax);
+                            paxhtml::Element::from_iter([
+                                converter.convert(&note.description, None),
+                                note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).into(),
+                            ])
+                        }}
                     </div>
                 </div>
             </div>
