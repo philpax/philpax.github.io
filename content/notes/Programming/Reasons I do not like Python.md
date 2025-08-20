@@ -11,10 +11,12 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 # Syntax
 
 - comprehensions force an inside-out reading order that makes them extraordinarily painful to read when nested
-  - they do not compose well; they are effectively syntax sugar for `filter |> map`, which means that `map |> filter` requires a second comprehension
-- lambdas are limited to one expression. Not one block, not one line, one expression.
+- comprehensions are effectively syntax sugar for `filter |> map`, such that `map |> filter` requires a second comprehension
 - the ternary syntax, in a fashion similar to comprehensions, requires parsing the code in inside-out order to understand what it will do in both the `True` and `False` cases
-- whitespace sensitivity pushes the busywork of formatting onto humans, when autoformatters can do a better, more consistent job while being more amenable to copy-and-paste + code shuffling
+- lambdas are limited to one expression. Not one block, not one line, one expression.
+- whitespace sensitivity pushes the busywork of formatting onto humans, when autoformatters can do a better, more consistent job while being more amenable to copy-and-paste + code shuffling[^notpython]
+
+[^notpython]: I know that this is a defining feature of Python, and I'm essentially asking it to not be Python. I don't care. I maintain that whitespace sensitivity is a mistake that no newly-ascendant language has replicated in the last 15 years.
 
 # Semantics
 
@@ -22,7 +24,11 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 - the callstacks are full of irrelevant noise that require you to hunt for the cause of an issue
 - imports are a mess, and you can make them even more of a mess by patching the import path at runtime
 - the typehints are not at all enforced in stock Python, which means you can just lie about what they are and nothing will catch them by default
-  - the type-checkers fix this, but they are either slow, incomplete (in the sense of not being done yet), or incomplete (in the sense of not being able to fully capture Python's madness)
+  - the type-checkers fix this, but they are either
+    - slow
+    - incomplete (in the sense of not being done yet)
+    - incomplete (in the sense of not being able to fully capture Python's madness)
+    - incomplete (in the sense of none of the libraries you use being typed, or worse, being typed incorrectly)
 - similarly, you just can't hide any code from consumers; _everything_ is public, including internals that you very much do not want to be public, which makes abiding by [Hyrum's Law](https://www.hyrumslaw.com/) basically impossible
 - mutable default arguments. Yes, I know why this happens, and while it's cute that everything is an object and the global state associated with the function object is initialized at initial evaluation, it's still just bad from a user's perspective. Sorry.
 - functional programming has been an [explicit anti-target](https://www.artima.com/weblogs/viewpost.jsp?thread=98196), and what exists today is perfunctory
@@ -34,14 +40,16 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 
 - the standard library may be batteries-included, but half of those batteries have expired in the last decade, and some of the batteries were malformed to begin with
 - `datetime.datetime`. No. Bad. Do not name your type the same thing as your module. I cannot count the number of times I have gotten got by trying to use `datetime.timedelta` after a `from datetime import datetime`.
+- the reference documentation is not fun to browse through; [both](https://docs.python.org/3/tutorial/datastructures.html) [forms](https://docs.python.org/3/library/stdtypes.html#lists) are presented in book/tutorial format, making it difficult to find and link to specific functions
+  - contrast [Ruby](https://ruby-doc.org/3.4.1/Array.html) or [Rust](https://doc.rust-lang.org/std/vec/struct.Vec.html) or [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), which let you easily navigate to the comparatively detailed docs for each function
 
 # Ecosystem
 
 - package management. It's bad! I don't know what I can say! It's an abomination! It is worse than basically any other language, and the efforts to fix it have only made more of a mess!
   - `uv` is genuinely fixing this, but not everyone is using it, and there is some concern around porting the entirety of the Python ecosystem to VC-ware that has yet to establish its monetisation path[^vcware]
-  - explicit `virtualenv`s / global-first installations are insane, as [xkcd has so kindly pointed out](https://xkcd.com/1987/)[^gcs]
   - it is basically impossible to reproduce the environment for codebases that were poorly versioned to begin with; good luck trying to get any ML code from two years ago to work
-  - as packages are all dumped into one environment, there is no way to have two dependencies use two different versions of the same sub-dependency. Hope your dependencies can use the same version of Pydantic!
+  - as packages are all dumped into one environment, there is no way to have two dependencies use two different versions of the same sub-dependency. Hope your dependencies are compatible with the same version of Pydantic!
+- explicit `virtualenv`s / global-first installations are insane, as [xkcd has so kindly pointed out](https://xkcd.com/1987/)[^gcs]
 - the language is inherently hostile to robust software engineering as a result of the above deficiencies
 - the relative flexibility of the language allows people who don't know any better (e.g. ML researchers) to write some of the worst, most unmaintainable code you will ever see
 
@@ -52,7 +60,7 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 
 - no tagged unions / algebraic datatypes. You can make do with a base class and some derived classes, but that's an open set, which means that external users can interfere with it
 - nullable types
-- pass-by-copy-of-mutable-references suggests spooky mutation at a distance, and the only way around this is defensive copying
+- pass-by-copy-of-mutable-references enables spooky mutation at a distance, and the only way around this is defensive copying
 - exceptions. Please tell me how your function can fail ahead of time. You don't even have to make me deal with it, just make me aware that it _can_ fail! I don't want a 3AM Runtime Surprise™!
 - late-binding closures; to be fair, Go got this one wrong too, so I'm willing to forgive Python for having made this mistake much earlier
 - neither here nor there, but I prefer RAII to `with`. Not something to fail the language over, though.
