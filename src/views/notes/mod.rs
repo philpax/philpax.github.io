@@ -33,11 +33,17 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
         },
         CurrentPage::Notes,
         html! {
-            <div class="flex flex-col md:flex-row">
-                <div class="mb-2 md:pb-0 md:mb-0 md:w-48 md:min-w-48 md:max-w-48">
+            <div class="relative">
+                <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
+                <label r#for="nav-toggle" class="block w-full px-4 py-2 bg-[var(--background-color-secondary)] text-[var(--color)] text-center cursor-pointer hover:bg-[var(--background-color-secondary)] transition-colors duration-200 lowercase select-none">
+                    "Other Notes"
+                </label>
+
+                <div class="absolute left-0 right-0 bg-[var(--background-color)] border-l border-r border-b border-[var(--background-color-secondary)] shadow-lg p-4 z-50 hidden peer-checked:block">
                     {notes_hierarchy(context, note)}
                 </div>
-                <div class="md:pl-4" style="--centered-content-width: 600px">
+
+                <div class="w-full mt-4">
                     <h2 class="text-3xl font-bold">
                         {{
                             let mut elements = vec![];

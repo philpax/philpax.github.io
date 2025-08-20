@@ -119,7 +119,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
     let heading_class = post_body_to_heading_class(post_body);
 
     html! {
-        <article class="post" style="--centered-content-width: 750px">
+        <article class="post">
             <header class="pb-0 mb-0">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     <div class="flex items-center gap-[var(--meta-spacing)]">
