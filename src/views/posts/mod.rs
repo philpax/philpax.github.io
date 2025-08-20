@@ -171,9 +171,17 @@ fn document_to_html_list(
         html! {
             <ul>
                 {if toplevel {
+                    // Bodge: use lowercase introduction text if all of the headings are lowercase
+                    let all_headings_lowercase = children.iter().all(|h| h.heading_text.to_lowercase() == h.heading_text);
+                    let introduction_text = if all_headings_lowercase {
+                        "introduction"
+                    } else {
+                        "Introduction"
+                    };
+
                     html! {
                         <li>
-                            {components::link(true, None, "#".to_string(), "", "Introduction".into())}
+                            {components::link(true, None, "#".to_string(), "", introduction_text.into())}
                         </li>
                     }
                 } else {
