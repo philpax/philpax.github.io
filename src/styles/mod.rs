@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use crate::ViewContext;
 
 pub struct GenerateOutput {
@@ -11,16 +13,12 @@ pub fn generate(
     fast: bool,
     use_global_tailwind: bool,
 ) -> anyhow::Result<GenerateOutput> {
-    let tailwind_css = "src/styles/tailwind.css";
     let tailwind_output = if use_global_tailwind {
-        paxhtml_tailwind::run_with_global(tailwind_css)
+        paxhtml_tailwind::Tailwind::global()
     } else {
-        paxhtml_tailwind::download_and_run(
-            paxhtml_tailwind::RECOMMENDED_VERSION,
-            fast,
-            tailwind_css,
-        )
-    }?;
+        paxhtml_tailwind::Tailwind::download(paxhtml_tailwind::RECOMMENDED_VERSION, fast)?
+    }
+    .generate_from_file(Path::new("src/styles/tailwind.css"))?;
 
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
