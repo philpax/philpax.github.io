@@ -91,6 +91,9 @@ impl<'a> MarkdownConverter<'a> {
                     .filter(|c| matches!(c, Node::Paragraph(_)))
                     .count()
                     == 1;
+
+                let class =
+                    paxhtml::Attribute::from(("class", "*:mb-2 [&>*:last-child]:mb-0 mb-1"));
                 if has_one_paragraph {
                     let mut children = Vec::new();
                     for child in &li.children {
@@ -100,9 +103,9 @@ impl<'a> MarkdownConverter<'a> {
                             children.push(self.convert(child, Some(node)));
                         }
                     }
-                    b::li([])(children)
+                    b::li([class])(children)
                 } else {
-                    b::li([])(self.convert_many(&li.children, Some(node)))
+                    b::li([class])(self.convert_many(&li.children, Some(node)))
                 }
             }
             Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
