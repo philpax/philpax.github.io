@@ -128,17 +128,6 @@ impl Timer {
     }
 }
 
-#[derive(Copy, Clone)]
-pub struct ViewContext<'a> {
-    pub website_author: &'a str,
-    pub website_name: &'a str,
-    pub website_description: &'a str,
-    pub website_base_url: &'a str,
-    pub syntax: &'a syntax::SyntaxHighlighter,
-    pub content: &'a content::Content,
-    pub generation_date: chrono::DateTime<chrono::Utc>,
-}
-
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
     let use_global_tailwind =
@@ -188,7 +177,7 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     let content = timer.step("Read content", content::Content::read)?;
-    let view_context = ViewContext {
+    let view_context = views::ViewContext {
         website_author: "Philpax",
         website_name: "Philpax",
         website_description: concat!(
@@ -237,7 +226,7 @@ fn main() -> anyhow::Result<()> {
 
         fn write_note_folder(
             output_dir: &Path,
-            context: ViewContext,
+            context: views::ViewContext,
             folder: &content::DocumentFolderNode,
         ) -> anyhow::Result<()> {
             if let Some(index_document) = &folder.index_document {

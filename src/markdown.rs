@@ -1,21 +1,24 @@
 use std::collections::HashMap;
 
-use crate::{elements as e, syntax::SyntaxHighlighter, views::components};
+use crate::{
+    elements as e,
+    views::{components, ViewContext},
+};
 use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 
 pub struct MarkdownConverter<'a> {
-    pub syntax: &'a SyntaxHighlighter,
+    pub context: ViewContext<'a>,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
 }
 impl<'a> MarkdownConverter<'a> {
-    pub fn new(syntax: &'a SyntaxHighlighter) -> Self {
+    pub fn new(context: ViewContext<'a>) -> Self {
         Self {
-            syntax,
+            context,
             footnotes: HashMap::new(),
             without_blocking_elements: false,
             footnote_counter: HashMap::new(),
@@ -108,7 +111,7 @@ impl<'a> MarkdownConverter<'a> {
                     b::li([class])(self.convert_many(&li.children, Some(node)))
                 }
             }
-            Node::Code(c) => components::code(self.syntax, c.lang.as_deref(), &c.value),
+            Node::Code(c) => components::code(self.context.syntax, c.lang.as_deref(), &c.value),
             Node::Blockquote(b) => {
                 let children = self.convert_many(&b.children, Some(node));
                 if self.without_blocking_elements {
@@ -119,7 +122,7 @@ impl<'a> MarkdownConverter<'a> {
             }
             Node::Break(_) => b::br([]),
             Node::InlineCode(c) => components::inline_code(
-                self.syntax,
+                self.context.syntax,
                 !matches!(parent_node, Some(Node::Heading(_))),
                 &c.value,
             ),
@@ -177,7 +180,7 @@ impl<'a> MarkdownConverter<'a> {
 
                 components::footnote(
                     &footnote_number.to_string(),
-                    MarkdownConverter::new(self.syntax)
+                    MarkdownConverter::new(self.context)
                         .without_blocking_elements()
                         .convert_many(&definition, None),
                 )
@@ -295,9 +298,9 @@ impl HeadingHierarchy {
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(syntax: &SyntaxHighlighter, node: &Node) -> Vec<HeadingHierarchy> {
+    pub fn from_node(context: ViewContext, node: &Node) -> Vec<HeadingHierarchy> {
         let mut headings = Vec::new();
-        collect_headings(syntax, node, &mut headings);
+        collect_headings(context, node, &mut headings);
 
         let mut result = Vec::new();
         let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
@@ -329,7 +332,7 @@ impl HeadingHierarchy {
         }
 
         fn collect_headings(
-            syntax: &SyntaxHighlighter,
+            context: ViewContext,
             node: &Node,
             headings: &mut Vec<(u8, paxhtml::Element, String)>,
         ) {
@@ -338,13 +341,13 @@ impl HeadingHierarchy {
                     if let Node::Heading(heading) = child {
                         headings.push((
                             heading.depth,
-                            MarkdownConverter::new(syntax)
+                            MarkdownConverter::new(context)
                                 .without_blocking_elements()
                                 .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
                     }
-                    collect_headings(syntax, child, headings); // Recurse into all children
+                    collect_headings(context, child, headings); // Recurse into all children
                 }
             }
         }

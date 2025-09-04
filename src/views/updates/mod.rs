@@ -32,7 +32,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     )
 }
 
-pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
+pub fn post(context: ViewContext, document: &crate::content::Document) -> paxhtml::Document {
     let hero_image = document.hero_filename_and_alt.as_ref().map(|(f, _)| {
         document
             .route_path()

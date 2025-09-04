@@ -1,5 +1,31 @@
-use crate::{content::Document, elements::*, Route, ViewContext};
+use crate::{
+    content::{Content, Document},
+    elements::*,
+    syntax::SyntaxHighlighter,
+    Route,
+};
 use std::collections::HashMap;
+
+pub mod blog;
+pub mod credits;
+pub mod frontpage;
+pub mod notes;
+pub mod posts;
+pub mod tags;
+pub mod updates;
+
+pub mod components;
+
+#[derive(Copy, Clone)]
+pub struct ViewContext<'a> {
+    pub website_author: &'a str,
+    pub website_name: &'a str,
+    pub website_description: &'a str,
+    pub website_base_url: &'a str,
+    pub syntax: &'a SyntaxHighlighter,
+    pub content: &'a Content,
+    pub generation_date: chrono::DateTime<chrono::Utc>,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum CurrentPage {
@@ -38,16 +64,6 @@ impl CurrentPage {
         }
     }
 }
-
-pub mod blog;
-pub mod credits;
-pub mod frontpage;
-pub mod notes;
-pub mod posts;
-pub mod tags;
-pub mod updates;
-
-pub mod components;
 
 pub const FONT_STYLE: &str = "font-['Literata',serif]";
 

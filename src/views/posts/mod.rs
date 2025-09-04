@@ -1,7 +1,6 @@
 use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
-    syntax::SyntaxHighlighter,
     util,
 };
 
@@ -62,7 +61,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             let h3_classname = "text-lg font-bold";
 
-            let toc = document_to_html_list(context.syntax, document);
+            let toc = document_to_html_list(context, document);
             if let Some(hierarchy_list) = toc.clone() {
                 elements.push(html! {
                     <aside class="toc sticky top-4 float-right -mr-64 mt-0 w-60 hidden 2xl:block" id="toc-sticky">
@@ -78,7 +77,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 });
             }
 
-            let mut converter = MarkdownConverter::new(context.syntax);
+            let mut converter = MarkdownConverter::new(context);
             elements.push(converter.convert(&document.description, None));
 
             if let Some(hierarchy_list) = toc {
@@ -100,13 +99,13 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
         }
         PostBody::Description => html! {
             <>
-                {MarkdownConverter::new(context.syntax).convert(&document.description, None)}
+                {MarkdownConverter::new(context).convert(&document.description, None)}
                 <p>
                     {components::link(true, None, url.clone(), "", "Read more".into())}
                 </p>
             </>
         },
-        PostBody::Short => MarkdownConverter::new(context.syntax).convert(
+        PostBody::Short => MarkdownConverter::new(context).convert(
             document
                 .metadata
                 .short()
@@ -157,11 +156,9 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     }
 }
 
-fn document_to_html_list(
-    syntax: &SyntaxHighlighter,
-    document: &Document,
-) -> Option<paxhtml::Element> {
-    let heading_hierarchy = HeadingHierarchy::from_node(syntax, document.rest_of_content.as_ref()?);
+fn document_to_html_list(context: ViewContext, document: &Document) -> Option<paxhtml::Element> {
+    let heading_hierarchy =
+        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?);
 
     fn build_list_recursively(children: &[HeadingHierarchy], toplevel: bool) -> paxhtml::Element {
         if children.is_empty() {

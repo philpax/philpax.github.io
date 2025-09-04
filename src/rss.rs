@@ -1,8 +1,8 @@
 use crate::{
     content::{Document, DocumentCollection},
     markdown::MarkdownConverter,
-    syntax::SyntaxHighlighter,
-    Route, ViewContext,
+    views::ViewContext,
+    Route,
 };
 
 pub fn generate(
@@ -15,14 +15,7 @@ pub fn generate(
     let items = collection
         .documents
         .iter()
-        .map(|doc| {
-            build_item(
-                context.website_base_url,
-                context.website_author,
-                doc,
-                context.syntax,
-            )
-        })
+        .map(|doc| build_item(context, doc))
         .collect::<Vec<_>>();
 
     let atom_ext = rss::extension::atom::AtomExtensionBuilder::default()
@@ -52,13 +45,12 @@ pub fn generate(
     )?)?)
 }
 
-fn build_item(
-    base_url: &str,
-    author: &str,
-    doc: &Document,
-    syntax: &SyntaxHighlighter,
-) -> rss::Item {
-    let url = format!("{base_url}{}", doc.route_path().url_path());
+fn build_item(context: ViewContext, doc: &Document) -> rss::Item {
+    let url = format!(
+        "{}{}",
+        context.website_base_url,
+        doc.route_path().url_path()
+    );
 
     let guid = rss::GuidBuilder::default()
         .value(url.clone())
@@ -66,7 +58,7 @@ fn build_item(
         .build();
 
     let description =
-        paxhtml::Document::new([MarkdownConverter::new(syntax).convert(&doc.description, None)])
+        paxhtml::Document::new([MarkdownConverter::new(context).convert(&doc.description, None)])
             .write_to_string()
             .unwrap();
 
@@ -75,7 +67,7 @@ fn build_item(
         .link(url)
         .guid(guid)
         .description(description)
-        .author(author.to_string())
+        .author(context.website_author.to_string())
         .pub_date(doc.metadata.datetime.map(|d| d.to_rfc2822()))
         .build()
 }

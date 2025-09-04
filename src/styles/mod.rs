@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::ViewContext;
+use crate::views::ViewContext;
 
 pub struct GenerateOutput {
     pub css: String,

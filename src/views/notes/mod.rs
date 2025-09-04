@@ -66,7 +66,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                     </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {{
-                            let mut converter = MarkdownConverter::new(context.syntax);
+                            let mut converter = MarkdownConverter::new(context);
                             paxhtml::Element::from_iter([
                                 converter.convert(&note.description, None),
                                 note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).into(),
