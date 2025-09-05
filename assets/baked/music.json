@@ -32875,547 +32875,6 @@
     ]
   },
   {
-    "artist": "Electronic Arts",
-    "album": "Need for Speed III: Hot Pursuit",
-    "year": 1998,
-    "duration": 4100,
-    "songs": [
-      {
-        "title": "Title Screen",
-        "track": 1,
-        "year": 1998,
-        "duration": 100
-      },
-      {
-        "title": "Demo #1",
-        "track": 2,
-        "year": 1998,
-        "duration": 30
-      },
-      {
-        "title": "Demo #2",
-        "track": 3,
-        "year": 1998,
-        "duration": 31
-      },
-      {
-        "title": "Demo #3",
-        "track": 4,
-        "year": 1998,
-        "duration": 30
-      },
-      {
-        "title": "Whacked",
-        "track": 5,
-        "year": 1998,
-        "duration": 73
-      },
-      {
-        "title": "Romulus 3",
-        "track": 6,
-        "year": 1998,
-        "duration": 199
-      },
-      {
-        "title": "Minotaur",
-        "track": 7,
-        "year": 1998,
-        "duration": 42
-      },
-      {
-        "title": "Pi",
-        "track": 8,
-        "year": 1998,
-        "duration": 60
-      },
-      {
-        "title": "Triton",
-        "track": 9,
-        "year": 1998,
-        "duration": 54
-      },
-      {
-        "title": "Monster",
-        "track": 10,
-        "year": 1998,
-        "duration": 167
-      },
-      {
-        "title": "Whipped",
-        "track": 11,
-        "year": 1998,
-        "duration": 64
-      },
-      {
-        "title": "Little Sweaty Sow",
-        "track": 12,
-        "year": 1998,
-        "duration": 512
-      },
-      {
-        "title": "Hydrus 606",
-        "track": 13,
-        "year": 1998,
-        "duration": 84
-      },
-      {
-        "title": "Snorkeling Cactus Weasels",
-        "track": 14,
-        "year": 1998,
-        "duration": 345
-      },
-      {
-        "title": "Cetus 808",
-        "track": 15,
-        "year": 1998,
-        "duration": 72
-      },
-      {
-        "title": "Rear Flutterblast #19",
-        "track": 16,
-        "year": 1998,
-        "duration": 307
-      },
-      {
-        "title": "Aquilla 303",
-        "track": 17,
-        "year": 1998,
-        "duration": 110
-      },
-      {
-        "title": "Snow Bags",
-        "track": 18,
-        "year": 1998,
-        "duration": 445
-      },
-      {
-        "title": "Knossos",
-        "track": 19,
-        "year": 1998,
-        "duration": 441
-      },
-      {
-        "title": "Flimsy",
-        "track": 20,
-        "year": 1998,
-        "duration": 511
-      },
-      {
-        "title": "Warped",
-        "track": 21,
-        "year": 1998,
-        "duration": 372
-      },
-      {
-        "title": "Win",
-        "track": 22,
-        "year": 1998,
-        "duration": 41
-      }
-    ]
-  },
-  {
-    "artist": "Electronic Arts",
-    "album": "Need For Speed V: Porsche Unleashed",
-    "year": 2000,
-    "duration": 3391,
-    "songs": [
-      {
-        "title": "Activator",
-        "artist": "Morphadron",
-        "track": 1,
-        "year": 2000,
-        "duration": 148
-      },
-      {
-        "title": "Choose Your Enemy",
-        "artist": "Cypher",
-        "track": 2,
-        "year": 2000,
-        "duration": 141
-      },
-      {
-        "title": "Funky Phreakout",
-        "artist": "Morphadron",
-        "track": 3,
-        "year": 2000,
-        "duration": 154
-      },
-      {
-        "title": "Injector",
-        "artist": "Cypher",
-        "track": 4,
-        "year": 2000,
-        "duration": 162
-      },
-      {
-        "title": "Let The Music Move You",
-        "artist": "Morphadron",
-        "track": 5,
-        "year": 2000,
-        "duration": 138
-      },
-      {
-        "title": "MetroGnome",
-        "artist": "Captain Ginger",
-        "track": 6,
-        "year": 2000,
-        "duration": 149
-      },
-      {
-        "title": "Rezidue",
-        "artist": "Morphadron",
-        "track": 7,
-        "year": 2000,
-        "duration": 147
-      },
-      {
-        "title": "Rock This Place",
-        "artist": "Morphadron",
-        "track": 8,
-        "year": 2000,
-        "duration": 184
-      },
-      {
-        "title": "R U Ready",
-        "artist": "Morphadron",
-        "track": 9,
-        "year": 2000,
-        "duration": 157
-      },
-      {
-        "title": "Sentient",
-        "artist": "Cypher",
-        "track": 10,
-        "year": 2000,
-        "duration": 166
-      },
-      {
-        "title": "Stealth Run",
-        "artist": "Morphadron",
-        "track": 11,
-        "year": 2000,
-        "duration": 149
-      },
-      {
-        "title": "The Moebius",
-        "artist": "Morphadron",
-        "track": 12,
-        "year": 2000,
-        "duration": 186
-      },
-      {
-        "title": "The UK Sound",
-        "artist": "Morphadron",
-        "track": 13,
-        "year": 2000,
-        "duration": 126
-      },
-      {
-        "title": "Twin",
-        "artist": "Cypher",
-        "track": 14,
-        "year": 2000,
-        "duration": 139
-      },
-      {
-        "title": "Untitled",
-        "artist": "Captain Ginger",
-        "track": 15,
-        "year": 2000,
-        "duration": 17
-      },
-      {
-        "title": "Aquadelic",
-        "artist": "Captain Ginger",
-        "track": 16,
-        "year": 2000,
-        "duration": 60
-      },
-      {
-        "title": "Hack The Planet",
-        "artist": "Morphadron",
-        "track": 17,
-        "year": 2000,
-        "duration": 53
-      },
-      {
-        "title": "Loser",
-        "artist": "Morphadron",
-        "track": 18,
-        "year": 2000,
-        "duration": 60
-      },
-      {
-        "title": "Sub Zero",
-        "artist": "Cypher",
-        "track": 19,
-        "year": 2000,
-        "duration": 61
-      },
-      {
-        "title": "Psychonaught",
-        "artist": "Captain Ginger",
-        "track": 20,
-        "year": 2000,
-        "duration": 154
-      },
-      {
-        "title": "Aircon",
-        "artist": "Cypher",
-        "track": 21,
-        "year": 2000,
-        "duration": 150
-      },
-      {
-        "title": "Dr. Know",
-        "artist": "Morphadron",
-        "track": 22,
-        "year": 2000,
-        "duration": 152
-      },
-      {
-        "title": "Cold Fusion Power",
-        "artist": "Morphadron",
-        "track": 23,
-        "year": 2000,
-        "duration": 151
-      },
-      {
-        "title": "Orion",
-        "artist": "Cypher",
-        "track": 24,
-        "year": 2000,
-        "duration": 158
-      },
-      {
-        "title": "Warm Storage",
-        "artist": "Morphadron",
-        "track": 25,
-        "year": 2000,
-        "duration": 68
-      },
-      {
-        "title": "Champion",
-        "artist": "Cypher",
-        "track": 26,
-        "year": 2000,
-        "duration": 65
-      },
-      {
-        "title": "Gimme The Power",
-        "artist": "Morphadron",
-        "track": 27,
-        "year": 2000,
-        "duration": 53
-      },
-      {
-        "title": "Untitled",
-        "artist": "Captain Ginger",
-        "track": 28,
-        "year": 2000,
-        "duration": 30
-      }
-    ]
-  },
-  {
-    "artist": "Electronic Arts",
-    "album": "Need for Speed IV: High Stakes",
-    "year": 2000,
-    "duration": 4599,
-    "songs": [
-      {
-        "title": "Opening Movie",
-        "artist": "Romolo di Prisco",
-        "track": 1,
-        "year": 2000,
-        "duration": 87
-      },
-      {
-        "title": "Cygnus Rift",
-        "artist": "Romolo di Prisco",
-        "track": 2,
-        "year": 2000,
-        "duration": 155
-      },
-      {
-        "title": "Paradigm Shifter (Long Version)",
-        "artist": "Romolo di Prisco",
-        "track": 3,
-        "year": 2000,
-        "duration": 223
-      },
-      {
-        "title": "Photon Rez",
-        "artist": "Need For Speed",
-        "track": 4,
-        "year": 2000,
-        "duration": 165
-      },
-      {
-        "title": "Quantum Singularity",
-        "artist": "Romolo di Prisco",
-        "track": 5,
-        "year": 2000,
-        "duration": 160
-      },
-      {
-        "title": "Bulbular Swirl (Garage)",
-        "artist": "Need For Speed",
-        "track": 6,
-        "year": 2000,
-        "duration": 180
-      },
-      {
-        "title": "Callista (Showcase)",
-        "artist": "Need For Speed",
-        "track": 7,
-        "year": 2000,
-        "duration": 153
-      },
-      {
-        "title": "Amorphous Being",
-        "artist": "Saki Kaskas",
-        "track": 8,
-        "year": 2000,
-        "duration": 177
-      },
-      {
-        "title": "Roll the Dice",
-        "artist": "Lunatic Calm",
-        "track": 9,
-        "year": 2000,
-        "duration": 197
-      },
-      {
-        "title": "Rock This",
-        "artist": "Need For Speed",
-        "track": 10,
-        "year": 2000,
-        "duration": 151
-      },
-      {
-        "title": "Naked and Ashamed",
-        "artist": "Dylam Rhymes",
-        "track": 11,
-        "year": 2000,
-        "duration": 152
-      },
-      {
-        "title": "War",
-        "artist": "Junkie XL",
-        "track": 12,
-        "year": 2000,
-        "duration": 168
-      },
-      {
-        "title": "Bionic",
-        "artist": "Need For Speed",
-        "track": 13,
-        "year": 2000,
-        "duration": 186
-      },
-      {
-        "title": "I Am Electro",
-        "artist": "Need For Speed",
-        "track": 14,
-        "year": 2000,
-        "duration": 162
-      },
-      {
-        "title": "Liquid Plasma",
-        "artist": "Need For Speed",
-        "track": 15,
-        "year": 2000,
-        "duration": 165
-      },
-      {
-        "title": "Fight",
-        "artist": "Junkie XL",
-        "track": 16,
-        "year": 2000,
-        "duration": 167
-      },
-      {
-        "title": "Clutch",
-        "artist": "DJ Icey",
-        "track": 17,
-        "year": 2000,
-        "duration": 126
-      },
-      {
-        "title": "Bring That Beat Back",
-        "artist": "Romolo di Prisco",
-        "track": 18,
-        "year": 2000,
-        "duration": 167
-      },
-      {
-        "title": "Dude In The Moon",
-        "artist": "Need For Speed",
-        "track": 19,
-        "year": 2000,
-        "duration": 156
-      },
-      {
-        "title": "Def Beat",
-        "artist": "Junkie XL",
-        "track": 20,
-        "year": 2000,
-        "duration": 196
-      },
-      {
-        "title": "The Cost Of Freedom",
-        "artist": "Need For Speed",
-        "track": 21,
-        "year": 2000,
-        "duration": 193
-      },
-      {
-        "title": "Globular Cluster",
-        "artist": "Need For Speed",
-        "track": 22,
-        "year": 2000,
-        "duration": 212
-      },
-      {
-        "title": "No Remorse",
-        "artist": "Need For Speed",
-        "track": 23,
-        "year": 2000,
-        "duration": 221
-      },
-      {
-        "title": "Insanity Sauce",
-        "artist": "Need For Speed",
-        "track": 24,
-        "year": 2000,
-        "duration": 192
-      },
-      {
-        "title": "Road Warrior",
-        "artist": "Electronic Arts",
-        "track": 25,
-        "year": 2000,
-        "duration": 142
-      },
-      {
-        "title": "Electro Optik",
-        "artist": "Romolo di Prisco",
-        "track": 26,
-        "year": 2000,
-        "duration": 185
-      },
-      {
-        "title": "Runnin' (Credits)",
-        "artist": "Need For Speed",
-        "track": 27,
-        "year": 2000,
-        "duration": 145
-      }
-    ]
-  },
-  {
     "artist": "Elk Road",
     "album": "Waiting for Your Waves to Pass",
     "year": 2014,
@@ -48951,7 +48410,7 @@
     "artist": "James Holden",
     "album": "One For You",
     "year": 2001,
-    "duration": 927,
+    "duration": 463,
     "songs": [
       {
         "title": "One for You (original)",
@@ -112557,6 +112016,646 @@
         "track": 3,
         "year": 1997,
         "duration": 594,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Need for Speed III: Hot Pursuit",
+    "year": 1998,
+    "duration": 4100,
+    "songs": [
+      {
+        "title": "Title",
+        "artist": "Traz Damji",
+        "track": 1,
+        "year": 1998,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 1",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 2,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 2",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 3,
+        "year": 1998,
+        "duration": 31,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 4,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Whacked",
+        "artist": "Alistair Hirst",
+        "track": 5,
+        "year": 1998,
+        "duration": 73,
+        "disc_number": 1
+      },
+      {
+        "title": "romulus 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 6,
+        "year": 1998,
+        "duration": 199,
+        "disc_number": 1
+      },
+      {
+        "title": "Minotaur",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 7,
+        "year": 1998,
+        "duration": 42,
+        "disc_number": 1
+      },
+      {
+        "title": "Pi",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 8,
+        "year": 1998,
+        "duration": 60,
+        "disc_number": 1
+      },
+      {
+        "title": "Triton",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 9,
+        "year": 1998,
+        "duration": 54,
+        "disc_number": 1
+      },
+      {
+        "title": "Monster",
+        "artist": "Crispin Hands",
+        "track": 10,
+        "year": 1998,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Whipped",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 11,
+        "year": 1998,
+        "duration": 64,
+        "disc_number": 1
+      },
+      {
+        "title": "Little Sweaty Sow",
+        "artist": "Saki Kaskas",
+        "track": 12,
+        "year": 1998,
+        "duration": 512,
+        "disc_number": 1
+      },
+      {
+        "title": "hydrus 606",
+        "artist": "Rom Di Prisco",
+        "track": 13,
+        "year": 1998,
+        "duration": 84,
+        "disc_number": 1
+      },
+      {
+        "title": "Snorkeling Cactus Weasels",
+        "artist": "Matt Ragan",
+        "track": 14,
+        "year": 1998,
+        "duration": 345,
+        "disc_number": 1
+      },
+      {
+        "title": "cetus 808",
+        "artist": "Rom Di Prisco",
+        "track": 15,
+        "year": 1998,
+        "duration": 72,
+        "disc_number": 1
+      },
+      {
+        "title": "Rear Flutter blast 19",
+        "artist": "Matt Ragan",
+        "track": 16,
+        "year": 1998,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "aquilla 303",
+        "artist": "Rom Di Prisco",
+        "track": 17,
+        "year": 1998,
+        "duration": 110,
+        "disc_number": 1
+      },
+      {
+        "title": "Snow Bags",
+        "artist": "Matt Ragan",
+        "track": 18,
+        "year": 1998,
+        "duration": 445,
+        "disc_number": 1
+      },
+      {
+        "title": "Knossos",
+        "artist": "Saki Kaskas",
+        "track": 19,
+        "year": 1998,
+        "duration": 441,
+        "disc_number": 1
+      },
+      {
+        "title": "Flimsy",
+        "artist": "Saki Kaskas",
+        "track": 20,
+        "year": 1998,
+        "duration": 511,
+        "disc_number": 1
+      },
+      {
+        "title": "Warped",
+        "artist": "Alistair Hirst",
+        "track": 21,
+        "year": 1998,
+        "duration": 372,
+        "disc_number": 1
+      },
+      {
+        "title": "Win",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 22,
+        "year": 1998,
+        "duration": 41,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Need For Speed: High Stakes",
+    "year": 1999,
+    "duration": 4599,
+    "songs": [
+      {
+        "title": "Opening Movie",
+        "artist": "Electronic Arts",
+        "track": 1,
+        "year": 1999,
+        "duration": 87,
+        "disc_number": 1
+      },
+      {
+        "title": "Cygnus Rift",
+        "artist": "Rom Di Prisco",
+        "track": 2,
+        "year": 1999,
+        "duration": 155,
+        "disc_number": 1
+      },
+      {
+        "title": "Paradigm Shifter (long version)",
+        "artist": "Rom Di Prisco",
+        "track": 3,
+        "year": 1999,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "Photon Rez",
+        "artist": "Rom Di Prisco",
+        "track": 4,
+        "year": 1999,
+        "duration": 165,
+        "disc_number": 1
+      },
+      {
+        "title": "Quantum Singularity",
+        "artist": "Rom Di Prisco",
+        "track": 5,
+        "year": 1999,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "Bulbular Swirl (Garage)",
+        "artist": "Saki Kaskas",
+        "track": 6,
+        "year": 1999,
+        "duration": 180,
+        "disc_number": 1
+      },
+      {
+        "title": "Callista (Showcase)",
+        "artist": "Saki Kaskas",
+        "track": 7,
+        "year": 1999,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Amorphous Being",
+        "artist": "Saki Kaskas",
+        "track": 8,
+        "year": 1999,
+        "duration": 177,
+        "disc_number": 1
+      },
+      {
+        "title": "Roll the Dice",
+        "artist": "Lunatic Calm",
+        "track": 9,
+        "year": 1999,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "Rock This",
+        "artist": "Rom Di Prisco",
+        "track": 10,
+        "year": 1999,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Naked and Ashamed",
+        "artist": "Dylan Rhymes",
+        "track": 11,
+        "year": 1999,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "War",
+        "artist": "Junkie XL",
+        "track": 12,
+        "year": 1999,
+        "duration": 168,
+        "disc_number": 1
+      },
+      {
+        "title": "Bionic",
+        "artist": "Crispin Hands",
+        "track": 13,
+        "year": 1999,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "I Am Electro",
+        "artist": "The Funk Lab",
+        "track": 14,
+        "year": 1999,
+        "duration": 162,
+        "disc_number": 1
+      },
+      {
+        "title": "Liquid Plasma",
+        "artist": "Rom Di Prisco",
+        "track": 15,
+        "year": 1999,
+        "duration": 165,
+        "disc_number": 1
+      },
+      {
+        "title": "Fight",
+        "artist": "Junkie XL",
+        "track": 16,
+        "year": 1999,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Clutch",
+        "artist": "DJ Icey",
+        "track": 17,
+        "year": 1999,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Bring That Beat Back",
+        "artist": "Rom Di Prisco",
+        "track": 18,
+        "year": 1999,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Dude in the Moon",
+        "artist": "Dastrix",
+        "track": 19,
+        "year": 1999,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "Def Beat",
+        "artist": "Junkie XL",
+        "track": 20,
+        "year": 1999,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "The Cost of Freedom",
+        "artist": "The Experiment",
+        "track": 21,
+        "year": 1999,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "Globular Cluster",
+        "artist": "Saki Kaskas",
+        "track": 22,
+        "year": 1999,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "No Remorse",
+        "artist": "Junkie XL",
+        "track": 23,
+        "year": 1999,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "Insanity Sauce",
+        "artist": "Surreal Madrid",
+        "track": 24,
+        "year": 1999,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Road Warrior",
+        "artist": "Rom Di Prisco",
+        "track": 25,
+        "year": 1999,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "Electro Optik",
+        "artist": "Rom Di Prisco",
+        "track": 26,
+        "year": 1999,
+        "duration": 185,
+        "disc_number": 1
+      },
+      {
+        "title": "Runnin' (Credits)",
+        "artist": "Rom Di Prisco",
+        "track": 27,
+        "year": 1999,
+        "duration": 145,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Need for Speed: Porsche Unleashed Soundtrack",
+    "year": 2000,
+    "duration": 3391,
+    "songs": [
+      {
+        "title": "Psychonaught",
+        "artist": "Saki Kaskas",
+        "track": 1,
+        "year": 2000,
+        "duration": 154,
+        "disc_number": 1
+      },
+      {
+        "title": "Aircon",
+        "artist": "Crispin Hands",
+        "track": 2,
+        "year": 2000,
+        "duration": 150,
+        "disc_number": 1
+      },
+      {
+        "title": "Orion Is Lonely",
+        "artist": "Crispin Hands",
+        "track": 3,
+        "year": 2000,
+        "duration": 158,
+        "disc_number": 1
+      },
+      {
+        "title": "Dr. Know (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 4,
+        "year": 2000,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Cold Fusion Power",
+        "artist": "Rom Di Prisco",
+        "track": 5,
+        "year": 2000,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "MetroGnome",
+        "artist": "Saki Kaskas",
+        "track": 6,
+        "year": 2000,
+        "duration": 149,
+        "disc_number": 1
+      },
+      {
+        "title": "Choose Your Enemy",
+        "artist": "Crispin Hands",
+        "track": 7,
+        "year": 2000,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Injector",
+        "artist": "Crispin Hands",
+        "track": 8,
+        "year": 2000,
+        "duration": 162,
+        "disc_number": 1
+      },
+      {
+        "title": "Sentient",
+        "artist": "Crispin Hands",
+        "track": 9,
+        "year": 2000,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "Twin",
+        "artist": "Crispin Hands",
+        "track": 10,
+        "year": 2000,
+        "duration": 139,
+        "disc_number": 1
+      },
+      {
+        "title": "Activator (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 11,
+        "year": 2000,
+        "duration": 148,
+        "disc_number": 1
+      },
+      {
+        "title": "Funky Phreakout (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 12,
+        "year": 2000,
+        "duration": 154,
+        "disc_number": 1
+      },
+      {
+        "title": "Let The Music Move You (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 13,
+        "year": 2000,
+        "duration": 138,
+        "disc_number": 1
+      },
+      {
+        "title": "R U Ready (Video Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 14,
+        "year": 2000,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "Rezidue (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 15,
+        "year": 2000,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Rock This Place (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 16,
+        "year": 2000,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "Stealth Run (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 17,
+        "year": 2000,
+        "duration": 149,
+        "disc_number": 1
+      },
+      {
+        "title": "The Moebius (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 18,
+        "year": 2000,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "The Uk Sound (Game Edit)",
+        "artist": "Rom Di Prisco",
+        "track": 19,
+        "year": 2000,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Aquadelic (Lose Theme)",
+        "artist": "Saki Kaskas",
+        "track": 20,
+        "year": 2000,
+        "duration": 60,
+        "disc_number": 1
+      },
+      {
+        "title": "Congrats (Win Theme)",
+        "artist": "Saki Kaskas",
+        "track": 21,
+        "year": 2000,
+        "duration": 17,
+        "disc_number": 1
+      },
+      {
+        "title": "Champion (Win Theme)",
+        "artist": "Crispin Hands",
+        "track": 22,
+        "year": 2000,
+        "duration": 65,
+        "disc_number": 1
+      },
+      {
+        "title": "Sub Zero (Lose Theme)",
+        "artist": "Crispin Hands",
+        "track": 23,
+        "year": 2000,
+        "duration": 61,
+        "disc_number": 1
+      },
+      {
+        "title": "Gimme The Power (Win Theme)",
+        "artist": "Rom Di Prisco",
+        "track": 24,
+        "year": 2000,
+        "duration": 53,
+        "disc_number": 1
+      },
+      {
+        "title": "Hack The Planet (Lose Theme)",
+        "artist": "Rom Di Prisco",
+        "track": 25,
+        "year": 2000,
+        "duration": 53,
+        "disc_number": 1
+      },
+      {
+        "title": "Warm Storage (Win Theme)",
+        "artist": "Rom Di Prisco",
+        "track": 26,
+        "year": 2000,
+        "duration": 68,
+        "disc_number": 1
+      },
+      {
+        "title": "Victory (Win Theme)",
+        "artist": "Crispin Hands",
+        "track": 27,
+        "year": 2000,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Loser (Lose Theme)",
+        "artist": "Rom Di Prisco",
+        "track": 28,
+        "year": 2000,
+        "duration": 60,
         "disc_number": 1
       }
     ]
