@@ -285,7 +285,7 @@ fn song(group: &OutputGroup, song: &OutputSong) -> paxhtml::Element {
         .filter(|artist| **artist != group.artist)
         .map(|artist| {
             html! {
-                <span class="artist" style={format!("color: {}", colours::string_to_colour(&artist))}>
+                <span class="artist" style={format!("color: {}", colours::string_to_colour(artist))}>
                     {artist.as_str()}
                 </span>
             }
