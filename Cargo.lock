@@ -73,6 +73,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34efbcccd345379ca2868b2b2c9d3782e9cc58ba87bc7d79d5b53d9c9ae6f25d"
 
 [[package]]
+name = "blackbird-json-export-types"
+version = "0.1.0"
+source = "git+https://github.com/philpax/blackbird.git#39553492d191bc75c6f1b937e117e79aeacb15f1"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "block-buffer"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -470,6 +478,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64",
+ "blackbird-json-export-types",
  "chrono",
  "markdown",
  "paxcss",
@@ -477,6 +486,7 @@ dependencies = [
  "paxhtml_tailwind",
  "rss",
  "serde",
+ "serde_json",
  "sha1",
  "syntect",
  "toml",

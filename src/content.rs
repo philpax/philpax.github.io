@@ -24,15 +24,14 @@ impl std::fmt::Display for DocumentType {
     }
 }
 
-#[derive(Debug)]
 pub struct Content {
-    pub path: PathBuf,
     pub blog: DocumentCollection,
     pub updates: DocumentCollection,
     pub notes: NotesCollection,
     pub tags: HashMap<Tag, Vec<DocumentId>>,
     pub about: Document,
     pub credits: Document,
+    pub music_library: blackbird_json_export_types::Output,
 }
 impl Content {
     pub fn read() -> anyhow::Result<Self> {
@@ -55,7 +54,6 @@ impl Content {
         }
 
         Ok(Content {
-            path: path.clone(),
             blog,
             updates,
             notes,
@@ -71,6 +69,9 @@ impl Content {
                 vec!["credits".to_string()],
                 vec!["Credits".to_string()],
                 DocumentType::Blog,
+            )?,
+            music_library: serde_json::from_str::<blackbird_json_export_types::Output>(
+                &std::fs::read_to_string("assets/baked/music.json")?,
             )?,
         })
     }
