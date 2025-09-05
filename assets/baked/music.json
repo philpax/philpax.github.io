@@ -618,17 +618,6 @@
     ]
   },
   {
-    "artist": "[Unknown Artist]",
-    "album": "[Unknown Album]",
-    "duration": 372,
-    "songs": [
-      {
-        "title": "02 Come On",
-        "duration": 372
-      }
-    ]
-  },
-  {
     "artist": "A Fine Frenzy",
     "album": "One Cell In The Sea",
     "year": 2007,
@@ -5124,6 +5113,22 @@
         "track": 9,
         "year": 2010,
         "duration": 275
+      }
+    ]
+  },
+  {
+    "artist": "Andy Hunter°",
+    "album": "Life",
+    "year": 2005,
+    "duration": 372,
+    "songs": [
+      {
+        "title": "Come On",
+        "artist": "Andy Hunter°",
+        "track": 2,
+        "year": 2005,
+        "duration": 372,
+        "disc_number": 1
       }
     ]
   },
@@ -68153,84 +68158,110 @@
         "artist": "Miami Horror",
         "track": 1,
         "year": 2010,
-        "duration": 127
+        "duration": 127,
+        "disc_number": 1
       },
       {
-        "title": "I Look to You (feat. Kimbra)",
-        "artist": "Miami Horror",
+        "title": "I Look to You",
+        "artist": "Miami Horror feat. Kimbra",
         "track": 2,
         "year": 2010,
-        "duration": 233
+        "duration": 233,
+        "disc_number": 1
       },
       {
-        "title": "Holidays (feat. Alan Palomo)",
-        "artist": "Miami Horror",
+        "title": "Holidays",
+        "artist": "Miami Horror feat. Alan Palomo",
         "track": 3,
         "year": 2010,
-        "duration": 268
+        "duration": 268,
+        "disc_number": 1
       },
       {
         "title": "Summersun",
         "artist": "Miami Horror",
         "track": 4,
         "year": 2010,
-        "duration": 326
+        "duration": 326,
+        "disc_number": 1
       },
       {
         "title": "Sometimes",
         "artist": "Miami Horror",
         "track": 5,
         "year": 2010,
-        "duration": 253
+        "duration": 253,
+        "disc_number": 1
       },
       {
         "title": "Moon Theory",
         "artist": "Miami Horror",
         "track": 6,
         "year": 2010,
-        "duration": 263
+        "duration": 263,
+        "disc_number": 1
       },
       {
-        "title": "Echoplex (feat. MAI)",
-        "artist": "Miami Horror",
+        "title": "Echoplex",
+        "artist": "Miami Horror feat. Mai",
         "track": 7,
         "year": 2010,
-        "duration": 265
+        "duration": 265,
+        "disc_number": 1
       },
       {
         "title": "Imagination",
         "artist": "Miami Horror",
         "track": 8,
         "year": 2010,
-        "duration": 308
+        "duration": 308,
+        "disc_number": 1
       },
       {
         "title": "Grand Illusion",
         "artist": "Miami Horror",
         "track": 9,
         "year": 2010,
-        "duration": 152
+        "duration": 152,
+        "disc_number": 1
       },
       {
-        "title": "Soft Light (feat. Alan Palomo)",
-        "artist": "Miami Horror",
+        "title": "Soft Light",
+        "artist": "Miami Horror feat. Alan Palomo",
         "track": 10,
         "year": 2010,
-        "duration": 293
+        "duration": 293,
+        "disc_number": 1
       },
       {
         "title": "Illuminated",
         "artist": "Miami Horror",
         "track": 11,
         "year": 2010,
-        "duration": 176
+        "duration": 176,
+        "disc_number": 1
       },
       {
-        "title": "Ultraviolet (feat. Alan Palomo)",
-        "artist": "Miami Horror",
+        "title": "Ultraviolet",
+        "artist": "Miami Horror feat. Alan Palomo",
         "track": 12,
         "year": 2010,
-        "duration": 236
+        "duration": 236,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Miami Horror",
+    "album": "Leila (Poolside remix)",
+    "year": 2017,
+    "duration": 318,
+    "songs": [
+      {
+        "title": "Leila (Poolside remix)",
+        "artist": "Miami Horror",
+        "year": 2017,
+        "duration": 318
       }
     ]
   },
@@ -68241,60 +68272,52 @@
     "duration": 1409,
     "songs": [
       {
-        "title": "Sign Of The Times",
+        "title": "Sign of the Times",
         "artist": "Miami Horror",
         "track": 1,
         "year": 2017,
-        "duration": 279
+        "duration": 279,
+        "disc_number": 1
       },
       {
         "title": "Trapeze",
         "artist": "Miami Horror",
         "track": 2,
         "year": 2017,
-        "duration": 231
+        "duration": 231,
+        "disc_number": 1
       },
       {
         "title": "Leila",
         "artist": "Miami Horror",
         "track": 3,
         "year": 2017,
-        "duration": 226
+        "duration": 226,
+        "disc_number": 1
       },
       {
         "title": "Azimba",
         "artist": "Miami Horror",
         "track": 4,
         "year": 2017,
-        "duration": 226
+        "duration": 226,
+        "disc_number": 1
       },
       {
-        "title": "Dark Love (feat. Danny Pratt)",
-        "artist": "Miami Horror",
+        "title": "Dark Love",
+        "artist": "Miami Horror feat. Danny Pratt",
         "track": 5,
         "year": 2017,
-        "duration": 219
+        "duration": 219,
+        "disc_number": 1
       },
       {
-        "title": "Leila (En Español) - Spanish Version",
+        "title": "Leila (En Español)",
         "artist": "Miami Horror",
         "track": 6,
         "year": 2017,
-        "duration": 226
-      }
-    ]
-  },
-  {
-    "artist": "Miami Horror",
-    "album": "[Unknown Album]",
-    "year": 2017,
-    "duration": 318,
-    "songs": [
-      {
-        "title": "Leila (Poolside Remix)",
-        "artist": "Miami Horror",
-        "year": 2017,
-        "duration": 318
+        "duration": 226,
+        "disc_number": 1
       }
     ]
   },
@@ -92415,14 +92438,14 @@
     ]
   },
   {
-    "artist": "Starjunk95 スタージャンク95",
-    "album": "[Unknown Album]",
+    "artist": "Starjunk 95",
+    "album": "Groove District",
     "year": 2021,
     "duration": 186,
     "songs": [
       {
         "title": "Groove District",
-        "artist": "Starjunk95 スタージャンク95",
+        "artist": "Starjunk 95",
         "year": 2021,
         "duration": 186
       }
