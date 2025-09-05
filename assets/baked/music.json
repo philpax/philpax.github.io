@@ -115259,6 +115259,446 @@
   },
   {
     "artist": "Various Artists",
+    "album": "4 Corners EP",
+    "year": 2009,
+    "duration": 1485,
+    "songs": [
+      {
+        "title": "Shine",
+        "artist": "Contour",
+        "track": 1,
+        "year": 2009,
+        "duration": 383,
+        "disc_number": 1
+      },
+      {
+        "title": "Down Inside (Subterra & Dekko remix)",
+        "artist": "Adam Form",
+        "track": 2,
+        "year": 2009,
+        "duration": 394,
+        "disc_number": 1
+      },
+      {
+        "title": "She Says",
+        "artist": "BHX",
+        "track": 3,
+        "year": 2009,
+        "duration": 368,
+        "disc_number": 1
+      },
+      {
+        "title": "Linear",
+        "artist": "Recriminate",
+        "track": 4,
+        "year": 2009,
+        "duration": 340,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "About: Berlin, Vol: 9",
+    "year": 2015,
+    "duration": 9528,
+    "songs": [
+      {
+        "title": "Claudius",
+        "artist": "Max Manie",
+        "track": 1,
+        "year": 2015,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "Little by Little (Lulleaux & George Whyman remix)",
+        "artist": "Ulf Nilsson",
+        "track": 2,
+        "year": 2015,
+        "duration": 181,
+        "disc_number": 1
+      },
+      {
+        "title": "Grizzly Bear (Lakechild remix)",
+        "artist": "Angus & Julia Stone",
+        "track": 3,
+        "year": 2015,
+        "duration": 210,
+        "disc_number": 1
+      },
+      {
+        "title": "Black Beauty (Leex Tropical mix)",
+        "artist": "Lana Del Rey",
+        "track": 4,
+        "year": 2015,
+        "duration": 357,
+        "disc_number": 1
+      },
+      {
+        "title": "Sunlight (extended club mix)",
+        "artist": "The Magician feat. Years & Years",
+        "track": 5,
+        "year": 2015,
+        "duration": 401,
+        "disc_number": 1
+      },
+      {
+        "title": "No Rest for the Wicked (Klangkarussell remix)",
+        "artist": "Lykke Li",
+        "track": 6,
+        "year": 2015,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "I Do (extended mix)",
+        "artist": "Felix Jaehn",
+        "track": 7,
+        "year": 2015,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "The Nights (Felix Jaehn remix)",
+        "artist": "Avicii",
+        "track": 8,
+        "year": 2015,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "Back Home",
+        "artist": "Fritz Kalkbrenner",
+        "track": 9,
+        "year": 2015,
+        "duration": 378,
+        "disc_number": 1
+      },
+      {
+        "title": "Bones",
+        "artist": "Oliver Koletzki feat. HVOB",
+        "track": 10,
+        "year": 2015,
+        "duration": 294,
+        "disc_number": 1
+      },
+      {
+        "title": "Thoughtful",
+        "artist": "Lexer",
+        "track": 11,
+        "year": 2015,
+        "duration": 402,
+        "disc_number": 1
+      },
+      {
+        "title": "Sonnendeck (extended mix)",
+        "artist": "Achtabahn",
+        "track": 12,
+        "year": 2015,
+        "duration": 304,
+        "disc_number": 1
+      },
+      {
+        "title": "Levo (club edit)",
+        "artist": "Recondite",
+        "track": 13,
+        "year": 2015,
+        "duration": 368,
+        "disc_number": 1
+      },
+      {
+        "title": "Sweet Ophelia (Gold Fields remix)",
+        "artist": "Zella Day",
+        "track": 14,
+        "year": 2015,
+        "duration": 304,
+        "disc_number": 1
+      },
+      {
+        "title": "True (Lexer remix)",
+        "artist": "Nora en Pure",
+        "track": 15,
+        "year": 2015,
+        "duration": 384,
+        "disc_number": 1
+      },
+      {
+        "title": "Faded (Taches remix)",
+        "artist": "ZHU",
+        "track": 16,
+        "year": 2015,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "Symmetry",
+        "artist": "Klangkarussell",
+        "track": 17,
+        "year": 2015,
+        "duration": 301,
+        "disc_number": 2
+      },
+      {
+        "title": "Wild Eyes",
+        "artist": "Broiler feat. Ravvel",
+        "track": 18,
+        "year": 2015,
+        "duration": 198,
+        "disc_number": 2
+      },
+      {
+        "title": "Rainman",
+        "artist": "Erlend Øye",
+        "track": 19,
+        "year": 2015,
+        "duration": 292,
+        "disc_number": 2
+      },
+      {
+        "title": "Are You With Me (extended remix)",
+        "artist": "Lost Frequencies",
+        "track": 20,
+        "year": 2015,
+        "duration": 286,
+        "disc_number": 2
+      },
+      {
+        "title": "Actors (Dinnerdate remix)",
+        "artist": "Still Parade",
+        "track": 21,
+        "year": 2015,
+        "duration": 249,
+        "disc_number": 2
+      },
+      {
+        "title": "Out of Yourself (Roosevelt remix)",
+        "artist": "Truls Heggero",
+        "track": 22,
+        "year": 2015,
+        "duration": 412,
+        "disc_number": 2
+      },
+      {
+        "title": "Fly Like a Bird (Till Von Sein & Tigerskin remix)",
+        "artist": "Pitto",
+        "track": 23,
+        "year": 2015,
+        "duration": 411,
+        "disc_number": 2
+      },
+      {
+        "title": "Giant in My Heart (No Artificial Colours remix)",
+        "artist": "Kiesza",
+        "track": 24,
+        "year": 2015,
+        "duration": 337,
+        "disc_number": 2
+      },
+      {
+        "title": "Changing (Klingande remix)",
+        "artist": "Sigma feat. Paloma Faith",
+        "track": 25,
+        "year": 2015,
+        "duration": 355,
+        "disc_number": 2
+      },
+      {
+        "title": "Give Me Sunshine (Niklas Ibach remix)",
+        "artist": "Santa Maradona F.C. feat. Lucy Spraggan",
+        "track": 26,
+        "year": 2015,
+        "duration": 347,
+        "disc_number": 2
+      },
+      {
+        "title": "Another You (Sonny Alven remix)",
+        "artist": "Nause",
+        "track": 27,
+        "year": 2015,
+        "duration": 281,
+        "disc_number": 2
+      },
+      {
+        "title": "Lost (Ben Pearce remix)",
+        "artist": "Tender Games",
+        "track": 28,
+        "year": 2015,
+        "duration": 271,
+        "disc_number": 2
+      },
+      {
+        "title": "Palm Tree Memories (N'to remix)",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 29,
+        "year": 2015,
+        "duration": 410,
+        "disc_number": 2
+      },
+      {
+        "title": "Northwind (Felix Jaehn remix)",
+        "artist": "Artenvielfalt & Wolfgang Lohr",
+        "track": 30,
+        "year": 2015,
+        "duration": 294,
+        "disc_number": 2
+      },
+      {
+        "title": "Piano Weapon (instrumental)",
+        "artist": "Shadow Child feat. Doorly",
+        "track": 31,
+        "year": 2015,
+        "duration": 295,
+        "disc_number": 2
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Acoustic Dance Sessions",
+    "year": 2012,
+    "duration": 3498,
+    "songs": [
+      {
+        "title": "I Follow Rivers (Live@giel!)",
+        "artist": "Triggerfinger",
+        "track": 1,
+        "year": 2012,
+        "duration": 214,
+        "disc_number": 1
+      },
+      {
+        "title": "More",
+        "artist": "Sandra van Nieuwland",
+        "track": 2,
+        "year": 2012,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "Wonderful Days",
+        "artist": "Miss Montreal",
+        "track": 3,
+        "year": 2012,
+        "duration": 177,
+        "disc_number": 1
+      },
+      {
+        "title": "Ayo Technology",
+        "artist": "Milow",
+        "track": 4,
+        "year": 2012,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "Firestarter",
+        "artist": "Torre Florim",
+        "track": 5,
+        "year": 2012,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "212",
+        "artist": "Wouter Hamel",
+        "track": 6,
+        "year": 2012,
+        "duration": 172,
+        "disc_number": 1
+      },
+      {
+        "title": "Domino",
+        "artist": "Chris Hordijk",
+        "track": 7,
+        "year": 2012,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Sexy and I Know It",
+        "artist": "Ed Struijlaart",
+        "track": 8,
+        "year": 2012,
+        "duration": 188,
+        "disc_number": 1
+      },
+      {
+        "title": "Titanium",
+        "artist": "Kensington",
+        "track": 9,
+        "year": 2012,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "Happiness",
+        "artist": "Epica",
+        "track": 10,
+        "year": 2012,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Firework",
+        "artist": "Jenny Lane",
+        "track": 11,
+        "year": 2012,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Paparazzi",
+        "artist": "Shary-An",
+        "track": 12,
+        "year": 2012,
+        "duration": 210,
+        "disc_number": 1
+      },
+      {
+        "title": "Dynamite",
+        "artist": "Only Seven Left",
+        "track": 13,
+        "year": 2012,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "Not Giving Up on Love",
+        "artist": "Kill Ferelli",
+        "track": 14,
+        "year": 2012,
+        "duration": 172,
+        "disc_number": 1
+      },
+      {
+        "title": "Swedish House Mafia Mash-Up",
+        "artist": "Rigby",
+        "track": 15,
+        "year": 2012,
+        "duration": 158,
+        "disc_number": 1
+      },
+      {
+        "title": "I Remember",
+        "artist": "Sofie Letitre",
+        "track": 16,
+        "year": 2012,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "Ik neem je mee",
+        "artist": "Leonie Meijer",
+        "track": 17,
+        "year": 2012,
+        "duration": 236,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Back to the Future",
     "year": 1985,
     "duration": 1590,
@@ -115325,6 +115765,1060 @@
         "track": 10,
         "year": 1985,
         "duration": 185,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Buddyhead Presents: Gimme Skelter",
+    "year": 2003,
+    "duration": 4503,
+    "songs": [
+      {
+        "title": "Introduction",
+        "artist": "Buddyhead",
+        "track": 1,
+        "year": 2003,
+        "duration": 8,
+        "disc_number": 1
+      },
+      {
+        "title": "New York City is Beating its Chest... Again",
+        "artist": "Buddyhead",
+        "track": 2,
+        "year": 2003,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Hard-On For War",
+        "artist": "Mudhoney",
+        "track": 3,
+        "year": 2003,
+        "duration": 235,
+        "disc_number": 1
+      },
+      {
+        "title": "Shot Down",
+        "artist": "Yeah Yeah Yeahs",
+        "track": 4,
+        "year": 2003,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "King Cobra In The Guts Of Valhalla",
+        "artist": "Pleasure Forever",
+        "track": 5,
+        "year": 2003,
+        "duration": 267,
+        "disc_number": 1
+      },
+      {
+        "title": "Go Metal",
+        "artist": "Buddyhead",
+        "track": 6,
+        "year": 2003,
+        "duration": 9,
+        "disc_number": 1
+      },
+      {
+        "title": "Overhead Metal Erection",
+        "artist": "Burning Brides",
+        "track": 7,
+        "year": 2003,
+        "duration": 296,
+        "disc_number": 1
+      },
+      {
+        "title": "Shoot Speed/Kill Light (live in Japan)",
+        "artist": "Primal Scream",
+        "track": 8,
+        "year": 2003,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "Lets Jump In",
+        "artist": "Dead Meadow",
+        "track": 9,
+        "year": 2003,
+        "duration": 382,
+        "disc_number": 1
+      },
+      {
+        "title": "Last Night I Had A Nightmare We Got Married",
+        "artist": "The Starvations",
+        "track": 10,
+        "year": 2003,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Demon Trance",
+        "artist": "Buddyhead",
+        "track": 11,
+        "year": 2003,
+        "duration": 66,
+        "disc_number": 1
+      },
+      {
+        "title": "Up In Flames",
+        "artist": "Beehive & The Barracudas",
+        "track": 12,
+        "year": 2003,
+        "duration": 170,
+        "disc_number": 1
+      },
+      {
+        "title": "Back Of A Taxi (Alt. Grunge Mix)",
+        "artist": "Your Enemies' Friends",
+        "track": 13,
+        "year": 2003,
+        "duration": 173,
+        "disc_number": 1
+      },
+      {
+        "title": "Mediocrity Rules",
+        "artist": "Le Tigre",
+        "track": 14,
+        "year": 2003,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "Spent (Louder, Faster Mix)",
+        "artist": "Wire",
+        "track": 15,
+        "year": 2003,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Intro/Yearly Note",
+        "artist": "Radio Vago",
+        "track": 16,
+        "year": 2003,
+        "duration": 300,
+        "disc_number": 1
+      },
+      {
+        "title": "Harmless Armless/Minus World",
+        "artist": "Cave In",
+        "track": 17,
+        "year": 2003,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "You Won't Get With Me Tonight",
+        "artist": "Weezer",
+        "track": 18,
+        "year": 2003,
+        "duration": 210,
+        "disc_number": 1
+      },
+      {
+        "title": "Losing Touch With My Mind",
+        "artist": "The Icarus Line",
+        "track": 19,
+        "year": 2003,
+        "duration": 343,
+        "disc_number": 1
+      },
+      {
+        "title": "A Brief History of Amerikkka",
+        "artist": "Buddyhead",
+        "track": 20,
+        "year": 2003,
+        "duration": 123,
+        "disc_number": 1
+      },
+      {
+        "title": "What The Fuck Do You Think Christina Aguilera Is Doing Right Now?",
+        "artist": "Shat",
+        "track": 21,
+        "year": 2003,
+        "duration": 79,
+        "disc_number": 1
+      },
+      {
+        "title": "Nardwuar vs. Iggy Pop",
+        "artist": "Buddyhead",
+        "track": 22,
+        "year": 2003,
+        "duration": 519,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Community: Music From the Original Television Series",
+    "year": 2010,
+    "duration": 2052,
+    "songs": [
+      {
+        "title": "At Least It Was Here (\"Community\" main title version)",
+        "artist": "The 88",
+        "track": 1,
+        "year": 2010,
+        "duration": 35,
+        "disc_number": 1
+      },
+      {
+        "title": "101 Rap",
+        "artist": "Donald Glover & Danny Pudi",
+        "track": 2,
+        "year": 2010,
+        "duration": 35,
+        "disc_number": 1
+      },
+      {
+        "title": "Getting Rid of Britta",
+        "artist": "Chevy Chase, Eric Christian Olsen & Tom Wolfe",
+        "track": 3,
+        "year": 2010,
+        "duration": 135,
+        "disc_number": 1
+      },
+      {
+        "title": "Pierce You Are a B",
+        "artist": "Eric Christian Olsen, Tom Wolfe & Jacques Slade",
+        "track": 4,
+        "year": 2010,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Pierce Raps",
+        "artist": "Jacques Slade",
+        "track": 5,
+        "year": 2010,
+        "duration": 36,
+        "disc_number": 1
+      },
+      {
+        "title": "Night Cap",
+        "artist": "Jacques Slade",
+        "track": 6,
+        "year": 2010,
+        "duration": 130,
+        "disc_number": 1
+      },
+      {
+        "title": "The Way It Is",
+        "artist": "Chevy Chase",
+        "track": 7,
+        "year": 2010,
+        "duration": 59,
+        "disc_number": 1
+      },
+      {
+        "title": "Community Medley",
+        "artist": "Ludwig Göransson",
+        "track": 8,
+        "year": 2010,
+        "duration": 277,
+        "disc_number": 1
+      },
+      {
+        "title": "Somewhere Out There",
+        "artist": "Donald Glover & Danny Pudi",
+        "track": 9,
+        "year": 2010,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "I Never Die",
+        "artist": "Jacques Slade",
+        "track": 10,
+        "year": 2010,
+        "duration": 110,
+        "disc_number": 1
+      },
+      {
+        "title": "Sensitive Night",
+        "artist": "Yvette Nicole Brown",
+        "track": 11,
+        "year": 2010,
+        "duration": 61,
+        "disc_number": 1
+      },
+      {
+        "title": "Party Where Your Heart Is",
+        "artist": "Trevor Armstrong",
+        "track": 12,
+        "year": 2010,
+        "duration": 61,
+        "disc_number": 1
+      },
+      {
+        "title": "Annie's Song",
+        "artist": "Eric Christian Olsen",
+        "track": 13,
+        "year": 2010,
+        "duration": 97,
+        "disc_number": 1
+      },
+      {
+        "title": "Episode 119 Medley",
+        "artist": "Ludwig Göransson",
+        "track": 14,
+        "year": 2010,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "Come, Take a Trip in My Air-Ship",
+        "artist": "Chevy Chase, Danny Pudi & Joel McHale",
+        "track": 15,
+        "year": 2010,
+        "duration": 46,
+        "disc_number": 1
+      },
+      {
+        "title": "Some Worries",
+        "artist": "Chevy Chase, Eric Christian Olsen & Tom Wolfe",
+        "track": 16,
+        "year": 2010,
+        "duration": 130,
+        "disc_number": 1
+      },
+      {
+        "title": "If I Die Before You",
+        "artist": "Ludwig Göransson",
+        "track": 17,
+        "year": 2010,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "At Least It Was Here (\"Community\" main title, full-length version)",
+        "artist": "The 88",
+        "track": 18,
+        "year": 2010,
+        "duration": 170,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Dark Was the Night",
+    "year": 2009,
+    "duration": 7625,
+    "songs": [
+      {
+        "title": "Knotty Pine",
+        "artist": "Dirty Projectors + David Byrne",
+        "track": 1,
+        "year": 2009,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "Cello Song",
+        "artist": "The Books feat. José González",
+        "track": 2,
+        "year": 2009,
+        "duration": 233,
+        "disc_number": 1
+      },
+      {
+        "title": "Train Song",
+        "artist": "Feist and Benjamin Gibbard",
+        "track": 3,
+        "year": 2009,
+        "duration": 182,
+        "disc_number": 1
+      },
+      {
+        "title": "Brackett, WI",
+        "artist": "Bon Iver",
+        "track": 4,
+        "year": 2009,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Deep Blue Sea",
+        "artist": "Grizzly Bear",
+        "track": 5,
+        "year": 2009,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "So Far Around the Bend",
+        "artist": "The National",
+        "track": 6,
+        "year": 2009,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "Tightrope",
+        "artist": "Yeasayer",
+        "track": 7,
+        "year": 2009,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Feeling Good",
+        "artist": "My Brightest Diamond",
+        "track": 8,
+        "year": 2009,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "Dark Was the Night",
+        "artist": "Kronos Quartet",
+        "track": 9,
+        "year": 2009,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "I Was Young When I Left Home",
+        "artist": "ANOHNI with Bryce Dessner",
+        "track": 10,
+        "year": 2009,
+        "duration": 293,
+        "disc_number": 1
+      },
+      {
+        "title": "Big Red Machine",
+        "artist": "Justin Vernon + Aaron Dessner",
+        "track": 11,
+        "year": 2009,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "Lenin",
+        "artist": "Arcade Fire",
+        "track": 13,
+        "year": 2009,
+        "duration": 246,
+        "disc_number": 2
+      },
+      {
+        "title": "Mimizan",
+        "artist": "Beirut",
+        "track": 14,
+        "year": 2009,
+        "duration": 162,
+        "disc_number": 2
+      },
+      {
+        "title": "El Caporal",
+        "artist": "My Morning Jacket",
+        "track": 15,
+        "year": 2009,
+        "duration": 212,
+        "disc_number": 2
+      },
+      {
+        "title": "Inspiration Information",
+        "artist": "Sharon Jones and the Dap‐Kings",
+        "track": 16,
+        "year": 2009,
+        "duration": 243,
+        "disc_number": 2
+      },
+      {
+        "title": "With a Girl Like You",
+        "artist": "Dave Sitek",
+        "track": 17,
+        "year": 2009,
+        "duration": 204,
+        "disc_number": 2
+      },
+      {
+        "title": "You are the Blood",
+        "artist": "Sufjan Stevens",
+        "track": 18,
+        "year": 2009,
+        "duration": 614,
+        "disc_number": 2
+      },
+      {
+        "title": "Blood, Part 2 (remix)",
+        "artist": "Buck 65 feat. Sufjan Stevens & Serengeti",
+        "track": 19,
+        "year": 2009,
+        "duration": 216,
+        "disc_number": 2
+      },
+      {
+        "title": "Hey, Snow White",
+        "artist": "The New Pornographers",
+        "track": 20,
+        "year": 2009,
+        "duration": 265,
+        "disc_number": 2
+      },
+      {
+        "title": "Gentle Hour",
+        "artist": "Yo La Tengo",
+        "track": 21,
+        "year": 2009,
+        "duration": 331,
+        "disc_number": 2
+      },
+      {
+        "title": "Die",
+        "artist": "Iron & Wine",
+        "track": 22,
+        "year": 2009,
+        "duration": 61,
+        "disc_number": 2
+      },
+      {
+        "title": "Service Bell",
+        "artist": "Grizzly Bear + Feist",
+        "track": 23,
+        "year": 2009,
+        "duration": 145,
+        "disc_number": 3
+      },
+      {
+        "title": "Sleepless",
+        "artist": "The Decemberists",
+        "track": 24,
+        "year": 2009,
+        "duration": 473,
+        "disc_number": 3
+      },
+      {
+        "title": "Happiness",
+        "artist": "Riceboy Sleeps",
+        "track": 25,
+        "year": 2009,
+        "duration": 517,
+        "disc_number": 3
+      },
+      {
+        "title": "Amazing Grace",
+        "artist": "Cat Power & the Dirty Delta Blues",
+        "track": 26,
+        "year": 2009,
+        "duration": 209,
+        "disc_number": 3
+      },
+      {
+        "title": "Another Saturday",
+        "artist": "Stuart Murdoch",
+        "track": 27,
+        "year": 2009,
+        "duration": 174,
+        "disc_number": 3
+      },
+      {
+        "title": "The Giant of Illinois",
+        "artist": "Andrew Bird",
+        "track": 28,
+        "year": 2009,
+        "duration": 284,
+        "disc_number": 3
+      },
+      {
+        "title": "Lua",
+        "artist": "Conor Oberst + Gillian Welch",
+        "track": 29,
+        "year": 2009,
+        "duration": 351,
+        "disc_number": 3
+      },
+      {
+        "title": "When the Road Runs Out",
+        "artist": "Blonde Redhead + Devastations",
+        "track": 30,
+        "year": 2009,
+        "duration": 208,
+        "disc_number": 3
+      },
+      {
+        "title": "Love vs. Porn",
+        "artist": "Kevin Drew",
+        "track": 31,
+        "year": 2009,
+        "duration": 232,
+        "disc_number": 3
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Drum & Bass 2022",
+    "year": 2023,
+    "duration": 343,
+    "songs": [
+      {
+        "title": "Gold Dust (Fox Stevenson extended remix)",
+        "artist": "DJ Fresh",
+        "track": 16,
+        "year": 2023,
+        "duration": 343,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Electro Swing 2015",
+    "year": 2014,
+    "duration": 3616,
+    "songs": [
+      {
+        "title": "Pump Up the Jam (electro swing version)",
+        "artist": "Swingrowers",
+        "track": 1,
+        "year": 2014,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Gypsi Doodle",
+        "artist": "Analogik",
+        "track": 2,
+        "year": 2014,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "Sunny Side of the Street",
+        "artist": "ShazaLaKazoo",
+        "track": 3,
+        "year": 2014,
+        "duration": 257,
+        "disc_number": 1
+      },
+      {
+        "title": "Swing Thing (radio edit)",
+        "artist": "11 Acorn Lane",
+        "track": 4,
+        "year": 2014,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "Berlinist (Louie Prima & Harry Chestwig remix)",
+        "artist": "Whiskydenker",
+        "track": 5,
+        "year": 2014,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "Go Feet (radio edit)",
+        "artist": "Got K.D.S & Starfinger",
+        "track": 6,
+        "year": 2014,
+        "duration": 233,
+        "disc_number": 1
+      },
+      {
+        "title": "Aguas de Marco (Electro Bossa Vision)",
+        "artist": "The Unforgettables",
+        "track": 7,
+        "year": 2014,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "The Bosnian (original mix)",
+        "artist": "NTO",
+        "track": 8,
+        "year": 2014,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "Lick the Spoon (original mix)",
+        "artist": "Foxy Cheex & Jem Stone",
+        "track": 9,
+        "year": 2014,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Blues My Naughty Sweetie Gives to Me (radio edit)",
+        "artist": "Francis Drunk",
+        "track": 10,
+        "year": 2014,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "Xyloswing (original mix)",
+        "artist": "DJ Dunya",
+        "track": 11,
+        "year": 2014,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "Dixieloop (Dixie mix)",
+        "artist": "Dixie",
+        "track": 12,
+        "year": 2014,
+        "duration": 333,
+        "disc_number": 1
+      },
+      {
+        "title": "Remedics (radio edit)",
+        "artist": "Pizeta",
+        "track": 13,
+        "year": 2014,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "(We've Got to) Put That Sun Back in the Sky (original mix)",
+        "artist": "Swing Republic",
+        "track": 14,
+        "year": 2014,
+        "duration": 283,
+        "disc_number": 1
+      },
+      {
+        "title": "The Duke (original)",
+        "artist": "Parov Stelar",
+        "track": 15,
+        "year": 2014,
+        "duration": 243,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Heroes",
+    "year": 2008,
+    "duration": 3689,
+    "songs": [
+      {
+        "title": "Heroes Theme",
+        "artist": "Wendy & Lisa",
+        "track": 1,
+        "year": 2008,
+        "duration": 12,
+        "disc_number": 1
+      },
+      {
+        "title": "Fire and Regeneration",
+        "artist": "Wendy & Lisa featuring Shankar",
+        "track": 2,
+        "year": 2008,
+        "duration": 146,
+        "disc_number": 1
+      },
+      {
+        "title": "He's Frank",
+        "artist": "Brighton Port Authority featuring Iggy Pop",
+        "track": 3,
+        "year": 2008,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "All for Swinging You Around",
+        "artist": "The New Pornographers",
+        "track": 4,
+        "year": 2008,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "Glad It's Over",
+        "artist": "Wilco",
+        "track": 5,
+        "year": 2008,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "Nine in the Afternoon",
+        "artist": "Panic at the Disco",
+        "track": 6,
+        "year": 2008,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Weightless",
+        "artist": "Nada Surf",
+        "track": 7,
+        "year": 2008,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Natural Selection",
+        "artist": "Wendy & Lisa",
+        "track": 8,
+        "year": 2008,
+        "duration": 24,
+        "disc_number": 1
+      },
+      {
+        "title": "Abonecronedrone 3 (excerpt)",
+        "artist": "Sheila Chandra",
+        "track": 9,
+        "year": 2008,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Chills",
+        "artist": "My Morning Jacket",
+        "track": 10,
+        "year": 2008,
+        "duration": 255,
+        "disc_number": 1
+      },
+      {
+        "title": "Jealousy Rides With Me",
+        "artist": "Death Cab for Cutie",
+        "track": 11,
+        "year": 2008,
+        "duration": 155,
+        "disc_number": 1
+      },
+      {
+        "title": "Not Now but Soon",
+        "artist": "Imogen Heap",
+        "track": 12,
+        "year": 2008,
+        "duration": 226,
+        "disc_number": 1
+      },
+      {
+        "title": "Homecoming",
+        "artist": "Wendy & Lisa",
+        "track": 13,
+        "year": 2008,
+        "duration": 31,
+        "disc_number": 1
+      },
+      {
+        "title": "All Things Must Pass",
+        "artist": "The Jesus & Mary Chain",
+        "track": 14,
+        "year": 2008,
+        "duration": 267,
+        "disc_number": 1
+      },
+      {
+        "title": "Man in the Long Black Coat",
+        "artist": "Bob Dylan",
+        "track": 15,
+        "year": 2008,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Maya's Theme",
+        "artist": "Cucu Diamantes & Yerba Buena",
+        "track": 16,
+        "year": 2008,
+        "duration": 302,
+        "disc_number": 1
+      },
+      {
+        "title": "Keep My Composure",
+        "artist": "The Chemical Brothers featuring Spank Rock",
+        "track": 17,
+        "year": 2008,
+        "duration": 279,
+        "disc_number": 1
+      },
+      {
+        "title": "Heroes",
+        "artist": "David Bowie",
+        "track": 18,
+        "year": 2008,
+        "duration": 366,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Ice Machine / Flat Of Angels (Pt.2)",
+    "year": 2013,
+    "duration": 477,
+    "songs": [
+      {
+        "title": "Ice Machine",
+        "artist": "Röyksopp",
+        "track": 1,
+        "year": 2013,
+        "duration": 218
+      },
+      {
+        "title": "Flat Of Angles (Pt.2)",
+        "artist": "Benedict Cumberbatch",
+        "track": 2,
+        "year": 2013,
+        "duration": 259
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Kitsuné Maison Compilation 9: Petit Bateau Edition",
+    "year": 2010,
+    "duration": 4651,
+    "songs": [
+      {
+        "title": "Belong",
+        "artist": "Washed Out",
+        "track": 1,
+        "year": 2010,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Let's Go Together",
+        "artist": "Gamble & Burke",
+        "track": 2,
+        "year": 2010,
+        "duration": 233,
+        "disc_number": 1
+      },
+      {
+        "title": "Animal Animal",
+        "artist": "Penguin Prison",
+        "track": 3,
+        "year": 2010,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "Short and Entertaining",
+        "artist": "Jamaica",
+        "track": 4,
+        "year": 2010,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Cooler Couleur",
+        "artist": "Crookers feat. Yelle",
+        "track": 5,
+        "year": 2010,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "Vox Populi (Lifelike treatment)",
+        "artist": "Jupiter",
+        "track": 6,
+        "year": 2010,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "Supermenz (We're Not)",
+        "artist": "Yuksek",
+        "track": 7,
+        "year": 2010,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Stop and Stare",
+        "artist": "Fenech-Soler",
+        "track": 8,
+        "year": 2010,
+        "duration": 226,
+        "disc_number": 1
+      },
+      {
+        "title": "Something Good Can Work (The Twelves remix)",
+        "artist": "Two Door Cinema Club",
+        "track": 9,
+        "year": 2010,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "La Vie Moderne",
+        "artist": "Logo",
+        "track": 10,
+        "year": 2010,
+        "duration": 325,
+        "disc_number": 1
+      },
+      {
+        "title": "Brow Beaten",
+        "artist": "Silver Columns",
+        "track": 11,
+        "year": 2010,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Say My Name",
+        "artist": "Holy Ghost!",
+        "track": 12,
+        "year": 2010,
+        "duration": 394,
+        "disc_number": 1
+      },
+      {
+        "title": "Wonderful Life (Arthur Baker Kitsuné edit)",
+        "artist": "Hurts",
+        "track": 13,
+        "year": 2010,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "Time to Wander (Joan of Arc remix)",
+        "artist": "GATC",
+        "track": 14,
+        "year": 2010,
+        "duration": 226,
+        "disc_number": 1
+      },
+      {
+        "title": "Dreamin'",
+        "artist": "Feldberg",
+        "track": 15,
+        "year": 2010,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Forward Motion",
+        "artist": "Your Nature",
+        "track": 16,
+        "year": 2010,
+        "duration": 253,
+        "disc_number": 1
+      },
+      {
+        "title": "Your Body Is a Machine (Zebra + Snake remix)",
+        "artist": "The Good Natured",
+        "track": 17,
+        "year": 2010,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "The Phoenix Alive (The Octans edit)",
+        "artist": "Monarchy",
+        "track": 18,
+        "year": 2010,
+        "duration": 261,
         "disc_number": 1
       }
     ]
@@ -115469,518 +116963,6 @@
         "track": 17,
         "year": 1988,
         "duration": 392,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "The Best of Bond… James Bond",
-    "year": 1992,
-    "duration": 4765,
-    "songs": [
-      {
-        "title": "James Bond Theme",
-        "artist": "The John Barry Orchestra",
-        "track": 1,
-        "year": 1992,
-        "duration": 107,
-        "disc_number": 1
-      },
-      {
-        "title": "From Russia With Love",
-        "artist": "Matt Monro",
-        "track": 2,
-        "year": 1992,
-        "duration": 154,
-        "disc_number": 1
-      },
-      {
-        "title": "Goldfinger",
-        "artist": "Shirley Bassey",
-        "track": 3,
-        "year": 1992,
-        "duration": 169,
-        "disc_number": 1
-      },
-      {
-        "title": "Thunderball",
-        "artist": "Tom Jones",
-        "track": 4,
-        "year": 1992,
-        "duration": 183,
-        "disc_number": 1
-      },
-      {
-        "title": "You Only Live Twice",
-        "artist": "Nancy Sinatra",
-        "track": 5,
-        "year": 1992,
-        "duration": 166,
-        "disc_number": 1
-      },
-      {
-        "title": "On Her Majesty’s Secret Service",
-        "artist": "John Barry",
-        "track": 6,
-        "year": 1992,
-        "duration": 155,
-        "disc_number": 1
-      },
-      {
-        "title": "We Have All the Time in the World",
-        "artist": "Louis Armstrong",
-        "track": 7,
-        "year": 1992,
-        "duration": 194,
-        "disc_number": 1
-      },
-      {
-        "title": "Diamonds Are Forever",
-        "artist": "Shirley Bassey",
-        "track": 8,
-        "year": 1992,
-        "duration": 161,
-        "disc_number": 1
-      },
-      {
-        "title": "Live and Let Die",
-        "artist": "Wings",
-        "track": 9,
-        "year": 1992,
-        "duration": 193,
-        "disc_number": 1
-      },
-      {
-        "title": "The Man With the Golden Gun",
-        "artist": "Lulu",
-        "track": 10,
-        "year": 1992,
-        "duration": 155,
-        "disc_number": 1
-      },
-      {
-        "title": "Nobody Does It Better",
-        "artist": "Carly Simon",
-        "track": 11,
-        "year": 1992,
-        "duration": 209,
-        "disc_number": 1
-      },
-      {
-        "title": "Moonraker",
-        "artist": "Shirley Bassey",
-        "track": 12,
-        "year": 1992,
-        "duration": 189,
-        "disc_number": 1
-      },
-      {
-        "title": "For Your Eyes Only",
-        "artist": "Sheena Easton",
-        "track": 13,
-        "year": 1992,
-        "duration": 184,
-        "disc_number": 1
-      },
-      {
-        "title": "All Time High",
-        "artist": "Rita Coolidge",
-        "track": 14,
-        "year": 1992,
-        "duration": 183,
-        "disc_number": 1
-      },
-      {
-        "title": "A View to a Kill",
-        "artist": "Duran Duran",
-        "track": 15,
-        "year": 1992,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "The Living Daylights",
-        "artist": "a‐ha",
-        "track": 16,
-        "year": 1992,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Licence to Kill",
-        "artist": "Gladys Knight",
-        "track": 17,
-        "year": 1992,
-        "duration": 251,
-        "disc_number": 1
-      },
-      {
-        "title": "Goldeneye",
-        "artist": "Tina Turner",
-        "track": 18,
-        "year": 1992,
-        "duration": 209,
-        "disc_number": 1
-      },
-      {
-        "title": "Tomorrow Never Dies",
-        "artist": "Sheryl Crow",
-        "track": 19,
-        "year": 1992,
-        "duration": 293,
-        "disc_number": 1
-      },
-      {
-        "title": "Surrender",
-        "artist": "k.d. lang",
-        "track": 20,
-        "year": 1992,
-        "duration": 236,
-        "disc_number": 1
-      },
-      {
-        "title": "The World Is Not Enough",
-        "artist": "Garbage",
-        "track": 21,
-        "year": 1992,
-        "duration": 236,
-        "disc_number": 1
-      },
-      {
-        "title": "Die Another Day",
-        "artist": "Madonna",
-        "track": 22,
-        "year": 1992,
-        "duration": 279,
-        "disc_number": 1
-      },
-      {
-        "title": "You Know My Name",
-        "artist": "Chris Cornell",
-        "track": 23,
-        "year": 1992,
-        "duration": 244,
-        "disc_number": 1
-      },
-      {
-        "title": "James Bond Theme",
-        "artist": "John Arnold",
-        "track": 24,
-        "year": 1992,
-        "duration": 134,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Trainspotting #2",
-    "year": 1997,
-    "duration": 594,
-    "songs": [
-      {
-        "title": "Dark and Long (Dark Train mix)",
-        "artist": "Underworld",
-        "track": 3,
-        "year": 1997,
-        "duration": 594,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Need for Speed III: Hot Pursuit",
-    "year": 1998,
-    "duration": 4100,
-    "songs": [
-      {
-        "title": "Title",
-        "artist": "Traz Damji",
-        "track": 1,
-        "year": 1998,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 1",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 2,
-        "year": 1998,
-        "duration": 30,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 2",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 3,
-        "year": 1998,
-        "duration": 31,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 3",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 4,
-        "year": 1998,
-        "duration": 30,
-        "disc_number": 1
-      },
-      {
-        "title": "Whacked",
-        "artist": "Alistair Hirst",
-        "track": 5,
-        "year": 1998,
-        "duration": 73,
-        "disc_number": 1
-      },
-      {
-        "title": "romulus 3",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 6,
-        "year": 1998,
-        "duration": 199,
-        "disc_number": 1
-      },
-      {
-        "title": "Minotaur",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 7,
-        "year": 1998,
-        "duration": 42,
-        "disc_number": 1
-      },
-      {
-        "title": "Pi",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 8,
-        "year": 1998,
-        "duration": 60,
-        "disc_number": 1
-      },
-      {
-        "title": "Triton",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 9,
-        "year": 1998,
-        "duration": 54,
-        "disc_number": 1
-      },
-      {
-        "title": "Monster",
-        "artist": "Crispin Hands",
-        "track": 10,
-        "year": 1998,
-        "duration": 167,
-        "disc_number": 1
-      },
-      {
-        "title": "Whipped",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 11,
-        "year": 1998,
-        "duration": 64,
-        "disc_number": 1
-      },
-      {
-        "title": "Little Sweaty Sow",
-        "artist": "Saki Kaskas",
-        "track": 12,
-        "year": 1998,
-        "duration": 512,
-        "disc_number": 1
-      },
-      {
-        "title": "hydrus 606",
-        "artist": "Rom Di Prisco",
-        "track": 13,
-        "year": 1998,
-        "duration": 84,
-        "disc_number": 1
-      },
-      {
-        "title": "Snorkeling Cactus Weasels",
-        "artist": "Matt Ragan",
-        "track": 14,
-        "year": 1998,
-        "duration": 345,
-        "disc_number": 1
-      },
-      {
-        "title": "cetus 808",
-        "artist": "Rom Di Prisco",
-        "track": 15,
-        "year": 1998,
-        "duration": 72,
-        "disc_number": 1
-      },
-      {
-        "title": "Rear Flutter blast 19",
-        "artist": "Matt Ragan",
-        "track": 16,
-        "year": 1998,
-        "duration": 307,
-        "disc_number": 1
-      },
-      {
-        "title": "aquilla 303",
-        "artist": "Rom Di Prisco",
-        "track": 17,
-        "year": 1998,
-        "duration": 110,
-        "disc_number": 1
-      },
-      {
-        "title": "Snow Bags",
-        "artist": "Matt Ragan",
-        "track": 18,
-        "year": 1998,
-        "duration": 445,
-        "disc_number": 1
-      },
-      {
-        "title": "Knossos",
-        "artist": "Saki Kaskas",
-        "track": 19,
-        "year": 1998,
-        "duration": 441,
-        "disc_number": 1
-      },
-      {
-        "title": "Flimsy",
-        "artist": "Saki Kaskas",
-        "track": 20,
-        "year": 1998,
-        "duration": 511,
-        "disc_number": 1
-      },
-      {
-        "title": "Warped",
-        "artist": "Alistair Hirst",
-        "track": 21,
-        "year": 1998,
-        "duration": 372,
-        "disc_number": 1
-      },
-      {
-        "title": "Win",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 22,
-        "year": 1998,
-        "duration": 41,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Science Fiction Jazz, Volume 3",
-    "year": 1998,
-    "duration": 4672,
-    "songs": [
-      {
-        "title": "Heroes (Roni Size live mix)",
-        "artist": "Roni Size / Reprazent",
-        "track": 1,
-        "year": 1998,
-        "duration": 244,
-        "disc_number": 1
-      },
-      {
-        "title": "Dirty Harry (Grooverider remix)",
-        "artist": "Adam F",
-        "track": 2,
-        "year": 1998,
-        "duration": 379,
-        "disc_number": 1
-      },
-      {
-        "title": "I Am the Black Gold of the Sun (4 Hero mix)",
-        "artist": "Nuyorican Soul",
-        "track": 3,
-        "year": 1998,
-        "duration": 507,
-        "disc_number": 1
-      },
-      {
-        "title": "Opaque",
-        "artist": "Aquasky",
-        "track": 4,
-        "year": 1998,
-        "duration": 439,
-        "disc_number": 1
-      },
-      {
-        "title": "Waking Up (remix)",
-        "artist": "Nicolette",
-        "track": 5,
-        "year": 1998,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "The Glass Bead Game",
-        "artist": "Thievery Corporation",
-        "track": 6,
-        "year": 1998,
-        "duration": 371,
-        "disc_number": 1
-      },
-      {
-        "title": "Bye Bye Blues",
-        "artist": "Bang Bang",
-        "track": 7,
-        "year": 1998,
-        "duration": 307,
-        "disc_number": 1
-      },
-      {
-        "title": "His Name Is ...",
-        "artist": "United Future Organization",
-        "track": 8,
-        "year": 1998,
-        "duration": 292,
-        "disc_number": 1
-      },
-      {
-        "title": "Papalon",
-        "artist": "Squarepusher",
-        "track": 9,
-        "year": 1998,
-        "duration": 483,
-        "disc_number": 1
-      },
-      {
-        "title": "Achilles Heel",
-        "artist": "DJ Die",
-        "track": 10,
-        "year": 1998,
-        "duration": 463,
-        "disc_number": 1
-      },
-      {
-        "title": "The Look",
-        "artist": "Guardians of Dalliance",
-        "track": 11,
-        "year": 1998,
-        "duration": 448,
-        "disc_number": 1
-      },
-      {
-        "title": "She's the Devil",
-        "artist": "Beatless",
-        "track": 12,
-        "year": 1998,
-        "duration": 368,
-        "disc_number": 1
-      },
-      {
-        "title": "Science Fiction Jazz (ultra short cut)",
-        "artist": "Minus 8",
-        "track": 13,
-        "year": 1998,
-        "duration": 68,
         "disc_number": 1
       }
     ]
@@ -116205,6 +117187,190 @@
         "track": 27,
         "year": 1999,
         "duration": 145,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Need for Speed III: Hot Pursuit",
+    "year": 1998,
+    "duration": 4100,
+    "songs": [
+      {
+        "title": "Title",
+        "artist": "Traz Damji",
+        "track": 1,
+        "year": 1998,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 1",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 2,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 2",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 3,
+        "year": 1998,
+        "duration": 31,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 4,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Whacked",
+        "artist": "Alistair Hirst",
+        "track": 5,
+        "year": 1998,
+        "duration": 73,
+        "disc_number": 1
+      },
+      {
+        "title": "romulus 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 6,
+        "year": 1998,
+        "duration": 199,
+        "disc_number": 1
+      },
+      {
+        "title": "Minotaur",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 7,
+        "year": 1998,
+        "duration": 42,
+        "disc_number": 1
+      },
+      {
+        "title": "Pi",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 8,
+        "year": 1998,
+        "duration": 60,
+        "disc_number": 1
+      },
+      {
+        "title": "Triton",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 9,
+        "year": 1998,
+        "duration": 54,
+        "disc_number": 1
+      },
+      {
+        "title": "Monster",
+        "artist": "Crispin Hands",
+        "track": 10,
+        "year": 1998,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Whipped",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 11,
+        "year": 1998,
+        "duration": 64,
+        "disc_number": 1
+      },
+      {
+        "title": "Little Sweaty Sow",
+        "artist": "Saki Kaskas",
+        "track": 12,
+        "year": 1998,
+        "duration": 512,
+        "disc_number": 1
+      },
+      {
+        "title": "hydrus 606",
+        "artist": "Rom Di Prisco",
+        "track": 13,
+        "year": 1998,
+        "duration": 84,
+        "disc_number": 1
+      },
+      {
+        "title": "Snorkeling Cactus Weasels",
+        "artist": "Matt Ragan",
+        "track": 14,
+        "year": 1998,
+        "duration": 345,
+        "disc_number": 1
+      },
+      {
+        "title": "cetus 808",
+        "artist": "Rom Di Prisco",
+        "track": 15,
+        "year": 1998,
+        "duration": 72,
+        "disc_number": 1
+      },
+      {
+        "title": "Rear Flutter blast 19",
+        "artist": "Matt Ragan",
+        "track": 16,
+        "year": 1998,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "aquilla 303",
+        "artist": "Rom Di Prisco",
+        "track": 17,
+        "year": 1998,
+        "duration": 110,
+        "disc_number": 1
+      },
+      {
+        "title": "Snow Bags",
+        "artist": "Matt Ragan",
+        "track": 18,
+        "year": 1998,
+        "duration": 445,
+        "disc_number": 1
+      },
+      {
+        "title": "Knossos",
+        "artist": "Saki Kaskas",
+        "track": 19,
+        "year": 1998,
+        "duration": 441,
+        "disc_number": 1
+      },
+      {
+        "title": "Flimsy",
+        "artist": "Saki Kaskas",
+        "track": 20,
+        "year": 1998,
+        "duration": 511,
+        "disc_number": 1
+      },
+      {
+        "title": "Warped",
+        "artist": "Alistair Hirst",
+        "track": 21,
+        "year": 1998,
+        "duration": 372,
+        "disc_number": 1
+      },
+      {
+        "title": "Win",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 22,
+        "year": 1998,
+        "duration": 41,
         "disc_number": 1
       }
     ]
@@ -116443,6 +117609,702 @@
   },
   {
     "artist": "Various Artists",
+    "album": "Paste Magazine Sampler #15: Apr‐May 2005",
+    "year": 2005,
+    "duration": 4492,
+    "songs": [
+      {
+        "title": "Kathleen (live)",
+        "artist": "Josh Ritter",
+        "track": 1,
+        "year": 2005,
+        "duration": 278,
+        "disc_number": 1
+      },
+      {
+        "title": "Dear John",
+        "artist": "Aimee Mann",
+        "track": 2,
+        "year": 2005,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Snowden",
+        "artist": "Doves",
+        "track": 3,
+        "year": 2005,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "We Both Go Down Together",
+        "artist": "The Decemberists",
+        "track": 4,
+        "year": 2005,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "Ghosts",
+        "artist": "Mark Geary",
+        "track": 5,
+        "year": 2005,
+        "duration": 199,
+        "disc_number": 1
+      },
+      {
+        "title": "Born (edit)",
+        "artist": "Over the Rhine",
+        "track": 6,
+        "year": 2005,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "Falling",
+        "artist": "Glen Phillips",
+        "track": 8,
+        "year": 2005,
+        "duration": 195,
+        "disc_number": 1
+      },
+      {
+        "title": "Requiem for O.M.M.2",
+        "artist": "of Montreal",
+        "track": 9,
+        "year": 2005,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Me & My Girl",
+        "artist": "John Davis",
+        "track": 10,
+        "year": 2005,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "I Need Your Love in My Life",
+        "artist": "Solomon Burke",
+        "track": 11,
+        "year": 2005,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "Skin Is, My",
+        "artist": "Andrew Bird",
+        "track": 12,
+        "year": 2005,
+        "duration": 218,
+        "disc_number": 1
+      },
+      {
+        "title": "Devil’s in the Details (edit)",
+        "artist": "Lowen & Navarro",
+        "track": 13,
+        "year": 2005,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Manhole",
+        "artist": "Ani DiFranco",
+        "track": 14,
+        "year": 2005,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Made Me So Happy",
+        "artist": "Jim Boggia w/ Jill Sobule",
+        "track": 15,
+        "year": 2005,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "Atlanta & Birmingham",
+        "artist": "Deana Carter",
+        "track": 16,
+        "year": 2005,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Stupid Game",
+        "artist": "Stephen Clair",
+        "track": 17,
+        "year": 2005,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "As You Do",
+        "artist": "Castanets",
+        "track": 18,
+        "year": 2005,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Sacrifice",
+        "artist": "Rachael Sage",
+        "track": 19,
+        "year": 2005,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "Sweethearts on Parade",
+        "artist": "M. Ward",
+        "track": 20,
+        "year": 2005,
+        "duration": 134,
+        "disc_number": 1
+      },
+      {
+        "title": "Hey Ho",
+        "artist": "Tracy Grammer",
+        "track": 21,
+        "year": 2005,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "The Air Between Us",
+        "artist": "Hammock",
+        "track": 22,
+        "year": 2005,
+        "duration": 223,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Recovery",
+    "year": 2008,
+    "duration": 4907,
+    "songs": [
+      {
+        "title": "Heart and Soul",
+        "artist": "BJ Nilsen",
+        "track": 1,
+        "year": 2008,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Mull of Kintyre",
+        "artist": "People Like Us & Ergo Phizmiz",
+        "track": 2,
+        "year": 2008,
+        "duration": 327,
+        "disc_number": 1
+      },
+      {
+        "title": "Hunting High and Low",
+        "artist": "Fennesz",
+        "track": 3,
+        "year": 2008,
+        "duration": 299,
+        "disc_number": 2
+      },
+      {
+        "title": "Bomber",
+        "artist": ":zoviet*france:",
+        "track": 4,
+        "year": 2008,
+        "duration": 222,
+        "disc_number": 2
+      },
+      {
+        "title": "Back in Black",
+        "artist": "Ryoji Ikeda",
+        "track": 5,
+        "year": 2008,
+        "duration": 240,
+        "disc_number": 3
+      },
+      {
+        "title": "Running Up That Hill",
+        "artist": "Mika Vainio",
+        "track": 6,
+        "year": 2008,
+        "duration": 206,
+        "disc_number": 3
+      },
+      {
+        "title": "Lucifer",
+        "artist": "Robert Henke",
+        "track": 7,
+        "year": 2008,
+        "duration": 324,
+        "disc_number": 4
+      },
+      {
+        "title": "My Sharona",
+        "artist": "Susan Stenger",
+        "track": 8,
+        "year": 2008,
+        "duration": 345,
+        "disc_number": 4
+      },
+      {
+        "title": "Dream Tree",
+        "artist": "Paradise Island",
+        "track": 9,
+        "year": 2008,
+        "duration": 210,
+        "disc_number": 5
+      },
+      {
+        "title": "Planet Rock",
+        "artist": "Alva Noto",
+        "track": 10,
+        "year": 2008,
+        "duration": 211,
+        "disc_number": 5
+      },
+      {
+        "title": "C·30 C·60 C·90 Go",
+        "artist": "Matmos",
+        "track": 11,
+        "year": 2008,
+        "duration": 224,
+        "disc_number": 6
+      },
+      {
+        "title": "Temptation",
+        "artist": "Barbara Morgenstern",
+        "track": 12,
+        "year": 2008,
+        "duration": 278,
+        "disc_number": 6
+      },
+      {
+        "title": "Lucifer Sam",
+        "artist": "Chris & Cosey",
+        "track": 13,
+        "year": 2008,
+        "duration": 214,
+        "disc_number": 7
+      },
+      {
+        "title": "Freedom! (feat. Caroline Thorpe)",
+        "artist": "Robert Lippok",
+        "track": 14,
+        "year": 2008,
+        "duration": 222,
+        "disc_number": 7
+      },
+      {
+        "title": "Billie Jean",
+        "artist": "SND",
+        "track": 15,
+        "year": 2008,
+        "duration": 300,
+        "disc_number": 8
+      },
+      {
+        "title": "Bleak Is My Favourite Cliché",
+        "artist": "Richard Chartier & CoH",
+        "track": 16,
+        "year": 2008,
+        "duration": 195,
+        "disc_number": 8
+      },
+      {
+        "title": "Ashes to Ashes",
+        "artist": "Momus & Germlin",
+        "track": 17,
+        "year": 2008,
+        "duration": 230,
+        "disc_number": 9
+      },
+      {
+        "title": "Dark Love",
+        "artist": "Jason Forrest",
+        "track": 18,
+        "year": 2008,
+        "duration": 225,
+        "disc_number": 9
+      },
+      {
+        "title": "Warm Leatherette",
+        "artist": "J.G. Thirlwell",
+        "track": 19,
+        "year": 2008,
+        "duration": 198,
+        "disc_number": 10
+      },
+      {
+        "title": "Souvenir",
+        "artist": "Jóhann Jóhannsson",
+        "track": 20,
+        "year": 2008,
+        "duration": 276,
+        "disc_number": 10
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Science Fiction Jazz, Volume 10",
+    "year": 2007,
+    "duration": 3872,
+    "songs": [
+      {
+        "title": "Stretched Out",
+        "artist": "K'Bonus",
+        "track": 1,
+        "year": 2007,
+        "duration": 279,
+        "disc_number": 1
+      },
+      {
+        "title": "Anything's Possible",
+        "artist": "Zero dB",
+        "track": 2,
+        "year": 2007,
+        "duration": 298,
+        "disc_number": 1
+      },
+      {
+        "title": "You Wish",
+        "artist": "Nightmares on Wax",
+        "track": 3,
+        "year": 2007,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "Boney M Down",
+        "artist": "Lindstrøm & Prins Thomas",
+        "track": 4,
+        "year": 2007,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "Ike's Mood I",
+        "artist": "Visioneers",
+        "track": 5,
+        "year": 2007,
+        "duration": 253,
+        "disc_number": 1
+      },
+      {
+        "title": "Wild Oak Tree",
+        "artist": "Airmate feat. Mozez",
+        "track": 6,
+        "year": 2007,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "Walkinonit",
+        "artist": "J Dilla",
+        "track": 7,
+        "year": 2007,
+        "duration": 73,
+        "disc_number": 1
+      },
+      {
+        "title": "Beautiful Day (Banzai Republic vs. Trentemøller mix)",
+        "artist": "Laid Back",
+        "track": 8,
+        "year": 2007,
+        "duration": 447,
+        "disc_number": 1
+      },
+      {
+        "title": "Ashamed of Myself",
+        "artist": "Kelley Polar",
+        "track": 9,
+        "year": 2007,
+        "duration": 290,
+        "disc_number": 1
+      },
+      {
+        "title": "Listen to the Drums (Clignancourt edit)",
+        "artist": "Outlines",
+        "track": 10,
+        "year": 2007,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Love From Outer Space",
+        "artist": "Tahiti 80",
+        "track": 11,
+        "year": 2007,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Koop Island Blues",
+        "artist": "Koop",
+        "track": 12,
+        "year": 2007,
+        "duration": 269,
+        "disc_number": 1
+      },
+      {
+        "title": "Chapel Stile",
+        "artist": "Pretz",
+        "track": 13,
+        "year": 2007,
+        "duration": 263,
+        "disc_number": 1
+      },
+      {
+        "title": "Sail Into the Sun",
+        "artist": "The Funky Lowlives",
+        "track": 14,
+        "year": 2007,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "Heaven Knows (Interlude No. 2)",
+        "artist": "Minus 8",
+        "track": 15,
+        "year": 2007,
+        "duration": 236,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Science Fiction Jazz, Volume 12",
+    "year": 2010,
+    "duration": 3643,
+    "songs": [
+      {
+        "title": "People (Banzai Republic vs Trentemøller mix)",
+        "artist": "Laid Back",
+        "track": 1,
+        "year": 2010,
+        "duration": 355,
+        "disc_number": 1
+      },
+      {
+        "title": "He's Looking at You",
+        "artist": "Mahara McKay & Minus 8",
+        "track": 2,
+        "year": 2010,
+        "duration": 237,
+        "disc_number": 1
+      },
+      {
+        "title": "Down in L.A. (Shazam remix)",
+        "artist": "Munk",
+        "track": 3,
+        "year": 2010,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "Out Into the Night",
+        "artist": "Lovebirds",
+        "track": 4,
+        "year": 2010,
+        "duration": 418,
+        "disc_number": 1
+      },
+      {
+        "title": "Musiq (A Tom Moulton mix)",
+        "artist": "Cool Million feat.Jahah",
+        "track": 5,
+        "year": 2010,
+        "duration": 291,
+        "disc_number": 1
+      },
+      {
+        "title": "Wings of Love (DJ Bootsie remix)",
+        "artist": "Žagar feat.Underground Divas",
+        "track": 6,
+        "year": 2010,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "To the Sky (Lemongrass Free Bird remix)",
+        "artist": "Tokyo Counterpoint",
+        "track": 7,
+        "year": 2010,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "We Be",
+        "artist": "Wax Tailor feat. Ursula Rucker",
+        "track": 8,
+        "year": 2010,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "All Through the Night",
+        "artist": "Emancipator",
+        "track": 9,
+        "year": 2010,
+        "duration": 251,
+        "disc_number": 1
+      },
+      {
+        "title": "Smooth Operator",
+        "artist": "青木カレン feat. Native",
+        "track": 10,
+        "year": 2010,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "Bewitched (Barrio Jazz Gang remix)",
+        "artist": "Pauline London",
+        "track": 11,
+        "year": 2010,
+        "duration": 298,
+        "disc_number": 1
+      },
+      {
+        "title": "Something Black",
+        "artist": "Audio Lotion",
+        "track": 12,
+        "year": 2010,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Together (The Orchad remix)",
+        "artist": "Atjazz feat.Mr. J",
+        "track": 13,
+        "year": 2010,
+        "duration": 270,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Science Fiction Jazz, Volume 3",
+    "year": 1998,
+    "duration": 4672,
+    "songs": [
+      {
+        "title": "Heroes (Roni Size live mix)",
+        "artist": "Roni Size / Reprazent",
+        "track": 1,
+        "year": 1998,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "Dirty Harry (Grooverider remix)",
+        "artist": "Adam F",
+        "track": 2,
+        "year": 1998,
+        "duration": 379,
+        "disc_number": 1
+      },
+      {
+        "title": "I Am the Black Gold of the Sun (4 Hero mix)",
+        "artist": "Nuyorican Soul",
+        "track": 3,
+        "year": 1998,
+        "duration": 507,
+        "disc_number": 1
+      },
+      {
+        "title": "Opaque",
+        "artist": "Aquasky",
+        "track": 4,
+        "year": 1998,
+        "duration": 439,
+        "disc_number": 1
+      },
+      {
+        "title": "Waking Up (remix)",
+        "artist": "Nicolette",
+        "track": 5,
+        "year": 1998,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "The Glass Bead Game",
+        "artist": "Thievery Corporation",
+        "track": 6,
+        "year": 1998,
+        "duration": 371,
+        "disc_number": 1
+      },
+      {
+        "title": "Bye Bye Blues",
+        "artist": "Bang Bang",
+        "track": 7,
+        "year": 1998,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "His Name Is ...",
+        "artist": "United Future Organization",
+        "track": 8,
+        "year": 1998,
+        "duration": 292,
+        "disc_number": 1
+      },
+      {
+        "title": "Papalon",
+        "artist": "Squarepusher",
+        "track": 9,
+        "year": 1998,
+        "duration": 483,
+        "disc_number": 1
+      },
+      {
+        "title": "Achilles Heel",
+        "artist": "DJ Die",
+        "track": 10,
+        "year": 1998,
+        "duration": 463,
+        "disc_number": 1
+      },
+      {
+        "title": "The Look",
+        "artist": "Guardians of Dalliance",
+        "track": 11,
+        "year": 1998,
+        "duration": 448,
+        "disc_number": 1
+      },
+      {
+        "title": "She's the Devil",
+        "artist": "Beatless",
+        "track": 12,
+        "year": 1998,
+        "duration": 368,
+        "disc_number": 1
+      },
+      {
+        "title": "Science Fiction Jazz (ultra short cut)",
+        "artist": "Minus 8",
+        "track": 13,
+        "year": 1998,
+        "duration": 68,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Space Night Vol. VI",
     "year": 2001,
     "duration": 8815,
@@ -116659,184 +118521,296 @@
   },
   {
     "artist": "Various Artists",
-    "album": "Buddyhead Presents: Gimme Skelter",
-    "year": 2003,
-    "duration": 4503,
+    "album": "Suicide Squad: The Album",
+    "year": 2016,
+    "duration": 3064,
     "songs": [
       {
-        "title": "Introduction",
-        "artist": "Buddyhead",
+        "title": "Purple Lamborghini",
+        "artist": "Skrillex & Rick Ross",
         "track": 1,
-        "year": 2003,
-        "duration": 8,
+        "year": 2016,
+        "duration": 215,
         "disc_number": 1
       },
       {
-        "title": "New York City is Beating its Chest... Again",
-        "artist": "Buddyhead",
+        "title": "Sucker for Pain",
+        "artist": "Lil Wayne, Wiz Khalifa & Imagine Dragons with Logic and Ty Dolla $ign feat. X Ambassadors",
         "track": 2,
-        "year": 2003,
-        "duration": 175,
+        "year": 2016,
+        "duration": 244,
         "disc_number": 1
       },
       {
-        "title": "Hard-On For War",
-        "artist": "Mudhoney",
+        "title": "Heathens",
+        "artist": "twenty one pilots",
         "track": 3,
-        "year": 2003,
-        "duration": 235,
+        "year": 2016,
+        "duration": 195,
         "disc_number": 1
       },
       {
-        "title": "Shot Down",
-        "artist": "Yeah Yeah Yeahs",
+        "title": "Standing in the Rain",
+        "artist": "Action Bronson, Mark Ronson & Dan Auerbach",
         "track": 4,
-        "year": 2003,
-        "duration": 90,
+        "year": 2016,
+        "duration": 202,
         "disc_number": 1
       },
       {
-        "title": "King Cobra In The Guts Of Valhalla",
-        "artist": "Pleasure Forever",
+        "title": "Gangsta",
+        "artist": "Kehlani",
         "track": 5,
-        "year": 2003,
-        "duration": 267,
+        "year": 2016,
+        "duration": 177,
         "disc_number": 1
       },
       {
-        "title": "Go Metal",
-        "artist": "Buddyhead",
+        "title": "Know Better",
+        "artist": "Kevin Gates",
         "track": 6,
-        "year": 2003,
-        "duration": 9,
+        "year": 2016,
+        "duration": 208,
         "disc_number": 1
       },
       {
-        "title": "Overhead Metal Erection",
-        "artist": "Burning Brides",
+        "title": "You Don’t Own Me",
+        "artist": "SAYGRACE feat. G‐Eazy",
         "track": 7,
-        "year": 2003,
-        "duration": 296,
+        "year": 2016,
+        "duration": 199,
         "disc_number": 1
       },
       {
-        "title": "Shoot Speed/Kill Light (live in Japan)",
-        "artist": "Primal Scream",
+        "title": "Without Me",
+        "artist": "Eminem",
         "track": 8,
-        "year": 2003,
-        "duration": 280,
+        "year": 2016,
+        "duration": 292,
         "disc_number": 1
       },
       {
-        "title": "Lets Jump In",
-        "artist": "Dead Meadow",
+        "title": "Wreak Havoc",
+        "artist": "Skylar Grey",
         "track": 9,
-        "year": 2003,
-        "duration": 382,
+        "year": 2016,
+        "duration": 228,
         "disc_number": 1
       },
       {
-        "title": "Last Night I Had A Nightmare We Got Married",
-        "artist": "The Starvations",
+        "title": "Medieval Warfare",
+        "artist": "Grimes",
         "track": 10,
-        "year": 2003,
-        "duration": 191,
+        "year": 2016,
+        "duration": 181,
         "disc_number": 1
       },
       {
-        "title": "Demon Trance",
-        "artist": "Buddyhead",
+        "title": "Bohemian Rhapsody",
+        "artist": "Panic! at the Disco",
         "track": 11,
-        "year": 2003,
-        "duration": 66,
+        "year": 2016,
+        "duration": 361,
         "disc_number": 1
       },
       {
-        "title": "Up In Flames",
-        "artist": "Beehive & The Barracudas",
+        "title": "Slippin’ Into Darkness",
+        "artist": "War",
         "track": 12,
-        "year": 2003,
+        "year": 2016,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Fortunate Son",
+        "artist": "Creedence Clearwater Revival",
+        "track": 13,
+        "year": 2016,
+        "duration": 138,
+        "disc_number": 1
+      },
+      {
+        "title": "I Started a Joke",
+        "artist": "ConfidentialMX feat. Becky Hanson",
+        "track": 14,
+        "year": 2016,
+        "duration": 190,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "TV ANIMATION \"Sonny Boy\" original soundtrack",
+    "year": 2021,
+    "duration": 4789,
+    "songs": [
+      {
+        "title": "少年少女 TV ver.",
+        "artist": "銀杏BOYZ",
+        "track": 1,
+        "year": 2021,
+        "duration": 94,
+        "disc_number": 1
+      },
+      {
+        "title": "Broken Windows",
+        "artist": "落日飛車",
+        "track": 2,
+        "year": 2021,
+        "duration": 102,
+        "disc_number": 1
+      },
+      {
+        "title": "Seagull",
+        "artist": "落日飛車",
+        "track": 3,
+        "year": 2021,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Summer Storm",
+        "artist": "VIDEOTAPEMUSIC",
+        "track": 4,
+        "year": 2021,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "Tune from diamond",
+        "artist": "ザ・なつやすみバンド",
+        "track": 5,
+        "year": 2021,
+        "duration": 276,
+        "disc_number": 1
+      },
+      {
+        "title": "夜釣り",
+        "artist": "ミツメ",
+        "track": 6,
+        "year": 2021,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "Let There Be Light Again",
+        "artist": "落日飛車",
+        "track": 7,
+        "year": 2021,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Beacon",
+        "artist": "Ogawa & Tokoro",
+        "track": 8,
+        "year": 2021,
         "duration": 170,
         "disc_number": 1
       },
       {
-        "title": "Back Of A Taxi (Alt. Grunge Mix)",
-        "artist": "Your Enemies' Friends",
+        "title": "Yamabiko’s Theme",
+        "artist": "공중도둑",
+        "track": 9,
+        "year": 2021,
+        "duration": 635,
+        "disc_number": 1
+      },
+      {
+        "title": "Kodama’s Theme",
+        "artist": "공중도둑",
+        "track": 10,
+        "year": 2021,
+        "duration": 200,
+        "disc_number": 1
+      },
+      {
+        "title": "Soft Oversight",
+        "artist": "Ogawa & Tokoro",
+        "track": 11,
+        "year": 2021,
+        "duration": 104,
+        "disc_number": 1
+      },
+      {
+        "title": "ソウとセイジ",
+        "artist": "ミツメ",
+        "track": 12,
+        "year": 2021,
+        "duration": 500,
+        "disc_number": 1
+      },
+      {
+        "title": "今日の歌",
+        "artist": "カネヨリマサル",
         "track": 13,
-        "year": 2003,
-        "duration": 173,
+        "year": 2021,
+        "duration": 236,
         "disc_number": 1
       },
       {
-        "title": "Mediocrity Rules",
-        "artist": "Le Tigre",
+        "title": "Lightship",
+        "artist": "ザ・なつやすみバンド",
         "track": 14,
-        "year": 2003,
-        "duration": 120,
+        "year": 2021,
+        "duration": 315,
         "disc_number": 1
       },
       {
-        "title": "Spent (Louder, Faster Mix)",
-        "artist": "Wire",
+        "title": "スペア",
+        "artist": "ミツメ",
         "track": 15,
-        "year": 2003,
-        "duration": 268,
+        "year": 2021,
+        "duration": 297,
         "disc_number": 1
       },
       {
-        "title": "Intro/Yearly Note",
-        "artist": "Radio Vago",
+        "title": "サニーボーイ・ラプソディ",
+        "artist": "toe",
         "track": 16,
-        "year": 2003,
-        "duration": 300,
+        "year": 2021,
+        "duration": 245,
         "disc_number": 1
       },
       {
-        "title": "Harmless Armless/Minus World",
-        "artist": "Cave In",
+        "title": "Lune",
+        "artist": "コーニッシュ",
         "track": 17,
-        "year": 2003,
-        "duration": 184,
+        "year": 2021,
+        "duration": 105,
         "disc_number": 1
       },
       {
-        "title": "You Won't Get With Me Tonight",
-        "artist": "Weezer",
+        "title": "Jugement",
+        "artist": "コーニッシュ",
         "track": 18,
-        "year": 2003,
-        "duration": 210,
+        "year": 2021,
+        "duration": 99,
         "disc_number": 1
       },
       {
-        "title": "Losing Touch With My Mind",
-        "artist": "The Icarus Line",
+        "title": "Tour",
+        "artist": "コーニッシュ",
         "track": 19,
-        "year": 2003,
-        "duration": 343,
+        "year": 2021,
+        "duration": 198,
         "disc_number": 1
       },
       {
-        "title": "A Brief History of Amerikkka",
-        "artist": "Buddyhead",
+        "title": "Soleil",
+        "artist": "コーニッシュ",
         "track": 20,
-        "year": 2003,
-        "duration": 123,
+        "year": 2021,
+        "duration": 156,
         "disc_number": 1
       },
       {
-        "title": "What The Fuck Do You Think Christina Aguilera Is Doing Right Now?",
-        "artist": "Shat",
+        "title": "旅立ちの日に",
+        "artist": "コーニッシュ",
         "track": 21,
-        "year": 2003,
-        "duration": 79,
-        "disc_number": 1
-      },
-      {
-        "title": "Nardwuar vs. Iggy Pop",
-        "artist": "Buddyhead",
-        "track": 22,
-        "year": 2003,
-        "duration": 519,
+        "year": 2021,
+        "duration": 294,
         "disc_number": 1
       }
     ]
@@ -116947,176 +118921,384 @@
   },
   {
     "artist": "Various Artists",
-    "album": "Paste Magazine Sampler #15: Apr‐May 2005",
-    "year": 2005,
-    "duration": 4492,
+    "album": "The Best of Bond… James Bond",
+    "year": 1992,
+    "duration": 4765,
     "songs": [
       {
-        "title": "Kathleen (live)",
-        "artist": "Josh Ritter",
+        "title": "James Bond Theme",
+        "artist": "The John Barry Orchestra",
         "track": 1,
-        "year": 2005,
-        "duration": 278,
+        "year": 1992,
+        "duration": 107,
         "disc_number": 1
       },
       {
-        "title": "Dear John",
-        "artist": "Aimee Mann",
+        "title": "From Russia With Love",
+        "artist": "Matt Monro",
         "track": 2,
-        "year": 2005,
+        "year": 1992,
+        "duration": 154,
+        "disc_number": 1
+      },
+      {
+        "title": "Goldfinger",
+        "artist": "Shirley Bassey",
+        "track": 3,
+        "year": 1992,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "Thunderball",
+        "artist": "Tom Jones",
+        "track": 4,
+        "year": 1992,
+        "duration": 183,
+        "disc_number": 1
+      },
+      {
+        "title": "You Only Live Twice",
+        "artist": "Nancy Sinatra",
+        "track": 5,
+        "year": 1992,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "On Her Majesty’s Secret Service",
+        "artist": "John Barry",
+        "track": 6,
+        "year": 1992,
+        "duration": 155,
+        "disc_number": 1
+      },
+      {
+        "title": "We Have All the Time in the World",
+        "artist": "Louis Armstrong",
+        "track": 7,
+        "year": 1992,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Diamonds Are Forever",
+        "artist": "Shirley Bassey",
+        "track": 8,
+        "year": 1992,
+        "duration": 161,
+        "disc_number": 1
+      },
+      {
+        "title": "Live and Let Die",
+        "artist": "Wings",
+        "track": 9,
+        "year": 1992,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "The Man With the Golden Gun",
+        "artist": "Lulu",
+        "track": 10,
+        "year": 1992,
+        "duration": 155,
+        "disc_number": 1
+      },
+      {
+        "title": "Nobody Does It Better",
+        "artist": "Carly Simon",
+        "track": 11,
+        "year": 1992,
+        "duration": 209,
+        "disc_number": 1
+      },
+      {
+        "title": "Moonraker",
+        "artist": "Shirley Bassey",
+        "track": 12,
+        "year": 1992,
         "duration": 189,
         "disc_number": 1
       },
       {
-        "title": "Snowden",
-        "artist": "Doves",
-        "track": 3,
-        "year": 2005,
+        "title": "For Your Eyes Only",
+        "artist": "Sheena Easton",
+        "track": 13,
+        "year": 1992,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "All Time High",
+        "artist": "Rita Coolidge",
+        "track": 14,
+        "year": 1992,
+        "duration": 183,
+        "disc_number": 1
+      },
+      {
+        "title": "A View to a Kill",
+        "artist": "Duran Duran",
+        "track": 15,
+        "year": 1992,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "The Living Daylights",
+        "artist": "a‐ha",
+        "track": 16,
+        "year": 1992,
         "duration": 254,
         "disc_number": 1
       },
       {
-        "title": "We Both Go Down Together",
-        "artist": "The Decemberists",
-        "track": 4,
-        "year": 2005,
-        "duration": 186,
+        "title": "Licence to Kill",
+        "artist": "Gladys Knight",
+        "track": 17,
+        "year": 1992,
+        "duration": 251,
         "disc_number": 1
       },
       {
-        "title": "Ghosts",
-        "artist": "Mark Geary",
-        "track": 5,
-        "year": 2005,
-        "duration": 199,
+        "title": "Goldeneye",
+        "artist": "Tina Turner",
+        "track": 18,
+        "year": 1992,
+        "duration": 209,
         "disc_number": 1
       },
       {
-        "title": "Born (edit)",
-        "artist": "Over the Rhine",
-        "track": 6,
-        "year": 2005,
-        "duration": 262,
+        "title": "Tomorrow Never Dies",
+        "artist": "Sheryl Crow",
+        "track": 19,
+        "year": 1992,
+        "duration": 293,
         "disc_number": 1
       },
       {
-        "title": "Falling",
-        "artist": "Glen Phillips",
-        "track": 8,
-        "year": 2005,
-        "duration": 195,
+        "title": "Surrender",
+        "artist": "k.d. lang",
+        "track": 20,
+        "year": 1992,
+        "duration": 236,
         "disc_number": 1
       },
       {
-        "title": "Requiem for O.M.M.2",
-        "artist": "of Montreal",
-        "track": 9,
-        "year": 2005,
-        "duration": 141,
+        "title": "The World Is Not Enough",
+        "artist": "Garbage",
+        "track": 21,
+        "year": 1992,
+        "duration": 236,
         "disc_number": 1
       },
       {
-        "title": "Me & My Girl",
-        "artist": "John Davis",
-        "track": 10,
-        "year": 2005,
+        "title": "Die Another Day",
+        "artist": "Madonna",
+        "track": 22,
+        "year": 1992,
+        "duration": 279,
+        "disc_number": 1
+      },
+      {
+        "title": "You Know My Name",
+        "artist": "Chris Cornell",
+        "track": 23,
+        "year": 1992,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "James Bond Theme",
+        "artist": "John Arnold",
+        "track": 24,
+        "year": 1992,
+        "duration": 134,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "The Music of Grand Theft Auto V, Volume 2: The Score",
+    "year": 2013,
+    "duration": 4720,
+    "songs": [
+      {
+        "title": "We Were Set Up",
+        "artist": "The Alchemist & Oh No",
+        "track": 1,
+        "year": 2013,
         "duration": 211,
         "disc_number": 1
       },
       {
-        "title": "I Need Your Love in My Life",
-        "artist": "Solomon Burke",
-        "track": 11,
-        "year": 2005,
-        "duration": 261,
+        "title": "A Legitimate Business Man",
+        "artist": "The Alchemist & Oh No",
+        "track": 2,
+        "year": 2013,
+        "duration": 177,
         "disc_number": 1
       },
       {
-        "title": "Skin Is, My",
-        "artist": "Andrew Bird",
-        "track": 12,
-        "year": 2005,
-        "duration": 218,
+        "title": "A Haze of Patriotic Fervor",
+        "artist": "Woody Jackson",
+        "track": 3,
+        "year": 2013,
+        "duration": 330,
         "disc_number": 1
       },
       {
-        "title": "Devil’s in the Details (edit)",
-        "artist": "Lowen & Navarro",
-        "track": 13,
-        "year": 2005,
+        "title": "Los Santos at Night",
+        "artist": "The Alchemist & Oh No",
+        "track": 4,
+        "year": 2013,
+        "duration": 103,
+        "disc_number": 1
+      },
+      {
+        "title": "North Yankton Memories",
+        "artist": "Tangerine Dream",
+        "track": 5,
+        "year": 2013,
         "duration": 242,
         "disc_number": 1
       },
       {
-        "title": "Manhole",
-        "artist": "Ani DiFranco",
-        "track": 14,
-        "year": 2005,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "Made Me So Happy",
-        "artist": "Jim Boggia w/ Jill Sobule",
-        "track": 15,
-        "year": 2005,
+        "title": "The Grip",
+        "artist": "The Alchemist & Oh No",
+        "track": 6,
+        "year": 2013,
         "duration": 190,
         "disc_number": 1
       },
       {
-        "title": "Atlanta & Birmingham",
-        "artist": "Deana Carter",
+        "title": "Mr. Trevor Philips",
+        "artist": "Woody Jackson",
+        "track": 7,
+        "year": 2013,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "A Bit of an Awkward Situation",
+        "artist": "Woody Jackson",
+        "track": 8,
+        "year": 2013,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "No Happy Endings",
+        "artist": "Tangerine Dream",
+        "track": 9,
+        "year": 2013,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "His Mentor",
+        "artist": "The Alchemist & Oh No",
+        "track": 10,
+        "year": 2013,
+        "duration": 87,
+        "disc_number": 1
+      },
+      {
+        "title": "(Sounds Kind of) Fruity",
+        "artist": "Tangerine Dream",
+        "track": 11,
+        "year": 2013,
+        "duration": 284,
+        "disc_number": 1
+      },
+      {
+        "title": "Minor Turbulence",
+        "artist": "Woody Jackson",
+        "track": 12,
+        "year": 2013,
+        "duration": 273,
+        "disc_number": 1
+      },
+      {
+        "title": "Chop the Dog",
+        "artist": "The Alchemist & Oh No",
+        "track": 13,
+        "year": 2013,
+        "duration": 251,
+        "disc_number": 1
+      },
+      {
+        "title": "A Lonely Man",
+        "artist": "The Alchemist & Oh No",
+        "track": 14,
+        "year": 2013,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "You Forget a Thousand Things",
+        "artist": "Tangerine Dream",
+        "track": 15,
+        "year": 2013,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "Impotent Rage / Am I Being Clear Now?",
+        "artist": "Woody Jackson",
         "track": 16,
-        "year": 2005,
-        "duration": 219,
+        "year": 2013,
+        "duration": 128,
         "disc_number": 1
       },
       {
-        "title": "Stupid Game",
-        "artist": "Stephen Clair",
+        "title": "Fresh Meat",
+        "artist": "Woody Jackson",
         "track": 17,
-        "year": 2005,
-        "duration": 186,
+        "year": 2013,
+        "duration": 243,
         "disc_number": 1
       },
       {
-        "title": "As You Do",
-        "artist": "Castanets",
+        "title": "Therapy and Other Hobbies",
+        "artist": "The Alchemist & Oh No",
         "track": 18,
-        "year": 2005,
-        "duration": 175,
+        "year": 2013,
+        "duration": 57,
         "disc_number": 1
       },
       {
-        "title": "Sacrifice",
-        "artist": "Rachael Sage",
+        "title": "Rich Man’s Plaything",
+        "artist": "Tangerine Dream",
         "track": 19,
-        "year": 2005,
-        "duration": 261,
+        "year": 2013,
+        "duration": 247,
         "disc_number": 1
       },
       {
-        "title": "Sweethearts on Parade",
-        "artist": "M. Ward",
+        "title": "The Agency Heist",
+        "artist": "The Alchemist & Oh No",
         "track": 20,
-        "year": 2005,
-        "duration": 134,
+        "year": 2013,
+        "duration": 202,
         "disc_number": 1
       },
       {
-        "title": "Hey Ho",
-        "artist": "Tracy Grammer",
+        "title": "Hillbilly Crank Dealers’ Blues",
+        "artist": "Woody Jackson",
         "track": 21,
-        "year": 2005,
-        "duration": 231,
+        "year": 2013,
+        "duration": 319,
         "disc_number": 1
       },
       {
-        "title": "The Air Between Us",
-        "artist": "Hammock",
+        "title": "Welcome to Los Santos (outro)",
+        "artist": "Oh No",
         "track": 22,
-        "year": 2005,
-        "duration": 223,
+        "year": 2013,
+        "duration": 71,
         "disc_number": 1
       }
     ]
@@ -117611,454 +119793,6 @@
   },
   {
     "artist": "Various Artists",
-    "album": "Science Fiction Jazz, Volume 10",
-    "year": 2007,
-    "duration": 3872,
-    "songs": [
-      {
-        "title": "Stretched Out",
-        "artist": "K'Bonus",
-        "track": 1,
-        "year": 2007,
-        "duration": 279,
-        "disc_number": 1
-      },
-      {
-        "title": "Anything's Possible",
-        "artist": "Zero dB",
-        "track": 2,
-        "year": 2007,
-        "duration": 298,
-        "disc_number": 1
-      },
-      {
-        "title": "You Wish",
-        "artist": "Nightmares on Wax",
-        "track": 3,
-        "year": 2007,
-        "duration": 184,
-        "disc_number": 1
-      },
-      {
-        "title": "Boney M Down",
-        "artist": "Lindstrøm & Prins Thomas",
-        "track": 4,
-        "year": 2007,
-        "duration": 211,
-        "disc_number": 1
-      },
-      {
-        "title": "Ike's Mood I",
-        "artist": "Visioneers",
-        "track": 5,
-        "year": 2007,
-        "duration": 253,
-        "disc_number": 1
-      },
-      {
-        "title": "Wild Oak Tree",
-        "artist": "Airmate feat. Mozez",
-        "track": 6,
-        "year": 2007,
-        "duration": 315,
-        "disc_number": 1
-      },
-      {
-        "title": "Walkinonit",
-        "artist": "J Dilla",
-        "track": 7,
-        "year": 2007,
-        "duration": 73,
-        "disc_number": 1
-      },
-      {
-        "title": "Beautiful Day (Banzai Republic vs. Trentemøller mix)",
-        "artist": "Laid Back",
-        "track": 8,
-        "year": 2007,
-        "duration": 447,
-        "disc_number": 1
-      },
-      {
-        "title": "Ashamed of Myself",
-        "artist": "Kelley Polar",
-        "track": 9,
-        "year": 2007,
-        "duration": 290,
-        "disc_number": 1
-      },
-      {
-        "title": "Listen to the Drums (Clignancourt edit)",
-        "artist": "Outlines",
-        "track": 10,
-        "year": 2007,
-        "duration": 270,
-        "disc_number": 1
-      },
-      {
-        "title": "Love From Outer Space",
-        "artist": "Tahiti 80",
-        "track": 11,
-        "year": 2007,
-        "duration": 191,
-        "disc_number": 1
-      },
-      {
-        "title": "Koop Island Blues",
-        "artist": "Koop",
-        "track": 12,
-        "year": 2007,
-        "duration": 269,
-        "disc_number": 1
-      },
-      {
-        "title": "Chapel Stile",
-        "artist": "Pretz",
-        "track": 13,
-        "year": 2007,
-        "duration": 263,
-        "disc_number": 1
-      },
-      {
-        "title": "Sail Into the Sun",
-        "artist": "The Funky Lowlives",
-        "track": 14,
-        "year": 2007,
-        "duration": 286,
-        "disc_number": 1
-      },
-      {
-        "title": "Heaven Knows (Interlude No. 2)",
-        "artist": "Minus 8",
-        "track": 15,
-        "year": 2007,
-        "duration": 236,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Heroes",
-    "year": 2008,
-    "duration": 3689,
-    "songs": [
-      {
-        "title": "Heroes Theme",
-        "artist": "Wendy & Lisa",
-        "track": 1,
-        "year": 2008,
-        "duration": 12,
-        "disc_number": 1
-      },
-      {
-        "title": "Fire and Regeneration",
-        "artist": "Wendy & Lisa featuring Shankar",
-        "track": 2,
-        "year": 2008,
-        "duration": 146,
-        "disc_number": 1
-      },
-      {
-        "title": "He's Frank",
-        "artist": "Brighton Port Authority featuring Iggy Pop",
-        "track": 3,
-        "year": 2008,
-        "duration": 206,
-        "disc_number": 1
-      },
-      {
-        "title": "All for Swinging You Around",
-        "artist": "The New Pornographers",
-        "track": 4,
-        "year": 2008,
-        "duration": 221,
-        "disc_number": 1
-      },
-      {
-        "title": "Glad It's Over",
-        "artist": "Wilco",
-        "track": 5,
-        "year": 2008,
-        "duration": 258,
-        "disc_number": 1
-      },
-      {
-        "title": "Nine in the Afternoon",
-        "artist": "Panic at the Disco",
-        "track": 6,
-        "year": 2008,
-        "duration": 194,
-        "disc_number": 1
-      },
-      {
-        "title": "Weightless",
-        "artist": "Nada Surf",
-        "track": 7,
-        "year": 2008,
-        "duration": 213,
-        "disc_number": 1
-      },
-      {
-        "title": "Natural Selection",
-        "artist": "Wendy & Lisa",
-        "track": 8,
-        "year": 2008,
-        "duration": 24,
-        "disc_number": 1
-      },
-      {
-        "title": "Abonecronedrone 3 (excerpt)",
-        "artist": "Sheila Chandra",
-        "track": 9,
-        "year": 2008,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Chills",
-        "artist": "My Morning Jacket",
-        "track": 10,
-        "year": 2008,
-        "duration": 255,
-        "disc_number": 1
-      },
-      {
-        "title": "Jealousy Rides With Me",
-        "artist": "Death Cab for Cutie",
-        "track": 11,
-        "year": 2008,
-        "duration": 155,
-        "disc_number": 1
-      },
-      {
-        "title": "Not Now but Soon",
-        "artist": "Imogen Heap",
-        "track": 12,
-        "year": 2008,
-        "duration": 226,
-        "disc_number": 1
-      },
-      {
-        "title": "Homecoming",
-        "artist": "Wendy & Lisa",
-        "track": 13,
-        "year": 2008,
-        "duration": 31,
-        "disc_number": 1
-      },
-      {
-        "title": "All Things Must Pass",
-        "artist": "The Jesus & Mary Chain",
-        "track": 14,
-        "year": 2008,
-        "duration": 267,
-        "disc_number": 1
-      },
-      {
-        "title": "Man in the Long Black Coat",
-        "artist": "Bob Dylan",
-        "track": 15,
-        "year": 2008,
-        "duration": 270,
-        "disc_number": 1
-      },
-      {
-        "title": "Maya's Theme",
-        "artist": "Cucu Diamantes & Yerba Buena",
-        "track": 16,
-        "year": 2008,
-        "duration": 302,
-        "disc_number": 1
-      },
-      {
-        "title": "Keep My Composure",
-        "artist": "The Chemical Brothers featuring Spank Rock",
-        "track": 17,
-        "year": 2008,
-        "duration": 279,
-        "disc_number": 1
-      },
-      {
-        "title": "Heroes",
-        "artist": "David Bowie",
-        "track": 18,
-        "year": 2008,
-        "duration": 366,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Recovery",
-    "year": 2008,
-    "duration": 4907,
-    "songs": [
-      {
-        "title": "Heart and Soul",
-        "artist": "BJ Nilsen",
-        "track": 1,
-        "year": 2008,
-        "duration": 152,
-        "disc_number": 1
-      },
-      {
-        "title": "Mull of Kintyre",
-        "artist": "People Like Us & Ergo Phizmiz",
-        "track": 2,
-        "year": 2008,
-        "duration": 327,
-        "disc_number": 1
-      },
-      {
-        "title": "Hunting High and Low",
-        "artist": "Fennesz",
-        "track": 3,
-        "year": 2008,
-        "duration": 299,
-        "disc_number": 2
-      },
-      {
-        "title": "Bomber",
-        "artist": ":zoviet*france:",
-        "track": 4,
-        "year": 2008,
-        "duration": 222,
-        "disc_number": 2
-      },
-      {
-        "title": "Back in Black",
-        "artist": "Ryoji Ikeda",
-        "track": 5,
-        "year": 2008,
-        "duration": 240,
-        "disc_number": 3
-      },
-      {
-        "title": "Running Up That Hill",
-        "artist": "Mika Vainio",
-        "track": 6,
-        "year": 2008,
-        "duration": 206,
-        "disc_number": 3
-      },
-      {
-        "title": "Lucifer",
-        "artist": "Robert Henke",
-        "track": 7,
-        "year": 2008,
-        "duration": 324,
-        "disc_number": 4
-      },
-      {
-        "title": "My Sharona",
-        "artist": "Susan Stenger",
-        "track": 8,
-        "year": 2008,
-        "duration": 345,
-        "disc_number": 4
-      },
-      {
-        "title": "Dream Tree",
-        "artist": "Paradise Island",
-        "track": 9,
-        "year": 2008,
-        "duration": 210,
-        "disc_number": 5
-      },
-      {
-        "title": "Planet Rock",
-        "artist": "Alva Noto",
-        "track": 10,
-        "year": 2008,
-        "duration": 211,
-        "disc_number": 5
-      },
-      {
-        "title": "C·30 C·60 C·90 Go",
-        "artist": "Matmos",
-        "track": 11,
-        "year": 2008,
-        "duration": 224,
-        "disc_number": 6
-      },
-      {
-        "title": "Temptation",
-        "artist": "Barbara Morgenstern",
-        "track": 12,
-        "year": 2008,
-        "duration": 278,
-        "disc_number": 6
-      },
-      {
-        "title": "Lucifer Sam",
-        "artist": "Chris & Cosey",
-        "track": 13,
-        "year": 2008,
-        "duration": 214,
-        "disc_number": 7
-      },
-      {
-        "title": "Freedom! (feat. Caroline Thorpe)",
-        "artist": "Robert Lippok",
-        "track": 14,
-        "year": 2008,
-        "duration": 222,
-        "disc_number": 7
-      },
-      {
-        "title": "Billie Jean",
-        "artist": "SND",
-        "track": 15,
-        "year": 2008,
-        "duration": 300,
-        "disc_number": 8
-      },
-      {
-        "title": "Bleak Is My Favourite Cliché",
-        "artist": "Richard Chartier & CoH",
-        "track": 16,
-        "year": 2008,
-        "duration": 195,
-        "disc_number": 8
-      },
-      {
-        "title": "Ashes to Ashes",
-        "artist": "Momus & Germlin",
-        "track": 17,
-        "year": 2008,
-        "duration": 230,
-        "disc_number": 9
-      },
-      {
-        "title": "Dark Love",
-        "artist": "Jason Forrest",
-        "track": 18,
-        "year": 2008,
-        "duration": 225,
-        "disc_number": 9
-      },
-      {
-        "title": "Warm Leatherette",
-        "artist": "J.G. Thirlwell",
-        "track": 19,
-        "year": 2008,
-        "duration": 198,
-        "disc_number": 10
-      },
-      {
-        "title": "Souvenir",
-        "artist": "Jóhann Jóhannsson",
-        "track": 20,
-        "year": 2008,
-        "duration": 276,
-        "disc_number": 10
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
     "album": "The What CD",
     "year": 2008,
     "duration": 4750,
@@ -118382,294 +120116,6 @@
         "year": 2008,
         "duration": 263,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "4 Corners EP",
-    "year": 2009,
-    "duration": 1485,
-    "songs": [
-      {
-        "title": "Shine",
-        "artist": "Contour",
-        "track": 1,
-        "year": 2009,
-        "duration": 383,
-        "disc_number": 1
-      },
-      {
-        "title": "Down Inside (Subterra & Dekko remix)",
-        "artist": "Adam Form",
-        "track": 2,
-        "year": 2009,
-        "duration": 394,
-        "disc_number": 1
-      },
-      {
-        "title": "She Says",
-        "artist": "BHX",
-        "track": 3,
-        "year": 2009,
-        "duration": 368,
-        "disc_number": 1
-      },
-      {
-        "title": "Linear",
-        "artist": "Recriminate",
-        "track": 4,
-        "year": 2009,
-        "duration": 340,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Dark Was the Night",
-    "year": 2009,
-    "duration": 7625,
-    "songs": [
-      {
-        "title": "Knotty Pine",
-        "artist": "Dirty Projectors + David Byrne",
-        "track": 1,
-        "year": 2009,
-        "duration": 142,
-        "disc_number": 1
-      },
-      {
-        "title": "Cello Song",
-        "artist": "The Books feat. José González",
-        "track": 2,
-        "year": 2009,
-        "duration": 233,
-        "disc_number": 1
-      },
-      {
-        "title": "Train Song",
-        "artist": "Feist and Benjamin Gibbard",
-        "track": 3,
-        "year": 2009,
-        "duration": 182,
-        "disc_number": 1
-      },
-      {
-        "title": "Brackett, WI",
-        "artist": "Bon Iver",
-        "track": 4,
-        "year": 2009,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "Deep Blue Sea",
-        "artist": "Grizzly Bear",
-        "track": 5,
-        "year": 2009,
-        "duration": 220,
-        "disc_number": 1
-      },
-      {
-        "title": "So Far Around the Bend",
-        "artist": "The National",
-        "track": 6,
-        "year": 2009,
-        "duration": 223,
-        "disc_number": 1
-      },
-      {
-        "title": "Tightrope",
-        "artist": "Yeasayer",
-        "track": 7,
-        "year": 2009,
-        "duration": 196,
-        "disc_number": 1
-      },
-      {
-        "title": "Feeling Good",
-        "artist": "My Brightest Diamond",
-        "track": 8,
-        "year": 2009,
-        "duration": 232,
-        "disc_number": 1
-      },
-      {
-        "title": "Dark Was the Night",
-        "artist": "Kronos Quartet",
-        "track": 9,
-        "year": 2009,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "I Was Young When I Left Home",
-        "artist": "ANOHNI with Bryce Dessner",
-        "track": 10,
-        "year": 2009,
-        "duration": 293,
-        "disc_number": 1
-      },
-      {
-        "title": "Big Red Machine",
-        "artist": "Justin Vernon + Aaron Dessner",
-        "track": 11,
-        "year": 2009,
-        "duration": 275,
-        "disc_number": 1
-      },
-      {
-        "title": "Lenin",
-        "artist": "Arcade Fire",
-        "track": 13,
-        "year": 2009,
-        "duration": 246,
-        "disc_number": 2
-      },
-      {
-        "title": "Mimizan",
-        "artist": "Beirut",
-        "track": 14,
-        "year": 2009,
-        "duration": 162,
-        "disc_number": 2
-      },
-      {
-        "title": "El Caporal",
-        "artist": "My Morning Jacket",
-        "track": 15,
-        "year": 2009,
-        "duration": 212,
-        "disc_number": 2
-      },
-      {
-        "title": "Inspiration Information",
-        "artist": "Sharon Jones and the Dap‐Kings",
-        "track": 16,
-        "year": 2009,
-        "duration": 243,
-        "disc_number": 2
-      },
-      {
-        "title": "With a Girl Like You",
-        "artist": "Dave Sitek",
-        "track": 17,
-        "year": 2009,
-        "duration": 204,
-        "disc_number": 2
-      },
-      {
-        "title": "You are the Blood",
-        "artist": "Sufjan Stevens",
-        "track": 18,
-        "year": 2009,
-        "duration": 614,
-        "disc_number": 2
-      },
-      {
-        "title": "Blood, Part 2 (remix)",
-        "artist": "Buck 65 feat. Sufjan Stevens & Serengeti",
-        "track": 19,
-        "year": 2009,
-        "duration": 216,
-        "disc_number": 2
-      },
-      {
-        "title": "Hey, Snow White",
-        "artist": "The New Pornographers",
-        "track": 20,
-        "year": 2009,
-        "duration": 265,
-        "disc_number": 2
-      },
-      {
-        "title": "Gentle Hour",
-        "artist": "Yo La Tengo",
-        "track": 21,
-        "year": 2009,
-        "duration": 331,
-        "disc_number": 2
-      },
-      {
-        "title": "Die",
-        "artist": "Iron & Wine",
-        "track": 22,
-        "year": 2009,
-        "duration": 61,
-        "disc_number": 2
-      },
-      {
-        "title": "Service Bell",
-        "artist": "Grizzly Bear + Feist",
-        "track": 23,
-        "year": 2009,
-        "duration": 145,
-        "disc_number": 3
-      },
-      {
-        "title": "Sleepless",
-        "artist": "The Decemberists",
-        "track": 24,
-        "year": 2009,
-        "duration": 473,
-        "disc_number": 3
-      },
-      {
-        "title": "Happiness",
-        "artist": "Riceboy Sleeps",
-        "track": 25,
-        "year": 2009,
-        "duration": 517,
-        "disc_number": 3
-      },
-      {
-        "title": "Amazing Grace",
-        "artist": "Cat Power & the Dirty Delta Blues",
-        "track": 26,
-        "year": 2009,
-        "duration": 209,
-        "disc_number": 3
-      },
-      {
-        "title": "Another Saturday",
-        "artist": "Stuart Murdoch",
-        "track": 27,
-        "year": 2009,
-        "duration": 174,
-        "disc_number": 3
-      },
-      {
-        "title": "The Giant of Illinois",
-        "artist": "Andrew Bird",
-        "track": 28,
-        "year": 2009,
-        "duration": 284,
-        "disc_number": 3
-      },
-      {
-        "title": "Lua",
-        "artist": "Conor Oberst + Gillian Welch",
-        "track": 29,
-        "year": 2009,
-        "duration": 351,
-        "disc_number": 3
-      },
-      {
-        "title": "When the Road Runs Out",
-        "artist": "Blonde Redhead + Devastations",
-        "track": 30,
-        "year": 2009,
-        "duration": 208,
-        "disc_number": 3
-      },
-      {
-        "title": "Love vs. Porn",
-        "artist": "Kevin Drew",
-        "track": 31,
-        "year": 2009,
-        "duration": 232,
-        "disc_number": 3
       }
     ]
   },
@@ -119091,416 +120537,544 @@
   },
   {
     "artist": "Various Artists",
-    "album": "Community: Music From the Original Television Series",
-    "year": 2010,
-    "duration": 2052,
+    "album": "The What CD, Volume 5",
+    "year": 2011,
+    "duration": 5727,
     "songs": [
       {
-        "title": "At Least It Was Here (\"Community\" main title version)",
-        "artist": "The 88",
+        "title": "Neon Searchlight",
+        "artist": "Mister Softy",
         "track": 1,
-        "year": 2010,
-        "duration": 35,
+        "year": 2011,
+        "duration": 187,
         "disc_number": 1
       },
       {
-        "title": "101 Rap",
-        "artist": "Donald Glover & Danny Pudi",
+        "title": "Oren Rath",
+        "artist": "A Fight You Can't Win",
         "track": 2,
-        "year": 2010,
-        "duration": 35,
+        "year": 2011,
+        "duration": 159,
         "disc_number": 1
       },
       {
-        "title": "Getting Rid of Britta",
-        "artist": "Chevy Chase, Eric Christian Olsen & Tom Wolfe",
+        "title": "The Worst Job (A Dream)",
+        "artist": "Bandits and Rebels",
         "track": 3,
-        "year": 2010,
-        "duration": 135,
+        "year": 2011,
+        "duration": 208,
         "disc_number": 1
       },
       {
-        "title": "Pierce You Are a B",
-        "artist": "Eric Christian Olsen, Tom Wolfe & Jacques Slade",
+        "title": "Ovary Montage",
+        "artist": "Castles",
         "track": 4,
-        "year": 2010,
-        "duration": 141,
+        "year": 2011,
+        "duration": 284,
         "disc_number": 1
       },
       {
-        "title": "Pierce Raps",
-        "artist": "Jacques Slade",
+        "title": "Carnival",
+        "artist": "Comic Strips",
         "track": 5,
-        "year": 2010,
-        "duration": 36,
+        "year": 2011,
+        "duration": 212,
         "disc_number": 1
       },
       {
-        "title": "Night Cap",
-        "artist": "Jacques Slade",
+        "title": "Repeat 0",
+        "artist": "cssc",
         "track": 6,
-        "year": 2010,
-        "duration": 130,
+        "year": 2011,
+        "duration": 470,
         "disc_number": 1
       },
       {
-        "title": "The Way It Is",
-        "artist": "Chevy Chase",
+        "title": "Japan",
+        "artist": "Domestic Robot",
         "track": 7,
-        "year": 2010,
-        "duration": 59,
+        "year": 2011,
+        "duration": 219,
         "disc_number": 1
       },
       {
-        "title": "Community Medley",
-        "artist": "Ludwig Göransson",
+        "title": "Staircase",
+        "artist": "Emergency Window Removal",
         "track": 8,
-        "year": 2010,
-        "duration": 277,
+        "year": 2011,
+        "duration": 204,
         "disc_number": 1
       },
       {
-        "title": "Somewhere Out There",
-        "artist": "Donald Glover & Danny Pudi",
+        "title": "#44",
+        "artist": "Kyle Niewiada",
         "track": 9,
-        "year": 2010,
-        "duration": 129,
+        "year": 2011,
+        "duration": 185,
         "disc_number": 1
       },
       {
-        "title": "I Never Die",
-        "artist": "Jacques Slade",
+        "title": "Quietly",
+        "artist": "Last Summer Leaves",
         "track": 10,
-        "year": 2010,
-        "duration": 110,
+        "year": 2011,
+        "duration": 342,
         "disc_number": 1
       },
       {
-        "title": "Sensitive Night",
-        "artist": "Yvette Nicole Brown",
+        "title": "Gravy",
+        "artist": "Lunar Funk Theory",
         "track": 11,
-        "year": 2010,
-        "duration": 61,
+        "year": 2011,
+        "duration": 455,
         "disc_number": 1
       },
       {
-        "title": "Party Where Your Heart Is",
-        "artist": "Trevor Armstrong",
+        "title": "Windsounds",
+        "artist": "Me & Martin",
         "track": 12,
-        "year": 2010,
-        "duration": 61,
+        "year": 2011,
+        "duration": 257,
         "disc_number": 1
       },
       {
-        "title": "Annie's Song",
-        "artist": "Eric Christian Olsen",
+        "title": "What Time?",
+        "artist": "Parára",
         "track": 13,
-        "year": 2010,
-        "duration": 97,
+        "year": 2011,
+        "duration": 226,
         "disc_number": 1
       },
       {
-        "title": "Episode 119 Medley",
-        "artist": "Ludwig Göransson",
+        "title": "Rorschach",
+        "artist": "Roentgenizdat",
         "track": 14,
-        "year": 2010,
-        "duration": 223,
+        "year": 2011,
+        "duration": 408,
         "disc_number": 1
       },
       {
-        "title": "Come, Take a Trip in My Air-Ship",
-        "artist": "Chevy Chase, Danny Pudi & Joel McHale",
+        "title": "On the Level",
+        "artist": "Scott Gold",
         "track": 15,
-        "year": 2010,
-        "duration": 46,
+        "year": 2011,
+        "duration": 194,
         "disc_number": 1
       },
       {
-        "title": "Some Worries",
-        "artist": "Chevy Chase, Eric Christian Olsen & Tom Wolfe",
+        "title": "Devotion",
+        "artist": "Shrines",
         "track": 16,
-        "year": 2010,
-        "duration": 130,
+        "year": 2011,
+        "duration": 133,
         "disc_number": 1
       },
       {
-        "title": "If I Die Before You",
-        "artist": "Ludwig Göransson",
+        "title": "Platypus Prime",
+        "artist": "Big Mean Sound Machine",
         "track": 17,
-        "year": 2010,
+        "year": 2011,
+        "duration": 323,
+        "disc_number": 1
+      },
+      {
+        "title": "Thirsty (Deepshine's Dub)",
+        "artist": "The Lower Mills",
+        "track": 18,
+        "year": 2011,
+        "duration": 293,
+        "disc_number": 1
+      },
+      {
+        "title": "Journal",
+        "artist": "The Release",
+        "track": 19,
+        "year": 2011,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "A Driving Rain",
+        "artist": "The Spark That Thought",
+        "track": 20,
+        "year": 2011,
+        "duration": 530,
+        "disc_number": 1
+      },
+      {
+        "title": "Never Been One",
+        "artist": "William Fillmore",
+        "track": 21,
+        "year": 2011,
+        "duration": 208,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "The What CD, Volume 6",
+    "year": 2012,
+    "duration": 7072,
+    "songs": [
+      {
+        "title": "D.F.R.",
+        "artist": "You are not all Boring",
+        "track": 1,
+        "year": 2012,
+        "duration": 332,
+        "disc_number": 1
+      },
+      {
+        "title": "Floop",
+        "artist": "Roentgenizdat",
+        "track": 2,
+        "year": 2012,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Western Gold",
+        "artist": "Goodbye Fairground",
+        "track": 3,
+        "year": 2012,
+        "duration": 201,
+        "disc_number": 1
+      },
+      {
+        "title": "The Wait Is the Agony",
+        "artist": "Thunderstorms",
+        "track": 4,
+        "year": 2012,
+        "duration": 300,
+        "disc_number": 1
+      },
+      {
+        "title": "Marry Mimosa",
+        "artist": "Lozenge",
+        "track": 5,
+        "year": 2012,
+        "duration": 302,
+        "disc_number": 1
+      },
+      {
+        "title": "Back Seat",
+        "artist": "Hopewell Exchange",
+        "track": 6,
+        "year": 2012,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "it'll open up unbidden",
+        "artist": "tht! tne",
+        "track": 7,
+        "year": 2012,
+        "duration": 630,
+        "disc_number": 1
+      },
+      {
+        "title": "Spin (Another Lie)",
+        "artist": "Sacre Noir",
+        "track": 8,
+        "year": 2012,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "#10",
+        "artist": "Kyle Niewiada",
+        "track": 9,
+        "year": 2012,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Shout, Noah",
+        "artist": "Sean Milo",
+        "track": 10,
+        "year": 2012,
+        "duration": 188,
+        "disc_number": 1
+      },
+      {
+        "title": "Everything Was",
+        "artist": "Efflorescent",
+        "track": 11,
+        "year": 2012,
+        "duration": 445,
+        "disc_number": 1
+      },
+      {
+        "title": "In Full Swing",
+        "artist": "Kalle Kaasinen",
+        "track": 12,
+        "year": 2012,
+        "duration": 155,
+        "disc_number": 2
+      },
+      {
+        "title": "Weightless",
+        "artist": "Willie Nelson Mandela",
+        "track": 13,
+        "year": 2012,
+        "duration": 238,
+        "disc_number": 2
+      },
+      {
+        "title": "I Took Too Long",
+        "artist": "The Cold Napoleons",
+        "track": 14,
+        "year": 2012,
+        "duration": 228,
+        "disc_number": 2
+      },
+      {
+        "title": "Ellis Island Blues",
+        "artist": "Sister City",
+        "track": 15,
+        "year": 2012,
+        "duration": 215,
+        "disc_number": 2
+      },
+      {
+        "title": "Dreamwalk",
+        "artist": "Lewdite",
+        "track": 16,
+        "year": 2012,
+        "duration": 233,
+        "disc_number": 2
+      },
+      {
+        "title": "Struck Weights",
+        "artist": "Kane James",
+        "track": 17,
+        "year": 2012,
+        "duration": 247,
+        "disc_number": 2
+      },
+      {
+        "title": "Special Beam Cannon",
+        "artist": "Chip’s Challenge",
+        "track": 18,
+        "year": 2012,
+        "duration": 198,
+        "disc_number": 2
+      },
+      {
+        "title": "Endless Spirals",
+        "artist": "Emergency Window Removal",
+        "track": 19,
+        "year": 2012,
+        "duration": 256,
+        "disc_number": 2
+      },
+      {
+        "title": "The Boy With Acromegaly",
+        "artist": "Pete Davis",
+        "track": 20,
+        "year": 2012,
+        "duration": 503,
+        "disc_number": 2
+      },
+      {
+        "title": "Underground Love",
+        "artist": "And the Giraffe",
+        "track": 21,
+        "year": 2012,
+        "duration": 263,
+        "disc_number": 2
+      },
+      {
+        "title": "IV",
+        "artist": "zxyzxy",
+        "track": 22,
+        "year": 2012,
+        "duration": 1306,
+        "disc_number": 2
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "The What CD, Volume 7",
+    "year": 2012,
+    "duration": 5106,
+    "songs": [
+      {
+        "title": "New World Order",
+        "artist": "The Adding Machine",
+        "track": 1,
+        "year": 2012,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "Bones",
+        "artist": "Queen Orlenes",
+        "track": 2,
+        "year": 2012,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "Dratini",
+        "artist": "Milky Eel Powers",
+        "track": 3,
+        "year": 2012,
+        "duration": 139,
+        "disc_number": 1
+      },
+      {
+        "title": "Purple Glow",
+        "artist": "Willie Nelson Mandela",
+        "track": 4,
+        "year": 2012,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "moonbow",
+        "artist": "lwpss",
+        "track": 5,
+        "year": 2012,
+        "duration": 372,
+        "disc_number": 1
+      },
+      {
+        "title": "Tzar Bomba",
+        "artist": "Big Mean Sound Machine",
+        "track": 6,
+        "year": 2012,
+        "duration": 359,
+        "disc_number": 1
+      },
+      {
+        "title": "Peak",
+        "artist": "Mister Softy",
+        "track": 7,
+        "year": 2012,
+        "duration": 352,
+        "disc_number": 1
+      },
+      {
+        "title": "You Take Me There",
+        "artist": "Skeye",
+        "track": 8,
+        "year": 2012,
+        "duration": 187,
+        "disc_number": 1
+      },
+      {
+        "title": "#16",
+        "artist": "Kyle Niewiada",
+        "track": 9,
+        "year": 2012,
         "duration": 169,
         "disc_number": 1
       },
       {
-        "title": "At Least It Was Here (\"Community\" main title, full-length version)",
-        "artist": "The 88",
-        "track": 18,
-        "year": 2010,
-        "duration": 170,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Kitsuné Maison Compilation 9: Petit Bateau Edition",
-    "year": 2010,
-    "duration": 4651,
-    "songs": [
-      {
-        "title": "Belong",
-        "artist": "Washed Out",
-        "track": 1,
-        "year": 2010,
-        "duration": 175,
-        "disc_number": 1
-      },
-      {
-        "title": "Let's Go Together",
-        "artist": "Gamble & Burke",
-        "track": 2,
-        "year": 2010,
-        "duration": 233,
-        "disc_number": 1
-      },
-      {
-        "title": "Animal Animal",
-        "artist": "Penguin Prison",
-        "track": 3,
-        "year": 2010,
-        "duration": 245,
-        "disc_number": 1
-      },
-      {
-        "title": "Short and Entertaining",
-        "artist": "Jamaica",
-        "track": 4,
-        "year": 2010,
-        "duration": 175,
-        "disc_number": 1
-      },
-      {
-        "title": "Cooler Couleur",
-        "artist": "Crookers feat. Yelle",
-        "track": 5,
-        "year": 2010,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "Vox Populi (Lifelike treatment)",
-        "artist": "Jupiter",
-        "track": 6,
-        "year": 2010,
-        "duration": 318,
-        "disc_number": 1
-      },
-      {
-        "title": "Supermenz (We're Not)",
-        "artist": "Yuksek",
-        "track": 7,
-        "year": 2010,
-        "duration": 206,
-        "disc_number": 1
-      },
-      {
-        "title": "Stop and Stare",
-        "artist": "Fenech-Soler",
-        "track": 8,
-        "year": 2010,
-        "duration": 226,
-        "disc_number": 1
-      },
-      {
-        "title": "Something Good Can Work (The Twelves remix)",
-        "artist": "Two Door Cinema Club",
-        "track": 9,
-        "year": 2010,
-        "duration": 249,
-        "disc_number": 1
-      },
-      {
-        "title": "La Vie Moderne",
-        "artist": "Logo",
+        "title": "Denial",
+        "artist": "William Fillmore",
         "track": 10,
-        "year": 2010,
-        "duration": 325,
+        "year": 2012,
+        "duration": 235,
         "disc_number": 1
       },
       {
-        "title": "Brow Beaten",
-        "artist": "Silver Columns",
+        "title": "Sober Up",
+        "artist": "Leadership by Assault",
         "track": 11,
-        "year": 2010,
-        "duration": 274,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 154,
+        "disc_number": 2
       },
       {
-        "title": "Say My Name",
-        "artist": "Holy Ghost!",
+        "title": "Monsters",
+        "artist": "Joni Fantora",
         "track": 12,
-        "year": 2010,
-        "duration": 394,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 212,
+        "disc_number": 2
       },
       {
-        "title": "Wonderful Life (Arthur Baker Kitsuné edit)",
-        "artist": "Hurts",
+        "title": "Make You Pay",
+        "artist": "Iridium",
         "track": 13,
-        "year": 2010,
-        "duration": 305,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 299,
+        "disc_number": 2
       },
       {
-        "title": "Time to Wander (Joan of Arc remix)",
-        "artist": "GATC",
+        "title": "Moving Too Fast",
+        "artist": "J-SAN & Big Mean Sound Machine",
         "track": 14,
-        "year": 2010,
-        "duration": 226,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 293,
+        "disc_number": 2
       },
       {
-        "title": "Dreamin'",
-        "artist": "Feldberg",
+        "title": "Lights (Changes)",
+        "artist": "Fractures",
         "track": 15,
-        "year": 2010,
-        "duration": 191,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 188,
+        "disc_number": 2
       },
       {
-        "title": "Forward Motion",
-        "artist": "Your Nature",
+        "title": "Late September",
+        "artist": "Achromatik feat. Matthew Beyer",
         "track": 16,
-        "year": 2010,
-        "duration": 253,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 249,
+        "disc_number": 2
       },
       {
-        "title": "Your Body Is a Machine (Zebra + Snake remix)",
-        "artist": "The Good Natured",
+        "title": "Delphi",
+        "artist": "Paper House",
         "track": 17,
-        "year": 2010,
-        "duration": 305,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 220,
+        "disc_number": 2
       },
       {
-        "title": "The Phoenix Alive (The Octans edit)",
-        "artist": "Monarchy",
+        "title": "Interplanetary Osmolarity",
+        "artist": "vyvexthorne",
         "track": 18,
-        "year": 2010,
-        "duration": 261,
-        "disc_number": 1
+        "year": 2012,
+        "duration": 400,
+        "disc_number": 2
+      },
+      {
+        "title": "Wherever You Get Lost",
+        "artist": "You are not all Boring",
+        "track": 19,
+        "year": 2012,
+        "duration": 252,
+        "disc_number": 2
+      },
+      {
+        "title": "Morning Rescue",
+        "artist": "Chip’s Challenge",
+        "track": 20,
+        "year": 2012,
+        "duration": 301,
+        "disc_number": 2
       }
     ]
   },
   {
     "artist": "Various Artists",
-    "album": "Science Fiction Jazz, Volume 12",
-    "year": 2010,
-    "duration": 3643,
+    "album": "Trainspotting #2",
+    "year": 1997,
+    "duration": 594,
     "songs": [
       {
-        "title": "People (Banzai Republic vs Trentemøller mix)",
-        "artist": "Laid Back",
-        "track": 1,
-        "year": 2010,
-        "duration": 355,
-        "disc_number": 1
-      },
-      {
-        "title": "He's Looking at You",
-        "artist": "Mahara McKay & Minus 8",
-        "track": 2,
-        "year": 2010,
-        "duration": 237,
-        "disc_number": 1
-      },
-      {
-        "title": "Down in L.A. (Shazam remix)",
-        "artist": "Munk",
+        "title": "Dark and Long (Dark Train mix)",
+        "artist": "Underworld",
         "track": 3,
-        "year": 2010,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "Out Into the Night",
-        "artist": "Lovebirds",
-        "track": 4,
-        "year": 2010,
-        "duration": 418,
-        "disc_number": 1
-      },
-      {
-        "title": "Musiq (A Tom Moulton mix)",
-        "artist": "Cool Million feat.Jahah",
-        "track": 5,
-        "year": 2010,
-        "duration": 291,
-        "disc_number": 1
-      },
-      {
-        "title": "Wings of Love (DJ Bootsie remix)",
-        "artist": "Žagar feat.Underground Divas",
-        "track": 6,
-        "year": 2010,
-        "duration": 211,
-        "disc_number": 1
-      },
-      {
-        "title": "To the Sky (Lemongrass Free Bird remix)",
-        "artist": "Tokyo Counterpoint",
-        "track": 7,
-        "year": 2010,
-        "duration": 234,
-        "disc_number": 1
-      },
-      {
-        "title": "We Be",
-        "artist": "Wax Tailor feat. Ursula Rucker",
-        "track": 8,
-        "year": 2010,
-        "duration": 275,
-        "disc_number": 1
-      },
-      {
-        "title": "All Through the Night",
-        "artist": "Emancipator",
-        "track": 9,
-        "year": 2010,
-        "duration": 251,
-        "disc_number": 1
-      },
-      {
-        "title": "Smooth Operator",
-        "artist": "青木カレン feat. Native",
-        "track": 10,
-        "year": 2010,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "Bewitched (Barrio Jazz Gang remix)",
-        "artist": "Pauline London",
-        "track": 11,
-        "year": 2010,
-        "duration": 298,
-        "disc_number": 1
-      },
-      {
-        "title": "Something Black",
-        "artist": "Audio Lotion",
-        "track": 12,
-        "year": 2010,
-        "duration": 206,
-        "disc_number": 1
-      },
-      {
-        "title": "Together (The Orchad remix)",
-        "artist": "Atjazz feat.Mr. J",
-        "track": 13,
-        "year": 2010,
-        "duration": 270,
+        "year": 1997,
+        "duration": 594,
         "disc_number": 1
       }
     ]
@@ -120929,1388 +122503,6 @@
   },
   {
     "artist": "Various Artists",
-    "album": "The What CD, Volume 5",
-    "year": 2011,
-    "duration": 5727,
-    "songs": [
-      {
-        "title": "Neon Searchlight",
-        "artist": "Mister Softy",
-        "track": 1,
-        "year": 2011,
-        "duration": 187,
-        "disc_number": 1
-      },
-      {
-        "title": "Oren Rath",
-        "artist": "A Fight You Can't Win",
-        "track": 2,
-        "year": 2011,
-        "duration": 159,
-        "disc_number": 1
-      },
-      {
-        "title": "The Worst Job (A Dream)",
-        "artist": "Bandits and Rebels",
-        "track": 3,
-        "year": 2011,
-        "duration": 208,
-        "disc_number": 1
-      },
-      {
-        "title": "Ovary Montage",
-        "artist": "Castles",
-        "track": 4,
-        "year": 2011,
-        "duration": 284,
-        "disc_number": 1
-      },
-      {
-        "title": "Carnival",
-        "artist": "Comic Strips",
-        "track": 5,
-        "year": 2011,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "Repeat 0",
-        "artist": "cssc",
-        "track": 6,
-        "year": 2011,
-        "duration": 470,
-        "disc_number": 1
-      },
-      {
-        "title": "Japan",
-        "artist": "Domestic Robot",
-        "track": 7,
-        "year": 2011,
-        "duration": 219,
-        "disc_number": 1
-      },
-      {
-        "title": "Staircase",
-        "artist": "Emergency Window Removal",
-        "track": 8,
-        "year": 2011,
-        "duration": 204,
-        "disc_number": 1
-      },
-      {
-        "title": "#44",
-        "artist": "Kyle Niewiada",
-        "track": 9,
-        "year": 2011,
-        "duration": 185,
-        "disc_number": 1
-      },
-      {
-        "title": "Quietly",
-        "artist": "Last Summer Leaves",
-        "track": 10,
-        "year": 2011,
-        "duration": 342,
-        "disc_number": 1
-      },
-      {
-        "title": "Gravy",
-        "artist": "Lunar Funk Theory",
-        "track": 11,
-        "year": 2011,
-        "duration": 455,
-        "disc_number": 1
-      },
-      {
-        "title": "Windsounds",
-        "artist": "Me & Martin",
-        "track": 12,
-        "year": 2011,
-        "duration": 257,
-        "disc_number": 1
-      },
-      {
-        "title": "What Time?",
-        "artist": "Parára",
-        "track": 13,
-        "year": 2011,
-        "duration": 226,
-        "disc_number": 1
-      },
-      {
-        "title": "Rorschach",
-        "artist": "Roentgenizdat",
-        "track": 14,
-        "year": 2011,
-        "duration": 408,
-        "disc_number": 1
-      },
-      {
-        "title": "On the Level",
-        "artist": "Scott Gold",
-        "track": 15,
-        "year": 2011,
-        "duration": 194,
-        "disc_number": 1
-      },
-      {
-        "title": "Devotion",
-        "artist": "Shrines",
-        "track": 16,
-        "year": 2011,
-        "duration": 133,
-        "disc_number": 1
-      },
-      {
-        "title": "Platypus Prime",
-        "artist": "Big Mean Sound Machine",
-        "track": 17,
-        "year": 2011,
-        "duration": 323,
-        "disc_number": 1
-      },
-      {
-        "title": "Thirsty (Deepshine's Dub)",
-        "artist": "The Lower Mills",
-        "track": 18,
-        "year": 2011,
-        "duration": 293,
-        "disc_number": 1
-      },
-      {
-        "title": "Journal",
-        "artist": "The Release",
-        "track": 19,
-        "year": 2011,
-        "duration": 221,
-        "disc_number": 1
-      },
-      {
-        "title": "A Driving Rain",
-        "artist": "The Spark That Thought",
-        "track": 20,
-        "year": 2011,
-        "duration": 530,
-        "disc_number": 1
-      },
-      {
-        "title": "Never Been One",
-        "artist": "William Fillmore",
-        "track": 21,
-        "year": 2011,
-        "duration": 208,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Acoustic Dance Sessions",
-    "year": 2012,
-    "duration": 3498,
-    "songs": [
-      {
-        "title": "I Follow Rivers (Live@giel!)",
-        "artist": "Triggerfinger",
-        "track": 1,
-        "year": 2012,
-        "duration": 214,
-        "disc_number": 1
-      },
-      {
-        "title": "More",
-        "artist": "Sandra van Nieuwland",
-        "track": 2,
-        "year": 2012,
-        "duration": 202,
-        "disc_number": 1
-      },
-      {
-        "title": "Wonderful Days",
-        "artist": "Miss Montreal",
-        "track": 3,
-        "year": 2012,
-        "duration": 177,
-        "disc_number": 1
-      },
-      {
-        "title": "Ayo Technology",
-        "artist": "Milow",
-        "track": 4,
-        "year": 2012,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "Firestarter",
-        "artist": "Torre Florim",
-        "track": 5,
-        "year": 2012,
-        "duration": 216,
-        "disc_number": 1
-      },
-      {
-        "title": "212",
-        "artist": "Wouter Hamel",
-        "track": 6,
-        "year": 2012,
-        "duration": 172,
-        "disc_number": 1
-      },
-      {
-        "title": "Domino",
-        "artist": "Chris Hordijk",
-        "track": 7,
-        "year": 2012,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Sexy and I Know It",
-        "artist": "Ed Struijlaart",
-        "track": 8,
-        "year": 2012,
-        "duration": 188,
-        "disc_number": 1
-      },
-      {
-        "title": "Titanium",
-        "artist": "Kensington",
-        "track": 9,
-        "year": 2012,
-        "duration": 275,
-        "disc_number": 1
-      },
-      {
-        "title": "Happiness",
-        "artist": "Epica",
-        "track": 10,
-        "year": 2012,
-        "duration": 213,
-        "disc_number": 1
-      },
-      {
-        "title": "Firework",
-        "artist": "Jenny Lane",
-        "track": 11,
-        "year": 2012,
-        "duration": 205,
-        "disc_number": 1
-      },
-      {
-        "title": "Paparazzi",
-        "artist": "Shary-An",
-        "track": 12,
-        "year": 2012,
-        "duration": 210,
-        "disc_number": 1
-      },
-      {
-        "title": "Dynamite",
-        "artist": "Only Seven Left",
-        "track": 13,
-        "year": 2012,
-        "duration": 190,
-        "disc_number": 1
-      },
-      {
-        "title": "Not Giving Up on Love",
-        "artist": "Kill Ferelli",
-        "track": 14,
-        "year": 2012,
-        "duration": 172,
-        "disc_number": 1
-      },
-      {
-        "title": "Swedish House Mafia Mash-Up",
-        "artist": "Rigby",
-        "track": 15,
-        "year": 2012,
-        "duration": 158,
-        "disc_number": 1
-      },
-      {
-        "title": "I Remember",
-        "artist": "Sofie Letitre",
-        "track": 16,
-        "year": 2012,
-        "duration": 221,
-        "disc_number": 1
-      },
-      {
-        "title": "Ik neem je mee",
-        "artist": "Leonie Meijer",
-        "track": 17,
-        "year": 2012,
-        "duration": 236,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "The What CD, Volume 6",
-    "year": 2012,
-    "duration": 7072,
-    "songs": [
-      {
-        "title": "D.F.R.",
-        "artist": "You are not all Boring",
-        "track": 1,
-        "year": 2012,
-        "duration": 332,
-        "disc_number": 1
-      },
-      {
-        "title": "Floop",
-        "artist": "Roentgenizdat",
-        "track": 2,
-        "year": 2012,
-        "duration": 213,
-        "disc_number": 1
-      },
-      {
-        "title": "Western Gold",
-        "artist": "Goodbye Fairground",
-        "track": 3,
-        "year": 2012,
-        "duration": 201,
-        "disc_number": 1
-      },
-      {
-        "title": "The Wait Is the Agony",
-        "artist": "Thunderstorms",
-        "track": 4,
-        "year": 2012,
-        "duration": 300,
-        "disc_number": 1
-      },
-      {
-        "title": "Marry Mimosa",
-        "artist": "Lozenge",
-        "track": 5,
-        "year": 2012,
-        "duration": 302,
-        "disc_number": 1
-      },
-      {
-        "title": "Back Seat",
-        "artist": "Hopewell Exchange",
-        "track": 6,
-        "year": 2012,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "it'll open up unbidden",
-        "artist": "tht! tne",
-        "track": 7,
-        "year": 2012,
-        "duration": 630,
-        "disc_number": 1
-      },
-      {
-        "title": "Spin (Another Lie)",
-        "artist": "Sacre Noir",
-        "track": 8,
-        "year": 2012,
-        "duration": 178,
-        "disc_number": 1
-      },
-      {
-        "title": "#10",
-        "artist": "Kyle Niewiada",
-        "track": 9,
-        "year": 2012,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "Shout, Noah",
-        "artist": "Sean Milo",
-        "track": 10,
-        "year": 2012,
-        "duration": 188,
-        "disc_number": 1
-      },
-      {
-        "title": "Everything Was",
-        "artist": "Efflorescent",
-        "track": 11,
-        "year": 2012,
-        "duration": 445,
-        "disc_number": 1
-      },
-      {
-        "title": "In Full Swing",
-        "artist": "Kalle Kaasinen",
-        "track": 12,
-        "year": 2012,
-        "duration": 155,
-        "disc_number": 2
-      },
-      {
-        "title": "Weightless",
-        "artist": "Willie Nelson Mandela",
-        "track": 13,
-        "year": 2012,
-        "duration": 238,
-        "disc_number": 2
-      },
-      {
-        "title": "I Took Too Long",
-        "artist": "The Cold Napoleons",
-        "track": 14,
-        "year": 2012,
-        "duration": 228,
-        "disc_number": 2
-      },
-      {
-        "title": "Ellis Island Blues",
-        "artist": "Sister City",
-        "track": 15,
-        "year": 2012,
-        "duration": 215,
-        "disc_number": 2
-      },
-      {
-        "title": "Dreamwalk",
-        "artist": "Lewdite",
-        "track": 16,
-        "year": 2012,
-        "duration": 233,
-        "disc_number": 2
-      },
-      {
-        "title": "Struck Weights",
-        "artist": "Kane James",
-        "track": 17,
-        "year": 2012,
-        "duration": 247,
-        "disc_number": 2
-      },
-      {
-        "title": "Special Beam Cannon",
-        "artist": "Chip’s Challenge",
-        "track": 18,
-        "year": 2012,
-        "duration": 198,
-        "disc_number": 2
-      },
-      {
-        "title": "Endless Spirals",
-        "artist": "Emergency Window Removal",
-        "track": 19,
-        "year": 2012,
-        "duration": 256,
-        "disc_number": 2
-      },
-      {
-        "title": "The Boy With Acromegaly",
-        "artist": "Pete Davis",
-        "track": 20,
-        "year": 2012,
-        "duration": 503,
-        "disc_number": 2
-      },
-      {
-        "title": "Underground Love",
-        "artist": "And the Giraffe",
-        "track": 21,
-        "year": 2012,
-        "duration": 263,
-        "disc_number": 2
-      },
-      {
-        "title": "IV",
-        "artist": "zxyzxy",
-        "track": 22,
-        "year": 2012,
-        "duration": 1306,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "The What CD, Volume 7",
-    "year": 2012,
-    "duration": 5106,
-    "songs": [
-      {
-        "title": "New World Order",
-        "artist": "The Adding Machine",
-        "track": 1,
-        "year": 2012,
-        "duration": 217,
-        "disc_number": 1
-      },
-      {
-        "title": "Bones",
-        "artist": "Queen Orlenes",
-        "track": 2,
-        "year": 2012,
-        "duration": 258,
-        "disc_number": 1
-      },
-      {
-        "title": "Dratini",
-        "artist": "Milky Eel Powers",
-        "track": 3,
-        "year": 2012,
-        "duration": 139,
-        "disc_number": 1
-      },
-      {
-        "title": "Purple Glow",
-        "artist": "Willie Nelson Mandela",
-        "track": 4,
-        "year": 2012,
-        "duration": 241,
-        "disc_number": 1
-      },
-      {
-        "title": "moonbow",
-        "artist": "lwpss",
-        "track": 5,
-        "year": 2012,
-        "duration": 372,
-        "disc_number": 1
-      },
-      {
-        "title": "Tzar Bomba",
-        "artist": "Big Mean Sound Machine",
-        "track": 6,
-        "year": 2012,
-        "duration": 359,
-        "disc_number": 1
-      },
-      {
-        "title": "Peak",
-        "artist": "Mister Softy",
-        "track": 7,
-        "year": 2012,
-        "duration": 352,
-        "disc_number": 1
-      },
-      {
-        "title": "You Take Me There",
-        "artist": "Skeye",
-        "track": 8,
-        "year": 2012,
-        "duration": 187,
-        "disc_number": 1
-      },
-      {
-        "title": "#16",
-        "artist": "Kyle Niewiada",
-        "track": 9,
-        "year": 2012,
-        "duration": 169,
-        "disc_number": 1
-      },
-      {
-        "title": "Denial",
-        "artist": "William Fillmore",
-        "track": 10,
-        "year": 2012,
-        "duration": 235,
-        "disc_number": 1
-      },
-      {
-        "title": "Sober Up",
-        "artist": "Leadership by Assault",
-        "track": 11,
-        "year": 2012,
-        "duration": 154,
-        "disc_number": 2
-      },
-      {
-        "title": "Monsters",
-        "artist": "Joni Fantora",
-        "track": 12,
-        "year": 2012,
-        "duration": 212,
-        "disc_number": 2
-      },
-      {
-        "title": "Make You Pay",
-        "artist": "Iridium",
-        "track": 13,
-        "year": 2012,
-        "duration": 299,
-        "disc_number": 2
-      },
-      {
-        "title": "Moving Too Fast",
-        "artist": "J-SAN & Big Mean Sound Machine",
-        "track": 14,
-        "year": 2012,
-        "duration": 293,
-        "disc_number": 2
-      },
-      {
-        "title": "Lights (Changes)",
-        "artist": "Fractures",
-        "track": 15,
-        "year": 2012,
-        "duration": 188,
-        "disc_number": 2
-      },
-      {
-        "title": "Late September",
-        "artist": "Achromatik feat. Matthew Beyer",
-        "track": 16,
-        "year": 2012,
-        "duration": 249,
-        "disc_number": 2
-      },
-      {
-        "title": "Delphi",
-        "artist": "Paper House",
-        "track": 17,
-        "year": 2012,
-        "duration": 220,
-        "disc_number": 2
-      },
-      {
-        "title": "Interplanetary Osmolarity",
-        "artist": "vyvexthorne",
-        "track": 18,
-        "year": 2012,
-        "duration": 400,
-        "disc_number": 2
-      },
-      {
-        "title": "Wherever You Get Lost",
-        "artist": "You are not all Boring",
-        "track": 19,
-        "year": 2012,
-        "duration": 252,
-        "disc_number": 2
-      },
-      {
-        "title": "Morning Rescue",
-        "artist": "Chip’s Challenge",
-        "track": 20,
-        "year": 2012,
-        "duration": 301,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Ice Machine / Flat Of Angels (Pt.2)",
-    "year": 2013,
-    "duration": 477,
-    "songs": [
-      {
-        "title": "Ice Machine",
-        "artist": "Röyksopp",
-        "track": 1,
-        "year": 2013,
-        "duration": 218
-      },
-      {
-        "title": "Flat Of Angles (Pt.2)",
-        "artist": "Benedict Cumberbatch",
-        "track": 2,
-        "year": 2013,
-        "duration": 259
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "The Music of Grand Theft Auto V, Volume 2: The Score",
-    "year": 2013,
-    "duration": 4720,
-    "songs": [
-      {
-        "title": "We Were Set Up",
-        "artist": "The Alchemist & Oh No",
-        "track": 1,
-        "year": 2013,
-        "duration": 211,
-        "disc_number": 1
-      },
-      {
-        "title": "A Legitimate Business Man",
-        "artist": "The Alchemist & Oh No",
-        "track": 2,
-        "year": 2013,
-        "duration": 177,
-        "disc_number": 1
-      },
-      {
-        "title": "A Haze of Patriotic Fervor",
-        "artist": "Woody Jackson",
-        "track": 3,
-        "year": 2013,
-        "duration": 330,
-        "disc_number": 1
-      },
-      {
-        "title": "Los Santos at Night",
-        "artist": "The Alchemist & Oh No",
-        "track": 4,
-        "year": 2013,
-        "duration": 103,
-        "disc_number": 1
-      },
-      {
-        "title": "North Yankton Memories",
-        "artist": "Tangerine Dream",
-        "track": 5,
-        "year": 2013,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "The Grip",
-        "artist": "The Alchemist & Oh No",
-        "track": 6,
-        "year": 2013,
-        "duration": 190,
-        "disc_number": 1
-      },
-      {
-        "title": "Mr. Trevor Philips",
-        "artist": "Woody Jackson",
-        "track": 7,
-        "year": 2013,
-        "duration": 265,
-        "disc_number": 1
-      },
-      {
-        "title": "A Bit of an Awkward Situation",
-        "artist": "Woody Jackson",
-        "track": 8,
-        "year": 2013,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "No Happy Endings",
-        "artist": "Tangerine Dream",
-        "track": 9,
-        "year": 2013,
-        "duration": 319,
-        "disc_number": 1
-      },
-      {
-        "title": "His Mentor",
-        "artist": "The Alchemist & Oh No",
-        "track": 10,
-        "year": 2013,
-        "duration": 87,
-        "disc_number": 1
-      },
-      {
-        "title": "(Sounds Kind of) Fruity",
-        "artist": "Tangerine Dream",
-        "track": 11,
-        "year": 2013,
-        "duration": 284,
-        "disc_number": 1
-      },
-      {
-        "title": "Minor Turbulence",
-        "artist": "Woody Jackson",
-        "track": 12,
-        "year": 2013,
-        "duration": 273,
-        "disc_number": 1
-      },
-      {
-        "title": "Chop the Dog",
-        "artist": "The Alchemist & Oh No",
-        "track": 13,
-        "year": 2013,
-        "duration": 251,
-        "disc_number": 1
-      },
-      {
-        "title": "A Lonely Man",
-        "artist": "The Alchemist & Oh No",
-        "track": 14,
-        "year": 2013,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "You Forget a Thousand Things",
-        "artist": "Tangerine Dream",
-        "track": 15,
-        "year": 2013,
-        "duration": 216,
-        "disc_number": 1
-      },
-      {
-        "title": "Impotent Rage / Am I Being Clear Now?",
-        "artist": "Woody Jackson",
-        "track": 16,
-        "year": 2013,
-        "duration": 128,
-        "disc_number": 1
-      },
-      {
-        "title": "Fresh Meat",
-        "artist": "Woody Jackson",
-        "track": 17,
-        "year": 2013,
-        "duration": 243,
-        "disc_number": 1
-      },
-      {
-        "title": "Therapy and Other Hobbies",
-        "artist": "The Alchemist & Oh No",
-        "track": 18,
-        "year": 2013,
-        "duration": 57,
-        "disc_number": 1
-      },
-      {
-        "title": "Rich Man’s Plaything",
-        "artist": "Tangerine Dream",
-        "track": 19,
-        "year": 2013,
-        "duration": 247,
-        "disc_number": 1
-      },
-      {
-        "title": "The Agency Heist",
-        "artist": "The Alchemist & Oh No",
-        "track": 20,
-        "year": 2013,
-        "duration": 202,
-        "disc_number": 1
-      },
-      {
-        "title": "Hillbilly Crank Dealers’ Blues",
-        "artist": "Woody Jackson",
-        "track": 21,
-        "year": 2013,
-        "duration": 319,
-        "disc_number": 1
-      },
-      {
-        "title": "Welcome to Los Santos (outro)",
-        "artist": "Oh No",
-        "track": 22,
-        "year": 2013,
-        "duration": 71,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Electro Swing 2015",
-    "year": 2014,
-    "duration": 3616,
-    "songs": [
-      {
-        "title": "Pump Up the Jam (electro swing version)",
-        "artist": "Swingrowers",
-        "track": 1,
-        "year": 2014,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "Gypsi Doodle",
-        "artist": "Analogik",
-        "track": 2,
-        "year": 2014,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "Sunny Side of the Street",
-        "artist": "ShazaLaKazoo",
-        "track": 3,
-        "year": 2014,
-        "duration": 257,
-        "disc_number": 1
-      },
-      {
-        "title": "Swing Thing (radio edit)",
-        "artist": "11 Acorn Lane",
-        "track": 4,
-        "year": 2014,
-        "duration": 129,
-        "disc_number": 1
-      },
-      {
-        "title": "Berlinist (Louie Prima & Harry Chestwig remix)",
-        "artist": "Whiskydenker",
-        "track": 5,
-        "year": 2014,
-        "duration": 232,
-        "disc_number": 1
-      },
-      {
-        "title": "Go Feet (radio edit)",
-        "artist": "Got K.D.S & Starfinger",
-        "track": 6,
-        "year": 2014,
-        "duration": 233,
-        "disc_number": 1
-      },
-      {
-        "title": "Aguas de Marco (Electro Bossa Vision)",
-        "artist": "The Unforgettables",
-        "track": 7,
-        "year": 2014,
-        "duration": 241,
-        "disc_number": 1
-      },
-      {
-        "title": "The Bosnian (original mix)",
-        "artist": "NTO",
-        "track": 8,
-        "year": 2014,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "Lick the Spoon (original mix)",
-        "artist": "Foxy Cheex & Jem Stone",
-        "track": 9,
-        "year": 2014,
-        "duration": 206,
-        "disc_number": 1
-      },
-      {
-        "title": "Blues My Naughty Sweetie Gives to Me (radio edit)",
-        "artist": "Francis Drunk",
-        "track": 10,
-        "year": 2014,
-        "duration": 221,
-        "disc_number": 1
-      },
-      {
-        "title": "Xyloswing (original mix)",
-        "artist": "DJ Dunya",
-        "track": 11,
-        "year": 2014,
-        "duration": 318,
-        "disc_number": 1
-      },
-      {
-        "title": "Dixieloop (Dixie mix)",
-        "artist": "Dixie",
-        "track": 12,
-        "year": 2014,
-        "duration": 333,
-        "disc_number": 1
-      },
-      {
-        "title": "Remedics (radio edit)",
-        "artist": "Pizeta",
-        "track": 13,
-        "year": 2014,
-        "duration": 189,
-        "disc_number": 1
-      },
-      {
-        "title": "(We've Got to) Put That Sun Back in the Sky (original mix)",
-        "artist": "Swing Republic",
-        "track": 14,
-        "year": 2014,
-        "duration": 283,
-        "disc_number": 1
-      },
-      {
-        "title": "The Duke (original)",
-        "artist": "Parov Stelar",
-        "track": 15,
-        "year": 2014,
-        "duration": 243,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "About: Berlin, Vol: 9",
-    "year": 2015,
-    "duration": 9528,
-    "songs": [
-      {
-        "title": "Claudius",
-        "artist": "Max Manie",
-        "track": 1,
-        "year": 2015,
-        "duration": 216,
-        "disc_number": 1
-      },
-      {
-        "title": "Little by Little (Lulleaux & George Whyman remix)",
-        "artist": "Ulf Nilsson",
-        "track": 2,
-        "year": 2015,
-        "duration": 181,
-        "disc_number": 1
-      },
-      {
-        "title": "Grizzly Bear (Lakechild remix)",
-        "artist": "Angus & Julia Stone",
-        "track": 3,
-        "year": 2015,
-        "duration": 210,
-        "disc_number": 1
-      },
-      {
-        "title": "Black Beauty (Leex Tropical mix)",
-        "artist": "Lana Del Rey",
-        "track": 4,
-        "year": 2015,
-        "duration": 357,
-        "disc_number": 1
-      },
-      {
-        "title": "Sunlight (extended club mix)",
-        "artist": "The Magician feat. Years & Years",
-        "track": 5,
-        "year": 2015,
-        "duration": 401,
-        "disc_number": 1
-      },
-      {
-        "title": "No Rest for the Wicked (Klangkarussell remix)",
-        "artist": "Lykke Li",
-        "track": 6,
-        "year": 2015,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "I Do (extended mix)",
-        "artist": "Felix Jaehn",
-        "track": 7,
-        "year": 2015,
-        "duration": 265,
-        "disc_number": 1
-      },
-      {
-        "title": "The Nights (Felix Jaehn remix)",
-        "artist": "Avicii",
-        "track": 8,
-        "year": 2015,
-        "duration": 197,
-        "disc_number": 1
-      },
-      {
-        "title": "Back Home",
-        "artist": "Fritz Kalkbrenner",
-        "track": 9,
-        "year": 2015,
-        "duration": 378,
-        "disc_number": 1
-      },
-      {
-        "title": "Bones",
-        "artist": "Oliver Koletzki feat. HVOB",
-        "track": 10,
-        "year": 2015,
-        "duration": 294,
-        "disc_number": 1
-      },
-      {
-        "title": "Thoughtful",
-        "artist": "Lexer",
-        "track": 11,
-        "year": 2015,
-        "duration": 402,
-        "disc_number": 1
-      },
-      {
-        "title": "Sonnendeck (extended mix)",
-        "artist": "Achtabahn",
-        "track": 12,
-        "year": 2015,
-        "duration": 304,
-        "disc_number": 1
-      },
-      {
-        "title": "Levo (club edit)",
-        "artist": "Recondite",
-        "track": 13,
-        "year": 2015,
-        "duration": 368,
-        "disc_number": 1
-      },
-      {
-        "title": "Sweet Ophelia (Gold Fields remix)",
-        "artist": "Zella Day",
-        "track": 14,
-        "year": 2015,
-        "duration": 304,
-        "disc_number": 1
-      },
-      {
-        "title": "True (Lexer remix)",
-        "artist": "Nora en Pure",
-        "track": 15,
-        "year": 2015,
-        "duration": 384,
-        "disc_number": 1
-      },
-      {
-        "title": "Faded (Taches remix)",
-        "artist": "ZHU",
-        "track": 16,
-        "year": 2015,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "Symmetry",
-        "artist": "Klangkarussell",
-        "track": 17,
-        "year": 2015,
-        "duration": 301,
-        "disc_number": 2
-      },
-      {
-        "title": "Wild Eyes",
-        "artist": "Broiler feat. Ravvel",
-        "track": 18,
-        "year": 2015,
-        "duration": 198,
-        "disc_number": 2
-      },
-      {
-        "title": "Rainman",
-        "artist": "Erlend Øye",
-        "track": 19,
-        "year": 2015,
-        "duration": 292,
-        "disc_number": 2
-      },
-      {
-        "title": "Are You With Me (extended remix)",
-        "artist": "Lost Frequencies",
-        "track": 20,
-        "year": 2015,
-        "duration": 286,
-        "disc_number": 2
-      },
-      {
-        "title": "Actors (Dinnerdate remix)",
-        "artist": "Still Parade",
-        "track": 21,
-        "year": 2015,
-        "duration": 249,
-        "disc_number": 2
-      },
-      {
-        "title": "Out of Yourself (Roosevelt remix)",
-        "artist": "Truls Heggero",
-        "track": 22,
-        "year": 2015,
-        "duration": 412,
-        "disc_number": 2
-      },
-      {
-        "title": "Fly Like a Bird (Till Von Sein & Tigerskin remix)",
-        "artist": "Pitto",
-        "track": 23,
-        "year": 2015,
-        "duration": 411,
-        "disc_number": 2
-      },
-      {
-        "title": "Giant in My Heart (No Artificial Colours remix)",
-        "artist": "Kiesza",
-        "track": 24,
-        "year": 2015,
-        "duration": 337,
-        "disc_number": 2
-      },
-      {
-        "title": "Changing (Klingande remix)",
-        "artist": "Sigma feat. Paloma Faith",
-        "track": 25,
-        "year": 2015,
-        "duration": 355,
-        "disc_number": 2
-      },
-      {
-        "title": "Give Me Sunshine (Niklas Ibach remix)",
-        "artist": "Santa Maradona F.C. feat. Lucy Spraggan",
-        "track": 26,
-        "year": 2015,
-        "duration": 347,
-        "disc_number": 2
-      },
-      {
-        "title": "Another You (Sonny Alven remix)",
-        "artist": "Nause",
-        "track": 27,
-        "year": 2015,
-        "duration": 281,
-        "disc_number": 2
-      },
-      {
-        "title": "Lost (Ben Pearce remix)",
-        "artist": "Tender Games",
-        "track": 28,
-        "year": 2015,
-        "duration": 271,
-        "disc_number": 2
-      },
-      {
-        "title": "Palm Tree Memories (N'to remix)",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 29,
-        "year": 2015,
-        "duration": 410,
-        "disc_number": 2
-      },
-      {
-        "title": "Northwind (Felix Jaehn remix)",
-        "artist": "Artenvielfalt & Wolfgang Lohr",
-        "track": 30,
-        "year": 2015,
-        "duration": 294,
-        "disc_number": 2
-      },
-      {
-        "title": "Piano Weapon (instrumental)",
-        "artist": "Shadow Child feat. Doorly",
-        "track": 31,
-        "year": 2015,
-        "duration": 295,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Suicide Squad: The Album",
-    "year": 2016,
-    "duration": 3064,
-    "songs": [
-      {
-        "title": "Purple Lamborghini",
-        "artist": "Skrillex & Rick Ross",
-        "track": 1,
-        "year": 2016,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "Sucker for Pain",
-        "artist": "Lil Wayne, Wiz Khalifa & Imagine Dragons with Logic and Ty Dolla $ign feat. X Ambassadors",
-        "track": 2,
-        "year": 2016,
-        "duration": 244,
-        "disc_number": 1
-      },
-      {
-        "title": "Heathens",
-        "artist": "twenty one pilots",
-        "track": 3,
-        "year": 2016,
-        "duration": 195,
-        "disc_number": 1
-      },
-      {
-        "title": "Standing in the Rain",
-        "artist": "Action Bronson, Mark Ronson & Dan Auerbach",
-        "track": 4,
-        "year": 2016,
-        "duration": 202,
-        "disc_number": 1
-      },
-      {
-        "title": "Gangsta",
-        "artist": "Kehlani",
-        "track": 5,
-        "year": 2016,
-        "duration": 177,
-        "disc_number": 1
-      },
-      {
-        "title": "Know Better",
-        "artist": "Kevin Gates",
-        "track": 6,
-        "year": 2016,
-        "duration": 208,
-        "disc_number": 1
-      },
-      {
-        "title": "You Don’t Own Me",
-        "artist": "SAYGRACE feat. G‐Eazy",
-        "track": 7,
-        "year": 2016,
-        "duration": 199,
-        "disc_number": 1
-      },
-      {
-        "title": "Without Me",
-        "artist": "Eminem",
-        "track": 8,
-        "year": 2016,
-        "duration": 292,
-        "disc_number": 1
-      },
-      {
-        "title": "Wreak Havoc",
-        "artist": "Skylar Grey",
-        "track": 9,
-        "year": 2016,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Medieval Warfare",
-        "artist": "Grimes",
-        "track": 10,
-        "year": 2016,
-        "duration": 181,
-        "disc_number": 1
-      },
-      {
-        "title": "Bohemian Rhapsody",
-        "artist": "Panic! at the Disco",
-        "track": 11,
-        "year": 2016,
-        "duration": 361,
-        "disc_number": 1
-      },
-      {
-        "title": "Slippin’ Into Darkness",
-        "artist": "War",
-        "track": 12,
-        "year": 2016,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "Fortunate Son",
-        "artist": "Creedence Clearwater Revival",
-        "track": 13,
-        "year": 2016,
-        "duration": 138,
-        "disc_number": 1
-      },
-      {
-        "title": "I Started a Joke",
-        "artist": "ConfidentialMX feat. Becky Hanson",
-        "track": 14,
-        "year": 2016,
-        "duration": 190,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
     "album": "beatmania IIDX 25 CANNON BALLERS ORIGINAL SOUNDTRACK",
     "year": 2018,
     "duration": 130,
@@ -122321,198 +122513,6 @@
         "track": 17,
         "year": 2018,
         "duration": 130,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "TV ANIMATION \"Sonny Boy\" original soundtrack",
-    "year": 2021,
-    "duration": 4789,
-    "songs": [
-      {
-        "title": "少年少女 TV ver.",
-        "artist": "銀杏BOYZ",
-        "track": 1,
-        "year": 2021,
-        "duration": 94,
-        "disc_number": 1
-      },
-      {
-        "title": "Broken Windows",
-        "artist": "落日飛車",
-        "track": 2,
-        "year": 2021,
-        "duration": 102,
-        "disc_number": 1
-      },
-      {
-        "title": "Seagull",
-        "artist": "落日飛車",
-        "track": 3,
-        "year": 2021,
-        "duration": 153,
-        "disc_number": 1
-      },
-      {
-        "title": "Summer Storm",
-        "artist": "VIDEOTAPEMUSIC",
-        "track": 4,
-        "year": 2021,
-        "duration": 190,
-        "disc_number": 1
-      },
-      {
-        "title": "Tune from diamond",
-        "artist": "ザ・なつやすみバンド",
-        "track": 5,
-        "year": 2021,
-        "duration": 276,
-        "disc_number": 1
-      },
-      {
-        "title": "夜釣り",
-        "artist": "ミツメ",
-        "track": 6,
-        "year": 2021,
-        "duration": 193,
-        "disc_number": 1
-      },
-      {
-        "title": "Let There Be Light Again",
-        "artist": "落日飛車",
-        "track": 7,
-        "year": 2021,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "Beacon",
-        "artist": "Ogawa & Tokoro",
-        "track": 8,
-        "year": 2021,
-        "duration": 170,
-        "disc_number": 1
-      },
-      {
-        "title": "Yamabiko’s Theme",
-        "artist": "공중도둑",
-        "track": 9,
-        "year": 2021,
-        "duration": 635,
-        "disc_number": 1
-      },
-      {
-        "title": "Kodama’s Theme",
-        "artist": "공중도둑",
-        "track": 10,
-        "year": 2021,
-        "duration": 200,
-        "disc_number": 1
-      },
-      {
-        "title": "Soft Oversight",
-        "artist": "Ogawa & Tokoro",
-        "track": 11,
-        "year": 2021,
-        "duration": 104,
-        "disc_number": 1
-      },
-      {
-        "title": "ソウとセイジ",
-        "artist": "ミツメ",
-        "track": 12,
-        "year": 2021,
-        "duration": 500,
-        "disc_number": 1
-      },
-      {
-        "title": "今日の歌",
-        "artist": "カネヨリマサル",
-        "track": 13,
-        "year": 2021,
-        "duration": 236,
-        "disc_number": 1
-      },
-      {
-        "title": "Lightship",
-        "artist": "ザ・なつやすみバンド",
-        "track": 14,
-        "year": 2021,
-        "duration": 315,
-        "disc_number": 1
-      },
-      {
-        "title": "スペア",
-        "artist": "ミツメ",
-        "track": 15,
-        "year": 2021,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "サニーボーイ・ラプソディ",
-        "artist": "toe",
-        "track": 16,
-        "year": 2021,
-        "duration": 245,
-        "disc_number": 1
-      },
-      {
-        "title": "Lune",
-        "artist": "コーニッシュ",
-        "track": 17,
-        "year": 2021,
-        "duration": 105,
-        "disc_number": 1
-      },
-      {
-        "title": "Jugement",
-        "artist": "コーニッシュ",
-        "track": 18,
-        "year": 2021,
-        "duration": 99,
-        "disc_number": 1
-      },
-      {
-        "title": "Tour",
-        "artist": "コーニッシュ",
-        "track": 19,
-        "year": 2021,
-        "duration": 198,
-        "disc_number": 1
-      },
-      {
-        "title": "Soleil",
-        "artist": "コーニッシュ",
-        "track": 20,
-        "year": 2021,
-        "duration": 156,
-        "disc_number": 1
-      },
-      {
-        "title": "旅立ちの日に",
-        "artist": "コーニッシュ",
-        "track": 21,
-        "year": 2021,
-        "duration": 294,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Drum & Bass 2022",
-    "year": 2023,
-    "duration": 343,
-    "songs": [
-      {
-        "title": "Gold Dust (Fox Stevenson extended remix)",
-        "artist": "DJ Fresh",
-        "track": 16,
-        "year": 2023,
-        "duration": 343,
         "disc_number": 1
       }
     ]
