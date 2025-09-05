@@ -15,7 +15,7 @@ pub fn number_to_comma_separated_string(number: usize) -> String {
     let mut temp = vec![];
     let mut number = number;
     while number > 0 {
-        temp.push((number % 1000) as u8);
+        temp.push(number % 1000);
         number /= 1000;
     }
     temp.reverse();
