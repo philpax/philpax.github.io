@@ -382,6 +382,7 @@ mod tests {
             syntax: syntax,
             content: content,
             generation_date: chrono::Utc::now(),
+            fast: false,
         }
     }
 

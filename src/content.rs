@@ -47,7 +47,7 @@ impl Content {
         }
     }
 
-    pub fn read() -> anyhow::Result<Self> {
+    pub fn read(fast: bool) -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
 
         let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
@@ -83,9 +83,13 @@ impl Content {
                 vec!["Credits".to_string()],
                 DocumentType::Blog,
             )?,
-            music_library: serde_json::from_str::<blackbird_json_export_types::Output>(
-                &std::fs::read_to_string("assets/baked/music.json")?,
-            )?,
+            music_library: if fast {
+                Default::default()
+            } else {
+                serde_json::from_str::<blackbird_json_export_types::Output>(
+                    &std::fs::read_to_string("assets/baked/music.json")?,
+                )?
+            },
         })
     }
 

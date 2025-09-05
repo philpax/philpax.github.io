@@ -91,6 +91,14 @@ mod colours {
 }
 
 pub fn music_library(context: ViewContext) -> paxhtml::Element {
+    if context.fast {
+        return html! {
+            <div>
+                <p>"Music library (SKIPPED)"</p>
+            </div>
+        };
+    }
+
     let style = format!(
         "
         .music-library {{

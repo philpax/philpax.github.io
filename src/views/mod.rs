@@ -25,6 +25,7 @@ pub struct ViewContext<'a> {
     pub syntax: &'a SyntaxHighlighter,
     pub content: &'a Content,
     pub generation_date: chrono::DateTime<chrono::Utc>,
+    pub fast: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]

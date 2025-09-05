@@ -176,7 +176,7 @@ fn main() -> anyhow::Result<()> {
         util::copy_dir(Path::new("static"), output_dir)
     })?;
 
-    let content = timer.step("Read content", content::Content::read)?;
+    let content = timer.step("Read content", || content::Content::read(fast))?;
     let view_context = views::ViewContext {
         website_author: "Philpax",
         website_name: "Philpax",
@@ -189,6 +189,7 @@ fn main() -> anyhow::Result<()> {
         content: &content,
         syntax: &syntax,
         generation_date: chrono::Utc::now(),
+        fast,
     };
 
     timer.step("Wrote content", || {
