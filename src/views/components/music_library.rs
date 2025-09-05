@@ -216,6 +216,36 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                     #{context.content.music_library.iter().map(group)}
                 </div>
             </div>
+            <script>
+                {r#"
+                document.addEventListener('DOMContentLoaded', function() {
+                    const trackLinks = document.querySelectorAll('.music-library a.track');
+
+                    for (const link of trackLinks) {
+                        const nameSpan = link.querySelector('.name');
+                        const track = nameSpan ? nameSpan.textContent.trim() : '';
+
+                        // Find the artist from the .artist span in the .right section
+                        const rightSection = link.querySelector('.right');
+                        const artistSpan = rightSection ? rightSection.querySelector('.artist') : null;
+                        const trackArtist = artistSpan ? artistSpan.textContent.trim() : '';
+
+                        // Find the album artist from the parent section's heading
+                        const section = link.closest('section');
+                        const artistHeading = section ? section.querySelector('heading .artist') : null;
+                        const albumArtist = artistHeading ? artistHeading.textContent.trim() : '';
+
+                        // Create the search query
+                        const artist = trackArtist || albumArtist;
+                        const query = `${artist} - ${track}`;
+
+                        // Set the href to YouTube search
+                        link.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+                        link.target = '_blank';
+                    }
+                });
+                "#}
+            </script>
         </>
     }
 }
