@@ -34,6 +34,19 @@ pub struct Content {
     pub music_library: blackbird_json_export_types::Output,
 }
 impl Content {
+    #[cfg(test)]
+    pub fn empty() -> Self {
+        Self {
+            blog: DocumentCollection::empty(),
+            updates: DocumentCollection::empty(),
+            notes: NotesCollection::empty(),
+            tags: HashMap::new(),
+            about: Document::empty(),
+            credits: Document::empty(),
+            music_library: blackbird_json_export_types::Output::new(),
+        }
+    }
+
     pub fn read() -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
 
@@ -89,6 +102,14 @@ pub struct DocumentCollection {
     pub document_key_to_id: HashMap<DocumentId, usize>,
 }
 impl DocumentCollection {
+    #[cfg(test)]
+    pub fn empty() -> Self {
+        Self {
+            documents: vec![],
+            document_key_to_id: HashMap::new(),
+        }
+    }
+
     fn read(collection_path: &Path, document_type: DocumentType) -> anyhow::Result<Self> {
         let documents = {
             let mut documents = vec![];
@@ -163,6 +184,17 @@ pub struct NotesCollection {
     pub documents: DocumentFolderNode,
 }
 impl NotesCollection {
+    #[cfg(test)]
+    pub fn empty() -> Self {
+        Self {
+            documents: DocumentFolderNode {
+                index_document: None,
+                folder_name: "".to_string(),
+                children: Default::default(),
+            },
+        }
+    }
+
     fn read(collection_path: &Path) -> anyhow::Result<Self> {
         fn find_documents(
             collection_path: &Path,
@@ -278,6 +310,30 @@ impl std::fmt::Display for Document {
     }
 }
 impl Document {
+    #[cfg(test)]
+    pub fn empty() -> Self {
+        Self {
+            id: vec![],
+            alternate_id: None,
+            display_path: vec![],
+            document_type: DocumentType::Blog,
+            metadata: DocumentMetadata {
+                title: "".to_string(),
+                short: None,
+                datetime: None,
+                taxonomies: None,
+            },
+            description: markdown::mdast::Node::Root(markdown::mdast::Root {
+                children: Default::default(),
+                position: Default::default(),
+            }),
+            rest_of_content: None,
+            files: vec![],
+            hero_filename_and_alt: None,
+            word_count: 0,
+        }
+    }
+
     fn read(
         path: &Path,
         id: DocumentId,

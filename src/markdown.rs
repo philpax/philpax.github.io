@@ -365,7 +365,25 @@ impl HeadingHierarchy {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::parse_markdown;
+    use crate::{
+        content::{parse_markdown, Content},
+        syntax::SyntaxHighlighter,
+    };
+
+    fn view_context_for_syntax_highlighter<'a>(
+        syntax: &'a SyntaxHighlighter,
+        content: &'a Content,
+    ) -> ViewContext<'a> {
+        ViewContext {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "test",
+            syntax: syntax,
+            content: content,
+            generation_date: chrono::Utc::now(),
+        }
+    }
 
     #[test]
     fn test_heading_hierarchy() {
@@ -382,6 +400,8 @@ mod tests {
 
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let context = view_context_for_syntax_highlighter(&syntax, &content);
 
         fn hh(heading: impl Into<String>, children: impl IntoIterator<Item = HH>) -> HH {
             let heading = heading.into();
@@ -389,7 +409,7 @@ mod tests {
         }
 
         assert_eq!(
-            HH::from_node(&syntax, &ast),
+            HH::from_node(context, &ast),
             vec![
                 hh(
                     "test",
@@ -411,7 +431,9 @@ Here is some text with a footnote[^note1] and another[^note2].
 
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
-        let mut converter = MarkdownConverter::new(&syntax);
+        let content = Content::empty();
+        let context = view_context_for_syntax_highlighter(&syntax, &content);
+        let mut converter = MarkdownConverter::new(context);
 
         let result = converter.convert(&ast, None);
         let html = paxhtml::Document::new([result]).write_to_string().unwrap();
