@@ -104,6 +104,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
         .music-library {{
             background-color: {background};
             color: {text};
+            max-width: 100%;
         }}
 
         .music-library heading {{
@@ -137,56 +138,61 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             align-items: center;
         }}
 
-        .music-library .track .left {{
-            flex: 1;
-            display: flex;
-            align-items: center;
-            min-width: 0;
-        }}
-
-        .music-library .track .right {{
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            margin-left: 0.5em;
-            text-align: right;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }}
-
-        .music-library .track .right .artist {{
-            margin-right: 0.5em;
-        }}
-
         .music-library .track .number {{
             color: {track_number};
             width: 48px;
             display: inline-block;
             text-align: right;
-            margin-right: 0.5em;
             flex-shrink: 0;
+        }}
+
+        .music-library .track .middle {{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            justify-content: space-between;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin: 0 0.5em;
         }}
 
         .music-library .track .name {{
             color: {track_name};
             flex: 1;
+            white-space: nowrap;
+            flex-grow: 1;
+        }}
+
+        .music-library .track .artist {{
             min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            flex-shrink: 1;
+            flex-grow: 0;
+            text-align: right;
+            margin-left: 0.5em;
         }}
 
+        .music-library .track .length {{
+            color: {track_length};
+            flex-shrink: 0;
+            text-align: right;
+        }}
         .music-library .track .name:hover {{
             color: {track_name_hovered};
         }}
 
         .music-library .track .length {{
             color: {track_length};
+            flex-shrink: 0;
         }}
 
         .music-library .track .duration {{
             color: {track_duration};
+            flex-shrink: 0;
         }}
     ",
         background = colours::background(),
@@ -201,14 +207,9 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
         track_duration = colours::track_duration(),
     );
 
-    let album_count = context.content.music_library.len();
-
-    let track_count = context
-        .content
-        .music_library
-        .iter()
-        .map(|g| g.songs.len())
-        .sum::<usize>();
+    let music_library = &context.content.music_library;
+    let album_count = music_library.len();
+    let track_count = music_library.iter().map(|g| g.songs.len()).sum::<usize>();
 
     html! {
         <>
@@ -221,7 +222,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                     {util::number_to_comma_separated_string(album_count)}" albums"
                 </div>
                 <div class="font-sans text-white music-library p-3 flex flex-col gap-8">
-                    #{context.content.music_library.iter().map(group)}
+                    #{music_library.iter().map(group)}
                 </div>
             </div>
             <script>
@@ -233,9 +234,8 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                         const nameSpan = link.querySelector('.name');
                         const track = nameSpan ? nameSpan.textContent.trim() : '';
 
-                        // Find the artist from the .artist span in the .right section
-                        const rightSection = link.querySelector('.right');
-                        const artistSpan = rightSection ? rightSection.querySelector('.artist') : null;
+                        // Find the artist from the .artist span
+                        const artistSpan = link.querySelector('.artist');
                         const trackArtist = artistSpan ? artistSpan.textContent.trim() : '';
 
                         // Find the album artist from the parent section's heading
@@ -309,14 +309,12 @@ fn song(group: &OutputGroup, song: &OutputSong) -> paxhtml::Element {
 
     html! {
         <a class="track">
-            <span class="left">
-                <span class="number">{track_number}</span>
+            <span class="number">{track_number}</span>
+            <span class="middle">
                 <span class="name">{song.title.as_str()}</span>
-            </span>
-            <span class="right">
                 {artist}
-                <span class="length">{duration}</span>
             </span>
+            <span class="length">{duration}</span>
         </a>
     }
 }
