@@ -24,6 +24,8 @@ impl std::fmt::Display for DocumentType {
     }
 }
 
+const MUSIC_LIBRARY_PATH: &str = "assets/baked/music.json";
+
 pub struct Content {
     pub blog: DocumentCollection,
     pub updates: DocumentCollection,
@@ -87,7 +89,7 @@ impl Content {
                 Default::default()
             } else {
                 serde_json::from_str::<blackbird_json_export_types::Output>(
-                    &std::fs::read_to_string("assets/baked/music.json")?,
+                    &std::fs::read_to_string(MUSIC_LIBRARY_PATH)?,
                 )?
             },
         })
@@ -360,10 +362,20 @@ impl Document {
 
             (metadata, content_raw)
         } else {
+            let mut path_datetime = get_file_datetime(path)?;
+
+            // HACK: Use the music library's modification datetime if it's in use + it's newer than the actual file
+            if file.contains("<music-library") {
+                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH))?;
+                if library_datetime > path_datetime {
+                    path_datetime = library_datetime;
+                }
+            }
+
             let metadata = DocumentMetadata {
                 title: display_path.last().cloned().unwrap(),
                 short: None,
-                datetime: Some(get_file_datetime(path)?),
+                datetime: Some(path_datetime),
                 taxonomies: None,
             };
 
