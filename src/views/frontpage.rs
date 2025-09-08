@@ -29,6 +29,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             twitter_card: None,
             twitter_image: None,
             article_published_time: None,
+            article_modified_time: None,
             article_tag: None,
         },
         CurrentPage::Home,

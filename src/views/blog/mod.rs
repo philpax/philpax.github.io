@@ -19,6 +19,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             twitter_card: None,
             twitter_image: None,
             article_published_time: None,
+            article_modified_time: None,
             article_tag: None,
         },
         CurrentPage::Blog,
@@ -60,6 +61,7 @@ pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
                 .map(|_| "summary_large_image".to_string()),
             twitter_image: hero_image,
             article_published_time: document.metadata.datetime,
+            article_modified_time: None,
             article_tag: document
                 .metadata
                 .taxonomies

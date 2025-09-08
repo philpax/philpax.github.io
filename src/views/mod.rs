@@ -87,6 +87,8 @@ pub struct SocialMeta {
     twitter_image: Option<String>,
     /// When the article was published (for OpenGraph article type)
     article_published_time: Option<chrono::DateTime<chrono::Utc>>,
+    /// When the article was last modified (for OpenGraph article type)
+    article_modified_time: Option<chrono::DateTime<chrono::Utc>>,
     /// A tag describing the article (for OpenGraph article type)
     article_tag: Option<String>,
 }
@@ -116,6 +118,10 @@ impl SocialMeta {
                 (
                     "article:published_time",
                     self.article_published_time.map(|t| t.to_rfc3339()),
+                ),
+                (
+                    "article:modified_time",
+                    self.article_modified_time.map(|t| t.to_rfc3339()),
                 ),
                 ("article:author", Some(context.website_author.into())),
                 ("article:tag", self.article_tag),

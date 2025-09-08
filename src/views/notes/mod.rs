@@ -29,6 +29,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
             twitter_card: None,
             twitter_image: None,
             article_published_time: None,
+            article_modified_time: note.metadata.datetime,
             article_tag: None,
         },
         CurrentPage::Notes,
