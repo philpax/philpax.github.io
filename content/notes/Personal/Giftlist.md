@@ -16,6 +16,7 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
 
 - artbooks
 
+  - the second edition of Half-Life 2: Raising the Bar, [should it ever come out](https://www.half-life.com/en/halflife2/20th#raisingthebar)
   - [Anime Architecture: Imagined Worlds and Endless Megacities](https://www.goodreads.com/book/show/51283907-anime-architecture)
   - [Arcade Game Typography: The Art of Pixel Type](https://www.goodreads.com/book/show/43785837-arcade-game-typography)
   - [Back to the Future: The Ultimate Visual History](https://www.goodreads.com/book/show/24892872-back-to-the-future)
