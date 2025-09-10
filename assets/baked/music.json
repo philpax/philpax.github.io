@@ -6781,6 +6781,94 @@
     ]
   },
   {
+    "artist": "Apparat",
+    "album": "LP5",
+    "year": 2019,
+    "duration": 2666,
+    "songs": [
+      {
+        "title": "VOI_DO",
+        "artist": "Apparat",
+        "track": 1,
+        "year": 2019,
+        "duration": 291,
+        "disc_number": 1
+      },
+      {
+        "title": "DAWAN",
+        "artist": "Apparat",
+        "track": 2,
+        "year": 2019,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "LAMINAR FLOW",
+        "artist": "Apparat",
+        "track": 3,
+        "year": 2019,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "HEROIST",
+        "artist": "Apparat",
+        "track": 4,
+        "year": 2019,
+        "duration": 345,
+        "disc_number": 1
+      },
+      {
+        "title": "MEANS OF ENTRY",
+        "artist": "Apparat",
+        "track": 5,
+        "year": 2019,
+        "duration": 102,
+        "disc_number": 1
+      },
+      {
+        "title": "BRANDENBURG",
+        "artist": "Apparat",
+        "track": 6,
+        "year": 2019,
+        "duration": 200,
+        "disc_number": 1
+      },
+      {
+        "title": "CARONTE",
+        "artist": "Apparat",
+        "track": 7,
+        "year": 2019,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "EQ_BREAK",
+        "artist": "Apparat",
+        "track": 8,
+        "year": 2019,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "OUTLIER",
+        "artist": "Apparat",
+        "track": 9,
+        "year": 2019,
+        "duration": 366,
+        "disc_number": 1
+      },
+      {
+        "title": "IN GRAVITAS",
+        "artist": "Apparat",
+        "track": 10,
+        "year": 2019,
+        "duration": 372,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Arcade Fire",
     "album": "The Suburbs",
     "year": 2010,
@@ -10880,6 +10968,94 @@
         "track": 5,
         "year": 2014,
         "duration": 220,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Battle Tapes",
+    "album": "Polygon",
+    "year": 2015,
+    "duration": 2748,
+    "songs": [
+      {
+        "title": "Belgrade",
+        "artist": "Battle Tapes",
+        "track": 1,
+        "year": 2015,
+        "duration": 293,
+        "disc_number": 1
+      },
+      {
+        "title": "Valkyrie",
+        "artist": "Battle Tapes",
+        "track": 2,
+        "year": 2015,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "Solid Gold",
+        "artist": "Battle Tapes feat. Party Nails",
+        "track": 3,
+        "year": 2015,
+        "duration": 251,
+        "disc_number": 1
+      },
+      {
+        "title": "Private Dancer",
+        "artist": "Battle Tapes",
+        "track": 4,
+        "year": 2015,
+        "duration": 260,
+        "disc_number": 1
+      },
+      {
+        "title": "Graveyard Shift",
+        "artist": "Battle Tapes",
+        "track": 5,
+        "year": 2015,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "Dreamboat",
+        "artist": "Battle Tapes",
+        "track": 6,
+        "year": 2015,
+        "duration": 348,
+        "disc_number": 1
+      },
+      {
+        "title": "Feel the Same",
+        "artist": "Battle Tapes",
+        "track": 7,
+        "year": 2015,
+        "duration": 222,
+        "disc_number": 1
+      },
+      {
+        "title": "Mulholland",
+        "artist": "Battle Tapes",
+        "track": 8,
+        "year": 2015,
+        "duration": 363,
+        "disc_number": 1
+      },
+      {
+        "title": "Valley People",
+        "artist": "Battle Tapes",
+        "track": 9,
+        "year": 2015,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Again",
+        "artist": "Battle Tapes",
+        "track": 10,
+        "year": 2015,
+        "duration": 278,
         "disc_number": 1
       }
     ]
@@ -17854,6 +18030,198 @@
     ]
   },
   {
+    "artist": "Bring Me the Horizon",
+    "album": "amo",
+    "year": 2019,
+    "duration": 3119,
+    "songs": [
+      {
+        "title": "i apologise if you feel something",
+        "artist": "Bring Me the Horizon",
+        "track": 1,
+        "year": 2019,
+        "duration": 139,
+        "disc_number": 1
+      },
+      {
+        "title": "MANTRA",
+        "artist": "Bring Me the Horizon",
+        "track": 2,
+        "year": 2019,
+        "duration": 233,
+        "disc_number": 1
+      },
+      {
+        "title": "nihilist blues",
+        "artist": "Bring Me the Horizon feat. Grimes",
+        "track": 3,
+        "year": 2019,
+        "duration": 325,
+        "disc_number": 1
+      },
+      {
+        "title": "in the dark",
+        "artist": "Bring Me the Horizon",
+        "track": 4,
+        "year": 2019,
+        "duration": 271,
+        "disc_number": 1
+      },
+      {
+        "title": "wonderful life",
+        "artist": "Bring Me the Horizon feat. Dani Filth",
+        "track": 5,
+        "year": 2019,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "ouch",
+        "artist": "Bring Me the Horizon",
+        "track": 6,
+        "year": 2019,
+        "duration": 109,
+        "disc_number": 1
+      },
+      {
+        "title": "medicine",
+        "artist": "Bring Me the Horizon",
+        "track": 7,
+        "year": 2019,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "sugar honey ice & tea",
+        "artist": "Bring Me the Horizon",
+        "track": 8,
+        "year": 2019,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "why you gotta kick me when i’m down?",
+        "artist": "Bring Me the Horizon",
+        "track": 9,
+        "year": 2019,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "fresh bruises",
+        "artist": "Bring Me the Horizon",
+        "track": 10,
+        "year": 2019,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "mother tongue",
+        "artist": "Bring Me the Horizon",
+        "track": 11,
+        "year": 2019,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "heavy metal",
+        "artist": "Bring Me the Horizon feat. Rahzel",
+        "track": 12,
+        "year": 2019,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "i don’t know what to say",
+        "artist": "Bring Me the Horizon",
+        "track": 13,
+        "year": 2019,
+        "duration": 352,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Bring Me the Horizon",
+    "album": "POST HUMAN: SURVIVAL HORROR",
+    "year": 2020,
+    "duration": 1931,
+    "songs": [
+      {
+        "title": "Dear Diary,",
+        "artist": "Bring Me the Horizon",
+        "track": 1,
+        "year": 2021,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Parasite Eve",
+        "artist": "Bring Me the Horizon",
+        "track": 2,
+        "year": 2021,
+        "duration": 291,
+        "disc_number": 1
+      },
+      {
+        "title": "Teardrops",
+        "artist": "Bring Me the Horizon",
+        "track": 3,
+        "year": 2021,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "Obey",
+        "artist": "Bring Me the Horizon with YUNGBLUD",
+        "track": 4,
+        "year": 2021,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "Itch for the Cure (When Will We Be Free?)",
+        "artist": "Bring Me the Horizon",
+        "track": 5,
+        "year": 2021,
+        "duration": 86,
+        "disc_number": 1
+      },
+      {
+        "title": "Kingslayer",
+        "artist": "Bring Me the Horizon feat. BABYMETAL",
+        "track": 6,
+        "year": 2021,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "1x1",
+        "artist": "Bring Me the Horizon feat. Nova Twins",
+        "track": 7,
+        "year": 2021,
+        "duration": 209,
+        "disc_number": 1
+      },
+      {
+        "title": "Ludens",
+        "artist": "Bring Me the Horizon",
+        "track": 8,
+        "year": 2021,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "One Day the Only Butterflies Left Will Be in Your Chest as You March Towards Your Death",
+        "artist": "Bring Me the Horizon feat. Amy Lee",
+        "track": 9,
+        "year": 2021,
+        "duration": 243,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Broken Bells",
     "album": "Broken Bells",
     "year": 2010,
@@ -20800,6 +21168,302 @@
     ]
   },
   {
+    "artist": "Celldweller",
+    "album": "Celldweller",
+    "year": 2003,
+    "duration": 8887,
+    "songs": [
+      {
+        "title": "Cell #1",
+        "artist": "Celldweller",
+        "track": 1,
+        "year": 2013,
+        "duration": 28,
+        "disc_number": 1
+      },
+      {
+        "title": "Switchback",
+        "artist": "Celldweller",
+        "track": 2,
+        "year": 2013,
+        "duration": 302,
+        "disc_number": 1
+      },
+      {
+        "title": "Stay With Me (Unlikely)",
+        "artist": "Celldweller",
+        "track": 3,
+        "year": 2013,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "The Last Firstborn",
+        "artist": "Celldweller",
+        "track": 4,
+        "year": 2013,
+        "duration": 461,
+        "disc_number": 1
+      },
+      {
+        "title": "Under My Feet",
+        "artist": "Celldweller",
+        "track": 5,
+        "year": 2013,
+        "duration": 210,
+        "disc_number": 1
+      },
+      {
+        "title": "I Believe You",
+        "artist": "Celldweller",
+        "track": 6,
+        "year": 2013,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Frozen",
+        "artist": "Celldweller",
+        "track": 7,
+        "year": 2013,
+        "duration": 420,
+        "disc_number": 1
+      },
+      {
+        "title": "Symbiont",
+        "artist": "Celldweller",
+        "track": 8,
+        "year": 2013,
+        "duration": 327,
+        "disc_number": 1
+      },
+      {
+        "title": "Afraid This Time",
+        "artist": "Celldweller",
+        "track": 9,
+        "year": 2013,
+        "duration": 299,
+        "disc_number": 1
+      },
+      {
+        "title": "Fadeaway",
+        "artist": "Celldweller",
+        "track": 10,
+        "year": 2013,
+        "duration": 287,
+        "disc_number": 1
+      },
+      {
+        "title": "Cell #2",
+        "artist": "Celldweller",
+        "track": 11,
+        "year": 2013,
+        "duration": 21,
+        "disc_number": 1
+      },
+      {
+        "title": "So Sorry to Say",
+        "artist": "Celldweller",
+        "track": 12,
+        "year": 2013,
+        "duration": 333,
+        "disc_number": 1
+      },
+      {
+        "title": "Own Little World",
+        "artist": "Celldweller",
+        "track": 13,
+        "year": 2013,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Unlikely (Stay With Me)",
+        "artist": "Celldweller",
+        "track": 14,
+        "year": 2013,
+        "duration": 179,
+        "disc_number": 1
+      },
+      {
+        "title": "One Good Reason",
+        "artist": "Celldweller",
+        "track": 15,
+        "year": 2013,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "The Stars of Orion",
+        "artist": "Celldweller",
+        "track": 16,
+        "year": 2013,
+        "duration": 176,
+        "disc_number": 1
+      },
+      {
+        "title": "Cell #3",
+        "artist": "Celldweller",
+        "track": 17,
+        "year": 2013,
+        "duration": 32,
+        "disc_number": 1
+      },
+      {
+        "title": "Welcome to the End",
+        "artist": "Celldweller",
+        "track": 18,
+        "year": 2013,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "Ghosts",
+        "artist": "Celldweller feat. Tom Salta",
+        "track": 19,
+        "year": 2013,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "Uncrowned",
+        "artist": "Celldweller",
+        "track": 20,
+        "year": 2013,
+        "duration": 266,
+        "disc_number": 1
+      },
+      {
+        "title": "Tragedy",
+        "artist": "Celldweller",
+        "track": 21,
+        "year": 2013,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Shapeshifter",
+        "artist": "Celldweller feat. Styles of Beyond",
+        "track": 22,
+        "year": 2013,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "Goodbye (remixed by Klayton)",
+        "artist": "Celldweller",
+        "track": 23,
+        "year": 2013,
+        "duration": 423,
+        "disc_number": 1
+      },
+      {
+        "title": "The Last Firstborn (remixed by Klayton)",
+        "artist": "Celldweller",
+        "track": 24,
+        "year": 2013,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Frozen (CPR remix by Copy Paste Repeat)",
+        "artist": "Celldweller",
+        "track": 25,
+        "year": 2013,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "Switchback (remixed by Klayton)",
+        "artist": "Celldweller",
+        "track": 26,
+        "year": 2013,
+        "duration": 407,
+        "disc_number": 1
+      },
+      {
+        "title": "Atmospheric Light (demo redux)",
+        "artist": "Celldweller",
+        "track": 27,
+        "year": 2013,
+        "duration": 239,
+        "disc_number": 1
+      },
+      {
+        "title": "Own Little World (remixed by Blue Stahli)",
+        "artist": "Celldweller",
+        "track": 28,
+        "year": 2013,
+        "duration": 385,
+        "disc_number": 1
+      },
+      {
+        "title": "Shapeshifter (remixed by Klayton)",
+        "artist": "Celldweller",
+        "track": 29,
+        "year": 2013,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "Goodbye",
+        "artist": "Celldweller",
+        "track": 30,
+        "year": 2013,
+        "duration": 325,
+        "disc_number": 1
+      },
+      {
+        "title": "Waiting (unreleased demo 2005)",
+        "artist": "Celldweller",
+        "track": 31,
+        "year": 2013,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "06-06-06 (unreleased demo 2006)",
+        "artist": "Celldweller",
+        "track": 32,
+        "year": 2013,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "Waiting for So Long (unreleased demo 2006)",
+        "artist": "Celldweller",
+        "track": 33,
+        "year": 2013,
+        "duration": 92,
+        "disc_number": 1
+      },
+      {
+        "title": "Blood From the Stone (unreleased demo 2005)",
+        "artist": "Celldweller",
+        "track": 34,
+        "year": 2013,
+        "duration": 181,
+        "disc_number": 1
+      },
+      {
+        "title": "IRIA (unreleased demo 2005)",
+        "artist": "Celldweller",
+        "track": 35,
+        "year": 2013,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "Switchback (Dead by Dawn remix by No I’m Not)",
+        "artist": "Celldweller",
+        "track": 36,
+        "year": 2013,
+        "duration": 194,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Charles Mingus",
     "album": "Mingus Ah Um",
     "year": 2009,
@@ -21910,6 +22574,102 @@
         "year": 2011,
         "duration": 277,
         "disc_number": 2
+      }
+    ]
+  },
+  {
+    "artist": "Childish Gambino",
+    "album": "“Awaken, My Love!”",
+    "year": 2016,
+    "duration": 2941,
+    "songs": [
+      {
+        "title": "Me and Your Mama",
+        "artist": "Childish Gambino",
+        "track": 1,
+        "year": 2016,
+        "duration": 379,
+        "disc_number": 1
+      },
+      {
+        "title": "Have Some Love",
+        "artist": "Childish Gambino",
+        "track": 2,
+        "year": 2016,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Boogieman",
+        "artist": "Childish Gambino",
+        "track": 3,
+        "year": 2016,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "Zombies",
+        "artist": "Childish Gambino",
+        "track": 4,
+        "year": 2016,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "Riot",
+        "artist": "Childish Gambino",
+        "track": 5,
+        "year": 2016,
+        "duration": 125,
+        "disc_number": 1
+      },
+      {
+        "title": "Redbone",
+        "artist": "Childish Gambino",
+        "track": 6,
+        "year": 2016,
+        "duration": 326,
+        "disc_number": 1
+      },
+      {
+        "title": "California",
+        "artist": "Childish Gambino",
+        "track": 7,
+        "year": 2016,
+        "duration": 165,
+        "disc_number": 1
+      },
+      {
+        "title": "Terrified",
+        "artist": "Childish Gambino",
+        "track": 8,
+        "year": 2016,
+        "duration": 255,
+        "disc_number": 1
+      },
+      {
+        "title": "Baby Boy",
+        "artist": "Childish Gambino",
+        "track": 9,
+        "year": 2016,
+        "duration": 382,
+        "disc_number": 1
+      },
+      {
+        "title": "The Night Me and Your Mama Met",
+        "artist": "Childish Gambino",
+        "track": 10,
+        "year": 2016,
+        "duration": 214,
+        "disc_number": 1
+      },
+      {
+        "title": "Stand Tall",
+        "artist": "Childish Gambino",
+        "track": 11,
+        "year": 2016,
+        "duration": 370,
+        "disc_number": 1
       }
     ]
   },
@@ -25163,6 +25923,86 @@
     ]
   },
   {
+    "artist": "Cut Copy",
+    "album": "Haiku From Zero",
+    "year": 2017,
+    "duration": 2532,
+    "songs": [
+      {
+        "title": "Standing in the Middle of the Field",
+        "artist": "Cut Copy",
+        "track": 1,
+        "year": 2017,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Counting Down",
+        "artist": "Cut Copy",
+        "track": 2,
+        "year": 2017,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Black Rainbows",
+        "artist": "Cut Copy",
+        "track": 3,
+        "year": 2017,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "Stars Last Me a Lifetime",
+        "artist": "Cut Copy",
+        "track": 4,
+        "year": 2017,
+        "duration": 225,
+        "disc_number": 1
+      },
+      {
+        "title": "Airborne",
+        "artist": "Cut Copy",
+        "track": 5,
+        "year": 2017,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "No Fixed Destination",
+        "artist": "Cut Copy",
+        "track": 6,
+        "year": 2017,
+        "duration": 253,
+        "disc_number": 1
+      },
+      {
+        "title": "Memories We Share",
+        "artist": "Cut Copy",
+        "track": 7,
+        "year": 2017,
+        "duration": 302,
+        "disc_number": 1
+      },
+      {
+        "title": "Living Upside Down",
+        "artist": "Cut Copy",
+        "track": 8,
+        "year": 2017,
+        "duration": 349,
+        "disc_number": 1
+      },
+      {
+        "title": "Tied to the Weather",
+        "artist": "Cut Copy",
+        "track": 9,
+        "year": 2017,
+        "duration": 272,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Cutting Crew",
     "album": "Grand Theft Auto Vice City O.S.T. - Volume 3 : Emotion 98.3",
     "year": 2002,
@@ -27863,7 +28703,7 @@
   },
   {
     "artist": "Dead Can Dance",
-    "album": "Toward The Within (2008 MFSL Hybrid SACD)",
+    "album": "Toward the Within",
     "year": 1994,
     "duration": 4076,
     "songs": [
@@ -27872,105 +28712,120 @@
         "artist": "Dead Can Dance",
         "track": 1,
         "year": 1994,
-        "duration": 386
+        "duration": 386,
+        "disc_number": 1
       },
       {
         "title": "Persian Love Song",
         "artist": "Dead Can Dance",
         "track": 2,
         "year": 1994,
-        "duration": 176
+        "duration": 176,
+        "disc_number": 1
       },
       {
         "title": "Desert Song",
         "artist": "Dead Can Dance",
         "track": 3,
         "year": 1994,
-        "duration": 260
+        "duration": 260,
+        "disc_number": 1
       },
       {
         "title": "Yulunga (Spirit Dance)",
         "artist": "Dead Can Dance",
         "track": 4,
         "year": 1994,
-        "duration": 432
+        "duration": 432,
+        "disc_number": 1
       },
       {
-        "title": "Piece For Solo Flute",
+        "title": "Piece for Solo Flute",
         "artist": "Dead Can Dance",
         "track": 5,
         "year": 1994,
-        "duration": 214
+        "duration": 214,
+        "disc_number": 1
       },
       {
-        "title": "The Wind That Shakes The Barley",
+        "title": "The Wind That Shakes the Barley",
         "artist": "Dead Can Dance",
         "track": 6,
         "year": 1994,
-        "duration": 194
+        "duration": 194,
+        "disc_number": 1
       },
       {
-        "title": "I Am Stretched On Your Grave",
+        "title": "I Am Stretched on Your Grave",
         "artist": "Dead Can Dance",
         "track": 7,
         "year": 1994,
-        "duration": 276
+        "duration": 276,
+        "disc_number": 1
       },
       {
         "title": "I Can See Now",
         "artist": "Dead Can Dance",
         "track": 8,
         "year": 1994,
-        "duration": 177
+        "duration": 177,
+        "disc_number": 1
       },
       {
         "title": "American Dreaming",
         "artist": "Dead Can Dance",
         "track": 9,
         "year": 1994,
-        "duration": 294
+        "duration": 294,
+        "disc_number": 1
       },
       {
         "title": "Cantara",
         "artist": "Dead Can Dance",
         "track": 10,
         "year": 1994,
-        "duration": 316
+        "duration": 316,
+        "disc_number": 1
       },
       {
         "title": "Oman",
         "artist": "Dead Can Dance",
         "track": 11,
         "year": 1994,
-        "duration": 349
+        "duration": 349,
+        "disc_number": 1
       },
       {
-        "title": "Song Of The Sibyl",
+        "title": "Song of the Sibyl",
         "artist": "Dead Can Dance",
         "track": 12,
         "year": 1994,
-        "duration": 271
+        "duration": 271,
+        "disc_number": 1
       },
       {
         "title": "Tristan",
         "artist": "Dead Can Dance",
         "track": 13,
         "year": 1994,
-        "duration": 108
+        "duration": 108,
+        "disc_number": 1
       },
       {
         "title": "Sanvean",
         "artist": "Dead Can Dance",
         "track": 14,
         "year": 1994,
-        "duration": 245
+        "duration": 245,
+        "disc_number": 1
       },
       {
         "title": "Don't Fade Away",
         "artist": "Dead Can Dance",
         "track": 15,
         "year": 1994,
-        "duration": 373
+        "duration": 373,
+        "disc_number": 1
       }
     ]
   },
@@ -43737,6 +44592,102 @@
     ]
   },
   {
+    "artist": "Grizzly Bear",
+    "album": "Painted Ruins",
+    "year": 2017,
+    "duration": 2907,
+    "songs": [
+      {
+        "title": "Wasted Acres",
+        "artist": "Grizzly Bear",
+        "track": 1,
+        "year": 2017,
+        "duration": 172,
+        "disc_number": 1
+      },
+      {
+        "title": "Mourning Sound",
+        "artist": "Grizzly Bear",
+        "track": 2,
+        "year": 2017,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "Four Cypresses",
+        "artist": "Grizzly Bear",
+        "track": 3,
+        "year": 2017,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Three Rings",
+        "artist": "Grizzly Bear",
+        "track": 4,
+        "year": 2017,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Losing All Sense",
+        "artist": "Grizzly Bear",
+        "track": 5,
+        "year": 2017,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "Aquarian",
+        "artist": "Grizzly Bear",
+        "track": 6,
+        "year": 2017,
+        "duration": 257,
+        "disc_number": 1
+      },
+      {
+        "title": "Cut‐Out",
+        "artist": "Grizzly Bear",
+        "track": 7,
+        "year": 2017,
+        "duration": 225,
+        "disc_number": 1
+      },
+      {
+        "title": "Glass Hillside",
+        "artist": "Grizzly Bear",
+        "track": 8,
+        "year": 2017,
+        "duration": 293,
+        "disc_number": 1
+      },
+      {
+        "title": "Neighbors",
+        "artist": "Grizzly Bear",
+        "track": 9,
+        "year": 2017,
+        "duration": 284,
+        "disc_number": 1
+      },
+      {
+        "title": "Systole",
+        "artist": "Grizzly Bear",
+        "track": 10,
+        "year": 2017,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Sky Took Hold",
+        "artist": "Grizzly Bear",
+        "track": 11,
+        "year": 2017,
+        "duration": 332,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Grouper",
     "album": "Wide",
     "year": 2006,
@@ -50810,6 +51761,118 @@
         "track": 11,
         "year": 2015,
         "duration": 241,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Jamiroquai",
+    "album": "Travelling Without Moving",
+    "year": 1996,
+    "duration": 3553,
+    "songs": [
+      {
+        "title": "Virtual Insanity",
+        "artist": "Jamiroquai",
+        "track": 1,
+        "year": 1997,
+        "duration": 340,
+        "disc_number": 1
+      },
+      {
+        "title": "Cosmic Girl",
+        "artist": "Jamiroquai",
+        "track": 2,
+        "year": 1997,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "Use the Force",
+        "artist": "Jamiroquai",
+        "track": 3,
+        "year": 1997,
+        "duration": 235,
+        "disc_number": 1
+      },
+      {
+        "title": "Everyday",
+        "artist": "Jamiroquai",
+        "track": 4,
+        "year": 1997,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Alright",
+        "artist": "Jamiroquai",
+        "track": 5,
+        "year": 1997,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "High Times",
+        "artist": "Jamiroquai",
+        "track": 6,
+        "year": 1997,
+        "duration": 358,
+        "disc_number": 1
+      },
+      {
+        "title": "Drifting Along",
+        "artist": "Jamiroquai",
+        "track": 7,
+        "year": 1997,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Didjerama",
+        "artist": "Jamiroquai",
+        "track": 8,
+        "year": 1997,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Didjital Vibrations",
+        "artist": "Jamiroquai",
+        "track": 9,
+        "year": 1997,
+        "duration": 349,
+        "disc_number": 1
+      },
+      {
+        "title": "Travelling Without Moving",
+        "artist": "Jamiroquai",
+        "track": 10,
+        "year": 1997,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "You Are My Love",
+        "artist": "Jamiroquai",
+        "track": 11,
+        "year": 1997,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Spend a Lifetime",
+        "artist": "Jamiroquai",
+        "track": 12,
+        "year": 1997,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "Do You Know Where You’re Coming From?",
+        "artist": "Jamiroquai",
+        "track": 13,
+        "year": 1997,
+        "duration": 299,
         "disc_number": 1
       }
     ]
@@ -69042,6 +70105,134 @@
   },
   {
     "artist": "Miami Horror",
+    "album": "All Possible Futures",
+    "year": 2015,
+    "duration": 3749,
+    "songs": [
+      {
+        "title": "American Dream",
+        "artist": "Miami Horror",
+        "track": 1,
+        "year": 2015,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Real Slow",
+        "artist": "Miami Horror feat. Sarah Chernoff",
+        "track": 2,
+        "year": 2015,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "Love Like Mine",
+        "artist": "Miami Horror feat. Cleopold",
+        "track": 3,
+        "year": 2015,
+        "duration": 250,
+        "disc_number": 1
+      },
+      {
+        "title": "Cellophane (So Cruel)",
+        "artist": "Miami Horror feat. Aaron Miller & Gavin Turek",
+        "track": 4,
+        "year": 2015,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "Wild Motion (Set It Free)",
+        "artist": "Miami Horror",
+        "track": 5,
+        "year": 2015,
+        "duration": 334,
+        "disc_number": 1
+      },
+      {
+        "title": "(Into the Night)",
+        "artist": "Miami Horror",
+        "track": 6,
+        "year": 2015,
+        "duration": 109,
+        "disc_number": 1
+      },
+      {
+        "title": "Colours in the Sky",
+        "artist": "Miami Horror feat. Cleopold",
+        "track": 7,
+        "year": 2015,
+        "duration": 250,
+        "disc_number": 1
+      },
+      {
+        "title": "All It Ever Was",
+        "artist": "Miami Horror",
+        "track": 8,
+        "year": 2015,
+        "duration": 342,
+        "disc_number": 1
+      },
+      {
+        "title": "(Maybe I Need You)",
+        "artist": "Miami Horror",
+        "track": 9,
+        "year": 2015,
+        "duration": 79,
+        "disc_number": 1
+      },
+      {
+        "title": "Out of Sight",
+        "artist": "Miami Horror",
+        "track": 10,
+        "year": 2015,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Stranger",
+        "artist": "Miami Horror feat. Future Unlimited",
+        "track": 11,
+        "year": 2015,
+        "duration": 247,
+        "disc_number": 1
+      },
+      {
+        "title": "Who Is Gonna Save Us?",
+        "artist": "Miami Horror",
+        "track": 12,
+        "year": 2015,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "(Happy without You)",
+        "artist": "Miami Horror",
+        "track": 13,
+        "year": 2015,
+        "duration": 144,
+        "disc_number": 1
+      },
+      {
+        "title": "Another Rise, Another Fall",
+        "artist": "Miami Horror",
+        "track": 14,
+        "year": 2015,
+        "duration": 311,
+        "disc_number": 1
+      },
+      {
+        "title": "Forever Ever?",
+        "artist": "Miami Horror",
+        "track": 15,
+        "year": 2015,
+        "duration": 364,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Miami Horror",
     "album": "Leila (Poolside remix)",
     "year": 2017,
     "duration": 318,
@@ -74240,6 +75431,126 @@
         "track": 12,
         "year": 2011,
         "duration": 286,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Neon Indian",
+    "album": "VEGA INTL. Night School",
+    "year": 2015,
+    "duration": 3083,
+    "songs": [
+      {
+        "title": "Hit Parade",
+        "artist": "Neon Indian",
+        "track": 1,
+        "year": 2015,
+        "duration": 65,
+        "disc_number": 1
+      },
+      {
+        "title": "Annie",
+        "artist": "Neon Indian",
+        "track": 2,
+        "year": 2015,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Street Level",
+        "artist": "Neon Indian",
+        "track": 3,
+        "year": 2015,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Smut!",
+        "artist": "Neon Indian",
+        "track": 4,
+        "year": 2015,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "Bozo",
+        "artist": "Neon Indian",
+        "track": 5,
+        "year": 2015,
+        "duration": 83,
+        "disc_number": 1
+      },
+      {
+        "title": "The Glitzy Hive",
+        "artist": "Neon Indian",
+        "track": 6,
+        "year": 2015,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "Dear Skorpio Magazine",
+        "artist": "Neon Indian",
+        "track": 7,
+        "year": 2015,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Slumlord",
+        "artist": "Neon Indian",
+        "track": 8,
+        "year": 2015,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "Slumlord’s Re-lease",
+        "artist": "Neon Indian",
+        "track": 9,
+        "year": 2015,
+        "duration": 145,
+        "disc_number": 1
+      },
+      {
+        "title": "Techno Clique",
+        "artist": "Neon Indian",
+        "track": 10,
+        "year": 2015,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Baby’s Eyes",
+        "artist": "Neon Indian",
+        "track": 11,
+        "year": 2015,
+        "duration": 386,
+        "disc_number": 1
+      },
+      {
+        "title": "C'est la vie (Say the Casualties!)",
+        "artist": "Neon Indian",
+        "track": 12,
+        "year": 2015,
+        "duration": 183,
+        "disc_number": 1
+      },
+      {
+        "title": "61 Cygni Ave",
+        "artist": "Neon Indian",
+        "track": 13,
+        "year": 2015,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "News From the Sun (live bootleg)",
+        "artist": "Neon Indian",
+        "track": 14,
+        "year": 2015,
+        "duration": 233,
         "disc_number": 1
       }
     ]
@@ -82519,6 +83830,262 @@
     ]
   },
   {
+    "artist": "Polyphia",
+    "album": "New Levels New Devils",
+    "year": 2018,
+    "duration": 2217,
+    "songs": [
+      {
+        "title": "Nasty",
+        "artist": "Polyphia feat. Jason Richardson",
+        "track": 1,
+        "year": 2018,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "O.D.",
+        "artist": "Polyphia",
+        "track": 2,
+        "year": 2018,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "Death Note",
+        "artist": "Polyphia feat. Ichika Nito",
+        "track": 3,
+        "year": 2018,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "Bad",
+        "artist": "Polyphia",
+        "track": 4,
+        "year": 2018,
+        "duration": 235,
+        "disc_number": 1
+      },
+      {
+        "title": "Drown",
+        "artist": "Polyphia feat. Mateus Asato",
+        "track": 5,
+        "year": 2018,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Saucy",
+        "artist": "Polyphia",
+        "track": 6,
+        "year": 2018,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "Yas",
+        "artist": "Polyphia feat. Mario Camarena & Erick Hansel",
+        "track": 7,
+        "year": 2018,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "So Strange",
+        "artist": "Polyphia feat. Cuco",
+        "track": 8,
+        "year": 2018,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "Rich Kids",
+        "artist": "Polyphia feat. Yvette Young",
+        "track": 9,
+        "year": 2018,
+        "duration": 201,
+        "disc_number": 1
+      },
+      {
+        "title": "G.O.A.T.",
+        "artist": "Polyphia",
+        "track": 10,
+        "year": 2018,
+        "duration": 216,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Polyphia",
+    "album": "Remember That You Will Die",
+    "year": 2022,
+    "duration": 3892,
+    "songs": [
+      {
+        "title": "Genesis",
+        "artist": "Polyphia feat. Brasstracks",
+        "track": 1,
+        "year": 2022,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Playing God",
+        "artist": "Polyphia",
+        "track": 2,
+        "year": 2022,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "The Audacity",
+        "artist": "Polyphia feat. Anomalie",
+        "track": 3,
+        "year": 2022,
+        "duration": 144,
+        "disc_number": 1
+      },
+      {
+        "title": "Reverie",
+        "artist": "Polyphia",
+        "track": 4,
+        "year": 2022,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "ABC",
+        "artist": "Polyphia feat. Sophia Black",
+        "track": 5,
+        "year": 2022,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Memento Mori",
+        "artist": "Polyphia feat. Killstation",
+        "track": 6,
+        "year": 2022,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Fuck Around and Find Out",
+        "artist": "Polyphia feat. $NOT",
+        "track": 7,
+        "year": 2022,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "All Falls Apart",
+        "artist": "Polyphia",
+        "track": 8,
+        "year": 2022,
+        "duration": 79,
+        "disc_number": 1
+      },
+      {
+        "title": "Neurotica",
+        "artist": "Polyphia",
+        "track": 9,
+        "year": 2022,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Chimera",
+        "artist": "Polyphia feat. Lil West",
+        "track": 10,
+        "year": 2022,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Bloodbath",
+        "artist": "Polyphia feat. Chino Moreno",
+        "track": 11,
+        "year": 2022,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Ego Death",
+        "artist": "Polyphia feat. Steve Vai",
+        "track": 12,
+        "year": 2022,
+        "duration": 350,
+        "disc_number": 1
+      },
+      {
+        "title": "Playing God (Beat Version)",
+        "artist": "Polyphia",
+        "track": 13,
+        "year": 2022,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Playing God (Acoustic)",
+        "artist": "Polyphia",
+        "track": 14,
+        "year": 2022,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Neurotica (Beat Version)",
+        "artist": "Polyphia",
+        "track": 15,
+        "year": 2022,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "ABC (Instrumental)",
+        "artist": "Polyphia",
+        "track": 16,
+        "year": 2022,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Fuck Around and Find Out (Instrumental)",
+        "artist": "Polyphia",
+        "track": 17,
+        "year": 2022,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Memento Mori (Instrumental)",
+        "artist": "Polyphia",
+        "track": 18,
+        "year": 2022,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Chimera (Instrumental)",
+        "artist": "Polyphia",
+        "track": 19,
+        "year": 2022,
+        "duration": 237,
+        "disc_number": 1
+      },
+      {
+        "title": "Bloodbath (Instrumental)",
+        "artist": "Polyphia",
+        "track": 20,
+        "year": 2022,
+        "duration": 230,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Polysics",
     "album": "Neu",
     "year": 2000,
@@ -82630,6 +84197,94 @@
         "year": 2010,
         "duration": 185,
         "disc_number": 7
+      }
+    ]
+  },
+  {
+    "artist": "Poppy",
+    "album": "I Disagree",
+    "year": 2020,
+    "duration": 2118,
+    "songs": [
+      {
+        "title": "Concrete",
+        "artist": "Poppy",
+        "track": 1,
+        "year": 2020,
+        "duration": 200,
+        "disc_number": 1
+      },
+      {
+        "title": "I Disagree",
+        "artist": "Poppy",
+        "track": 2,
+        "year": 2020,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "BLOODMONEY",
+        "artist": "Poppy",
+        "track": 3,
+        "year": 2020,
+        "duration": 182,
+        "disc_number": 1
+      },
+      {
+        "title": "Anything Like Me",
+        "artist": "Poppy",
+        "track": 4,
+        "year": 2020,
+        "duration": 199,
+        "disc_number": 1
+      },
+      {
+        "title": "Fill the Crown",
+        "artist": "Poppy",
+        "track": 5,
+        "year": 2020,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "Nothing I Need",
+        "artist": "Poppy",
+        "track": 6,
+        "year": 2020,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "Sit / Stay",
+        "artist": "Poppy",
+        "track": 7,
+        "year": 2020,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Bite Your Teeth",
+        "artist": "Poppy",
+        "track": 8,
+        "year": 2020,
+        "duration": 162,
+        "disc_number": 1
+      },
+      {
+        "title": "Sick of the Sun",
+        "artist": "Poppy",
+        "track": 9,
+        "year": 2020,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Don’t Go Outside",
+        "artist": "Poppy",
+        "track": 10,
+        "year": 2020,
+        "duration": 372,
+        "disc_number": 1
       }
     ]
   },
@@ -100527,6 +102182,222 @@
         "track": 12,
         "year": 2012,
         "duration": 320,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Tame Impala",
+    "album": "Currents",
+    "year": 2015,
+    "duration": 3073,
+    "songs": [
+      {
+        "title": "Let It Happen",
+        "artist": "Tame Impala",
+        "track": 1,
+        "year": 2015,
+        "duration": 466,
+        "disc_number": 1
+      },
+      {
+        "title": "Nangs",
+        "artist": "Tame Impala",
+        "track": 2,
+        "year": 2015,
+        "duration": 107,
+        "disc_number": 1
+      },
+      {
+        "title": "The Moment",
+        "artist": "Tame Impala",
+        "track": 3,
+        "year": 2015,
+        "duration": 255,
+        "disc_number": 1
+      },
+      {
+        "title": "Yes I’m Changing",
+        "artist": "Tame Impala",
+        "track": 4,
+        "year": 2015,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Eventually",
+        "artist": "Tame Impala",
+        "track": 5,
+        "year": 2015,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "Gossip",
+        "artist": "Tame Impala",
+        "track": 6,
+        "year": 2015,
+        "duration": 55,
+        "disc_number": 1
+      },
+      {
+        "title": "The Less I Know the Better",
+        "artist": "Tame Impala",
+        "track": 7,
+        "year": 2015,
+        "duration": 218,
+        "disc_number": 1
+      },
+      {
+        "title": "Past Life",
+        "artist": "Tame Impala",
+        "track": 8,
+        "year": 2015,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Disciples",
+        "artist": "Tame Impala",
+        "track": 9,
+        "year": 2015,
+        "duration": 108,
+        "disc_number": 1
+      },
+      {
+        "title": "’Cause I’m a Man",
+        "artist": "Tame Impala",
+        "track": 10,
+        "year": 2015,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Reality in Motion",
+        "artist": "Tame Impala",
+        "track": 11,
+        "year": 2015,
+        "duration": 252,
+        "disc_number": 1
+      },
+      {
+        "title": "Love/Paranoia",
+        "artist": "Tame Impala",
+        "track": 12,
+        "year": 2015,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "New Person, Same Old Mistakes",
+        "artist": "Tame Impala",
+        "track": 13,
+        "year": 2015,
+        "duration": 362,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Tame Impala",
+    "album": "The Slow Rush",
+    "year": 2020,
+    "duration": 3443,
+    "songs": [
+      {
+        "title": "One More Year",
+        "artist": "Tame Impala",
+        "track": 1,
+        "year": 2020,
+        "duration": 324,
+        "disc_number": 1
+      },
+      {
+        "title": "Instant Destiny",
+        "artist": "Tame Impala",
+        "track": 2,
+        "year": 2020,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Borderline",
+        "artist": "Tame Impala",
+        "track": 3,
+        "year": 2020,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Posthumous Forgiveness",
+        "artist": "Tame Impala",
+        "track": 4,
+        "year": 2020,
+        "duration": 367,
+        "disc_number": 1
+      },
+      {
+        "title": "Breathe Deeper",
+        "artist": "Tame Impala",
+        "track": 5,
+        "year": 2020,
+        "duration": 374,
+        "disc_number": 1
+      },
+      {
+        "title": "Tomorrow’s Dust",
+        "artist": "Tame Impala",
+        "track": 6,
+        "year": 2020,
+        "duration": 326,
+        "disc_number": 1
+      },
+      {
+        "title": "On Track",
+        "artist": "Tame Impala",
+        "track": 7,
+        "year": 2020,
+        "duration": 303,
+        "disc_number": 1
+      },
+      {
+        "title": "Lost in Yesterday",
+        "artist": "Tame Impala",
+        "track": 8,
+        "year": 2020,
+        "duration": 250,
+        "disc_number": 1
+      },
+      {
+        "title": "Is It True",
+        "artist": "Tame Impala",
+        "track": 9,
+        "year": 2020,
+        "duration": 237,
+        "disc_number": 1
+      },
+      {
+        "title": "It Might Be Time",
+        "artist": "Tame Impala",
+        "track": 10,
+        "year": 2020,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Glimmer",
+        "artist": "Tame Impala",
+        "track": 11,
+        "year": 2020,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "One More Hour",
+        "artist": "Tame Impala",
+        "track": 12,
+        "year": 2020,
+        "duration": 426,
         "disc_number": 1
       }
     ]
@@ -126719,112 +128590,6 @@
     ]
   },
   {
-    "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-    "album": "Hollow Me / Beautiful",
-    "year": 2009,
-    "duration": 4422,
-    "songs": [
-      {
-        "title": "Ohayo Mada Yaro",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 1,
-        "year": 2009,
-        "duration": 326
-      },
-      {
-        "title": "Dekinai",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 2,
-        "year": 2009,
-        "duration": 263
-      },
-      {
-        "title": "Sweet Surrender",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 3,
-        "year": 2009,
-        "duration": 270
-      },
-      {
-        "title": "Tender Animals",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 4,
-        "year": 2009,
-        "duration": 331
-      },
-      {
-        "title": "Still Alive",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 5,
-        "year": 2009,
-        "duration": 230
-      },
-      {
-        "title": "Listless Dream (Album Version)",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 6,
-        "year": 2009,
-        "duration": 403
-      },
-      {
-        "title": "Beautiful (Album Version)",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 7,
-        "year": 2009,
-        "duration": 348
-      },
-      {
-        "title": "In The Forest",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 8,
-        "year": 2009,
-        "duration": 243
-      },
-      {
-        "title": "Lonely Satellite",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 9,
-        "year": 2009,
-        "duration": 362
-      },
-      {
-        "title": "Hollow Me",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 10,
-        "year": 2009,
-        "duration": 288
-      },
-      {
-        "title": "Beautiful",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 11,
-        "year": 2009,
-        "duration": 371
-      },
-      {
-        "title": "Listless Dream",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 12,
-        "year": 2009,
-        "duration": 318
-      },
-      {
-        "title": "Miserable and Ashamed",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 13,
-        "year": 2009,
-        "duration": 335
-      },
-      {
-        "title": "The Boat",
-        "artist": "Yura Yura Teikoku (ゆらゆら帝国)",
-        "track": 14,
-        "year": 2009,
-        "duration": 328
-      }
-    ]
-  },
-  {
     "artist": "Yuto Takei",
     "album": "Gran Turismo 5 Original Soundtrack",
     "year": 2010,
@@ -128452,6 +130217,126 @@
         "track": 9,
         "year": 2015,
         "duration": 306
+      }
+    ]
+  },
+  {
+    "artist": "ゆらゆら帝国",
+    "album": "Hollow Me / Beautiful",
+    "year": 2009,
+    "duration": 4422,
+    "songs": [
+      {
+        "title": "Ohayo Mada Yaro",
+        "artist": "ゆらゆら帝国",
+        "track": 1,
+        "year": 2009,
+        "duration": 326,
+        "disc_number": 1
+      },
+      {
+        "title": "Dekinai",
+        "artist": "ゆらゆら帝国",
+        "track": 2,
+        "year": 2009,
+        "duration": 263,
+        "disc_number": 1
+      },
+      {
+        "title": "Sweet Surrender",
+        "artist": "ゆらゆら帝国",
+        "track": 3,
+        "year": 2009,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Tender Animals",
+        "artist": "ゆらゆら帝国",
+        "track": 4,
+        "year": 2009,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Still Alive",
+        "artist": "ゆらゆら帝国",
+        "track": 5,
+        "year": 2009,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Listless Dream (album version)",
+        "artist": "ゆらゆら帝国",
+        "track": 6,
+        "year": 2009,
+        "duration": 403,
+        "disc_number": 1
+      },
+      {
+        "title": "Beautiful (album version)",
+        "artist": "ゆらゆら帝国",
+        "track": 7,
+        "year": 2009,
+        "duration": 348,
+        "disc_number": 1
+      },
+      {
+        "title": "In the Forest",
+        "artist": "ゆらゆら帝国",
+        "track": 8,
+        "year": 2009,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Lonely Satellite",
+        "artist": "ゆらゆら帝国",
+        "track": 9,
+        "year": 2009,
+        "duration": 362,
+        "disc_number": 1
+      },
+      {
+        "title": "Hollow Me",
+        "artist": "ゆらゆら帝国",
+        "track": 10,
+        "year": 2009,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Beautiful",
+        "artist": "ゆらゆら帝国",
+        "track": 11,
+        "year": 2009,
+        "duration": 371,
+        "disc_number": 1
+      },
+      {
+        "title": "Listless Dream",
+        "artist": "ゆらゆら帝国",
+        "track": 12,
+        "year": 2009,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "Miserable and Ashamed",
+        "artist": "ゆらゆら帝国",
+        "track": 13,
+        "year": 2009,
+        "duration": 335,
+        "disc_number": 1
+      },
+      {
+        "title": "The Boat",
+        "artist": "ゆらゆら帝国",
+        "track": 14,
+        "year": 2009,
+        "duration": 328,
+        "disc_number": 1
       }
     ]
   },
@@ -134827,6 +136712,126 @@
         "track": 11,
         "year": 2022,
         "duration": 212,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "結束バンド",
+    "album": "結束バンド",
+    "year": 2022,
+    "duration": 3248,
+    "songs": [
+      {
+        "title": "青春コンプレックス",
+        "artist": "結束バンド",
+        "track": 1,
+        "year": 2022,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "ひとりぼっち東京",
+        "artist": "結束バンド",
+        "track": 2,
+        "year": 2022,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "Distortion!!",
+        "artist": "結束バンド",
+        "track": 3,
+        "year": 2022,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "ひみつ基地",
+        "artist": "結束バンド",
+        "track": 4,
+        "year": 2022,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "ギターと孤独と蒼い惑星",
+        "artist": "結束バンド",
+        "track": 5,
+        "year": 2022,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "ラブソングが歌えない",
+        "artist": "結束バンド",
+        "track": 6,
+        "year": 2022,
+        "duration": 188,
+        "disc_number": 1
+      },
+      {
+        "title": "あのバンド",
+        "artist": "結束バンド",
+        "track": 7,
+        "year": 2022,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "カラカラ",
+        "artist": "結束バンド",
+        "track": 8,
+        "year": 2022,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "小さな海",
+        "artist": "結束バンド",
+        "track": 9,
+        "year": 2022,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "なにが悪い",
+        "artist": "結束バンド",
+        "track": 10,
+        "year": 2022,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "忘れてやらない",
+        "artist": "結束バンド",
+        "track": 11,
+        "year": 2022,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "星座になれたら",
+        "artist": "結束バンド",
+        "track": 12,
+        "year": 2022,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "フラッシュバッカー",
+        "artist": "結束バンド",
+        "track": 13,
+        "year": 2022,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "転がる岩、君に朝が降る",
+        "artist": "結束バンド",
+        "track": 14,
+        "year": 2022,
+        "duration": 271,
         "disc_number": 1
       }
     ]
