@@ -1,4 +1,4 @@
-use blackbird_json_export_types::{OutputGroup, OutputSong};
+use blackbird_json_export_types::{OutputGroup, OutputTrack};
 use paxhtml::html;
 
 use crate::{util, views::ViewContext};
@@ -209,7 +209,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
 
     let music_library = &context.content.music_library;
     let album_count = music_library.len();
-    let track_count = music_library.iter().map(|g| g.songs.len()).sum::<usize>();
+    let track_count = music_library.iter().map(|g| g.tracks.len()).sum::<usize>();
 
     html! {
         <>
@@ -273,21 +273,21 @@ fn group(group: &OutputGroup) -> paxhtml::Element {
                 </div>
             </heading>
             <div>
-                #{group.songs.iter().map(|s| song(group, s))}
+                #{group.tracks.iter().map(|t| track(group, t))}
             </div>
         </section>
     }
 }
 
-fn song(group: &OutputGroup, song: &OutputSong) -> paxhtml::Element {
-    let track_number = match (song.disc_number, song.track) {
+fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
+    let track_number = match (track.disc_number, track.track) {
         (Some(disc_number), Some(track_number)) => format!("{disc_number}.{track_number}"),
         (Some(disc_number), None) => format!("{disc_number}.?"),
         (None, Some(track_number)) => format!("{track_number}"),
         (None, None) => "?".to_string(),
     };
 
-    let artist = song
+    let artist = track
         .artist
         .as_ref()
         .filter(|artist| **artist != group.artist)
@@ -299,7 +299,7 @@ fn song(group: &OutputGroup, song: &OutputSong) -> paxhtml::Element {
             }
         });
 
-    let duration = song.duration.map(|duration| {
+    let duration = track.duration.map(|duration| {
         html! {
             <span>
                 {seconds_to_hms_string(duration, false)}
@@ -311,7 +311,7 @@ fn song(group: &OutputGroup, song: &OutputSong) -> paxhtml::Element {
         <a class="track">
             <span class="number">{track_number}</span>
             <span class="middle">
-                <span class="name">{song.title.as_str()}</span>
+                <span class="name">{track.title.as_str()}</span>
                 {artist}
             </span>
             <span class="length">{duration}</span>
