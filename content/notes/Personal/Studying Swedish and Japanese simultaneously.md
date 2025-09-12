@@ -42,11 +42,19 @@ Anyway, it's simple: at some point in the future, I am going to join a Japanese 
 
 ## Software
 
+### Anki
+
 [Anki](https://apps.ankiweb.net/). Anki anki anki. The best free spaced repetition system out there. SRS is one of the most efficient ways to memorise, and you're going to need to do a lot of memorisation. I suggest these addons for Anki-on-desktop:
 
 - [Audio Playback Controls](https://ankiweb.net/shared/info/312734862): Being able to slow down audio cards is crucial to being able to improve your pronunciation and/or recognition. Just make sure to eventually work your way up to normal speed.
 - [Review Heatmap](https://ankiweb.net/shared/info/1771074083): I must admit that I find streaks, and visualisations thereof, to be quite motivating. Seeing your progress day-in day-out can help contextualise just how much grinding you're doing, which I find useful on days where I feel like I'm not achieving much at all.
 - [Adjust Sound Volume](https://ankiweb.net/shared/info/2095265391): There are decks out there that are useful, but have their audio levels way out of whack. You can use this addon to normalise them and/or bring them to a volume you find acceptable.
+
+### LLMs
+
+Your favourite LLM; mine is [Claude](https://claude.ai/), but any reasonably-powerful LLM will do. They can break down sentences for you and clarify grammar points that are not immediately intuitive.
+
+As with any LLM guidance, you'll want to check the results for yourself (I cross-reference against the grammar dictionaries, mentioned later), but they're very powerful and the closest thing you can get to a teacher-on-demand. Here's [an example](https://claude.ai/share/5e3cb978-91b7-4be7-b580-b4689bb56120) of a conversation where I explore some Japanese sentences.
 
 ## Environment
 
@@ -88,3 +96,9 @@ Today, I use these Anki decks:
 
 - a Genki deck that is no longer available, but that's fine - there's [no shortage of decks](https://ankiweb.net/shared/decks?search=genki). Pick the one that looks the most well-attended.
 - [4,217 Japanese Sentences w/ Audio (& Lessons!)](https://ankiweb.net/shared/info/126242908): responsible for dramatically improving my Japanese comprehension. Real sentences, with real speakers, and with real breakdowns. Excellent deck.
+
+For reference material, I use:
+
+- [jisho.org](https://jisho.org/): online Japanese-English dictionary with fuzzy lookup, pronunciations, example sentences, and more
+- [Shirabe Jisho](https://apps.apple.com/us/app/shirabe-jisho/id1005203380): iOS app for the same
+- [A Dictionary of Basic Japanese Grammar](https://www.amazon.com/Dictionary-Basic-Japanese-Grammar/dp/4789004546) + Intermediate/Advanced: a physical dictionary of Japanese grammar points (particles, inflections, subphrases, etc). Online resources also work, but a physical book is easy to rifle through and is less distracting.
