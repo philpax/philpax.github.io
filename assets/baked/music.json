@@ -90734,7 +90734,7 @@
       },
       {
         "title": "Blue Fear (original extended mix)",
-        "artist": "Armin van Buuren",
+        "artist": "Armin",
         "track": 24,
         "year": 1997,
         "duration": 478,
@@ -90743,14 +90743,14 @@
     ]
   },
   {
-    "artist": "Sasha & John Digweed • Sasha, John Digweed",
+    "artist": "Sasha and John Digweed • Sasha, John Digweed",
     "album": "Northern Exposure",
     "year": 1996,
     "duration": 8852,
     "tracks": [
       {
         "title": "Satellite Serenade (Transasianexpress mix)",
-        "artist": "鈴木慶一",
+        "artist": "Keiichi Suzuki",
         "track": 1,
         "year": 1996,
         "duration": 640,
@@ -91530,14 +91530,14 @@
     ]
   },
   {
-    "artist": "School Food Punishment • school food punishment",
+    "artist": "school food punishment",
     "album": "air feel,color swim",
     "year": 2007,
     "duration": 2346,
     "tracks": [
       {
         "title": "you may crawl",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 1,
         "year": 2007,
         "duration": 297,
@@ -91545,7 +91545,7 @@
       },
       {
         "title": "sky step",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 2,
         "year": 2007,
         "duration": 336,
@@ -91553,7 +91553,7 @@
       },
       {
         "title": "loop,share",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 3,
         "year": 2007,
         "duration": 245,
@@ -91561,7 +91561,7 @@
       },
       {
         "title": "煙に白",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 4,
         "year": 2007,
         "duration": 275,
@@ -91569,7 +91569,7 @@
       },
       {
         "title": "turn",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 5,
         "year": 2007,
         "duration": 277,
@@ -91577,7 +91577,7 @@
       },
       {
         "title": "曖昧に逸れる",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 6,
         "year": 2007,
         "duration": 306,
@@ -91585,7 +91585,7 @@
       },
       {
         "title": "art line",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 7,
         "year": 2007,
         "duration": 383,
@@ -91593,7 +91593,7 @@
       },
       {
         "title": "transient",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 8,
         "year": 2007,
         "duration": 225,
@@ -92278,6 +92278,694 @@
         "year": 2013,
         "duration": 258,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Shiro Sagisu",
+    "album": "Music from \"EVANGELION: 1.0\" YOU ARE (NOT) ALONE",
+    "year": 2007,
+    "duration": 4071,
+    "tracks": [
+      {
+        "title": "L' Attaque des Anges",
+        "artist": "Shiro Sagisu",
+        "track": 1,
+        "year": 2007,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "I'll Go On Lovin' Someone Else",
+        "artist": "Shiro Sagisu",
+        "track": 2,
+        "year": 2007,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Premiere Manoeuvre",
+        "artist": "Shiro Sagisu",
+        "track": 3,
+        "year": 2007,
+        "duration": 174,
+        "disc_number": 1
+      },
+      {
+        "title": "Staggering Yet",
+        "artist": "Shiro Sagisu",
+        "track": 4,
+        "year": 2007,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "Les Betes",
+        "artist": "Shiro Sagisu",
+        "track": 5,
+        "year": 2007,
+        "duration": 130,
+        "disc_number": 1
+      },
+      {
+        "title": "Crepuscule - Tokyo III",
+        "artist": "Shiro Sagisu",
+        "track": 6,
+        "year": 2007,
+        "duration": 98,
+        "disc_number": 1
+      },
+      {
+        "title": "Cruel Dilemme",
+        "artist": "Shiro Sagisu",
+        "track": 7,
+        "year": 2007,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "The Longest Day",
+        "artist": "Shiro Sagisu",
+        "track": 8,
+        "year": 2007,
+        "duration": 179,
+        "disc_number": 1
+      },
+      {
+        "title": "Contre Les Agressions",
+        "artist": "Shiro Sagisu",
+        "track": 9,
+        "year": 2007,
+        "duration": 122,
+        "disc_number": 1
+      },
+      {
+        "title": "Showdown",
+        "artist": "Shiro Sagisu",
+        "track": 10,
+        "year": 2007,
+        "duration": 122,
+        "disc_number": 1
+      },
+      {
+        "title": "Mecanisme de Defense",
+        "artist": "Shiro Sagisu",
+        "track": 11,
+        "year": 2007,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Cruel Dilemme II",
+        "artist": "Shiro Sagisu",
+        "track": 12,
+        "year": 2007,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Rei-Opus IV",
+        "artist": "Shiro Sagisu",
+        "track": 13,
+        "year": 2007,
+        "duration": 143,
+        "disc_number": 1
+      },
+      {
+        "title": "The Longest Day II",
+        "artist": "Shiro Sagisu",
+        "track": 14,
+        "year": 2007,
+        "duration": 139,
+        "disc_number": 1
+      },
+      {
+        "title": "Lucifer's Cry",
+        "artist": "Shiro Sagisu",
+        "track": 15,
+        "year": 2007,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "Cruel Dilemme III",
+        "artist": "Shiro Sagisu",
+        "track": 16,
+        "year": 2007,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Strategie \"Yashima\"",
+        "artist": "Shiro Sagisu",
+        "track": 17,
+        "year": 2007,
+        "duration": 145,
+        "disc_number": 1
+      },
+      {
+        "title": "The Longest Day III",
+        "artist": "Shiro Sagisu",
+        "track": 18,
+        "year": 2007,
+        "duration": 134,
+        "disc_number": 1
+      },
+      {
+        "title": "Danse des Lucioles",
+        "artist": "Shiro Sagisu",
+        "track": 19,
+        "year": 2007,
+        "duration": 108,
+        "disc_number": 1
+      },
+      {
+        "title": "Bataille Decisive",
+        "artist": "Shiro Sagisu",
+        "track": 20,
+        "year": 2007,
+        "duration": 285,
+        "disc_number": 1
+      },
+      {
+        "title": "Angel of Doom",
+        "artist": "Shiro Sagisu",
+        "track": 21,
+        "year": 2007,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Rei-Opus V",
+        "artist": "Shiro Sagisu",
+        "track": 22,
+        "year": 2007,
+        "duration": 179,
+        "disc_number": 1
+      },
+      {
+        "title": "Trailer Eva Special",
+        "artist": "Shiro Sagisu",
+        "track": 23,
+        "year": 2007,
+        "duration": 110,
+        "disc_number": 1
+      },
+      {
+        "title": "EM17_Demo",
+        "artist": "Shiro Sagisu",
+        "track": 24,
+        "year": 2007,
+        "duration": 127,
+        "disc_number": 1
+      },
+      {
+        "title": "EM21_Demo",
+        "artist": "Shiro Sagisu",
+        "track": 25,
+        "year": 2007,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "Cruel Dilemme IV",
+        "artist": "Shiro Sagisu",
+        "track": 26,
+        "year": 2007,
+        "duration": 113,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Shirō Sagisu • Shiro Sagisu",
+    "album": "Evangelion: 2.0 You Can (Not) Advance. Original Sound Track",
+    "year": 2009,
+    "duration": 8236,
+    "tracks": [
+      {
+        "title": "2EM01_B01 \"At The Very Beginning\"",
+        "artist": "Shirō Sagisu",
+        "track": 1,
+        "year": 2009,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM03_0908",
+        "artist": "Shirō Sagisu",
+        "track": 2,
+        "year": 2009,
+        "duration": 59,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM04_E4",
+        "artist": "Shirō Sagisu",
+        "track": 3,
+        "year": 2009,
+        "duration": 102,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM05_KK_B09",
+        "artist": "Shirō Sagisu",
+        "track": 4,
+        "year": 2009,
+        "duration": 64,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM06_KK_B16",
+        "artist": "Shirō Sagisu",
+        "track": 5,
+        "year": 2009,
+        "duration": 8,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM07_KK_B09_InDoor",
+        "artist": "Shirō Sagisu",
+        "track": 6,
+        "year": 2009,
+        "duration": 63,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM08_B17",
+        "artist": "Shirō Sagisu",
+        "track": 7,
+        "year": 2009,
+        "duration": 42,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM09_Yamashita",
+        "artist": "Shirō Sagisu",
+        "track": 8,
+        "year": 2009,
+        "duration": 81,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM10_KK_C01_AddGuit",
+        "artist": "Shirō Sagisu",
+        "track": 9,
+        "year": 2009,
+        "duration": 99,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM11_B16",
+        "artist": "Shirō Sagisu",
+        "track": 10,
+        "year": 2009,
+        "duration": 102,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM12_KK_A09",
+        "artist": "Shirō Sagisu",
+        "track": 11,
+        "year": 2009,
+        "duration": 95,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM13_EM20_Alterna",
+        "artist": "Shirō Sagisu",
+        "track": 12,
+        "year": 2009,
+        "duration": 116,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM14_EM10C",
+        "artist": "Shirō Sagisu",
+        "track": 13,
+        "year": 2009,
+        "duration": 65,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM15_0938 \"Destiny\"",
+        "artist": "Shirō Sagisu",
+        "track": 14,
+        "year": 2009,
+        "duration": 140,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM16_0944 \"Fate\"",
+        "artist": "Shirō Sagisu",
+        "track": 15,
+        "year": 2009,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM17_KK_A08",
+        "artist": "Shirō Sagisu",
+        "track": 16,
+        "year": 2009,
+        "duration": 95,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM18_KK_C01",
+        "artist": "Shirō Sagisu",
+        "track": 17,
+        "year": 2009,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM20_KK_A09_Kuriya",
+        "artist": "Shirō Sagisu",
+        "track": 19,
+        "year": 2009,
+        "duration": 106,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM21_KK_C01_Str+AcGuit",
+        "artist": "Shirō Sagisu",
+        "track": 20,
+        "year": 2009,
+        "duration": 145,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM22_KK_A08_Orche",
+        "artist": "Shirō Sagisu",
+        "track": 21,
+        "year": 2009,
+        "duration": 127,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM25_Piano_Nu",
+        "artist": "Shirō Sagisu",
+        "track": 22,
+        "year": 2009,
+        "duration": 96,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM26_EM05B",
+        "artist": "Shirō Sagisu",
+        "track": 23,
+        "year": 2009,
+        "duration": 32,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM28_EM13",
+        "artist": "Shirō Sagisu",
+        "track": 24,
+        "year": 2009,
+        "duration": 51,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM29_E5",
+        "artist": "Shirō Sagisu",
+        "track": 25,
+        "year": 2009,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "Kyou no Hi wa Sayounara",
+        "artist": "Megumi Hayashibara",
+        "track": 26,
+        "year": 2009,
+        "duration": 163,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM31_0948 \"In My Spirit\"",
+        "artist": "Shirō Sagisu",
+        "track": 27,
+        "year": 2009,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM32_0910 \"Keep Your Head Above The Mayhem\"",
+        "artist": "Shirō Sagisu",
+        "track": 28,
+        "year": 2009,
+        "duration": 93,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM33_0902 \"The Final Decision We All Must Take\"",
+        "artist": "Shirō Sagisu",
+        "track": 29,
+        "year": 2009,
+        "duration": 208,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM34_E13",
+        "artist": "Shirō Sagisu",
+        "track": 30,
+        "year": 2009,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM35_Nu02 \"Carnage\"",
+        "artist": "Shirō Sagisu",
+        "track": 31,
+        "year": 2009,
+        "duration": 97,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM36_E16",
+        "artist": "Shirō Sagisu",
+        "track": 32,
+        "year": 2009,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "Tsubasa wo Kudasai",
+        "artist": "Megumi Hayashibara",
+        "track": 33,
+        "year": 2009,
+        "duration": 290,
+        "disc_number": 1
+      },
+      {
+        "title": "2EM38_F02",
+        "artist": "Shirō Sagisu",
+        "track": 34,
+        "year": 2009,
+        "duration": 46,
+        "disc_number": 1
+      },
+      {
+        "title": "Furimukanai de",
+        "artist": "The Peanuts",
+        "track": 35,
+        "year": 2009,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Koi no Kisetsu",
+        "artist": "Yōko Kon, Pinky & Killers",
+        "track": 36,
+        "year": 2009,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "At The Very Beginning (2EM01)",
+        "artist": "Shirō Sagisu",
+        "track": 37,
+        "year": 2009,
+        "duration": 195,
+        "disc_number": 2
+      },
+      {
+        "title": "L'Agresseur (2EM03)",
+        "artist": "Shirō Sagisu",
+        "track": 38,
+        "year": 2009,
+        "duration": 157,
+        "disc_number": 2
+      },
+      {
+        "title": "Ambassadrice Rouge (2EM04)",
+        "artist": "Shirō Sagisu",
+        "track": 39,
+        "year": 2009,
+        "duration": 118,
+        "disc_number": 2
+      },
+      {
+        "title": "Des Cordes: opus 1 (2EM18)",
+        "artist": "Shirō Sagisu",
+        "track": 40,
+        "year": 2009,
+        "duration": 200,
+        "disc_number": 2
+      },
+      {
+        "title": "Destiny (2EM15)",
+        "artist": "Shirō Sagisu",
+        "track": 41,
+        "year": 2009,
+        "duration": 172,
+        "disc_number": 2
+      },
+      {
+        "title": "Fate (2EM16)",
+        "artist": "Shirō Sagisu",
+        "track": 42,
+        "year": 2009,
+        "duration": 215,
+        "disc_number": 2
+      },
+      {
+        "title": "Robe des Champs (2EM20)",
+        "artist": "Shirō Sagisu",
+        "track": 43,
+        "year": 2009,
+        "duration": 109,
+        "disc_number": 2
+      },
+      {
+        "title": "Des Cordes: opus 2 (2EM18)",
+        "artist": "Shirō Sagisu",
+        "track": 44,
+        "year": 2009,
+        "duration": 194,
+        "disc_number": 2
+      },
+      {
+        "title": "Tranquillité (2EM25)",
+        "artist": "Shirō Sagisu",
+        "track": 45,
+        "year": 2009,
+        "duration": 202,
+        "disc_number": 2
+      },
+      {
+        "title": "Les Bêtes (2EM29)",
+        "artist": "Shirō Sagisu",
+        "track": 46,
+        "year": 2009,
+        "duration": 206,
+        "disc_number": 2
+      },
+      {
+        "title": "Kyou no Hi wa Sayounara - Tribute to \"Sound of Music\"",
+        "artist": "Megumi Hayashibara",
+        "track": 47,
+        "year": 2009,
+        "duration": 220,
+        "disc_number": 2
+      },
+      {
+        "title": "In My Spirit (2EM31)",
+        "artist": "Shirō Sagisu",
+        "track": 48,
+        "year": 2009,
+        "duration": 194,
+        "disc_number": 2
+      },
+      {
+        "title": "Keep Your Head Above The Mayhem (2EM32)",
+        "artist": "Shirō Sagisu",
+        "track": 49,
+        "year": 2009,
+        "duration": 147,
+        "disc_number": 2
+      },
+      {
+        "title": "Instabilité: Orchestre (2EM22)",
+        "artist": "Shirō Sagisu",
+        "track": 50,
+        "year": 2009,
+        "duration": 209,
+        "disc_number": 2
+      },
+      {
+        "title": "The Final Decision We All Must Take (2EM33)",
+        "artist": "Shirō Sagisu",
+        "track": 51,
+        "year": 2009,
+        "duration": 254,
+        "disc_number": 2
+      },
+      {
+        "title": "Evanescence: mouvement 1 (2EM34)",
+        "artist": "Shirō Sagisu",
+        "track": 52,
+        "year": 2009,
+        "duration": 44,
+        "disc_number": 2
+      },
+      {
+        "title": "Evanescence: mouvement 2 (2EM34)",
+        "artist": "Shirō Sagisu",
+        "track": 53,
+        "year": 2009,
+        "duration": 166,
+        "disc_number": 2
+      },
+      {
+        "title": "Evanescence: mouvement 3 (2EM34)",
+        "artist": "Shirō Sagisu",
+        "track": 54,
+        "year": 2009,
+        "duration": 143,
+        "disc_number": 2
+      },
+      {
+        "title": "Carnage (2EM35)",
+        "artist": "Shirō Sagisu",
+        "track": 55,
+        "year": 2009,
+        "duration": 205,
+        "disc_number": 2
+      },
+      {
+        "title": "Sin From Genesis (2EM36)",
+        "artist": "Shirō Sagisu",
+        "track": 56,
+        "year": 2009,
+        "duration": 162,
+        "disc_number": 2
+      },
+      {
+        "title": "Tsubasa wo Kudasai - Tribute to \"Sound of Music\"",
+        "artist": "Megumi Hayashibara",
+        "track": 57,
+        "year": 2009,
+        "duration": 371,
+        "disc_number": 2
+      },
+      {
+        "title": "Instabilité: Piano Solo (2EM17)",
+        "artist": "Shirō Sagisu",
+        "track": 58,
+        "year": 2009,
+        "duration": 224,
+        "disc_number": 2
+      },
+      {
+        "title": "Mellow 2009 (2EM18)",
+        "artist": "Shirō Sagisu",
+        "track": 59,
+        "year": 2009,
+        "duration": 232,
+        "disc_number": 2
       }
     ]
   },
@@ -134024,7 +134712,7 @@
       },
       {
         "title": "futuristic imagination",
-        "artist": "School Food Punishment",
+        "artist": "school food punishment",
         "track": 26,
         "year": 2009,
         "duration": 244,
@@ -140532,222 +141220,6 @@
   },
   {
     "artist": "鷺巣詩郎",
-    "album": "Music from \"EVANGELION: 1.0\" YOU ARE (NOT) ALONE",
-    "year": 2007,
-    "duration": 4071,
-    "tracks": [
-      {
-        "title": "L' Attaque des Anges",
-        "artist": "鷺巣詩郎",
-        "track": 1,
-        "year": 2007,
-        "duration": 153,
-        "disc_number": 1
-      },
-      {
-        "title": "I'll Go On Lovin' Someone Else",
-        "artist": "鷺巣詩郎",
-        "track": 2,
-        "year": 2007,
-        "duration": 192,
-        "disc_number": 1
-      },
-      {
-        "title": "Premiere Manoeuvre",
-        "artist": "鷺巣詩郎",
-        "track": 3,
-        "year": 2007,
-        "duration": 174,
-        "disc_number": 1
-      },
-      {
-        "title": "Staggering Yet",
-        "artist": "鷺巣詩郎",
-        "track": 4,
-        "year": 2007,
-        "duration": 120,
-        "disc_number": 1
-      },
-      {
-        "title": "Les Betes",
-        "artist": "鷺巣詩郎",
-        "track": 5,
-        "year": 2007,
-        "duration": 130,
-        "disc_number": 1
-      },
-      {
-        "title": "Crepuscule - Tokyo III",
-        "artist": "鷺巣詩郎",
-        "track": 6,
-        "year": 2007,
-        "duration": 98,
-        "disc_number": 1
-      },
-      {
-        "title": "Cruel Dilemme",
-        "artist": "鷺巣詩郎",
-        "track": 7,
-        "year": 2007,
-        "duration": 166,
-        "disc_number": 1
-      },
-      {
-        "title": "The Longest Day",
-        "artist": "鷺巣詩郎",
-        "track": 8,
-        "year": 2007,
-        "duration": 179,
-        "disc_number": 1
-      },
-      {
-        "title": "Contre Les Agressions",
-        "artist": "鷺巣詩郎",
-        "track": 9,
-        "year": 2007,
-        "duration": 122,
-        "disc_number": 1
-      },
-      {
-        "title": "Showdown",
-        "artist": "鷺巣詩郎",
-        "track": 10,
-        "year": 2007,
-        "duration": 122,
-        "disc_number": 1
-      },
-      {
-        "title": "Mecanisme de Defense",
-        "artist": "鷺巣詩郎",
-        "track": 11,
-        "year": 2007,
-        "duration": 164,
-        "disc_number": 1
-      },
-      {
-        "title": "Cruel Dilemme II",
-        "artist": "鷺巣詩郎",
-        "track": 12,
-        "year": 2007,
-        "duration": 194,
-        "disc_number": 1
-      },
-      {
-        "title": "Rei-Opus IV",
-        "artist": "鷺巣詩郎",
-        "track": 13,
-        "year": 2007,
-        "duration": 143,
-        "disc_number": 1
-      },
-      {
-        "title": "The Longest Day II",
-        "artist": "鷺巣詩郎",
-        "track": 14,
-        "year": 2007,
-        "duration": 139,
-        "disc_number": 1
-      },
-      {
-        "title": "Lucifer's Cry",
-        "artist": "鷺巣詩郎",
-        "track": 15,
-        "year": 2007,
-        "duration": 166,
-        "disc_number": 1
-      },
-      {
-        "title": "Cruel Dilemme III",
-        "artist": "鷺巣詩郎",
-        "track": 16,
-        "year": 2007,
-        "duration": 147,
-        "disc_number": 1
-      },
-      {
-        "title": "Strategie \"Yashima\"",
-        "artist": "鷺巣詩郎",
-        "track": 17,
-        "year": 2007,
-        "duration": 145,
-        "disc_number": 1
-      },
-      {
-        "title": "The Longest Day III",
-        "artist": "鷺巣詩郎",
-        "track": 18,
-        "year": 2007,
-        "duration": 134,
-        "disc_number": 1
-      },
-      {
-        "title": "Danse des Lucioles",
-        "artist": "鷺巣詩郎",
-        "track": 19,
-        "year": 2007,
-        "duration": 108,
-        "disc_number": 1
-      },
-      {
-        "title": "Bataille Decisive",
-        "artist": "鷺巣詩郎",
-        "track": 20,
-        "year": 2007,
-        "duration": 285,
-        "disc_number": 1
-      },
-      {
-        "title": "Angel of Doom",
-        "artist": "鷺巣詩郎",
-        "track": 21,
-        "year": 2007,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "Rei-Opus V",
-        "artist": "鷺巣詩郎",
-        "track": 22,
-        "year": 2007,
-        "duration": 179,
-        "disc_number": 1
-      },
-      {
-        "title": "Trailer Eva Special",
-        "artist": "鷺巣詩郎",
-        "track": 23,
-        "year": 2007,
-        "duration": 110,
-        "disc_number": 1
-      },
-      {
-        "title": "EM17_Demo",
-        "artist": "鷺巣詩郎",
-        "track": 24,
-        "year": 2007,
-        "duration": 127,
-        "disc_number": 1
-      },
-      {
-        "title": "EM21_Demo",
-        "artist": "鷺巣詩郎",
-        "track": 25,
-        "year": 2007,
-        "duration": 217,
-        "disc_number": 1
-      },
-      {
-        "title": "Cruel Dilemme IV",
-        "artist": "鷺巣詩郎",
-        "track": 26,
-        "year": 2007,
-        "duration": 113,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "鷺巣詩郎",
     "album": "Shiro SAGISU Music from “EVANGELION:3.0” YOU CAN (NOT) REDO.",
     "year": 2012,
     "duration": 7238,
@@ -141022,478 +141494,6 @@
         "track": 34,
         "year": 2012,
         "duration": 555,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "鷺巣詩郎 • Shiro Sagisu",
-    "album": "Evangelion: 2.0 You Can (Not) Advance. Original Sound Track",
-    "year": 2009,
-    "duration": 8236,
-    "tracks": [
-      {
-        "title": "2EM01_B01 \"At The Very Beginning\"",
-        "artist": "鷺巣詩郎",
-        "track": 1,
-        "year": 2009,
-        "duration": 157,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM03_0908",
-        "artist": "鷺巣詩郎",
-        "track": 2,
-        "year": 2009,
-        "duration": 59,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM04_E4",
-        "artist": "鷺巣詩郎",
-        "track": 3,
-        "year": 2009,
-        "duration": 102,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM05_KK_B09",
-        "artist": "鷺巣詩郎",
-        "track": 4,
-        "year": 2009,
-        "duration": 64,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM06_KK_B16",
-        "artist": "鷺巣詩郎",
-        "track": 5,
-        "year": 2009,
-        "duration": 8,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM07_KK_B09_InDoor",
-        "artist": "鷺巣詩郎",
-        "track": 6,
-        "year": 2009,
-        "duration": 63,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM08_B17",
-        "artist": "鷺巣詩郎",
-        "track": 7,
-        "year": 2009,
-        "duration": 42,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM09_Yamashita",
-        "artist": "鷺巣詩郎",
-        "track": 8,
-        "year": 2009,
-        "duration": 81,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM10_KK_C01_AddGuit",
-        "artist": "鷺巣詩郎",
-        "track": 9,
-        "year": 2009,
-        "duration": 99,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM11_B16",
-        "artist": "鷺巣詩郎",
-        "track": 10,
-        "year": 2009,
-        "duration": 102,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM12_KK_A09",
-        "artist": "鷺巣詩郎",
-        "track": 11,
-        "year": 2009,
-        "duration": 95,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM13_EM20_Alterna",
-        "artist": "鷺巣詩郎",
-        "track": 12,
-        "year": 2009,
-        "duration": 116,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM14_EM10C",
-        "artist": "鷺巣詩郎",
-        "track": 13,
-        "year": 2009,
-        "duration": 65,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM15_0938 \"Destiny\"",
-        "artist": "鷺巣詩郎",
-        "track": 14,
-        "year": 2009,
-        "duration": 140,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM16_0944 \"Fate\"",
-        "artist": "鷺巣詩郎",
-        "track": 15,
-        "year": 2009,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM17_KK_A08",
-        "artist": "鷺巣詩郎",
-        "track": 16,
-        "year": 2009,
-        "duration": 95,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM18_KK_C01",
-        "artist": "鷺巣詩郎",
-        "track": 17,
-        "year": 2009,
-        "duration": 141,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM20_KK_A09_Kuriya",
-        "artist": "鷺巣詩郎",
-        "track": 19,
-        "year": 2009,
-        "duration": 106,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM21_KK_C01_Str+AcGuit",
-        "artist": "鷺巣詩郎",
-        "track": 20,
-        "year": 2009,
-        "duration": 145,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM22_KK_A08_Orche",
-        "artist": "鷺巣詩郎",
-        "track": 21,
-        "year": 2009,
-        "duration": 127,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM25_Piano_Nu",
-        "artist": "鷺巣詩郎",
-        "track": 22,
-        "year": 2009,
-        "duration": 96,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM26_EM05B",
-        "artist": "鷺巣詩郎",
-        "track": 23,
-        "year": 2009,
-        "duration": 32,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM28_EM13",
-        "artist": "鷺巣詩郎",
-        "track": 24,
-        "year": 2009,
-        "duration": 51,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM29_E5",
-        "artist": "鷺巣詩郎",
-        "track": 25,
-        "year": 2009,
-        "duration": 120,
-        "disc_number": 1
-      },
-      {
-        "title": "Kyou no Hi wa Sayounara",
-        "artist": "林原めぐみ",
-        "track": 26,
-        "year": 2009,
-        "duration": 163,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM31_0948 \"In My Spirit\"",
-        "artist": "鷺巣詩郎",
-        "track": 27,
-        "year": 2009,
-        "duration": 141,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM32_0910 \"Keep Your Head Above The Mayhem\"",
-        "artist": "鷺巣詩郎",
-        "track": 28,
-        "year": 2009,
-        "duration": 93,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM33_0902 \"The Final Decision We All Must Take\"",
-        "artist": "鷺巣詩郎",
-        "track": 29,
-        "year": 2009,
-        "duration": 208,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM34_E13",
-        "artist": "鷺巣詩郎",
-        "track": 30,
-        "year": 2009,
-        "duration": 120,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM35_Nu02 \"Carnage\"",
-        "artist": "鷺巣詩郎",
-        "track": 31,
-        "year": 2009,
-        "duration": 97,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM36_E16",
-        "artist": "鷺巣詩郎",
-        "track": 32,
-        "year": 2009,
-        "duration": 129,
-        "disc_number": 1
-      },
-      {
-        "title": "Tsubasa wo Kudasai",
-        "artist": "林原めぐみ",
-        "track": 33,
-        "year": 2009,
-        "duration": 290,
-        "disc_number": 1
-      },
-      {
-        "title": "2EM38_F02",
-        "artist": "鷺巣詩郎",
-        "track": 34,
-        "year": 2009,
-        "duration": 46,
-        "disc_number": 1
-      },
-      {
-        "title": "Furimukanai de",
-        "artist": "ザ・ピーナッツ",
-        "track": 35,
-        "year": 2009,
-        "duration": 175,
-        "disc_number": 1
-      },
-      {
-        "title": "Koi no Kisetsu",
-        "artist": "今陽子, ピンキーとキラーズ",
-        "track": 36,
-        "year": 2009,
-        "duration": 202,
-        "disc_number": 1
-      },
-      {
-        "title": "At The Very Beginning (2EM01)",
-        "artist": "鷺巣詩郎",
-        "track": 37,
-        "year": 2009,
-        "duration": 195,
-        "disc_number": 2
-      },
-      {
-        "title": "L'Agresseur (2EM03)",
-        "artist": "鷺巣詩郎",
-        "track": 38,
-        "year": 2009,
-        "duration": 157,
-        "disc_number": 2
-      },
-      {
-        "title": "Ambassadrice Rouge (2EM04)",
-        "artist": "鷺巣詩郎",
-        "track": 39,
-        "year": 2009,
-        "duration": 118,
-        "disc_number": 2
-      },
-      {
-        "title": "Des Cordes: opus 1 (2EM18)",
-        "artist": "鷺巣詩郎",
-        "track": 40,
-        "year": 2009,
-        "duration": 200,
-        "disc_number": 2
-      },
-      {
-        "title": "Destiny (2EM15)",
-        "artist": "鷺巣詩郎",
-        "track": 41,
-        "year": 2009,
-        "duration": 172,
-        "disc_number": 2
-      },
-      {
-        "title": "Fate (2EM16)",
-        "artist": "鷺巣詩郎",
-        "track": 42,
-        "year": 2009,
-        "duration": 215,
-        "disc_number": 2
-      },
-      {
-        "title": "Robe des Champs (2EM20)",
-        "artist": "鷺巣詩郎",
-        "track": 43,
-        "year": 2009,
-        "duration": 109,
-        "disc_number": 2
-      },
-      {
-        "title": "Des Cordes: opus 2 (2EM18)",
-        "artist": "鷺巣詩郎",
-        "track": 44,
-        "year": 2009,
-        "duration": 194,
-        "disc_number": 2
-      },
-      {
-        "title": "Tranquillité (2EM25)",
-        "artist": "鷺巣詩郎",
-        "track": 45,
-        "year": 2009,
-        "duration": 202,
-        "disc_number": 2
-      },
-      {
-        "title": "Les Bêtes (2EM29)",
-        "artist": "鷺巣詩郎",
-        "track": 46,
-        "year": 2009,
-        "duration": 206,
-        "disc_number": 2
-      },
-      {
-        "title": "Kyou no Hi wa Sayounara - Tribute to \"Sound of Music\"",
-        "artist": "林原めぐみ",
-        "track": 47,
-        "year": 2009,
-        "duration": 220,
-        "disc_number": 2
-      },
-      {
-        "title": "In My Spirit (2EM31)",
-        "artist": "鷺巣詩郎",
-        "track": 48,
-        "year": 2009,
-        "duration": 194,
-        "disc_number": 2
-      },
-      {
-        "title": "Keep Your Head Above The Mayhem (2EM32)",
-        "artist": "鷺巣詩郎",
-        "track": 49,
-        "year": 2009,
-        "duration": 147,
-        "disc_number": 2
-      },
-      {
-        "title": "Instabilité: Orchestre (2EM22)",
-        "artist": "鷺巣詩郎",
-        "track": 50,
-        "year": 2009,
-        "duration": 209,
-        "disc_number": 2
-      },
-      {
-        "title": "The Final Decision We All Must Take (2EM33)",
-        "artist": "鷺巣詩郎",
-        "track": 51,
-        "year": 2009,
-        "duration": 254,
-        "disc_number": 2
-      },
-      {
-        "title": "Evanescence: mouvement 1 (2EM34)",
-        "artist": "鷺巣詩郎",
-        "track": 52,
-        "year": 2009,
-        "duration": 44,
-        "disc_number": 2
-      },
-      {
-        "title": "Evanescence: mouvement 2 (2EM34)",
-        "artist": "鷺巣詩郎",
-        "track": 53,
-        "year": 2009,
-        "duration": 166,
-        "disc_number": 2
-      },
-      {
-        "title": "Evanescence: mouvement 3 (2EM34)",
-        "artist": "鷺巣詩郎",
-        "track": 54,
-        "year": 2009,
-        "duration": 143,
-        "disc_number": 2
-      },
-      {
-        "title": "Carnage (2EM35)",
-        "artist": "鷺巣詩郎",
-        "track": 55,
-        "year": 2009,
-        "duration": 205,
-        "disc_number": 2
-      },
-      {
-        "title": "Sin From Genesis (2EM36)",
-        "artist": "鷺巣詩郎",
-        "track": 56,
-        "year": 2009,
-        "duration": 162,
-        "disc_number": 2
-      },
-      {
-        "title": "Tsubasa wo Kudasai - Tribute to \"Sound of Music\"",
-        "artist": "林原めぐみ",
-        "track": 57,
-        "year": 2009,
-        "duration": 371,
-        "disc_number": 2
-      },
-      {
-        "title": "Instabilité: Piano Solo (2EM17)",
-        "artist": "鷺巣詩郎",
-        "track": 58,
-        "year": 2009,
-        "duration": 224,
-        "disc_number": 2
-      },
-      {
-        "title": "Mellow 2009 (2EM18)",
-        "artist": "鷺巣詩郎",
-        "track": 59,
-        "year": 2009,
-        "duration": 232,
         "disc_number": 2
       }
     ]
