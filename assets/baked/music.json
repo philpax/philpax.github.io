@@ -8017,102 +8017,6 @@
     ]
   },
   {
-    "artist": "Astrophysics",
-    "album": "SEXO, VIOLÊNCIA, RIO & SÃO PAULO",
-    "year": 2024,
-    "duration": 1680,
-    "tracks": [
-      {
-        "title": "CANIBAL",
-        "artist": "Astrophysics",
-        "track": 1,
-        "year": 2024,
-        "duration": 134,
-        "disc_number": 1
-      },
-      {
-        "title": "MEU DEUS!!",
-        "artist": "Astrophysics",
-        "track": 2,
-        "year": 2024,
-        "duration": 132,
-        "disc_number": 1
-      },
-      {
-        "title": "VIOLÊNCIA",
-        "artist": "Astrophysics",
-        "track": 3,
-        "year": 2024,
-        "duration": 120,
-        "disc_number": 1
-      },
-      {
-        "title": "ZIKA (FUDIDA)",
-        "artist": "Astrophysics",
-        "track": 4,
-        "year": 2024,
-        "duration": 135,
-        "disc_number": 1
-      },
-      {
-        "title": "BEAT SUICIDA",
-        "artist": "Astrophysics",
-        "track": 5,
-        "year": 2024,
-        "duration": 109,
-        "disc_number": 1
-      },
-      {
-        "title": "MENGÃO INTERLÚDIO",
-        "artist": "Astrophysics",
-        "track": 6,
-        "year": 2024,
-        "duration": 82,
-        "disc_number": 1
-      },
-      {
-        "title": "QUERO TE DA",
-        "artist": "Astrophysics",
-        "track": 7,
-        "year": 2024,
-        "duration": 179,
-        "disc_number": 1
-      },
-      {
-        "title": "CRIMINOSO",
-        "artist": "Astrophysics",
-        "track": 8,
-        "year": 2024,
-        "duration": 76,
-        "disc_number": 1
-      },
-      {
-        "title": "RIO",
-        "artist": "Astrophysics ft. DJ DENGUE DE MARICÁ",
-        "track": 9,
-        "year": 2024,
-        "duration": 204,
-        "disc_number": 1
-      },
-      {
-        "title": "RIO - PARTE 2 - PERDIDO NO SAARA",
-        "artist": "Astrophysics",
-        "track": 10,
-        "year": 2024,
-        "duration": 183,
-        "disc_number": 1
-      },
-      {
-        "title": "SÃO PAULO (CORINGADA VAGABUNDA)",
-        "artist": "Astrophysics ft. Yandrel",
-        "track": 11,
-        "year": 2024,
-        "duration": 322,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Asura",
     "album": "Code Eternity",
     "year": 2000,
@@ -56178,6 +56082,318 @@
     ]
   },
   {
+    "artist": "Kanye West",
+    "album": "Graduation",
+    "year": 2007,
+    "duration": 3083,
+    "tracks": [
+      {
+        "title": "Good Morning",
+        "artist": "Kanye West",
+        "track": 1,
+        "year": 2007,
+        "duration": 195,
+        "disc_number": 1
+      },
+      {
+        "title": "Champion",
+        "artist": "Kanye West",
+        "track": 2,
+        "year": 2007,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Stronger",
+        "artist": "Kanye West",
+        "track": 3,
+        "year": 2007,
+        "duration": 312,
+        "disc_number": 1
+      },
+      {
+        "title": "I Wonder",
+        "artist": "Kanye West",
+        "track": 4,
+        "year": 2007,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Good Life",
+        "artist": "Kanye West feat. T‐Pain",
+        "track": 5,
+        "year": 2007,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "Can't Tell Me Nothing",
+        "artist": "Kanye West",
+        "track": 6,
+        "year": 2007,
+        "duration": 271,
+        "disc_number": 1
+      },
+      {
+        "title": "Barry Bonds",
+        "artist": "Kanye West feat. Lil Wayne",
+        "track": 7,
+        "year": 2007,
+        "duration": 204,
+        "disc_number": 1
+      },
+      {
+        "title": "Drunk and Hot Girls",
+        "artist": "Kanye West feat. Mos Def",
+        "track": 8,
+        "year": 2007,
+        "duration": 313,
+        "disc_number": 1
+      },
+      {
+        "title": "Flashing Lights",
+        "artist": "Kanye West feat. Dwele",
+        "track": 9,
+        "year": 2007,
+        "duration": 237,
+        "disc_number": 1
+      },
+      {
+        "title": "Everything I Am",
+        "artist": "Kanye West feat. DJ Premier",
+        "track": 10,
+        "year": 2007,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "The Glory",
+        "artist": "Kanye West",
+        "track": 11,
+        "year": 2007,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "Homecoming",
+        "artist": "Kanye West feat. Chris Martin",
+        "track": 12,
+        "year": 2007,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "Big Brother",
+        "artist": "Kanye West",
+        "track": 13,
+        "year": 2007,
+        "duration": 287,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Kanye West",
+    "album": "My Beautiful Dark Twisted Fantasy",
+    "year": 2010,
+    "duration": 4123,
+    "tracks": [
+      {
+        "title": "Dark Fantasy",
+        "artist": "Kanye West",
+        "track": 1,
+        "year": 2010,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "Gorgeous",
+        "artist": "Kanye West feat. Kid Cudi & Raekwon",
+        "track": 2,
+        "year": 2010,
+        "duration": 357,
+        "disc_number": 1
+      },
+      {
+        "title": "Power",
+        "artist": "Kanye West",
+        "track": 3,
+        "year": 2010,
+        "duration": 292,
+        "disc_number": 1
+      },
+      {
+        "title": "All of the Lights (interlude)",
+        "artist": "Kanye West",
+        "track": 4,
+        "year": 2010,
+        "duration": 62,
+        "disc_number": 1
+      },
+      {
+        "title": "All of the Lights",
+        "artist": "Kanye West",
+        "track": 5,
+        "year": 2010,
+        "duration": 299,
+        "disc_number": 1
+      },
+      {
+        "title": "Monster",
+        "artist": "Kanye West feat. Jay‐Z, Rick Ross, Nicki Minaj & Bon Iver",
+        "track": 6,
+        "year": 2010,
+        "duration": 378,
+        "disc_number": 1
+      },
+      {
+        "title": "So Appalled",
+        "artist": "Kanye West feat. Jay‐Z, Pusha T, CyHi da Prynce, Swizz Beatz & The RZA",
+        "track": 7,
+        "year": 2010,
+        "duration": 398,
+        "disc_number": 1
+      },
+      {
+        "title": "Devil in a New Dress",
+        "artist": "Kanye West feat. Rick Ross",
+        "track": 8,
+        "year": 2010,
+        "duration": 352,
+        "disc_number": 1
+      },
+      {
+        "title": "Runaway",
+        "artist": "Kanye West feat. Pusha T",
+        "track": 9,
+        "year": 2010,
+        "duration": 548,
+        "disc_number": 1
+      },
+      {
+        "title": "Hell of a Life",
+        "artist": "Kanye West",
+        "track": 10,
+        "year": 2010,
+        "duration": 327,
+        "disc_number": 1
+      },
+      {
+        "title": "Blame Game",
+        "artist": "Kanye West feat. John Legend",
+        "track": 11,
+        "year": 2010,
+        "duration": 469,
+        "disc_number": 1
+      },
+      {
+        "title": "Lost in the World",
+        "artist": "Kanye West feat. Bon Iver",
+        "track": 12,
+        "year": 2010,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "Who Will Survive in America",
+        "artist": "Kanye West",
+        "track": 13,
+        "year": 2010,
+        "duration": 98,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Kanye West",
+    "album": "Yeezus",
+    "year": 2013,
+    "duration": 2406,
+    "tracks": [
+      {
+        "title": "On Sight",
+        "artist": "Kanye West",
+        "track": 1,
+        "year": 2013,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "Black Skinhead",
+        "artist": "Kanye West",
+        "track": 2,
+        "year": 2013,
+        "duration": 188,
+        "disc_number": 1
+      },
+      {
+        "title": "I Am a God",
+        "artist": "Kanye West feat. God",
+        "track": 3,
+        "year": 2013,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "New Slaves",
+        "artist": "Kanye West",
+        "track": 4,
+        "year": 2013,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "Hold My Liquor",
+        "artist": "Kanye West",
+        "track": 5,
+        "year": 2013,
+        "duration": 326,
+        "disc_number": 1
+      },
+      {
+        "title": "I’m in It",
+        "artist": "Kanye West",
+        "track": 6,
+        "year": 2013,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Blood on the Leaves",
+        "artist": "Kanye West",
+        "track": 7,
+        "year": 2013,
+        "duration": 360,
+        "disc_number": 1
+      },
+      {
+        "title": "Guilt Trip",
+        "artist": "Kanye West",
+        "track": 8,
+        "year": 2013,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Send It Up",
+        "artist": "Kanye West",
+        "track": 9,
+        "year": 2013,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "Bound 2",
+        "artist": "Kanye West",
+        "track": 10,
+        "year": 2013,
+        "duration": 229,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Kartell",
     "album": "Fresh Memories - EP",
     "year": 2010,
@@ -91866,6 +92082,102 @@
     ]
   },
   {
+    "artist": "SEXCORP.",
+    "album": "SEXO, VIOLÊNCIA, RIO & SÃO PAULO",
+    "year": 2024,
+    "duration": 1680,
+    "tracks": [
+      {
+        "title": "CANIBAL",
+        "artist": "SEXCORP",
+        "track": 1,
+        "year": 2024,
+        "duration": 134,
+        "disc_number": 1
+      },
+      {
+        "title": "MEU DEUS!!",
+        "artist": "SEXCORP",
+        "track": 2,
+        "year": 2024,
+        "duration": 132,
+        "disc_number": 1
+      },
+      {
+        "title": "VIOLÊNCIA",
+        "artist": "SEXCORP",
+        "track": 3,
+        "year": 2024,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "ZIKA (FUDIDA)",
+        "artist": "SEXCORP",
+        "track": 4,
+        "year": 2024,
+        "duration": 135,
+        "disc_number": 1
+      },
+      {
+        "title": "BEAT SUICIDA",
+        "artist": "SEXCORP",
+        "track": 5,
+        "year": 2024,
+        "duration": 109,
+        "disc_number": 1
+      },
+      {
+        "title": "MENGÃO INTERLÚDIO",
+        "artist": "SEXCORP",
+        "track": 6,
+        "year": 2024,
+        "duration": 82,
+        "disc_number": 1
+      },
+      {
+        "title": "QUERO TE DA",
+        "artist": "SEXCORP",
+        "track": 7,
+        "year": 2024,
+        "duration": 179,
+        "disc_number": 1
+      },
+      {
+        "title": "CRIMINOSO",
+        "artist": "SEXCORP",
+        "track": 8,
+        "year": 2024,
+        "duration": 76,
+        "disc_number": 1
+      },
+      {
+        "title": "RIO",
+        "artist": "SEXCORP ft. DJ DENGUE DE MARICÁ",
+        "track": 9,
+        "year": 2024,
+        "duration": 204,
+        "disc_number": 1
+      },
+      {
+        "title": "RIO - PARTE 2 - PERDIDO NO SAARA",
+        "artist": "SEXCORP",
+        "track": 10,
+        "year": 2024,
+        "duration": 183,
+        "disc_number": 1
+      },
+      {
+        "title": "SÃO PAULO (CORINGADA VAGABUNDA)",
+        "artist": "SEXCORP ft. Yandrel",
+        "track": 11,
+        "year": 2024,
+        "duration": 322,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Shigeto",
     "album": "No Better Time Than Now",
     "year": 2013,
@@ -127302,318 +127614,6 @@
         "year": 2010,
         "duration": 229,
         "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Ye",
-    "album": "Graduation",
-    "year": 2007,
-    "duration": 3083,
-    "tracks": [
-      {
-        "title": "Good Morning",
-        "artist": "Ye",
-        "track": 1,
-        "year": 2007,
-        "duration": 195,
-        "disc_number": 1
-      },
-      {
-        "title": "Champion",
-        "artist": "Ye",
-        "track": 2,
-        "year": 2007,
-        "duration": 167,
-        "disc_number": 1
-      },
-      {
-        "title": "Stronger",
-        "artist": "Ye",
-        "track": 3,
-        "year": 2007,
-        "duration": 312,
-        "disc_number": 1
-      },
-      {
-        "title": "I Wonder",
-        "artist": "Ye",
-        "track": 4,
-        "year": 2007,
-        "duration": 243,
-        "disc_number": 1
-      },
-      {
-        "title": "Good Life",
-        "artist": "Ye feat. T‐Pain",
-        "track": 5,
-        "year": 2007,
-        "duration": 207,
-        "disc_number": 1
-      },
-      {
-        "title": "Can't Tell Me Nothing",
-        "artist": "Ye",
-        "track": 6,
-        "year": 2007,
-        "duration": 271,
-        "disc_number": 1
-      },
-      {
-        "title": "Barry Bonds",
-        "artist": "Ye feat. Lil Wayne",
-        "track": 7,
-        "year": 2007,
-        "duration": 204,
-        "disc_number": 1
-      },
-      {
-        "title": "Drunk and Hot Girls",
-        "artist": "Ye feat. Yasiin Bey",
-        "track": 8,
-        "year": 2007,
-        "duration": 313,
-        "disc_number": 1
-      },
-      {
-        "title": "Flashing Lights",
-        "artist": "Ye feat. Dwele",
-        "track": 9,
-        "year": 2007,
-        "duration": 237,
-        "disc_number": 1
-      },
-      {
-        "title": "Everything I Am",
-        "artist": "Ye feat. DJ Premier",
-        "track": 10,
-        "year": 2007,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "The Glory",
-        "artist": "Ye",
-        "track": 11,
-        "year": 2007,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "Homecoming",
-        "artist": "Ye feat. Chris Martin",
-        "track": 12,
-        "year": 2007,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "Big Brother",
-        "artist": "Ye",
-        "track": 13,
-        "year": 2007,
-        "duration": 287,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Ye",
-    "album": "My Beautiful Dark Twisted Fantasy",
-    "year": 2010,
-    "duration": 4123,
-    "tracks": [
-      {
-        "title": "Dark Fantasy",
-        "artist": "Ye",
-        "track": 1,
-        "year": 2010,
-        "duration": 281,
-        "disc_number": 1
-      },
-      {
-        "title": "Gorgeous",
-        "artist": "Ye feat. Kid Cudi & Raekwon",
-        "track": 2,
-        "year": 2010,
-        "duration": 357,
-        "disc_number": 1
-      },
-      {
-        "title": "Power",
-        "artist": "Ye",
-        "track": 3,
-        "year": 2010,
-        "duration": 292,
-        "disc_number": 1
-      },
-      {
-        "title": "All of the Lights (interlude)",
-        "artist": "Ye",
-        "track": 4,
-        "year": 2010,
-        "duration": 62,
-        "disc_number": 1
-      },
-      {
-        "title": "All of the Lights",
-        "artist": "Ye",
-        "track": 5,
-        "year": 2010,
-        "duration": 299,
-        "disc_number": 1
-      },
-      {
-        "title": "Monster",
-        "artist": "Ye feat. JAY‐Z, Rick Ross, Nicki Minaj & Bon Iver",
-        "track": 6,
-        "year": 2010,
-        "duration": 378,
-        "disc_number": 1
-      },
-      {
-        "title": "So Appalled",
-        "artist": "Ye feat. JAY‐Z, Pusha T, Cyhi the Prynce, Swizz Beatz & RZA",
-        "track": 7,
-        "year": 2010,
-        "duration": 398,
-        "disc_number": 1
-      },
-      {
-        "title": "Devil in a New Dress",
-        "artist": "Ye feat. Rick Ross",
-        "track": 8,
-        "year": 2010,
-        "duration": 352,
-        "disc_number": 1
-      },
-      {
-        "title": "Runaway",
-        "artist": "Ye feat. Pusha T",
-        "track": 9,
-        "year": 2010,
-        "duration": 548,
-        "disc_number": 1
-      },
-      {
-        "title": "Hell of a Life",
-        "artist": "Ye",
-        "track": 10,
-        "year": 2010,
-        "duration": 327,
-        "disc_number": 1
-      },
-      {
-        "title": "Blame Game",
-        "artist": "Ye feat. John Legend",
-        "track": 11,
-        "year": 2010,
-        "duration": 469,
-        "disc_number": 1
-      },
-      {
-        "title": "Lost in the World",
-        "artist": "Ye feat. Bon Iver",
-        "track": 12,
-        "year": 2010,
-        "duration": 256,
-        "disc_number": 1
-      },
-      {
-        "title": "Who Will Survive in America",
-        "artist": "Ye",
-        "track": 13,
-        "year": 2010,
-        "duration": 98,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Ye",
-    "album": "Yeezus",
-    "year": 2013,
-    "duration": 2406,
-    "tracks": [
-      {
-        "title": "On Sight",
-        "artist": "Ye",
-        "track": 1,
-        "year": 2013,
-        "duration": 157,
-        "disc_number": 1
-      },
-      {
-        "title": "Black Skinhead",
-        "artist": "Ye",
-        "track": 2,
-        "year": 2013,
-        "duration": 188,
-        "disc_number": 1
-      },
-      {
-        "title": "I Am a God",
-        "artist": "Ye feat. [unknown]",
-        "track": 3,
-        "year": 2013,
-        "duration": 231,
-        "disc_number": 1
-      },
-      {
-        "title": "New Slaves",
-        "artist": "Ye",
-        "track": 4,
-        "year": 2013,
-        "duration": 256,
-        "disc_number": 1
-      },
-      {
-        "title": "Hold My Liquor",
-        "artist": "Ye",
-        "track": 5,
-        "year": 2013,
-        "duration": 326,
-        "disc_number": 1
-      },
-      {
-        "title": "I’m in It",
-        "artist": "Ye",
-        "track": 6,
-        "year": 2013,
-        "duration": 234,
-        "disc_number": 1
-      },
-      {
-        "title": "Blood on the Leaves",
-        "artist": "Ye",
-        "track": 7,
-        "year": 2013,
-        "duration": 360,
-        "disc_number": 1
-      },
-      {
-        "title": "Guilt Trip",
-        "artist": "Ye",
-        "track": 8,
-        "year": 2013,
-        "duration": 243,
-        "disc_number": 1
-      },
-      {
-        "title": "Send It Up",
-        "artist": "Ye",
-        "track": 9,
-        "year": 2013,
-        "duration": 178,
-        "disc_number": 1
-      },
-      {
-        "title": "Bound 2",
-        "artist": "Ye",
-        "track": 10,
-        "year": 2013,
-        "duration": 229,
-        "disc_number": 1
       }
     ]
   },
