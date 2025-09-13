@@ -1578,470 +1578,530 @@
     ]
   },
   {
-    "artist": "Aes Dana",
+    "artist": "AES Dana",
     "album": "Season 5",
     "year": 2002,
     "duration": 4153,
     "tracks": [
       {
         "title": "Natti Natti",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 1,
         "year": 2002,
-        "duration": 420
+        "duration": 420,
+        "disc_number": 1
       },
       {
         "title": "Peripherics",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2002,
-        "duration": 438
+        "duration": 438,
+        "disc_number": 1
       },
       {
         "title": "Season 5",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2002,
-        "duration": 527
+        "duration": 527,
+        "disc_number": 1
       },
       {
         "title": "Undertow",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2002,
-        "duration": 415
+        "duration": 415,
+        "disc_number": 1
       },
       {
         "title": "Gatewick (Vinyl Airport Delay)",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2002,
-        "duration": 458
+        "duration": 458,
+        "disc_number": 1
       },
       {
-        "title": "Dew (Herbal Version)",
-        "artist": "Aes Dana",
+        "title": "Dew (Herbal version)",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2002,
-        "duration": 377
+        "duration": 377,
+        "disc_number": 1
       },
       {
         "title": "Chrysalis",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2002,
-        "duration": 408
+        "duration": 408,
+        "disc_number": 1
       },
       {
-        "title": "Onset Data (Ethereal Version)",
-        "artist": "Aes Dana",
+        "title": "Onset Data (Ethereal version)",
+        "artist": "AES Dana",
         "track": 8,
         "year": 2002,
-        "duration": 443
+        "duration": 443,
+        "disc_number": 1
       },
       {
         "title": "Forest Fish",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 9,
         "year": 2002,
-        "duration": 313
+        "duration": 313,
+        "disc_number": 1
       },
       {
         "title": "Suspended Grounds",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 10,
         "year": 2002,
-        "duration": 349
+        "duration": 349,
+        "disc_number": 1
       }
     ]
   },
   {
-    "artist": "Aes Dana",
-    "album": "Aftermath",
+    "artist": "AES Dana",
+    "album": "Aftermath: Archives of Peace",
     "year": 2003,
     "duration": 2529,
     "tracks": [
       {
-        "title": "Aftermath #01",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 01",
+        "artist": "AES Dana",
         "track": 1,
         "year": 2003,
-        "duration": 474
+        "duration": 474,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #02",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 02",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2003,
-        "duration": 393
+        "duration": 393,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #03",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 03",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2003,
-        "duration": 482
+        "duration": 482,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #04",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 04",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2003,
-        "duration": 243
+        "duration": 243,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #05",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 05",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2003,
-        "duration": 327
+        "duration": 327,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #06",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 06",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2003,
-        "duration": 372
+        "duration": 372,
+        "disc_number": 1
       },
       {
-        "title": "Aftermath #07",
-        "artist": "Aes Dana",
+        "title": "Aftermath # 07",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2003,
-        "duration": 236
+        "duration": 236,
+        "disc_number": 1
       }
     ]
   },
   {
-    "artist": "Aes Dana",
+    "artist": "AES Dana",
     "album": "Memory Shell",
     "year": 2004,
     "duration": 4266,
     "tracks": [
       {
         "title": "Chernozem",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 1,
         "year": 2004,
-        "duration": 205
+        "duration": 205,
+        "disc_number": 1
       },
       {
         "title": "Iris Rotation",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2004,
-        "duration": 380
+        "duration": 380,
+        "disc_number": 1
       },
       {
         "title": "Dusts",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2004,
-        "duration": 435
+        "duration": 435,
+        "disc_number": 1
       },
       {
         "title": "Opalin",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2004,
-        "duration": 431
+        "duration": 431,
+        "disc_number": 1
       },
       {
-        "title": "Memory Shell (lost radio e-dit)",
-        "artist": "Aes Dana",
+        "title": "Memory Shell (Lost radio e-dit)",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2004,
-        "duration": 529
+        "duration": 529,
+        "disc_number": 1
       },
       {
         "title": "Haze",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2004,
-        "duration": 462
+        "duration": 462,
+        "disc_number": 1
       },
       {
         "title": "Shouting Valley",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2004,
-        "duration": 291
+        "duration": 291,
+        "disc_number": 1
       },
       {
         "title": "Cities Update",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 8,
         "year": 2004,
-        "duration": 353
+        "duration": 353,
+        "disc_number": 1
       },
       {
         "title": "Sub Morphing",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 9,
         "year": 2004,
-        "duration": 350
+        "duration": 350,
+        "disc_number": 1
       },
       {
         "title": "Grounds Around",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 10,
         "year": 2004,
-        "duration": 249
+        "duration": 249,
+        "disc_number": 1
       },
       {
         "title": "Exposure (Aes Dana rmx)",
-        "artist": "Aes Dana",
+        "artist": "Aural Planet",
         "track": 11,
         "year": 2004,
-        "duration": 388
+        "duration": 388,
+        "disc_number": 1
       },
       {
         "title": "Chernozem (Closing)",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 12,
         "year": 2004,
-        "duration": 188
+        "duration": 188,
+        "disc_number": 1
       }
     ]
   },
   {
-    "artist": "Aes Dana",
+    "artist": "AES Dana",
     "album": "Leylines",
     "year": 2009,
     "duration": 4679,
     "tracks": [
       {
         "title": "Alignments",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 1,
         "year": 2009,
-        "duration": 477
+        "duration": 477,
+        "disc_number": 1
       },
       {
-        "title": "Bam (Album Edit)",
-        "artist": "Aes Dana",
+        "title": "Bam (album edit)",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2009,
-        "duration": 477
+        "duration": 477,
+        "disc_number": 1
       },
       {
         "title": "Oxyd",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2009,
-        "duration": 517
+        "duration": 517,
+        "disc_number": 1
       },
       {
         "title": "Heights",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2009,
-        "duration": 418
+        "duration": 418,
+        "disc_number": 1
       },
       {
         "title": "Adonaï",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2009,
-        "duration": 541
+        "duration": 541,
+        "disc_number": 1
       },
       {
         "title": "Leylines",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2009,
-        "duration": 550
+        "duration": 550,
+        "disc_number": 1
       },
       {
-        "title": "Lysistrata (Album Edit)",
-        "artist": "Aes Dana",
+        "title": "Lysistrata (album edit)",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2009,
-        "duration": 562
+        "duration": 562,
+        "disc_number": 1
       },
       {
         "title": "Signs",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 8,
         "year": 2009,
-        "duration": 404
+        "duration": 404,
+        "disc_number": 1
       },
       {
         "title": "Inter",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 9,
         "year": 2009,
-        "duration": 363
+        "duration": 363,
+        "disc_number": 1
       },
       {
         "title": "Blossom",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 10,
         "year": 2009,
-        "duration": 365
+        "duration": 365,
+        "disc_number": 1
       }
     ]
   },
   {
-    "artist": "Aes Dana",
+    "artist": "AES Dana",
     "album": "Perimeters",
     "year": 2011,
     "duration": 4448,
     "tracks": [
       {
         "title": "Anthrazit",
-        "artist": "Aes Dana",
+        "artist": "AES Dana feat. Field Rotation",
         "track": 1,
         "year": 2011,
-        "duration": 393
+        "duration": 393,
+        "disc_number": 1
       },
       {
         "title": "Snöflinga",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2011,
-        "duration": 383
+        "duration": 383,
+        "disc_number": 1
       },
       {
         "title": "Perimeters",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2011,
-        "duration": 609
+        "duration": 609,
+        "disc_number": 1
       },
       {
         "title": "In Between",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2011,
-        "duration": 474
+        "duration": 474,
+        "disc_number": 1
       },
       {
         "title": "Xylem",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2011,
-        "duration": 133
+        "duration": 133,
+        "disc_number": 1
       },
       {
-        "title": "Resin (Overspring Edit)",
-        "artist": "Aes Dana",
+        "title": "Resin (Overspring edit)",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2011,
-        "duration": 612
+        "duration": 612,
+        "disc_number": 1
       },
       {
         "title": "Heaven Report",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2011,
-        "duration": 429
+        "duration": 429,
+        "disc_number": 1
       },
       {
-        "title": "Antimatter (Ante)",
-        "artist": "Aes Dana",
+        "title": "Antimatter (ante)",
+        "artist": "AES Dana",
         "track": 8,
         "year": 2011,
-        "duration": 204
+        "duration": 204,
+        "disc_number": 1
       },
       {
-        "title": "Antimatter (Post)",
-        "artist": "Aes Dana",
+        "title": "Antimatter (post)",
+        "artist": "AES Dana",
         "track": 9,
         "year": 2011,
-        "duration": 375
+        "duration": 375,
+        "disc_number": 1
       },
       {
         "title": "The Missing Words",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 10,
         "year": 2011,
-        "duration": 477
+        "duration": 477,
+        "disc_number": 1
       },
       {
         "title": "Currents",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 11,
         "year": 2011,
-        "duration": 353
+        "duration": 353,
+        "disc_number": 1
       }
     ]
   },
   {
-    "artist": "Aes Dana",
+    "artist": "AES Dana",
     "album": "Pollen",
     "year": 2012,
     "duration": 4619,
     "tracks": [
       {
         "title": "Jetlag Corporation",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 1,
         "year": 2012,
-        "duration": 343
+        "duration": 343,
+        "disc_number": 1
       },
       {
         "title": "Borderline",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 2,
         "year": 2012,
-        "duration": 366
+        "duration": 366,
+        "disc_number": 1
       },
       {
-        "title": "Conditioned (Album Edit)",
-        "artist": "Aes Dana",
+        "title": "Conditioned (album edit)",
+        "artist": "AES Dana",
         "track": 3,
         "year": 2012,
-        "duration": 463
+        "duration": 463,
+        "disc_number": 1
       },
       {
         "title": "Tree.Some",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 4,
         "year": 2012,
-        "duration": 423
+        "duration": 423,
+        "disc_number": 1
       },
       {
         "title": "A Carmine Day",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 5,
         "year": 2012,
-        "duration": 526
+        "duration": 526,
+        "disc_number": 1
       },
       {
         "title": "101 Clouds",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 6,
         "year": 2012,
-        "duration": 460
+        "duration": 460,
+        "disc_number": 1
       },
       {
         "title": "Riven",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 7,
         "year": 2012,
-        "duration": 442
+        "duration": 442,
+        "disc_number": 1
       },
       {
         "title": "The Meeting Point",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 8,
         "year": 2012,
-        "duration": 423
+        "duration": 423,
+        "disc_number": 1
       },
       {
         "title": "Horizontal Rain",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 9,
         "year": 2012,
-        "duration": 502
+        "duration": 502,
+        "disc_number": 1
       },
       {
         "title": "Low Tide Explorations",
-        "artist": "Aes Dana",
+        "artist": "AES Dana",
         "track": 10,
         "year": 2012,
-        "duration": 665
+        "duration": 665,
+        "disc_number": 1
       }
     ]
   },
@@ -7358,7 +7418,7 @@
       },
       {
         "title": "Shi No Barado",
-        "artist": "Area 11 feat. ベッキー・クルーエル",
+        "artist": "Area 11 feat. Beckii Cruel",
         "track": 7,
         "year": 2013,
         "duration": 319,
@@ -7446,7 +7506,7 @@
       },
       {
         "title": "Shi No Barado (Off-Vocal)",
-        "artist": "Area 11 feat. ベッキー・クルーエル",
+        "artist": "Area 11 feat. Beckii Cruel",
         "track": 18,
         "year": 2013,
         "duration": 319,
@@ -7534,7 +7594,7 @@
       },
       {
         "title": "Shi No Barado (Commentary)",
-        "artist": "Area 11 feat. ベッキー・クルーエル",
+        "artist": "Area 11 feat. Beckii Cruel",
         "track": 29,
         "year": 2013,
         "duration": 318,
@@ -7622,7 +7682,7 @@
       },
       {
         "title": "Shi No Barado (Japanese Version)",
-        "artist": "Area 11 feat. ベッキー・クルーエル",
+        "artist": "Area 11 feat. Beckii Cruel",
         "track": 40,
         "year": 2013,
         "duration": 318,
@@ -11921,8 +11981,8 @@
     ]
   },
   {
-    "artist": "Ben Salisbury & Geoff Barrow",
-    "album": "Ex_Machina",
+    "artist": "Ben Salisbury and Geoff Barrow",
+    "album": "Ex_Machina: Original Motion Picture Soundtrack",
     "year": 2015,
     "duration": 4121,
     "tracks": [
@@ -11992,7 +12052,7 @@
       },
       {
         "title": "Out",
-        "artist": "Ben Salisbury & Geoff Barrow",
+        "artist": "Thought Forms",
         "track": 9,
         "year": 2015,
         "duration": 122,
@@ -12000,7 +12060,7 @@
       },
       {
         "title": "Bunsen Burner",
-        "artist": "Ben Salisbury & Geoff Barrow",
+        "artist": "CUTS",
         "track": 10,
         "year": 2015,
         "duration": 242,
@@ -12009,7 +12069,7 @@
       {
         "title": "The Lab",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 1,
+        "track": 11,
         "year": 2015,
         "duration": 101,
         "disc_number": 2
@@ -12017,7 +12077,7 @@
       {
         "title": "Masks",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 2,
+        "track": 12,
         "year": 2015,
         "duration": 148,
         "disc_number": 2
@@ -12025,7 +12085,7 @@
       {
         "title": "Ava Undresses (Demo Version 1)",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 3,
+        "track": 13,
         "year": 2015,
         "duration": 132,
         "disc_number": 2
@@ -12033,7 +12093,7 @@
       {
         "title": "Session 2",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 4,
+        "track": 14,
         "year": 2015,
         "duration": 35,
         "disc_number": 2
@@ -12041,23 +12101,23 @@
       {
         "title": "Mary Experiment",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 5,
+        "track": 15,
         "year": 2015,
         "duration": 178,
         "disc_number": 2
       },
       {
-        "title": "Ava Turns To CCTV",
+        "title": "Ava Turns to CCTV",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 6,
+        "track": 16,
         "year": 2015,
         "duration": 107,
         "disc_number": 2
       },
       {
-        "title": "Climbing The Waterfall",
+        "title": "Climbing the Waterfall",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 7,
+        "track": 17,
         "year": 2015,
         "duration": 108,
         "disc_number": 2
@@ -12065,15 +12125,15 @@
       {
         "title": "Ava Undresses (Demo Version 2)",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 8,
+        "track": 18,
         "year": 2015,
         "duration": 93,
         "disc_number": 2
       },
       {
-        "title": "Reversing The Test",
+        "title": "Reversing the Test",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 9,
+        "track": 19,
         "year": 2015,
         "duration": 124,
         "disc_number": 2
@@ -12081,7 +12141,7 @@
       {
         "title": "A Beginning",
         "artist": "Ben Salisbury & Geoff Barrow",
-        "track": 10,
+        "track": 20,
         "year": 2015,
         "duration": 186,
         "disc_number": 2
@@ -25327,78 +25387,88 @@
   {
     "artist": "Convextion",
     "album": "Convextion",
-    "year": 2008,
+    "year": 2006,
     "duration": 4446,
     "tracks": [
       {
         "title": "Equanimity",
         "artist": "Convextion",
         "track": 1,
-        "year": 2008,
-        "duration": 598
+        "year": 2006,
+        "duration": 598,
+        "disc_number": 1
       },
       {
-        "title": "Solum Ferrum (Extended Version)",
+        "title": "Solum Ferrum (extended version)",
         "artist": "Convextion",
         "track": 2,
-        "year": 2008,
-        "duration": 495
+        "year": 2006,
+        "duration": 495,
+        "disc_number": 1
       },
       {
         "title": "Sulphur Vent",
         "artist": "Convextion",
         "track": 3,
-        "year": 2008,
-        "duration": 584
+        "year": 2006,
+        "duration": 584,
+        "disc_number": 1
       },
       {
         "title": "Astrum",
         "artist": "Convextion",
         "track": 4,
-        "year": 2008,
-        "duration": 426
+        "year": 2006,
+        "duration": 426,
+        "disc_number": 1
       },
       {
         "title": "Premiata",
         "artist": "Convextion",
         "track": 5,
-        "year": 2008,
-        "duration": 445
+        "year": 2006,
+        "duration": 445,
+        "disc_number": 1
       },
       {
         "title": "Interlude 1",
         "artist": "Convextion",
         "track": 6,
-        "year": 2008,
-        "duration": 128
+        "year": 2006,
+        "duration": 128,
+        "disc_number": 1
       },
       {
         "title": "Desolate Hub",
         "artist": "Convextion",
         "track": 7,
-        "year": 2008,
-        "duration": 493
+        "year": 2006,
+        "duration": 493,
+        "disc_number": 1
       },
       {
         "title": "Interlude 2",
         "artist": "Convextion",
         "track": 8,
-        "year": 2008,
-        "duration": 124
+        "year": 2006,
+        "duration": 124,
+        "disc_number": 1
       },
       {
         "title": "Venea",
         "artist": "Convextion",
         "track": 9,
-        "year": 2008,
-        "duration": 698
+        "year": 2006,
+        "duration": 698,
+        "disc_number": 1
       },
       {
         "title": "JMA020603",
         "artist": "Convextion",
         "track": 10,
-        "year": 2008,
-        "duration": 452
+        "year": 2006,
+        "duration": 452,
+        "disc_number": 1
       }
     ]
   },
@@ -25419,30 +25489,33 @@
   },
   {
     "artist": "Cornelius",
-    "album": "Star Fruit Surf Rider",
-    "year": 1997,
+    "album": "Star Fruits Surf Rider",
+    "year": 1998,
     "duration": 1001,
     "tracks": [
       {
-        "title": "Star Fruits Surf Rider (Single Version)",
+        "title": "Star Fruits Surf Rider (single version)",
         "artist": "Cornelius",
         "track": 1,
-        "year": 1997,
-        "duration": 342
+        "year": 1998,
+        "duration": 342,
+        "disc_number": 1
       },
       {
-        "title": "Ball In -Kick Off",
+        "title": "Ball in - Kick Off",
         "artist": "Cornelius",
         "track": 2,
-        "year": 1997,
-        "duration": 319
+        "year": 1998,
+        "duration": 319,
+        "disc_number": 1
       },
       {
         "title": "Star Fruits Green",
         "artist": "Cornelius",
         "track": 3,
-        "year": 1997,
-        "duration": 339
+        "year": 1998,
+        "duration": 339,
+        "disc_number": 1
       }
     ]
   },
@@ -29294,164 +29367,186 @@
     ]
   },
   {
-    "artist": "Death Cab For Cutie",
-    "album": "Transatlanticism (10th Anniversary Edition)",
-    "year": 2013,
+    "artist": "Death Cab for Cutie",
+    "album": "Transatlanticism",
+    "year": 2003,
     "duration": 5378,
     "tracks": [
       {
         "title": "The New Year",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 1,
-        "year": 2013,
-        "duration": 246
+        "year": 2003,
+        "duration": 246,
+        "disc_number": 1
       },
       {
         "title": "Lightness",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 2,
-        "year": 2013,
-        "duration": 210
+        "year": 2003,
+        "duration": 210,
+        "disc_number": 1
       },
       {
-        "title": "Title And Registration",
-        "artist": "Death Cab For Cutie",
+        "title": "Title and Registration",
+        "artist": "Death Cab for Cutie",
         "track": 3,
-        "year": 2013,
-        "duration": 219
+        "year": 2003,
+        "duration": 219,
+        "disc_number": 1
       },
       {
-        "title": "Expo '86",
-        "artist": "Death Cab For Cutie",
+        "title": "Expo ’86",
+        "artist": "Death Cab for Cutie",
         "track": 4,
-        "year": 2013,
-        "duration": 251
+        "year": 2003,
+        "duration": 251,
+        "disc_number": 1
       },
       {
-        "title": "The Sound Of Settling",
-        "artist": "Death Cab For Cutie",
+        "title": "The Sound of Settling",
+        "artist": "Death Cab for Cutie",
         "track": 5,
-        "year": 2013,
-        "duration": 132
+        "year": 2003,
+        "duration": 132,
+        "disc_number": 1
       },
       {
         "title": "Tiny Vessels",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 6,
-        "year": 2013,
-        "duration": 261
+        "year": 2003,
+        "duration": 261,
+        "disc_number": 1
       },
       {
         "title": "Transatlanticism",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 7,
-        "year": 2013,
-        "duration": 475
+        "year": 2003,
+        "duration": 475,
+        "disc_number": 1
       },
       {
         "title": "Passenger Seat",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 8,
-        "year": 2013,
-        "duration": 221
+        "year": 2003,
+        "duration": 221,
+        "disc_number": 1
       },
       {
-        "title": "Death Of An Interior Decorator",
-        "artist": "Death Cab For Cutie",
+        "title": "Death of an Interior Decorator",
+        "artist": "Death Cab for Cutie",
         "track": 9,
-        "year": 2013,
-        "duration": 176
+        "year": 2003,
+        "duration": 176,
+        "disc_number": 1
       },
       {
         "title": "We Looked Like Giants",
-        "artist": "Death Cab For Cutie",
+        "artist": "Death Cab for Cutie",
         "track": 10,
-        "year": 2013,
-        "duration": 332
+        "year": 2003,
+        "duration": 332,
+        "disc_number": 1
       },
       {
-        "title": "A Lack Of Color",
-        "artist": "Death Cab For Cutie",
+        "title": "A Lack of Color",
+        "artist": "Death Cab for Cutie",
         "track": 11,
-        "year": 2013,
-        "duration": 215
+        "year": 2003,
+        "duration": 215,
+        "disc_number": 1
       },
       {
-        "title": "The New Year (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "The New Year (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 12,
-        "year": 2013,
-        "duration": 197
+        "year": 2003,
+        "duration": 197,
+        "disc_number": 1
       },
       {
-        "title": "Lightness (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Lightness (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 13,
-        "year": 2013,
-        "duration": 264
+        "year": 2003,
+        "duration": 264,
+        "disc_number": 1
       },
       {
-        "title": "Title And Registration (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Title and Registration (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 14,
-        "year": 2013,
-        "duration": 222
+        "year": 2003,
+        "duration": 222,
+        "disc_number": 1
       },
       {
-        "title": "Expo '86 (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Expo ’86 (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 15,
-        "year": 2013,
-        "duration": 299
+        "year": 2003,
+        "duration": 299,
+        "disc_number": 1
       },
       {
-        "title": "The Sound Of Settling (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "The Sound of Settling (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 16,
-        "year": 2013,
-        "duration": 156
+        "year": 2003,
+        "duration": 156,
+        "disc_number": 1
       },
       {
-        "title": "Tiny Vessels (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Tiny Vessels (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 17,
-        "year": 2013,
-        "duration": 295
+        "year": 2003,
+        "duration": 295,
+        "disc_number": 1
       },
       {
-        "title": "Transatlanticism (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Transatlanticism (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 18,
-        "year": 2013,
-        "duration": 372
+        "year": 2003,
+        "duration": 372,
+        "disc_number": 1
       },
       {
-        "title": "Passenger Seat (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Passenger Seat (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 19,
-        "year": 2013,
-        "duration": 199
+        "year": 2003,
+        "duration": 199,
+        "disc_number": 1
       },
       {
-        "title": "Death Of An Interior Decorator (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "Death of an Interior Decorator (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 20,
-        "year": 2013,
-        "duration": 191
+        "year": 2003,
+        "duration": 191,
+        "disc_number": 1
       },
       {
-        "title": "We Looked Like Giants (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "We Looked Like Giants (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 21,
-        "year": 2013,
-        "duration": 232
+        "year": 2003,
+        "duration": 232,
+        "disc_number": 1
       },
       {
-        "title": "A Lack Of Color (Demo)",
-        "artist": "Death Cab For Cutie",
+        "title": "A Lack of Color (demo)",
+        "artist": "Death Cab for Cutie",
         "track": 22,
-        "year": 2013,
-        "duration": 203
+        "year": 2003,
+        "duration": 203,
+        "disc_number": 1
       }
     ]
   },
@@ -30698,112 +30793,128 @@
         "artist": "Deluka",
         "track": 1,
         "year": 2007,
-        "duration": 243
+        "duration": 243,
+        "disc_number": 1
       },
       {
         "title": "Finito",
         "artist": "Deluka",
         "track": 2,
         "year": 2007,
-        "duration": 222
+        "duration": 222,
+        "disc_number": 1
       },
       {
         "title": "Flashbacks",
         "artist": "Deluka",
         "track": 3,
         "year": 2007,
-        "duration": 223
+        "duration": 223,
+        "disc_number": 1
       },
       {
         "title": "Sleep Is Impossible",
         "artist": "Deluka",
         "track": 4,
         "year": 2007,
-        "duration": 284
+        "duration": 284,
+        "disc_number": 1
       },
       {
         "title": "Capital City",
         "artist": "Deluka",
         "track": 5,
         "year": 2007,
-        "duration": 339
+        "duration": 339,
+        "disc_number": 1
       },
       {
         "title": "Confession",
         "artist": "Deluka",
         "track": 6,
         "year": 2007,
-        "duration": 240
+        "duration": 240,
+        "disc_number": 1
       },
       {
         "title": "I'll Wait",
         "artist": "Deluka",
         "track": 7,
         "year": 2007,
-        "duration": 142
+        "duration": 142,
+        "disc_number": 1
       },
       {
-        "title": "Ike and Tina",
+        "title": "Ike & Tina",
         "artist": "Deluka",
         "track": 8,
         "year": 2007,
-        "duration": 288
+        "duration": 288,
+        "disc_number": 1
       },
       {
-        "title": "Stop_Stop",
+        "title": "Stop Stop",
         "artist": "Deluka",
         "track": 9,
         "year": 2007,
-        "duration": 257
+        "duration": 257,
+        "disc_number": 1
       },
       {
         "title": "Mixed Messages",
         "artist": "Deluka",
         "track": 10,
         "year": 2007,
-        "duration": 267
+        "duration": 267,
+        "disc_number": 1
       },
       {
         "title": "(I Hear) These Whispers",
         "artist": "Deluka",
         "track": 11,
         "year": 2007,
-        "duration": 283
+        "duration": 283,
+        "disc_number": 1
       },
       {
         "title": "Shakes",
         "artist": "Deluka",
         "track": 12,
         "year": 2007,
-        "duration": 357
+        "duration": 357,
+        "disc_number": 1
       },
       {
         "title": "I'll Wait (two_ERRORS substantial rework)",
         "artist": "Deluka",
         "track": 13,
         "year": 2007,
-        "duration": 275
+        "duration": 275,
+        "disc_number": 1
       },
       {
         "title": "Flashbacks (Hooker & De Freitas Remix)",
         "artist": "Deluka",
         "track": 14,
         "year": 2007,
-        "duration": 379
+        "duration": 379,
+        "disc_number": 1
       },
       {
         "title": "Ike and Tina (Gash DJs Elephants Knee Remix)",
         "artist": "Deluka",
         "track": 15,
         "year": 2007,
-        "duration": 394
+        "duration": 394,
+        "disc_number": 1
       },
       {
         "title": "Stop_Stop (single/original Version)",
         "artist": "Deluka",
         "track": 16,
         "year": 2007,
-        "duration": 254
+        "duration": 254,
+        "disc_number": 1
       }
     ]
   },
@@ -30818,77 +30929,88 @@
         "artist": "Deluka",
         "track": 1,
         "year": 2010,
-        "duration": 174
+        "duration": 174,
+        "disc_number": 1
       },
       {
         "title": "Snapshot",
         "artist": "Deluka",
         "track": 2,
         "year": 2010,
-        "duration": 108
+        "duration": 108,
+        "disc_number": 1
       },
       {
         "title": "Cascade",
         "artist": "Deluka",
         "track": 3,
         "year": 2010,
-        "duration": 255
+        "duration": 255,
+        "disc_number": 1
       },
       {
         "title": "Nevada",
         "artist": "Deluka",
         "track": 4,
         "year": 2010,
-        "duration": 166
+        "duration": 166,
+        "disc_number": 1
       },
       {
         "title": "Come Back to Me",
         "artist": "Deluka",
         "track": 5,
         "year": 2010,
-        "duration": 233
+        "duration": 233,
+        "disc_number": 1
       },
       {
         "title": "Your Name on My Lips",
         "artist": "Deluka",
         "track": 6,
         "year": 2010,
-        "duration": 262
+        "duration": 262,
+        "disc_number": 1
       },
       {
-        "title": "Mean Streak",
+        "title": "Meanstreak",
         "artist": "Deluka",
         "track": 7,
         "year": 2010,
-        "duration": 219
+        "duration": 219,
+        "disc_number": 1
       },
       {
         "title": "Trespasser",
         "artist": "Deluka",
         "track": 8,
         "year": 2010,
-        "duration": 173
+        "duration": 173,
+        "disc_number": 1
       },
       {
         "title": "Waves",
         "artist": "Deluka",
         "track": 9,
         "year": 2010,
-        "duration": 254
+        "duration": 254,
+        "disc_number": 1
       },
       {
         "title": "Morning Comes",
         "artist": "Deluka",
         "track": 10,
         "year": 2010,
-        "duration": 203
+        "duration": 203,
+        "disc_number": 1
       },
       {
         "title": "Capital City",
         "artist": "Deluka",
         "track": 11,
         "year": 2010,
-        "duration": 351
+        "duration": 351,
+        "disc_number": 1
       }
     ]
   },
@@ -37892,84 +38014,96 @@
         "artist": "Evanescence",
         "track": 1,
         "year": 2003,
-        "duration": 214
+        "duration": 214,
+        "disc_number": 1
       },
       {
         "title": "Bring Me to Life",
         "artist": "Evanescence",
         "track": 2,
         "year": 2003,
-        "duration": 237
+        "duration": 237,
+        "disc_number": 1
       },
       {
-        "title": "Everybody's Fool",
+        "title": "Everybody’s Fool",
         "artist": "Evanescence",
         "track": 3,
         "year": 2003,
-        "duration": 195
+        "duration": 195,
+        "disc_number": 1
       },
       {
         "title": "My Immortal",
         "artist": "Evanescence",
         "track": 4,
         "year": 2003,
-        "duration": 264
+        "duration": 264,
+        "disc_number": 1
       },
       {
         "title": "Haunted",
         "artist": "Evanescence",
         "track": 5,
         "year": 2003,
-        "duration": 186
+        "duration": 186,
+        "disc_number": 1
       },
       {
         "title": "Tourniquet",
         "artist": "Evanescence",
         "track": 6,
         "year": 2003,
-        "duration": 278
+        "duration": 278,
+        "disc_number": 1
       },
       {
         "title": "Imaginary",
         "artist": "Evanescence",
         "track": 7,
         "year": 2003,
-        "duration": 257
+        "duration": 257,
+        "disc_number": 1
       },
       {
         "title": "Taking Over Me",
         "artist": "Evanescence",
         "track": 8,
         "year": 2003,
-        "duration": 230
+        "duration": 230,
+        "disc_number": 1
       },
       {
         "title": "Hello",
         "artist": "Evanescence",
         "track": 9,
         "year": 2003,
-        "duration": 220
+        "duration": 220,
+        "disc_number": 1
       },
       {
         "title": "My Last Breath",
         "artist": "Evanescence",
         "track": 10,
         "year": 2003,
-        "duration": 247
+        "duration": 247,
+        "disc_number": 1
       },
       {
         "title": "Whisper",
         "artist": "Evanescence",
         "track": 11,
         "year": 2003,
-        "duration": 330
+        "duration": 330,
+        "disc_number": 1
       },
       {
-        "title": "My Immortal (Band Version)",
+        "title": "My Immortal (band version)",
         "artist": "Evanescence",
         "track": 12,
         "year": 2003,
-        "duration": 273
+        "duration": 273,
+        "disc_number": 1
       }
     ]
   },
@@ -43087,79 +43221,89 @@
   },
   {
     "artist": "Global Communication",
-    "album": "76:14 Remastered",
-    "year": 1997,
+    "album": "76:14",
+    "year": 1994,
     "duration": 4574,
     "tracks": [
       {
-        "title": "4:02",
+        "title": "4 02",
         "artist": "Global Communication",
         "track": 1,
-        "year": 1997,
-        "duration": 242
+        "year": 1994,
+        "duration": 242,
+        "disc_number": 1
       },
       {
-        "title": "14:31",
+        "title": "14 31",
         "artist": "Global Communication",
         "track": 2,
-        "year": 1997,
-        "duration": 871
+        "year": 1994,
+        "duration": 871,
+        "disc_number": 1
       },
       {
-        "title": "9:25",
+        "title": "9 25",
         "artist": "Global Communication",
         "track": 3,
-        "year": 1997,
-        "duration": 565
+        "year": 1994,
+        "duration": 565,
+        "disc_number": 1
       },
       {
-        "title": "9:39",
+        "title": "9 39",
         "artist": "Global Communication",
         "track": 4,
-        "year": 1997,
-        "duration": 579
+        "year": 1994,
+        "duration": 579,
+        "disc_number": 1
       },
       {
-        "title": "7:39",
+        "title": "7 39",
         "artist": "Global Communication",
         "track": 5,
-        "year": 1997,
-        "duration": 459
+        "year": 1994,
+        "duration": 459,
+        "disc_number": 1
       },
       {
-        "title": "0:54",
+        "title": "0 54",
         "artist": "Global Communication",
         "track": 6,
-        "year": 1997,
-        "duration": 54
+        "year": 1994,
+        "duration": 54,
+        "disc_number": 1
       },
       {
-        "title": "8:07",
+        "title": "8 07",
         "artist": "Global Communication",
         "track": 7,
-        "year": 1997,
-        "duration": 487
+        "year": 1994,
+        "duration": 487,
+        "disc_number": 1
       },
       {
-        "title": "5:23",
+        "title": "5 23",
         "artist": "Global Communication",
         "track": 8,
-        "year": 1997,
-        "duration": 323
+        "year": 1994,
+        "duration": 323,
+        "disc_number": 1
       },
       {
-        "title": "4:14",
+        "title": "4 14",
         "artist": "Global Communication",
         "track": 9,
-        "year": 1997,
-        "duration": 254
+        "year": 1994,
+        "duration": 254,
+        "disc_number": 1
       },
       {
-        "title": "12:18",
+        "title": "12 18",
         "artist": "Global Communication",
         "track": 10,
-        "year": 1997,
-        "duration": 738
+        "year": 1994,
+        "duration": 738,
+        "disc_number": 1
       }
     ]
   },
@@ -46854,218 +46998,248 @@
         "artist": "Hans Zimmer",
         "track": 1,
         "year": 2010,
-        "duration": 72
+        "duration": 72,
+        "disc_number": 1
       },
       {
         "title": "We Built Our Own World",
         "artist": "Hans Zimmer",
         "track": 2,
         "year": 2010,
-        "duration": 115
+        "duration": 115,
+        "disc_number": 1
       },
       {
         "title": "Dream Is Collapsing",
         "artist": "Hans Zimmer",
         "track": 3,
         "year": 2010,
-        "duration": 143
+        "duration": 143,
+        "disc_number": 1
       },
       {
         "title": "Radical Notion",
         "artist": "Hans Zimmer",
         "track": 4,
         "year": 2010,
-        "duration": 222
+        "duration": 222,
+        "disc_number": 1
       },
       {
         "title": "Old Souls",
         "artist": "Hans Zimmer",
         "track": 5,
         "year": 2010,
-        "duration": 464
+        "duration": 464,
+        "disc_number": 1
       },
       {
         "title": "528491",
         "artist": "Hans Zimmer",
         "track": 6,
         "year": 2010,
-        "duration": 143
+        "duration": 143,
+        "disc_number": 1
       },
       {
         "title": "Mombasa",
         "artist": "Hans Zimmer",
         "track": 7,
         "year": 2010,
-        "duration": 294
+        "duration": 294,
+        "disc_number": 1
       },
       {
         "title": "One Simple Idea",
         "artist": "Hans Zimmer",
         "track": 8,
         "year": 2010,
-        "duration": 148
+        "duration": 148,
+        "disc_number": 1
       },
       {
-        "title": "Dream Within A Dream",
+        "title": "Dream Within a Dream",
         "artist": "Hans Zimmer",
         "track": 9,
         "year": 2010,
-        "duration": 304
+        "duration": 304,
+        "disc_number": 1
       },
       {
-        "title": "Waiting For A Train",
+        "title": "Waiting for a Train",
         "artist": "Hans Zimmer",
         "track": 10,
         "year": 2010,
-        "duration": 570
+        "duration": 570,
+        "disc_number": 1
       },
       {
         "title": "Paradox",
         "artist": "Hans Zimmer",
         "track": 11,
         "year": 2010,
-        "duration": 205
+        "duration": 205,
+        "disc_number": 1
       },
       {
         "title": "Time",
         "artist": "Hans Zimmer",
         "track": 12,
         "year": 2010,
-        "duration": 275
+        "duration": 275,
+        "disc_number": 1
       }
     ]
   },
   {
     "artist": "Hans Zimmer",
-    "album": "The Dark Knight Rises (Deluxe Edition)",
+    "album": "The Dark Knight Rises: Original Motion Picture Soundtrack",
     "year": 2012,
     "duration": 4127,
     "tracks": [
       {
-        "title": "A Storm is Coming",
+        "title": "A Storm Is Coming",
         "artist": "Hans Zimmer",
         "track": 1,
         "year": 2012,
-        "duration": 36
+        "duration": 36,
+        "disc_number": 1
       },
       {
         "title": "On Thin Ice",
         "artist": "Hans Zimmer",
         "track": 2,
         "year": 2012,
-        "duration": 174
+        "duration": 174,
+        "disc_number": 1
       },
       {
         "title": "Gotham's Reckoning",
         "artist": "Hans Zimmer",
         "track": 3,
         "year": 2012,
-        "duration": 247
+        "duration": 247,
+        "disc_number": 1
       },
       {
-        "title": "Mind if I Cut In?",
+        "title": "Mind If I Cut In?",
         "artist": "Hans Zimmer",
         "track": 4,
         "year": 2012,
-        "duration": 207
+        "duration": 207,
+        "disc_number": 1
       },
       {
         "title": "Underground Army",
         "artist": "Hans Zimmer",
         "track": 5,
         "year": 2012,
-        "duration": 191
+        "duration": 191,
+        "disc_number": 1
       },
       {
         "title": "Born in Darkness",
         "artist": "Hans Zimmer",
         "track": 6,
         "year": 2012,
-        "duration": 116
+        "duration": 116,
+        "disc_number": 1
       },
       {
         "title": "The Fire Rises",
         "artist": "Hans Zimmer",
         "track": 7,
         "year": 2012,
-        "duration": 333
+        "duration": 333,
+        "disc_number": 1
       },
       {
         "title": "Nothing Out There",
         "artist": "Hans Zimmer",
         "track": 8,
         "year": 2012,
-        "duration": 171
+        "duration": 171,
+        "disc_number": 1
       },
       {
         "title": "Despair",
         "artist": "Hans Zimmer",
         "track": 9,
         "year": 2012,
-        "duration": 194
+        "duration": 194,
+        "disc_number": 1
       },
       {
         "title": "Fear Will Find You",
         "artist": "Hans Zimmer",
         "track": 10,
         "year": 2012,
-        "duration": 188
+        "duration": 188,
+        "disc_number": 1
       },
       {
         "title": "Why Do We Fall?",
         "artist": "Hans Zimmer",
         "track": 11,
         "year": 2012,
-        "duration": 122
+        "duration": 122,
+        "disc_number": 1
       },
       {
         "title": "Death by Exile",
         "artist": "Hans Zimmer",
         "track": 12,
         "year": 2012,
-        "duration": 23
+        "duration": 23,
+        "disc_number": 1
       },
       {
         "title": "Imagine the Fire",
         "artist": "Hans Zimmer",
         "track": 13,
         "year": 2012,
-        "duration": 445
+        "duration": 445,
+        "disc_number": 1
       },
       {
         "title": "Necessary Evil",
         "artist": "Hans Zimmer",
         "track": 14,
         "year": 2012,
-        "duration": 196
+        "duration": 196,
+        "disc_number": 1
       },
       {
         "title": "Rise",
         "artist": "Hans Zimmer",
         "track": 15,
         "year": 2012,
-        "duration": 435
+        "duration": 435,
+        "disc_number": 1
       },
       {
-        "title": "Bombers Over Ibiza (Junkie XL Remix)",
+        "title": "Bombers Over Ibiza (Junkie XL remix)",
         "artist": "Hans Zimmer",
         "track": 16,
         "year": 2012,
-        "duration": 350
+        "duration": 350,
+        "disc_number": 1
       },
       {
         "title": "The Shadows Betray You",
         "artist": "Hans Zimmer",
         "track": 17,
         "year": 2012,
-        "duration": 320
+        "duration": 320,
+        "disc_number": 1
       },
       {
         "title": "The End",
         "artist": "Hans Zimmer",
         "track": 18,
         "year": 2012,
-        "duration": 372
+        "duration": 372,
+        "disc_number": 1
       }
     ]
   },
@@ -49401,93 +49575,105 @@
   },
   {
     "artist": "IAMX",
-    "album": "The Alternative (UK Special Edition)",
-    "year": 2008,
+    "album": "The Alternative",
+    "year": 2006,
     "duration": 3052,
     "tracks": [
       {
         "title": "President",
         "artist": "IAMX",
         "track": 1,
-        "year": 2008,
-        "duration": 237
+        "year": 2006,
+        "duration": 237,
+        "disc_number": 1
       },
       {
         "title": "The Alternative",
         "artist": "IAMX",
         "track": 2,
-        "year": 2008,
-        "duration": 253
+        "year": 2006,
+        "duration": 253,
+        "disc_number": 1
       },
       {
         "title": "Nightlife",
         "artist": "IAMX",
         "track": 3,
-        "year": 2008,
-        "duration": 301
+        "year": 2006,
+        "duration": 301,
+        "disc_number": 1
       },
       {
-        "title": "Lulled By Numbers",
+        "title": "Lulled by Numbers",
         "artist": "IAMX",
         "track": 4,
-        "year": 2008,
-        "duration": 240
+        "year": 2006,
+        "duration": 240,
+        "disc_number": 1
       },
       {
-        "title": "Song Of Imaginary Beings",
+        "title": "Song of Imaginary Beings",
         "artist": "IAMX",
         "track": 5,
-        "year": 2008,
-        "duration": 271
+        "year": 2006,
+        "duration": 271,
+        "disc_number": 1
       },
       {
         "title": "The Negative Sex",
         "artist": "IAMX",
         "track": 6,
-        "year": 2008,
-        "duration": 192
+        "year": 2006,
+        "duration": 192,
+        "disc_number": 1
       },
       {
-        "title": "Bring Me Back A Dog",
+        "title": "Bring Me Back a Dog",
         "artist": "IAMX",
         "track": 7,
-        "year": 2008,
-        "duration": 209
+        "year": 2006,
+        "duration": 209,
+        "disc_number": 1
       },
       {
         "title": "S.H.E.",
         "artist": "IAMX",
         "track": 8,
-        "year": 2008,
-        "duration": 242
+        "year": 2006,
+        "duration": 242,
+        "disc_number": 1
       },
       {
         "title": "Spit It Out",
         "artist": "IAMX",
         "track": 9,
-        "year": 2008,
-        "duration": 235
+        "year": 2006,
+        "duration": 235,
+        "disc_number": 1
       },
       {
         "title": "After Every Party I Die",
         "artist": "IAMX",
         "track": 10,
-        "year": 2008,
-        "duration": 230
+        "year": 2006,
+        "duration": 230,
+        "disc_number": 1
       },
       {
         "title": "This Will Make You Love Again",
         "artist": "IAMX",
         "track": 11,
-        "year": 2008,
-        "duration": 287
+        "year": 2006,
+        "duration": 287,
+        "disc_number": 1
       },
       {
-        "title": "Spit It Out (String Version)",
+        "title": "Spit It Out (string version)",
         "artist": "IAMX",
         "track": 12,
-        "year": 2008,
-        "duration": 351
+        "year": 2006,
+        "duration": 351,
+        "disc_number": 1
       }
     ]
   },
@@ -49581,12 +49767,12 @@
   },
   {
     "artist": "Ice Cube",
-    "album": "It Was A Good Day",
+    "album": "It Was a Good Day",
     "year": 1992,
     "duration": 523,
     "tracks": [
       {
-        "title": "It Was A Good Day (Radio Version)",
+        "title": "It Was a Good Day (radio version)",
         "artist": "Ice Cube",
         "track": 1,
         "year": 1992,
@@ -49594,7 +49780,7 @@
         "disc_number": 1
       },
       {
-        "title": "It Was A Good Day (Instrumental)",
+        "title": "It Was a Good Day (instrumental)",
         "artist": "Ice Cube",
         "track": 2,
         "year": 1992,
@@ -55518,14 +55704,14 @@
     ]
   },
   {
-    "artist": "Kan Gao, feat. Laura Shigihara",
+    "artist": "Kan R. Gao, feat. Laura Shigihara",
     "album": "To the Moon: Original Soundtrack",
     "year": 2011,
     "duration": 3468,
     "tracks": [
       {
         "title": "To the Moon – Main Theme",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 1,
         "year": 2011,
         "duration": 296,
@@ -55533,7 +55719,7 @@
       },
       {
         "title": "Between a Squirrel and a Tree",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 2,
         "year": 2011,
         "duration": 78,
@@ -55541,7 +55727,7 @@
       },
       {
         "title": "Spiral of Secrets",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 3,
         "year": 2011,
         "duration": 66,
@@ -55549,7 +55735,7 @@
       },
       {
         "title": "For River – Piano (Sarah & Tommy’s version)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 4,
         "year": 2011,
         "duration": 178,
@@ -55557,7 +55743,7 @@
       },
       {
         "title": "Bestest Detectives in the World",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 5,
         "year": 2011,
         "duration": 76,
@@ -55565,7 +55751,7 @@
       },
       {
         "title": "Too Bad So Sad",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 6,
         "year": 2011,
         "duration": 8,
@@ -55573,7 +55759,7 @@
       },
       {
         "title": "Teddy",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 7,
         "year": 2011,
         "duration": 42,
@@ -55581,7 +55767,7 @@
       },
       {
         "title": "Uncharted Realms",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 8,
         "year": 2011,
         "duration": 68,
@@ -55589,7 +55775,7 @@
       },
       {
         "title": "Having Lived",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 9,
         "year": 2011,
         "duration": 81,
@@ -55597,7 +55783,7 @@
       },
       {
         "title": "Moonwisher",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 10,
         "year": 2011,
         "duration": 130,
@@ -55605,7 +55791,7 @@
       },
       {
         "title": "Born a Stranger",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 11,
         "year": 2011,
         "duration": 101,
@@ -55613,7 +55799,7 @@
       },
       {
         "title": "For River – Piano (Johnny’s version)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 12,
         "year": 2011,
         "duration": 99,
@@ -55621,7 +55807,7 @@
       },
       {
         "title": "Lament of a Stranger",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 13,
         "year": 2011,
         "duration": 66,
@@ -55629,7 +55815,7 @@
       },
       {
         "title": "Everything’s Alright (music box)",
-        "artist": "Laura Shigihara, arranged by Kan Gao",
+        "artist": "Laura Shigihara, arranged by Kan R. Gao",
         "track": 14,
         "year": 2011,
         "duration": 40,
@@ -55637,7 +55823,7 @@
       },
       {
         "title": "Moongazer",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 15,
         "year": 2011,
         "duration": 135,
@@ -55645,7 +55831,7 @@
       },
       {
         "title": "Anya by the Stars",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 16,
         "year": 2011,
         "duration": 135,
@@ -55653,7 +55839,7 @@
       },
       {
         "title": "Take Me Anywhere",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 17,
         "year": 2011,
         "duration": 60,
@@ -55661,7 +55847,7 @@
       },
       {
         "title": "Warning (AKA best track ever)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 18,
         "year": 2011,
         "duration": 9,
@@ -55669,7 +55855,7 @@
       },
       {
         "title": "Beta‐B",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 19,
         "year": 2011,
         "duration": 66,
@@ -55677,7 +55863,7 @@
       },
       {
         "title": "World’s Smallest Ferris Wheel",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 20,
         "year": 2011,
         "duration": 35,
@@ -55685,7 +55871,7 @@
       },
       {
         "title": "Once Upon a Memory",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 21,
         "year": 2011,
         "duration": 145,
@@ -55693,7 +55879,7 @@
       },
       {
         "title": "Once Upon a Memory (piano)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 22,
         "year": 2011,
         "duration": 95,
@@ -55709,7 +55895,7 @@
       },
       {
         "title": "Everything’s Alright (reprise)",
-        "artist": "Laura Shigihara, arranged by Kan Gao",
+        "artist": "Laura Shigihara, arranged by Kan R. Gao",
         "track": 24,
         "year": 2011,
         "duration": 58,
@@ -55717,7 +55903,7 @@
       },
       {
         "title": "Tomorrow",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 25,
         "year": 2011,
         "duration": 130,
@@ -55725,7 +55911,7 @@
       },
       {
         "title": "Launch",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 26,
         "year": 2011,
         "duration": 117,
@@ -55733,7 +55919,7 @@
       },
       {
         "title": "To the Moon – Piano (ending version)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 27,
         "year": 2011,
         "duration": 315,
@@ -55741,7 +55927,7 @@
       },
       {
         "title": "Eva’s Ringtone",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 28,
         "year": 2011,
         "duration": 4,
@@ -55749,7 +55935,7 @@
       },
       {
         "title": "Trailer Theme, Part 1",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 29,
         "year": 2011,
         "duration": 103,
@@ -55757,7 +55943,7 @@
       },
       {
         "title": "Trailer Theme, Part 2",
-        "artist": "Kan Gao feat. Laura Shigihara",
+        "artist": "Kan R. Gao feat. Laura Shigihara",
         "track": 30,
         "year": 2011,
         "duration": 109,
@@ -55765,7 +55951,7 @@
       },
       {
         "title": "Trailer Theme, Part 2 (instrumental)",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 31,
         "year": 2011,
         "duration": 120,
@@ -55773,7 +55959,7 @@
       },
       {
         "title": "For River – Holiday Edition",
-        "artist": "Kan Gao",
+        "artist": "Kan R. Gao",
         "track": 32,
         "year": 2011,
         "duration": 61,
@@ -58454,24 +58640,26 @@
     "duration": 3555,
     "tracks": [
       {
-        "title": "Bayreuth return",
+        "title": "Bayreuth Return",
         "artist": "Klaus Schulze",
         "track": 1,
         "year": 1975,
-        "duration": 1832
+        "duration": 1832,
+        "disc_number": 1
       },
       {
         "title": "Wahnfried 1883",
         "artist": "Klaus Schulze",
         "track": 2,
         "year": 1975,
-        "duration": 1722
+        "duration": 1722,
+        "disc_number": 1
       }
     ]
   },
   {
     "artist": "Klaus Schulze",
-    "album": "Mirage Deluxe Edition",
+    "album": "Mirage",
     "year": 1977,
     "duration": 4636,
     "tracks": [
@@ -58480,21 +58668,24 @@
         "artist": "Klaus Schulze",
         "track": 1,
         "year": 1977,
-        "duration": 1699
+        "duration": 1699,
+        "disc_number": 1
       },
       {
         "title": "Crystal Lake",
         "artist": "Klaus Schulze",
         "track": 2,
         "year": 1977,
-        "duration": 1757
+        "duration": 1757,
+        "disc_number": 1
       },
       {
-        "title": "In Cosa Crede Chi Non Crede?",
+        "title": "In cosa crede chi non crede?",
         "artist": "Klaus Schulze",
         "track": 3,
         "year": 1977,
-        "duration": 1179
+        "duration": 1179,
+        "disc_number": 1
       }
     ]
   },
@@ -62724,14 +62915,14 @@
   {
     "artist": "Longview",
     "album": "Mercury",
-    "year": 2006,
+    "year": 2003,
     "duration": 3614,
     "tracks": [
       {
-        "title": "Further (Jack Joseph Puig Mix)",
+        "title": "Further",
         "artist": "Longview",
         "track": 1,
-        "year": 2006,
+        "year": 2003,
         "duration": 244,
         "disc_number": 1
       },
@@ -62739,23 +62930,23 @@
         "title": "Can't Explain",
         "artist": "Longview",
         "track": 2,
-        "year": 2006,
+        "year": 2003,
         "duration": 301,
         "disc_number": 1
       },
       {
-        "title": "Falling For You",
+        "title": "Falling for You",
         "artist": "Longview",
-        "track": 2,
-        "year": 2006,
+        "track": 3,
+        "year": 2003,
         "duration": 246,
         "disc_number": 1
       },
       {
-        "title": "In A Dream",
+        "title": "In a Dream",
         "artist": "Longview",
         "track": 4,
-        "year": 2006,
+        "year": 2003,
         "duration": 229,
         "disc_number": 1
       },
@@ -62763,7 +62954,7 @@
         "title": "Nowhere",
         "artist": "Longview",
         "track": 5,
-        "year": 2006,
+        "year": 2003,
         "duration": 229,
         "disc_number": 1
       },
@@ -62771,7 +62962,7 @@
         "title": "I Would",
         "artist": "Longview",
         "track": 6,
-        "year": 2006,
+        "year": 2003,
         "duration": 328,
         "disc_number": 1
       },
@@ -62779,7 +62970,7 @@
         "title": "Electricity",
         "artist": "Longview",
         "track": 7,
-        "year": 2006,
+        "year": 2003,
         "duration": 213,
         "disc_number": 1
       },
@@ -62787,7 +62978,7 @@
         "title": "Still",
         "artist": "Longview",
         "track": 8,
-        "year": 2006,
+        "year": 2003,
         "duration": 246,
         "disc_number": 1
       },
@@ -62795,7 +62986,7 @@
         "title": "One More Try",
         "artist": "Longview",
         "track": 9,
-        "year": 2006,
+        "year": 2003,
         "duration": 222,
         "disc_number": 1
       },
@@ -62803,7 +62994,7 @@
         "title": "When You Sleep",
         "artist": "Longview",
         "track": 10,
-        "year": 2006,
+        "year": 2003,
         "duration": 238,
         "disc_number": 1
       },
@@ -62811,7 +63002,7 @@
         "title": "If You Asked",
         "artist": "Longview",
         "track": 11,
-        "year": 2006,
+        "year": 2003,
         "duration": 280,
         "disc_number": 1
       },
@@ -62819,23 +63010,23 @@
         "title": "Will You Wait Here",
         "artist": "Longview",
         "track": 12,
-        "year": 2006,
+        "year": 2003,
         "duration": 364,
         "disc_number": 1
       },
       {
-        "title": "Further (New Radio Mix)",
+        "title": "Further (radio mix)",
         "artist": "Longview",
         "track": 13,
-        "year": 2006,
+        "year": 2003,
         "duration": 245,
         "disc_number": 1
       },
       {
-        "title": "Falling Without You - 2005 Version",
+        "title": "Falling Without You",
         "artist": "Longview",
         "track": 14,
-        "year": 2006,
+        "year": 2003,
         "duration": 224,
         "disc_number": 1
       }
@@ -76342,7 +76533,7 @@
     "duration": 4135,
     "tracks": [
       {
-        "title": "Here Come The People",
+        "title": "Here Come the People",
         "artist": "New Musik",
         "track": 1,
         "year": 1982,
@@ -76358,7 +76549,7 @@
         "disc_number": 1
       },
       {
-        "title": "A Train On Twisted Tracks",
+        "title": "A Train on Twisted Tracks",
         "artist": "New Musik",
         "track": 3,
         "year": 1982,
@@ -76390,7 +76581,7 @@
         "disc_number": 1
       },
       {
-        "title": "Kingdoms For Horses",
+        "title": "Kingdoms for Horses",
         "artist": "New Musik",
         "track": 7,
         "year": 1982,
@@ -76406,7 +76597,7 @@
         "disc_number": 1
       },
       {
-        "title": "The New Evolutionist (Example 'A')",
+        "title": "The New Evolutionist (Example ‘A’)",
         "artist": "New Musik",
         "track": 9,
         "year": 1982,
@@ -76414,7 +76605,7 @@
         "disc_number": 1
       },
       {
-        "title": "Green And Red (Respectively)",
+        "title": "Green and Red (Respectively)",
         "artist": "New Musik",
         "track": 10,
         "year": 1982,
@@ -76422,7 +76613,7 @@
         "disc_number": 1
       },
       {
-        "title": "The Planet Doesn't Mind",
+        "title": "The Planet Doesn’t Mind",
         "artist": "New Musik",
         "track": 11,
         "year": 1982,
@@ -76438,7 +76629,7 @@
         "disc_number": 1
       },
       {
-        "title": "The Planet Doesn't Mind (Single Version)",
+        "title": "The Planet Doesn’t Mind (single version)",
         "artist": "New Musik",
         "track": 13,
         "year": 1982,
@@ -76446,7 +76637,7 @@
         "disc_number": 1
       },
       {
-        "title": "The Planet Doesn't Mind (12inch Version)",
+        "title": "The Planet Doesn’t Mind (12 Inch version)",
         "artist": "New Musik",
         "track": 14,
         "year": 1982,
@@ -76454,7 +76645,7 @@
         "disc_number": 1
       },
       {
-        "title": "24 Hours From Culture - Part II",
+        "title": "24 Hours From Culture, Part II",
         "artist": "New Musik",
         "track": 15,
         "year": 1982,
@@ -76470,7 +76661,7 @@
         "disc_number": 1
       },
       {
-        "title": "Here Come The People (Remix)",
+        "title": "Here Come the People (remix)",
         "artist": "New Musik",
         "track": 17,
         "year": 1982,
@@ -80240,77 +80431,88 @@
         "artist": "Orbient",
         "track": 1,
         "year": 2001,
-        "duration": 422
+        "duration": 422,
+        "disc_number": 1
       },
       {
-        "title": "In Time ( Korean Version )",
+        "title": "In Time (Korean version)",
         "artist": "Orbient",
         "track": 2,
         "year": 2001,
-        "duration": 397
+        "duration": 397,
+        "disc_number": 1
       },
       {
         "title": "Boarding",
         "artist": "Orbient",
         "track": 3,
         "year": 2001,
-        "duration": 380
+        "duration": 380,
+        "disc_number": 1
       },
       {
         "title": "Dreamspeed",
         "artist": "Orbient",
         "track": 4,
         "year": 2001,
-        "duration": 260
+        "duration": 260,
+        "disc_number": 1
       },
       {
         "title": "Nova",
         "artist": "Orbient",
         "track": 5,
         "year": 2001,
-        "duration": 252
+        "duration": 252,
+        "disc_number": 1
       },
       {
         "title": "Much Better",
         "artist": "Orbient",
         "track": 6,
         "year": 2001,
-        "duration": 411
+        "duration": 411,
+        "disc_number": 1
       },
       {
         "title": "Glow",
         "artist": "Orbient",
         "track": 7,
         "year": 2001,
-        "duration": 440
+        "duration": 440,
+        "disc_number": 1
       },
       {
         "title": "Rich",
         "artist": "Orbient",
         "track": 8,
         "year": 2001,
-        "duration": 352
+        "duration": 352,
+        "disc_number": 1
       },
       {
         "title": "Lumis",
         "artist": "Orbient",
         "track": 9,
         "year": 2001,
-        "duration": 404
+        "duration": 404,
+        "disc_number": 1
       },
       {
         "title": "True Decision",
         "artist": "Orbient",
         "track": 10,
         "year": 2001,
-        "duration": 452
+        "duration": 452,
+        "disc_number": 1
       },
       {
-        "title": "Sojus (Mission continues...)",
+        "title": "Sojus (Mission Continues...)",
         "artist": "Orbient",
         "track": 11,
         "year": 2001,
-        "duration": 421
+        "duration": 421,
+        "disc_number": 1
       }
     ]
   },
@@ -81042,184 +81244,209 @@
         "title": "D>E>A>T>H>M>E>T>A>L",
         "artist": "Panchiko",
         "track": 1,
-        "year": 2000,
-        "duration": 261
+        "year": 2020,
+        "duration": 261,
+        "disc_number": 1
       },
       {
-        "title": "Stabilisers For Big Boys",
+        "title": "Stabilisers for Big Boys",
         "artist": "Panchiko",
         "track": 2,
-        "year": 2000,
-        "duration": 252
+        "year": 2020,
+        "duration": 252,
+        "disc_number": 1
       },
       {
         "title": "Laputa",
         "artist": "Panchiko",
         "track": 3,
-        "year": 2000,
-        "duration": 163
+        "year": 2020,
+        "duration": 163,
+        "disc_number": 1
       },
       {
         "title": "The Eyes of Ibad",
         "artist": "Panchiko",
         "track": 4,
-        "year": 2000,
-        "duration": 417
+        "year": 2020,
+        "duration": 417,
+        "disc_number": 1
       },
       {
         "title": "CUT",
         "artist": "Panchiko",
         "track": 5,
-        "year": 2000,
-        "duration": 293
+        "year": 2020,
+        "duration": 293,
+        "disc_number": 1
       },
       {
         "title": "Sodium Chloride",
         "artist": "Panchiko",
         "track": 6,
-        "year": 2000,
-        "duration": 163
+        "year": 2020,
+        "duration": 163,
+        "disc_number": 1
       },
       {
         "title": "Kicking Cars",
         "artist": "Panchiko",
         "track": 7,
-        "year": 2000,
-        "duration": 251
+        "year": 2020,
+        "duration": 251,
+        "disc_number": 1
       },
       {
         "title": "D>E>A>T>H>M>E>T>A>L_R>O>T",
         "artist": "Panchiko",
         "track": 8,
-        "year": 2000,
-        "duration": 260
+        "year": 2020,
+        "duration": 260,
+        "disc_number": 1
       },
       {
-        "title": "Stabilisers For Big Boys_R>O>T",
+        "title": "Stabilisers for Big Boys_R>O>T",
         "artist": "Panchiko",
         "track": 9,
-        "year": 2000,
-        "duration": 251
+        "year": 2020,
+        "duration": 251,
+        "disc_number": 1
       },
       {
         "title": "Laputa_R>O>T",
         "artist": "Panchiko",
         "track": 10,
-        "year": 2000,
-        "duration": 164
+        "year": 2020,
+        "duration": 164,
+        "disc_number": 1
       },
       {
         "title": "The Eyes of Ibad_R>O>T",
         "artist": "Panchiko",
         "track": 11,
-        "year": 2000,
-        "duration": 421
+        "year": 2020,
+        "duration": 421,
+        "disc_number": 1
       }
     ]
   },
   {
     "artist": "Panchiko",
     "album": "D>E>L>U>X>E>M>E>T>A>L",
-    "year": 2020,
+    "year": 2000,
     "duration": 3632,
     "tracks": [
       {
-        "title": "Deathmetal - Vinyl Remaster",
+        "title": "Deathmetal",
         "artist": "Panchiko",
         "track": 1,
         "year": 2020,
-        "duration": 260
+        "duration": 260,
+        "disc_number": 1
       },
       {
-        "title": "Stabilisers For Big Boys - Vinyl Remaster",
+        "title": "Stabilisers For Big Boys",
         "artist": "Panchiko",
         "track": 2,
         "year": 2020,
-        "duration": 252
+        "duration": 252,
+        "disc_number": 1
       },
       {
-        "title": "Laputa - Vinyl Remaster",
+        "title": "Laputa",
         "artist": "Panchiko",
         "track": 3,
         "year": 2020,
-        "duration": 163
+        "duration": 163,
+        "disc_number": 1
       },
       {
-        "title": "Eyes of Ibad - Vinyl Remaster",
+        "title": "Eyes of Ibad",
         "artist": "Panchiko",
         "track": 4,
         "year": 2020,
-        "duration": 418
+        "duration": 418,
+        "disc_number": 1
       },
       {
-        "title": "Cut - Vinyl Remaster",
+        "title": "Cut",
         "artist": "Panchiko",
         "track": 5,
         "year": 2020,
-        "duration": 292
+        "duration": 292,
+        "disc_number": 1
       },
       {
-        "title": "Sodium Chloride - Vinyl Remaster",
+        "title": "Sodium Chloride",
         "artist": "Panchiko",
         "track": 6,
         "year": 2020,
-        "duration": 165
+        "duration": 165,
+        "disc_number": 1
       },
       {
-        "title": "Kicking Cars - Vinyl Remaster",
+        "title": "Kicking Cars",
         "artist": "Panchiko",
         "track": 7,
         "year": 2020,
-        "duration": 252
+        "duration": 252,
+        "disc_number": 1
       },
       {
         "title": "CUT - Demo Version 2001",
         "artist": "Panchiko",
         "track": 8,
         "year": 2020,
-        "duration": 250
+        "duration": 250,
+        "disc_number": 1
       },
       {
         "title": "Sodium Chloride - Demo Version 2001",
         "artist": "Panchiko",
         "track": 9,
         "year": 2020,
-        "duration": 258
+        "duration": 258,
+        "disc_number": 1
       },
       {
         "title": "Kicking Cars - Demo Version 2001",
         "artist": "Panchiko",
         "track": 10,
         "year": 2020,
-        "duration": 226
+        "duration": 226,
+        "disc_number": 1
       },
       {
-        "title": "Deathmetal_ROT - Remaster",
+        "title": "Deathmetal_ROT",
         "artist": "Panchiko",
         "track": 11,
         "year": 2020,
-        "duration": 261
+        "duration": 261,
+        "disc_number": 1
       },
       {
-        "title": "Stabilisers For Big Boys_ROT - Remaster",
+        "title": "Stabilisers For Big Boys_ROT",
         "artist": "Panchiko",
         "track": 12,
         "year": 2020,
-        "duration": 252
+        "duration": 252,
+        "disc_number": 1
       },
       {
-        "title": "Laputa ROT - Remaster",
+        "title": "Laputa ROT",
         "artist": "Panchiko",
         "track": 13,
         "year": 2020,
-        "duration": 163
+        "duration": 163,
+        "disc_number": 1
       },
       {
-        "title": "Eyes of Ibad_ROT - Remaster",
+        "title": "Eyes of Ibad_ROT",
         "artist": "Panchiko",
         "track": 14,
         "year": 2020,
-        "duration": 416
+        "duration": 416,
+        "disc_number": 1
       }
     ]
   },
@@ -82377,7 +82604,7 @@
   },
   {
     "artist": "Peter Gabriel",
-    "album": "Passion (Remastered)",
+    "album": "Passion",
     "year": 1989,
     "duration": 4017,
     "tracks": [
@@ -82386,147 +82613,168 @@
         "artist": "Peter Gabriel",
         "track": 1,
         "year": 1989,
-        "duration": 239
+        "duration": 239,
+        "disc_number": 1
       },
       {
         "title": "Gethsemane",
         "artist": "Peter Gabriel",
         "track": 2,
         "year": 1989,
-        "duration": 85
+        "duration": 85,
+        "disc_number": 1
       },
       {
         "title": "Of These, Hope",
         "artist": "Peter Gabriel",
         "track": 3,
         "year": 1989,
-        "duration": 235
+        "duration": 235,
+        "disc_number": 1
       },
       {
         "title": "Lazarus Raised",
         "artist": "Peter Gabriel",
         "track": 4,
         "year": 1989,
-        "duration": 85
+        "duration": 85,
+        "disc_number": 1
       },
       {
-        "title": "Of These, Hope - Reprise",
+        "title": "Of These, Hope (reprise)",
         "artist": "Peter Gabriel",
         "track": 5,
         "year": 1989,
-        "duration": 164
+        "duration": 164,
+        "disc_number": 1
       },
       {
         "title": "In Doubt",
         "artist": "Peter Gabriel",
         "track": 6,
         "year": 1989,
-        "duration": 92
+        "duration": 92,
+        "disc_number": 1
       },
       {
         "title": "A Different Drum",
         "artist": "Peter Gabriel",
         "track": 7,
         "year": 1989,
-        "duration": 279
+        "duration": 279,
+        "disc_number": 1
       },
       {
         "title": "Zaar",
         "artist": "Peter Gabriel",
         "track": 8,
         "year": 1989,
-        "duration": 292
+        "duration": 292,
+        "disc_number": 1
       },
       {
         "title": "Troubled",
         "artist": "Peter Gabriel",
         "track": 9,
         "year": 1989,
-        "duration": 175
+        "duration": 175,
+        "disc_number": 1
       },
       {
         "title": "Open",
         "artist": "Peter Gabriel",
         "track": 10,
         "year": 1989,
-        "duration": 206
+        "duration": 206,
+        "disc_number": 1
       },
       {
         "title": "Before Night Falls",
         "artist": "Peter Gabriel",
         "track": 11,
         "year": 1989,
-        "duration": 138
+        "duration": 138,
+        "disc_number": 1
       },
       {
         "title": "With This Love",
         "artist": "Peter Gabriel",
         "track": 12,
         "year": 1989,
-        "duration": 220
+        "duration": 220,
+        "disc_number": 1
       },
       {
         "title": "Sandstorm",
         "artist": "Peter Gabriel",
         "track": 13,
         "year": 1989,
-        "duration": 181
+        "duration": 181,
+        "disc_number": 1
       },
       {
         "title": "Stigmata",
         "artist": "Peter Gabriel",
         "track": 14,
         "year": 1989,
-        "duration": 147
+        "duration": 147,
+        "disc_number": 1
       },
       {
         "title": "Passion",
         "artist": "Peter Gabriel",
         "track": 15,
         "year": 1989,
-        "duration": 457
+        "duration": 457,
+        "disc_number": 1
       },
       {
-        "title": "With This Love - Choir",
+        "title": "With This Love (choir)",
         "artist": "Peter Gabriel",
         "track": 16,
         "year": 1989,
-        "duration": 200
+        "duration": 200,
+        "disc_number": 1
       },
       {
-        "title": "Wall Of Breath",
+        "title": "Wall of Breath",
         "artist": "Peter Gabriel",
         "track": 17,
         "year": 1989,
-        "duration": 149
+        "duration": 149,
+        "disc_number": 1
       },
       {
-        "title": "The Promise Of Shadows",
+        "title": "The Promise of Shadows",
         "artist": "Peter Gabriel",
         "track": 18,
         "year": 1989,
-        "duration": 133
+        "duration": 133,
+        "disc_number": 1
       },
       {
         "title": "Disturbed",
         "artist": "Peter Gabriel",
         "track": 19,
         "year": 1989,
-        "duration": 215
+        "duration": 215,
+        "disc_number": 1
       },
       {
         "title": "It Is Accomplished",
         "artist": "Peter Gabriel",
         "track": 20,
         "year": 1989,
-        "duration": 175
+        "duration": 175,
+        "disc_number": 1
       },
       {
-        "title": "Bread And Wine",
+        "title": "Bread and Wine",
         "artist": "Peter Gabriel",
         "track": 21,
         "year": 1989,
-        "duration": 140
+        "duration": 140,
+        "disc_number": 1
       }
     ]
   },
@@ -86389,6 +86637,46 @@
   },
   {
     "artist": "Queens of the Stone Age",
+    "album": "No One Knows",
+    "year": 2002,
+    "duration": 1404,
+    "tracks": [
+      {
+        "title": "No One Knows",
+        "artist": "Queens of the Stone Age",
+        "track": 1,
+        "year": 2002,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "No One Knows (UNKLE reconstruction radio edit)",
+        "artist": "Queens of the Stone Age",
+        "track": 2,
+        "year": 2002,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "No One Knows (UNKLE reconstruction full length vocal)",
+        "artist": "Queens of the Stone Age",
+        "track": 3,
+        "year": 2002,
+        "duration": 421,
+        "disc_number": 1
+      },
+      {
+        "title": "No One Knows (UNKLE reconstruction instrumental)",
+        "artist": "Queens of the Stone Age",
+        "track": 4,
+        "year": 2002,
+        "duration": 420,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Queens of the Stone Age",
     "album": "Songs for the Deaf",
     "year": 2002,
     "duration": 4208,
@@ -86528,42 +86816,6 @@
         "year": 2002,
         "duration": 174,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Queens of the Stone Age",
-    "album": "No One Knows",
-    "year": 2003,
-    "duration": 1404,
-    "tracks": [
-      {
-        "title": "No One Knows (Album Version)",
-        "artist": "Queens Of The Stone Age",
-        "track": 1,
-        "year": 2003,
-        "duration": 281
-      },
-      {
-        "title": "No One Knows (UNKLE Reconstruction - Radio Edit)",
-        "artist": "Queens of the Stone Age",
-        "track": 2,
-        "year": 2003,
-        "duration": 281
-      },
-      {
-        "title": "No One Knows (UNKLE Reconstruction - Full Length)",
-        "artist": "Queens of the Stone Age",
-        "track": 3,
-        "year": 2003,
-        "duration": 421
-      },
-      {
-        "title": "No One Knows (UNKLE Reconstruction - Instrumental)",
-        "artist": "Queens of the Stone Age",
-        "track": 4,
-        "year": 2003,
-        "duration": 420
       }
     ]
   },
@@ -91715,7 +91967,7 @@
   },
   {
     "artist": "Seafret",
-    "album": "Tell Me It's Real (Deluxe)",
+    "album": "Tell Me It’s Real",
     "year": 2016,
     "duration": 3164,
     "tracks": [
@@ -91768,7 +92020,7 @@
         "disc_number": 1
       },
       {
-        "title": "Tell Me It's Real",
+        "title": "Tell Me It’s Real",
         "artist": "Seafret",
         "track": 7,
         "year": 2016,
@@ -91808,7 +92060,7 @@
         "disc_number": 1
       },
       {
-        "title": "There's a Light",
+        "title": "There’s a Light",
         "artist": "Seafret",
         "track": 12,
         "year": 2016,
@@ -91817,7 +92069,7 @@
       },
       {
         "title": "To the Sea",
-        "artist": "Seafret",
+        "artist": "Seafret feat. Rosie Carney",
         "track": 13,
         "year": 2016,
         "duration": 197,
@@ -91840,7 +92092,7 @@
         "disc_number": 1
       },
       {
-        "title": "Oceans (BBC Live Version)",
+        "title": "Oceans (BBC live version)",
         "artist": "Seafret",
         "track": 16,
         "year": 2016,
@@ -93196,98 +93448,112 @@
         "artist": "Sia",
         "track": 1,
         "year": 2010,
-        "duration": 219
+        "duration": 219,
+        "disc_number": 1
       },
       {
         "title": "Clap Your Hands",
         "artist": "Sia",
         "track": 2,
         "year": 2010,
-        "duration": 238
+        "duration": 238,
+        "disc_number": 1
       },
       {
         "title": "Stop Trying",
         "artist": "Sia",
         "track": 3,
         "year": 2010,
-        "duration": 160
+        "duration": 160,
+        "disc_number": 1
       },
       {
-        "title": "You've Changed",
+        "title": "You’ve Changed",
         "artist": "Sia",
         "track": 4,
         "year": 2010,
-        "duration": 191
+        "duration": 191,
+        "disc_number": 1
       },
       {
-        "title": "Be Good To Me",
+        "title": "Be Good to Me",
         "artist": "Sia",
         "track": 5,
         "year": 2010,
-        "duration": 236
+        "duration": 236,
+        "disc_number": 1
       },
       {
         "title": "Bring Night",
         "artist": "Sia",
         "track": 6,
         "year": 2010,
-        "duration": 177
+        "duration": 177,
+        "disc_number": 1
       },
       {
         "title": "Hurting Me Now",
         "artist": "Sia",
         "track": 7,
         "year": 2010,
-        "duration": 206
+        "duration": 206,
+        "disc_number": 1
       },
       {
         "title": "Never Gonna Leave Me",
         "artist": "Sia",
         "track": 8,
         "year": 2010,
-        "duration": 214
+        "duration": 214,
+        "disc_number": 1
       },
       {
         "title": "Cloud",
         "artist": "Sia",
         "track": 9,
         "year": 2010,
-        "duration": 223
+        "duration": 223,
+        "disc_number": 1
       },
       {
-        "title": "I'm In Here",
+        "title": "I’m in Here",
         "artist": "Sia",
         "track": 10,
         "year": 2010,
-        "duration": 221
+        "duration": 221,
+        "disc_number": 1
       },
       {
         "title": "The Co-Dependent",
         "artist": "Sia",
         "track": 11,
         "year": 2010,
-        "duration": 175
+        "duration": 175,
+        "disc_number": 1
       },
       {
-        "title": "Big Little Girl",
+        "title": "Big Girl Little Girl",
         "artist": "Sia",
         "track": 12,
         "year": 2010,
-        "duration": 258
+        "duration": 258,
+        "disc_number": 1
       },
       {
         "title": "Oh Father",
         "artist": "Sia",
         "track": 13,
         "year": 2010,
-        "duration": 269
+        "duration": 269,
+        "disc_number": 1
       },
       {
-        "title": "I'm In Here (Piano Vocal Version)",
+        "title": "I’m in Here (piano vocal version)",
         "artist": "Sia",
         "track": 14,
         "year": 2010,
-        "duration": 227
+        "duration": 227,
+        "disc_number": 1
       }
     ]
   },
@@ -106251,171 +106517,210 @@
     ]
   },
   {
-    "artist": "The Door And The Window",
+    "artist": "The Door and the Window",
     "album": "Detailed Twang",
-    "year": 2003,
+    "year": 1980,
     "duration": 4163,
     "tracks": [
       {
         "title": "Dads",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 1,
-        "year": 2003,
-        "duration": 281
+        "year": 1980,
+        "duration": 281,
+        "disc_number": 1
       },
       {
         "title": "Habits",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 2,
-        "year": 2003,
-        "duration": 134
+        "year": 1980,
+        "duration": 134,
+        "disc_number": 1
       },
       {
         "title": "We Do Scare Each Other",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 3,
-        "year": 2003,
-        "duration": 143
+        "year": 1980,
+        "duration": 143,
+        "disc_number": 1
       },
       {
         "title": "Order And Obey",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 4,
-        "year": 2003,
-        "duration": 200
+        "year": 1980,
+        "duration": 200,
+        "disc_number": 1
       },
       {
         "title": "He Feels Like A Doris",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 5,
-        "year": 2003,
-        "duration": 287
+        "year": 1980,
+        "duration": 287,
+        "disc_number": 1
       },
       {
         "title": "Part-Time Punks",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 6,
-        "year": 2003,
-        "duration": 230
+        "year": 1980,
+        "duration": 230,
+        "disc_number": 1
       },
       {
         "title": "In The Car",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 7,
-        "year": 2003,
-        "duration": 43
+        "year": 1980,
+        "duration": 43,
+        "disc_number": 1
       },
       {
         "title": "Subculture Fashion Slaves",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 8,
-        "year": 2003,
-        "duration": 231
+        "year": 1980,
+        "duration": 231,
+        "disc_number": 1
       },
       {
         "title": "Sticks And Stones",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 9,
-        "year": 2003,
-        "duration": 236
+        "year": 1980,
+        "duration": 236,
+        "disc_number": 1
       },
       {
         "title": "Positive",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 10,
-        "year": 2003,
-        "duration": 264
+        "year": 1980,
+        "duration": 264,
+        "disc_number": 1
       },
       {
-        "title": "Why Must You Build Walls Around Us",
-        "artist": "The Door And The Window",
+        "title": "Why Must You Build Walls Around Us?",
+        "artist": "The Door and the Window",
         "track": 11,
-        "year": 2003,
-        "duration": 137
+        "year": 1980,
+        "duration": 137,
+        "disc_number": 1
       },
       {
         "title": "Detailed Twang",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 12,
-        "year": 2003,
-        "duration": 110
+        "year": 1980,
+        "duration": 110,
+        "disc_number": 1
       },
       {
         "title": "Subculture Fashion Slaves (Early Version)",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 13,
-        "year": 2003,
-        "duration": 206
+        "year": 1980,
+        "duration": 206,
+        "disc_number": 1
       },
       {
         "title": "Nostradamus",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 14,
-        "year": 2003,
-        "duration": 98
+        "year": 1980,
+        "duration": 98,
+        "disc_number": 1
       },
       {
         "title": "Don't Kill Colin",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 15,
-        "year": 2003,
-        "duration": 213
+        "year": 1980,
+        "duration": 213,
+        "disc_number": 1
       },
       {
         "title": "Wurst Band",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 16,
-        "year": 2003,
-        "duration": 98
+        "year": 1980,
+        "duration": 98,
+        "disc_number": 1
       },
       {
         "title": "Dig",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 17,
-        "year": 2003,
-        "duration": 130
+        "year": 1980,
+        "duration": 130,
+        "disc_number": 1
       },
       {
         "title": "Production Line",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 18,
-        "year": 2003,
-        "duration": 245
+        "year": 1980,
+        "duration": 245,
+        "disc_number": 1
       },
       {
-        "title": "He Feels Like A Doris (Early Version)",
-        "artist": "The Door And The Window",
+        "title": "He Feels Like a Doris (Early version)",
+        "artist": "The Door and the Window",
         "track": 19,
-        "year": 2003,
-        "duration": 205
+        "year": 1980,
+        "duration": 205,
+        "disc_number": 1
       },
       {
         "title": "I Like Sound",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 20,
-        "year": 2003,
-        "duration": 85
+        "year": 1980,
+        "duration": 85,
+        "disc_number": 1
       },
       {
         "title": "Innocent",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 21,
-        "year": 2003,
-        "duration": 98
+        "year": 1980,
+        "duration": 98,
+        "disc_number": 1
       },
       {
         "title": "The Number One Entertainer",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 22,
-        "year": 2003,
-        "duration": 218
+        "year": 1980,
+        "duration": 218,
+        "disc_number": 1
       },
       {
         "title": "C.C.H.",
-        "artist": "The Door And The Window",
+        "artist": "The Door and the Window",
         "track": 23,
-        "year": 2003,
-        "duration": 259
+        "year": 1980,
+        "duration": 259,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "The Doors",
+    "album": "The Doors",
+    "year": 1967,
+    "duration": 148,
+    "tracks": [
+      {
+        "title": "Break On Through (to the Other Side)",
+        "artist": "The Doors",
+        "track": 1,
+        "year": 1967,
+        "duration": 148,
+        "disc_number": 1
       }
     ]
   },
@@ -106432,21 +106737,6 @@
         "year": 1971,
         "duration": 431,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "The Doors",
-    "album": "The Doors [40th Anniversary Edition]",
-    "year": 2007,
-    "duration": 148,
-    "tracks": [
-      {
-        "title": "Break On Through (To The Other Side)",
-        "artist": "The Doors",
-        "track": 1,
-        "year": 2007,
-        "duration": 148
       }
     ]
   },
@@ -108913,7 +109203,7 @@
         "disc_number": 1
       },
       {
-        "title": "Murder Me Rachael [Live]",
+        "title": "Murder Me Rachael (live)",
         "artist": "The National",
         "track": 6,
         "year": 2004,
@@ -109025,7 +109315,7 @@
         "disc_number": 1
       },
       {
-        "title": "Terrible Love (Alternate Version)",
+        "title": "Terrible Love (alternate version)",
         "artist": "The National",
         "track": 12,
         "year": 2010,
@@ -109041,7 +109331,7 @@
         "disc_number": 1
       },
       {
-        "title": "You Were A Kindness",
+        "title": "You Were a Kindness",
         "artist": "The National",
         "track": 14,
         "year": 2010,
@@ -109065,7 +109355,7 @@
         "disc_number": 1
       },
       {
-        "title": "Bloodbuzz Ohio (Live At Current)",
+        "title": "Bloodbuzz Ohio (live)",
         "artist": "The National",
         "track": 17,
         "year": 2010,
@@ -109073,7 +109363,7 @@
         "disc_number": 1
       },
       {
-        "title": "Anyone’s Ghost (Live)",
+        "title": "Anyone's Ghost (live)",
         "artist": "The National",
         "track": 18,
         "year": 2010,
@@ -109081,7 +109371,7 @@
         "disc_number": 1
       },
       {
-        "title": "England (Live)",
+        "title": "England (live)",
         "artist": "The National",
         "track": 19,
         "year": 2010,
@@ -109092,12 +109382,12 @@
   },
   {
     "artist": "The National",
-    "album": "Exile Vilify",
+    "album": "Exile Vilify (from the game \"Portal 2\")",
     "year": 2011,
     "duration": 285,
     "tracks": [
       {
-        "title": "Exile Vilify",
+        "title": "Exile Vilify (from the game \"Portal 2\")",
         "artist": "The National",
         "track": 1,
         "year": 2011,
@@ -126500,152 +126790,152 @@
     ]
   },
   {
-    "artist": "Walk The Moon",
-    "album": "Walk The Moon (Australian Deluxe Edition)",
-    "year": 2013,
+    "artist": "WALK THE MOON",
+    "album": "Walk the Moon",
+    "year": 2012,
     "duration": 4056,
     "tracks": [
       {
-        "title": "Quesedilla",
-        "artist": "Walk The Moon",
+        "title": "Quesadilla",
+        "artist": "WALK THE MOON",
         "track": 1,
-        "year": 2013,
+        "year": 2012,
         "duration": 195,
         "disc_number": 1
       },
       {
         "title": "Lisa Baby",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 2,
-        "year": 2013,
+        "year": 2012,
         "duration": 232,
         "disc_number": 1
       },
       {
         "title": "Next in Line",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 3,
-        "year": 2013,
+        "year": 2012,
         "duration": 239,
         "disc_number": 1
       },
       {
         "title": "Anna Sun",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 4,
-        "year": 2013,
+        "year": 2012,
         "duration": 321,
         "disc_number": 1
       },
       {
         "title": "Tightrope",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 5,
-        "year": 2013,
+        "year": 2012,
         "duration": 209,
         "disc_number": 1
       },
       {
         "title": "Jenny",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 6,
-        "year": 2013,
+        "year": 2012,
         "duration": 245,
         "disc_number": 1
       },
       {
         "title": "Shiver Shiver",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 7,
-        "year": 2013,
+        "year": 2012,
         "duration": 232,
         "disc_number": 1
       },
       {
         "title": "Lions",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 8,
-        "year": 2013,
+        "year": 2012,
         "duration": 35,
         "disc_number": 1
       },
       {
         "title": "Iscariot",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 9,
-        "year": 2013,
+        "year": 2012,
         "duration": 324,
         "disc_number": 1
       },
       {
-        "title": "Fixin'",
-        "artist": "Walk The Moon",
+        "title": "Fixin’",
+        "artist": "WALK THE MOON",
         "track": 10,
-        "year": 2013,
+        "year": 2012,
         "duration": 262,
         "disc_number": 1
       },
       {
         "title": "I Can Lift a Car",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 11,
-        "year": 2013,
+        "year": 2012,
         "duration": 288,
         "disc_number": 1
       },
       {
         "title": "anywayican",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 12,
-        "year": 2013,
+        "year": 2012,
         "duration": 220,
         "disc_number": 1
       },
       {
-        "title": "Tête á Tête",
-        "artist": "Walk The Moon",
+        "title": "Tête-à-tête",
+        "artist": "WALK THE MOON",
         "track": 13,
-        "year": 2013,
+        "year": 2012,
         "duration": 171,
         "disc_number": 1
       },
       {
         "title": "Drunk in the Woods",
-        "artist": "Walk The Moon",
+        "artist": "WALK THE MOON",
         "track": 14,
-        "year": 2013,
+        "year": 2012,
         "duration": 169,
         "disc_number": 1
       },
       {
-        "title": "Tightrope (Acoustic)",
-        "artist": "Walk The Moon",
+        "title": "Tightrope (acoustic)",
+        "artist": "WALK THE MOON",
         "track": 15,
-        "year": 2013,
+        "year": 2012,
         "duration": 208,
         "disc_number": 1
       },
       {
-        "title": "Burning Down the House (Live)",
-        "artist": "Walk The Moon",
+        "title": "Burning Down the House (live)",
+        "artist": "WALK THE MOON",
         "track": 16,
-        "year": 2013,
+        "year": 2012,
         "duration": 231,
         "disc_number": 1
       },
       {
-        "title": "Tightrope (J. Viewz Remix)",
-        "artist": "Walk The Moon",
+        "title": "Tightrope (J. Views remix)",
+        "artist": "WALK THE MOON",
         "track": 17,
-        "year": 2013,
+        "year": 2012,
         "duration": 243,
         "disc_number": 1
       },
       {
-        "title": "Shiver Shiver (Bells & Whistles Mix)",
-        "artist": "Walk The Moon",
+        "title": "Shiver Shiver (Bells & Whistles mix)",
+        "artist": "WALK THE MOON",
         "track": 18,
-        "year": 2013,
+        "year": 2012,
         "duration": 225,
         "disc_number": 1
       }
