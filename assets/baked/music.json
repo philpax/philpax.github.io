@@ -904,6 +904,94 @@
     ]
   },
   {
+    "artist": "a‐ha",
+    "album": "Hunting High and Low",
+    "year": 1985,
+    "duration": 2237,
+    "tracks": [
+      {
+        "title": "Take On Me",
+        "artist": "a‐ha",
+        "track": 1,
+        "year": 1985,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Train of Thought",
+        "artist": "a‐ha",
+        "track": 2,
+        "year": 1985,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Hunting High and Low",
+        "artist": "a‐ha",
+        "track": 3,
+        "year": 1985,
+        "duration": 225,
+        "disc_number": 1
+      },
+      {
+        "title": "The Blue Sky",
+        "artist": "a‐ha",
+        "track": 4,
+        "year": 1985,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "Living a Boy’s Adventure Tale",
+        "artist": "a‐ha",
+        "track": 5,
+        "year": 1985,
+        "duration": 302,
+        "disc_number": 1
+      },
+      {
+        "title": "The Sun Always Shines on T.V.",
+        "artist": "a‐ha",
+        "track": 6,
+        "year": 1985,
+        "duration": 308,
+        "disc_number": 1
+      },
+      {
+        "title": "And You Tell Me",
+        "artist": "a‐ha",
+        "track": 7,
+        "year": 1985,
+        "duration": 112,
+        "disc_number": 1
+      },
+      {
+        "title": "Love Is Reason",
+        "artist": "a‐ha",
+        "track": 8,
+        "year": 1985,
+        "duration": 187,
+        "disc_number": 1
+      },
+      {
+        "title": "I Dream Myself Alive",
+        "artist": "a‐ha",
+        "track": 9,
+        "year": 1985,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "Here I Stand and Face the Rain",
+        "artist": "a‐ha",
+        "track": 10,
+        "year": 1985,
+        "duration": 270,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Above & Beyond",
     "album": "Tri-State",
     "year": 2006,
@@ -11798,94 +11886,6 @@
     ]
   },
   {
-    "artist": "a‐ha",
-    "album": "Hunting High and Low",
-    "year": 1985,
-    "duration": 2237,
-    "tracks": [
-      {
-        "title": "Take On Me",
-        "artist": "a‐ha",
-        "track": 1,
-        "year": 1985,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Train of Thought",
-        "artist": "a‐ha",
-        "track": 2,
-        "year": 1985,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Hunting High and Low",
-        "artist": "a‐ha",
-        "track": 3,
-        "year": 1985,
-        "duration": 225,
-        "disc_number": 1
-      },
-      {
-        "title": "The Blue Sky",
-        "artist": "a‐ha",
-        "track": 4,
-        "year": 1985,
-        "duration": 156,
-        "disc_number": 1
-      },
-      {
-        "title": "Living a Boy’s Adventure Tale",
-        "artist": "a‐ha",
-        "track": 5,
-        "year": 1985,
-        "duration": 302,
-        "disc_number": 1
-      },
-      {
-        "title": "The Sun Always Shines on T.V.",
-        "artist": "a‐ha",
-        "track": 6,
-        "year": 1985,
-        "duration": 308,
-        "disc_number": 1
-      },
-      {
-        "title": "And You Tell Me",
-        "artist": "a‐ha",
-        "track": 7,
-        "year": 1985,
-        "duration": 112,
-        "disc_number": 1
-      },
-      {
-        "title": "Love Is Reason",
-        "artist": "a‐ha",
-        "track": 8,
-        "year": 1985,
-        "duration": 187,
-        "disc_number": 1
-      },
-      {
-        "title": "I Dream Myself Alive",
-        "artist": "a‐ha",
-        "track": 9,
-        "year": 1985,
-        "duration": 190,
-        "disc_number": 1
-      },
-      {
-        "title": "Here I Stand and Face the Rain",
-        "artist": "a‐ha",
-        "track": 10,
-        "year": 1985,
-        "duration": 270,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "BADBADNOTGOOD",
     "album": "IV",
     "year": 2016,
@@ -16890,6 +16890,134 @@
     ]
   },
   {
+    "artist": "bôa",
+    "album": "Twilight",
+    "year": 2001,
+    "duration": 3930,
+    "tracks": [
+      {
+        "title": "Duvet",
+        "artist": "bôa",
+        "track": 1,
+        "year": 2023,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "Twilight",
+        "artist": "bôa",
+        "track": 2,
+        "year": 2023,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Fool",
+        "artist": "bôa",
+        "track": 3,
+        "year": 2023,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "Rain",
+        "artist": "bôa",
+        "track": 4,
+        "year": 2023,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Elephant",
+        "artist": "bôa",
+        "track": 5,
+        "year": 2023,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Scoring",
+        "artist": "bôa",
+        "track": 6,
+        "year": 2023,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Deeply",
+        "artist": "bôa",
+        "track": 7,
+        "year": 2023,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "One Day",
+        "artist": "bôa",
+        "track": 8,
+        "year": 2023,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "Welcome",
+        "artist": "bôa",
+        "track": 9,
+        "year": 2023,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "For Jasmine",
+        "artist": "bôa",
+        "track": 10,
+        "year": 2023,
+        "duration": 317,
+        "disc_number": 1
+      },
+      {
+        "title": "Anna Maria",
+        "artist": "bôa",
+        "track": 11,
+        "year": 2023,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "Duvet (acoustic)",
+        "artist": "bôa",
+        "track": 12,
+        "year": 2023,
+        "duration": 314,
+        "disc_number": 1
+      },
+      {
+        "title": "Little Miss",
+        "artist": "bôa",
+        "track": 13,
+        "year": 2023,
+        "duration": 233,
+        "disc_number": 1
+      },
+      {
+        "title": "Drinking",
+        "artist": "bôa",
+        "track": 14,
+        "year": 2023,
+        "duration": 252,
+        "disc_number": 1
+      },
+      {
+        "title": "Duvet (ScummV remix)",
+        "artist": "bôa",
+        "track": 15,
+        "year": 2023,
+        "duration": 386,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Boards of Canada",
     "album": "Twoism",
     "year": 1995,
@@ -20533,134 +20661,6 @@
         "track": 7,
         "year": 1991,
         "duration": 428,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "bôa",
-    "album": "Twilight",
-    "year": 2001,
-    "duration": 3930,
-    "tracks": [
-      {
-        "title": "Duvet",
-        "artist": "bôa",
-        "track": 1,
-        "year": 2023,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "Twilight",
-        "artist": "bôa",
-        "track": 2,
-        "year": 2023,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Fool",
-        "artist": "bôa",
-        "track": 3,
-        "year": 2023,
-        "duration": 307,
-        "disc_number": 1
-      },
-      {
-        "title": "Rain",
-        "artist": "bôa",
-        "track": 4,
-        "year": 2023,
-        "duration": 236,
-        "disc_number": 1
-      },
-      {
-        "title": "Elephant",
-        "artist": "bôa",
-        "track": 5,
-        "year": 2023,
-        "duration": 234,
-        "disc_number": 1
-      },
-      {
-        "title": "Scoring",
-        "artist": "bôa",
-        "track": 6,
-        "year": 2023,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "Deeply",
-        "artist": "bôa",
-        "track": 7,
-        "year": 2023,
-        "duration": 274,
-        "disc_number": 1
-      },
-      {
-        "title": "One Day",
-        "artist": "bôa",
-        "track": 8,
-        "year": 2023,
-        "duration": 160,
-        "disc_number": 1
-      },
-      {
-        "title": "Welcome",
-        "artist": "bôa",
-        "track": 9,
-        "year": 2023,
-        "duration": 305,
-        "disc_number": 1
-      },
-      {
-        "title": "For Jasmine",
-        "artist": "bôa",
-        "track": 10,
-        "year": 2023,
-        "duration": 317,
-        "disc_number": 1
-      },
-      {
-        "title": "Anna Maria",
-        "artist": "bôa",
-        "track": 11,
-        "year": 2023,
-        "duration": 245,
-        "disc_number": 1
-      },
-      {
-        "title": "Duvet (acoustic)",
-        "artist": "bôa",
-        "track": 12,
-        "year": 2023,
-        "duration": 314,
-        "disc_number": 1
-      },
-      {
-        "title": "Little Miss",
-        "artist": "bôa",
-        "track": 13,
-        "year": 2023,
-        "duration": 233,
-        "disc_number": 1
-      },
-      {
-        "title": "Drinking",
-        "artist": "bôa",
-        "track": 14,
-        "year": 2023,
-        "duration": 252,
-        "disc_number": 1
-      },
-      {
-        "title": "Duvet (ScummV remix)",
-        "artist": "bôa",
-        "track": 15,
-        "year": 2023,
-        "duration": 386,
         "disc_number": 1
       }
     ]
@@ -39484,6 +39484,38 @@
     ]
   },
   {
+    "artist": "Éric Alfred Leslie Satie",
+    "album": "Gran Turismo 5 Original Soundtrack",
+    "year": 2010,
+    "duration": 491,
+    "tracks": [
+      {
+        "title": "Gnossienne No.1",
+        "artist": "Éric Alfred Leslie Satie",
+        "track": 4,
+        "year": 2010,
+        "duration": 191,
+        "disc_number": 3
+      },
+      {
+        "title": "Gymnopedie No.1",
+        "artist": "Éric Alfred Leslie Satie",
+        "track": 5,
+        "year": 2010,
+        "duration": 208,
+        "disc_number": 3
+      },
+      {
+        "title": "Le Piccadilly",
+        "artist": "Éric Alfred Leslie Satie",
+        "track": 6,
+        "year": 2010,
+        "duration": 91,
+        "disc_number": 3
+      }
+    ]
+  },
+  {
     "artist": "Eric Clapton",
     "album": "Blues",
     "year": 1999,
@@ -41700,22 +41732,6 @@
     ]
   },
   {
-    "artist": "femtanyl",
-    "album": "LOTTERY",
-    "year": 2025,
-    "duration": 172,
-    "tracks": [
-      {
-        "title": "LOTTERY",
-        "artist": "femtanyl",
-        "track": 1,
-        "year": 2025,
-        "duration": 172,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "femtanyl feat. zombAe",
     "album": "WORLDWID3",
     "year": 2024,
@@ -41727,6 +41743,22 @@
         "track": 1,
         "year": 2024,
         "duration": 147,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "femtanyl",
+    "album": "LOTTERY",
+    "year": 2025,
+    "duration": 172,
+    "tracks": [
+      {
+        "title": "LOTTERY",
+        "artist": "femtanyl",
+        "track": 1,
+        "year": 2025,
+        "duration": 172,
         "disc_number": 1
       }
     ]
@@ -44364,6 +44396,30 @@
     ]
   },
   {
+    "artist": "Frédéric François Chopin",
+    "album": "Gran Turismo 5 Original Soundtrack",
+    "year": 2010,
+    "duration": 414,
+    "tracks": [
+      {
+        "title": "Nocture Op.9 No.2",
+        "artist": "Frédéric François Chopin",
+        "track": 7,
+        "year": 2010,
+        "duration": 216,
+        "disc_number": 3
+      },
+      {
+        "title": "Waltz In C Sharp Minor Op.64 No.2",
+        "artist": "Frédéric François Chopin",
+        "track": 8,
+        "year": 2010,
+        "duration": 197,
+        "disc_number": 3
+      }
+    ]
+  },
+  {
     "artist": "Friendly Fires",
     "album": "Gran Turismo 5 Original Soundtrack",
     "year": 2010,
@@ -44472,30 +44528,6 @@
         "year": 2002,
         "duration": 281,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Frédéric François Chopin",
-    "album": "Gran Turismo 5 Original Soundtrack",
-    "year": 2010,
-    "duration": 414,
-    "tracks": [
-      {
-        "title": "Nocture Op.9 No.2",
-        "artist": "Frédéric François Chopin",
-        "track": 7,
-        "year": 2010,
-        "duration": 216,
-        "disc_number": 3
-      },
-      {
-        "title": "Waltz In C Sharp Minor Op.64 No.2",
-        "artist": "Frédéric François Chopin",
-        "track": 8,
-        "year": 2010,
-        "duration": 197,
-        "disc_number": 3
       }
     ]
   },
@@ -52842,230 +52874,6 @@
     ]
   },
   {
-    "artist": "Jack Wall",
-    "album": "Mass Effect 2: Original Videogame Score",
-    "year": 2010,
-    "duration": 6957,
-    "tracks": [
-      {
-        "title": "The Illusive Man",
-        "artist": "Jack Wall",
-        "track": 1,
-        "year": 2010,
-        "duration": 143,
-        "disc_number": 1
-      },
-      {
-        "title": "Humans Are Disappearing",
-        "artist": "Jack Wall",
-        "track": 2,
-        "year": 2010,
-        "duration": 120,
-        "disc_number": 1
-      },
-      {
-        "title": "The Attack",
-        "artist": "Jack Wall",
-        "track": 3,
-        "year": 2010,
-        "duration": 313,
-        "disc_number": 1
-      },
-      {
-        "title": "The Lazarus Project",
-        "artist": "Jack Wall",
-        "track": 4,
-        "year": 2010,
-        "duration": 70,
-        "disc_number": 1
-      },
-      {
-        "title": "A Rude Awakening",
-        "artist": "Jack Wall & Jimmy Hinson",
-        "track": 5,
-        "year": 2010,
-        "duration": 99,
-        "disc_number": 1
-      },
-      {
-        "title": "The Normandy Reborn",
-        "artist": "Jack Wall & Jimmy Hinson",
-        "track": 6,
-        "year": 2010,
-        "duration": 126,
-        "disc_number": 1
-      },
-      {
-        "title": "Miranda",
-        "artist": "Jack Wall & David Kates",
-        "track": 7,
-        "year": 2010,
-        "duration": 322,
-        "disc_number": 1
-      },
-      {
-        "title": "Jacob",
-        "artist": "Jack Wall & Sam Hulick",
-        "track": 8,
-        "year": 2010,
-        "duration": 362,
-        "disc_number": 1
-      },
-      {
-        "title": "Freedom’s Progress",
-        "artist": "Jack Wall",
-        "track": 9,
-        "year": 2010,
-        "duration": 341,
-        "disc_number": 1
-      },
-      {
-        "title": "Thane",
-        "artist": "Jack Wall & David Kates",
-        "track": 10,
-        "year": 2010,
-        "duration": 559,
-        "disc_number": 1
-      },
-      {
-        "title": "Garrus",
-        "artist": "Jack Wall & David Kates",
-        "track": 11,
-        "year": 2010,
-        "duration": 364,
-        "disc_number": 1
-      },
-      {
-        "title": "An Unknown Enemy",
-        "artist": "Jack Wall",
-        "track": 12,
-        "year": 2010,
-        "duration": 161,
-        "disc_number": 1
-      },
-      {
-        "title": "Samara",
-        "artist": "Jack Wall & Jimmy Hinson",
-        "track": 13,
-        "year": 2010,
-        "duration": 533,
-        "disc_number": 1
-      },
-      {
-        "title": "Grunt",
-        "artist": "Jack Wall & Jimmy Hinson",
-        "track": 14,
-        "year": 2010,
-        "duration": 326,
-        "disc_number": 2
-      },
-      {
-        "title": "Horizon",
-        "artist": "Jack Wall",
-        "track": 15,
-        "year": 2010,
-        "duration": 176,
-        "disc_number": 2
-      },
-      {
-        "title": "Tali",
-        "artist": "Jack Wall & Jimmy Hinson",
-        "track": 16,
-        "year": 2010,
-        "duration": 358,
-        "disc_number": 2
-      },
-      {
-        "title": "Mordin",
-        "artist": "Jack Wall & David Kates",
-        "track": 17,
-        "year": 2010,
-        "duration": 387,
-        "disc_number": 2
-      },
-      {
-        "title": "The Normandy Attacked",
-        "artist": "Jack Wall & Sam Hulick",
-        "track": 18,
-        "year": 2010,
-        "duration": 131,
-        "disc_number": 2
-      },
-      {
-        "title": "Jack",
-        "artist": "Jack Wall & Sam Hulick",
-        "track": 19,
-        "year": 2010,
-        "duration": 388,
-        "disc_number": 2
-      },
-      {
-        "title": "Legion",
-        "artist": "Jack Wall & Sam Hulick",
-        "track": 20,
-        "year": 2010,
-        "duration": 382,
-        "disc_number": 2
-      },
-      {
-        "title": "Jump Drive",
-        "artist": "Jack Wall",
-        "track": 21,
-        "year": 2010,
-        "duration": 136,
-        "disc_number": 2
-      },
-      {
-        "title": "Crash Landing",
-        "artist": "Jack Wall",
-        "track": 22,
-        "year": 2010,
-        "duration": 223,
-        "disc_number": 2
-      },
-      {
-        "title": "The Collector Base",
-        "artist": "Jack Wall",
-        "track": 23,
-        "year": 2010,
-        "duration": 232,
-        "disc_number": 2
-      },
-      {
-        "title": "The End Run",
-        "artist": "Jack Wall",
-        "track": 24,
-        "year": 2010,
-        "duration": 177,
-        "disc_number": 2
-      },
-      {
-        "title": "Suicide Mission",
-        "artist": "Jack Wall",
-        "track": 25,
-        "year": 2010,
-        "duration": 285,
-        "disc_number": 2
-      },
-      {
-        "title": "New Worlds",
-        "artist": "Jack Wall & Sam Hulick",
-        "track": 26,
-        "year": 2010,
-        "duration": 150,
-        "disc_number": 2
-      },
-      {
-        "title": "Reflections",
-        "artist": "Jack Wall",
-        "track": 27,
-        "year": 2010,
-        "duration": 79,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
     "artist": "Jack Wall & Sam Hulick",
     "album": "Mass Effect",
     "year": 2007,
@@ -53366,6 +53174,230 @@
         "year": 2007,
         "duration": 497,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Jack Wall",
+    "album": "Mass Effect 2: Original Videogame Score",
+    "year": 2010,
+    "duration": 6957,
+    "tracks": [
+      {
+        "title": "The Illusive Man",
+        "artist": "Jack Wall",
+        "track": 1,
+        "year": 2010,
+        "duration": 143,
+        "disc_number": 1
+      },
+      {
+        "title": "Humans Are Disappearing",
+        "artist": "Jack Wall",
+        "track": 2,
+        "year": 2010,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "The Attack",
+        "artist": "Jack Wall",
+        "track": 3,
+        "year": 2010,
+        "duration": 313,
+        "disc_number": 1
+      },
+      {
+        "title": "The Lazarus Project",
+        "artist": "Jack Wall",
+        "track": 4,
+        "year": 2010,
+        "duration": 70,
+        "disc_number": 1
+      },
+      {
+        "title": "A Rude Awakening",
+        "artist": "Jack Wall & Jimmy Hinson",
+        "track": 5,
+        "year": 2010,
+        "duration": 99,
+        "disc_number": 1
+      },
+      {
+        "title": "The Normandy Reborn",
+        "artist": "Jack Wall & Jimmy Hinson",
+        "track": 6,
+        "year": 2010,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Miranda",
+        "artist": "Jack Wall & David Kates",
+        "track": 7,
+        "year": 2010,
+        "duration": 322,
+        "disc_number": 1
+      },
+      {
+        "title": "Jacob",
+        "artist": "Jack Wall & Sam Hulick",
+        "track": 8,
+        "year": 2010,
+        "duration": 362,
+        "disc_number": 1
+      },
+      {
+        "title": "Freedom’s Progress",
+        "artist": "Jack Wall",
+        "track": 9,
+        "year": 2010,
+        "duration": 341,
+        "disc_number": 1
+      },
+      {
+        "title": "Thane",
+        "artist": "Jack Wall & David Kates",
+        "track": 10,
+        "year": 2010,
+        "duration": 559,
+        "disc_number": 1
+      },
+      {
+        "title": "Garrus",
+        "artist": "Jack Wall & David Kates",
+        "track": 11,
+        "year": 2010,
+        "duration": 364,
+        "disc_number": 1
+      },
+      {
+        "title": "An Unknown Enemy",
+        "artist": "Jack Wall",
+        "track": 12,
+        "year": 2010,
+        "duration": 161,
+        "disc_number": 1
+      },
+      {
+        "title": "Samara",
+        "artist": "Jack Wall & Jimmy Hinson",
+        "track": 13,
+        "year": 2010,
+        "duration": 533,
+        "disc_number": 1
+      },
+      {
+        "title": "Grunt",
+        "artist": "Jack Wall & Jimmy Hinson",
+        "track": 14,
+        "year": 2010,
+        "duration": 326,
+        "disc_number": 2
+      },
+      {
+        "title": "Horizon",
+        "artist": "Jack Wall",
+        "track": 15,
+        "year": 2010,
+        "duration": 176,
+        "disc_number": 2
+      },
+      {
+        "title": "Tali",
+        "artist": "Jack Wall & Jimmy Hinson",
+        "track": 16,
+        "year": 2010,
+        "duration": 358,
+        "disc_number": 2
+      },
+      {
+        "title": "Mordin",
+        "artist": "Jack Wall & David Kates",
+        "track": 17,
+        "year": 2010,
+        "duration": 387,
+        "disc_number": 2
+      },
+      {
+        "title": "The Normandy Attacked",
+        "artist": "Jack Wall & Sam Hulick",
+        "track": 18,
+        "year": 2010,
+        "duration": 131,
+        "disc_number": 2
+      },
+      {
+        "title": "Jack",
+        "artist": "Jack Wall & Sam Hulick",
+        "track": 19,
+        "year": 2010,
+        "duration": 388,
+        "disc_number": 2
+      },
+      {
+        "title": "Legion",
+        "artist": "Jack Wall & Sam Hulick",
+        "track": 20,
+        "year": 2010,
+        "duration": 382,
+        "disc_number": 2
+      },
+      {
+        "title": "Jump Drive",
+        "artist": "Jack Wall",
+        "track": 21,
+        "year": 2010,
+        "duration": 136,
+        "disc_number": 2
+      },
+      {
+        "title": "Crash Landing",
+        "artist": "Jack Wall",
+        "track": 22,
+        "year": 2010,
+        "duration": 223,
+        "disc_number": 2
+      },
+      {
+        "title": "The Collector Base",
+        "artist": "Jack Wall",
+        "track": 23,
+        "year": 2010,
+        "duration": 232,
+        "disc_number": 2
+      },
+      {
+        "title": "The End Run",
+        "artist": "Jack Wall",
+        "track": 24,
+        "year": 2010,
+        "duration": 177,
+        "disc_number": 2
+      },
+      {
+        "title": "Suicide Mission",
+        "artist": "Jack Wall",
+        "track": 25,
+        "year": 2010,
+        "duration": 285,
+        "disc_number": 2
+      },
+      {
+        "title": "New Worlds",
+        "artist": "Jack Wall & Sam Hulick",
+        "track": 26,
+        "year": 2010,
+        "duration": 150,
+        "disc_number": 2
+      },
+      {
+        "title": "Reflections",
+        "artist": "Jack Wall",
+        "track": 27,
+        "year": 2010,
+        "duration": 79,
+        "disc_number": 2
       }
     ]
   },
@@ -55122,6 +55154,150 @@
     ]
   },
   {
+    "artist": "Jóhann Jóhannsson",
+    "album": "IBM 1401, A User’s Manual",
+    "year": 2006,
+    "duration": 2572,
+    "tracks": [
+      {
+        "title": "Part 1: IBM 1401 Processing Unit",
+        "artist": "Jóhann Jóhannsson",
+        "track": 1,
+        "year": 2006,
+        "duration": 512,
+        "disc_number": 1
+      },
+      {
+        "title": "Part 2: IBM 1403 Printer",
+        "artist": "Jóhann Jóhannsson",
+        "track": 2,
+        "year": 2006,
+        "duration": 572,
+        "disc_number": 1
+      },
+      {
+        "title": "Part 3: IBM 1402 Card Read–Punch",
+        "artist": "Jóhann Jóhannsson",
+        "track": 3,
+        "year": 2006,
+        "duration": 623,
+        "disc_number": 1
+      },
+      {
+        "title": "Part 4: IBM 729 II Magnetic Tape Unit",
+        "artist": "Jóhann Jóhannsson",
+        "track": 4,
+        "year": 2006,
+        "duration": 435,
+        "disc_number": 1
+      },
+      {
+        "title": "Part 5: The Sun’s Gone Dim and the Sky’s Turned Black",
+        "artist": "Jóhann Jóhannsson",
+        "track": 5,
+        "year": 2006,
+        "duration": 429,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Jóhann Jóhannsson",
+    "album": "Fordlandia",
+    "year": 2008,
+    "duration": 4029,
+    "tracks": [
+      {
+        "title": "Fordlandia",
+        "artist": "Jóhann Jóhannsson",
+        "track": 1,
+        "year": 2008,
+        "duration": 822,
+        "disc_number": 1
+      },
+      {
+        "title": "Melodia (I)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 2,
+        "year": 2008,
+        "duration": 116,
+        "disc_number": 1
+      },
+      {
+        "title": "The Rocket Builder (Io Pan!)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 3,
+        "year": 2008,
+        "duration": 384,
+        "disc_number": 1
+      },
+      {
+        "title": "Melodia (II)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 4,
+        "year": 2008,
+        "duration": 108,
+        "disc_number": 1
+      },
+      {
+        "title": "Fordlandia - Aerial View",
+        "artist": "Jóhann Jóhannsson",
+        "track": 5,
+        "year": 2008,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Melodia (III)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 6,
+        "year": 2008,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Chimaerica",
+        "artist": "Jóhann Jóhannsson",
+        "track": 7,
+        "year": 2008,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "Melodia (IV)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 8,
+        "year": 2008,
+        "duration": 165,
+        "disc_number": 1
+      },
+      {
+        "title": "The Great God Pan Is Dead",
+        "artist": "Jóhann Jóhannsson",
+        "track": 9,
+        "year": 2008,
+        "duration": 295,
+        "disc_number": 1
+      },
+      {
+        "title": "Melodia (Guidelines for a Space Propulsion Device Based on Heim’s Quantum Theory)",
+        "artist": "Jóhann Jóhannsson",
+        "track": 10,
+        "year": 2008,
+        "duration": 543,
+        "disc_number": 1
+      },
+      {
+        "title": "How We Left Fordlandia",
+        "artist": "Jóhann Jóhannsson",
+        "track": 11,
+        "year": 2008,
+        "duration": 924,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "John Coltrane",
     "album": "A Love Supreme",
     "year": 1965,
@@ -56442,6 +56618,38 @@
     ]
   },
   {
+    "artist": "Justice vs. Simian",
+    "album": "We Are Your Friends",
+    "year": 2006,
+    "duration": 1110,
+    "tracks": [
+      {
+        "title": "We Are Your Friends",
+        "artist": "Justice vs. Simian",
+        "track": 1,
+        "year": 2006,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "We Are Your Friends (Lee Cabrera's \"Lower East Side\" remix)",
+        "artist": "Justice vs. Simian",
+        "track": 2,
+        "year": 2006,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "We Are Your Friends (Edison remix)",
+        "artist": "Justice vs. Simian",
+        "track": 3,
+        "year": 2006,
+        "duration": 517,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Justice",
     "album": "✝",
     "year": 2007,
@@ -56746,38 +56954,6 @@
     ]
   },
   {
-    "artist": "Justice vs. Simian",
-    "album": "We Are Your Friends",
-    "year": 2006,
-    "duration": 1110,
-    "tracks": [
-      {
-        "title": "We Are Your Friends",
-        "artist": "Justice vs. Simian",
-        "track": 1,
-        "year": 2006,
-        "duration": 262,
-        "disc_number": 1
-      },
-      {
-        "title": "We Are Your Friends (Lee Cabrera's \"Lower East Side\" remix)",
-        "artist": "Justice vs. Simian",
-        "track": 2,
-        "year": 2006,
-        "duration": 331,
-        "disc_number": 1
-      },
-      {
-        "title": "We Are Your Friends (Edison remix)",
-        "artist": "Justice vs. Simian",
-        "track": 3,
-        "year": 2006,
-        "duration": 517,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Justin Timberlake",
     "album": "The 20/20 Experience",
     "year": 2013,
@@ -56877,150 +57053,6 @@
         "track": 12,
         "year": 2013,
         "duration": 282,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Jóhann Jóhannsson",
-    "album": "IBM 1401, A User’s Manual",
-    "year": 2006,
-    "duration": 2572,
-    "tracks": [
-      {
-        "title": "Part 1: IBM 1401 Processing Unit",
-        "artist": "Jóhann Jóhannsson",
-        "track": 1,
-        "year": 2006,
-        "duration": 512,
-        "disc_number": 1
-      },
-      {
-        "title": "Part 2: IBM 1403 Printer",
-        "artist": "Jóhann Jóhannsson",
-        "track": 2,
-        "year": 2006,
-        "duration": 572,
-        "disc_number": 1
-      },
-      {
-        "title": "Part 3: IBM 1402 Card Read–Punch",
-        "artist": "Jóhann Jóhannsson",
-        "track": 3,
-        "year": 2006,
-        "duration": 623,
-        "disc_number": 1
-      },
-      {
-        "title": "Part 4: IBM 729 II Magnetic Tape Unit",
-        "artist": "Jóhann Jóhannsson",
-        "track": 4,
-        "year": 2006,
-        "duration": 435,
-        "disc_number": 1
-      },
-      {
-        "title": "Part 5: The Sun’s Gone Dim and the Sky’s Turned Black",
-        "artist": "Jóhann Jóhannsson",
-        "track": 5,
-        "year": 2006,
-        "duration": 429,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Jóhann Jóhannsson",
-    "album": "Fordlandia",
-    "year": 2008,
-    "duration": 4029,
-    "tracks": [
-      {
-        "title": "Fordlandia",
-        "artist": "Jóhann Jóhannsson",
-        "track": 1,
-        "year": 2008,
-        "duration": 822,
-        "disc_number": 1
-      },
-      {
-        "title": "Melodia (I)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 2,
-        "year": 2008,
-        "duration": 116,
-        "disc_number": 1
-      },
-      {
-        "title": "The Rocket Builder (Io Pan!)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 3,
-        "year": 2008,
-        "duration": 384,
-        "disc_number": 1
-      },
-      {
-        "title": "Melodia (II)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 4,
-        "year": 2008,
-        "duration": 108,
-        "disc_number": 1
-      },
-      {
-        "title": "Fordlandia - Aerial View",
-        "artist": "Jóhann Jóhannsson",
-        "track": 5,
-        "year": 2008,
-        "duration": 272,
-        "disc_number": 1
-      },
-      {
-        "title": "Melodia (III)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 6,
-        "year": 2008,
-        "duration": 192,
-        "disc_number": 1
-      },
-      {
-        "title": "Chimaerica",
-        "artist": "Jóhann Jóhannsson",
-        "track": 7,
-        "year": 2008,
-        "duration": 202,
-        "disc_number": 1
-      },
-      {
-        "title": "Melodia (IV)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 8,
-        "year": 2008,
-        "duration": 165,
-        "disc_number": 1
-      },
-      {
-        "title": "The Great God Pan Is Dead",
-        "artist": "Jóhann Jóhannsson",
-        "track": 9,
-        "year": 2008,
-        "duration": 295,
-        "disc_number": 1
-      },
-      {
-        "title": "Melodia (Guidelines for a Space Propulsion Device Based on Heim’s Quantum Theory)",
-        "artist": "Jóhann Jóhannsson",
-        "track": 10,
-        "year": 2008,
-        "duration": 543,
-        "disc_number": 1
-      },
-      {
-        "title": "How We Left Fordlandia",
-        "artist": "Jóhann Jóhannsson",
-        "track": 11,
-        "year": 2008,
-        "duration": 924,
         "disc_number": 1
       }
     ]
@@ -60290,94 +60322,6 @@
     ]
   },
   {
-    "artist": "King Gizzard & the Lizard Wizard",
-    "album": "Phantom Island",
-    "year": 2025,
-    "duration": 2798,
-    "tracks": [
-      {
-        "title": "Phantom Island",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 1,
-        "year": 2025,
-        "duration": 314,
-        "disc_number": 1
-      },
-      {
-        "title": "Deadstick",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 2,
-        "year": 2025,
-        "duration": 213,
-        "disc_number": 1
-      },
-      {
-        "title": "Lonely Cosmos",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 3,
-        "year": 2025,
-        "duration": 335,
-        "disc_number": 1
-      },
-      {
-        "title": "Eternal Return",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 4,
-        "year": 2025,
-        "duration": 274,
-        "disc_number": 1
-      },
-      {
-        "title": "Panpsych",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 5,
-        "year": 2025,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "Spacesick",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 6,
-        "year": 2025,
-        "duration": 290,
-        "disc_number": 1
-      },
-      {
-        "title": "Aerodynamic",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 7,
-        "year": 2025,
-        "duration": 286,
-        "disc_number": 1
-      },
-      {
-        "title": "Sea of Doubt",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 8,
-        "year": 2025,
-        "duration": 264,
-        "disc_number": 1
-      },
-      {
-        "title": "Silent Spirit",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 9,
-        "year": 2025,
-        "duration": 268,
-        "disc_number": 1
-      },
-      {
-        "title": "Grow Wings and Fly",
-        "artist": "King Gizzard & the Lizard Wizard",
-        "track": 10,
-        "year": 2025,
-        "duration": 308,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "King Gizzard & the Lizard Wizard with Mild High Club",
     "album": "Sketches of Brunswick East",
     "year": 2017,
@@ -60485,6 +60429,94 @@
         "track": 13,
         "year": 2017,
         "duration": 128,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "King Gizzard & the Lizard Wizard",
+    "album": "Phantom Island",
+    "year": 2025,
+    "duration": 2798,
+    "tracks": [
+      {
+        "title": "Phantom Island",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 1,
+        "year": 2025,
+        "duration": 314,
+        "disc_number": 1
+      },
+      {
+        "title": "Deadstick",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 2,
+        "year": 2025,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Lonely Cosmos",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 3,
+        "year": 2025,
+        "duration": 335,
+        "disc_number": 1
+      },
+      {
+        "title": "Eternal Return",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 4,
+        "year": 2025,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Panpsych",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 5,
+        "year": 2025,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Spacesick",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 6,
+        "year": 2025,
+        "duration": 290,
+        "disc_number": 1
+      },
+      {
+        "title": "Aerodynamic",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 7,
+        "year": 2025,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "Sea of Doubt",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 8,
+        "year": 2025,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "Silent Spirit",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 9,
+        "year": 2025,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Grow Wings and Fly",
+        "artist": "King Gizzard & the Lizard Wizard",
+        "track": 10,
+        "year": 2025,
+        "duration": 308,
         "disc_number": 1
       }
     ]
@@ -68928,6 +68960,46 @@
     ]
   },
   {
+    "artist": "Makoto & Deeizm",
+    "album": "Release the Bird",
+    "year": 2010,
+    "duration": 1482,
+    "tracks": [
+      {
+        "title": "Release the Bird",
+        "artist": "Makoto & Deeizm",
+        "track": 1,
+        "year": 2010,
+        "duration": 399,
+        "disc_number": 1
+      },
+      {
+        "title": "Stop",
+        "artist": "Makoto & Deeizm",
+        "track": 2,
+        "year": 2010,
+        "duration": 390,
+        "disc_number": 1
+      },
+      {
+        "title": "Untold",
+        "artist": "Makoto & Deeizm",
+        "track": 3,
+        "year": 2010,
+        "duration": 367,
+        "disc_number": 1
+      },
+      {
+        "title": "Can't Hold It Back",
+        "artist": "Makoto & Deeizm",
+        "track": 4,
+        "year": 2010,
+        "duration": 324,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Makoto",
     "album": "Souled Out",
     "year": 2011,
@@ -69179,46 +69251,6 @@
         "track": 15,
         "year": 2019,
         "duration": 278,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Makoto & Deeizm",
-    "album": "Release the Bird",
-    "year": 2010,
-    "duration": 1482,
-    "tracks": [
-      {
-        "title": "Release the Bird",
-        "artist": "Makoto & Deeizm",
-        "track": 1,
-        "year": 2010,
-        "duration": 399,
-        "disc_number": 1
-      },
-      {
-        "title": "Stop",
-        "artist": "Makoto & Deeizm",
-        "track": 2,
-        "year": 2010,
-        "duration": 390,
-        "disc_number": 1
-      },
-      {
-        "title": "Untold",
-        "artist": "Makoto & Deeizm",
-        "track": 3,
-        "year": 2010,
-        "duration": 367,
-        "disc_number": 1
-      },
-      {
-        "title": "Can't Hold It Back",
-        "artist": "Makoto & Deeizm",
-        "track": 4,
-        "year": 2010,
-        "duration": 324,
         "disc_number": 1
       }
     ]
@@ -82360,6 +82392,118 @@
     ]
   },
   {
+    "artist": "Ólafur Arnalds",
+    "album": "For Now I Am Winter",
+    "year": 2013,
+    "duration": 3147,
+    "tracks": [
+      {
+        "title": "Sudden Throw",
+        "artist": "Ólafur Arnalds",
+        "track": 1,
+        "year": 2013,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Brim",
+        "artist": "Ólafur Arnalds",
+        "track": 2,
+        "year": 2013,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "For Now I Am Winter",
+        "artist": "Ólafur Arnalds feat. Arnór Dan",
+        "track": 3,
+        "year": 2013,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "A Stutter",
+        "artist": "Ólafur Arnalds feat. Arnór Dan",
+        "track": 4,
+        "year": 2013,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "Words of Amber",
+        "artist": "Ólafur Arnalds",
+        "track": 5,
+        "year": 2013,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "Reclaim",
+        "artist": "Ólafur Arnalds feat. Arnór Dan",
+        "track": 6,
+        "year": 2013,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Hands, Be Still",
+        "artist": "Ólafur Arnalds",
+        "track": 7,
+        "year": 2013,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Only the Winds",
+        "artist": "Ólafur Arnalds",
+        "track": 8,
+        "year": 2013,
+        "duration": 321,
+        "disc_number": 1
+      },
+      {
+        "title": "Old Skin",
+        "artist": "Ólafur Arnalds feat. Arnór Dan",
+        "track": 9,
+        "year": 2013,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "We (Too) Shall Rest",
+        "artist": "Ólafur Arnalds",
+        "track": 10,
+        "year": 2013,
+        "duration": 125,
+        "disc_number": 1
+      },
+      {
+        "title": "This Place Was a Shelter",
+        "artist": "Ólafur Arnalds",
+        "track": 11,
+        "year": 2013,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Carry Me Anew",
+        "artist": "Ólafur Arnalds",
+        "track": 12,
+        "year": 2013,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "No. Other",
+        "artist": "Ólafur Arnalds feat. Arnór Dan",
+        "track": 13,
+        "year": 2013,
+        "duration": 258,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Oliver Hacke",
     "album": "Subject Carrier",
     "year": 2004,
@@ -82800,6 +82944,54 @@
     ]
   },
   {
+    "artist": "Oliver Schories & Joris Delacroix",
+    "album": "Palm Tree Memories",
+    "year": 2014,
+    "duration": 2155,
+    "tracks": [
+      {
+        "title": "Palm Tree Memories",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 1,
+        "year": 2014,
+        "duration": 397,
+        "disc_number": 1
+      },
+      {
+        "title": "Don't Move",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 2,
+        "year": 2014,
+        "duration": 406,
+        "disc_number": 1
+      },
+      {
+        "title": "Palm Tree Memories (Zusammenklang remix)",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 3,
+        "year": 2014,
+        "duration": 499,
+        "disc_number": 1
+      },
+      {
+        "title": "Palm Tree Memories (N'to remix)",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 4,
+        "year": 2014,
+        "duration": 419,
+        "disc_number": 1
+      },
+      {
+        "title": "Don't Move (Dan Caster remix)",
+        "artist": "Oliver Schories & Joris Delacroix",
+        "track": 5,
+        "year": 2014,
+        "duration": 432,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Oliver Schories",
     "album": "Fields Without Fences",
     "year": 2015,
@@ -82899,54 +83091,6 @@
         "track": 12,
         "year": 2015,
         "duration": 332,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Oliver Schories & Joris Delacroix",
-    "album": "Palm Tree Memories",
-    "year": 2014,
-    "duration": 2155,
-    "tracks": [
-      {
-        "title": "Palm Tree Memories",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 1,
-        "year": 2014,
-        "duration": 397,
-        "disc_number": 1
-      },
-      {
-        "title": "Don't Move",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 2,
-        "year": 2014,
-        "duration": 406,
-        "disc_number": 1
-      },
-      {
-        "title": "Palm Tree Memories (Zusammenklang remix)",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 3,
-        "year": 2014,
-        "duration": 499,
-        "disc_number": 1
-      },
-      {
-        "title": "Palm Tree Memories (N'to remix)",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 4,
-        "year": 2014,
-        "duration": 419,
-        "disc_number": 1
-      },
-      {
-        "title": "Don't Move (Dan Caster remix)",
-        "artist": "Oliver Schories & Joris Delacroix",
-        "track": 5,
-        "year": 2014,
-        "duration": 432,
         "disc_number": 1
       }
     ]
@@ -87159,6 +87303,86 @@
     ]
   },
   {
+    "artist": "Plaid & Bob Jaroc",
+    "album": "Greedy Baby",
+    "year": 2006,
+    "duration": 3098,
+    "tracks": [
+      {
+        "title": "War Dialer",
+        "artist": "Plaid",
+        "track": 1,
+        "year": 2006,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "I Citizen the Loathsome",
+        "artist": "Plaid",
+        "track": 2,
+        "year": 2006,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "The Launching of Big Face",
+        "artist": "Plaid",
+        "track": 3,
+        "year": 2006,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Zn Zero",
+        "artist": "Plaid",
+        "track": 4,
+        "year": 2006,
+        "duration": 438,
+        "disc_number": 1
+      },
+      {
+        "title": "The Return of Super Barrio (instrumental)",
+        "artist": "Plaid",
+        "track": 5,
+        "year": 2006,
+        "duration": 411,
+        "disc_number": 1
+      },
+      {
+        "title": "The Return of Super Barrio (end credits)",
+        "artist": "Plaid",
+        "track": 6,
+        "year": 2006,
+        "duration": 88,
+        "disc_number": 1
+      },
+      {
+        "title": "E.M.R.",
+        "artist": "Plaid",
+        "track": 7,
+        "year": 2006,
+        "duration": 622,
+        "disc_number": 1
+      },
+      {
+        "title": "Super Positions",
+        "artist": "Plaid",
+        "track": 8,
+        "year": 2006,
+        "duration": 422,
+        "disc_number": 1
+      },
+      {
+        "title": "To",
+        "artist": "Plaid",
+        "track": 9,
+        "year": 2006,
+        "duration": 310,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Plaid",
     "album": "Scintilli",
     "year": 2011,
@@ -87370,86 +87594,6 @@
         "track": 12,
         "year": 2016,
         "duration": 161,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Plaid & Bob Jaroc",
-    "album": "Greedy Baby",
-    "year": 2006,
-    "duration": 3098,
-    "tracks": [
-      {
-        "title": "War Dialer",
-        "artist": "Plaid",
-        "track": 1,
-        "year": 2006,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "I Citizen the Loathsome",
-        "artist": "Plaid",
-        "track": 2,
-        "year": 2006,
-        "duration": 319,
-        "disc_number": 1
-      },
-      {
-        "title": "The Launching of Big Face",
-        "artist": "Plaid",
-        "track": 3,
-        "year": 2006,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Zn Zero",
-        "artist": "Plaid",
-        "track": 4,
-        "year": 2006,
-        "duration": 438,
-        "disc_number": 1
-      },
-      {
-        "title": "The Return of Super Barrio (instrumental)",
-        "artist": "Plaid",
-        "track": 5,
-        "year": 2006,
-        "duration": 411,
-        "disc_number": 1
-      },
-      {
-        "title": "The Return of Super Barrio (end credits)",
-        "artist": "Plaid",
-        "track": 6,
-        "year": 2006,
-        "duration": 88,
-        "disc_number": 1
-      },
-      {
-        "title": "E.M.R.",
-        "artist": "Plaid",
-        "track": 7,
-        "year": 2006,
-        "duration": 622,
-        "disc_number": 1
-      },
-      {
-        "title": "Super Positions",
-        "artist": "Plaid",
-        "track": 8,
-        "year": 2006,
-        "duration": 422,
-        "disc_number": 1
-      },
-      {
-        "title": "To",
-        "artist": "Plaid",
-        "track": 9,
-        "year": 2006,
-        "duration": 310,
         "disc_number": 1
       }
     ]
@@ -92663,142 +92807,6 @@
     ]
   },
   {
-    "artist": "Rusko",
-    "album": "Gran Turismo 5 Original Soundtrack",
-    "year": 2010,
-    "duration": 242,
-    "tracks": [
-      {
-        "title": "You’re on My Mind Baby",
-        "artist": "Rusko",
-        "track": 36,
-        "year": 2010,
-        "duration": 242,
-        "disc_number": 4
-      }
-    ]
-  },
-  {
-    "artist": "Ryo Sonoda",
-    "album": "Gran Turismo 5 Original Soundtrack",
-    "year": 2010,
-    "duration": 214,
-    "tracks": [
-      {
-        "title": "Smoker's Lamnet",
-        "artist": "Ryo Sonoda",
-        "track": 23,
-        "year": 2010,
-        "duration": 214,
-        "disc_number": 5
-      }
-    ]
-  },
-  {
-    "artist": "Ryuichi Sakamoto",
-    "album": "1996",
-    "year": 1996,
-    "duration": 3147,
-    "tracks": [
-      {
-        "title": "A Day a Gorilla Gives a Banana",
-        "artist": "坂本龍一",
-        "track": 1,
-        "year": 1996,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "Rain",
-        "artist": "坂本龍一",
-        "track": 2,
-        "year": 1996,
-        "duration": 218,
-        "disc_number": 1
-      },
-      {
-        "title": "Bibo No Aozora",
-        "artist": "坂本龍一",
-        "track": 3,
-        "year": 1996,
-        "duration": 396,
-        "disc_number": 1
-      },
-      {
-        "title": "The Last Emperor",
-        "artist": "坂本龍一",
-        "track": 4,
-        "year": 1996,
-        "duration": 353,
-        "disc_number": 1
-      },
-      {
-        "title": "1919",
-        "artist": "坂本龍一",
-        "track": 5,
-        "year": 1996,
-        "duration": 382,
-        "disc_number": 1
-      },
-      {
-        "title": "Merry Christmas Mr. Lawrence",
-        "artist": "坂本龍一",
-        "track": 6,
-        "year": 1996,
-        "duration": 286,
-        "disc_number": 1
-      },
-      {
-        "title": "M.A.Y. in the Backyard",
-        "artist": "坂本龍一",
-        "track": 7,
-        "year": 1996,
-        "duration": 264,
-        "disc_number": 1
-      },
-      {
-        "title": "The Sheltering Sky",
-        "artist": "坂本龍一",
-        "track": 8,
-        "year": 1996,
-        "duration": 273,
-        "disc_number": 1
-      },
-      {
-        "title": "A Tribute to N.J.P.",
-        "artist": "坂本龍一",
-        "track": 9,
-        "year": 1996,
-        "duration": 197,
-        "disc_number": 1
-      },
-      {
-        "title": "High Heels (Main Theme)",
-        "artist": "坂本龍一",
-        "track": 10,
-        "year": 1996,
-        "duration": 198,
-        "disc_number": 1
-      },
-      {
-        "title": "Aoneko No Torso",
-        "artist": "坂本龍一",
-        "track": 11,
-        "year": 1996,
-        "duration": 153,
-        "disc_number": 1
-      },
-      {
-        "title": "The Wuthering Heights",
-        "artist": "坂本龍一",
-        "track": 12,
-        "year": 1996,
-        "duration": 321,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Röyksopp",
     "album": "Melody A.M.",
     "year": 2001,
@@ -93303,6 +93311,30 @@
     ]
   },
   {
+    "artist": "Röyksopp / Benedict Cumberbatch",
+    "album": "Ice Machine / Flat of Angles",
+    "year": 2013,
+    "duration": 477,
+    "tracks": [
+      {
+        "title": "Ice Machine",
+        "artist": "Röyksopp",
+        "track": 1,
+        "year": 2013,
+        "duration": 218,
+        "disc_number": 1
+      },
+      {
+        "title": "Flat of Angles, Part 2",
+        "artist": "Benedict Cumberbatch",
+        "track": 2,
+        "year": 2013,
+        "duration": 259,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Röyksopp",
     "album": "The Inevitable End",
     "year": 2014,
@@ -93447,25 +93479,137 @@
     ]
   },
   {
-    "artist": "Röyksopp / Benedict Cumberbatch",
-    "album": "Ice Machine / Flat of Angles",
-    "year": 2013,
-    "duration": 477,
+    "artist": "Rusko",
+    "album": "Gran Turismo 5 Original Soundtrack",
+    "year": 2010,
+    "duration": 242,
     "tracks": [
       {
-        "title": "Ice Machine",
-        "artist": "Röyksopp",
+        "title": "You’re on My Mind Baby",
+        "artist": "Rusko",
+        "track": 36,
+        "year": 2010,
+        "duration": 242,
+        "disc_number": 4
+      }
+    ]
+  },
+  {
+    "artist": "Ryo Sonoda",
+    "album": "Gran Turismo 5 Original Soundtrack",
+    "year": 2010,
+    "duration": 214,
+    "tracks": [
+      {
+        "title": "Smoker's Lamnet",
+        "artist": "Ryo Sonoda",
+        "track": 23,
+        "year": 2010,
+        "duration": 214,
+        "disc_number": 5
+      }
+    ]
+  },
+  {
+    "artist": "Ryuichi Sakamoto",
+    "album": "1996",
+    "year": 1996,
+    "duration": 3147,
+    "tracks": [
+      {
+        "title": "A Day a Gorilla Gives a Banana",
+        "artist": "坂本龍一",
         "track": 1,
-        "year": 2013,
+        "year": 1996,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Rain",
+        "artist": "坂本龍一",
+        "track": 2,
+        "year": 1996,
         "duration": 218,
         "disc_number": 1
       },
       {
-        "title": "Flat of Angles, Part 2",
-        "artist": "Benedict Cumberbatch",
-        "track": 2,
-        "year": 2013,
-        "duration": 259,
+        "title": "Bibo No Aozora",
+        "artist": "坂本龍一",
+        "track": 3,
+        "year": 1996,
+        "duration": 396,
+        "disc_number": 1
+      },
+      {
+        "title": "The Last Emperor",
+        "artist": "坂本龍一",
+        "track": 4,
+        "year": 1996,
+        "duration": 353,
+        "disc_number": 1
+      },
+      {
+        "title": "1919",
+        "artist": "坂本龍一",
+        "track": 5,
+        "year": 1996,
+        "duration": 382,
+        "disc_number": 1
+      },
+      {
+        "title": "Merry Christmas Mr. Lawrence",
+        "artist": "坂本龍一",
+        "track": 6,
+        "year": 1996,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "M.A.Y. in the Backyard",
+        "artist": "坂本龍一",
+        "track": 7,
+        "year": 1996,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "The Sheltering Sky",
+        "artist": "坂本龍一",
+        "track": 8,
+        "year": 1996,
+        "duration": 273,
+        "disc_number": 1
+      },
+      {
+        "title": "A Tribute to N.J.P.",
+        "artist": "坂本龍一",
+        "track": 9,
+        "year": 1996,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "High Heels (Main Theme)",
+        "artist": "坂本龍一",
+        "track": 10,
+        "year": 1996,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "Aoneko No Torso",
+        "artist": "坂本龍一",
+        "track": 11,
+        "year": 1996,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "The Wuthering Heights",
+        "artist": "坂本龍一",
+        "track": 12,
+        "year": 1996,
+        "duration": 321,
         "disc_number": 1
       }
     ]
@@ -95334,110 +95478,6 @@
     ]
   },
   {
-    "artist": "Seatbelts",
-    "album": "Cowboy Bebop: Tank! THE! BEST!",
-    "year": 2004,
-    "duration": 3054,
-    "tracks": [
-      {
-        "title": "Tank! (TV stretch)",
-        "artist": "シートベルツ",
-        "track": 1,
-        "year": 2004,
-        "duration": 207,
-        "disc_number": 1
-      },
-      {
-        "title": "WHAT PLANET IS THIS.",
-        "artist": "シートベルツ",
-        "track": 2,
-        "year": 2004,
-        "duration": 164,
-        "disc_number": 1
-      },
-      {
-        "title": "COSMIC DARE (PRETTY WITH A PISTOL)",
-        "artist": "シートベルツ",
-        "track": 3,
-        "year": 2004,
-        "duration": 248,
-        "disc_number": 1
-      },
-      {
-        "title": "DIAMONDS",
-        "artist": "シートベルツ",
-        "track": 4,
-        "year": 2004,
-        "duration": 241,
-        "disc_number": 1
-      },
-      {
-        "title": "Don’t bother none (TV edit)",
-        "artist": "シートベルツ",
-        "track": 5,
-        "year": 2004,
-        "duration": 175,
-        "disc_number": 1
-      },
-      {
-        "title": "PIANO BLACK",
-        "artist": "シートベルツ",
-        "track": 6,
-        "year": 2004,
-        "duration": 167,
-        "disc_number": 1
-      },
-      {
-        "title": "MUSHROOM HUNTING",
-        "artist": "シートベルツ",
-        "track": 7,
-        "year": 2004,
-        "duration": 199,
-        "disc_number": 1
-      },
-      {
-        "title": "No Reply",
-        "artist": "シートベルツ",
-        "track": 8,
-        "year": 2004,
-        "duration": 360,
-        "disc_number": 1
-      },
-      {
-        "title": "BLUE",
-        "artist": "シートベルツ",
-        "track": 9,
-        "year": 2004,
-        "duration": 304,
-        "disc_number": 1
-      },
-      {
-        "title": "EINSTEIN GROOVIN’",
-        "artist": "シートベルツ",
-        "track": 10,
-        "year": 2004,
-        "duration": 379,
-        "disc_number": 1
-      },
-      {
-        "title": "PEARLS",
-        "artist": "シートベルツ",
-        "track": 11,
-        "year": 2004,
-        "duration": 284,
-        "disc_number": 1
-      },
-      {
-        "title": "Gotta knock a little harder",
-        "artist": "シートベルツ",
-        "track": 12,
-        "year": 2004,
-        "duration": 320,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Seatbelts / Yoko Kanno",
     "album": "Cowboy Bebop: CD-Box: Original Sound Track",
     "year": 2002,
@@ -96210,6 +96250,110 @@
         "year": 2002,
         "duration": 198,
         "disc_number": 4
+      }
+    ]
+  },
+  {
+    "artist": "Seatbelts",
+    "album": "Cowboy Bebop: Tank! THE! BEST!",
+    "year": 2004,
+    "duration": 3054,
+    "tracks": [
+      {
+        "title": "Tank! (TV stretch)",
+        "artist": "シートベルツ",
+        "track": 1,
+        "year": 2004,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "WHAT PLANET IS THIS.",
+        "artist": "シートベルツ",
+        "track": 2,
+        "year": 2004,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "COSMIC DARE (PRETTY WITH A PISTOL)",
+        "artist": "シートベルツ",
+        "track": 3,
+        "year": 2004,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "DIAMONDS",
+        "artist": "シートベルツ",
+        "track": 4,
+        "year": 2004,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Don’t bother none (TV edit)",
+        "artist": "シートベルツ",
+        "track": 5,
+        "year": 2004,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "PIANO BLACK",
+        "artist": "シートベルツ",
+        "track": 6,
+        "year": 2004,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "MUSHROOM HUNTING",
+        "artist": "シートベルツ",
+        "track": 7,
+        "year": 2004,
+        "duration": 199,
+        "disc_number": 1
+      },
+      {
+        "title": "No Reply",
+        "artist": "シートベルツ",
+        "track": 8,
+        "year": 2004,
+        "duration": 360,
+        "disc_number": 1
+      },
+      {
+        "title": "BLUE",
+        "artist": "シートベルツ",
+        "track": 9,
+        "year": 2004,
+        "duration": 304,
+        "disc_number": 1
+      },
+      {
+        "title": "EINSTEIN GROOVIN’",
+        "artist": "シートベルツ",
+        "track": 10,
+        "year": 2004,
+        "duration": 379,
+        "disc_number": 1
+      },
+      {
+        "title": "PEARLS",
+        "artist": "シートベルツ",
+        "track": 11,
+        "year": 2004,
+        "duration": 284,
+        "disc_number": 1
+      },
+      {
+        "title": "Gotta knock a little harder",
+        "artist": "シートベルツ",
+        "track": 12,
+        "year": 2004,
+        "duration": 320,
+        "disc_number": 1
       }
     ]
   },
@@ -100870,6 +101014,110 @@
     ]
   },
   {
+    "artist": "Solar Fields • Solar Fields & Lisa Miskovsky",
+    "album": "Mirror’s Edge: Original Videogame Score",
+    "year": 2009,
+    "duration": 4757,
+    "tracks": [
+      {
+        "title": "Introduction",
+        "artist": "Solar Fields",
+        "track": 1,
+        "year": 2009,
+        "duration": 334,
+        "disc_number": 1
+      },
+      {
+        "title": "Edge Flight",
+        "artist": "Solar Fields",
+        "track": 2,
+        "year": 2009,
+        "duration": 415,
+        "disc_number": 1
+      },
+      {
+        "title": "Jacknife",
+        "artist": "Solar Fields",
+        "track": 3,
+        "year": 2009,
+        "duration": 385,
+        "disc_number": 1
+      },
+      {
+        "title": "Heat",
+        "artist": "Solar Fields",
+        "track": 4,
+        "year": 2009,
+        "duration": 421,
+        "disc_number": 1
+      },
+      {
+        "title": "Ropeburn",
+        "artist": "Solar Fields",
+        "track": 5,
+        "year": 2009,
+        "duration": 435,
+        "disc_number": 1
+      },
+      {
+        "title": "New Eden",
+        "artist": "Solar Fields",
+        "track": 6,
+        "year": 2009,
+        "duration": 472,
+        "disc_number": 1
+      },
+      {
+        "title": "Pirandello Kruger",
+        "artist": "Solar Fields",
+        "track": 7,
+        "year": 2009,
+        "duration": 428,
+        "disc_number": 1
+      },
+      {
+        "title": "Boat",
+        "artist": "Solar Fields",
+        "track": 8,
+        "year": 2009,
+        "duration": 450,
+        "disc_number": 1
+      },
+      {
+        "title": "Kate",
+        "artist": "Solar Fields",
+        "track": 9,
+        "year": 2009,
+        "duration": 433,
+        "disc_number": 1
+      },
+      {
+        "title": "Shard",
+        "artist": "Solar Fields",
+        "track": 10,
+        "year": 2009,
+        "duration": 436,
+        "disc_number": 1
+      },
+      {
+        "title": "Still Alive",
+        "artist": "Lisa Miskovsky",
+        "track": 11,
+        "year": 2009,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Still Alive (instrumental)",
+        "artist": "Lisa Miskovsky",
+        "track": 12,
+        "year": 2009,
+        "duration": 269,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Solar Fields",
     "album": "Movements",
     "year": 2009,
@@ -101425,110 +101673,6 @@
         "track": 10,
         "year": 2013,
         "duration": 508,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Solar Fields • Solar Fields & Lisa Miskovsky",
-    "album": "Mirror’s Edge: Original Videogame Score",
-    "year": 2009,
-    "duration": 4757,
-    "tracks": [
-      {
-        "title": "Introduction",
-        "artist": "Solar Fields",
-        "track": 1,
-        "year": 2009,
-        "duration": 334,
-        "disc_number": 1
-      },
-      {
-        "title": "Edge Flight",
-        "artist": "Solar Fields",
-        "track": 2,
-        "year": 2009,
-        "duration": 415,
-        "disc_number": 1
-      },
-      {
-        "title": "Jacknife",
-        "artist": "Solar Fields",
-        "track": 3,
-        "year": 2009,
-        "duration": 385,
-        "disc_number": 1
-      },
-      {
-        "title": "Heat",
-        "artist": "Solar Fields",
-        "track": 4,
-        "year": 2009,
-        "duration": 421,
-        "disc_number": 1
-      },
-      {
-        "title": "Ropeburn",
-        "artist": "Solar Fields",
-        "track": 5,
-        "year": 2009,
-        "duration": 435,
-        "disc_number": 1
-      },
-      {
-        "title": "New Eden",
-        "artist": "Solar Fields",
-        "track": 6,
-        "year": 2009,
-        "duration": 472,
-        "disc_number": 1
-      },
-      {
-        "title": "Pirandello Kruger",
-        "artist": "Solar Fields",
-        "track": 7,
-        "year": 2009,
-        "duration": 428,
-        "disc_number": 1
-      },
-      {
-        "title": "Boat",
-        "artist": "Solar Fields",
-        "track": 8,
-        "year": 2009,
-        "duration": 450,
-        "disc_number": 1
-      },
-      {
-        "title": "Kate",
-        "artist": "Solar Fields",
-        "track": 9,
-        "year": 2009,
-        "duration": 433,
-        "disc_number": 1
-      },
-      {
-        "title": "Shard",
-        "artist": "Solar Fields",
-        "track": 10,
-        "year": 2009,
-        "duration": 436,
-        "disc_number": 1
-      },
-      {
-        "title": "Still Alive",
-        "artist": "Lisa Miskovsky",
-        "track": 11,
-        "year": 2009,
-        "duration": 274,
-        "disc_number": 1
-      },
-      {
-        "title": "Still Alive (instrumental)",
-        "artist": "Lisa Miskovsky",
-        "track": 12,
-        "year": 2009,
-        "duration": 269,
         "disc_number": 1
       }
     ]
@@ -104310,6 +104454,54 @@
     ]
   },
   {
+    "artist": "Sub Focus feat. Alpines",
+    "album": "Tidal Wave",
+    "year": 2012,
+    "duration": 1481,
+    "tracks": [
+      {
+        "title": "Tidal Wave",
+        "artist": "Sub Focus feat. Alpines",
+        "track": 1,
+        "year": 2012,
+        "duration": 226,
+        "disc_number": 1
+      },
+      {
+        "title": "Tidal Wave (Chuckie remix)",
+        "artist": "Sub Focus feat. Alpines",
+        "track": 2,
+        "year": 2012,
+        "duration": 320,
+        "disc_number": 1
+      },
+      {
+        "title": "Tidal Wave (Killsonik remix)",
+        "artist": "Sub Focus feat. Alpines",
+        "track": 3,
+        "year": 2012,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "Tidal Wave (Flosstradamus remix)",
+        "artist": "Sub Focus feat. Alpines",
+        "track": 4,
+        "year": 2012,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Tidal Wave (Shadow Child remix)",
+        "artist": "Sub Focus feat. Alpines",
+        "track": 5,
+        "year": 2012,
+        "duration": 387,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Sub Focus",
     "album": "Torus",
     "year": 2013,
@@ -104449,54 +104641,6 @@
         "track": 17,
         "year": 2013,
         "duration": 275,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Sub Focus feat. Alpines",
-    "album": "Tidal Wave",
-    "year": 2012,
-    "duration": 1481,
-    "tracks": [
-      {
-        "title": "Tidal Wave",
-        "artist": "Sub Focus feat. Alpines",
-        "track": 1,
-        "year": 2012,
-        "duration": 226,
-        "disc_number": 1
-      },
-      {
-        "title": "Tidal Wave (Chuckie remix)",
-        "artist": "Sub Focus feat. Alpines",
-        "track": 2,
-        "year": 2012,
-        "duration": 320,
-        "disc_number": 1
-      },
-      {
-        "title": "Tidal Wave (Killsonik remix)",
-        "artist": "Sub Focus feat. Alpines",
-        "track": 3,
-        "year": 2012,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "Tidal Wave (Flosstradamus remix)",
-        "artist": "Sub Focus feat. Alpines",
-        "track": 4,
-        "year": 2012,
-        "duration": 249,
-        "disc_number": 1
-      },
-      {
-        "title": "Tidal Wave (Shadow Child remix)",
-        "artist": "Sub Focus feat. Alpines",
-        "track": 5,
-        "year": 2012,
-        "duration": 387,
         "disc_number": 1
       }
     ]
@@ -106358,6 +106502,158 @@
     ]
   },
   {
+    "artist": "Ta‐ku",
+    "album": "Songs to Break Up To",
+    "year": 2013,
+    "duration": 2186,
+    "tracks": [
+      {
+        "title": "Beginning to End",
+        "artist": "Ta‐ku",
+        "track": 1,
+        "year": 2013,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "Heartbreak (Sinking)",
+        "artist": "Ta‐ku",
+        "track": 2,
+        "year": 2013,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "I Miss You",
+        "artist": "Ta‐ku",
+        "track": 3,
+        "year": 2013,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "Love Lost",
+        "artist": "Ta‐ku",
+        "track": 4,
+        "year": 2013,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "I Miss You More",
+        "artist": "Ta‐ku feat. Atu",
+        "track": 5,
+        "year": 2013,
+        "duration": 266,
+        "disc_number": 1
+      },
+      {
+        "title": "We Were in Love",
+        "artist": "Ta‐ku",
+        "track": 6,
+        "year": 2013,
+        "duration": 229,
+        "disc_number": 1
+      },
+      {
+        "title": "Wasted Time",
+        "artist": "Ta‐ku feat. Thandiwe Phoenix",
+        "track": 7,
+        "year": 2013,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "Healing (Hope You're Well)",
+        "artist": "Ta‐ku",
+        "track": 8,
+        "year": 2013,
+        "duration": 185,
+        "disc_number": 1
+      },
+      {
+        "title": "Moving On",
+        "artist": "Ta‐ku",
+        "track": 9,
+        "year": 2013,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
+        "title": "Descent",
+        "artist": "Ta‐ku feat. Ebrahim",
+        "track": 10,
+        "year": 2013,
+        "duration": 176,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Ta‐ku",
+    "album": "Songs to Make Up To",
+    "year": 2015,
+    "duration": 1699,
+    "tracks": [
+      {
+        "title": "Hopeful",
+        "artist": "Ta‐ku",
+        "track": 1,
+        "year": 2015,
+        "duration": 170,
+        "disc_number": 1
+      },
+      {
+        "title": "Love Again",
+        "artist": "Ta‐ku feat. JMSN & Sango",
+        "track": 2,
+        "year": 2015,
+        "duration": 316,
+        "disc_number": 1
+      },
+      {
+        "title": "Trust Me",
+        "artist": "Ta‐ku",
+        "track": 3,
+        "year": 2015,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Long Time No See",
+        "artist": "Ta‐ku feat. Atu",
+        "track": 4,
+        "year": 2015,
+        "duration": 282,
+        "disc_number": 1
+      },
+      {
+        "title": "Sunrise / Beautiful",
+        "artist": "Ta‐ku feat. Jordan Rakei",
+        "track": 5,
+        "year": 2015,
+        "duration": 336,
+        "disc_number": 1
+      },
+      {
+        "title": "Fall4You",
+        "artist": "Ta‐ku feat. Sunni Colón",
+        "track": 6,
+        "year": 2015,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Work in Progress",
+        "artist": "Ta‐ku",
+        "track": 7,
+        "year": 2015,
+        "duration": 135,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Takeshi Abo",
     "album": "Steins;Gate Original Soundtrack",
     "year": 2010,
@@ -107956,158 +108252,6 @@
         "track": 6,
         "year": 2024,
         "duration": 321
-      }
-    ]
-  },
-  {
-    "artist": "Ta‐ku",
-    "album": "Songs to Break Up To",
-    "year": 2013,
-    "duration": 2186,
-    "tracks": [
-      {
-        "title": "Beginning to End",
-        "artist": "Ta‐ku",
-        "track": 1,
-        "year": 2013,
-        "duration": 178,
-        "disc_number": 1
-      },
-      {
-        "title": "Heartbreak (Sinking)",
-        "artist": "Ta‐ku",
-        "track": 2,
-        "year": 2013,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "I Miss You",
-        "artist": "Ta‐ku",
-        "track": 3,
-        "year": 2013,
-        "duration": 231,
-        "disc_number": 1
-      },
-      {
-        "title": "Love Lost",
-        "artist": "Ta‐ku",
-        "track": 4,
-        "year": 2013,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "I Miss You More",
-        "artist": "Ta‐ku feat. Atu",
-        "track": 5,
-        "year": 2013,
-        "duration": 266,
-        "disc_number": 1
-      },
-      {
-        "title": "We Were in Love",
-        "artist": "Ta‐ku",
-        "track": 6,
-        "year": 2013,
-        "duration": 229,
-        "disc_number": 1
-      },
-      {
-        "title": "Wasted Time",
-        "artist": "Ta‐ku feat. Thandiwe Phoenix",
-        "track": 7,
-        "year": 2013,
-        "duration": 211,
-        "disc_number": 1
-      },
-      {
-        "title": "Healing (Hope You're Well)",
-        "artist": "Ta‐ku",
-        "track": 8,
-        "year": 2013,
-        "duration": 185,
-        "disc_number": 1
-      },
-      {
-        "title": "Moving On",
-        "artist": "Ta‐ku",
-        "track": 9,
-        "year": 2013,
-        "duration": 238,
-        "disc_number": 1
-      },
-      {
-        "title": "Descent",
-        "artist": "Ta‐ku feat. Ebrahim",
-        "track": 10,
-        "year": 2013,
-        "duration": 176,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Ta‐ku",
-    "album": "Songs to Make Up To",
-    "year": 2015,
-    "duration": 1699,
-    "tracks": [
-      {
-        "title": "Hopeful",
-        "artist": "Ta‐ku",
-        "track": 1,
-        "year": 2015,
-        "duration": 170,
-        "disc_number": 1
-      },
-      {
-        "title": "Love Again",
-        "artist": "Ta‐ku feat. JMSN & Sango",
-        "track": 2,
-        "year": 2015,
-        "duration": 316,
-        "disc_number": 1
-      },
-      {
-        "title": "Trust Me",
-        "artist": "Ta‐ku",
-        "track": 3,
-        "year": 2015,
-        "duration": 189,
-        "disc_number": 1
-      },
-      {
-        "title": "Long Time No See",
-        "artist": "Ta‐ku feat. Atu",
-        "track": 4,
-        "year": 2015,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "Sunrise / Beautiful",
-        "artist": "Ta‐ku feat. Jordan Rakei",
-        "track": 5,
-        "year": 2015,
-        "duration": 336,
-        "disc_number": 1
-      },
-      {
-        "title": "Fall4You",
-        "artist": "Ta‐ku feat. Sunni Colón",
-        "track": 6,
-        "year": 2015,
-        "duration": 268,
-        "disc_number": 1
-      },
-      {
-        "title": "Work in Progress",
-        "artist": "Ta‐ku",
-        "track": 7,
-        "year": 2015,
-        "duration": 135,
-        "disc_number": 1
       }
     ]
   },
@@ -121504,6 +121648,198 @@
     ]
   },
   {
+    "artist": "Ulrich Schnauss & Mark Peters",
+    "album": "Underrated Silence",
+    "year": 2007,
+    "duration": 2987,
+    "tracks": [
+      {
+        "title": "The Messiah Is Falling",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 1,
+        "year": 2007,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Long Distance Call",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 2,
+        "year": 2007,
+        "duration": 172,
+        "disc_number": 1
+      },
+      {
+        "title": "Forgotten",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 3,
+        "year": 2007,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Yesterday Didn't Exist",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 4,
+        "year": 2007,
+        "duration": 330,
+        "disc_number": 1
+      },
+      {
+        "title": "Rosen im Asphalt",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 5,
+        "year": 2007,
+        "duration": 334,
+        "disc_number": 1
+      },
+      {
+        "title": "The Child or the Pigeon",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 6,
+        "year": 2007,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Ekaterina",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 7,
+        "year": 2007,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Amoxicillin",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 8,
+        "year": 2007,
+        "duration": 260,
+        "disc_number": 1
+      },
+      {
+        "title": "Gift Horse's Mouth",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 9,
+        "year": 2007,
+        "duration": 442,
+        "disc_number": 1
+      },
+      {
+        "title": "Underrated Silence",
+        "artist": "Ulrich Schnauss & Mark Peters",
+        "track": 10,
+        "year": 2007,
+        "duration": 412,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Ulrich Schnauss & Jonas Munk",
+    "album": "Epic",
+    "year": 2010,
+    "duration": 3328,
+    "tracks": [
+      {
+        "title": "Chasing Rainbows",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 1,
+        "year": 2010,
+        "duration": 365,
+        "disc_number": 1
+      },
+      {
+        "title": "Coming Up for Air",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 2,
+        "year": 2010,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Coming Up for Air (dub)",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 3,
+        "year": 2010,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Johnny (Sentimental Fool)",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 4,
+        "year": 2010,
+        "duration": 322,
+        "disc_number": 1
+      },
+      {
+        "title": "Costa Nova",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 5,
+        "year": 2010,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "Weightless Memories",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 6,
+        "year": 2010,
+        "duration": 375,
+        "disc_number": 1
+      },
+      {
+        "title": "Sirocco",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 7,
+        "year": 2010,
+        "duration": 486,
+        "disc_number": 1
+      },
+      {
+        "title": "Sonnenblumenstrahl",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 8,
+        "year": 2010,
+        "duration": 402,
+        "disc_number": 1
+      },
+      {
+        "title": "Made of Sky",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 9,
+        "year": 2010,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "In Odense",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 10,
+        "year": 2010,
+        "duration": 135,
+        "disc_number": 1
+      },
+      {
+        "title": "You Can Walk Anywhere",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 11,
+        "year": 2010,
+        "duration": 254,
+        "disc_number": 1
+      },
+      {
+        "title": "Leaves of Grass",
+        "artist": "Ulrich Schnauss & Jonas Munk",
+        "track": 12,
+        "year": 2010,
+        "duration": 125,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Ulrich Schnauss",
     "album": "A Long Way to Fall",
     "year": 2013,
@@ -121627,198 +121963,6 @@
         "track": 4,
         "year": 2013,
         "duration": 346,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Ulrich Schnauss & Jonas Munk",
-    "album": "Epic",
-    "year": 2010,
-    "duration": 3328,
-    "tracks": [
-      {
-        "title": "Chasing Rainbows",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 1,
-        "year": 2010,
-        "duration": 365,
-        "disc_number": 1
-      },
-      {
-        "title": "Coming Up for Air",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 2,
-        "year": 2010,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "Coming Up for Air (dub)",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 3,
-        "year": 2010,
-        "duration": 243,
-        "disc_number": 1
-      },
-      {
-        "title": "Johnny (Sentimental Fool)",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 4,
-        "year": 2010,
-        "duration": 322,
-        "disc_number": 1
-      },
-      {
-        "title": "Costa Nova",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 5,
-        "year": 2010,
-        "duration": 244,
-        "disc_number": 1
-      },
-      {
-        "title": "Weightless Memories",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 6,
-        "year": 2010,
-        "duration": 375,
-        "disc_number": 1
-      },
-      {
-        "title": "Sirocco",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 7,
-        "year": 2010,
-        "duration": 486,
-        "disc_number": 1
-      },
-      {
-        "title": "Sonnenblumenstrahl",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 8,
-        "year": 2010,
-        "duration": 402,
-        "disc_number": 1
-      },
-      {
-        "title": "Made of Sky",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 9,
-        "year": 2010,
-        "duration": 129,
-        "disc_number": 1
-      },
-      {
-        "title": "In Odense",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 10,
-        "year": 2010,
-        "duration": 135,
-        "disc_number": 1
-      },
-      {
-        "title": "You Can Walk Anywhere",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 11,
-        "year": 2010,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Leaves of Grass",
-        "artist": "Ulrich Schnauss & Jonas Munk",
-        "track": 12,
-        "year": 2010,
-        "duration": 125,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Ulrich Schnauss & Mark Peters",
-    "album": "Underrated Silence",
-    "year": 2007,
-    "duration": 2987,
-    "tracks": [
-      {
-        "title": "The Messiah Is Falling",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 1,
-        "year": 2007,
-        "duration": 224,
-        "disc_number": 1
-      },
-      {
-        "title": "Long Distance Call",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 2,
-        "year": 2007,
-        "duration": 172,
-        "disc_number": 1
-      },
-      {
-        "title": "Forgotten",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 3,
-        "year": 2007,
-        "duration": 254,
-        "disc_number": 1
-      },
-      {
-        "title": "Yesterday Didn't Exist",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 4,
-        "year": 2007,
-        "duration": 330,
-        "disc_number": 1
-      },
-      {
-        "title": "Rosen im Asphalt",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 5,
-        "year": 2007,
-        "duration": 334,
-        "disc_number": 1
-      },
-      {
-        "title": "The Child or the Pigeon",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 6,
-        "year": 2007,
-        "duration": 224,
-        "disc_number": 1
-      },
-      {
-        "title": "Ekaterina",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 7,
-        "year": 2007,
-        "duration": 331,
-        "disc_number": 1
-      },
-      {
-        "title": "Amoxicillin",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 8,
-        "year": 2007,
-        "duration": 260,
-        "disc_number": 1
-      },
-      {
-        "title": "Gift Horse's Mouth",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 9,
-        "year": 2007,
-        "duration": 442,
-        "disc_number": 1
-      },
-      {
-        "title": "Underrated Silence",
-        "artist": "Ulrich Schnauss & Mark Peters",
-        "track": 10,
-        "year": 2007,
-        "duration": 412,
         "disc_number": 1
       }
     ]
@@ -123727,6 +123871,190 @@
     ]
   },
   {
+    "artist": "Various Artists • Nakagawa Koutarou",
+    "album": "Code Geass - Lelouch of the Rebellion O.S.T.",
+    "year": 2006,
+    "duration": 2830,
+    "tracks": [
+      {
+        "title": "0",
+        "artist": "Kotaro Nakagawa",
+        "track": 1,
+        "year": 2006,
+        "duration": 94,
+        "disc_number": 1
+      },
+      {
+        "title": "Stories",
+        "artist": "Hitomi",
+        "track": 2,
+        "year": 2006,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "Prologue",
+        "artist": "Kotaro Nakagawa",
+        "track": 3,
+        "year": 2006,
+        "duration": 136,
+        "disc_number": 1
+      },
+      {
+        "title": "Stream of Consciousness",
+        "artist": "Hitomi Kuroishi",
+        "track": 4,
+        "year": 2006,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Cold Nobility",
+        "artist": "Kotaro Nakagawa",
+        "track": 5,
+        "year": 2006,
+        "duration": 76,
+        "disc_number": 1
+      },
+      {
+        "title": "The First Signature",
+        "artist": "Hitomi Kuroishi",
+        "track": 6,
+        "year": 2006,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Strange Girl",
+        "artist": "Hitomi Kuroishi",
+        "track": 7,
+        "year": 2006,
+        "duration": 183,
+        "disc_number": 1
+      },
+      {
+        "title": "Outside Road",
+        "artist": "Kotaro Nakagawa",
+        "track": 8,
+        "year": 2006,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Injustice",
+        "artist": "Kotaro Nakagawa",
+        "track": 9,
+        "year": 2006,
+        "duration": 112,
+        "disc_number": 1
+      },
+      {
+        "title": "Nightmare",
+        "artist": "Kotaro Nakagawa",
+        "track": 10,
+        "year": 2006,
+        "duration": 68,
+        "disc_number": 1
+      },
+      {
+        "title": "All Hail Britannia!!!",
+        "artist": "Kotaro Nakagawa",
+        "track": 11,
+        "year": 2006,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Light of Green",
+        "artist": "Kotaro Nakagawa",
+        "track": 12,
+        "year": 2006,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "Masquerade",
+        "artist": "Hitomi",
+        "track": 13,
+        "year": 2006,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "Awakening of the Child",
+        "artist": "Hitomi Kuroishi",
+        "track": 14,
+        "year": 2006,
+        "duration": 87,
+        "disc_number": 1
+      },
+      {
+        "title": "Boyhood",
+        "artist": "Kotaro Nakagawa",
+        "track": 15,
+        "year": 2006,
+        "duration": 104,
+        "disc_number": 1
+      },
+      {
+        "title": "Stray Cat",
+        "artist": "Hitomi Kuroishi",
+        "track": 16,
+        "year": 2006,
+        "duration": 74,
+        "disc_number": 1
+      },
+      {
+        "title": "Occupied Thinking",
+        "artist": "Kotaro Nakagawa",
+        "track": 17,
+        "year": 2006,
+        "duration": 118,
+        "disc_number": 1
+      },
+      {
+        "title": "Shin Troop",
+        "artist": "Kotaro Nakagawa",
+        "track": 18,
+        "year": 2006,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Brain Game",
+        "artist": "Kotaro Nakagawa",
+        "track": 19,
+        "year": 2006,
+        "duration": 113,
+        "disc_number": 1
+      },
+      {
+        "title": "Elegant Force",
+        "artist": "Kotaro Nakagawa",
+        "track": 20,
+        "year": 2006,
+        "duration": 103,
+        "disc_number": 1
+      },
+      {
+        "title": "Devil Created",
+        "artist": "Kotaro Nakagawa",
+        "track": 21,
+        "year": 2006,
+        "duration": 86,
+        "disc_number": 1
+      },
+      {
+        "title": "勇侠青春謳 [TV Ver.]",
+        "artist": "ALI PROJECT",
+        "track": 22,
+        "year": 2006,
+        "duration": 90,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Various Artists",
     "album": "Community: Music From the Original Television Series",
     "year": 2010,
@@ -124859,6 +125187,206 @@
         "year": 2014,
         "duration": 243,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists • Fullmetal Alchemist",
+    "album": "FULLMETAL ALCHEMIST THE BEST",
+    "year": 2012,
+    "duration": 6195,
+    "tracks": [
+      {
+        "title": "Melissa",
+        "artist": "ポルノグラフィティ",
+        "track": 1,
+        "year": 2012,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "Kesenai Tsumi",
+        "artist": "北出菜奈",
+        "track": 2,
+        "year": 2012,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "READY STEADY GO",
+        "artist": "L’Arc〜en〜Ciel",
+        "track": 3,
+        "year": 2012,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Tobira no Mukou e",
+        "artist": "YeLLOW Generation",
+        "track": 4,
+        "year": 2012,
+        "duration": 289,
+        "disc_number": 1
+      },
+      {
+        "title": "UNDO",
+        "artist": "COOL JOKE",
+        "track": 5,
+        "year": 2012,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Motherland",
+        "artist": "Crystal Kay",
+        "track": 6,
+        "year": 2012,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Rewrite",
+        "artist": "ASIAN KUNG-FU GENERATION",
+        "track": 7,
+        "year": 2012,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "I Will",
+        "artist": "Sowelu",
+        "track": 8,
+        "year": 2012,
+        "duration": 255,
+        "disc_number": 1
+      },
+      {
+        "title": "Kanashimi no Kizu",
+        "artist": "北出菜奈",
+        "track": 9,
+        "year": 2012,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "Link",
+        "artist": "L’Arc〜en〜Ciel",
+        "track": 10,
+        "year": 2012,
+        "duration": 287,
+        "disc_number": 1
+      },
+      {
+        "title": "LOST HEAVEN",
+        "artist": "L’Arc〜en〜Ciel",
+        "track": 11,
+        "year": 2012,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "again",
+        "artist": "YUI",
+        "track": 12,
+        "year": 2012,
+        "duration": 256,
+        "disc_number": 2
+      },
+      {
+        "title": "Uso",
+        "artist": "シド",
+        "track": 13,
+        "year": 2012,
+        "duration": 205,
+        "disc_number": 2
+      },
+      {
+        "title": "Hologram",
+        "artist": "NICO Touches the Walls",
+        "track": 14,
+        "year": 2012,
+        "duration": 248,
+        "disc_number": 2
+      },
+      {
+        "title": "LET IT OUT",
+        "artist": "福原美穂",
+        "track": 15,
+        "year": 2012,
+        "duration": 258,
+        "disc_number": 2
+      },
+      {
+        "title": "Golden Time Lover",
+        "artist": "スキマスイッチ",
+        "track": 16,
+        "year": 2012,
+        "duration": 341,
+        "disc_number": 2
+      },
+      {
+        "title": "Tsunaida Te",
+        "artist": "Lil’B",
+        "track": 17,
+        "year": 2012,
+        "duration": 279,
+        "disc_number": 2
+      },
+      {
+        "title": "Period",
+        "artist": "CHEMISTRY",
+        "track": 18,
+        "year": 2012,
+        "duration": 215,
+        "disc_number": 2
+      },
+      {
+        "title": "Shunkan Sentimental",
+        "artist": "SCANDAL",
+        "track": 19,
+        "year": 2012,
+        "duration": 226,
+        "disc_number": 2
+      },
+      {
+        "title": "Rain",
+        "artist": "シド",
+        "track": 20,
+        "year": 2012,
+        "duration": 253,
+        "disc_number": 2
+      },
+      {
+        "title": "RAY OF LIGHT",
+        "artist": "中川翔子",
+        "track": 21,
+        "year": 2012,
+        "duration": 268,
+        "disc_number": 2
+      },
+      {
+        "title": "Drama",
+        "artist": "シド",
+        "track": 22,
+        "year": 2012,
+        "duration": 228,
+        "disc_number": 2
+      },
+      {
+        "title": "Chasing hearts",
+        "artist": "miwa",
+        "track": 23,
+        "year": 2012,
+        "duration": 277,
+        "disc_number": 2
+      },
+      {
+        "title": "GOOD LUCK MY WAY",
+        "artist": "L’Arc〜en〜Ciel",
+        "track": 24,
+        "year": 2012,
+        "duration": 262,
+        "disc_number": 2
       }
     ]
   },
@@ -132317,390 +132845,6 @@
     ]
   },
   {
-    "artist": "Various Artists • Fullmetal Alchemist",
-    "album": "FULLMETAL ALCHEMIST THE BEST",
-    "year": 2012,
-    "duration": 6195,
-    "tracks": [
-      {
-        "title": "Melissa",
-        "artist": "ポルノグラフィティ",
-        "track": 1,
-        "year": 2012,
-        "duration": 275,
-        "disc_number": 1
-      },
-      {
-        "title": "Kesenai Tsumi",
-        "artist": "北出菜奈",
-        "track": 2,
-        "year": 2012,
-        "duration": 256,
-        "disc_number": 1
-      },
-      {
-        "title": "READY STEADY GO",
-        "artist": "L’Arc〜en〜Ciel",
-        "track": 3,
-        "year": 2012,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Tobira no Mukou e",
-        "artist": "YeLLOW Generation",
-        "track": 4,
-        "year": 2012,
-        "duration": 289,
-        "disc_number": 1
-      },
-      {
-        "title": "UNDO",
-        "artist": "COOL JOKE",
-        "track": 5,
-        "year": 2012,
-        "duration": 242,
-        "disc_number": 1
-      },
-      {
-        "title": "Motherland",
-        "artist": "Crystal Kay",
-        "track": 6,
-        "year": 2012,
-        "duration": 270,
-        "disc_number": 1
-      },
-      {
-        "title": "Rewrite",
-        "artist": "ASIAN KUNG-FU GENERATION",
-        "track": 7,
-        "year": 2012,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "I Will",
-        "artist": "Sowelu",
-        "track": 8,
-        "year": 2012,
-        "duration": 255,
-        "disc_number": 1
-      },
-      {
-        "title": "Kanashimi no Kizu",
-        "artist": "北出菜奈",
-        "track": 9,
-        "year": 2012,
-        "duration": 264,
-        "disc_number": 1
-      },
-      {
-        "title": "Link",
-        "artist": "L’Arc〜en〜Ciel",
-        "track": 10,
-        "year": 2012,
-        "duration": 287,
-        "disc_number": 1
-      },
-      {
-        "title": "LOST HEAVEN",
-        "artist": "L’Arc〜en〜Ciel",
-        "track": 11,
-        "year": 2012,
-        "duration": 275,
-        "disc_number": 1
-      },
-      {
-        "title": "again",
-        "artist": "YUI",
-        "track": 12,
-        "year": 2012,
-        "duration": 256,
-        "disc_number": 2
-      },
-      {
-        "title": "Uso",
-        "artist": "シド",
-        "track": 13,
-        "year": 2012,
-        "duration": 205,
-        "disc_number": 2
-      },
-      {
-        "title": "Hologram",
-        "artist": "NICO Touches the Walls",
-        "track": 14,
-        "year": 2012,
-        "duration": 248,
-        "disc_number": 2
-      },
-      {
-        "title": "LET IT OUT",
-        "artist": "福原美穂",
-        "track": 15,
-        "year": 2012,
-        "duration": 258,
-        "disc_number": 2
-      },
-      {
-        "title": "Golden Time Lover",
-        "artist": "スキマスイッチ",
-        "track": 16,
-        "year": 2012,
-        "duration": 341,
-        "disc_number": 2
-      },
-      {
-        "title": "Tsunaida Te",
-        "artist": "Lil’B",
-        "track": 17,
-        "year": 2012,
-        "duration": 279,
-        "disc_number": 2
-      },
-      {
-        "title": "Period",
-        "artist": "CHEMISTRY",
-        "track": 18,
-        "year": 2012,
-        "duration": 215,
-        "disc_number": 2
-      },
-      {
-        "title": "Shunkan Sentimental",
-        "artist": "SCANDAL",
-        "track": 19,
-        "year": 2012,
-        "duration": 226,
-        "disc_number": 2
-      },
-      {
-        "title": "Rain",
-        "artist": "シド",
-        "track": 20,
-        "year": 2012,
-        "duration": 253,
-        "disc_number": 2
-      },
-      {
-        "title": "RAY OF LIGHT",
-        "artist": "中川翔子",
-        "track": 21,
-        "year": 2012,
-        "duration": 268,
-        "disc_number": 2
-      },
-      {
-        "title": "Drama",
-        "artist": "シド",
-        "track": 22,
-        "year": 2012,
-        "duration": 228,
-        "disc_number": 2
-      },
-      {
-        "title": "Chasing hearts",
-        "artist": "miwa",
-        "track": 23,
-        "year": 2012,
-        "duration": 277,
-        "disc_number": 2
-      },
-      {
-        "title": "GOOD LUCK MY WAY",
-        "artist": "L’Arc〜en〜Ciel",
-        "track": 24,
-        "year": 2012,
-        "duration": 262,
-        "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists • Nakagawa Koutarou",
-    "album": "Code Geass - Lelouch of the Rebellion O.S.T.",
-    "year": 2006,
-    "duration": 2830,
-    "tracks": [
-      {
-        "title": "0",
-        "artist": "Kotaro Nakagawa",
-        "track": 1,
-        "year": 2006,
-        "duration": 94,
-        "disc_number": 1
-      },
-      {
-        "title": "Stories",
-        "artist": "Hitomi",
-        "track": 2,
-        "year": 2006,
-        "duration": 319,
-        "disc_number": 1
-      },
-      {
-        "title": "Prologue",
-        "artist": "Kotaro Nakagawa",
-        "track": 3,
-        "year": 2006,
-        "duration": 136,
-        "disc_number": 1
-      },
-      {
-        "title": "Stream of Consciousness",
-        "artist": "Hitomi Kuroishi",
-        "track": 4,
-        "year": 2006,
-        "duration": 167,
-        "disc_number": 1
-      },
-      {
-        "title": "Cold Nobility",
-        "artist": "Kotaro Nakagawa",
-        "track": 5,
-        "year": 2006,
-        "duration": 76,
-        "disc_number": 1
-      },
-      {
-        "title": "The First Signature",
-        "artist": "Hitomi Kuroishi",
-        "track": 6,
-        "year": 2006,
-        "duration": 141,
-        "disc_number": 1
-      },
-      {
-        "title": "Strange Girl",
-        "artist": "Hitomi Kuroishi",
-        "track": 7,
-        "year": 2006,
-        "duration": 183,
-        "disc_number": 1
-      },
-      {
-        "title": "Outside Road",
-        "artist": "Kotaro Nakagawa",
-        "track": 8,
-        "year": 2006,
-        "duration": 126,
-        "disc_number": 1
-      },
-      {
-        "title": "Injustice",
-        "artist": "Kotaro Nakagawa",
-        "track": 9,
-        "year": 2006,
-        "duration": 112,
-        "disc_number": 1
-      },
-      {
-        "title": "Nightmare",
-        "artist": "Kotaro Nakagawa",
-        "track": 10,
-        "year": 2006,
-        "duration": 68,
-        "disc_number": 1
-      },
-      {
-        "title": "All Hail Britannia!!!",
-        "artist": "Kotaro Nakagawa",
-        "track": 11,
-        "year": 2006,
-        "duration": 152,
-        "disc_number": 1
-      },
-      {
-        "title": "Light of Green",
-        "artist": "Kotaro Nakagawa",
-        "track": 12,
-        "year": 2006,
-        "duration": 90,
-        "disc_number": 1
-      },
-      {
-        "title": "Masquerade",
-        "artist": "Hitomi",
-        "track": 13,
-        "year": 2006,
-        "duration": 280,
-        "disc_number": 1
-      },
-      {
-        "title": "Awakening of the Child",
-        "artist": "Hitomi Kuroishi",
-        "track": 14,
-        "year": 2006,
-        "duration": 87,
-        "disc_number": 1
-      },
-      {
-        "title": "Boyhood",
-        "artist": "Kotaro Nakagawa",
-        "track": 15,
-        "year": 2006,
-        "duration": 104,
-        "disc_number": 1
-      },
-      {
-        "title": "Stray Cat",
-        "artist": "Hitomi Kuroishi",
-        "track": 16,
-        "year": 2006,
-        "duration": 74,
-        "disc_number": 1
-      },
-      {
-        "title": "Occupied Thinking",
-        "artist": "Kotaro Nakagawa",
-        "track": 17,
-        "year": 2006,
-        "duration": 118,
-        "disc_number": 1
-      },
-      {
-        "title": "Shin Troop",
-        "artist": "Kotaro Nakagawa",
-        "track": 18,
-        "year": 2006,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "Brain Game",
-        "artist": "Kotaro Nakagawa",
-        "track": 19,
-        "year": 2006,
-        "duration": 113,
-        "disc_number": 1
-      },
-      {
-        "title": "Elegant Force",
-        "artist": "Kotaro Nakagawa",
-        "track": 20,
-        "year": 2006,
-        "duration": 103,
-        "disc_number": 1
-      },
-      {
-        "title": "Devil Created",
-        "artist": "Kotaro Nakagawa",
-        "track": 21,
-        "year": 2006,
-        "duration": 86,
-        "disc_number": 1
-      },
-      {
-        "title": "勇侠青春謳 [TV Ver.]",
-        "artist": "ALI PROJECT",
-        "track": 22,
-        "year": 2006,
-        "duration": 90,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "velocissimo",
     "album": "Unknown",
     "year": 2011,
@@ -138529,150 +138673,6 @@
     ]
   },
   {
-    "artist": "Éric Alfred Leslie Satie",
-    "album": "Gran Turismo 5 Original Soundtrack",
-    "year": 2010,
-    "duration": 491,
-    "tracks": [
-      {
-        "title": "Gnossienne No.1",
-        "artist": "Éric Alfred Leslie Satie",
-        "track": 4,
-        "year": 2010,
-        "duration": 191,
-        "disc_number": 3
-      },
-      {
-        "title": "Gymnopedie No.1",
-        "artist": "Éric Alfred Leslie Satie",
-        "track": 5,
-        "year": 2010,
-        "duration": 208,
-        "disc_number": 3
-      },
-      {
-        "title": "Le Piccadilly",
-        "artist": "Éric Alfred Leslie Satie",
-        "track": 6,
-        "year": 2010,
-        "duration": 91,
-        "disc_number": 3
-      }
-    ]
-  },
-  {
-    "artist": "Ólafur Arnalds",
-    "album": "For Now I Am Winter",
-    "year": 2013,
-    "duration": 3147,
-    "tracks": [
-      {
-        "title": "Sudden Throw",
-        "artist": "Ólafur Arnalds",
-        "track": 1,
-        "year": 2013,
-        "duration": 196,
-        "disc_number": 1
-      },
-      {
-        "title": "Brim",
-        "artist": "Ólafur Arnalds",
-        "track": 2,
-        "year": 2013,
-        "duration": 282,
-        "disc_number": 1
-      },
-      {
-        "title": "For Now I Am Winter",
-        "artist": "Ólafur Arnalds feat. Arnór Dan",
-        "track": 3,
-        "year": 2013,
-        "duration": 305,
-        "disc_number": 1
-      },
-      {
-        "title": "A Stutter",
-        "artist": "Ólafur Arnalds feat. Arnór Dan",
-        "track": 4,
-        "year": 2013,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "Words of Amber",
-        "artist": "Ólafur Arnalds",
-        "track": 5,
-        "year": 2013,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "Reclaim",
-        "artist": "Ólafur Arnalds feat. Arnór Dan",
-        "track": 6,
-        "year": 2013,
-        "duration": 241,
-        "disc_number": 1
-      },
-      {
-        "title": "Hands, Be Still",
-        "artist": "Ólafur Arnalds",
-        "track": 7,
-        "year": 2013,
-        "duration": 219,
-        "disc_number": 1
-      },
-      {
-        "title": "Only the Winds",
-        "artist": "Ólafur Arnalds",
-        "track": 8,
-        "year": 2013,
-        "duration": 321,
-        "disc_number": 1
-      },
-      {
-        "title": "Old Skin",
-        "artist": "Ólafur Arnalds feat. Arnór Dan",
-        "track": 9,
-        "year": 2013,
-        "duration": 248,
-        "disc_number": 1
-      },
-      {
-        "title": "We (Too) Shall Rest",
-        "artist": "Ólafur Arnalds",
-        "track": 10,
-        "year": 2013,
-        "duration": 125,
-        "disc_number": 1
-      },
-      {
-        "title": "This Place Was a Shelter",
-        "artist": "Ólafur Arnalds",
-        "track": 11,
-        "year": 2013,
-        "duration": 230,
-        "disc_number": 1
-      },
-      {
-        "title": "Carry Me Anew",
-        "artist": "Ólafur Arnalds",
-        "track": 12,
-        "year": 2013,
-        "duration": 205,
-        "disc_number": 1
-      },
-      {
-        "title": "No. Other",
-        "artist": "Ólafur Arnalds feat. Arnór Dan",
-        "track": 13,
-        "year": 2013,
-        "duration": 258,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Мои Ракеты Вверх",
     "album": "Humanaut",
     "year": 2007,
@@ -139993,54 +139993,6 @@
     ]
   },
   {
-    "artist": "ファンタズム",
-    "album": "アニーの指輪",
-    "year": 2018,
-    "duration": 1556,
-    "tracks": [
-      {
-        "title": "アニーの指輪",
-        "artist": "ファンタズム(FES cv. 榊原ゆい)",
-        "track": 1,
-        "year": 2018,
-        "duration": 341,
-        "disc_number": 1
-      },
-      {
-        "title": "運命のファルファッラ",
-        "artist": "ファンタズム(FES cv. 榊原ゆい)",
-        "track": 2,
-        "year": 2018,
-        "duration": 315,
-        "disc_number": 1
-      },
-      {
-        "title": "プレギエーラの月夜に",
-        "artist": "ファンタズム(FES cv. 榊原ゆい)",
-        "track": 3,
-        "year": 2018,
-        "duration": 256,
-        "disc_number": 1
-      },
-      {
-        "title": "刻司ル十二ノ盟約",
-        "artist": "ファンタズム(FES cv. 榊原ゆい)",
-        "track": 4,
-        "year": 2018,
-        "duration": 303,
-        "disc_number": 1
-      },
-      {
-        "title": "アニーの指輪 (Instrumental Ver.)",
-        "artist": "ファンタズム(FES cv. 榊原ゆい)",
-        "track": 5,
-        "year": 2018,
-        "duration": 340,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "ファンタズム(FES cv.榊原ゆい)",
     "album": "運命のファルファッラ",
     "year": 2009,
@@ -140164,6 +140116,54 @@
         "track": 4,
         "year": 2011,
         "duration": 307,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "ファンタズム",
+    "album": "アニーの指輪",
+    "year": 2018,
+    "duration": 1556,
+    "tracks": [
+      {
+        "title": "アニーの指輪",
+        "artist": "ファンタズム(FES cv. 榊原ゆい)",
+        "track": 1,
+        "year": 2018,
+        "duration": 341,
+        "disc_number": 1
+      },
+      {
+        "title": "運命のファルファッラ",
+        "artist": "ファンタズム(FES cv. 榊原ゆい)",
+        "track": 2,
+        "year": 2018,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "プレギエーラの月夜に",
+        "artist": "ファンタズム(FES cv. 榊原ゆい)",
+        "track": 3,
+        "year": 2018,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "刻司ル十二ノ盟約",
+        "artist": "ファンタズム(FES cv. 榊原ゆい)",
+        "track": 4,
+        "year": 2018,
+        "duration": 303,
+        "disc_number": 1
+      },
+      {
+        "title": "アニーの指輪 (Instrumental Ver.)",
+        "artist": "ファンタズム(FES cv. 榊原ゆい)",
+        "track": 5,
+        "year": 2018,
+        "duration": 340,
         "disc_number": 1
       }
     ]
@@ -141889,222 +141889,6 @@
     ]
   },
   {
-    "artist": "菅野よう子",
-    "album": "Darker Than Black Original Soundtrack 5.1",
-    "year": 2009,
-    "duration": 4520,
-    "tracks": [
-      {
-        "title": "始動",
-        "artist": "菅野よう子",
-        "track": 1,
-        "year": 2009,
-        "duration": 195,
-        "disc_number": 1
-      },
-      {
-        "title": "星見様",
-        "artist": "菅野よう子",
-        "track": 2,
-        "year": 2009,
-        "duration": 157,
-        "disc_number": 1
-      },
-      {
-        "title": "Go Dark",
-        "artist": "菅野よう子",
-        "track": 3,
-        "year": 2009,
-        "duration": 197,
-        "disc_number": 1
-      },
-      {
-        "title": "ハイヒールラナウェイ",
-        "artist": "菅野よう子",
-        "track": 4,
-        "year": 2009,
-        "duration": 208,
-        "disc_number": 1
-      },
-      {
-        "title": "Tenderly",
-        "artist": "菅野よう子",
-        "track": 5,
-        "year": 2009,
-        "duration": 139,
-        "disc_number": 1
-      },
-      {
-        "title": "シド",
-        "artist": "菅野よう子",
-        "track": 6,
-        "year": 2009,
-        "duration": 124,
-        "disc_number": 1
-      },
-      {
-        "title": "Kurasan",
-        "artist": "菅野よう子",
-        "track": 7,
-        "year": 2009,
-        "duration": 144,
-        "disc_number": 1
-      },
-      {
-        "title": "Was",
-        "artist": "菅野よう子",
-        "track": 8,
-        "year": 2009,
-        "duration": 248,
-        "disc_number": 1
-      },
-      {
-        "title": "No One’s Home",
-        "artist": "山根麻以",
-        "track": 9,
-        "year": 2009,
-        "duration": 164,
-        "disc_number": 1
-      },
-      {
-        "title": "ケイヤクシャ",
-        "artist": "菅野よう子",
-        "track": 10,
-        "year": 2009,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "クロ",
-        "artist": "菅野よう子",
-        "track": 11,
-        "year": 2009,
-        "duration": 217,
-        "disc_number": 1
-      },
-      {
-        "title": "Deadly Work",
-        "artist": "James Wendt",
-        "track": 12,
-        "year": 2009,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "テンタイカンソク",
-        "artist": "菅野よう子",
-        "track": 13,
-        "year": 2009,
-        "duration": 46,
-        "disc_number": 1
-      },
-      {
-        "title": "BlueCat",
-        "artist": "菅野よう子",
-        "track": 14,
-        "year": 2009,
-        "duration": 187,
-        "disc_number": 1
-      },
-      {
-        "title": "Water Forest",
-        "artist": "菅野よう子",
-        "track": 15,
-        "year": 2009,
-        "duration": 131,
-        "disc_number": 1
-      },
-      {
-        "title": "Night Cruise",
-        "artist": "菅野よう子",
-        "track": 16,
-        "year": 2009,
-        "duration": 256,
-        "disc_number": 1
-      },
-      {
-        "title": "くろねこのひっこし",
-        "artist": "菅野よう子",
-        "track": 17,
-        "year": 2009,
-        "duration": 122,
-        "disc_number": 1
-      },
-      {
-        "title": "しずく",
-        "artist": "菅野よう子",
-        "track": 18,
-        "year": 2009,
-        "duration": 163,
-        "disc_number": 1
-      },
-      {
-        "title": "EPR",
-        "artist": "菅野よう子",
-        "track": 19,
-        "year": 2009,
-        "duration": 217,
-        "disc_number": 1
-      },
-      {
-        "title": "水と電線",
-        "artist": "菅野よう子",
-        "track": 20,
-        "year": 2009,
-        "duration": 141,
-        "disc_number": 1
-      },
-      {
-        "title": "Total Eclipse",
-        "artist": "菅野よう子",
-        "track": 21,
-        "year": 2009,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "EPR2",
-        "artist": "菅野よう子",
-        "track": 22,
-        "year": 2009,
-        "duration": 178,
-        "disc_number": 1
-      },
-      {
-        "title": "スーパー黒",
-        "artist": "菅野よう子",
-        "track": 23,
-        "year": 2009,
-        "duration": 156,
-        "disc_number": 1
-      },
-      {
-        "title": "接触",
-        "artist": "菅野よう子",
-        "track": 24,
-        "year": 2009,
-        "duration": 149,
-        "disc_number": 1
-      },
-      {
-        "title": "M25-3",
-        "artist": "菅野よう子",
-        "track": 25,
-        "year": 2009,
-        "duration": 162,
-        "disc_number": 1
-      },
-      {
-        "title": "セキベツ",
-        "artist": "菅野よう子",
-        "track": 26,
-        "year": 2009,
-        "duration": 181,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "菅野よう子、シートベルツ",
     "album": "COWBOY BEBOP",
     "year": 1998,
@@ -142468,6 +142252,222 @@
         "track": 8,
         "year": 1998,
         "duration": 194,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "菅野よう子",
+    "album": "Darker Than Black Original Soundtrack 5.1",
+    "year": 2009,
+    "duration": 4520,
+    "tracks": [
+      {
+        "title": "始動",
+        "artist": "菅野よう子",
+        "track": 1,
+        "year": 2009,
+        "duration": 195,
+        "disc_number": 1
+      },
+      {
+        "title": "星見様",
+        "artist": "菅野よう子",
+        "track": 2,
+        "year": 2009,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "Go Dark",
+        "artist": "菅野よう子",
+        "track": 3,
+        "year": 2009,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "ハイヒールラナウェイ",
+        "artist": "菅野よう子",
+        "track": 4,
+        "year": 2009,
+        "duration": 208,
+        "disc_number": 1
+      },
+      {
+        "title": "Tenderly",
+        "artist": "菅野よう子",
+        "track": 5,
+        "year": 2009,
+        "duration": 139,
+        "disc_number": 1
+      },
+      {
+        "title": "シド",
+        "artist": "菅野よう子",
+        "track": 6,
+        "year": 2009,
+        "duration": 124,
+        "disc_number": 1
+      },
+      {
+        "title": "Kurasan",
+        "artist": "菅野よう子",
+        "track": 7,
+        "year": 2009,
+        "duration": 144,
+        "disc_number": 1
+      },
+      {
+        "title": "Was",
+        "artist": "菅野よう子",
+        "track": 8,
+        "year": 2009,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "No One’s Home",
+        "artist": "山根麻以",
+        "track": 9,
+        "year": 2009,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "ケイヤクシャ",
+        "artist": "菅野よう子",
+        "track": 10,
+        "year": 2009,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "クロ",
+        "artist": "菅野よう子",
+        "track": 11,
+        "year": 2009,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "Deadly Work",
+        "artist": "James Wendt",
+        "track": 12,
+        "year": 2009,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "テンタイカンソク",
+        "artist": "菅野よう子",
+        "track": 13,
+        "year": 2009,
+        "duration": 46,
+        "disc_number": 1
+      },
+      {
+        "title": "BlueCat",
+        "artist": "菅野よう子",
+        "track": 14,
+        "year": 2009,
+        "duration": 187,
+        "disc_number": 1
+      },
+      {
+        "title": "Water Forest",
+        "artist": "菅野よう子",
+        "track": 15,
+        "year": 2009,
+        "duration": 131,
+        "disc_number": 1
+      },
+      {
+        "title": "Night Cruise",
+        "artist": "菅野よう子",
+        "track": 16,
+        "year": 2009,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "くろねこのひっこし",
+        "artist": "菅野よう子",
+        "track": 17,
+        "year": 2009,
+        "duration": 122,
+        "disc_number": 1
+      },
+      {
+        "title": "しずく",
+        "artist": "菅野よう子",
+        "track": 18,
+        "year": 2009,
+        "duration": 163,
+        "disc_number": 1
+      },
+      {
+        "title": "EPR",
+        "artist": "菅野よう子",
+        "track": 19,
+        "year": 2009,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "水と電線",
+        "artist": "菅野よう子",
+        "track": 20,
+        "year": 2009,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Total Eclipse",
+        "artist": "菅野よう子",
+        "track": 21,
+        "year": 2009,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "EPR2",
+        "artist": "菅野よう子",
+        "track": 22,
+        "year": 2009,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "スーパー黒",
+        "artist": "菅野よう子",
+        "track": 23,
+        "year": 2009,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "接触",
+        "artist": "菅野よう子",
+        "track": 24,
+        "year": 2009,
+        "duration": 149,
+        "disc_number": 1
+      },
+      {
+        "title": "M25-3",
+        "artist": "菅野よう子",
+        "track": 25,
+        "year": 2009,
+        "duration": 162,
+        "disc_number": 1
+      },
+      {
+        "title": "セキベツ",
+        "artist": "菅野よう子",
+        "track": 26,
+        "year": 2009,
+        "duration": 181,
         "disc_number": 1
       }
     ]
@@ -145921,6 +145921,22 @@
     ]
   },
   {
+    "artist": "鷺巣詩郎 • Shiro Sagisu",
+    "album": "evangelion:2.0 you can (not) advance. original sound track",
+    "year": 2009,
+    "duration": 60,
+    "tracks": [
+      {
+        "title": "2EM19_ソル:モーツァルトの主題による変奏曲",
+        "artist": "Fernando Sor",
+        "track": 18,
+        "year": 2009,
+        "duration": 60,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "鷺巣詩郎",
     "album": "Shiro SAGISU Music from “EVANGELION:3.0” YOU CAN (NOT) REDO.",
     "year": 2012,
@@ -146197,22 +146213,6 @@
         "year": 2012,
         "duration": 555,
         "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "鷺巣詩郎 • Shiro Sagisu",
-    "album": "evangelion:2.0 you can (not) advance. original sound track",
-    "year": 2009,
-    "duration": 60,
-    "tracks": [
-      {
-        "title": "2EM19_ソル:モーツァルトの主題による変奏曲",
-        "artist": "Fernando Sor",
-        "track": 18,
-        "year": 2009,
-        "duration": 60,
-        "disc_number": 1
       }
     ]
   },
