@@ -114132,6 +114132,190 @@
     ]
   },
   {
+    "artist": "The Rogue Element",
+    "album": "Rogue Rock",
+    "year": 2005,
+    "duration": 3083,
+    "tracks": [
+      {
+        "title": "Let Me Breathe (feat. Miss Trouble)",
+        "artist": "The Rogue Element",
+        "track": 1,
+        "year": 2005,
+        "duration": 217,
+        "disc_number": 1
+      },
+      {
+        "title": "My Style",
+        "artist": "The Rogue Element",
+        "track": 2,
+        "year": 2005,
+        "duration": 332,
+        "disc_number": 1
+      },
+      {
+        "title": "Breaking Point (feat. MC Incyte, MC Xander, Miss Trouble)",
+        "artist": "The Rogue Element",
+        "track": 3,
+        "year": 2005,
+        "duration": 292,
+        "disc_number": 1
+      },
+      {
+        "title": "Fused (feat. M. Dawson)",
+        "artist": "The Rogue Element",
+        "track": 4,
+        "year": 2005,
+        "duration": 279,
+        "disc_number": 1
+      },
+      {
+        "title": "Sunrise Leaves Me Blind",
+        "artist": "The Rogue Element",
+        "track": 5,
+        "year": 2005,
+        "duration": 290,
+        "disc_number": 1
+      },
+      {
+        "title": "Calm (feat. Ras B)",
+        "artist": "The Rogue Element",
+        "track": 6,
+        "year": 2005,
+        "duration": 357,
+        "disc_number": 1
+      },
+      {
+        "title": "Backbreaker",
+        "artist": "The Rogue Element",
+        "track": 7,
+        "year": 2005,
+        "duration": 433,
+        "disc_number": 1
+      },
+      {
+        "title": "Stiletto",
+        "artist": "The Rogue Element",
+        "track": 8,
+        "year": 2005,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "Rogue Rock (feat. M. Dawson)",
+        "artist": "The Rogue Element",
+        "track": 9,
+        "year": 2005,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "You Know That Sound",
+        "artist": "The Rogue Element",
+        "track": 10,
+        "year": 2005,
+        "duration": 406,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "The Rogue Element",
+    "album": "Lumina",
+    "year": 2009,
+    "duration": 3286,
+    "tracks": [
+      {
+        "title": "Lumina",
+        "artist": "The Rogue Element",
+        "track": 1,
+        "year": 2009,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "Shuffle and Clap",
+        "artist": "The Rogue Element",
+        "track": 2,
+        "year": 2009,
+        "duration": 304,
+        "disc_number": 1
+      },
+      {
+        "title": "Binary Suite",
+        "artist": "The Rogue Element",
+        "track": 3,
+        "year": 2009,
+        "duration": 252,
+        "disc_number": 1
+      },
+      {
+        "title": "Sidewinder",
+        "artist": "The Rogue Element",
+        "track": 4,
+        "year": 2009,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "In Place",
+        "artist": "The Rogue Element",
+        "track": 5,
+        "year": 2009,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "Mistakes",
+        "artist": "The Rogue Element",
+        "track": 6,
+        "year": 2009,
+        "duration": 361,
+        "disc_number": 1
+      },
+      {
+        "title": "An Unsavoury Urge",
+        "artist": "The Rogue Element",
+        "track": 7,
+        "year": 2009,
+        "duration": 218,
+        "disc_number": 1
+      },
+      {
+        "title": "Reality Is Overrated",
+        "artist": "The Rogue Element",
+        "track": 8,
+        "year": 2009,
+        "duration": 293,
+        "disc_number": 1
+      },
+      {
+        "title": "Hive",
+        "artist": "The Rogue Element",
+        "track": 9,
+        "year": 2009,
+        "duration": 380,
+        "disc_number": 1
+      },
+      {
+        "title": "Escalation",
+        "artist": "The Rogue Element",
+        "track": 10,
+        "year": 2009,
+        "duration": 273,
+        "disc_number": 1
+      },
+      {
+        "title": "Soretooth",
+        "artist": "The Rogue Element",
+        "track": 11,
+        "year": 2009,
+        "duration": 342,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "The Silverman",
     "album": "Dream Cell",
     "year": 1995,
