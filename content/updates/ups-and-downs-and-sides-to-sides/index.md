@@ -4,7 +4,7 @@ short = "Taking a Discord break does make you more productive, but it wears off 
 datetime = 2025-07-29T21:30:00Z
 
 [taxonomies]
-tags=["meta", "genresinspace", "hardware"]
+tags=["meta", "genresinspace", "hardware", "nixos"]
 +++
 
 My pet project for the last week and a half has been to stay logged out of Discord, my primary social platform, through which I stay in touch with my friends, group chats, and niche news. The goal behind this was simple: I spend a _lot_ of time talking to people on Discord, especially when I'm waiting on things to complete (long-running processes, AI agents, etc) or as junk-food-stimulation for when my brain simply refuses to shift out of neutral. Taking a break should, theoretically, force me to spend more time actually doing the things that I am supposed to be doing.

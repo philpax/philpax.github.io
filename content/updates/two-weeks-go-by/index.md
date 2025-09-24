@@ -4,7 +4,7 @@ short = "As usual, recapping the happenings, even if the pace has slowed down"
 datetime = 2025-09-03T03:30:00Z
 
 [taxonomies]
-tags=["hardware", "paxboard", "genresinspace"]
+tags=["hardware", "paxboard", "genresinspace", "nixos"]
 +++
 
 It has been over two weeks since my last update. I've worked on a few things, but not a lot: I realised that, after my last update, that I was running myself ragged, and I'd be better served by taking my foot off the pedal and taking things a bit more leisurely, so that's what I did. That's not to say that I did nothing, though...

@@ -4,7 +4,7 @@ short = "I had other things to do this week, unfortunately"
 datetime = 2025-08-06T03:30:00Z
 
 [taxonomies]
-tags=["meta", "paxboard"]
+tags=["meta", "paxboard", "nixos"]
 +++
 
 Between work and social engagements, I had limited time to work on my own personal projects this week.
