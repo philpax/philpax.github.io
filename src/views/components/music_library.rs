@@ -194,6 +194,16 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             color: {track_duration};
             flex-shrink: 0;
         }}
+
+        .music-library .track .heart {{
+            color: red;
+            font-size: 1em;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            text-align: center;
+            margin-left: 0.5em;
+        }}
     ",
         background = colours::background(),
         text = colours::text(),
@@ -314,7 +324,7 @@ fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
                 <span class="name">{track.title.as_str()}</span>
                 {artist}
             </span>
-            <span class="length">{duration}</span>
+            <span class="length">{duration} <span class="heart">{if track.starred { "♥" } else { " " }}</span></span>
         </a>
     }
 }
