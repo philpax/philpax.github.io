@@ -32,6 +32,7 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
   - [Proof of Work: Blockchain Provocations 20112021](https://www.goodreads.com/book/show/60262546-proof-of-work)
   - [Tech Noir: The Art of James Cameron](https://www.goodreads.com/book/show/57057960-tech-noir)
   - [The Art and Making of Control](https://www.goodreads.com/book/show/54974433-the-art-and-making-of-control-limited-edition)
+  - [The Art of Remember Me](https://www.goodreads.com/book/show/17367274-the-art-of-remember-me)
   - [The Art of the Mass Effect Trilogy: Expanded Edition](https://www.goodreads.com/book/show/54608868-the-art-of-the-mass-effect-trilogy)
   - [The Camera](https://www.goodreads.com/book/show/20501.The_Camera)
   - [The James Bond Archives](https://www.goodreads.com/book/show/14661626-the-james-bond-archives-)
