@@ -12224,7 +12224,8 @@
         "track": 7,
         "year": 2025,
         "duration": 288,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Stochastic Drift",
@@ -28706,7 +28707,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Daft Punk",
@@ -29432,7 +29434,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Daiki Kasho",
@@ -43218,7 +43221,8 @@
         "track": 3,
         "year": 2025,
         "duration": 273,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Ajar",
@@ -81537,7 +81541,8 @@
         "track": 2,
         "year": 2013,
         "duration": 322,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Came Back Haunted",
@@ -83885,7 +83890,8 @@
         "track": 10,
         "year": 2013,
         "duration": 174,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Memorize",
@@ -88937,7 +88943,8 @@
         "track": 11,
         "year": 2007,
         "duration": 306,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "The Gentle Descent",
@@ -136204,7 +136211,8 @@
         "track": 7,
         "year": 2013,
         "duration": 222,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Shadows",
