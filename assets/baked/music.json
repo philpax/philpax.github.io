@@ -785,6 +785,78 @@
     ]
   },
   {
+    "artist": "２８１４",
+    "album": "新しい日の誕生",
+    "year": 2015,
+    "duration": 4045,
+    "tracks": [
+      {
+        "title": "恢复",
+        "artist": "２８１４",
+        "track": 1,
+        "year": 2015,
+        "duration": 351,
+        "disc_number": 1
+      },
+      {
+        "title": "遠くの愛好家",
+        "artist": "２８１４",
+        "track": 2,
+        "year": 2015,
+        "duration": 378,
+        "disc_number": 1
+      },
+      {
+        "title": "新宿ゴールデン街",
+        "artist": "２８１４",
+        "track": 3,
+        "year": 2015,
+        "duration": 531,
+        "disc_number": 1
+      },
+      {
+        "title": "ふわっと",
+        "artist": "２８１４",
+        "track": 4,
+        "year": 2015,
+        "duration": 396,
+        "disc_number": 1
+      },
+      {
+        "title": "悲哀",
+        "artist": "２８１４",
+        "track": 5,
+        "year": 2015,
+        "duration": 563,
+        "disc_number": 1
+      },
+      {
+        "title": "真実の恋",
+        "artist": "２８１４",
+        "track": 6,
+        "year": 2015,
+        "duration": 432,
+        "disc_number": 1
+      },
+      {
+        "title": "テレパシー",
+        "artist": "２８１４",
+        "track": 7,
+        "year": 2015,
+        "duration": 608,
+        "disc_number": 1
+      },
+      {
+        "title": "新しい日の誕生",
+        "artist": "２８１４",
+        "track": 8,
+        "year": 2015,
+        "duration": 784,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "A Fine Frenzy",
     "album": "One Cell in the Sea",
     "year": 2007,
@@ -42930,30 +43002,6 @@
     ]
   },
   {
-    "artist": "Fire! Orchestra",
-    "album": "Exit!",
-    "year": 2013,
-    "duration": 2663,
-    "tracks": [
-      {
-        "title": "Exit! Part One",
-        "artist": "Fire! Orchestra",
-        "track": 1,
-        "year": 2013,
-        "duration": 1169,
-        "disc_number": 1
-      },
-      {
-        "title": "Exit! Part Two",
-        "artist": "Fire! Orchestra",
-        "track": 2,
-        "year": 2013,
-        "duration": 1494,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "Fire‐Toolz",
     "album": "I am upset because I see something that is not there.",
     "year": 2023,
@@ -43053,6 +43101,30 @@
         "track": 12,
         "year": 2023,
         "duration": 390,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Fire! Orchestra",
+    "album": "Exit!",
+    "year": 2013,
+    "duration": 2663,
+    "tracks": [
+      {
+        "title": "Exit! Part One",
+        "artist": "Fire! Orchestra",
+        "track": 1,
+        "year": 2013,
+        "duration": 1169,
+        "disc_number": 1
+      },
+      {
+        "title": "Exit! Part Two",
+        "artist": "Fire! Orchestra",
+        "track": 2,
+        "year": 2013,
+        "duration": 1494,
         "disc_number": 1
       }
     ]
@@ -124810,89 +124882,6 @@
   },
   {
     "artist": "Various Artists",
-    "album": "CODE GEASS COMPLETE BEST",
-    "year": 2009,
-    "duration": 2156,
-    "tracks": [
-      {
-        "title": "COLORS",
-        "artist": "FLOW",
-        "track": 2,
-        "year": 2009,
-        "duration": 219,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Yuukyou Seishunka",
-        "artist": "ALI PROJECT",
-        "track": 3,
-        "year": 2009,
-        "duration": 261,
-        "disc_number": 1
-      },
-      {
-        "title": "Kaidoku Funou",
-        "artist": "ジン",
-        "track": 5,
-        "year": 2009,
-        "duration": 186,
-        "disc_number": 1
-      },
-      {
-        "title": "Mosaic Kakera",
-        "artist": "SunSet Swish",
-        "track": 6,
-        "year": 2009,
-        "duration": 278,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Hitomi no Tsubasa",
-        "artist": "access",
-        "track": 7,
-        "year": 2009,
-        "duration": 212,
-        "disc_number": 1
-      },
-      {
-        "title": "O2",
-        "artist": "ORANGE RANGE",
-        "track": 9,
-        "year": 2009,
-        "duration": 238,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Shiawase Neiro",
-        "artist": "ORANGE RANGE",
-        "track": 10,
-        "year": 2009,
-        "duration": 258,
-        "disc_number": 1
-      },
-      {
-        "title": "WORLD END",
-        "artist": "FLOW",
-        "track": 12,
-        "year": 2009,
-        "duration": 228,
-        "disc_number": 1
-      },
-      {
-        "title": "Waga Routashi Aku no Hana",
-        "artist": "ALI PROJECT",
-        "track": 13,
-        "year": 2009,
-        "duration": 273,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
     "album": "Chaos Restored, Volume 2",
     "year": 2008,
     "duration": 4058,
@@ -125246,6 +125235,89 @@
   },
   {
     "artist": "Various Artists",
+    "album": "CODE GEASS COMPLETE BEST",
+    "year": 2009,
+    "duration": 2156,
+    "tracks": [
+      {
+        "title": "COLORS",
+        "artist": "FLOW",
+        "track": 2,
+        "year": 2009,
+        "duration": 219,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Yuukyou Seishunka",
+        "artist": "ALI PROJECT",
+        "track": 3,
+        "year": 2009,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "Kaidoku Funou",
+        "artist": "ジン",
+        "track": 5,
+        "year": 2009,
+        "duration": 186,
+        "disc_number": 1
+      },
+      {
+        "title": "Mosaic Kakera",
+        "artist": "SunSet Swish",
+        "track": 6,
+        "year": 2009,
+        "duration": 278,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Hitomi no Tsubasa",
+        "artist": "access",
+        "track": 7,
+        "year": 2009,
+        "duration": 212,
+        "disc_number": 1
+      },
+      {
+        "title": "O2",
+        "artist": "ORANGE RANGE",
+        "track": 9,
+        "year": 2009,
+        "duration": 238,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Shiawase Neiro",
+        "artist": "ORANGE RANGE",
+        "track": 10,
+        "year": 2009,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "WORLD END",
+        "artist": "FLOW",
+        "track": 12,
+        "year": 2009,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Waga Routashi Aku no Hana",
+        "artist": "ALI PROJECT",
+        "track": 13,
+        "year": 2009,
+        "duration": 273,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Community: Music From the Original Television Series",
     "year": 2010,
     "duration": 2052,
@@ -125394,198 +125466,6 @@
         "duration": 170,
         "disc_number": 1,
         "starred": true
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "DJ Andy Smith's Jam Up Twist",
-    "year": 2011,
-    "duration": 3349,
-    "tracks": [
-      {
-        "title": "Talk About a Party",
-        "artist": "Boogaloo & His Gallant Crew",
-        "track": 1,
-        "year": 2011,
-        "duration": 151,
-        "disc_number": 1
-      },
-      {
-        "title": "Bloodshot Eyes",
-        "artist": "Wynonie Harris",
-        "track": 2,
-        "year": 2011,
-        "duration": 158,
-        "disc_number": 1
-      },
-      {
-        "title": "Touch and Go",
-        "artist": "Wynona Carr",
-        "track": 3,
-        "year": 2011,
-        "duration": 126,
-        "disc_number": 1
-      },
-      {
-        "title": "Rock and Roll Jungle",
-        "artist": "Joe Benson",
-        "track": 4,
-        "year": 2011,
-        "duration": 137,
-        "disc_number": 1
-      },
-      {
-        "title": "Oooh Little Girl",
-        "artist": "Floyd Dixon",
-        "track": 5,
-        "year": 2011,
-        "duration": 130,
-        "disc_number": 1
-      },
-      {
-        "title": "Let's Go Bopping Tonight",
-        "artist": "Al Ferrier",
-        "track": 6,
-        "year": 2011,
-        "duration": 133,
-        "disc_number": 1
-      },
-      {
-        "title": "Big Green Car",
-        "artist": "Jimmy Carroll",
-        "track": 7,
-        "year": 2011,
-        "duration": 132,
-        "disc_number": 1
-      },
-      {
-        "title": "Jello Sal",
-        "artist": "Benny Ingram",
-        "track": 8,
-        "year": 2011,
-        "duration": 133,
-        "disc_number": 1
-      },
-      {
-        "title": "Nobody but You",
-        "artist": "Wooden Nickels",
-        "track": 9,
-        "year": 2011,
-        "duration": 135,
-        "disc_number": 1
-      },
-      {
-        "title": "Tracks to Your Mind",
-        "artist": "The Sounds of Lane",
-        "track": 10,
-        "year": 2011,
-        "duration": 148,
-        "disc_number": 1
-      },
-      {
-        "title": "Try My Love",
-        "artist": "Toni & the Showmen",
-        "track": 11,
-        "year": 2011,
-        "duration": 169,
-        "disc_number": 1
-      },
-      {
-        "title": "Oh Baby Don't You Weep",
-        "artist": "Luther Ingram",
-        "track": 12,
-        "year": 2011,
-        "duration": 176,
-        "disc_number": 1
-      },
-      {
-        "title": "Can It Be Me",
-        "artist": "Mel Williams",
-        "track": 13,
-        "year": 2011,
-        "duration": 153,
-        "disc_number": 1
-      },
-      {
-        "title": "Don't Happen No More",
-        "artist": "Young Jessie",
-        "track": 14,
-        "year": 2011,
-        "duration": 142,
-        "disc_number": 1
-      },
-      {
-        "title": "My Man a.k.a. He May Be Your Man",
-        "artist": "Dolly Cooper",
-        "track": 15,
-        "year": 2011,
-        "duration": 128,
-        "disc_number": 1
-      },
-      {
-        "title": "The Bear",
-        "artist": "Johnny “Guitar” Watson",
-        "track": 16,
-        "year": 2011,
-        "duration": 157,
-        "disc_number": 1
-      },
-      {
-        "title": "Ska Beat",
-        "artist": "Alton Ellis",
-        "track": 17,
-        "year": 2011,
-        "duration": 135,
-        "disc_number": 1
-      },
-      {
-        "title": "Malcolm X",
-        "artist": "The Skatalites",
-        "track": 18,
-        "year": 2011,
-        "duration": 147,
-        "disc_number": 1
-      },
-      {
-        "title": "Fast Mouth",
-        "artist": "Randy’s All Stars",
-        "track": 19,
-        "year": 2011,
-        "duration": 133,
-        "disc_number": 1
-      },
-      {
-        "title": "Collie Bud",
-        "artist": "The Skatalites",
-        "track": 20,
-        "year": 2011,
-        "duration": 147,
-        "disc_number": 1
-      },
-      {
-        "title": "Bam-A-Lam",
-        "artist": "Mickey Champion",
-        "track": 21,
-        "year": 2011,
-        "duration": 131,
-        "disc_number": 1
-      },
-      {
-        "title": "Hit, Git and Split",
-        "artist": "Young Jessie",
-        "track": 22,
-        "year": 2011,
-        "duration": 147,
-        "disc_number": 1
-      },
-      {
-        "title": "Make Up Your Mind",
-        "artist": "San Francisco T.K.O.'s",
-        "track": 23,
-        "year": 2011,
-        "duration": 191,
-        "disc_number": 1
       }
     ]
   },
@@ -126258,6 +126138,198 @@
   },
   {
     "artist": "Various Artists",
+    "album": "DJ Andy Smith's Jam Up Twist",
+    "year": 2011,
+    "duration": 3349,
+    "tracks": [
+      {
+        "title": "Talk About a Party",
+        "artist": "Boogaloo & His Gallant Crew",
+        "track": 1,
+        "year": 2011,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Bloodshot Eyes",
+        "artist": "Wynonie Harris",
+        "track": 2,
+        "year": 2011,
+        "duration": 158,
+        "disc_number": 1
+      },
+      {
+        "title": "Touch and Go",
+        "artist": "Wynona Carr",
+        "track": 3,
+        "year": 2011,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Rock and Roll Jungle",
+        "artist": "Joe Benson",
+        "track": 4,
+        "year": 2011,
+        "duration": 137,
+        "disc_number": 1
+      },
+      {
+        "title": "Oooh Little Girl",
+        "artist": "Floyd Dixon",
+        "track": 5,
+        "year": 2011,
+        "duration": 130,
+        "disc_number": 1
+      },
+      {
+        "title": "Let's Go Bopping Tonight",
+        "artist": "Al Ferrier",
+        "track": 6,
+        "year": 2011,
+        "duration": 133,
+        "disc_number": 1
+      },
+      {
+        "title": "Big Green Car",
+        "artist": "Jimmy Carroll",
+        "track": 7,
+        "year": 2011,
+        "duration": 132,
+        "disc_number": 1
+      },
+      {
+        "title": "Jello Sal",
+        "artist": "Benny Ingram",
+        "track": 8,
+        "year": 2011,
+        "duration": 133,
+        "disc_number": 1
+      },
+      {
+        "title": "Nobody but You",
+        "artist": "Wooden Nickels",
+        "track": 9,
+        "year": 2011,
+        "duration": 135,
+        "disc_number": 1
+      },
+      {
+        "title": "Tracks to Your Mind",
+        "artist": "The Sounds of Lane",
+        "track": 10,
+        "year": 2011,
+        "duration": 148,
+        "disc_number": 1
+      },
+      {
+        "title": "Try My Love",
+        "artist": "Toni & the Showmen",
+        "track": 11,
+        "year": 2011,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "Oh Baby Don't You Weep",
+        "artist": "Luther Ingram",
+        "track": 12,
+        "year": 2011,
+        "duration": 176,
+        "disc_number": 1
+      },
+      {
+        "title": "Can It Be Me",
+        "artist": "Mel Williams",
+        "track": 13,
+        "year": 2011,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Don't Happen No More",
+        "artist": "Young Jessie",
+        "track": 14,
+        "year": 2011,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "My Man a.k.a. He May Be Your Man",
+        "artist": "Dolly Cooper",
+        "track": 15,
+        "year": 2011,
+        "duration": 128,
+        "disc_number": 1
+      },
+      {
+        "title": "The Bear",
+        "artist": "Johnny “Guitar” Watson",
+        "track": 16,
+        "year": 2011,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "Ska Beat",
+        "artist": "Alton Ellis",
+        "track": 17,
+        "year": 2011,
+        "duration": 135,
+        "disc_number": 1
+      },
+      {
+        "title": "Malcolm X",
+        "artist": "The Skatalites",
+        "track": 18,
+        "year": 2011,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Fast Mouth",
+        "artist": "Randy’s All Stars",
+        "track": 19,
+        "year": 2011,
+        "duration": 133,
+        "disc_number": 1
+      },
+      {
+        "title": "Collie Bud",
+        "artist": "The Skatalites",
+        "track": 20,
+        "year": 2011,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Bam-A-Lam",
+        "artist": "Mickey Champion",
+        "track": 21,
+        "year": 2011,
+        "duration": 131,
+        "disc_number": 1
+      },
+      {
+        "title": "Hit, Git and Split",
+        "artist": "Young Jessie",
+        "track": 22,
+        "year": 2011,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Make Up Your Mind",
+        "artist": "San Francisco T.K.O.'s",
+        "track": 23,
+        "year": 2011,
+        "duration": 191,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Electro Swing 2015",
     "year": 2014,
     "duration": 3616,
@@ -126380,6 +126452,40 @@
         "track": 15,
         "year": 2014,
         "duration": 243,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "Fallout 3",
+    "year": 2008,
+    "duration": 508,
+    "tracks": [
+      {
+        "title": "Way Back Home",
+        "artist": "Bob Crosby's Bobcats",
+        "track": 4,
+        "year": 2008,
+        "duration": 173,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "I Don't Want to Set the World on Fire",
+        "artist": "The Ink Spots",
+        "track": 16,
+        "year": 2008,
+        "duration": 186,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Butcher Pete (Part 1)",
+        "artist": "Roy Brown and His Mighty-Mighty Men",
+        "track": 18,
+        "year": 2008,
+        "duration": 148,
         "disc_number": 1
       }
     ]
@@ -126582,40 +126688,6 @@
         "year": 2012,
         "duration": 262,
         "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Fallout 3",
-    "year": 2008,
-    "duration": 508,
-    "tracks": [
-      {
-        "title": "Way Back Home",
-        "artist": "Bob Crosby's Bobcats",
-        "track": 4,
-        "year": 2008,
-        "duration": 173,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "I Don't Want to Set the World on Fire",
-        "artist": "The Ink Spots",
-        "track": 16,
-        "year": 2008,
-        "duration": 186,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Butcher Pete (Part 1)",
-        "artist": "Roy Brown and His Mighty-Mighty Men",
-        "track": 18,
-        "year": 2008,
-        "duration": 148,
-        "disc_number": 1
       }
     ]
   },
@@ -127572,6 +127644,192 @@
   },
   {
     "artist": "Various Artists",
+    "album": "Need for Speed III: Hot Pursuit",
+    "year": 1998,
+    "duration": 4100,
+    "tracks": [
+      {
+        "title": "Title",
+        "artist": "Traz Damji",
+        "track": 1,
+        "year": 1998,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 1",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 2,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 2",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 3,
+        "year": 1998,
+        "duration": 31,
+        "disc_number": 1
+      },
+      {
+        "title": "Demo 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 4,
+        "year": 1998,
+        "duration": 30,
+        "disc_number": 1
+      },
+      {
+        "title": "Whacked",
+        "artist": "Alistair Hirst",
+        "track": 5,
+        "year": 1998,
+        "duration": 73,
+        "disc_number": 1
+      },
+      {
+        "title": "romulus 3",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 6,
+        "year": 1998,
+        "duration": 199,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Minotaur",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 7,
+        "year": 1998,
+        "duration": 42,
+        "disc_number": 1
+      },
+      {
+        "title": "Pi",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 8,
+        "year": 1998,
+        "duration": 60,
+        "disc_number": 1
+      },
+      {
+        "title": "Triton",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 9,
+        "year": 1998,
+        "duration": 54,
+        "disc_number": 1
+      },
+      {
+        "title": "Monster",
+        "artist": "Crispin Hands",
+        "track": 10,
+        "year": 1998,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Whipped",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 11,
+        "year": 1998,
+        "duration": 64,
+        "disc_number": 1
+      },
+      {
+        "title": "Little Sweaty Sow",
+        "artist": "Saki Kaskas",
+        "track": 12,
+        "year": 1998,
+        "duration": 512,
+        "disc_number": 1
+      },
+      {
+        "title": "hydrus 606",
+        "artist": "Romolo Di Prisco",
+        "track": 13,
+        "year": 1998,
+        "duration": 84,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Snorkeling Cactus Weasels",
+        "artist": "Matt Ragan",
+        "track": 14,
+        "year": 1998,
+        "duration": 345,
+        "disc_number": 1
+      },
+      {
+        "title": "cetus 808",
+        "artist": "Romolo di Prisco",
+        "track": 15,
+        "year": 1998,
+        "duration": 72,
+        "disc_number": 1
+      },
+      {
+        "title": "Rear Flutter blast 19",
+        "artist": "Matt Ragan",
+        "track": 16,
+        "year": 1998,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "aquilla 303",
+        "artist": "Romolo di Prisco",
+        "track": 17,
+        "year": 1998,
+        "duration": 110,
+        "disc_number": 1
+      },
+      {
+        "title": "Snow Bags",
+        "artist": "Matt Ragan",
+        "track": 18,
+        "year": 1998,
+        "duration": 445,
+        "disc_number": 1
+      },
+      {
+        "title": "Knossos",
+        "artist": "Saki Kaskas",
+        "track": 19,
+        "year": 1998,
+        "duration": 441,
+        "disc_number": 1
+      },
+      {
+        "title": "Flimsy",
+        "artist": "Saki Kaskas",
+        "track": 20,
+        "year": 1998,
+        "duration": 511,
+        "disc_number": 1
+      },
+      {
+        "title": "Warped",
+        "artist": "Alistair Hirst",
+        "track": 21,
+        "year": 1998,
+        "duration": 372,
+        "disc_number": 1
+      },
+      {
+        "title": "Win",
+        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
+        "track": 22,
+        "year": 1998,
+        "duration": 41,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Need For Speed: High Stakes",
     "year": 1999,
     "duration": 4599,
@@ -127796,192 +128054,6 @@
         "duration": 145,
         "disc_number": 1,
         "starred": true
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Need for Speed III: Hot Pursuit",
-    "year": 1998,
-    "duration": 4100,
-    "tracks": [
-      {
-        "title": "Title",
-        "artist": "Traz Damji",
-        "track": 1,
-        "year": 1998,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 1",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 2,
-        "year": 1998,
-        "duration": 30,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 2",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 3,
-        "year": 1998,
-        "duration": 31,
-        "disc_number": 1
-      },
-      {
-        "title": "Demo 3",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 4,
-        "year": 1998,
-        "duration": 30,
-        "disc_number": 1
-      },
-      {
-        "title": "Whacked",
-        "artist": "Alistair Hirst",
-        "track": 5,
-        "year": 1998,
-        "duration": 73,
-        "disc_number": 1
-      },
-      {
-        "title": "romulus 3",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 6,
-        "year": 1998,
-        "duration": 199,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Minotaur",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 7,
-        "year": 1998,
-        "duration": 42,
-        "disc_number": 1
-      },
-      {
-        "title": "Pi",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 8,
-        "year": 1998,
-        "duration": 60,
-        "disc_number": 1
-      },
-      {
-        "title": "Triton",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 9,
-        "year": 1998,
-        "duration": 54,
-        "disc_number": 1
-      },
-      {
-        "title": "Monster",
-        "artist": "Crispin Hands",
-        "track": 10,
-        "year": 1998,
-        "duration": 167,
-        "disc_number": 1
-      },
-      {
-        "title": "Whipped",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 11,
-        "year": 1998,
-        "duration": 64,
-        "disc_number": 1
-      },
-      {
-        "title": "Little Sweaty Sow",
-        "artist": "Saki Kaskas",
-        "track": 12,
-        "year": 1998,
-        "duration": 512,
-        "disc_number": 1
-      },
-      {
-        "title": "hydrus 606",
-        "artist": "Romolo Di Prisco",
-        "track": 13,
-        "year": 1998,
-        "duration": 84,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Snorkeling Cactus Weasels",
-        "artist": "Matt Ragan",
-        "track": 14,
-        "year": 1998,
-        "duration": 345,
-        "disc_number": 1
-      },
-      {
-        "title": "cetus 808",
-        "artist": "Romolo di Prisco",
-        "track": 15,
-        "year": 1998,
-        "duration": 72,
-        "disc_number": 1
-      },
-      {
-        "title": "Rear Flutter blast 19",
-        "artist": "Matt Ragan",
-        "track": 16,
-        "year": 1998,
-        "duration": 307,
-        "disc_number": 1
-      },
-      {
-        "title": "aquilla 303",
-        "artist": "Romolo di Prisco",
-        "track": 17,
-        "year": 1998,
-        "duration": 110,
-        "disc_number": 1
-      },
-      {
-        "title": "Snow Bags",
-        "artist": "Matt Ragan",
-        "track": 18,
-        "year": 1998,
-        "duration": 445,
-        "disc_number": 1
-      },
-      {
-        "title": "Knossos",
-        "artist": "Saki Kaskas",
-        "track": 19,
-        "year": 1998,
-        "duration": 441,
-        "disc_number": 1
-      },
-      {
-        "title": "Flimsy",
-        "artist": "Saki Kaskas",
-        "track": 20,
-        "year": 1998,
-        "duration": 511,
-        "disc_number": 1
-      },
-      {
-        "title": "Warped",
-        "artist": "Alistair Hirst",
-        "track": 21,
-        "year": 1998,
-        "duration": 372,
-        "disc_number": 1
-      },
-      {
-        "title": "Win",
-        "artist": "Robert Ridihalgh, Crispin Hands, Alistair Hirst, Saki Kaskas, Matt Ragan, Rom Di Prisco & Traz Damji",
-        "track": 22,
-        "year": 1998,
-        "duration": 41,
-        "disc_number": 1
       }
     ]
   },
@@ -128687,6 +128759,119 @@
   },
   {
     "artist": "Various Artists",
+    "album": "Science Fiction Jazz, Volume 3",
+    "year": 1998,
+    "duration": 4672,
+    "tracks": [
+      {
+        "title": "Heroes (Roni Size live mix)",
+        "artist": "Roni Size / Reprazent",
+        "track": 1,
+        "year": 1998,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "Dirty Harry (Grooverider remix)",
+        "artist": "Adam F",
+        "track": 2,
+        "year": 1998,
+        "duration": 379,
+        "disc_number": 1
+      },
+      {
+        "title": "I Am the Black Gold of the Sun (4 Hero mix)",
+        "artist": "Nuyorican Soul",
+        "track": 3,
+        "year": 1998,
+        "duration": 507,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Opaque",
+        "artist": "Aquasky",
+        "track": 4,
+        "year": 1998,
+        "duration": 439,
+        "disc_number": 1
+      },
+      {
+        "title": "Waking Up (remix)",
+        "artist": "Nicolette",
+        "track": 5,
+        "year": 1998,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "The Glass Bead Game",
+        "artist": "Thievery Corporation",
+        "track": 6,
+        "year": 1998,
+        "duration": 371,
+        "disc_number": 1
+      },
+      {
+        "title": "Bye Bye Blues",
+        "artist": "Bang Bang",
+        "track": 7,
+        "year": 1998,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "His Name Is ...",
+        "artist": "United Future Organization",
+        "track": 8,
+        "year": 1998,
+        "duration": 292,
+        "disc_number": 1
+      },
+      {
+        "title": "Papalon",
+        "artist": "Squarepusher",
+        "track": 9,
+        "year": 1998,
+        "duration": 483,
+        "disc_number": 1
+      },
+      {
+        "title": "Achilles Heel",
+        "artist": "DJ Die",
+        "track": 10,
+        "year": 1998,
+        "duration": 463,
+        "disc_number": 1
+      },
+      {
+        "title": "The Look",
+        "artist": "Guardians of Dalliance",
+        "track": 11,
+        "year": 1998,
+        "duration": 448,
+        "disc_number": 1
+      },
+      {
+        "title": "She's the Devil",
+        "artist": "Beatless",
+        "track": 12,
+        "year": 1998,
+        "duration": 368,
+        "disc_number": 1
+      },
+      {
+        "title": "Science Fiction Jazz (ultra short cut)",
+        "artist": "Minus 8",
+        "track": 13,
+        "year": 1998,
+        "duration": 68,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Science Fiction Jazz, Volume 10",
     "year": 2007,
     "duration": 3872,
@@ -128921,119 +129106,6 @@
         "track": 13,
         "year": 2010,
         "duration": 270,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "Science Fiction Jazz, Volume 3",
-    "year": 1998,
-    "duration": 4672,
-    "tracks": [
-      {
-        "title": "Heroes (Roni Size live mix)",
-        "artist": "Roni Size / Reprazent",
-        "track": 1,
-        "year": 1998,
-        "duration": 244,
-        "disc_number": 1
-      },
-      {
-        "title": "Dirty Harry (Grooverider remix)",
-        "artist": "Adam F",
-        "track": 2,
-        "year": 1998,
-        "duration": 379,
-        "disc_number": 1
-      },
-      {
-        "title": "I Am the Black Gold of the Sun (4 Hero mix)",
-        "artist": "Nuyorican Soul",
-        "track": 3,
-        "year": 1998,
-        "duration": 507,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Opaque",
-        "artist": "Aquasky",
-        "track": 4,
-        "year": 1998,
-        "duration": 439,
-        "disc_number": 1
-      },
-      {
-        "title": "Waking Up (remix)",
-        "artist": "Nicolette",
-        "track": 5,
-        "year": 1998,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "The Glass Bead Game",
-        "artist": "Thievery Corporation",
-        "track": 6,
-        "year": 1998,
-        "duration": 371,
-        "disc_number": 1
-      },
-      {
-        "title": "Bye Bye Blues",
-        "artist": "Bang Bang",
-        "track": 7,
-        "year": 1998,
-        "duration": 307,
-        "disc_number": 1
-      },
-      {
-        "title": "His Name Is ...",
-        "artist": "United Future Organization",
-        "track": 8,
-        "year": 1998,
-        "duration": 292,
-        "disc_number": 1
-      },
-      {
-        "title": "Papalon",
-        "artist": "Squarepusher",
-        "track": 9,
-        "year": 1998,
-        "duration": 483,
-        "disc_number": 1
-      },
-      {
-        "title": "Achilles Heel",
-        "artist": "DJ Die",
-        "track": 10,
-        "year": 1998,
-        "duration": 463,
-        "disc_number": 1
-      },
-      {
-        "title": "The Look",
-        "artist": "Guardians of Dalliance",
-        "track": 11,
-        "year": 1998,
-        "duration": 448,
-        "disc_number": 1
-      },
-      {
-        "title": "She's the Devil",
-        "artist": "Beatless",
-        "track": 12,
-        "year": 1998,
-        "duration": 368,
-        "disc_number": 1
-      },
-      {
-        "title": "Science Fiction Jazz (ultra short cut)",
-        "artist": "Minus 8",
-        "track": 13,
-        "year": 1998,
-        "duration": 68,
         "disc_number": 1
       }
     ]
@@ -129372,651 +129444,6 @@
         "year": 2016,
         "duration": 190,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "TV ANIMATION \"Sonny Boy\" original soundtrack",
-    "year": 2021,
-    "duration": 4789,
-    "tracks": [
-      {
-        "title": "少年少女 TV ver.",
-        "artist": "銀杏BOYZ",
-        "track": 1,
-        "year": 2021,
-        "duration": 94,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Broken Windows",
-        "artist": "落日飛車",
-        "track": 2,
-        "year": 2021,
-        "duration": 102,
-        "disc_number": 1
-      },
-      {
-        "title": "Seagull",
-        "artist": "落日飛車",
-        "track": 3,
-        "year": 2021,
-        "duration": 153,
-        "disc_number": 1
-      },
-      {
-        "title": "Summer Storm",
-        "artist": "VIDEOTAPEMUSIC",
-        "track": 4,
-        "year": 2021,
-        "duration": 190,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Tune from diamond",
-        "artist": "ザ・なつやすみバンド",
-        "track": 5,
-        "year": 2021,
-        "duration": 276,
-        "disc_number": 1
-      },
-      {
-        "title": "夜釣り",
-        "artist": "ミツメ",
-        "track": 6,
-        "year": 2021,
-        "duration": 193,
-        "disc_number": 1
-      },
-      {
-        "title": "Let There Be Light Again",
-        "artist": "落日飛車",
-        "track": 7,
-        "year": 2021,
-        "duration": 227,
-        "disc_number": 1
-      },
-      {
-        "title": "Beacon",
-        "artist": "Ogawa & Tokoro",
-        "track": 8,
-        "year": 2021,
-        "duration": 170,
-        "disc_number": 1
-      },
-      {
-        "title": "Yamabiko’s Theme",
-        "artist": "空中泥棒",
-        "track": 9,
-        "year": 2021,
-        "duration": 635,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Kodama’s Theme",
-        "artist": "空中泥棒",
-        "track": 10,
-        "year": 2021,
-        "duration": 200,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Soft Oversight",
-        "artist": "Ogawa & Tokoro",
-        "track": 11,
-        "year": 2021,
-        "duration": 104,
-        "disc_number": 1
-      },
-      {
-        "title": "ソウとセイジ",
-        "artist": "ミツメ",
-        "track": 12,
-        "year": 2021,
-        "duration": 500,
-        "disc_number": 1
-      },
-      {
-        "title": "今日の歌",
-        "artist": "カネヨリマサル",
-        "track": 13,
-        "year": 2021,
-        "duration": 236,
-        "disc_number": 1
-      },
-      {
-        "title": "Lightship",
-        "artist": "ザ・なつやすみバンド",
-        "track": 14,
-        "year": 2021,
-        "duration": 315,
-        "disc_number": 1
-      },
-      {
-        "title": "スペア",
-        "artist": "ミツメ",
-        "track": 15,
-        "year": 2021,
-        "duration": 297,
-        "disc_number": 1
-      },
-      {
-        "title": "サニーボーイ・ラプソディ",
-        "artist": "toe",
-        "track": 16,
-        "year": 2021,
-        "duration": 245,
-        "disc_number": 1,
-        "starred": true
-      },
-      {
-        "title": "Lune",
-        "artist": "コーニッシュ",
-        "track": 17,
-        "year": 2021,
-        "duration": 105,
-        "disc_number": 1
-      },
-      {
-        "title": "Jugement",
-        "artist": "コーニッシュ",
-        "track": 18,
-        "year": 2021,
-        "duration": 99,
-        "disc_number": 1
-      },
-      {
-        "title": "Tour",
-        "artist": "コーニッシュ",
-        "track": 19,
-        "year": 2021,
-        "duration": 198,
-        "disc_number": 1
-      },
-      {
-        "title": "Soleil",
-        "artist": "コーニッシュ",
-        "track": 20,
-        "year": 2021,
-        "duration": 156,
-        "disc_number": 1
-      },
-      {
-        "title": "旅立ちの日に",
-        "artist": "コーニッシュ",
-        "track": 21,
-        "year": 2021,
-        "duration": 294,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Various Artists",
-    "album": "TV Animation \"STEINS;GATE 0\" Original Soundtrack",
-    "year": 2018,
-    "duration": 8551,
-    "tracks": [
-      {
-        "title": "Fatima (TV Size Ver.)",
-        "artist": "いとうかなこ",
-        "track": 1,
-        "year": 2018,
-        "duration": 93,
-        "disc_number": 1
-      },
-      {
-        "title": "Amadeus (TV Size Ver.)",
-        "artist": "いとうかなこ",
-        "track": 2,
-        "year": 2018,
-        "duration": 111,
-        "disc_number": 1
-      },
-      {
-        "title": "B-Messenger",
-        "artist": "阿保剛",
-        "track": 3,
-        "year": 2018,
-        "duration": 281,
-        "disc_number": 1
-      },
-      {
-        "title": "Someday - Believe Me",
-        "artist": "阿保剛",
-        "track": 4,
-        "year": 2018,
-        "duration": 132,
-        "disc_number": 1
-      },
-      {
-        "title": "Hiyajou Maho",
-        "artist": "阿保剛",
-        "track": 5,
-        "year": 2018,
-        "duration": 272,
-        "disc_number": 1
-      },
-      {
-        "title": "Amadeus System",
-        "artist": "阿保剛",
-        "track": 6,
-        "year": 2018,
-        "duration": 215,
-        "disc_number": 1
-      },
-      {
-        "title": "Logic",
-        "artist": "阿保剛",
-        "track": 7,
-        "year": 2018,
-        "duration": 207,
-        "disc_number": 1
-      },
-      {
-        "title": "Memories",
-        "artist": "阿保剛",
-        "track": 8,
-        "year": 2018,
-        "duration": 203,
-        "disc_number": 1
-      },
-      {
-        "title": "Leap",
-        "artist": "阿保剛",
-        "track": 9,
-        "year": 2018,
-        "duration": 152,
-        "disc_number": 1
-      },
-      {
-        "title": "Loneliness",
-        "artist": "阿保剛",
-        "track": 10,
-        "year": 2018,
-        "duration": 173,
-        "disc_number": 1
-      },
-      {
-        "title": "Lab-Members",
-        "artist": "阿保剛",
-        "track": 11,
-        "year": 2018,
-        "duration": 155,
-        "disc_number": 1
-      },
-      {
-        "title": "Comima",
-        "artist": "阿保剛",
-        "track": 12,
-        "year": 2018,
-        "duration": 142,
-        "disc_number": 1
-      },
-      {
-        "title": "Sergeant Clean",
-        "artist": "日向萌",
-        "track": 13,
-        "year": 2018,
-        "duration": 72,
-        "disc_number": 1
-      },
-      {
-        "title": "Comical",
-        "artist": "阿保剛",
-        "track": 14,
-        "year": 2018,
-        "duration": 100,
-        "disc_number": 1
-      },
-      {
-        "title": "Special Training",
-        "artist": "阿保剛",
-        "track": 15,
-        "year": 2018,
-        "duration": 107,
-        "disc_number": 1
-      },
-      {
-        "title": "Successful Man Daru",
-        "artist": "阿保剛",
-        "track": 16,
-        "year": 2018,
-        "duration": 93,
-        "disc_number": 1
-      },
-      {
-        "title": "Facility",
-        "artist": "阿保剛",
-        "track": 17,
-        "year": 2018,
-        "duration": 146,
-        "disc_number": 1
-      },
-      {
-        "title": "Activate Reading Steiner",
-        "artist": "阿保剛",
-        "track": 18,
-        "year": 2018,
-        "duration": 152,
-        "disc_number": 1
-      },
-      {
-        "title": "Establishment",
-        "artist": "阿保剛",
-        "track": 19,
-        "year": 2018,
-        "duration": 201,
-        "disc_number": 1
-      },
-      {
-        "title": "Convergence",
-        "artist": "阿保剛",
-        "track": 20,
-        "year": 2018,
-        "duration": 160,
-        "disc_number": 1
-      },
-      {
-        "title": "Lab-Members -Piano-",
-        "artist": "阿保剛",
-        "track": 21,
-        "year": 2018,
-        "duration": 246,
-        "disc_number": 1
-      },
-      {
-        "title": "A Song Played by the Stars (Duet Ver.) & 潘めぐみ",
-        "artist": "花澤香菜 & 潘めぐみ",
-        "track": 22,
-        "year": 2018,
-        "duration": 331,
-        "disc_number": 1
-      },
-      {
-        "title": "Lyra (TV Size Ver.)",
-        "artist": "Zwei",
-        "track": 23,
-        "year": 2018,
-        "duration": 142,
-        "disc_number": 1
-      },
-      {
-        "title": "Last Game (TV Size Ver.)",
-        "artist": "Zwei",
-        "track": 24,
-        "year": 2018,
-        "duration": 90,
-        "disc_number": 1
-      },
-      {
-        "title": "B-Messenger -piano-",
-        "artist": "阿保剛",
-        "track": 25,
-        "year": 2018,
-        "duration": 367,
-        "disc_number": 2
-      },
-      {
-        "title": "Soliloquizing",
-        "artist": "阿保剛",
-        "track": 26,
-        "year": 2018,
-        "duration": 96,
-        "disc_number": 2
-      },
-      {
-        "title": "Monologue",
-        "artist": "日向萌",
-        "track": 27,
-        "year": 2018,
-        "duration": 105,
-        "disc_number": 2
-      },
-      {
-        "title": "Suzuha",
-        "artist": "信澤宣明",
-        "track": 28,
-        "year": 2018,
-        "duration": 100,
-        "disc_number": 2
-      },
-      {
-        "title": "Consideration",
-        "artist": "日向萌",
-        "track": 29,
-        "year": 2018,
-        "duration": 109,
-        "disc_number": 2
-      },
-      {
-        "title": "Suzuha's Impatience",
-        "artist": "信澤宣明",
-        "track": 30,
-        "year": 2018,
-        "duration": 150,
-        "disc_number": 2
-      },
-      {
-        "title": "Father and Daughter",
-        "artist": "日向萌",
-        "track": 31,
-        "year": 2018,
-        "duration": 107,
-        "disc_number": 2
-      },
-      {
-        "title": "Hiyajou and Salieri",
-        "artist": "信澤宣明",
-        "track": 32,
-        "year": 2018,
-        "duration": 98,
-        "disc_number": 2
-      },
-      {
-        "title": "A Song Played by the Stars (Piano)",
-        "artist": "信澤宣明",
-        "track": 33,
-        "year": 2018,
-        "duration": 99,
-        "disc_number": 2
-      },
-      {
-        "title": "A Song Played by the Stars (Strings Quartet)",
-        "artist": "信澤宣明",
-        "track": 34,
-        "year": 2018,
-        "duration": 109,
-        "disc_number": 2
-      },
-      {
-        "title": "Daru and Yuki",
-        "artist": "日向萌",
-        "track": 35,
-        "year": 2018,
-        "duration": 101,
-        "disc_number": 2
-      },
-      {
-        "title": "Kurisu Unknown by Okabe",
-        "artist": "信澤宣明",
-        "track": 36,
-        "year": 2018,
-        "duration": 93,
-        "disc_number": 2
-      },
-      {
-        "title": "Okabe Who Threw Away Chuni",
-        "artist": "阿保剛",
-        "track": 37,
-        "year": 2018,
-        "duration": 109,
-        "disc_number": 2
-      },
-      {
-        "title": "Brainwashing",
-        "artist": "日向萌",
-        "track": 38,
-        "year": 2018,
-        "duration": 178,
-        "disc_number": 2
-      },
-      {
-        "title": "Hiyajou's Determination",
-        "artist": "信澤宣明",
-        "track": 39,
-        "year": 2018,
-        "duration": 110,
-        "disc_number": 2
-      },
-      {
-        "title": "Suzuha's Wish",
-        "artist": "阿保剛",
-        "track": 40,
-        "year": 2018,
-        "duration": 102,
-        "disc_number": 2
-      },
-      {
-        "title": "Mayuri's Sadness",
-        "artist": "阿保剛",
-        "track": 41,
-        "year": 2018,
-        "duration": 169,
-        "disc_number": 2
-      },
-      {
-        "title": "B-Messenger -Strings Quartet-",
-        "artist": "信澤宣明",
-        "track": 42,
-        "year": 2018,
-        "duration": 111,
-        "disc_number": 2
-      },
-      {
-        "title": "Mayuri's Determination",
-        "artist": "日向萌",
-        "track": 43,
-        "year": 2018,
-        "duration": 105,
-        "disc_number": 2
-      },
-      {
-        "title": "Struggle",
-        "artist": "阿保剛",
-        "track": 44,
-        "year": 2018,
-        "duration": 94,
-        "disc_number": 2
-      },
-      {
-        "title": "Return of the Magic Flute",
-        "artist": "日向萌",
-        "track": 45,
-        "year": 2018,
-        "duration": 100,
-        "disc_number": 2
-      },
-      {
-        "title": "Fight",
-        "artist": "阿保剛",
-        "track": 46,
-        "year": 2018,
-        "duration": 197,
-        "disc_number": 2
-      },
-      {
-        "title": "Anger",
-        "artist": "日向萌",
-        "track": 47,
-        "year": 2018,
-        "duration": 105,
-        "disc_number": 2
-      },
-      {
-        "title": "Okabe's Defiance",
-        "artist": "阿保剛",
-        "track": 48,
-        "year": 2018,
-        "duration": 124,
-        "disc_number": 2
-      },
-      {
-        "title": "Operation Arc-light",
-        "artist": "信澤宣明",
-        "track": 49,
-        "year": 2018,
-        "duration": 103,
-        "disc_number": 2
-      },
-      {
-        "title": "Walküre",
-        "artist": "信澤宣明",
-        "track": 50,
-        "year": 2018,
-        "duration": 111,
-        "disc_number": 2
-      },
-      {
-        "title": "Luka's Death",
-        "artist": "信澤宣明",
-        "track": 51,
-        "year": 2018,
-        "duration": 132,
-        "disc_number": 2
-      },
-      {
-        "title": "Messenger from 0",
-        "artist": "阿保剛",
-        "track": 52,
-        "year": 2018,
-        "duration": 110,
-        "disc_number": 2
-      },
-      {
-        "title": "Revival 'Re-awake'",
-        "artist": "阿保剛",
-        "track": 53,
-        "year": 2018,
-        "duration": 294,
-        "disc_number": 2
-      },
-      {
-        "title": "Last Mission",
-        "artist": "日向萌",
-        "track": 54,
-        "year": 2018,
-        "duration": 143,
-        "disc_number": 2
-      },
-      {
-        "title": "World-Line (TV Size Ver.)",
-        "artist": "今井麻美",
-        "track": 55,
-        "year": 2018,
-        "duration": 92,
-        "disc_number": 2
-      },
-      {
-        "title": "Gate of Steiner (Bonus Track)",
-        "artist": "佐々木恵梨",
-        "track": 56,
-        "year": 2018,
-        "duration": 254,
-        "disc_number": 2
-      },
-      {
-        "title": "Monologue Drama \"Puddle of Tearful Rain\"",
-        "artist": "椎名まゆり (cv.花澤香菜)",
-        "track": 57,
-        "year": 2018,
-        "duration": 273,
-        "disc_number": 2
       }
     ]
   },
@@ -132438,6 +131865,651 @@
         "track": 20,
         "year": 2012,
         "duration": 301,
+        "disc_number": 2
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "TV ANIMATION \"Sonny Boy\" original soundtrack",
+    "year": 2021,
+    "duration": 4789,
+    "tracks": [
+      {
+        "title": "少年少女 TV ver.",
+        "artist": "銀杏BOYZ",
+        "track": 1,
+        "year": 2021,
+        "duration": 94,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Broken Windows",
+        "artist": "落日飛車",
+        "track": 2,
+        "year": 2021,
+        "duration": 102,
+        "disc_number": 1
+      },
+      {
+        "title": "Seagull",
+        "artist": "落日飛車",
+        "track": 3,
+        "year": 2021,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Summer Storm",
+        "artist": "VIDEOTAPEMUSIC",
+        "track": 4,
+        "year": 2021,
+        "duration": 190,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Tune from diamond",
+        "artist": "ザ・なつやすみバンド",
+        "track": 5,
+        "year": 2021,
+        "duration": 276,
+        "disc_number": 1
+      },
+      {
+        "title": "夜釣り",
+        "artist": "ミツメ",
+        "track": 6,
+        "year": 2021,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "Let There Be Light Again",
+        "artist": "落日飛車",
+        "track": 7,
+        "year": 2021,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Beacon",
+        "artist": "Ogawa & Tokoro",
+        "track": 8,
+        "year": 2021,
+        "duration": 170,
+        "disc_number": 1
+      },
+      {
+        "title": "Yamabiko’s Theme",
+        "artist": "空中泥棒",
+        "track": 9,
+        "year": 2021,
+        "duration": 635,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Kodama’s Theme",
+        "artist": "空中泥棒",
+        "track": 10,
+        "year": 2021,
+        "duration": 200,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Soft Oversight",
+        "artist": "Ogawa & Tokoro",
+        "track": 11,
+        "year": 2021,
+        "duration": 104,
+        "disc_number": 1
+      },
+      {
+        "title": "ソウとセイジ",
+        "artist": "ミツメ",
+        "track": 12,
+        "year": 2021,
+        "duration": 500,
+        "disc_number": 1
+      },
+      {
+        "title": "今日の歌",
+        "artist": "カネヨリマサル",
+        "track": 13,
+        "year": 2021,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Lightship",
+        "artist": "ザ・なつやすみバンド",
+        "track": 14,
+        "year": 2021,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "スペア",
+        "artist": "ミツメ",
+        "track": 15,
+        "year": 2021,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "サニーボーイ・ラプソディ",
+        "artist": "toe",
+        "track": 16,
+        "year": 2021,
+        "duration": 245,
+        "disc_number": 1,
+        "starred": true
+      },
+      {
+        "title": "Lune",
+        "artist": "コーニッシュ",
+        "track": 17,
+        "year": 2021,
+        "duration": 105,
+        "disc_number": 1
+      },
+      {
+        "title": "Jugement",
+        "artist": "コーニッシュ",
+        "track": 18,
+        "year": 2021,
+        "duration": 99,
+        "disc_number": 1
+      },
+      {
+        "title": "Tour",
+        "artist": "コーニッシュ",
+        "track": 19,
+        "year": 2021,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "Soleil",
+        "artist": "コーニッシュ",
+        "track": 20,
+        "year": 2021,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "旅立ちの日に",
+        "artist": "コーニッシュ",
+        "track": 21,
+        "year": 2021,
+        "duration": 294,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
+    "album": "TV Animation \"STEINS;GATE 0\" Original Soundtrack",
+    "year": 2018,
+    "duration": 8551,
+    "tracks": [
+      {
+        "title": "Fatima (TV Size Ver.)",
+        "artist": "いとうかなこ",
+        "track": 1,
+        "year": 2018,
+        "duration": 93,
+        "disc_number": 1
+      },
+      {
+        "title": "Amadeus (TV Size Ver.)",
+        "artist": "いとうかなこ",
+        "track": 2,
+        "year": 2018,
+        "duration": 111,
+        "disc_number": 1
+      },
+      {
+        "title": "B-Messenger",
+        "artist": "阿保剛",
+        "track": 3,
+        "year": 2018,
+        "duration": 281,
+        "disc_number": 1
+      },
+      {
+        "title": "Someday - Believe Me",
+        "artist": "阿保剛",
+        "track": 4,
+        "year": 2018,
+        "duration": 132,
+        "disc_number": 1
+      },
+      {
+        "title": "Hiyajou Maho",
+        "artist": "阿保剛",
+        "track": 5,
+        "year": 2018,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Amadeus System",
+        "artist": "阿保剛",
+        "track": 6,
+        "year": 2018,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "Logic",
+        "artist": "阿保剛",
+        "track": 7,
+        "year": 2018,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "Memories",
+        "artist": "阿保剛",
+        "track": 8,
+        "year": 2018,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "Leap",
+        "artist": "阿保剛",
+        "track": 9,
+        "year": 2018,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Loneliness",
+        "artist": "阿保剛",
+        "track": 10,
+        "year": 2018,
+        "duration": 173,
+        "disc_number": 1
+      },
+      {
+        "title": "Lab-Members",
+        "artist": "阿保剛",
+        "track": 11,
+        "year": 2018,
+        "duration": 155,
+        "disc_number": 1
+      },
+      {
+        "title": "Comima",
+        "artist": "阿保剛",
+        "track": 12,
+        "year": 2018,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "Sergeant Clean",
+        "artist": "日向萌",
+        "track": 13,
+        "year": 2018,
+        "duration": 72,
+        "disc_number": 1
+      },
+      {
+        "title": "Comical",
+        "artist": "阿保剛",
+        "track": 14,
+        "year": 2018,
+        "duration": 100,
+        "disc_number": 1
+      },
+      {
+        "title": "Special Training",
+        "artist": "阿保剛",
+        "track": 15,
+        "year": 2018,
+        "duration": 107,
+        "disc_number": 1
+      },
+      {
+        "title": "Successful Man Daru",
+        "artist": "阿保剛",
+        "track": 16,
+        "year": 2018,
+        "duration": 93,
+        "disc_number": 1
+      },
+      {
+        "title": "Facility",
+        "artist": "阿保剛",
+        "track": 17,
+        "year": 2018,
+        "duration": 146,
+        "disc_number": 1
+      },
+      {
+        "title": "Activate Reading Steiner",
+        "artist": "阿保剛",
+        "track": 18,
+        "year": 2018,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Establishment",
+        "artist": "阿保剛",
+        "track": 19,
+        "year": 2018,
+        "duration": 201,
+        "disc_number": 1
+      },
+      {
+        "title": "Convergence",
+        "artist": "阿保剛",
+        "track": 20,
+        "year": 2018,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "Lab-Members -Piano-",
+        "artist": "阿保剛",
+        "track": 21,
+        "year": 2018,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "A Song Played by the Stars (Duet Ver.) & 潘めぐみ",
+        "artist": "花澤香菜 & 潘めぐみ",
+        "track": 22,
+        "year": 2018,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Lyra (TV Size Ver.)",
+        "artist": "Zwei",
+        "track": 23,
+        "year": 2018,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "Last Game (TV Size Ver.)",
+        "artist": "Zwei",
+        "track": 24,
+        "year": 2018,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "B-Messenger -piano-",
+        "artist": "阿保剛",
+        "track": 25,
+        "year": 2018,
+        "duration": 367,
+        "disc_number": 2
+      },
+      {
+        "title": "Soliloquizing",
+        "artist": "阿保剛",
+        "track": 26,
+        "year": 2018,
+        "duration": 96,
+        "disc_number": 2
+      },
+      {
+        "title": "Monologue",
+        "artist": "日向萌",
+        "track": 27,
+        "year": 2018,
+        "duration": 105,
+        "disc_number": 2
+      },
+      {
+        "title": "Suzuha",
+        "artist": "信澤宣明",
+        "track": 28,
+        "year": 2018,
+        "duration": 100,
+        "disc_number": 2
+      },
+      {
+        "title": "Consideration",
+        "artist": "日向萌",
+        "track": 29,
+        "year": 2018,
+        "duration": 109,
+        "disc_number": 2
+      },
+      {
+        "title": "Suzuha's Impatience",
+        "artist": "信澤宣明",
+        "track": 30,
+        "year": 2018,
+        "duration": 150,
+        "disc_number": 2
+      },
+      {
+        "title": "Father and Daughter",
+        "artist": "日向萌",
+        "track": 31,
+        "year": 2018,
+        "duration": 107,
+        "disc_number": 2
+      },
+      {
+        "title": "Hiyajou and Salieri",
+        "artist": "信澤宣明",
+        "track": 32,
+        "year": 2018,
+        "duration": 98,
+        "disc_number": 2
+      },
+      {
+        "title": "A Song Played by the Stars (Piano)",
+        "artist": "信澤宣明",
+        "track": 33,
+        "year": 2018,
+        "duration": 99,
+        "disc_number": 2
+      },
+      {
+        "title": "A Song Played by the Stars (Strings Quartet)",
+        "artist": "信澤宣明",
+        "track": 34,
+        "year": 2018,
+        "duration": 109,
+        "disc_number": 2
+      },
+      {
+        "title": "Daru and Yuki",
+        "artist": "日向萌",
+        "track": 35,
+        "year": 2018,
+        "duration": 101,
+        "disc_number": 2
+      },
+      {
+        "title": "Kurisu Unknown by Okabe",
+        "artist": "信澤宣明",
+        "track": 36,
+        "year": 2018,
+        "duration": 93,
+        "disc_number": 2
+      },
+      {
+        "title": "Okabe Who Threw Away Chuni",
+        "artist": "阿保剛",
+        "track": 37,
+        "year": 2018,
+        "duration": 109,
+        "disc_number": 2
+      },
+      {
+        "title": "Brainwashing",
+        "artist": "日向萌",
+        "track": 38,
+        "year": 2018,
+        "duration": 178,
+        "disc_number": 2
+      },
+      {
+        "title": "Hiyajou's Determination",
+        "artist": "信澤宣明",
+        "track": 39,
+        "year": 2018,
+        "duration": 110,
+        "disc_number": 2
+      },
+      {
+        "title": "Suzuha's Wish",
+        "artist": "阿保剛",
+        "track": 40,
+        "year": 2018,
+        "duration": 102,
+        "disc_number": 2
+      },
+      {
+        "title": "Mayuri's Sadness",
+        "artist": "阿保剛",
+        "track": 41,
+        "year": 2018,
+        "duration": 169,
+        "disc_number": 2
+      },
+      {
+        "title": "B-Messenger -Strings Quartet-",
+        "artist": "信澤宣明",
+        "track": 42,
+        "year": 2018,
+        "duration": 111,
+        "disc_number": 2
+      },
+      {
+        "title": "Mayuri's Determination",
+        "artist": "日向萌",
+        "track": 43,
+        "year": 2018,
+        "duration": 105,
+        "disc_number": 2
+      },
+      {
+        "title": "Struggle",
+        "artist": "阿保剛",
+        "track": 44,
+        "year": 2018,
+        "duration": 94,
+        "disc_number": 2
+      },
+      {
+        "title": "Return of the Magic Flute",
+        "artist": "日向萌",
+        "track": 45,
+        "year": 2018,
+        "duration": 100,
+        "disc_number": 2
+      },
+      {
+        "title": "Fight",
+        "artist": "阿保剛",
+        "track": 46,
+        "year": 2018,
+        "duration": 197,
+        "disc_number": 2
+      },
+      {
+        "title": "Anger",
+        "artist": "日向萌",
+        "track": 47,
+        "year": 2018,
+        "duration": 105,
+        "disc_number": 2
+      },
+      {
+        "title": "Okabe's Defiance",
+        "artist": "阿保剛",
+        "track": 48,
+        "year": 2018,
+        "duration": 124,
+        "disc_number": 2
+      },
+      {
+        "title": "Operation Arc-light",
+        "artist": "信澤宣明",
+        "track": 49,
+        "year": 2018,
+        "duration": 103,
+        "disc_number": 2
+      },
+      {
+        "title": "Walküre",
+        "artist": "信澤宣明",
+        "track": 50,
+        "year": 2018,
+        "duration": 111,
+        "disc_number": 2
+      },
+      {
+        "title": "Luka's Death",
+        "artist": "信澤宣明",
+        "track": 51,
+        "year": 2018,
+        "duration": 132,
+        "disc_number": 2
+      },
+      {
+        "title": "Messenger from 0",
+        "artist": "阿保剛",
+        "track": 52,
+        "year": 2018,
+        "duration": 110,
+        "disc_number": 2
+      },
+      {
+        "title": "Revival 'Re-awake'",
+        "artist": "阿保剛",
+        "track": 53,
+        "year": 2018,
+        "duration": 294,
+        "disc_number": 2
+      },
+      {
+        "title": "Last Mission",
+        "artist": "日向萌",
+        "track": 54,
+        "year": 2018,
+        "duration": 143,
+        "disc_number": 2
+      },
+      {
+        "title": "World-Line (TV Size Ver.)",
+        "artist": "今井麻美",
+        "track": 55,
+        "year": 2018,
+        "duration": 92,
+        "disc_number": 2
+      },
+      {
+        "title": "Gate of Steiner (Bonus Track)",
+        "artist": "佐々木恵梨",
+        "track": 56,
+        "year": 2018,
+        "duration": 254,
+        "disc_number": 2
+      },
+      {
+        "title": "Monologue Drama \"Puddle of Tearful Rain\"",
+        "artist": "椎名まゆり (cv.花澤香菜)",
+        "track": 57,
+        "year": 2018,
+        "duration": 273,
         "disc_number": 2
       }
     ]
@@ -140087,6 +140159,182 @@
     ]
   },
   {
+    "artist": "アフィリア・サーガ・イースト",
+    "album": "ルミナスの泉",
+    "year": 2009,
+    "duration": 1256,
+    "tracks": [
+      {
+        "title": "ルミナスの泉",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 1,
+        "year": 2009,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "My White Ribbon",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 2,
+        "year": 2009,
+        "duration": 320,
+        "disc_number": 1
+      },
+      {
+        "title": "ルミナスの泉 (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 3,
+        "year": 2009,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "My White Ribbon (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 4,
+        "year": 2009,
+        "duration": 317,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "アフィリア・サーガ・イースト",
+    "album": "ワタシ☆LOVEな☆オトメ!",
+    "year": 2010,
+    "duration": 1098,
+    "tracks": [
+      {
+        "title": "ワタシ☆LOVEな☆オトメ!",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 1,
+        "year": 2010,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "聖ナル wktk ノ星",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 2,
+        "year": 2010,
+        "duration": 303,
+        "disc_number": 1
+      },
+      {
+        "title": "ワタシ☆LOVEな☆オトメ! (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 3,
+        "year": 2010,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "聖ナル wktk ノ星 (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 4,
+        "year": 2010,
+        "duration": 302,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "アフィリア・サーガ・イースト",
+    "album": "La*La*Laラボリューション",
+    "year": 2011,
+    "duration": 1755,
+    "tracks": [
+      {
+        "title": "La*La*Laラボリューション",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 1,
+        "year": 2011,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "TANTEI☆ラプソディ",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 2,
+        "year": 2011,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "La*La*Laラボリューション (feat.カレン、マホ、ミィナ、アリア)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 3,
+        "year": 2011,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "Dearセンパイ♡ 〜メンバー自己紹介ソング〜",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 4,
+        "year": 2011,
+        "duration": 347,
+        "disc_number": 1
+      },
+      {
+        "title": "La*La*Laラボリューション (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 5,
+        "year": 2011,
+        "duration": 309,
+        "disc_number": 1
+      },
+      {
+        "title": "TANTEI☆ラプソディ (off vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 6,
+        "year": 2011,
+        "duration": 238,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "アフィリア・サーガ・イースト",
+    "album": "禁断無敵のだーりん",
+    "year": 2012,
+    "duration": 1143,
+    "tracks": [
+      {
+        "title": "禁断無敵のだーりん",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 1,
+        "year": 2012,
+        "duration": 259,
+        "disc_number": 1
+      },
+      {
+        "title": "エシカル〜ありがとうを伝えたい〜",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 2,
+        "year": 2012,
+        "duration": 313,
+        "disc_number": 1
+      },
+      {
+        "title": "禁断無敵のだーりん (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 3,
+        "year": 2012,
+        "duration": 259,
+        "disc_number": 1
+      },
+      {
+        "title": "エシカル〜ありがとうを伝えたい〜 (off Vocal)",
+        "artist": "アフィリア・サーガ・イースト",
+        "track": 4,
+        "year": 2012,
+        "duration": 312,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "いとうかなこ",
     "album": "スカイクラッドの観測者",
     "year": 2009,
@@ -140336,6 +140584,86 @@
   },
   {
     "artist": "かめりあ",
+    "album": "crystallized",
+    "year": 2015,
+    "duration": 2891,
+    "tracks": [
+      {
+        "title": "Rain of Amethyst",
+        "artist": "かめりあ",
+        "track": 1,
+        "year": 2015,
+        "duration": 441,
+        "disc_number": 1
+      },
+      {
+        "title": "Artificial Snow",
+        "artist": "かめりあ",
+        "track": 2,
+        "year": 2015,
+        "duration": 266,
+        "disc_number": 1
+      },
+      {
+        "title": "amorphous",
+        "artist": "かめりあ",
+        "track": 3,
+        "year": 2015,
+        "duration": 406,
+        "disc_number": 1
+      },
+      {
+        "title": "First Town Of This Journey",
+        "artist": "かめりあ",
+        "track": 4,
+        "year": 2015,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "yesterday",
+        "artist": "かめりあ",
+        "track": 5,
+        "year": 2015,
+        "duration": 304,
+        "disc_number": 1
+      },
+      {
+        "title": "Light it up",
+        "artist": "かめりあ",
+        "track": 6,
+        "year": 2015,
+        "duration": 374,
+        "disc_number": 1
+      },
+      {
+        "title": "NUCLEAR-STAR",
+        "artist": "かめりあ",
+        "track": 7,
+        "year": 2015,
+        "duration": 294,
+        "disc_number": 1
+      },
+      {
+        "title": "crystallized",
+        "artist": "かめりあ",
+        "track": 8,
+        "year": 2015,
+        "duration": 277,
+        "disc_number": 1
+      },
+      {
+        "title": "liquated",
+        "artist": "かめりあ",
+        "track": 9,
+        "year": 2015,
+        "duration": 306,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "かめりあ",
     "album": "PLANET//SHAPER",
     "year": 2015,
     "duration": 4053,
@@ -140455,86 +140783,6 @@
     ]
   },
   {
-    "artist": "かめりあ",
-    "album": "crystallized",
-    "year": 2015,
-    "duration": 2891,
-    "tracks": [
-      {
-        "title": "Rain of Amethyst",
-        "artist": "かめりあ",
-        "track": 1,
-        "year": 2015,
-        "duration": 441,
-        "disc_number": 1
-      },
-      {
-        "title": "Artificial Snow",
-        "artist": "かめりあ",
-        "track": 2,
-        "year": 2015,
-        "duration": 266,
-        "disc_number": 1
-      },
-      {
-        "title": "amorphous",
-        "artist": "かめりあ",
-        "track": 3,
-        "year": 2015,
-        "duration": 406,
-        "disc_number": 1
-      },
-      {
-        "title": "First Town Of This Journey",
-        "artist": "かめりあ",
-        "track": 4,
-        "year": 2015,
-        "duration": 223,
-        "disc_number": 1
-      },
-      {
-        "title": "yesterday",
-        "artist": "かめりあ",
-        "track": 5,
-        "year": 2015,
-        "duration": 304,
-        "disc_number": 1
-      },
-      {
-        "title": "Light it up",
-        "artist": "かめりあ",
-        "track": 6,
-        "year": 2015,
-        "duration": 374,
-        "disc_number": 1
-      },
-      {
-        "title": "NUCLEAR-STAR",
-        "artist": "かめりあ",
-        "track": 7,
-        "year": 2015,
-        "duration": 294,
-        "disc_number": 1
-      },
-      {
-        "title": "crystallized",
-        "artist": "かめりあ",
-        "track": 8,
-        "year": 2015,
-        "duration": 277,
-        "disc_number": 1
-      },
-      {
-        "title": "liquated",
-        "artist": "かめりあ",
-        "track": 9,
-        "year": 2015,
-        "duration": 306,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
     "artist": "きゃりーぱみゅぱみゅ",
     "album": "Invader Invader",
     "year": 2013,
@@ -140563,182 +140811,6 @@
         "track": 3,
         "year": 2013,
         "duration": 295,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "アフィリア・サーガ・イースト",
-    "album": "ルミナスの泉",
-    "year": 2009,
-    "duration": 1256,
-    "tracks": [
-      {
-        "title": "ルミナスの泉",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 1,
-        "year": 2009,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "My White Ribbon",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 2,
-        "year": 2009,
-        "duration": 320,
-        "disc_number": 1
-      },
-      {
-        "title": "ルミナスの泉 (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 3,
-        "year": 2009,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "My White Ribbon (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 4,
-        "year": 2009,
-        "duration": 317,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "アフィリア・サーガ・イースト",
-    "album": "ワタシ☆LOVEな☆オトメ!",
-    "year": 2010,
-    "duration": 1098,
-    "tracks": [
-      {
-        "title": "ワタシ☆LOVEな☆オトメ!",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 1,
-        "year": 2010,
-        "duration": 246,
-        "disc_number": 1
-      },
-      {
-        "title": "聖ナル wktk ノ星",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 2,
-        "year": 2010,
-        "duration": 303,
-        "disc_number": 1
-      },
-      {
-        "title": "ワタシ☆LOVEな☆オトメ! (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 3,
-        "year": 2010,
-        "duration": 245,
-        "disc_number": 1
-      },
-      {
-        "title": "聖ナル wktk ノ星 (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 4,
-        "year": 2010,
-        "duration": 302,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "アフィリア・サーガ・イースト",
-    "album": "La*La*Laラボリューション",
-    "year": 2011,
-    "duration": 1755,
-    "tracks": [
-      {
-        "title": "La*La*Laラボリューション",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 1,
-        "year": 2011,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "TANTEI☆ラプソディ",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 2,
-        "year": 2011,
-        "duration": 240,
-        "disc_number": 1
-      },
-      {
-        "title": "La*La*Laラボリューション (feat.カレン、マホ、ミィナ、アリア)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 3,
-        "year": 2011,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "Dearセンパイ♡ 〜メンバー自己紹介ソング〜",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 4,
-        "year": 2011,
-        "duration": 347,
-        "disc_number": 1
-      },
-      {
-        "title": "La*La*Laラボリューション (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 5,
-        "year": 2011,
-        "duration": 309,
-        "disc_number": 1
-      },
-      {
-        "title": "TANTEI☆ラプソディ (off vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 6,
-        "year": 2011,
-        "duration": 238,
-        "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "アフィリア・サーガ・イースト",
-    "album": "禁断無敵のだーりん",
-    "year": 2012,
-    "duration": 1143,
-    "tracks": [
-      {
-        "title": "禁断無敵のだーりん",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 1,
-        "year": 2012,
-        "duration": 259,
-        "disc_number": 1
-      },
-      {
-        "title": "エシカル〜ありがとうを伝えたい〜",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 2,
-        "year": 2012,
-        "duration": 313,
-        "disc_number": 1
-      },
-      {
-        "title": "禁断無敵のだーりん (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 3,
-        "year": 2012,
-        "duration": 259,
-        "disc_number": 1
-      },
-      {
-        "title": "エシカル〜ありがとうを伝えたい〜 (off Vocal)",
-        "artist": "アフィリア・サーガ・イースト",
-        "track": 4,
-        "year": 2012,
-        "duration": 312,
         "disc_number": 1
       }
     ]
@@ -147499,78 +147571,6 @@
         "year": 2012,
         "duration": 555,
         "disc_number": 2
-      }
-    ]
-  },
-  {
-    "artist": "２８１４",
-    "album": "新しい日の誕生",
-    "year": 2015,
-    "duration": 4045,
-    "tracks": [
-      {
-        "title": "恢复",
-        "artist": "２８１４",
-        "track": 1,
-        "year": 2015,
-        "duration": 351,
-        "disc_number": 1
-      },
-      {
-        "title": "遠くの愛好家",
-        "artist": "２８１４",
-        "track": 2,
-        "year": 2015,
-        "duration": 378,
-        "disc_number": 1
-      },
-      {
-        "title": "新宿ゴールデン街",
-        "artist": "２８１４",
-        "track": 3,
-        "year": 2015,
-        "duration": 531,
-        "disc_number": 1
-      },
-      {
-        "title": "ふわっと",
-        "artist": "２８１４",
-        "track": 4,
-        "year": 2015,
-        "duration": 396,
-        "disc_number": 1
-      },
-      {
-        "title": "悲哀",
-        "artist": "２８１４",
-        "track": 5,
-        "year": 2015,
-        "duration": 563,
-        "disc_number": 1
-      },
-      {
-        "title": "真実の恋",
-        "artist": "２８１４",
-        "track": 6,
-        "year": 2015,
-        "duration": 432,
-        "disc_number": 1
-      },
-      {
-        "title": "テレパシー",
-        "artist": "２８１４",
-        "track": 7,
-        "year": 2015,
-        "duration": 608,
-        "disc_number": 1
-      },
-      {
-        "title": "新しい日の誕生",
-        "artist": "２８１４",
-        "track": 8,
-        "year": 2015,
-        "duration": 784,
-        "disc_number": 1
       }
     ]
   }
