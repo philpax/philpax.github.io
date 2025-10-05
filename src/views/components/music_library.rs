@@ -195,7 +195,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             flex-shrink: 0;
         }}
 
-        .music-library .track .heart {{
+        .music-library .heart {{
             color: red;
             font-size: 1em;
             width: 1em;
@@ -279,7 +279,7 @@ fn group(group: &OutputGroup) -> paxhtml::Element {
                             group.year.map(|y| html! { <span class="album-year">{format!(" ({y})")}</span> }).unwrap_or_default()
                         }
                     </h4>
-                    <span class="album-length">{seconds_to_hms_string(group.duration, false)}</span>
+                    <span class="album-length">{seconds_to_hms_string(group.duration, false)} <span class="heart">{if group.starred { "♥" } else { " " }}</span></span>
                 </div>
             </heading>
             <div>

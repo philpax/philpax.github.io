@@ -75,7 +75,7 @@ checksum = "2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394"
 [[package]]
 name = "blackbird-json-export-types"
 version = "0.1.0"
-source = "git+https://github.com/philpax/blackbird.git#eca95ec751b5f330e09ac882f881ca1bb483a396"
+source = "git+https://github.com/philpax/blackbird.git#76988a2e50afbe0b22677fb021939879ab9341d4"
 dependencies = [
  "serde",
 ]
