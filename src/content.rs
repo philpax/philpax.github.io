@@ -502,6 +502,10 @@ impl Document {
                 .route_path(),
             })
     }
+
+    pub fn tags(&self) -> Option<&Vec<String>> {
+        self.metadata.taxonomies.as_ref().map(|t| &t.tags)
+    }
 }
 
 #[derive(Debug, Deserialize)]

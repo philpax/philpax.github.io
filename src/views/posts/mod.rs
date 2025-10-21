@@ -12,11 +12,9 @@ pub const POST_BODY_MARGIN_CLASS: &str =
 
 pub fn tags(document: &Document) -> paxhtml::Element {
     document
-        .metadata
-        .taxonomies
-        .as_ref()
+        .tags()
         .map(|t| {
-            let tags = t.tags.iter().map(|tag| {
+            let tags = t.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
                         {components::link(
@@ -129,13 +127,15 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                         {document.word_count.to_string()}
                         " words"
                     </div>
-                    <div class="sm:hidden -mt-1">
-                        {tags(document)}
-                    </div>
-                    <div class="hidden sm:flex items-center gap-[var(--meta-spacing)]">
-                        " · "
-                        {tags(document)}
-                    </div>
+                    {if document.tags().is_some_and(|t| !t.is_empty()) { html! { <>
+                        <div class="sm:hidden -mt-1">
+                            {tags(document)}
+                        </div>
+                        <div class="hidden sm:flex items-center gap-[var(--meta-spacing)]">
+                            " · "
+                            {tags(document)}
+                        </div>
+                    </> }} else { paxhtml::Element::Empty } }
                 </div>
                 <a href={url} class="flex items-center p-0 no-underline post-title">
                     <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>

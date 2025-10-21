@@ -62,11 +62,7 @@ pub fn post(context: ViewContext, document: &crate::content::Document) -> paxhtm
             twitter_image: hero_image,
             article_published_time: document.metadata.datetime,
             article_modified_time: None,
-            article_tag: document
-                .metadata
-                .taxonomies
-                .as_ref()
-                .map(|t| t.tags.join(", ")),
+            article_tag: document.tags().map(|t| t.join(", ")),
         },
         CurrentPage::Updates,
         posts::post(context, document, posts::PostBody::Full),
