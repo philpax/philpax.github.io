@@ -52,8 +52,11 @@ fn handle_connection(stream: &mut TcpStream, root_dir: &Path) -> std::io::Result
         return handle_poll_for_liveness(stream, &request);
     }
 
+    // Strip query string (everything after ?)
+    let path_without_query = path.split('?').next().unwrap_or(path);
+
     // Remove leading slash and decode percent-encoded characters
-    let cleaned_path = decode_percent_encoding(&path[1..]);
+    let cleaned_path = decode_percent_encoding(&path_without_query[1..]);
     let file_path = root_dir.join(cleaned_path);
 
     // Prevent directory traversal
