@@ -220,6 +220,12 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
     let music_library = &context.content.music_library;
     let album_count = music_library.len();
     let track_count = music_library.iter().map(|g| g.tracks.len()).sum::<usize>();
+    let liked_album_count = music_library.iter().filter(|g| g.starred).count();
+    let liked_track_count = music_library
+        .iter()
+        .flat_map(|g| &g.tracks)
+        .filter(|t| t.starred)
+        .count();
 
     html! {
         <>
@@ -228,8 +234,20 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             </style>
             <div>
                 <div class="text-xl text-center bg-emerald-950 text-white p-2">
-                    {util::number_to_comma_separated_string(track_count)}" tracks | "
+                    {util::number_to_comma_separated_string(track_count)}" tracks"
+                    {if liked_track_count > 0 {
+                        format!(" ({} liked)", util::number_to_comma_separated_string(liked_track_count))
+                    } else {
+                        String::new()
+                    }}
+                    " | "
                     {util::number_to_comma_separated_string(album_count)}" albums"
+                    {if liked_album_count > 0 {
+                        format!(" ({} liked)", util::number_to_comma_separated_string(liked_album_count))
+                    } else {
+                        String::new()
+                    }}
+                </div>
                 </div>
                 <div class="font-sans text-white music-library p-3 flex flex-col gap-8">
                     #{music_library.iter().map(group)}
