@@ -122,6 +122,16 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             color: {album};
         }}
 
+        .music-library .album .album-link {{
+            color: {album};
+            cursor: pointer;
+            text-decoration: none;
+        }}
+
+        .music-library .album .album-link:hover {{
+            text-decoration: underline;
+        }}
+
         .music-library .album-year {{
             color: {album_year};
         }}
@@ -261,6 +271,19 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             <script>
                 {paxhtml::Element::Raw { html: r#"
                 document.addEventListener('DOMContentLoaded', () => {
+                    // Helper: Get album artist from a section
+                    const getAlbumArtist = (element) => {
+                        const section = element.closest('section');
+                        const artistHeading = section ? section.querySelector('heading .artist') : null;
+                        return artistHeading ? artistHeading.textContent.trim() : '';
+                    };
+
+                    // Helper: Configure a link as a YouTube search
+                    const setYouTubeSearch = (link, query) => {
+                        link.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+                        link.target = '_blank';
+                    };
+
                     // Set up YouTube links for tracks
                     for (const link of document.querySelectorAll('.music-library a.track')) {
                         const nameSpan = link.querySelector('.name');
@@ -269,15 +292,19 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                         const artistSpan = link.querySelector('.artist');
                         const trackArtist = artistSpan ? artistSpan.textContent.trim() : '';
 
-                        const section = link.closest('section');
-                        const artistHeading = section ? section.querySelector('heading .artist') : null;
-                        const albumArtist = artistHeading ? artistHeading.textContent.trim() : '';
-
-                        const artist = trackArtist || albumArtist;
+                        const artist = trackArtist || getAlbumArtist(link);
                         const query = `${artist} - ${track}`;
 
-                        link.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-                        link.target = '_blank';
+                        setYouTubeSearch(link, query);
+                    }
+
+                    // Set up YouTube links for albums
+                    for (const link of document.querySelectorAll('.music-library a.album-link')) {
+                        const album = link.textContent.trim();
+                        const artist = getAlbumArtist(link);
+                        const query = `${artist} - ${album} album`;
+
+                        setYouTubeSearch(link, query);
                     }
 
                     // Likes filter functionality
@@ -361,7 +388,9 @@ fn group(group: &OutputGroup) -> paxhtml::Element {
                 <h3 class="artist" style={format!("color: {}", colours::string_to_colour(&group.artist))}>{&group.artist}</h3>
                 <div class="album-row">
                     <h4 class="album">
-                        {&group.album} {
+                        <a class="album-link">
+                            {&group.album}
+                        </a> {
                             group.year.map(|y| html! { <span class="album-year">{format!(" ({y})")}</span> }).unwrap_or_default()
                         }
                     </h4>
