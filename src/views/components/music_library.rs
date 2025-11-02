@@ -233,7 +233,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                 {style}
             </style>
             <div>
-                <div class="text-xl text-center bg-emerald-950 text-white p-2">
+                <div class="text-xl text-center bg-emerald-900 text-white p-2">
                     {util::number_to_comma_separated_string(track_count)}" tracks"
                     {if liked_track_count > 0 {
                         format!(" ({} liked)", util::number_to_comma_separated_string(liked_track_count))
@@ -248,39 +248,107 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                         String::new()
                     }}
                 </div>
+                <div class="text-center bg-emerald-950 text-white p-2">
+                    <label style="cursor: pointer; user-select: none;">
+                        <input r#type="checkbox" id="likes-filter-checkbox" style="margin-right: 0.5em; cursor: pointer;"/>
+                        "Show only liked tracks/albums"
+                    </label>
                 </div>
-                <div class="font-sans text-white music-library p-3 flex flex-col gap-8">
+                <div class="font-sans text-white music-library p-3 flex flex-col gap-8" id="music-library-container">
                     #{music_library.iter().map(group)}
                 </div>
             </div>
             <script>
-                {r#"
-                document.addEventListener('DOMContentLoaded', function() {
-                    const trackLinks = document.querySelectorAll('.music-library a.track');
-
-                    for (const link of trackLinks) {
+                {paxhtml::Element::Raw { html: r#"
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Set up YouTube links for tracks
+                    for (const link of document.querySelectorAll('.music-library a.track')) {
                         const nameSpan = link.querySelector('.name');
                         const track = nameSpan ? nameSpan.textContent.trim() : '';
 
-                        // Find the artist from the .artist span
                         const artistSpan = link.querySelector('.artist');
                         const trackArtist = artistSpan ? artistSpan.textContent.trim() : '';
 
-                        // Find the album artist from the parent section's heading
                         const section = link.closest('section');
                         const artistHeading = section ? section.querySelector('heading .artist') : null;
                         const albumArtist = artistHeading ? artistHeading.textContent.trim() : '';
 
-                        // Create the search query
                         const artist = trackArtist || albumArtist;
                         const query = `${artist} - ${track}`;
 
-                        // Set the href to YouTube search
                         link.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
                         link.target = '_blank';
                     }
+
+                    // Likes filter functionality
+                    const likesCheckbox = document.getElementById('likes-filter-checkbox');
+                    const sections = document.querySelectorAll('.music-library section');
+                    const urlParams = new URLSearchParams(window.location.search);
+
+                    // Check for ?likes=1 in URL
+                    if (urlParams.get('likes') === '1') {
+                        likesCheckbox.checked = true;
+                    }
+
+                    const filterByLikes = () => {
+                        const showOnlyLikes = likesCheckbox.checked;
+
+                        for (const section of sections) {
+                            const albumHeart = section.querySelector('heading .album-length .heart');
+                            const albumIsStarred = albumHeart && albumHeart.textContent.trim() === '♥';
+                            const tracks = section.querySelectorAll('.track');
+
+                            if (!showOnlyLikes) {
+                                // Show all
+                                section.style.display = '';
+                                for (const track of tracks) {
+                                    track.style.display = '';
+                                }
+                                continue;
+                            }
+
+                            // If album is starred, show all tracks
+                            if (albumIsStarred) {
+                                section.style.display = '';
+                                for (const track of tracks) {
+                                    track.style.display = '';
+                                }
+                                continue;
+                            }
+
+                            // Filter tracks within non-starred album
+                            let hasVisibleTracks = false;
+                            for (const track of tracks) {
+                                const trackHeart = track.querySelector('.length .heart');
+                                const trackIsStarred = trackHeart && trackHeart.textContent.trim() === '♥';
+
+                                track.style.display = trackIsStarred ? '' : 'none';
+                                if (trackIsStarred) {
+                                    hasVisibleTracks = true;
+                                }
+                            }
+
+                            section.style.display = hasVisibleTracks ? '' : 'none';
+                        }
+
+                        // Update URL parameter
+                        if (showOnlyLikes) {
+                            urlParams.set('likes', '1');
+                        } else {
+                            urlParams.delete('likes');
+                        }
+                        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                        window.history.replaceState({}, '', newUrl);
+                    };
+
+                    // Apply initial filter if needed
+                    if (likesCheckbox.checked) {
+                        filterByLikes();
+                    }
+
+                    likesCheckbox.addEventListener('change', filterByLikes);
                 });
-                "#}
+                "#.into() }}
             </script>
         </>
     }
