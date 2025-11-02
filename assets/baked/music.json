@@ -4516,7 +4516,8 @@
         "track": 1,
         "year": 2008,
         "duration": 221,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Persist",
@@ -11987,7 +11988,8 @@
         "track": 10,
         "year": 2011,
         "duration": 259,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "Wake Up",
@@ -11995,7 +11997,8 @@
         "track": 11,
         "year": 2011,
         "duration": 182,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "Not Your Fault",
@@ -17281,7 +17284,8 @@
         "track": 4,
         "year": 1996,
         "duration": 414,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Boc Maxima",
@@ -17401,7 +17405,8 @@
         "track": 19,
         "year": 1996,
         "duration": 375,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "One Very Important Thought",
@@ -17555,7 +17560,8 @@
         "duration": 78,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Boards of Canada",
@@ -17755,7 +17761,8 @@
         "duration": 130,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Boards of Canada",
@@ -17883,7 +17890,8 @@
         "duration": 547,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Boards of Canada",
@@ -19062,7 +19070,8 @@
         "track": 8,
         "year": 2015,
         "duration": 265,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "スパイシー・マドンナ",
@@ -22090,7 +22099,8 @@
         "track": 13,
         "year": 2025,
         "duration": 510,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "24-Dimensional Non-Euclidean Deep Blue Starfall Vertigo",
@@ -24716,7 +24726,8 @@
         "track": 1,
         "year": 2016,
         "duration": 379,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Have Some Love",
@@ -28101,7 +28112,8 @@
         "track": 3,
         "year": 2013,
         "duration": 153,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "I Don't Care",
@@ -28239,7 +28251,8 @@
         "track": 8,
         "year": 2017,
         "duration": 349,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Tied to the Weather",
@@ -28850,7 +28863,8 @@
         "track": 8,
         "year": 2005,
         "duration": 287,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Technologic",
@@ -28898,7 +28912,8 @@
         "track": 3,
         "year": 2007,
         "duration": 291,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Too Long / Steam Machine",
@@ -28914,7 +28929,8 @@
         "track": 5,
         "year": 2007,
         "duration": 327,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Burnin’ / Too Long",
@@ -28922,7 +28938,8 @@
         "track": 6,
         "year": 2007,
         "duration": 429,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Face to Face / Short Circuit",
@@ -28955,7 +28972,8 @@
         "track": 10,
         "year": 2007,
         "duration": 658,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Da Funk / Daftendirekt",
@@ -28971,7 +28989,8 @@
         "track": 12,
         "year": 2007,
         "duration": 339,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -29882,7 +29901,8 @@
         "track": 12,
         "year": 2009,
         "duration": 274,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Toeachizown (D-F’s Theme)",
@@ -32402,7 +32422,8 @@
         "artist": "Deekapz ft Bibi Caetano",
         "track": 6,
         "year": 2025,
-        "duration": 216
+        "duration": 216,
+        "starred": true
       },
       {
         "title": "Repare",
@@ -35979,7 +36000,8 @@
         "track": 1,
         "year": 2025,
         "duration": 287,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Coma",
@@ -38269,7 +38291,8 @@
         "track": 1,
         "year": 2000,
         "duration": 184,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Somebody That I Used to Know",
@@ -40772,7 +40795,8 @@
         "track": 7,
         "year": 2013,
         "duration": 218,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "피터팬 (Peter Pan)",
@@ -41986,7 +42010,8 @@
         "track": 14,
         "year": 2001,
         "duration": 185,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "21st Century Meltdown",
@@ -43674,7 +43699,8 @@
         "track": 4,
         "year": 2015,
         "duration": 307,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Various Storms & Saints",
@@ -44861,7 +44887,8 @@
         "track": 2,
         "year": 2002,
         "duration": 277,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "It's Good to Be in Love",
@@ -52614,7 +52641,8 @@
         "track": 6,
         "year": 2012,
         "duration": 241,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Hear Me",
@@ -54601,7 +54629,8 @@
         "track": 9,
         "year": 1997,
         "duration": 349,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Travelling Without Moving",
@@ -57955,7 +57984,8 @@
         "track": 6,
         "year": 2024,
         "duration": 519,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Together",
@@ -58027,7 +58057,8 @@
         "track": 2,
         "year": 2025,
         "duration": 383,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Magical Distance",
@@ -69112,8 +69143,16 @@
     "artist": "Machine Girl",
     "album": "Psycho Warrior (MG Ultra X)",
     "year": 2025,
-    "duration": 423,
+    "duration": 2844,
     "tracks": [
+      {
+        "title": "We Don’t Give a Fuck",
+        "artist": "Machine Girl",
+        "track": 1,
+        "year": 2025,
+        "duration": 200,
+        "disc_number": 1
+      },
       {
         "title": "Come On Baby, Scrape My Data",
         "artist": "Machine Girl",
@@ -69124,11 +69163,99 @@
         "starred": true
       },
       {
+        "title": "Ignore the Vore",
+        "artist": "Machine Girl",
+        "track": 3,
+        "year": 2025,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
         "title": "Rabbit Season",
         "artist": "Machine Girl",
         "track": 4,
         "year": 2025,
         "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Creeping Up From the Pit",
+        "artist": "Machine Girl",
+        "track": 5,
+        "year": 2025,
+        "duration": 132,
+        "disc_number": 1
+      },
+      {
+        "title": "Psychowar",
+        "artist": "Machine Girl",
+        "track": 6,
+        "year": 2025,
+        "duration": 341,
+        "disc_number": 1
+      },
+      {
+        "title": "Innermission",
+        "artist": "Machine Girl",
+        "track": 7,
+        "year": 2025,
+        "duration": 142,
+        "disc_number": 1
+      },
+      {
+        "title": "Dual Wield",
+        "artist": "Machine Girl",
+        "track": 8,
+        "year": 2025,
+        "duration": 173,
+        "disc_number": 1
+      },
+      {
+        "title": "ID Crisis Angel",
+        "artist": "Machine Girl",
+        "track": 9,
+        "year": 2025,
+        "duration": 87,
+        "disc_number": 1
+      },
+      {
+        "title": "Down to the Essence",
+        "artist": "Machine Girl",
+        "track": 10,
+        "year": 2025,
+        "duration": 180,
+        "disc_number": 1
+      },
+      {
+        "title": "Despite Having No Money At All I’m Just Another Rat in the Mall",
+        "artist": "Machine Girl",
+        "track": 11,
+        "year": 2025,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Phantom Doom",
+        "artist": "Machine Girl",
+        "track": 12,
+        "year": 2025,
+        "duration": 188,
+        "disc_number": 1
+      },
+      {
+        "title": "Dread Architect",
+        "artist": "Machine Girl feat. Drumcorps",
+        "track": 13,
+        "year": 2025,
+        "duration": 301,
+        "disc_number": 1
+      },
+      {
+        "title": "i-Void Destroyer",
+        "artist": "Machine Girl",
+        "track": 14,
+        "year": 2025,
+        "duration": 268,
         "disc_number": 1
       }
     ]
@@ -70024,6 +70151,310 @@
         "year": 2010,
         "duration": 303,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Marcin Przybyłowicz, P.T. Adamczyk & Paul Leonard‐Morgan",
+    "album": "Cyberpunk 2077",
+    "year": 2020,
+    "duration": 7823,
+    "tracks": [
+      {
+        "title": "V",
+        "artist": "Marcin Przybyłowicz",
+        "track": 1,
+        "year": 2020,
+        "duration": 154,
+        "disc_number": 1
+      },
+      {
+        "title": "Extraction Action",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 2,
+        "year": 2020,
+        "duration": 296,
+        "disc_number": 1
+      },
+      {
+        "title": "The Rebel Path",
+        "artist": "P.T. Adamczyk",
+        "track": 3,
+        "year": 2020,
+        "duration": 251,
+        "disc_number": 1
+      },
+      {
+        "title": "The Streets Are Long‐Ass Gutters",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 4,
+        "year": 2020,
+        "duration": 168,
+        "disc_number": 1
+      },
+      {
+        "title": "Outsider No More",
+        "artist": "P.T. Adamczyk",
+        "track": 5,
+        "year": 2020,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Cloudy Day",
+        "artist": "Marcin Przybyłowicz",
+        "track": 6,
+        "year": 2020,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "Wushu Dolls",
+        "artist": "Marcin Przybyłowicz",
+        "track": 7,
+        "year": 2020,
+        "duration": 141,
+        "disc_number": 1
+      },
+      {
+        "title": "Scavenger Hunt",
+        "artist": "P.T. Adamczyk",
+        "track": 8,
+        "year": 2020,
+        "duration": 228,
+        "disc_number": 1
+      },
+      {
+        "title": "Мусорщики",
+        "artist": "P.T. Adamczyk",
+        "track": 9,
+        "year": 2020,
+        "duration": 107,
+        "disc_number": 1
+      },
+      {
+        "title": "Close Probing",
+        "artist": "Marcin Przybyłowicz",
+        "track": 10,
+        "year": 2020,
+        "duration": 180,
+        "disc_number": 1
+      },
+      {
+        "title": "There’s Gonna Be a Parade!",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 11,
+        "year": 2020,
+        "duration": 285,
+        "disc_number": 1
+      },
+      {
+        "title": "Trouble Finds Trouble",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 12,
+        "year": 2020,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "You Shall Never Have to Forgive Me Again",
+        "artist": "P.T. Adamczyk",
+        "track": 13,
+        "year": 2020,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Code Red Initiated",
+        "artist": "P.T. Adamczyk",
+        "track": 14,
+        "year": 2020,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "The Heist",
+        "artist": "P.T. Adamczyk",
+        "track": 15,
+        "year": 2020,
+        "duration": 143,
+        "disc_number": 1
+      },
+      {
+        "title": "Streetfighters",
+        "artist": "Marcin Przybyłowicz",
+        "track": 16,
+        "year": 2020,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "Patri(di)ots",
+        "artist": "Marcin Przybyłowicz",
+        "track": 17,
+        "year": 2020,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Mining Minds",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 18,
+        "year": 2020,
+        "duration": 173,
+        "disc_number": 1
+      },
+      {
+        "title": "Rite of Passage",
+        "artist": "P.T. Adamczyk",
+        "track": 19,
+        "year": 2020,
+        "duration": 334,
+        "disc_number": 1
+      },
+      {
+        "title": "The Voice in My Head",
+        "artist": "P.T. Adamczyk",
+        "track": 20,
+        "year": 2020,
+        "duration": 187,
+        "disc_number": 2
+      },
+      {
+        "title": "Modern Anthill",
+        "artist": "Marcin Przybyłowicz",
+        "track": 21,
+        "year": 2020,
+        "duration": 203,
+        "disc_number": 2
+      },
+      {
+        "title": "The Sacred and the Profane",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 22,
+        "year": 2020,
+        "duration": 275,
+        "disc_number": 2
+      },
+      {
+        "title": "Kang Tao Down",
+        "artist": "P.T. Adamczyk",
+        "track": 23,
+        "year": 2020,
+        "duration": 252,
+        "disc_number": 2
+      },
+      {
+        "title": "Cyberwildlife Park",
+        "artist": "Marcin Przybyłowicz",
+        "track": 24,
+        "year": 2020,
+        "duration": 132,
+        "disc_number": 2
+      },
+      {
+        "title": "Consumer Cathedral",
+        "artist": "Marcin Przybyłowicz",
+        "track": 25,
+        "year": 2020,
+        "duration": 372,
+        "disc_number": 2
+      },
+      {
+        "title": "Juiced Up",
+        "artist": "P.T. Adamczyk",
+        "track": 26,
+        "year": 2020,
+        "duration": 126,
+        "disc_number": 2
+      },
+      {
+        "title": "Bells of Laguna Bend",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 27,
+        "year": 2020,
+        "duration": 261,
+        "disc_number": 2
+      },
+      {
+        "title": "Urban Downunder",
+        "artist": "Marcin Przybyłowicz",
+        "track": 28,
+        "year": 2020,
+        "duration": 130,
+        "disc_number": 2
+      },
+      {
+        "title": "Atlantis",
+        "artist": "P.T. Adamczyk",
+        "track": 29,
+        "year": 2020,
+        "duration": 283,
+        "disc_number": 2
+      },
+      {
+        "title": "Cyberninja",
+        "artist": "Marcin Przybyłowicz",
+        "track": 30,
+        "year": 2020,
+        "duration": 138,
+        "disc_number": 2
+      },
+      {
+        "title": "The Suits Are Scared",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 31,
+        "year": 2020,
+        "duration": 151,
+        "disc_number": 2
+      },
+      {
+        "title": "Tower Lockdown",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 32,
+        "year": 2020,
+        "duration": 211,
+        "disc_number": 2
+      },
+      {
+        "title": "To Hell and Back",
+        "artist": "P.T. Adamczyk",
+        "track": 33,
+        "year": 2020,
+        "duration": 206,
+        "disc_number": 2
+      },
+      {
+        "title": "Adam Smasher",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 34,
+        "year": 2020,
+        "duration": 204,
+        "disc_number": 2
+      },
+      {
+        "title": "Hanako & Yorinobu",
+        "artist": "Paul Leonard‐Morgan",
+        "track": 35,
+        "year": 2020,
+        "duration": 174,
+        "disc_number": 2
+      },
+      {
+        "title": "Been Good to Know Ya",
+        "artist": "Marcin Przybyłowicz",
+        "track": 36,
+        "year": 2020,
+        "duration": 254,
+        "disc_number": 2
+      },
+      {
+        "title": "Never Fade Away (SAMURAI cover)",
+        "artist": "P.T. Adamczyk feat. Olga Jankowska",
+        "track": 37,
+        "year": 2020,
+        "duration": 286,
+        "disc_number": 2
       }
     ]
   },
@@ -72447,7 +72878,8 @@
         "track": 13,
         "year": 2013,
         "duration": 271,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "All Better",
@@ -73744,7 +74176,8 @@
         "track": 4,
         "year": 2015,
         "duration": 265,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Wild Motion (Set It Free)",
@@ -73900,7 +74333,8 @@
         "track": 5,
         "year": 2017,
         "duration": 219,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Leila (En Español)",
@@ -80878,7 +81312,8 @@
         "track": 18,
         "year": 1999,
         "duration": 300,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "Complication",
@@ -80886,7 +81321,8 @@
         "track": 19,
         "year": 1999,
         "duration": 150,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "I’m Looking Forward to Joining You, Finally",
@@ -83348,7 +83784,8 @@
         "track": 8,
         "year": 2004,
         "duration": 409,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "12:31",
@@ -84526,7 +84963,8 @@
         "track": 5,
         "year": 2011,
         "duration": 492,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Templehof",
@@ -93408,7 +93846,8 @@
         "track": 2,
         "year": 2010,
         "duration": 381,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Gamma Velorum",
@@ -95546,7 +95985,8 @@
         "track": 3,
         "year": 2025,
         "duration": 196,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "P.",
@@ -95604,7 +96044,8 @@
         "duration": 363,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "SBTRKT",
@@ -97687,7 +98128,8 @@
         "track": 10,
         "year": 2013,
         "duration": 285,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Silver Lining",
@@ -100318,6 +100760,21 @@
         "year": 2006,
         "duration": 361,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Sinkane",
+    "album": "Telephone (Roosevelt Remix)",
+    "year": 2024,
+    "duration": 507,
+    "tracks": [
+      {
+        "title": "Telephone (Roosevelt remix)",
+        "artist": "Sinkane",
+        "track": 1,
+        "year": 2024,
+        "duration": 507
       }
     ]
   },
@@ -105851,7 +106308,8 @@
         "track": 2,
         "year": 2019,
         "duration": 265,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "センチメンタルハートボーイ",
@@ -106052,7 +106510,8 @@
         "track": 15,
         "year": 2003,
         "duration": 425,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Marching Band",
@@ -111170,7 +111629,8 @@
         "track": 15,
         "year": 2015,
         "duration": 440,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -116061,7 +116521,8 @@
         "track": 4,
         "year": 2014,
         "duration": 431,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Disappearing",
@@ -134460,7 +134921,8 @@
         "track": 8,
         "year": 2013,
         "duration": 183,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Liars",
@@ -136412,7 +136874,8 @@
         "track": 8,
         "year": 2007,
         "duration": 186,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Quiet Place",
@@ -136582,7 +137045,8 @@
         "duration": 152,
         "disc_number": 2
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Xerxes & Phoenix",
@@ -140610,7 +141074,8 @@
         "track": 3,
         "year": 2015,
         "duration": 406,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "First Town Of This Journey",
@@ -140754,7 +141219,8 @@
         "track": 11,
         "year": 2015,
         "duration": 332,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "PLANET//SHAPER",
@@ -144916,7 +145382,8 @@
         "duration": 205,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "高木正勝",
