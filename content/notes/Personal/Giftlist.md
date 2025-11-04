@@ -36,6 +36,7 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
   - [The Art of the Mass Effect Trilogy: Expanded Edition](https://www.goodreads.com/book/show/54608868-the-art-of-the-mass-effect-trilogy)
   - [The Camera](https://www.goodreads.com/book/show/20501.The_Camera)
   - [The James Bond Archives](https://www.goodreads.com/book/show/14661626-the-james-bond-archives-)
+  - [The World of Cyberpunk 2077](https://www.goodreads.com/book/show/51584768-the-world-of-cyberpunk-2077)
   - [Tokyo Storefronts - The Artworks of Mateusz Urbanowicz](https://www.goodreads.com/book/show/40025407-tokyo-storefronts---the-artworks-of-mateusz-urbanowicz)
   - [Waneella: Pixelscapes](https://www.goodreads.com/book/show/209499026-waneella)
   - [WipEout Futurism: The Graphic Archives](https://www.goodreads.com/book/show/210016015-wipeout-futurism)
@@ -68,17 +69,18 @@ One of:
 
 ## PC
 
-- RTX 5090 or equivalent. Preferably NVIDIA for their ML features.
+- RTX 5090 or equivalent. Preferably NVIDIA for their ML features. How else will I play Cyberpunk 2077 in VR with pathtracing? (Not a serious predicament, unless you're in a position to buy me a 5090, in which case it is.)
+- open-back headphones. My ATH-M50s have served me well, but I'm ready to move on.
 - good speakers, preferably with a subwoofer
 
 ## Server
 
-- another 3090 or 4090. I have two 3090s in there, but more GPUs means more VRAM and more model parallelisation.
-- 3x 24+TB hard drives. I need to set up ZFS sooner rather than later.
+- another 3090 or 4090. I have two 3090s in there, but more GPUs means more VRAM and more model parallelisation. I'd like to be able to run a GLM Air model (109B) with quantisation, which should be possible with 3x24GB GPUs.
+- 3x 24+TB hard drives. Can't be relying on a chonky external forever. Currently thinking about getting refurbished drives from Databricks, but they're all out of stock.
 
 # Misc
 
-- I need Fuji X-mount zoom lenses with autofocus. In order of priority:
+- My life would certainly be better with Fuji X-mount zoom lenses with autofocus. (It is _hard_ to track focus with manual-focus vintage lenses.) In order of priority:
   - [Fujinon XF16-55mm F2.8 R LM WR](https://www.fujifilm-x.com/global/products/lenses/xf16-55mmf28-r-lm-wr/)
   - [Fujinon XF50-140mm F2.8 R LM OIS WR](https://www.fujifilm-x.com/global/products/lenses/xf50-140mmf28-r-lm-ois-wr/)
   - [Fujinon XF70-300mm F4-5.6 R LM OIS WR](https://www.fujifilm-x.com/global/products/lenses/xf70-300mmf4-56-r-lm-ois-wr/)
