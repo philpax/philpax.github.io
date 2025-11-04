@@ -126,16 +126,40 @@ impl<'a> MarkdownConverter<'a> {
                 !matches!(parent_node, Some(Node::Heading(_))),
                 &c.value,
             ),
-            Node::Image(i) => b::a([("href", i.url.clone()).into()])(b::img([
-                ("src", i.url.clone()).into(),
-                ("alt", i.alt.clone()).into(),
-                (
-                    "class",
-                    "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
-                        .to_string(),
-                )
-                    .into(),
-            ])),
+            Node::Image(i) => {
+                // Check if the URL ends with a video extension
+                let is_video = i.url.to_lowercase().ends_with(".mp4")
+                    || i.url.to_lowercase().ends_with(".webm")
+                    || i.url.to_lowercase().ends_with(".mov")
+                    || i.url.to_lowercase().ends_with(".avi")
+                    || i.url.to_lowercase().ends_with(".mkv")
+                    || i.url.to_lowercase().ends_with(".ogv");
+
+                if is_video {
+                    b::video([
+                        ("src", i.url.clone()).into(),
+                        ("controls", "true").into(),
+                        ("loop", "true").into(),
+                        (
+                            "class",
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
+                                .to_string(),
+                        )
+                            .into(),
+                    ])(paxhtml::Element::Empty)
+                } else {
+                    b::a([("href", i.url.clone()).into()])(b::img([
+                        ("src", i.url.clone()).into(),
+                        ("alt", i.alt.clone()).into(),
+                        (
+                            "class",
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
+                                .to_string(),
+                        )
+                            .into(),
+                    ]))
+                }
+            }
             Node::Link(l) => {
                 let target = l.url.clone();
                 let title = l.title.clone();

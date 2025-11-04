@@ -162,6 +162,7 @@ fn guess_mime_type(path: &Path) -> &'static str {
         Some("woff") => "font/woff",
         Some("woff2") => "font/woff2",
         Some("xml") => "application/xml",
+        Some("mp4") => "video/mp4",
         Some(ext) => panic!("Unknown file extension: {}", ext),
         None => "application/octet-stream",
     }
