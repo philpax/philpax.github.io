@@ -7510,7 +7510,7 @@ function Av(h, z) {
 }
 async function Bd(h) {
   if (Zl !== void 0) return Zl;
-  typeof h < "u" && (Object.getPrototypeOf(h) === Object.prototype ? { module_or_path: h } = h : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof h > "u" && (h = new URL("/assets/perchance_wasm_bg-C9L6yHBo.wasm", import.meta.url));
+  typeof h < "u" && (Object.getPrototypeOf(h) === Object.prototype ? { module_or_path: h } = h : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof h > "u" && (h = new URL("" + new URL("perchance_wasm_bg-C9L6yHBo.wasm", import.meta.url).href, import.meta.url));
   const z = Ev();
   (typeof h == "string" || typeof Request == "function" && h instanceof Request || typeof URL == "function" && h instanceof URL) && (h = fetch(h));
   const { instance: p, module: y } = await Tv(await h, z);
