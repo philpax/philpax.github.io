@@ -620,7 +620,8 @@
         "track": 8,
         "year": 2010,
         "duration": 441,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Tiger Girl",
@@ -692,7 +693,8 @@
         "track": 7,
         "year": 2013,
         "duration": 384,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Safe Passage",
@@ -3918,7 +3920,8 @@
         "track": 9,
         "year": 2013,
         "duration": 284,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Exosphere",
@@ -18861,7 +18864,8 @@
         "track": 11,
         "year": 2011,
         "duration": 244,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Irreversible",
@@ -20049,7 +20053,8 @@
         "track": 9,
         "year": 2021,
         "duration": 243,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -20144,7 +20149,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Broken Bells",
@@ -20246,7 +20252,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Broken Social Scene",
@@ -20352,7 +20359,8 @@
         "duration": 324,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Broken Social Scene",
@@ -20469,7 +20477,8 @@
         "duration": 144,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Broken Social Scene",
@@ -22677,7 +22686,8 @@
         "duration": 223,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Carbon Based Lifeforms",
@@ -25899,7 +25909,8 @@
         "track": 12,
         "year": 2015,
         "duration": 308,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Get Away",
@@ -28398,7 +28409,8 @@
         "track": 5,
         "year": 2016,
         "duration": 260,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Escapism (BilliumMoto Flip)",
@@ -31728,7 +31740,8 @@
         "track": 25,
         "year": 2014,
         "duration": 400,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "Petting Zoo",
@@ -35524,7 +35537,8 @@
         "track": 9,
         "year": 1998,
         "duration": 327,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Diff Step",
@@ -45855,7 +45869,8 @@
         "track": 3,
         "year": 1994,
         "duration": 565,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "9 39",
@@ -47916,7 +47931,8 @@
         "track": 6,
         "year": 2009,
         "duration": 297,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Les Enfants",
@@ -48163,7 +48179,8 @@
         "track": 12,
         "year": 2006,
         "duration": 702,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -56867,7 +56884,8 @@
         "track": 2,
         "year": 2010,
         "duration": 342,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "What Else",
@@ -57003,7 +57021,8 @@
         "track": 7,
         "year": 2009,
         "duration": 307,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "What It’s For",
@@ -64399,7 +64418,8 @@
         "track": 4,
         "year": 2002,
         "duration": 520,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Nice Weather for Ducks",
@@ -70166,7 +70186,8 @@
         "track": 1,
         "year": 2020,
         "duration": 154,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Extraction Action",
@@ -70182,7 +70203,8 @@
         "track": 3,
         "year": 2020,
         "duration": 251,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "The Streets Are Long‐Ass Gutters",
@@ -70214,7 +70236,8 @@
         "track": 7,
         "year": 2020,
         "duration": 141,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Scavenger Hunt",
@@ -70446,7 +70469,8 @@
         "track": 36,
         "year": 2020,
         "duration": 254,
-        "disc_number": 2
+        "disc_number": 2,
+        "starred": true
       },
       {
         "title": "Never Fade Away (SAMURAI cover)",
@@ -71990,7 +72014,8 @@
         "track": 3,
         "year": 2023,
         "duration": 392,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Calder Shapes",
@@ -72048,7 +72073,8 @@
         "duration": 407,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Maudlin Strangers",
@@ -79151,7 +79177,8 @@
         "track": 5,
         "year": 2012,
         "duration": 446,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -81170,7 +81197,8 @@
         "track": 1,
         "year": 1999,
         "duration": 271,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "The Day the World Went Away",
@@ -81356,7 +81384,8 @@
         "duration": 394,
         "disc_number": 2
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Nine Inch Nails",
@@ -81490,7 +81519,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Nine Inch Nails",
@@ -81637,7 +81667,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Nine Inch Nails",
@@ -82027,7 +82058,8 @@
         "disc_number": 1,
         "starred": true
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Nine Inch Nails",
@@ -85160,7 +85192,8 @@
         "track": 11,
         "year": 2002,
         "duration": 396,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Heligoland",
@@ -87262,7 +87295,8 @@
         "track": 10,
         "year": 2014,
         "duration": 289,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -88967,7 +89001,8 @@
         "track": 10,
         "year": 2018,
         "duration": 216,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -89016,7 +89051,8 @@
         "track": 5,
         "year": 2022,
         "duration": 152,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Memento Mori",
@@ -95032,7 +95068,8 @@
         "track": 10,
         "year": 2007,
         "duration": 265,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Basic Street Blues (feat. DJ Need)",
@@ -107053,7 +107090,8 @@
         "track": 5,
         "year": 2004,
         "duration": 380,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Fever",
@@ -107494,7 +107532,8 @@
         "track": 4,
         "year": 2000,
         "duration": 232,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Genshi",
@@ -107558,7 +107597,8 @@
         "track": 12,
         "year": 2000,
         "duration": 115,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       }
     ]
   },
@@ -109408,7 +109448,8 @@
         "track": 9,
         "year": 2015,
         "duration": 108,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "’Cause I’m a Man",
@@ -120608,7 +120649,8 @@
         "track": 6,
         "year": 1997,
         "duration": 302,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Ambient Emely",
@@ -125942,7 +125984,8 @@
         "track": 1,
         "year": 2009,
         "duration": 142,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Cello Song",
@@ -126158,7 +126201,8 @@
         "track": 29,
         "year": 2009,
         "duration": 351,
-        "disc_number": 3
+        "disc_number": 3,
+        "starred": true
       },
       {
         "title": "When the Road Runs Out",
@@ -127939,7 +127983,8 @@
         "track": 16,
         "year": 2010,
         "duration": 253,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Your Body Is a Machine (Zebra + Snake remix)",
@@ -130401,7 +130446,8 @@
         "duration": 71,
         "disc_number": 1
       }
-    ]
+    ],
+    "starred": true
   },
   {
     "artist": "Various Artists",
@@ -131370,7 +131416,8 @@
         "track": 19,
         "year": 2008,
         "duration": 265,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "Missing",
@@ -143552,7 +143599,8 @@
         "track": 7,
         "year": 2022,
         "duration": 192,
-        "disc_number": 1
+        "disc_number": 1,
+        "starred": true
       },
       {
         "title": "かたむすび",
