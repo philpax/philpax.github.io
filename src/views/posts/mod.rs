@@ -17,7 +17,7 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
-                        <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()} additional_classes={""}>
+                        <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                             {format!("#{tag}")}
                         </Link>
                     </li>
@@ -95,7 +95,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             <>
                 {MarkdownConverter::new(context).convert(&document.description, None)}
                 <p>
-                    <Link underline target={url.clone()} additional_classes={""}>
+                    <Link underline target={url.clone()}>
                         "Read more"
                     </Link>
                 </p>
@@ -198,7 +198,7 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
     ) -> paxhtml::Element {
         html! {
             <li>
-                <Link underline target={format!("#{}", util::slugify(heading_text))} additional_classes={""}>
+                <Link underline target={format!("#{}", util::slugify(heading_text))}>
                     {heading.clone()}
                 </Link>
                 {build_list_recursively(children, false)}

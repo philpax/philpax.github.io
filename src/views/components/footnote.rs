@@ -1,10 +1,11 @@
 #[derive(Default)]
+#[allow(dead_code)]
 pub struct FootnoteProps {
     pub identifier: String,
     pub children: Vec<paxhtml::Element>,
 }
 
-#[allow(non_snake_case)]
+#[allow(non_snake_case, dead_code)]
 pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
     let id = format!("footnote-{}", props.identifier);
     let children = paxhtml::Element::from(props.children);

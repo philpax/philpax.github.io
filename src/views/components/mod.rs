@@ -1,7 +1,9 @@
 mod link;
+#[allow(unused_imports)]
 pub use link::*;
 
 mod footnote;
+#[allow(unused_imports)]
 pub use footnote::*;
 
 mod inline_code;

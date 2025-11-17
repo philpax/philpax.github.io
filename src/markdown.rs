@@ -160,17 +160,11 @@ impl<'a> MarkdownConverter<'a> {
                     ]))
                 }
             }
-            Node::Link(l) => {
-                let target = l.url.clone();
-                let title = l.title.clone().unwrap_or_default();
-                let children: Vec<_> = l.children.iter().map(|n| self.convert(n, Some(node))).collect();
-
-                paxhtml::html! {
-                    <Link underline title={title} target={target} additional_classes={""}>
-                        #{children}
-                    </Link>
-                }
-            }
+            Node::Link(l) => paxhtml::html! {
+                <Link underline target={l.url.clone()}>
+                    #{l.children.iter().map(|n| self.convert(n, Some(node)))}
+                </Link>
+            },
             Node::Html(h) => {
                 // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
                 // in the middle of the string and actual content follows, but it's good enough for now.
@@ -205,11 +199,9 @@ impl<'a> MarkdownConverter<'a> {
                         number
                     });
 
-                let children = vec![
-                    MarkdownConverter::new(self.context)
-                        .without_blocking_elements()
-                        .convert_many(&definition, None)
-                ];
+                let children = vec![MarkdownConverter::new(self.context)
+                    .without_blocking_elements()
+                    .convert_many(&definition, None)];
 
                 paxhtml::html! {
                     <Footnote identifier={footnote_number.to_string()}>

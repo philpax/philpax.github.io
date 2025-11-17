@@ -1,8 +1,5 @@
 use super::*;
-use crate::{
-    util,
-    views::{components, posts},
-};
+use crate::{util, views::posts};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
@@ -30,7 +27,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     let item_count = context.content.tags[*tag].len();
                     html! {
                         <li class="list-disc">
-                            <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()} additional_classes={""}>
+                            <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                                 {format!("#{tag}")}
                             </Link>
                             {format!(

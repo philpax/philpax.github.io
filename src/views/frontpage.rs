@@ -1,9 +1,6 @@
 use super::*;
 
-use crate::{
-    markdown::MarkdownConverter,
-    views::posts,
-};
+use crate::{markdown::MarkdownConverter, views::posts};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let content = &context.content;
@@ -43,7 +40,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
                     <div>
                         <h3 class="text-3xl font-bold mb-2 italic">
-                            <Link target={Route::Blog.url_path()} additional_classes={""}>
+                            <Link target={Route::Blog.url_path()}>
                                 "posts"
                             </Link>
                         </h3>
@@ -61,7 +58,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4">
                         <h3 class="text-3xl font-bold mb-2 italic">
-                            <Link target={Route::Updates.url_path()} additional_classes={""}>
+                            <Link target={Route::Updates.url_path()}>
                                 "updates"
                             </Link>
                         </h3>
@@ -101,7 +98,7 @@ fn update_doc_item(doc: &Document) -> paxhtml::Element {
     html! {
         <li>
             <span class="text-[var(--color-secondary)]">{date_str}": "</span>
-            <Link target={doc.route_path().url_path()} additional_classes={""}>
+            <Link target={doc.route_path().url_path()}>
                 {doc.metadata.title.clone()}
             </Link>
         </li>
