@@ -90,6 +90,8 @@ mod colours {
     ];
 }
 
+// Note: This component uses ViewContext so it's kept as a regular function
+// rather than using the custom component syntax
 pub fn music_library(context: ViewContext) -> paxhtml::Element {
     if context.fast {
         return html! {

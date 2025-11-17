@@ -2,7 +2,7 @@ use super::*;
 
 use crate::{
     markdown::MarkdownConverter,
-    views::{components, posts},
+    views::posts,
 };
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
@@ -43,7 +43,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
                     <div>
                         <h3 class="text-3xl font-bold mb-2 italic">
-                            {components::link(false, None, Route::Blog.url_path(), "", "posts".into())}
+                            <Link target={Route::Blog.url_path()} additional_classes={""}>
+                                "posts"
+                            </Link>
                         </h3>
                         <div class="*:mb-6">
                         #{
@@ -59,7 +61,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4">
                         <h3 class="text-3xl font-bold mb-2 italic">
-                            {components::link(false, None, Route::Updates.url_path(), "", "updates".into())}
+                            <Link target={Route::Updates.url_path()} additional_classes={""}>
+                                "updates"
+                            </Link>
                         </h3>
                         <ul class="list-none m-0 p-0 space-y-1">
                         #{
@@ -97,7 +101,9 @@ fn update_doc_item(doc: &Document) -> paxhtml::Element {
     html! {
         <li>
             <span class="text-[var(--color-secondary)]">{date_str}": "</span>
-            {components::link(false, None, doc.route_path().url_path(), "", doc.metadata.title.clone().into())}
+            <Link target={doc.route_path().url_path()} additional_classes={""}>
+                {doc.metadata.title.clone()}
+            </Link>
         </li>
     }
 }

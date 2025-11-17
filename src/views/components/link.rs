@@ -1,18 +1,26 @@
-pub fn link(
-    underline: bool,
-    title: impl Into<Option<String>>,
-    target: impl Into<String>,
-    additional_classes: impl Into<String>,
-    children: paxhtml::Element,
-) -> paxhtml::Element {
-    let additional_classes = additional_classes.into();
-    let title = title.into().unwrap_or_else(|| children.inner_text());
+#[derive(Default)]
+pub struct LinkProps {
+    pub underline: bool,
+    pub title: String,
+    pub target: String,
+    pub additional_classes: String,
+    pub children: Vec<paxhtml::Element>,
+}
+
+#[allow(non_snake_case)]
+pub fn Link(props: LinkProps) -> paxhtml::Element {
+    let children = paxhtml::Element::from(props.children);
+    let title = if props.title.is_empty() {
+        children.inner_text()
+    } else {
+        props.title
+    };
 
     paxhtml::html! {
         <a
-            href={target.into()}
+            href={props.target}
             title={title}
-            class={format!("{} {additional_classes}", if underline { "link-underline" } else { "link-no-underline" })}
+            class={format!("{} {}", if props.underline { "link-underline" } else { "link-no-underline" }, props.additional_classes)}
         >
             {children}
         </a>

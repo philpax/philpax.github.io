@@ -30,13 +30,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     let item_count = context.content.tags[*tag].len();
                     html! {
                         <li class="list-disc">
-                            {components::link(
-                                true,
-                                format!("Tag: {tag}"),
-                                Route::Tag { tag_id: tag.to_string() }.url_path(),
-                                "",
-                                format!("#{tag}").into()
-                            )}
+                            <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()} additional_classes={""}>
+                                {format!("#{tag}")}
+                            </Link>
                             {format!(
                                 " ({} {})",
                                 item_count,

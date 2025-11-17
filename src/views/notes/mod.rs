@@ -100,17 +100,15 @@ fn build_tree(
     );
 
     let render_document = |document: &Document| {
-        components::link(
-            false,
-            None,
-            document.route_path().url_path(),
-            if active_document.id == document.id {
+        html! {
+            <Link target={document.route_path().url_path()} additional_classes={if active_document.id == document.id {
                 "font-bold italic"
             } else {
                 ""
-            },
-            document.metadata.title.clone().into(),
-        )
+            }}>
+                {document.metadata.title.clone()}
+            </Link>
+        }
     };
 
     let index_item = folder_node
