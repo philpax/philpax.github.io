@@ -7551,7 +7551,7 @@ function xy() {
     return g.versions;
   }, r.wbg.__wbindgen_cast_2241b6af4c4b2941 = function(g, p) {
     return Ei(g, p);
-  }, r.wbg.__wbindgen_cast_77878eef07e6a99a = function(g, p) {
+  }, r.wbg.__wbindgen_cast_902a70736b89c8fd = function(g, p) {
     return Ty(g, p, zl.wasm_bindgen__closure__destroy__h032a9fb1222a415c, My);
   }, r.wbg.__wbindgen_cast_cb9088102bce6b30 = function(g, p) {
     return Bd(g, p);
@@ -7565,7 +7565,7 @@ function Ry(r, g) {
 }
 async function Zd(r) {
   if (zl !== void 0) return zl;
-  typeof r < "u" && (Object.getPrototypeOf(r) === Object.prototype ? { module_or_path: r } = r : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof r > "u" && (r = new URL("" + new URL("perchance_wasm_bg-CUAKM3ei.wasm", import.meta.url).href, import.meta.url));
+  typeof r < "u" && (Object.getPrototypeOf(r) === Object.prototype ? { module_or_path: r } = r : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof r > "u" && (r = new URL("" + new URL("perchance_wasm_bg-DHTUb4Vs.wasm", import.meta.url).href, import.meta.url));
   const g = xy();
   (typeof r == "string" || typeof Request == "function" && r instanceof Request || typeof URL == "function" && r instanceof URL) && (r = fetch(r));
   const { instance: p, module: o } = await Ny(await r, g);
