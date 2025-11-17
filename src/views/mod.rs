@@ -15,6 +15,7 @@ pub mod tags;
 pub mod updates;
 
 pub mod components;
+use components::{Link, LinkProps};
 
 #[derive(Copy, Clone)]
 pub struct ViewContext<'a> {
@@ -199,7 +200,7 @@ pub fn layout(
                             "."
                         </div>
                         <div>
-                            <Link underline title={"Creative Commons 0"} target={"https://creativecommons.org/public-domain/cc0/"}>
+                            <Link underline title={"Creative Commons 0".to_string()} target={"https://creativecommons.org/public-domain/cc0/"}>
                                 "cc0"
                             </Link>" / public domain. do whatever you like! "
                             <Link underline target={Route::Credits.url_path()}>

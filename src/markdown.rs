@@ -2,7 +2,10 @@ use std::collections::HashMap;
 
 use crate::{
     elements as e,
-    views::{components, ViewContext},
+    views::{
+        components::{self, Footnote, FootnoteProps, Link, LinkProps},
+        ViewContext,
+    },
 };
 use paxhtml::builder as b;
 
@@ -397,8 +400,8 @@ mod tests {
             website_name: "test",
             website_description: "test",
             website_base_url: "test",
-            syntax: syntax,
-            content: content,
+            syntax,
+            content,
             generation_date: chrono::Utc::now(),
             fast: false,
         }

@@ -1,6 +1,12 @@
 use super::*;
 
-use crate::{markdown::MarkdownConverter, views::posts};
+use crate::{
+    markdown::MarkdownConverter,
+    views::{
+        components::{Link, LinkProps},
+        posts,
+    },
+};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let content = &context.content;

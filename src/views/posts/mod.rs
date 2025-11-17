@@ -2,6 +2,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
+    views::components::{Link, LinkProps},
 };
 
 pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";

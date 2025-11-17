@@ -3,6 +3,8 @@
 pub struct FootnoteProps {
     pub identifier: String,
     pub children: Vec<paxhtml::Element>,
+    #[allow(dead_code)]
+    pub class: Option<String>,
 }
 
 #[allow(non_snake_case, dead_code)]

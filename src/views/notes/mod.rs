@@ -2,6 +2,7 @@ use crate::{
     content::{DocumentFolderNode, DocumentNode},
     markdown::MarkdownConverter,
     util,
+    views::components::{Link, LinkProps},
 };
 
 use super::*;
@@ -100,12 +101,13 @@ fn build_tree(
     );
 
     let render_document = |document: &Document| {
+        let additional_classes = if active_document.id == document.id {
+            Some("font-bold italic".to_string())
+        } else {
+            None
+        };
         html! {
-            <Link target={document.route_path().url_path()} additional_classes={if active_document.id == document.id {
-                "font-bold italic"
-            } else {
-                ""
-            }}>
+            <Link target={document.route_path().url_path()} additional_classes={additional_classes}>
                 {document.metadata.title.clone()}
             </Link>
         }

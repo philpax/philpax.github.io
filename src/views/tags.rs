@@ -1,5 +1,11 @@
 use super::*;
-use crate::{util, views::posts};
+use crate::{
+    util,
+    views::{
+        components::{Link, LinkProps},
+        posts,
+    },
+};
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
     let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
