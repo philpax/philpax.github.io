@@ -2,7 +2,10 @@ use std::collections::HashMap;
 
 use crate::{
     elements as e,
-    views::{components, ViewContext},
+    views::{
+        components::{self, Footnote, FootnoteProps, Link, LinkProps},
+        ViewContext,
+    },
 };
 use paxhtml::builder as b;
 
@@ -160,20 +163,11 @@ impl<'a> MarkdownConverter<'a> {
                     ]))
                 }
             }
-            Node::Link(l) => {
-                let target = l.url.clone();
-                let title = l.title.clone();
-
-                components::link(
-                    true,
-                    title,
-                    target,
-                    "",
-                    paxhtml::Element::from_iter(
-                        l.children.iter().map(|n| self.convert(n, Some(node))),
-                    ),
-                )
-            }
+            Node::Link(l) => paxhtml::html! {
+                <Link underline target={l.url.clone()}>
+                    #{l.children.iter().map(|n| self.convert(n, Some(node)))}
+                </Link>
+            },
             Node::Html(h) => {
                 // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
                 // in the middle of the string and actual content follows, but it's good enough for now.
@@ -208,12 +202,15 @@ impl<'a> MarkdownConverter<'a> {
                         number
                     });
 
-                components::footnote(
-                    &footnote_number.to_string(),
-                    MarkdownConverter::new(self.context)
-                        .without_blocking_elements()
-                        .convert_many(&definition, None),
-                )
+                let children = vec![MarkdownConverter::new(self.context)
+                    .without_blocking_elements()
+                    .convert_many(&definition, None)];
+
+                paxhtml::html! {
+                    <Footnote identifier={footnote_number.to_string()}>
+                        #{children}
+                    </Footnote>
+                }
             }
 
             // Table
@@ -403,8 +400,8 @@ mod tests {
             website_name: "test",
             website_description: "test",
             website_base_url: "test",
-            syntax: syntax,
-            content: content,
+            syntax,
+            content,
             generation_date: chrono::Utc::now(),
             fast: false,
         }

@@ -1,5 +1,7 @@
 use crate::{syntax::SyntaxHighlighter, views::FONT_STYLE};
 
+// Note: This component uses references so it's kept as a regular function
+// rather than using the custom component syntax
 pub fn code(syntax: &SyntaxHighlighter, lang: Option<&str>, code: &str) -> paxhtml::Element {
     paxhtml::html! {
         <pre class="code text-sm p-2 overflow-x-auto max-w-(--centered-content-width) mx-auto">

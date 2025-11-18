@@ -1,5 +1,16 @@
-pub fn footnote(identifier: &str, children: paxhtml::Element) -> paxhtml::Element {
-    let id = format!("footnote-{identifier}");
+#[derive(Default)]
+#[allow(dead_code)]
+pub struct FootnoteProps {
+    pub identifier: String,
+    pub children: Vec<paxhtml::Element>,
+    #[allow(dead_code)]
+    pub class: Option<String>,
+}
+
+#[allow(non_snake_case, dead_code)]
+pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
+    let id = format!("footnote-{}", props.identifier);
+    let children = paxhtml::Element::from(props.children);
 
     paxhtml::html! {
         <span class="footnote m-0">
@@ -10,7 +21,7 @@ pub fn footnote(identifier: &str, children: paxhtml::Element) -> paxhtml::Elemen
                     hover:bg-[var(--color-secondary)] relative \
                     before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-[var(--background-color-secondary)]\
                 ">
-                    {identifier}
+                    {&props.identifier}
                 </sup>
             </label>
             <span class="hidden peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1">{children}</span>

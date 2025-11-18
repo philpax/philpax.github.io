@@ -1,7 +1,10 @@
 use super::*;
 use crate::{
     util,
-    views::{components, posts},
+    views::{
+        components::{Link, LinkProps},
+        posts,
+    },
 };
 
 pub fn index(context: ViewContext) -> paxhtml::Document {
@@ -30,13 +33,9 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                     let item_count = context.content.tags[*tag].len();
                     html! {
                         <li class="list-disc">
-                            {components::link(
-                                true,
-                                format!("Tag: {tag}"),
-                                Route::Tag { tag_id: tag.to_string() }.url_path(),
-                                "",
-                                format!("#{tag}").into()
-                            )}
+                            <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
+                                {format!("#{tag}")}
+                            </Link>
                             {format!(
                                 " ({} {})",
                                 item_count,

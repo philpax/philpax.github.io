@@ -2,6 +2,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
+    views::components::{Link, LinkProps},
 };
 
 pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
@@ -17,13 +18,9 @@ pub fn tags(document: &Document) -> paxhtml::Element {
             let tags = t.iter().map(|tag| {
                 html! {
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
-                        {components::link(
-                            false,
-                            format!("Tag: {tag}"),
-                            Route::Tag { tag_id: tag.to_string() }.url_path(),
-                            "",
-                            format!("#{tag}").into()
-                        )}
+                        <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
+                            {format!("#{tag}")}
+                        </Link>
                     </li>
                 }
             });
@@ -99,7 +96,9 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             <>
                 {MarkdownConverter::new(context).convert(&document.description, None)}
                 <p>
-                    {components::link(true, None, url.clone(), "", "Read more".into())}
+                    <Link underline target={url.clone()}>
+                        "Read more"
+                    </Link>
                 </p>
             </>
         },
@@ -178,7 +177,9 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
 
                     html! {
                         <li>
-                            {components::link(true, None, "#".to_string(), "", introduction_text.into())}
+                            <Link underline target={"#"}>
+                                {introduction_text}
+                            </Link>
                         </li>
                     }
                 } else {
@@ -198,7 +199,9 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
     ) -> paxhtml::Element {
         html! {
             <li>
-                {components::link(true, None, format!("#{}", util::slugify(heading_text)), "", heading.clone())}
+                <Link underline target={format!("#{}", util::slugify(heading_text))}>
+                    {heading.clone()}
+                </Link>
                 {build_list_recursively(children, false)}
             </li>
         }
