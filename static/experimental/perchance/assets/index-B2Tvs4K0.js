@@ -7580,7 +7580,7 @@ function Hh(f, h) {
 }
 async function Z0(f) {
   if (El !== void 0) return El;
-  typeof f < "u" && (Object.getPrototypeOf(f) === Object.prototype ? { module_or_path: f } = f : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof f > "u" && (f = new URL("" + new URL("perchance_wasm_bg-Dkw6UDIq.wasm", import.meta.url).href, import.meta.url));
+  typeof f < "u" && (Object.getPrototypeOf(f) === Object.prototype ? { module_or_path: f } = f : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof f > "u" && (f = new URL("" + new URL("perchance_wasm_bg-TaVwP43a.wasm", import.meta.url).href, import.meta.url));
   const h = Rh();
   (typeof f == "string" || typeof Request == "function" && f instanceof Request || typeof URL == "function" && f instanceof URL) && (f = fetch(f));
   const { instance: S, module: s } = await Ch(await f, h);
