@@ -7565,7 +7565,7 @@ function Ry(r, g) {
 }
 async function Zd(r) {
   if (zl !== void 0) return zl;
-  typeof r < "u" && (Object.getPrototypeOf(r) === Object.prototype ? { module_or_path: r } = r : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof r > "u" && (r = new URL("" + new URL("perchance_wasm_bg-DHTUb4Vs.wasm", import.meta.url).href, import.meta.url));
+  typeof r < "u" && (Object.getPrototypeOf(r) === Object.prototype ? { module_or_path: r } = r : console.warn("using deprecated parameters for the initialization function; pass a single object instead")), typeof r > "u" && (r = new URL("" + new URL("perchance_wasm_bg-Cl1P9kYl.wasm", import.meta.url).href, import.meta.url));
   const g = xy();
   (typeof r == "string" || typeof Request == "function" && r instanceof Request || typeof URL == "function" && r instanceof URL) && (r = fetch(r));
   const { instance: p, module: o } = await Ny(await r, g);
