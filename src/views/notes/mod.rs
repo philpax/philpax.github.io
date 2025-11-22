@@ -19,16 +19,22 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
         note.description.to_string()
     };
 
+    let og_image_url = format!(
+        "{}{}",
+        context.website_base_url,
+        note.og_image_path()
+    );
+
     layout(
         context,
         SocialMeta {
             title: Some(display_path.last().unwrap().to_string()),
             description: Some(description),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(og_image_url.clone()),
             url: Some(Route::Notes.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
+            twitter_card: Some("summary_large_image".to_string()),
+            twitter_image: Some(og_image_url),
             article_published_time: None,
             article_modified_time: note.metadata.datetime,
             article_tag: None,
