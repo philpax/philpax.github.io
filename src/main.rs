@@ -298,8 +298,9 @@ fn main() -> anyhow::Result<()> {
             let filename = format!("{}.png", doc.id.join("-"));
             let output_path = type_dir.join(&filename);
 
-            og_image::generate_og_image(&options, &output_path)
-                .with_context(|| format!("Failed to generate OG image for {}", doc.metadata.title))?;
+            og_image::generate_og_image(&options, &output_path).with_context(|| {
+                format!("Failed to generate OG image for {}", doc.metadata.title)
+            })?;
         }
 
         // Helper function to generate OG images for notes
@@ -321,7 +322,10 @@ fn main() -> anyhow::Result<()> {
                 let output_path = notes_dir.join(&filename);
 
                 og_image::generate_og_image(&options, &output_path).with_context(|| {
-                    format!("Failed to generate OG image for {}", index_document.metadata.title)
+                    format!(
+                        "Failed to generate OG image for {}",
+                        index_document.metadata.title
+                    )
                 })?;
             }
 
@@ -344,7 +348,10 @@ fn main() -> anyhow::Result<()> {
                         let output_path = notes_dir.join(&filename);
 
                         og_image::generate_og_image(&options, &output_path).with_context(|| {
-                            format!("Failed to generate OG image for {}", document.metadata.title)
+                            format!(
+                                "Failed to generate OG image for {}",
+                                document.metadata.title
+                            )
                         })?;
                     }
                 }

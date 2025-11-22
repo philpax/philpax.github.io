@@ -19,11 +19,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
         note.description.to_string()
     };
 
-    let og_image_url = format!(
-        "{}{}",
-        context.website_base_url,
-        note.og_image_path()
-    );
+    let og_image_url = format!("{}{}", context.website_base_url, note.og_image_path());
 
     layout(
         context,

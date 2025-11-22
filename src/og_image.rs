@@ -86,7 +86,7 @@ fn calculate_title_font_size(title: &str) -> f32 {
     let calculated_size = MAX_TEXT_WIDTH / (char_count * AVG_CHAR_WIDTH_RATIO);
 
     // Clamp between min and max font sizes
-    calculated_size.min(TITLE_MAX_FONT_SIZE).max(TITLE_MIN_FONT_SIZE)
+    calculated_size.clamp(TITLE_MIN_FONT_SIZE, TITLE_MAX_FONT_SIZE)
 }
 
 /// Generate SVG content for the OG image

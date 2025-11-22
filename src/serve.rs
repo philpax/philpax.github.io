@@ -35,9 +35,9 @@ pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
 
 fn handle_connection(stream: &mut TcpStream, root_dir: &Path) -> std::io::Result<()> {
     let mut buffer = [0; 1024];
-    stream.read(&mut buffer)?;
+    let bytes_read = stream.read(&mut buffer)?;
 
-    let request = String::from_utf8_lossy(&buffer[..]);
+    let request = String::from_utf8_lossy(&buffer[..bytes_read]);
     let request_line = request.lines().next().unwrap_or("");
     let parts: Vec<&str> = request_line.split_whitespace().collect();
 
@@ -121,7 +121,7 @@ fn handle_poll_for_liveness(stream: &mut TcpStream, request: &str) -> std::io::R
 
     let mut hasher = sha1::Sha1::new();
     hasher.update(format!("{key}258EAFA5-E914-47DA-95CA-C5AB0DC85B11"));
-    let accept = base64::engine::general_purpose::STANDARD.encode(&hasher.finalize());
+    let accept = base64::engine::general_purpose::STANDARD.encode(hasher.finalize());
 
     // Send WebSocket upgrade response
     let response = format!(
