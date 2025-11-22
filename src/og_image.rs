@@ -1,6 +1,7 @@
 use anyhow::Result;
+use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::{DateTime, Utc};
-use std::path::Path;
+use std::{path::Path, sync::LazyLock};
 
 const IMAGE_WIDTH: u32 = 1200;
 const IMAGE_HEIGHT: u32 = 630;
@@ -43,7 +44,7 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
     let title_font_size = calculate_title_font_size(&options.title);
 
     // Load icon and convert to base64
-    let icon_data_url = load_icon_as_data_url()?;
+    let icon_data_url = load_icon_as_data_url();
 
     // Generate SVG
     let svg_content = generate_svg(
@@ -52,7 +53,7 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
         &options.author,
         options.datetime.as_ref(),
         title_font_size,
-        &icon_data_url,
+        icon_data_url,
     );
 
     // Parse SVG with usvg
@@ -86,41 +87,14 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
     Ok(())
 }
 
-/// Load the icon.png file and convert it to a base64 data URL
-fn load_icon_as_data_url() -> Result<String> {
-    let icon_path = "assets/baked/static/icon.png";
-    let icon_data = std::fs::read(icon_path)?;
-    let base64_data = base64_encode(&icon_data);
-    Ok(format!("data:image/png;base64,{}", base64_data))
-}
-
-/// Simple base64 encoding
-fn base64_encode(data: &[u8]) -> String {
-    const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    let mut result = String::new();
-
-    for chunk in data.chunks(3) {
-        let b1 = chunk[0];
-        let b2 = chunk.get(1).copied().unwrap_or(0);
-        let b3 = chunk.get(2).copied().unwrap_or(0);
-
-        result.push(CHARS[(b1 >> 2) as usize] as char);
-        result.push(CHARS[(((b1 & 0x03) << 4) | (b2 >> 4)) as usize] as char);
-
-        if chunk.len() > 1 {
-            result.push(CHARS[(((b2 & 0x0f) << 2) | (b3 >> 6)) as usize] as char);
-        } else {
-            result.push('=');
-        }
-
-        if chunk.len() > 2 {
-            result.push(CHARS[(b3 & 0x3f) as usize] as char);
-        } else {
-            result.push('=');
-        }
-    }
-
-    result
+fn load_icon_as_data_url() -> &'static str {
+    static ICON_DATA_URL: LazyLock<String> = LazyLock::new(|| {
+        std::fs::read("assets/baked/static/icon.png")
+            .map(|data| STANDARD.encode(&data))
+            .map(|e| format!("data:image/png;base64,{e}"))
+            .unwrap()
+    });
+    ICON_DATA_URL.as_str()
 }
 
 /// Calculate the appropriate font size for the title to fit within the image width
