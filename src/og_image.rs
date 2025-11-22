@@ -1,4 +1,5 @@
 use anyhow::Result;
+use chrono::{DateTime, Utc};
 use std::path::Path;
 
 const IMAGE_WIDTH: u32 = 1200;
@@ -7,8 +8,10 @@ const BACKGROUND_COLOR: &str = "#3c2954";
 const TEXT_COLOR: &str = "#ffffff";
 const BOTTOM_MARGIN: f32 = 80.0;
 const SIDE_PADDING: f32 = 100.0; // Padding on each side
+const TOP_PADDING: f32 = 60.0;
 const TYPE_FONT_SIZE: f32 = 32.0;
 const AUTHOR_FONT_SIZE: f32 = 32.0;
+const DATE_FONT_SIZE: f32 = 28.0;
 const TITLE_MAX_FONT_SIZE: f32 = 80.0;
 const TITLE_MIN_FONT_SIZE: f32 = 40.0;
 const LINE_SPACING: f32 = 20.0;
@@ -18,6 +21,7 @@ pub struct OgImageOptions {
     pub post_type: String,
     pub title: String,
     pub author: String,
+    pub datetime: Option<DateTime<Utc>>,
 }
 
 impl Default for OgImageOptions {
@@ -25,7 +29,8 @@ impl Default for OgImageOptions {
         Self {
             post_type: String::new(),
             title: String::new(),
-            author: "Philpax".to_string(),
+            author: "philpax".to_string(),
+            datetime: None,
         }
     }
 }
@@ -40,6 +45,7 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
         &options.post_type,
         &options.title,
         &options.author,
+        options.datetime.as_ref(),
         title_font_size,
     );
 
@@ -66,6 +72,9 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
     );
 
     // Save PNG
+    if let Some(parent) = output_path.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
     pixmap.save_png(output_path)?;
 
     Ok(())
@@ -90,16 +99,36 @@ fn calculate_title_font_size(title: &str) -> f32 {
 }
 
 /// Generate SVG content for the OG image
-fn generate_svg(post_type: &str, title: &str, author: &str, title_font_size: f32) -> String {
+fn generate_svg(
+    post_type: &str,
+    title: &str,
+    author: &str,
+    datetime: Option<&DateTime<Utc>>,
+    title_font_size: f32,
+) -> String {
     // Calculate vertical positions (from bottom up)
     let author_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
     let title_y = author_y - AUTHOR_FONT_SIZE - LINE_SPACING;
     let type_y = title_y - title_font_size - LINE_SPACING;
 
-    // Escape XML special characters
-    let post_type = escape_xml(post_type);
+    // Escape XML special characters and lowercase
+    let post_type = escape_xml(&post_type.to_lowercase());
     let title = escape_xml(title);
-    let author = escape_xml(author);
+    let author = escape_xml(&author.to_lowercase());
+
+    // Format date if present
+    let date_element = if let Some(dt) = datetime {
+        let date_str = dt.format("%Y-%m-%d").to_string();
+        format!(
+            r#"<text x="{}" y="{}" font-size="{}px" opacity="0.7" text-anchor="end">{}</text>"#,
+            IMAGE_WIDTH as f32 - SIDE_PADDING,
+            TOP_PADDING,
+            DATE_FONT_SIZE,
+            escape_xml(&date_str)
+        )
+    } else {
+        String::new()
+    };
 
     format!(
         r#"<?xml version="1.0" encoding="UTF-8"?>
@@ -113,28 +142,31 @@ fn generate_svg(post_type: &str, title: &str, author: &str, title_font_size: f32
       text {{
         font-family: 'Literata', serif;
         fill: {};
-        text-anchor: middle;
       }}
     </style>
   </defs>
 
   <rect width="100%" height="100%" fill="{}"/>
 
-  <text x="50%" y="{}" font-size="{}px" opacity="0.7">{}</text>
-  <text x="50%" y="{}" font-size="{}px" font-weight="bold" textLength="{}" lengthAdjust="spacingAndGlyphs">{}</text>
-  <text x="50%" y="{}" font-size="{}px" opacity="0.7">{}</text>
+  {}
+  <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
+  <text x="{}" y="{}" font-size="{}px" font-weight="bold">{}</text>
+  <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
 </svg>"#,
         IMAGE_WIDTH,
         IMAGE_HEIGHT,
         TEXT_COLOR,
         BACKGROUND_COLOR,
+        date_element,
+        SIDE_PADDING,
         type_y,
         TYPE_FONT_SIZE,
         post_type,
+        SIDE_PADDING,
         title_y,
         title_font_size,
-        MAX_TEXT_WIDTH,
         title,
+        SIDE_PADDING,
         author_y,
         AUTHOR_FONT_SIZE,
         author

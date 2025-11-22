@@ -263,106 +263,89 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.step("Generated OG images", || {
-        let og_images_dir = output_dir.join("og-images");
-        std::fs::create_dir_all(&og_images_dir)?;
+    if !fast {
+        timer.step("Generated OG images", || {
+            use rayon::prelude::*;
 
-        // Generate OG images for blog posts and updates
-        for doc in content
-            .blog
-            .documents
-            .iter()
-            .chain(content.updates.documents.iter())
-        {
-            let post_type = match doc.document_type {
-                content::DocumentType::Blog => "Blog Post",
-                content::DocumentType::Update => "Update",
-                content::DocumentType::Note => unreachable!(),
-            };
+            let og_images_dir = output_dir.join("og-images");
+            std::fs::create_dir_all(&og_images_dir)?;
 
-            let options = og_image::OgImageOptions {
-                post_type: post_type.to_string(),
-                title: doc.metadata.title.clone(),
-                author: "Philpax".to_string(),
-            };
+            // Create subdirectories
+            std::fs::create_dir_all(og_images_dir.join("blog"))?;
+            std::fs::create_dir_all(og_images_dir.join("updates"))?;
+            std::fs::create_dir_all(og_images_dir.join("notes"))?;
 
-            // Create subdirectory for this document type
-            let type_dir = og_images_dir.join(match doc.document_type {
-                content::DocumentType::Blog => "blog",
-                content::DocumentType::Update => "updates",
-                content::DocumentType::Note => unreachable!(),
-            });
-            std::fs::create_dir_all(&type_dir)?;
-
-            // Generate filename from document ID
-            let filename = format!("{}.png", doc.id.join("-"));
-            let output_path = type_dir.join(&filename);
-
-            og_image::generate_og_image(&options, &output_path).with_context(|| {
-                format!("Failed to generate OG image for {}", doc.metadata.title)
-            })?;
-        }
-
-        // Helper function to generate OG images for notes
-        fn generate_note_images(
-            og_images_dir: &Path,
-            folder: &content::DocumentFolderNode,
-        ) -> anyhow::Result<()> {
-            if let Some(index_document) = &folder.index_document {
-                let options = og_image::OgImageOptions {
-                    post_type: "Note".to_string(),
-                    title: index_document.metadata.title.clone(),
-                    author: "Philpax".to_string(),
+            // Helper function to generate OG image for a document
+            fn generate_doc_image(
+                og_images_dir: &Path,
+                doc: &content::Document,
+            ) -> anyhow::Result<()> {
+                let (post_type, type_subdir) = match doc.document_type {
+                    content::DocumentType::Blog => ("blog", "blog"),
+                    content::DocumentType::Update => ("update", "updates"),
+                    content::DocumentType::Note => ("note", "notes"),
                 };
 
-                let notes_dir = og_images_dir.join("notes");
-                std::fs::create_dir_all(&notes_dir)?;
+                let options = og_image::OgImageOptions {
+                    post_type: post_type.to_string(),
+                    title: doc.metadata.title.clone(),
+                    author: "philpax".to_string(),
+                    datetime: doc.metadata.datetime,
+                };
 
-                let filename = format!("{}.png", index_document.id.join("-"));
-                let output_path = notes_dir.join(&filename);
+                let type_dir = og_images_dir.join(type_subdir);
+                let filename = format!("{}.png", doc.id.join("-"));
+                let output_path = type_dir.join(&filename);
 
                 og_image::generate_og_image(&options, &output_path).with_context(|| {
-                    format!(
-                        "Failed to generate OG image for {}",
-                        index_document.metadata.title
-                    )
+                    format!("Failed to generate OG image for {}", doc.metadata.title)
                 })?;
+
+                Ok(())
             }
 
-            for child in folder.children.values() {
-                match child {
-                    content::DocumentNode::Folder(folder) => {
-                        generate_note_images(og_images_dir, folder)?;
-                    }
-                    content::DocumentNode::Document { document } => {
-                        let options = og_image::OgImageOptions {
-                            post_type: "Note".to_string(),
-                            title: document.metadata.title.clone(),
-                            author: "Philpax".to_string(),
-                        };
+            // Collect all documents
+            let mut all_docs = Vec::new();
 
-                        let notes_dir = og_images_dir.join("notes");
-                        std::fs::create_dir_all(&notes_dir)?;
+            // Add blog posts and updates
+            all_docs.extend(content.blog.documents.iter());
+            all_docs.extend(content.updates.documents.iter());
 
-                        let filename = format!("{}.png", document.id.join("-"));
-                        let output_path = notes_dir.join(&filename);
-
-                        og_image::generate_og_image(&options, &output_path).with_context(|| {
-                            format!(
-                                "Failed to generate OG image for {}",
-                                document.metadata.title
-                            )
-                        })?;
+            // Recursively collect notes
+            fn collect_notes<'a>(
+                docs: &mut Vec<&'a content::Document>,
+                folder: &'a content::DocumentFolderNode,
+            ) {
+                if let Some(index_document) = &folder.index_document {
+                    docs.push(index_document);
+                }
+                for child in folder.children.values() {
+                    match child {
+                        content::DocumentNode::Folder(folder) => {
+                            collect_notes(docs, folder);
+                        }
+                        content::DocumentNode::Document { document } => {
+                            docs.push(document);
+                        }
                     }
                 }
             }
-            Ok(())
-        }
 
-        generate_note_images(&og_images_dir, &content.notes.documents)?;
+            collect_notes(&mut all_docs, &content.notes.documents);
 
-        anyhow::Ok(())
-    })?;
+            // Generate images in parallel
+            all_docs
+                .par_iter()
+                .try_for_each(|doc| generate_doc_image(&og_images_dir, doc))?;
+
+            anyhow::Ok(())
+        })?;
+    } else {
+        timer.step(
+            "Skipped OG image generation in fast mode",
+            || anyhow::Ok(()),
+        )?;
+    }
 
     timer.step("Wrote blog index", || {
         views::blog::index(view_context).write_to_route(output_dir, Route::Blog)

@@ -18,6 +18,7 @@ image = { version = "0.25.1", features = [
 resvg = "0.44"
 usvg = "0.44"
 fontdb = "0.22"
+rayon = "1.10"
 
 [dependencies]
 anyhow = { workspace = true }
@@ -49,6 +50,7 @@ blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git"
 resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }
+rayon = { workspace = true }
 # blackbird-json-export-types = { path = "../blackbird/blackbird-json-export-types" }
 
 [features]
