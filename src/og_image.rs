@@ -158,7 +158,26 @@ fn generate_svg(
     // Icon positioning
     let icon_x = SIDE_PADDING;
     let icon_y = author_y - AUTHOR_FONT_SIZE / 2.0 - ICON_SIZE / 2.0; // Center vertically with text
+    let icon_center_x = icon_x + ICON_SIZE / 2.0;
+    let icon_center_y = icon_y + ICON_SIZE / 2.0;
+    let icon_radius = ICON_SIZE / 2.0;
     let author_text_x = icon_x + ICON_SIZE + ICON_MARGIN;
+
+    // Text positioning
+    let type_text_x = SIDE_PADDING;
+    let title_text_x = SIDE_PADDING;
+    let date_text_x = IMAGE_WIDTH as f32 - SIDE_PADDING;
+    let date_text_y = TOP_PADDING;
+
+    // Dimensions and colors
+    let image_width = IMAGE_WIDTH;
+    let image_height = IMAGE_HEIGHT;
+    let text_color = TEXT_COLOR;
+    let background_color = BACKGROUND_COLOR;
+    let type_font_size = TYPE_FONT_SIZE;
+    let author_font_size = AUTHOR_FONT_SIZE;
+    let date_font_size = DATE_FONT_SIZE;
+    let icon_size = ICON_SIZE;
 
     // Escape XML special characters and lowercase
     let post_type = escape_xml(&post_type.to_lowercase());
@@ -168,12 +187,9 @@ fn generate_svg(
     // Format date if present
     let date_element = if let Some(dt) = datetime {
         let date_str = dt.format("%Y-%m-%d").to_string();
+        let escaped_date_str = escape_xml(&date_str);
         format!(
-            r#"<text x="{}" y="{}" font-size="{}px" opacity="0.7" text-anchor="end">{}</text>"#,
-            IMAGE_WIDTH as f32 - SIDE_PADDING,
-            TOP_PADDING,
-            DATE_FONT_SIZE,
-            escape_xml(&date_str)
+            r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{date_font_size}px" opacity="0.7" text-anchor="end">{escaped_date_str}</text>"#
         )
     } else {
         String::new()
@@ -181,7 +197,7 @@ fn generate_svg(
 
     format!(
         r#"<?xml version="1.0" encoding="UTF-8"?>
-<svg width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">
+<svg width="{image_width}" height="{image_height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       @font-face {{
@@ -190,54 +206,26 @@ fn generate_svg(
       }}
       text {{
         font-family: 'Literata', serif;
-        fill: {};
+        fill: {text_color};
       }}
     </style>
     <clipPath id="icon-circle">
-      <circle cx="{}" cy="{}" r="{}"/>
+      <circle cx="{icon_center_x}" cy="{icon_center_y}" r="{icon_radius}"/>
     </clipPath>
   </defs>
 
-  <rect width="100%" height="100%" fill="{}"/>
+  <rect width="100%" height="100%" fill="{background_color}"/>
 
-  {}
-  <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
-  <text x="{}" y="{}" font-size="{}px" font-weight="bold">{}</text>
+  {date_element}
+  <text x="{type_text_x}" y="{type_y}" font-size="{type_font_size}px" opacity="0.7">{post_type}</text>
+  <text x="{title_text_x}" y="{title_y}" font-size="{title_font_size}px" font-weight="bold">{title}</text>
 
   <!-- Icon with circular clip and white border -->
-  <image href="{}" x="{}" y="{}" width="{}" height="{}" clip-path="url(#icon-circle)"/>
-  <circle cx="{}" cy="{}" r="{}" fill="none" stroke="white" stroke-width="2"/>
+  <image href="{icon_data_url}" x="{icon_x}" y="{icon_y}" width="{icon_size}" height="{icon_size}" clip-path="url(#icon-circle)"/>
+  <circle cx="{icon_center_x}" cy="{icon_center_y}" r="{icon_radius}" fill="none" stroke="white" stroke-width="2"/>
 
-  <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
-</svg>"#,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
-        TEXT_COLOR,
-        icon_x + ICON_SIZE / 2.0,
-        icon_y + ICON_SIZE / 2.0,
-        ICON_SIZE / 2.0,
-        BACKGROUND_COLOR,
-        date_element,
-        SIDE_PADDING,
-        type_y,
-        TYPE_FONT_SIZE,
-        post_type,
-        SIDE_PADDING,
-        title_y,
-        title_font_size,
-        title,
-        icon_data_url,
-        icon_x,
-        icon_y,
-        ICON_SIZE,
-        ICON_SIZE,
-        icon_x + ICON_SIZE / 2.0,
-        icon_y + ICON_SIZE / 2.0,
-        ICON_SIZE / 2.0,
-        author_text_x,
-        author_y,
-        AUTHOR_FONT_SIZE,
-        author
+  <text x="{author_text_x}" y="{author_y}" font-size="{author_font_size}px" opacity="0.7">{author}</text>
+</svg>"#
     )
 }
 
