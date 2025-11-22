@@ -16,6 +16,8 @@ const TITLE_MAX_FONT_SIZE: f32 = 80.0;
 const TITLE_MIN_FONT_SIZE: f32 = 40.0;
 const LINE_SPACING: f32 = 20.0;
 const MAX_TEXT_WIDTH: f32 = IMAGE_WIDTH as f32 - (SIDE_PADDING * 2.0);
+const ICON_SIZE: f32 = 40.0; // Size of the circular icon
+const ICON_MARGIN: f32 = 12.0; // Space between icon and text
 
 pub struct OgImageOptions {
     pub post_type: String,
@@ -40,6 +42,9 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
     // Calculate dynamic title font size based on length
     let title_font_size = calculate_title_font_size(&options.title);
 
+    // Load icon and convert to base64
+    let icon_data_url = load_icon_as_data_url()?;
+
     // Generate SVG
     let svg_content = generate_svg(
         &options.post_type,
@@ -47,6 +52,7 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
         &options.author,
         options.datetime.as_ref(),
         title_font_size,
+        &icon_data_url,
     );
 
     // Parse SVG with usvg
@@ -80,6 +86,43 @@ pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result
     Ok(())
 }
 
+/// Load the icon.png file and convert it to a base64 data URL
+fn load_icon_as_data_url() -> Result<String> {
+    let icon_path = "assets/baked/static/icon.png";
+    let icon_data = std::fs::read(icon_path)?;
+    let base64_data = base64_encode(&icon_data);
+    Ok(format!("data:image/png;base64,{}", base64_data))
+}
+
+/// Simple base64 encoding
+fn base64_encode(data: &[u8]) -> String {
+    const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut result = String::new();
+
+    for chunk in data.chunks(3) {
+        let b1 = chunk[0];
+        let b2 = chunk.get(1).copied().unwrap_or(0);
+        let b3 = chunk.get(2).copied().unwrap_or(0);
+
+        result.push(CHARS[(b1 >> 2) as usize] as char);
+        result.push(CHARS[(((b1 & 0x03) << 4) | (b2 >> 4)) as usize] as char);
+
+        if chunk.len() > 1 {
+            result.push(CHARS[(((b2 & 0x0f) << 2) | (b3 >> 6)) as usize] as char);
+        } else {
+            result.push('=');
+        }
+
+        if chunk.len() > 2 {
+            result.push(CHARS[(b3 & 0x3f) as usize] as char);
+        } else {
+            result.push('=');
+        }
+    }
+
+    result
+}
+
 /// Calculate the appropriate font size for the title to fit within the image width
 fn calculate_title_font_size(title: &str) -> f32 {
     // Estimate character width for Literata font (serif)
@@ -105,11 +148,17 @@ fn generate_svg(
     author: &str,
     datetime: Option<&DateTime<Utc>>,
     title_font_size: f32,
+    icon_data_url: &str,
 ) -> String {
     // Calculate vertical positions (from bottom up)
     let author_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
     let title_y = author_y - AUTHOR_FONT_SIZE - LINE_SPACING;
     let type_y = title_y - title_font_size - LINE_SPACING;
+
+    // Icon positioning
+    let icon_x = SIDE_PADDING;
+    let icon_y = author_y - AUTHOR_FONT_SIZE / 2.0 - ICON_SIZE / 2.0; // Center vertically with text
+    let author_text_x = icon_x + ICON_SIZE + ICON_MARGIN;
 
     // Escape XML special characters and lowercase
     let post_type = escape_xml(&post_type.to_lowercase());
@@ -144,6 +193,9 @@ fn generate_svg(
         fill: {};
       }}
     </style>
+    <clipPath id="icon-circle">
+      <circle cx="{}" cy="{}" r="{}"/>
+    </clipPath>
   </defs>
 
   <rect width="100%" height="100%" fill="{}"/>
@@ -151,11 +203,19 @@ fn generate_svg(
   {}
   <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
   <text x="{}" y="{}" font-size="{}px" font-weight="bold">{}</text>
+
+  <!-- Icon with circular clip and white border -->
+  <image href="{}" x="{}" y="{}" width="{}" height="{}" clip-path="url(#icon-circle)"/>
+  <circle cx="{}" cy="{}" r="{}" fill="none" stroke="white" stroke-width="2"/>
+
   <text x="{}" y="{}" font-size="{}px" opacity="0.7">{}</text>
 </svg>"#,
         IMAGE_WIDTH,
         IMAGE_HEIGHT,
         TEXT_COLOR,
+        icon_x + ICON_SIZE / 2.0,
+        icon_y + ICON_SIZE / 2.0,
+        ICON_SIZE / 2.0,
         BACKGROUND_COLOR,
         date_element,
         SIDE_PADDING,
@@ -166,7 +226,15 @@ fn generate_svg(
         title_y,
         title_font_size,
         title,
-        SIDE_PADDING,
+        icon_data_url,
+        icon_x,
+        icon_y,
+        ICON_SIZE,
+        ICON_SIZE,
+        icon_x + ICON_SIZE / 2.0,
+        icon_y + ICON_SIZE / 2.0,
+        ICON_SIZE / 2.0,
+        author_text_x,
         author_y,
         AUTHOR_FONT_SIZE,
         author
