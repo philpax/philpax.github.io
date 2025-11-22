@@ -175,15 +175,12 @@ impl<'a> MarkdownConverter<'a> {
                     return paxhtml::Element::Empty;
                 }
 
-                // BODGE: Implement custom elements through lookups.
-                // In future, I might want to apply some kind of actual HTML parsing here (could be cute to reuse paxhtml's HTML parser)
-                if h.value.starts_with("<music-library") {
+                let element = paxhtml::parse_html(&h.value).expect("failed to parse HTML"); // todo: make this a fallible result
+                if element.tag() == Some("MusicLibrary") {
                     return components::music_library(self.context);
                 }
 
-                paxhtml::Element::Raw {
-                    html: h.value.clone(),
-                }
+                element
             }
             Node::FootnoteReference(r) => {
                 let definition = self

@@ -2,4 +2,4 @@ Here follows the entirety of my local music library, styled to roughly match [my
 
 <!-- more -->
 
-<music-library />
+<MusicLibrary />

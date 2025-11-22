@@ -365,7 +365,7 @@ impl Document {
             let mut path_datetime = get_file_datetime(path)?;
 
             // HACK: Use the music library's modification datetime if it's in use + it's newer than the actual file
-            if file.contains("<music-library") {
+            if file.contains("<MusicLibrary") {
                 let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH))?;
                 if library_datetime > path_datetime {
                     path_datetime = library_datetime;
