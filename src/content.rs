@@ -484,6 +484,16 @@ impl Document {
         }
     }
 
+    pub fn og_image_path(&self) -> String {
+        let type_dir = match self.document_type {
+            DocumentType::Blog => "blog",
+            DocumentType::Update => "updates",
+            DocumentType::Note => "notes",
+        };
+        let filename = format!("{}.png", self.id.join("-"));
+        format!("/og-images/{}/{}", type_dir, filename)
+    }
+
     pub fn alternate_route_path(&self) -> Option<RoutePath> {
         self.alternate_id
             .as_ref()

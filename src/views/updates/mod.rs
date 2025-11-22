@@ -34,12 +34,8 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
 }
 
 pub fn post(context: ViewContext, document: &crate::content::Document) -> paxhtml::Document {
-    let hero_image = document.hero_filename_and_alt.as_ref().map(|(f, _)| {
-        document
-            .route_path()
-            .with_filename(f)
-            .abs_url(context.website_base_url)
-    });
+    let og_image_url = format!("{}{}", context.website_base_url, document.og_image_path());
+
     layout(
         context,
         SocialMeta {
@@ -51,15 +47,11 @@ pub fn post(context: ViewContext, document: &crate::content::Document) -> paxhtm
                     .unwrap_or_else(|| document.description.clone())
                     .to_string(),
             ),
-            image: hero_image
-                .clone()
-                .or_else(|| Some(Route::Icon.route_path().abs_url(context.website_base_url))),
+            image: Some(og_image_url.clone()),
             url: Some(document.route_path().abs_url(context.website_base_url)),
             type_: Some("article".to_string()),
-            twitter_card: hero_image
-                .as_ref()
-                .map(|_| "summary_large_image".to_string()),
-            twitter_image: hero_image,
+            twitter_card: Some("summary_large_image".to_string()),
+            twitter_image: Some(og_image_url),
             article_published_time: document.metadata.datetime,
             article_modified_time: None,
             article_tag: document.tags().map(|t| t.join(", ")),
