@@ -4,6 +4,9 @@
   --color-secondary: #cccccc;
   --background-color: #3c2954;
   --background-color-secondary: #6f4c9a;
+  --code-label-bg: hsl(220, 27%, 20%);
+  --code-label-color: #ffffff;
+  --code-inline-bg: #bfbdb60f;
 }
 
 --light-mode {
@@ -11,6 +14,9 @@
   --color-secondary: #5d5569;
   --background-color: #f8f6fa;
   --background-color-secondary: #ebe5f2;
+  --code-label-bg: #e0dce5;
+  --code-label-color: #5c6166;
+  --code-inline-bg: #5c61660f;
 }
 
 /* Root variables */
@@ -56,6 +62,11 @@
 /* Code blocks */
 code span {
   display: inline;
+}
+
+/* Inline code background */
+code.code {
+  background-color: var(--code-inline-bg);
 }
 
 /* Table of contents */

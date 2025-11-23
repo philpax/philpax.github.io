@@ -24,7 +24,8 @@ pub fn generate(
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
     let light_mode = property_sets.get(paxcss::LIGHT_MODE).unwrap();
-    let syntax = context.syntax.theme_css();
+    let syntax_dark = context.syntax.dark_theme_css();
+    let syntax_light = context.syntax.light_theme_css();
     let css = format!(
         r#"
 /* --- THEMES --- */
@@ -50,8 +51,23 @@ pub fn generate(
 /* --- TAILWIND --- */
 {tailwind_output}
 
-/* --- SYNTAX HIGHLIGHTING --- */
-{syntax}
+/* --- SYNTAX HIGHLIGHTING (DARK) --- */
+:root {{
+{syntax_dark}
+}}
+:root.dark-theme {{
+{syntax_dark}
+}}
+
+/* --- SYNTAX HIGHLIGHTING (LIGHT) --- */
+@media (prefers-color-scheme: light) {{
+:root {{
+{syntax_light}
+}}
+}}
+:root.light-theme {{
+{syntax_light}
+}}
 "#,
     )
     .trim()

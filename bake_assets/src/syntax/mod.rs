@@ -42,6 +42,11 @@ fn build_theme_set(source_dir: &Path, output_dir: &Path) -> anyhow::Result<()> {
     )?)?;
     set.themes
         .insert("ayu-dark".to_string(), ayu_dark.try_into()?);
+    let ayu_light = sublime_color_scheme::ColorScheme::from_str(&std::fs::read_to_string(
+        &source_dir.join("ayu-light.sublime-color-scheme"),
+    )?)?;
+    set.themes
+        .insert("ayu-light".to_string(), ayu_light.try_into()?);
     syntect::dumps::dump_to_file(&set, output_dir.join("theme_set.packdump"))?;
     Ok(())
 }
