@@ -7,10 +7,10 @@
 }
 
 --light-mode {
-  --color: black;
-  --color-secondary: #333;
-  --background-color: #c5b4db;
-  --background-color-secondary: #8f6eb9;
+  --color: #1f1a26;
+  --color-secondary: #5d5569;
+  --background-color: #f8f6fa;
+  --background-color-secondary: #ebe5f2;
 }
 
 /* Root variables */
