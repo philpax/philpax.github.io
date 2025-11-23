@@ -9,6 +9,7 @@ mod content;
 mod elements;
 mod js;
 mod markdown;
+mod og_image;
 mod rss;
 #[cfg(feature = "serve")]
 mod serve;
@@ -261,6 +262,94 @@ fn main() -> anyhow::Result<()> {
 
         anyhow::Ok(())
     })?;
+
+    if !fast {
+        timer.step("Generated OG images", || {
+            use rayon::prelude::*;
+
+            let og_images_dir = output_dir.join("og-images");
+            std::fs::create_dir_all(&og_images_dir)?;
+
+            // Create subdirectories
+            std::fs::create_dir_all(og_images_dir.join("blog"))?;
+            std::fs::create_dir_all(og_images_dir.join("updates"))?;
+            std::fs::create_dir_all(og_images_dir.join("notes"))?;
+
+            let generator = og_image::Generator::new(view_context.website_author.into())?;
+
+            // Helper function to generate OG image for a document
+            fn generate_doc_image(
+                generator: &og_image::Generator,
+                og_images_dir: &Path,
+                doc: &content::Document,
+            ) -> anyhow::Result<()> {
+                let (post_type, type_subdir) = match doc.document_type {
+                    content::DocumentType::Blog => ("blog", "blog"),
+                    content::DocumentType::Update => ("update", "updates"),
+                    content::DocumentType::Note => ("note", "notes"),
+                };
+
+                let options = og_image::OgImageOptions {
+                    post_type: post_type.to_string(),
+                    title: doc.metadata.title.clone(),
+                    datetime: doc.metadata.datetime,
+                };
+
+                let type_dir = og_images_dir.join(type_subdir);
+                let filename = format!("{}.png", doc.id.join("-"));
+                let output_path = type_dir.join(&filename);
+
+                generator
+                    .generate(&options, &output_path)
+                    .with_context(|| {
+                        format!("Failed to generate OG image for {}", doc.metadata.title)
+                    })?;
+
+                Ok(())
+            }
+
+            // Collect all documents
+            let mut all_docs = Vec::new();
+
+            // Add blog posts and updates
+            all_docs.extend(content.blog.documents.iter());
+            all_docs.extend(content.updates.documents.iter());
+
+            // Recursively collect notes
+            fn collect_notes<'a>(
+                docs: &mut Vec<&'a content::Document>,
+                folder: &'a content::DocumentFolderNode,
+            ) {
+                if let Some(index_document) = &folder.index_document {
+                    docs.push(index_document);
+                }
+                for child in folder.children.values() {
+                    match child {
+                        content::DocumentNode::Folder(folder) => {
+                            collect_notes(docs, folder);
+                        }
+                        content::DocumentNode::Document { document } => {
+                            docs.push(document);
+                        }
+                    }
+                }
+            }
+
+            collect_notes(&mut all_docs, &content.notes.documents);
+
+            // Generate images in parallel
+            all_docs
+                .par_iter()
+                .try_for_each(|doc| generate_doc_image(&generator, &og_images_dir, doc))?;
+
+            anyhow::Ok(())
+        })?;
+    } else {
+        timer.step(
+            "Skipped OG image generation in fast mode",
+            || anyhow::Ok(()),
+        )?;
+    }
 
     timer.step("Wrote blog index", || {
         views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
