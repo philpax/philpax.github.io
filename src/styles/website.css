@@ -4,6 +4,8 @@
   --color-secondary: #cccccc;
   --background-color: #3c2954;
   --background-color-secondary: #6f4c9a;
+  --code-label-bg: hsl(220, 27%, 20%);
+  --code-label-color: #ffffff;
 }
 
 --light-mode {
@@ -11,6 +13,8 @@
   --color-secondary: #5d5569;
   --background-color: #f8f6fa;
   --background-color-secondary: #ebe5f2;
+  --code-label-bg: #e0dce5;
+  --code-label-color: #5c6166;
 }
 
 /* Root variables */
