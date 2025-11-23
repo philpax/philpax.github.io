@@ -1,118 +1,77 @@
 use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::{DateTime, Utc};
-use std::{path::Path, sync::LazyLock};
+use std::{path::Path, sync::Arc};
 
 const IMAGE_WIDTH: u32 = 1200;
 const IMAGE_HEIGHT: u32 = 630;
-const BACKGROUND_COLOR: &str = "#3c2954";
-const TEXT_COLOR: &str = "#ffffff";
-const BOTTOM_MARGIN: f32 = 80.0;
-const SIDE_PADDING: f32 = 100.0; // Padding on each side
-const TOP_PADDING: f32 = 60.0;
-const TYPE_FONT_SIZE: f32 = 32.0;
-const AUTHOR_FONT_SIZE: f32 = 32.0;
-const DATE_FONT_SIZE: f32 = 28.0;
-const TITLE_MAX_FONT_SIZE: f32 = 80.0;
-const TITLE_MIN_FONT_SIZE: f32 = 40.0;
-const LINE_SPACING: f32 = 20.0;
-const MAX_TEXT_WIDTH: f32 = IMAGE_WIDTH as f32 - (SIDE_PADDING * 2.0);
-const ICON_SIZE: f32 = 40.0; // Size of the circular icon
-const ICON_MARGIN: f32 = 12.0; // Space between icon and text
+const SIDE_PADDING: f32 = 40.0; // Padding on each side
 
+#[derive(Default)]
 pub struct OgImageOptions {
     pub post_type: String,
     pub title: String,
-    pub author: String,
     pub datetime: Option<DateTime<Utc>>,
 }
 
-impl Default for OgImageOptions {
-    fn default() -> Self {
-        Self {
-            post_type: String::new(),
-            title: String::new(),
-            author: "philpax".to_string(),
-            datetime: None,
-        }
-    }
+pub struct Generator {
+    author: String,
+    og_base_data_url: String,
+    fontdb: Arc<fontdb::Database>,
 }
-
-/// Generate an OpenGraph preview image with the given options
-pub fn generate_og_image(options: &OgImageOptions, output_path: &Path) -> Result<()> {
-    // Calculate dynamic title font size based on length
-    let title_font_size = calculate_title_font_size(&options.title);
-
-    // Load icon and convert to base64
-    let icon_data_url = load_icon_as_data_url();
-
-    // Generate SVG
-    let svg_content = generate_svg(
-        &options.post_type,
-        &options.title,
-        &options.author,
-        options.datetime.as_ref(),
-        title_font_size,
-        icon_data_url,
-    );
-
-    // Parse SVG with usvg
-    let mut opt = usvg::Options::default();
-    opt.fontdb_mut().load_system_fonts();
-
-    // Try to load Literata font from the static directory
-    if let Ok(font_data) = std::fs::read("static/fonts/Literata.woff2") {
-        opt.fontdb_mut().load_font_data(font_data);
-    }
-
-    let tree = usvg::Tree::from_str(&svg_content, &opt)?;
-
-    // Render to PNG
-    let pixmap_size = tree.size().to_int_size();
-    let mut pixmap = resvg::tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height())
-        .ok_or_else(|| anyhow::anyhow!("Failed to create pixmap"))?;
-
-    resvg::render(
-        &tree,
-        resvg::usvg::Transform::identity(),
-        &mut pixmap.as_mut(),
-    );
-
-    // Save PNG
-    if let Some(parent) = output_path.parent() {
-        std::fs::create_dir_all(parent)?;
-    }
-    pixmap.save_png(output_path)?;
-
-    Ok(())
-}
-
-fn load_icon_as_data_url() -> &'static str {
-    static ICON_DATA_URL: LazyLock<String> = LazyLock::new(|| {
-        std::fs::read("assets/baked/static/icon.png")
+impl Generator {
+    pub fn new(author: String) -> Result<Self> {
+        let og_base_data_url = std::fs::read("assets/source/ogbase.png")
             .map(|data| STANDARD.encode(&data))
-            .map(|e| format!("data:image/png;base64,{e}"))
-            .unwrap()
-    });
-    ICON_DATA_URL.as_str()
-}
+            .map(|e| format!("data:image/png;base64,{e}"))?;
 
-/// Calculate the appropriate font size for the title to fit within the image width
-fn calculate_title_font_size(title: &str) -> f32 {
-    // Estimate character width for Literata font (serif)
-    // Average character width ≈ font_size * 0.55 for this font
-    const AVG_CHAR_WIDTH_RATIO: f32 = 0.55;
+        let mut fontdb = fontdb::Database::new();
+        fontdb.load_font_data(std::fs::read("static/fonts/Literata.ttf")?);
+        let fontdb = Arc::new(fontdb);
 
-    let char_count = title.chars().count() as f32;
+        Ok(Self {
+            author,
+            og_base_data_url,
+            fontdb,
+        })
+    }
 
-    // Calculate the font size that would fit the text within MAX_TEXT_WIDTH
-    // estimated_width = char_count * font_size * AVG_CHAR_WIDTH_RATIO
-    // We want: estimated_width <= MAX_TEXT_WIDTH
-    // Therefore: font_size <= MAX_TEXT_WIDTH / (char_count * AVG_CHAR_WIDTH_RATIO)
-    let calculated_size = MAX_TEXT_WIDTH / (char_count * AVG_CHAR_WIDTH_RATIO);
+    /// Generate an OpenGraph preview image with the given options
+    pub fn generate(&self, options: &OgImageOptions, output_path: &Path) -> Result<()> {
+        // Generate SVG
+        let svg_content = generate_svg(
+            &options.post_type,
+            &options.title,
+            &self.author,
+            options.datetime.as_ref(),
+            &self.og_base_data_url,
+        );
 
-    // Clamp between min and max font sizes
-    calculated_size.clamp(TITLE_MIN_FONT_SIZE, TITLE_MAX_FONT_SIZE)
+        let opt = usvg::Options {
+            fontdb: self.fontdb.clone(),
+            ..Default::default()
+        };
+        let tree = usvg::Tree::from_str(&svg_content, &opt)?;
+
+        // Render to PNG
+        let pixmap_size = tree.size().to_int_size();
+        let mut pixmap = resvg::tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height())
+            .ok_or_else(|| anyhow::anyhow!("Failed to create pixmap"))?;
+
+        resvg::render(
+            &tree,
+            resvg::usvg::Transform::identity(),
+            &mut pixmap.as_mut(),
+        );
+
+        // Save PNG
+        if let Some(parent) = output_path.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
+        pixmap.save_png(output_path)?;
+
+        Ok(())
+    }
 }
 
 /// Generate SVG content for the OG image
@@ -121,41 +80,44 @@ fn generate_svg(
     title: &str,
     author: &str,
     datetime: Option<&DateTime<Utc>>,
-    title_font_size: f32,
-    icon_data_url: &str,
+    og_base_url: &str,
 ) -> String {
-    // Calculate vertical positions (from bottom up)
-    let author_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
-    let title_y = author_y - AUTHOR_FONT_SIZE - LINE_SPACING;
-    let type_y = title_y - title_font_size - LINE_SPACING;
+    const TEXT_COLOR: &str = "#ffffff";
+    const SECONDARY_TEXT_COLOR: &str = "#cccccc"; // --color-secondary from stylesheet
+    const BOTTOM_MARGIN: f32 = 40.0;
+    const TOP_PADDING: f32 = 40.0;
+    const TYPE_FONT_SIZE: f32 = 30.0;
+    const AUTHOR_FONT_SIZE: f32 = 40.0;
+    const DATE_FONT_SIZE: f32 = 30.0;
 
-    // Icon positioning
-    let icon_x = SIDE_PADDING;
-    let icon_y = author_y - AUTHOR_FONT_SIZE / 2.0 - ICON_SIZE / 2.0; // Center vertically with text
-    let icon_center_x = icon_x + ICON_SIZE / 2.0;
-    let icon_center_y = icon_y + ICON_SIZE / 2.0;
-    let icon_radius = ICON_SIZE / 2.0;
-    let author_text_x = icon_x + ICON_SIZE + ICON_MARGIN;
+    // Calculate dynamic title font size based on length
+    // let title_font_size = calculate_title_font_size(&options.title);
+    let title_font_size = 40.0;
 
     // Text positioning
-    let type_text_x = SIDE_PADDING;
-    let title_text_x = SIDE_PADDING;
-    let date_text_x = IMAGE_WIDTH as f32 - SIDE_PADDING;
-    let date_text_y = TOP_PADDING;
+    let title_x = SIDE_PADDING;
+    let title_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
+    let type_x = SIDE_PADDING;
+    let type_y = title_y - title_font_size - 4.0;
+    let author_text_x = IMAGE_WIDTH as f32 - SIDE_PADDING;
+    let author_text_y = TOP_PADDING + AUTHOR_FONT_SIZE;
+    let date_text_x = author_text_x;
+    let date_text_y = author_text_y + DATE_FONT_SIZE + 6.0;
 
-    // Dimensions and colors
-    let image_width = IMAGE_WIDTH;
-    let image_height = IMAGE_HEIGHT;
-    let text_color = TEXT_COLOR;
-    let background_color = BACKGROUND_COLOR;
-    let type_font_size = TYPE_FONT_SIZE;
-    let author_font_size = AUTHOR_FONT_SIZE;
-    let date_font_size = DATE_FONT_SIZE;
-    let icon_size = ICON_SIZE;
+    // Truncate the title to a maximum length, ending with a ... if truncated
+    const MAX_TITLE_LENGTH: usize = 50;
+    let title = if title.len() > MAX_TITLE_LENGTH {
+        format!(
+            "{}...",
+            title.chars().take(MAX_TITLE_LENGTH).collect::<String>()
+        )
+    } else {
+        title.to_string()
+    };
 
     // Escape XML special characters and lowercase
     let post_type = escape_xml(&post_type.to_lowercase());
-    let title = escape_xml(title);
+    let title = escape_xml(&title);
     let author = escape_xml(&author.to_lowercase());
 
     // Format date if present
@@ -163,7 +125,7 @@ fn generate_svg(
         let date_str = dt.format("%Y-%m-%d").to_string();
         let escaped_date_str = escape_xml(&date_str);
         format!(
-            r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{date_font_size}px" opacity="0.7" text-anchor="end">{escaped_date_str}</text>"#
+            r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">{escaped_date_str}</text>"#
         )
     } else {
         String::new()
@@ -171,7 +133,7 @@ fn generate_svg(
 
     format!(
         r#"<?xml version="1.0" encoding="UTF-8"?>
-<svg width="{image_width}" height="{image_height}" xmlns="http://www.w3.org/2000/svg">
+<svg width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       @font-face {{
@@ -180,25 +142,17 @@ fn generate_svg(
       }}
       text {{
         font-family: 'Literata', serif;
-        fill: {text_color};
       }}
     </style>
-    <clipPath id="icon-circle">
-      <circle cx="{icon_center_x}" cy="{icon_center_y}" r="{icon_radius}"/>
-    </clipPath>
   </defs>
 
-  <rect width="100%" height="100%" fill="{background_color}"/>
+  <image href="{og_base_url}" x="0" y="0" width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}"/>
 
   {date_element}
-  <text x="{type_text_x}" y="{type_y}" font-size="{type_font_size}px" opacity="0.7">{post_type}</text>
-  <text x="{title_text_x}" y="{title_y}" font-size="{title_font_size}px" font-weight="bold">{title}</text>
+  <text x="{type_x}" y="{type_y}" font-size="{TYPE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}">{post_type}</text>
+  <text x="{title_x}" y="{title_y}" font-size="{title_font_size}px" fill="{TEXT_COLOR}">{title}</text>
 
-  <!-- Icon with circular clip and white border -->
-  <image href="{icon_data_url}" x="{icon_x}" y="{icon_y}" width="{icon_size}" height="{icon_size}" clip-path="url(#icon-circle)"/>
-  <circle cx="{icon_center_x}" cy="{icon_center_y}" r="{icon_radius}" fill="none" stroke="white" stroke-width="2"/>
-
-  <text x="{author_text_x}" y="{author_y}" font-size="{author_font_size}px" opacity="0.7">{author}</text>
+  <text x="{author_text_x}" y="{author_text_y}" font-size="{AUTHOR_FONT_SIZE}px" text-anchor="end" fill="{TEXT_COLOR}">{author}</text>
 </svg>"#
     )
 }

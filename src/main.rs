@@ -275,8 +275,11 @@ fn main() -> anyhow::Result<()> {
             std::fs::create_dir_all(og_images_dir.join("updates"))?;
             std::fs::create_dir_all(og_images_dir.join("notes"))?;
 
+            let generator = og_image::Generator::new(view_context.website_author.into())?;
+
             // Helper function to generate OG image for a document
             fn generate_doc_image(
+                generator: &og_image::Generator,
                 og_images_dir: &Path,
                 doc: &content::Document,
             ) -> anyhow::Result<()> {
@@ -289,7 +292,6 @@ fn main() -> anyhow::Result<()> {
                 let options = og_image::OgImageOptions {
                     post_type: post_type.to_string(),
                     title: doc.metadata.title.clone(),
-                    author: "philpax".to_string(),
                     datetime: doc.metadata.datetime,
                 };
 
@@ -297,9 +299,11 @@ fn main() -> anyhow::Result<()> {
                 let filename = format!("{}.png", doc.id.join("-"));
                 let output_path = type_dir.join(&filename);
 
-                og_image::generate_og_image(&options, &output_path).with_context(|| {
-                    format!("Failed to generate OG image for {}", doc.metadata.title)
-                })?;
+                generator
+                    .generate(&options, &output_path)
+                    .with_context(|| {
+                        format!("Failed to generate OG image for {}", doc.metadata.title)
+                    })?;
 
                 Ok(())
             }
@@ -336,7 +340,7 @@ fn main() -> anyhow::Result<()> {
             // Generate images in parallel
             all_docs
                 .par_iter()
-                .try_for_each(|doc| generate_doc_image(&og_images_dir, doc))?;
+                .try_for_each(|doc| generate_doc_image(&generator, &og_images_dir, doc))?;
 
             anyhow::Ok(())
         })?;
