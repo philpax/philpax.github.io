@@ -34,10 +34,26 @@ pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
 }
 
 fn handle_connection(stream: &mut TcpStream, root_dir: &Path) -> std::io::Result<()> {
-    let mut buffer = [0; 1024];
-    let bytes_read = stream.read(&mut buffer)?;
+    let mut buffer = Vec::new();
+    let mut temp = [0; 1024];
 
-    let request = String::from_utf8_lossy(&buffer[..bytes_read]);
+    loop {
+        let bytes_read = stream.read(&mut temp)?;
+        if bytes_read == 0 {
+            return send_400(stream);
+        }
+        buffer.extend_from_slice(&temp[..bytes_read]);
+
+        // Check if we have the complete headers
+        if buffer.windows(4).any(|w| w == b"\r\n\r\n") {
+            break;
+        }
+        if buffer.len() > 16384 {
+            return send_400(stream); // Headers too large
+        }
+    }
+
+    let request = String::from_utf8_lossy(&buffer);
     let request_line = request.lines().next().unwrap_or("");
     let parts: Vec<&str> = request_line.split_whitespace().collect();
 
