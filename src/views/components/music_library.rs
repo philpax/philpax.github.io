@@ -170,11 +170,21 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
             margin: 0 0.5em;
         }}
 
+        .music-library .track .name-group {{
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }}
+
         .music-library .track .name {{
             color: {track_name};
-            flex: 1;
             white-space: nowrap;
-            flex-grow: 1;
+        }}
+
+        .music-library .track .play-count {{
+            color: {track_number};
+            margin-left: 0.5em;
+            white-space: nowrap;
         }}
 
         .music-library .track .artist {{
@@ -434,11 +444,22 @@ fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
         }
     });
 
+    let play_count = track.play_count.map(|count| {
+        html! {
+            <span class="play-count">
+                {count.to_string()}
+            </span>
+        }
+    });
+
     html! {
         <a class="track">
             <span class="number">{track_number}</span>
             <span class="middle">
-                <span class="name">{track.title.as_str()}</span>
+                <span class="name-group">
+                    <span class="name">{track.title.as_str()}</span>
+                    {play_count}
+                </span>
                 {artist}
             </span>
             <span class="length">{duration} <span class="heart">{if track.starred { "♥" } else { " " }}</span></span>
