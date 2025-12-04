@@ -145,7 +145,7 @@ impl<'a> MarkdownConverter<'a> {
                         ("loop", "true").into(),
                         (
                             "class",
-                            "border-2 border-(--color) w-full max-w-(--centered-content-width) mx-auto block"
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
                                 .to_string(),
                         )
                             .into(),
@@ -156,7 +156,7 @@ impl<'a> MarkdownConverter<'a> {
                         ("alt", i.alt.clone()).into(),
                         (
                             "class",
-                            "border-2 border-(--color) w-full max-w-(--centered-content-width) mx-auto block"
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
                                 .to_string(),
                         )
                             .into(),
