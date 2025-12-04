@@ -76,7 +76,6 @@ One of:
 ## Server
 
 - another 3090 or 4090. I have two 3090s in there, but more GPUs means more VRAM and more model parallelisation. I'd like to be able to run a GLM Air model (109B) with quantisation, which should be possible with 3x24GB GPUs.
-- 3x 24+TB hard drives. Can't be relying on a chonky external forever. Currently thinking about getting refurbished drives from Databricks, but they're all out of stock.
 
 # Misc
 
