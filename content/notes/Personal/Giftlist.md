@@ -34,10 +34,8 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
   - [The Art and Making of Control](https://www.goodreads.com/book/show/54974433-the-art-and-making-of-control-limited-edition)
   - [The Art of Remember Me](https://www.goodreads.com/book/show/17367274-the-art-of-remember-me)
   - [The Art of the Mass Effect Trilogy: Expanded Edition](https://www.goodreads.com/book/show/54608868-the-art-of-the-mass-effect-trilogy)
-  - [The Camera](https://www.goodreads.com/book/show/20501.The_Camera)
   - [The James Bond Archives](https://www.goodreads.com/book/show/14661626-the-james-bond-archives-)
   - [The World of Cyberpunk 2077](https://www.goodreads.com/book/show/51584768-the-world-of-cyberpunk-2077)
-  - [Tokyo Storefronts - The Artworks of Mateusz Urbanowicz](https://www.goodreads.com/book/show/40025407-tokyo-storefronts---the-artworks-of-mateusz-urbanowicz)
   - [Waneella: Pixelscapes](https://www.goodreads.com/book/show/209499026-waneella)
   - [WipEout Futurism: The Graphic Archives](https://www.goodreads.com/book/show/210016015-wipeout-futurism)
 
