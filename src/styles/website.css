@@ -49,6 +49,13 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: "Iosevka";
+  src: url("/fonts/Iosevka-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Code blocks */
 code span {
   display: inline;

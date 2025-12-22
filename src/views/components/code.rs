@@ -1,11 +1,11 @@
-use crate::{syntax::SyntaxHighlighter, views::FONT_STYLE};
+use crate::{syntax::SyntaxHighlighter, views::{CODE_FONT_STYLE, FONT_STYLE}};
 
 // Note: This component uses references so it's kept as a regular function
 // rather than using the custom component syntax
 pub fn code(syntax: &SyntaxHighlighter, lang: Option<&str>, code: &str) -> paxhtml::Element {
     paxhtml::html! {
         <pre class="code text-sm p-2 overflow-x-auto max-w-(--centered-content-width) mx-auto">
-            <code>
+            <code class={CODE_FONT_STYLE}>
                 <pre class={format!("\
                     bg-(--code-label-bg) text-(--code-label-color) -mt-2 mb-1 -ml-2 py-0.5 px-1 \
                     w-fit lowercase text-xs sticky -left-2 \

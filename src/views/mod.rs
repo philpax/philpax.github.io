@@ -68,6 +68,7 @@ impl CurrentPage {
 }
 
 pub const FONT_STYLE: &str = "font-['Literata',serif]";
+pub const CODE_FONT_STYLE: &str = "font-['Iosevka',monospace]";
 
 #[derive(Default)]
 /// Metadata for social media platforms like Twitter and OpenGraph
