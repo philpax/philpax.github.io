@@ -27,9 +27,9 @@ The most visible change was to adjust the styling, which was made easier by my s
 
 ![paxboard with styling updates](paxboard.png)
 
-Aside from that, it's mostly been internal changes. Inspired by [Lustre](https://hexdocs.pm/lustre/index.html)'s namespaced HTML elements, I moved all of the HTML element constructors into a `h` namespace, which stops them from polluting the global scope,[^table] but also helps clearly delineate view-shaped code:
+Aside from that, it's mostly been internal changes. Inspired by [Lustre](https://hexdocs.pm/lustre/index.html)'s namespaced HTML elements, I moved all of the HTML element constructors into a `lua:h` namespace, which stops them from polluting the global scope,[^table] but also helps clearly delineate view-shaped code:
 
-[^table]: The Lua `table` library being replaced by a HTML `table` constructor is not ideal.
+[^table]: The Lua `lua:table` library being replaced by a HTML `html:table` constructor is not ideal.
 
 ```lua
 local function layout(body)
@@ -90,7 +90,7 @@ This is because I'd designed it as a logo with a larger resolution in mind:
 
 I'd been hemming-and-hawing about the best way to fix this, but the answer was always going to be obvious: simplify the logo and ensure it pops at icon-size resolutions. Thankfully, due to a decision I made when I originally designed the logo, this ended up being relatively easy.
 
-Reader, I have lied to you. I said that "I" "designed" this icon, but what I actually mean is that I had Claude design a bespoke `canvas`-powered interface for deterministically generating the logo. This was absurdly overkill, but it let me spend less time in graphic design applications, so it served its goal well.
+Reader, I have lied to you. I said that "I" "designed" this icon, but what I actually mean is that I had Claude design a bespoke `html:canvas`-powered interface for deterministically generating the logo. This was absurdly overkill, but it let me spend less time in graphic design applications, so it served its goal well.
 
 Because of this, I was able to direct Claude to do follow-up work on the interface, including adding previews for different sizes, generating colours using [OKLCH](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl), and assigning those colours through basic iterative graph colouring[^graphcolouring]. After making these changes, I then proceeded to tweak the settings until I found a variant of the logo that I was happy with:
 

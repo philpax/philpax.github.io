@@ -12,7 +12,7 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 
 - comprehensions force an inside-out reading order that makes them extraordinarily painful to read when nested
 - comprehensions are effectively syntax sugar for `filter |> map`, such that `map |> filter` requires a second comprehension
-- the ternary syntax, in a fashion similar to comprehensions, requires parsing the code in inside-out order to understand what it will do in both the `True` and `False` cases
+- the ternary syntax, in a fashion similar to comprehensions, requires parsing the code in inside-out order to understand what it will do in both the `py:True` and `py:False` cases
 - lambdas are limited to one expression. Not one block, not one line, one expression.
 - whitespace sensitivity pushes the busywork of formatting onto humans, when autoformatters can do a better, more consistent job while being more amenable to copy-and-paste + code shuffling[^notpython]
 
@@ -39,7 +39,7 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 # Standard library
 
 - the standard library may be batteries-included, but half of those batteries have expired in the last decade, and some of the batteries were malformed to begin with
-- `datetime.datetime`. No. Bad. Do not name your type the same thing as your module. I cannot count the number of times I have gotten got by trying to use `datetime.timedelta` after a `from datetime import datetime`.
+- `py:datetime.datetime`. No. Bad. Do not name your type the same thing as your module. I cannot count the number of times I have gotten got by trying to use `py:datetime.timedelta` after a `py:from datetime import datetime`.
 - the reference documentation is not fun to browse through; [both](https://docs.python.org/3/tutorial/datastructures.html) [forms](https://docs.python.org/3/library/stdtypes.html#lists) are presented in book/tutorial format, making it difficult to find and link to specific functions
   - contrast [Ruby](https://ruby-doc.org/3.4.1/Array.html) or [Rust](https://doc.rust-lang.org/std/vec/struct.Vec.html) or [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), which let you easily navigate to the comparatively detailed docs for each function
 
@@ -63,7 +63,7 @@ This is an incomplete list that I will add to over time, and perhaps reformat; i
 - pass-by-copy-of-mutable-references enables spooky mutation at a distance, and the only way around this is defensive copying
 - exceptions. Please tell me how your function can fail ahead of time. You don't even have to make me deal with it, just make me aware that it _can_ fail! I don't want a 3AM Runtime Surprise™!
 - late-binding closures; to be fair, Go got this one wrong too, so I'm willing to forgive Python for having made this mistake much earlier
-- neither here nor there, but I prefer RAII to `with`. Not something to fail the language over, though.
+- neither here nor there, but I prefer RAII to `py:with`. Not something to fail the language over, though.
 
 # Closing thoughts
 

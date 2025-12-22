@@ -113,7 +113,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 True
 ```
 
-If you do not see `True`, God help you and good luck. The above shell _should_ work for getting you to a valid Python+CUDA-on-NixOS environment, but with a stack that's this brittle, who knows?
+If you do not see `py:True`, God help you and good luck. The above shell _should_ work for getting you to a valid Python+CUDA-on-NixOS environment, but with a stack that's this brittle, who knows?
 
 Once you're good to go, you can run the training command. Consider tweaking:
 

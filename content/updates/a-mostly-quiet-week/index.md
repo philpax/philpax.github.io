@@ -46,6 +46,6 @@ As part of this project, I trained a FLUX.1-dev LoRA, which is not a conceptuall
 
 # website
 
-When I added the above note, I noticed that the code blocks were blowing out the layout's width, despite `max-width: 100%` being set. After trying out a few approaches with and without the help of Claude, I eventually threw in the towel and added a numerical `max-width` for the code blocks. I'm not really sure why it wasn't working, and I'm sure I could get to the bottom of it, but my patience had very much run out by that point.
+When I added the above note, I noticed that the code blocks were blowing out the layout's width, despite `css:max-width: 100%` being set. After trying out a few approaches with and without the help of Claude, I eventually threw in the towel and added a numerical `css:max-width` for the code blocks. I'm not really sure why it wasn't working, and I'm sure I could get to the bottom of it, but my patience had very much run out by that point.
 
-Anyway! I noticed it didn't look _terrible_, so I applied the same `max-width` for images and varied the `max-width` size for this interstital content between posts and notes. The upshot is that I can now call this hackfix an intentional design feature. We take our wins where we can get them.
+Anyway! I noticed it didn't look _terrible_, so I applied the same `css:max-width` for images and varied the `css:max-width` size for this interstital content between posts and notes. The upshot is that I can now call this hackfix an intentional design feature. We take our wins where we can get them.

@@ -51,6 +51,28 @@ impl SyntaxHighlighter {
             .and_then(|l| self.syntax_set.find_syntax_by_token(l))
             .unwrap_or_else(|| self.syntax_set.find_syntax_by_name("plaintext").unwrap())
     }
+
+    /// Check if a language token is valid/recognized
+    pub fn is_valid_language(&self, language: &str) -> bool {
+        self.syntax_set.find_syntax_by_token(language).is_some()
+    }
+
+    /// Parse inline code with optional language prefix (e.g., "rs:Option<T>")
+    /// Returns (language, code) where language is Some if a valid prefix was found
+    pub fn parse_inline_code<'a>(&self, code: &'a str) -> (Option<&'a str>, &'a str) {
+        // Look for pattern: alphabetic chars followed by colon
+        if let Some(colon_pos) = code.find(':') {
+            let potential_lang = &code[..colon_pos];
+            // Must be non-empty, alphabetic, and a valid language
+            if !potential_lang.is_empty()
+                && potential_lang.chars().all(|c| c.is_ascii_alphabetic())
+                && self.is_valid_language(potential_lang)
+            {
+                return (Some(potential_lang), &code[colon_pos + 1..]);
+            }
+        }
+        (None, code)
+    }
     pub fn highlight_code(
         &self,
         language: Option<&str>,

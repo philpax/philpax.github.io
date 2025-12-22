@@ -65,7 +65,7 @@ All we need to do is to extract the URL from that link (the `/property-house-vic
 <a href='/(.+?)' class='name' rel='listingName'>
 ```
 
-After storing all the results from the above regular expression, we can then use another regular expression to extract the next page link (which looks like `<li class="nextLink"><a href="/buy/omitted-for-clarity" rel="newSearchPage">Next</a>`):
+After storing all the results from the above regular expression, we can then use another regular expression to extract the next page link (which looks like `html:<li class="nextLink"><a href="/buy/omitted-for-clarity" rel="newSearchPage">Next</a>`):
 
 ```re
 <li class="nextLink"><a href="(.+?)"
@@ -81,13 +81,13 @@ The page for each house contains vital information that we can collect and use f
 
 Since most of these are presented in the same way, the resulting regular expressions are quite similar. They all function in the same fashion: they extract the contents of a given HTML tag. For example, here are two of the expressions:
 
-Getting the description of the house (Example: `<p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`):
+Getting the description of the house (Example: `html:<p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`):
 
 ```re
 <p class="body">(.*?)</p>
 ```
 
-Getting the number of bedrooms (Example: `<li>Bedrooms:<span>4</span></li>`):
+Getting the number of bedrooms (Example: `html:<li>Bedrooms:<span>4</span></li>`):
 
 ```re
 <li>Bedrooms:<span>([0-9]+?)</span></li>
@@ -195,7 +195,7 @@ To demonstrate this, here's what I did for the journey planner:
 
 From the resulting Fiddler dump, we can begin to divine what we need to know for automating this service. First, we can see that the request (the text under TextView in the top-half) submitted is [URL-encoded](http://en.wikipedia.org/wiki/Percent-encoding#The_application.2Fx-www-form-urlencoded_type); this lets us know _how_ to send the data to the service. After that, we can break down the request data; the names of each field in the request are fairly self-explanatory, giving us everything we need to construct our very own request.
 
-Next up, understanding the response (bottom-half of the window). Looking at the response in Raw view, something becomes apparent: this is actually more HTML! Since we only need _one_ thing from this response, the travel time (`<span>54min</span>`), this is a problem easily solved with, you guessed it, regular expressions:
+Next up, understanding the response (bottom-half of the window). Looking at the response in Raw view, something becomes apparent: this is actually more HTML! Since we only need _one_ thing from this response, the travel time (`html:<span>54min</span>`), this is a problem easily solved with, you guessed it, regular expressions:
 
 Extract the time span from the response:
 
@@ -379,7 +379,7 @@ The last step remains: presenting all of the data. The use of vibe.d makes this 
 
 Using [Bootstrap](http://getbootstrap.com/) allowed me to concentrate on presenting the content without having to worry about styling concerns. Its grid system ensured that I could easily use more complicated layouts, such as the two-column layout used by the list of houses.
 
-The function to render a house is quite simple: we define our basic layout - heading and body - and then fill it with data. A few helper functions (unshown), such as `renderTableRow`, are used to ensure that adding new data to the layout is easy. In the interest of showing the basic concept, only a few data points are shown in the code below.
+The function to render a house is quite simple: we define our basic layout - heading and body - and then fill it with data. A few helper functions (unshown), such as `d:renderTableRow`, are used to ensure that adding new data to the layout is easy. In the interest of showing the basic concept, only a few data points are shown in the code below.
 
 ```pug
 - void renderHouse(T)(ref T house)

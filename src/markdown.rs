@@ -124,11 +124,15 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Break(_) => b::br([]),
-            Node::InlineCode(c) => components::inline_code(
-                self.context.syntax,
-                !matches!(parent_node, Some(Node::Heading(_))),
-                &c.value,
-            ),
+            Node::InlineCode(c) => {
+                let (lang, code) = self.context.syntax.parse_inline_code(&c.value);
+                components::inline_code(
+                    self.context.syntax,
+                    !matches!(parent_node, Some(Node::Heading(_))),
+                    lang,
+                    code,
+                )
+            }
             Node::Image(i) => {
                 // Check if the URL ends with a video extension
                 let is_video = i.url.to_lowercase().ends_with(".mp4")
