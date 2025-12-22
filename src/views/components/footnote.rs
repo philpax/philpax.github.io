@@ -62,7 +62,7 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
             </a>
 
             // Inline popup content (small screens only) - toggled by checkbox
-            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1">
+            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1 [&_a]:text-[var(--background-color)] [&_a]:decoration-[var(--background-color-secondary)] [&_a:hover]:text-[var(--background-color-secondary)]">
                 {children.clone()}
             </span>
 

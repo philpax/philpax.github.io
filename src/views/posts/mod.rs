@@ -62,7 +62,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 content_elements.push(html! {
                     <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:text-right 2xl:sticky 2xl:top-4" id="toc-sticky">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        <div class="toc">
+                        <div class="toc [&_ul_ul]:pr-6 [&_ul_ul]:pl-0 [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                             {hierarchy_list}
                         </div>
                     </aside>
@@ -83,7 +83,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 content_elements.push(html! {
                     <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        <div class={POST_BODY_CONTENT_MARGIN_LEFT_CLASS}>
+                        <div class={format!("{POST_BODY_CONTENT_MARGIN_LEFT_CLASS} [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
                             {hierarchy_list}
                         </div>
                     </aside>
@@ -168,8 +168,11 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
             return paxhtml::Element::Empty;
         }
 
+        // Top-level: no padding; nested: indent left (or right for sidebar via CSS)
+        let ul_class = if toplevel { "list-none p-0 m-0" } else { "list-none m-0 pl-6" };
+
         html! {
-            <ul>
+            <ul class={ul_class}>
                 {if toplevel {
                     // Bodge: use lowercase introduction text if all of the headings are lowercase
                     let all_headings_lowercase = children.iter().all(|h| h.heading_text.to_lowercase() == h.heading_text);

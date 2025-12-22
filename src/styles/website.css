@@ -49,21 +49,6 @@
   font-style: italic;
 }
 
-/* Footnotes - inline popup (small screens, inverted colors) */
-.footnote-inline a {
-  color: var(--background-color);
-  text-decoration-color: var(--background-color-secondary);
-}
-
-.footnote-inline a:hover {
-  color: var(--background-color-secondary);
-  text-decoration-color: color-mix(
-    in srgb,
-    var(--background-color-secondary) 80%,
-    transparent
-  );
-}
-
 /* Code blocks */
 code span {
   display: inline;
@@ -72,42 +57,4 @@ code span {
 /* Inline code background */
 code.code {
   background-color: var(--code-inline-bg);
-}
-
-/* Table of contents */
-.toc a:not(.active) {
-  color: var(--color-secondary);
-  text-decoration-line: none;
-}
-.toc a:not(.active):hover {
-  color: var(--color);
-}
-
-.toc ul {
-  list-style: none;
-  padding-left: 0em;
-  margin: 0;
-}
-
-.toc ul ul {
-  padding-left: 1.5em;
-}
-
-/* Collapsible notes hierarchy */
-.peer:checked ~ .peer-checked\:hidden {
-  display: none;
-}
-
-.peer:checked ~ .peer-checked\:inline {
-  display: inline;
-}
-
-.peer:checked ~ .peer-checked\:block {
-  display: block;
-}
-
-/* TOC sidebar in grid layout */
-.toc-sidebar .toc ul ul {
-  padding-right: 1.5em;
-  padding-left: 0;
 }
