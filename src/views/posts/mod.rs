@@ -144,7 +144,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                     <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
                 </a>
             </header>
-            <div class={format!("post-body {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" })}>
+            <div class={format!("post-body {} {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" }, if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" })}>
                 {post_body_rendered}
             </div>
         </article>
