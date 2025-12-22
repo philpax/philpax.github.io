@@ -34,12 +34,14 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
     ";
 
     // Sidenote: hidden on small screens, floats right on 2xl+
+    // Has background and z-index to overlay the sticky TOC when scrolling
     let sidenote_class = "\
         sidenote hidden \
         2xl:block 2xl:float-right 2xl:clear-right \
         2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] \
         2xl:-mr-[calc((100vw-var(--body-content-width))/2-3rem)] \
-        text-sm border-t-2 border-[var(--color-secondary)] pt-0 mb-4\
+        text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4 \
+        backdrop-blur-lg z-10 relative\
     ";
 
     paxhtml::html! {

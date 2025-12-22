@@ -57,12 +57,12 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             let mut content_elements = vec![];
 
-            // TOC sidebar (2xl only) - floats left into margin
+            // TOC sidebar (2xl only) - floats right into margin, above sidenotes
             if let Some(hierarchy_list) = toc.clone() {
                 content_elements.push(html! {
-                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:text-right 2xl:sticky 2xl:top-4" id="toc-sticky">
+                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-right 2xl:clear-right 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-mr-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pl-2 2xl:sticky 2xl:top-4" id="toc-sticky">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        <div class="toc [&_ul_ul]:pr-6 [&_ul_ul]:pl-0 [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                        <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                             {hierarchy_list}
                         </div>
                     </aside>
