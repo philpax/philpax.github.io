@@ -52,31 +52,35 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
     let post_body_rendered = match post_body {
         PostBody::Full => {
-            let mut elements = vec![];
-
             let h3_classname = "text-lg font-bold";
-
             let toc = document_to_html_list(context, document);
+
+            let mut content_elements = vec![];
+
+            // TOC sidebar (2xl only) - floats left into margin
             if let Some(hierarchy_list) = toc.clone() {
-                elements.push(html! {
-                    <aside class="toc sticky top-4 float-right -mr-64 mt-0 w-60 hidden 2xl:block" id="toc-sticky">
+                content_elements.push(html! {
+                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:text-right 2xl:sticky 2xl:top-4" id="toc-sticky">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
-                        {hierarchy_list}
+                        <div class="toc">
+                            {hierarchy_list}
+                        </div>
                     </aside>
                 });
             }
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
-                elements.push(html! {
+                content_elements.push(html! {
                     <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
 
             let mut converter = MarkdownConverter::new(context);
-            elements.push(converter.convert(&document.description, None));
+            content_elements.push(converter.convert(&document.description, None));
 
+            // Inline TOC for small screens (between description and rest of content)
             if let Some(hierarchy_list) = toc {
-                elements.push(html! {
+                content_elements.push(html! {
                     <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
                         <div class={POST_BODY_CONTENT_MARGIN_LEFT_CLASS}>
@@ -87,10 +91,10 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             }
 
             if let Some(content) = document.rest_of_content.as_ref() {
-                elements.push(converter.convert(content, None));
+                content_elements.push(converter.convert(content, None));
             }
 
-            paxhtml::Element::from(elements)
+            paxhtml::Element::from(content_elements)
         }
         PostBody::Description => html! {
             <>

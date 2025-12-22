@@ -156,7 +156,7 @@ pub fn layout(
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class={format!("max-w-[860px] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-4 py-2 transition-all duration-200")}>
+                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-all duration-200")}>
                     <header>
                         <div class="flex flex-col md:flex-row md:items-center md:mt-2">
                             <div id="top-bar" class="flex h-[var(--header-height)] items-center md:mr-8 justify-center md:flex-none">

@@ -31,13 +31,19 @@ impl SyntaxHighlighter {
     }
 
     pub fn dark_theme_css(&self) -> String {
-        css_for_theme_with_class_style(&self.theme_set.themes[self.dark_theme()], ClassStyle::Spaced)
-            .unwrap()
+        css_for_theme_with_class_style(
+            &self.theme_set.themes[self.dark_theme()],
+            ClassStyle::Spaced,
+        )
+        .unwrap()
     }
 
     pub fn light_theme_css(&self) -> String {
-        css_for_theme_with_class_style(&self.theme_set.themes[self.light_theme()], ClassStyle::Spaced)
-            .unwrap()
+        css_for_theme_with_class_style(
+            &self.theme_set.themes[self.light_theme()],
+            ClassStyle::Spaced,
+        )
+        .unwrap()
     }
 
     pub fn lookup_language(&self, language: Option<&str>) -> &SyntaxReference {

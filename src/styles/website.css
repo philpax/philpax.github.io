@@ -26,6 +26,11 @@
   --header-link-height: 2em;
   --header-link-item-spacing: 0.5em;
   --meta-spacing: 0.25em;
+  /* Body layout */
+  --body-max-width: 860px;
+  --body-padding: 1rem;
+  --body-content-width: calc(var(--body-max-width) - var(--body-padding) * 2);
+  /* Content max-widths */
   --centered-content-width: 750px;
 }
 
@@ -44,13 +49,13 @@
   font-style: italic;
 }
 
-/* Footnotes */
-.footnote a {
+/* Footnotes - inline popup (small screens, inverted colors) */
+.footnote-inline a {
   color: var(--background-color);
   text-decoration-color: var(--background-color-secondary);
 }
 
-.footnote a:hover {
+.footnote-inline a:hover {
   color: var(--background-color-secondary);
   text-decoration-color: color-mix(
     in srgb,
@@ -99,4 +104,10 @@ code.code {
 
 .peer:checked ~ .peer-checked\:block {
   display: block;
+}
+
+/* TOC sidebar in grid layout */
+.toc-sidebar .toc ul ul {
+  padding-right: 1.5em;
+  padding-left: 0;
 }
