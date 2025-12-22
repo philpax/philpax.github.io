@@ -1,4 +1,7 @@
-use crate::{syntax::SyntaxHighlighter, views::{CODE_FONT_STYLE, FONT_STYLE}};
+use crate::{
+    syntax::SyntaxHighlighter,
+    views::{CODE_FONT_STYLE, FONT_STYLE},
+};
 
 // Note: This component uses references so it's kept as a regular function
 // rather than using the custom component syntax

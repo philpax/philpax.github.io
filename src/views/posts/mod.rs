@@ -169,7 +169,11 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
         }
 
         // Top-level: no padding; nested: indent left (or right for sidebar via CSS)
-        let ul_class = if toplevel { "list-none p-0 m-0" } else { "list-none m-0 pl-6" };
+        let ul_class = if toplevel {
+            "list-none p-0 m-0"
+        } else {
+            "list-none m-0 pl-6"
+        };
 
         html! {
             <ul class={ul_class}>
