@@ -31,7 +31,7 @@
   --body-padding: 1rem;
   --body-content-width: calc(var(--body-max-width) - var(--body-padding) * 2);
   /* Content max-widths */
-  --centered-content-width: 750px;
+  --centered-content-width: min(calc(var(--body-content-width) * 0.925), 100%);
 }
 
 /* Fonts */
