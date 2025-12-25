@@ -78,7 +78,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 });
             }
 
-            let mut converter = MarkdownConverter::new(context);
+            let mut converter = MarkdownConverter::new(context).with_sidenotes();
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)

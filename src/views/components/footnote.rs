@@ -5,11 +5,16 @@ pub struct FootnoteProps {
     pub children: Vec<paxhtml::Element>,
     #[allow(dead_code)]
     pub class: Option<String>,
+    /// When true, footnotes display as sidenotes on wide screens (2xl+).
+    /// When false, footnotes are always inline.
+    pub sidenotes_enabled: bool,
 }
 
 /// Footnote component with dual display:
-/// - Small screens: inline checkbox toggle (existing behavior)
-/// - Wide screens (2xl+): sidenote floats into right margin with bidirectional linking
+/// - When sidenotes_enabled=false: inline checkbox toggle on all screens
+/// - When sidenotes_enabled=true:
+///   - Small screens: inline checkbox toggle
+///   - Wide screens (2xl+): sidenote floats into right margin with bidirectional linking
 ///
 /// Uses only inline elements (<span>, <small>) to avoid breaking <p> tags.
 /// Based on Tufte CSS sidenote pattern.
@@ -26,6 +31,23 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
         hover:bg-[var(--color-secondary)] relative \
         before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-[var(--background-color-secondary)]\
     ";
+
+    // When sidenotes are disabled, render inline-only footnote
+    if !props.sidenotes_enabled {
+        return paxhtml::html! {
+            <span class="footnote m-0" id={ref_id}>
+                <input r#type="checkbox" id={id.clone()} class="peer hidden" autocomplete="off" />
+                <label r#for={id} class="inline-block cursor-pointer select-none">
+                    <sup class={sup_class}>
+                        {&props.identifier}
+                    </sup>
+                </label>
+                <span class="footnote-inline hidden peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1 [&_a]:text-[var(--background-color)] [&_a]:decoration-[var(--background-color-secondary)] [&_a:hover]:text-[var(--background-color-secondary)]">
+                    {children}
+                </span>
+            </span>
+        };
+    }
 
     // Styling for the sidenote's number (span, not sup - full height, no vertical offset)
     let sidenote_number_class = "\

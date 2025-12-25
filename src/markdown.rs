@@ -17,6 +17,7 @@ pub struct MarkdownConverter<'a> {
     pub without_blocking_elements: bool,
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
+    pub sidenotes_enabled: bool,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>) -> Self {
@@ -26,6 +27,7 @@ impl<'a> MarkdownConverter<'a> {
             without_blocking_elements: false,
             footnote_counter: HashMap::new(),
             next_footnote_number: 1,
+            sidenotes_enabled: false,
         }
     }
 
@@ -33,6 +35,13 @@ impl<'a> MarkdownConverter<'a> {
     /// instead, just return their children.
     pub fn without_blocking_elements(mut self) -> Self {
         self.without_blocking_elements = true;
+        self
+    }
+
+    /// Enable sidenotes for footnotes on wide screens (2xl+).
+    /// Only use this for full article pages (blog, updates, notes).
+    pub fn with_sidenotes(mut self) -> Self {
+        self.sidenotes_enabled = true;
         self
     }
 
@@ -207,8 +216,9 @@ impl<'a> MarkdownConverter<'a> {
                     .without_blocking_elements()
                     .convert_many(&definition, None)];
 
+                let sidenotes_enabled = self.sidenotes_enabled;
                 paxhtml::html! {
-                    <Footnote identifier={footnote_number.to_string()}>
+                    <Footnote identifier={footnote_number.to_string()} sidenotes_enabled={sidenotes_enabled}>
                         #{children}
                     </Footnote>
                 }
