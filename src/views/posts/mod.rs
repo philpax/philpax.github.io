@@ -57,13 +57,16 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
             let mut content_elements = vec![];
 
-            // TOC sidebar (2xl only) - floats right into margin, above sidenotes
+            // TOC sidebar (2xl only) - floats left into margin
+            // Uses flex justify-end + w-max so longest item aligns to right edge of column
             if let Some(hierarchy_list) = toc.clone() {
                 content_elements.push(html! {
-                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-right 2xl:clear-right 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-mr-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pl-2 2xl:sticky 2xl:top-4" id="toc-sticky">
-                        <h3 class={h3_classname}>"Table of Contents"</h3>
-                        <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
-                            {hierarchy_list}
+                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
+                        <div class="w-max max-w-full">
+                            <h3 class={h3_classname}>"Table of Contents"</h3>
+                            <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                                {hierarchy_list}
+                            </div>
                         </div>
                     </aside>
                 });

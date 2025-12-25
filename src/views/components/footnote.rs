@@ -33,15 +33,13 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
         before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-[var(--background-color-secondary)]\
     ";
 
-    // Sidenote: hidden on small screens, floats right on 2xl+
-    // Has background and z-index to overlay the sticky TOC when scrolling
+    // Sidenote: hidden on small screens, floats right into right margin on 2xl+
     let sidenote_class = "\
         sidenote hidden \
         2xl:block 2xl:float-right 2xl:clear-right \
         2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] \
         2xl:-mr-[calc((100vw-var(--body-content-width))/2-3rem)] \
-        text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4 \
-        backdrop-blur-lg z-10 relative\
+        text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4\
     ";
 
     paxhtml::html! {
