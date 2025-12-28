@@ -1,17 +1,19 @@
 use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::{DateTime, Utc};
-use std::{path::Path, sync::Arc};
+use image::{GenericImageView, ImageEncoder, ImageReader};
+use std::{io::Cursor, path::Path, sync::Arc};
 
 const IMAGE_WIDTH: u32 = 1200;
 const IMAGE_HEIGHT: u32 = 630;
 const SIDE_PADDING: f32 = 40.0; // Padding on each side
 
 #[derive(Default)]
-pub struct OgImageOptions {
+pub struct OgImageOptions<'a> {
     pub post_type: String,
     pub title: String,
     pub datetime: Option<DateTime<Utc>>,
+    pub hero_image_path: Option<&'a Path>,
 }
 
 pub struct Generator {
@@ -38,13 +40,20 @@ impl Generator {
 
     /// Generate an OpenGraph preview image with the given options
     pub fn generate(&self, options: &OgImageOptions, output_path: &Path) -> Result<()> {
+        // Determine the background image data URL
+        let bg_data_url = if let Some(hero_path) = options.hero_image_path {
+            create_blurred_darkened_background(hero_path)?
+        } else {
+            self.og_base_data_url.clone()
+        };
+
         // Generate SVG
         let svg_content = generate_svg(
             &options.post_type,
             &options.title,
             &self.author,
             options.datetime.as_ref(),
-            &self.og_base_data_url,
+            &bg_data_url,
         );
 
         let opt = usvg::Options {
@@ -164,4 +173,74 @@ fn escape_xml(s: &str) -> String {
         .replace('>', "&gt;")
         .replace('"', "&quot;")
         .replace('\'', "&apos;")
+}
+
+/// Create a blurred and darkened background image from a hero image
+fn create_blurred_darkened_background(hero_path: &Path) -> Result<String> {
+    // Load the hero image
+    let img = ImageReader::open(hero_path)?.decode()?;
+
+    // Calculate crop dimensions for OG image aspect ratio (1200x630)
+    let (orig_width, orig_height) = img.dimensions();
+    let target_aspect = IMAGE_WIDTH as f64 / IMAGE_HEIGHT as f64;
+    let orig_aspect = orig_width as f64 / orig_height as f64;
+
+    let (crop_width, crop_height) = if orig_aspect > target_aspect {
+        // Image is wider than target, crop width
+        let new_width = (orig_height as f64 * target_aspect) as u32;
+        (new_width, orig_height)
+    } else {
+        // Image is taller than target, crop height
+        let new_height = (orig_width as f64 / target_aspect) as u32;
+        (orig_width, new_height)
+    };
+
+    // Center crop
+    let crop_x = (orig_width - crop_width) / 2;
+    let crop_y = (orig_height - crop_height) / 2;
+
+    // Crop, resize to target dimensions, and convert to RGBA
+    let img = img
+        .crop_imm(crop_x, crop_y, crop_width, crop_height)
+        .resize_exact(
+            IMAGE_WIDTH,
+            IMAGE_HEIGHT,
+            image::imageops::FilterType::Lanczos3,
+        )
+        .to_rgba8();
+
+    let blurred = image::imageops::blur(&img, 20.0);
+
+    // Find peak brightness of the blurred image
+    let peak_brightness = blurred
+        .pixels()
+        .map(|p| (p[0] as f64 + p[1] as f64 + p[2] as f64) / 3.0)
+        .fold(0.0_f64, f64::max);
+
+    // Calculate multiplier to achieve target peak brightness
+    let target_brightness = 0.5 * 255.0;
+    let multiplier = (target_brightness / peak_brightness).min(1.0) as f32;
+
+    let darkened = image::ImageBuffer::from_fn(IMAGE_WIDTH, IMAGE_HEIGHT, |x, y| {
+        let pixel = blurred.get_pixel(x, y);
+        image::Rgba([
+            (pixel[0] as f32 * multiplier) as u8,
+            (pixel[1] as f32 * multiplier) as u8,
+            (pixel[2] as f32 * multiplier) as u8,
+            pixel[3],
+        ])
+    });
+
+    // Encode to PNG and then to base64 data URL
+    let mut png_bytes = Vec::new();
+    let encoder = image::codecs::png::PngEncoder::new(Cursor::new(&mut png_bytes));
+    encoder.write_image(
+        &darkened,
+        IMAGE_WIDTH,
+        IMAGE_HEIGHT,
+        image::ExtendedColorType::Rgba8,
+    )?;
+
+    let base64_data = STANDARD.encode(&png_bytes);
+    Ok(format!("data:image/png;base64,{base64_data}"))
 }

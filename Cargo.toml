@@ -14,6 +14,7 @@ syntect = "5.2"
 image = { version = "0.25.1", features = [
     "png",
     "ico",
+    "jpeg",
 ], default-features = false }
 resvg = "0.44"
 usvg = "0.44"
@@ -46,6 +47,7 @@ syntect = { workspace = true }
 toml = "0.8.12"
 paxcss = { path = "paxcss" }
 toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
+image = { workspace = true }
 resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }

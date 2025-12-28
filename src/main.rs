@@ -280,6 +280,7 @@ fn main() -> anyhow::Result<()> {
             // Helper function to generate OG image for a document
             fn generate_doc_image(
                 generator: &og_image::Generator,
+                output_dir: &Path,
                 og_images_dir: &Path,
                 doc: &content::Document,
             ) -> anyhow::Result<()> {
@@ -289,10 +290,17 @@ fn main() -> anyhow::Result<()> {
                     content::DocumentType::Note => ("note", "notes"),
                 };
 
+                let hero_image_path = doc.hero_filename_and_alt.as_ref().map(|(filename, _)| {
+                    doc.route_path()
+                        .with_filename(filename)
+                        .file_path(output_dir)
+                });
+
                 let options = og_image::OgImageOptions {
                     post_type: post_type.to_string(),
                     title: doc.metadata.title.clone(),
                     datetime: doc.metadata.datetime,
+                    hero_image_path: hero_image_path.as_deref(),
                 };
 
                 let type_dir = og_images_dir.join(type_subdir);
@@ -338,9 +346,9 @@ fn main() -> anyhow::Result<()> {
             collect_notes(&mut all_docs, &content.notes.documents);
 
             // Generate images in parallel
-            all_docs
-                .par_iter()
-                .try_for_each(|doc| generate_doc_image(&generator, &og_images_dir, doc))?;
+            all_docs.par_iter().try_for_each(|doc| {
+                generate_doc_image(&generator, output_dir, &og_images_dir, doc)
+            })?;
 
             anyhow::Ok(())
         })?;
