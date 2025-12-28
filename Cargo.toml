@@ -63,3 +63,5 @@ crc32fast.opt-level = 3
 miniz_oxide.opt-level = 3
 png.opt-level = 3
 syntect.opt-level = 3
+markdown.opt-level = 3
+unicode-id.opt-level = 3
