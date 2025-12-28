@@ -46,7 +46,10 @@ impl<'a> MarkdownConverter<'a> {
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element {
-        self.gather_footnote_definitions(node);
+        // Only gather footnotes at the root level (when there's no parent)
+        if parent_node.is_none() {
+            self.gather_footnote_definitions(node);
+        }
 
         match node {
             Node::Root(r) => {
