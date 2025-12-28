@@ -194,37 +194,41 @@ fn main() -> anyhow::Result<()> {
     };
 
     timer.step("Wrote content", || {
-        for doc in content
+        use rayon::prelude::*;
+
+        content
             .blog
             .documents
-            .iter()
-            .chain(content.updates.documents.iter())
-        {
-            let post_route_path = doc.route_path();
+            .par_iter()
+            .chain(content.updates.documents.par_iter())
+            .try_for_each(|doc| {
+                let post_route_path = doc.route_path();
 
-            let view = match doc.document_type {
-                content::DocumentType::Blog => views::blog::post(view_context, doc),
-                content::DocumentType::Update => views::updates::post(view_context, doc),
-                content::DocumentType::Note => unreachable!(),
-            };
+                let view = match doc.document_type {
+                    content::DocumentType::Blog => views::blog::post(view_context, doc),
+                    content::DocumentType::Update => views::updates::post(view_context, doc),
+                    content::DocumentType::Note => unreachable!(),
+                };
 
-            view.write_to_route(output_dir, post_route_path.clone())?;
-            {
-                let post_output_dir = post_route_path.dir_path(output_dir);
-                for path in &doc.files {
-                    let output_path = post_output_dir.join(path.file_name().unwrap());
-                    std::fs::copy(path, &output_path).with_context(|| {
-                        format!("failed to copy content file {path:?} to {output_path:?}")
-                    })?;
+                view.write_to_route(output_dir, post_route_path.clone())?;
+                {
+                    let post_output_dir = post_route_path.dir_path(output_dir);
+                    for path in &doc.files {
+                        let output_path = post_output_dir.join(path.file_name().unwrap());
+                        std::fs::copy(path, &output_path).with_context(|| {
+                            format!("failed to copy content file {path:?} to {output_path:?}")
+                        })?;
+                    }
                 }
-            }
 
-            // Write redirect for alternate_id if it exists
-            if let Some(alternate_route_path) = doc.alternate_route_path() {
-                views::redirect(&post_route_path.url_path())
-                    .write_to_route(output_dir, alternate_route_path)?;
-            }
-        }
+                // Write redirect for alternate_id if it exists
+                if let Some(alternate_route_path) = doc.alternate_route_path() {
+                    views::redirect(&post_route_path.url_path())
+                        .write_to_route(output_dir, alternate_route_path)?;
+                }
+
+                anyhow::Ok(())
+            })?;
 
         fn write_note_folder(
             output_dir: &Path,
