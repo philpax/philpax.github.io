@@ -140,11 +140,6 @@ fn main() -> anyhow::Result<()> {
     #[cfg(feature = "serve")]
     let port = 8192;
 
-    let syntax = timer.step(
-        "Loaded syntax highlighter",
-        syntax::SyntaxHighlighter::default,
-    );
-
     if !fast {
         timer.step("Cleared output directory", || {
             if output_dir.is_dir() {
@@ -177,7 +172,22 @@ fn main() -> anyhow::Result<()> {
         util::copy_dir(Path::new("static"), output_dir)
     })?;
 
-    let content = timer.step("Read content", || content::Content::read(fast))?;
+    // Run syntax loading, tailwind generation, and content reading in parallel
+    let (syntax, tailwind_css, content) = timer.step(
+        "Loaded syntax, generated Tailwind CSS, and read content",
+        || {
+            let ((syntax, tailwind_css), content) = rayon::join(
+                || {
+                    rayon::join(syntax::SyntaxHighlighter::default, || {
+                        styles::generate_tailwind(fast, use_global_tailwind)
+                    })
+                },
+                || content::Content::read(fast),
+            );
+
+            anyhow::Ok((syntax, tailwind_css?, content?))
+        },
+    )?;
     let view_context = views::ViewContext {
         website_author: "Philpax",
         website_name: "Philpax",
@@ -429,7 +439,7 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", || {
-        let output = styles::generate(view_context, fast, use_global_tailwind)?;
+        let output = styles::generate(view_context, &tailwind_css)?;
         Route::Styles.route_path().write(output_dir, output.css)?;
         Route::DarkModeIcon
             .route_path()
