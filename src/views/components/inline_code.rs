@@ -13,7 +13,7 @@ pub fn inline_code<'bump>(
 ) -> paxhtml::Element<'bump> {
     paxhtml::html! { in bump;
         <code class={if styled { format!("code text-sm p-1 m-y-0.5 {CODE_FONT_STYLE}") } else { format!("code {CODE_FONT_STYLE}") }}>
-            {syntax.highlight_code(bump, lang, code).unwrap()}
+            {syntax.highlight_code(bump, lang, code)}
         </code>
     }
 }

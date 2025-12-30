@@ -1,15 +1,9 @@
 use std::path::Path;
 
-mod syntax;
-
 fn main() -> anyhow::Result<()> {
     let static_dir = Path::new("assets/baked/static");
     std::fs::create_dir_all(static_dir)?;
 
-    syntax::build(
-        Path::new("assets/source/syntax"),
-        Path::new("assets/baked/syntax"),
-    )?;
     icon::build(Path::new("assets/source/icon.png"), static_dir)?;
     Ok(())
 }

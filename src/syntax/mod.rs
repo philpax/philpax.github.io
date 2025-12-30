@@ -1,73 +1,59 @@
+use std::cell::RefCell;
+use std::sync::Arc;
+
+use arborium::{theme::builtin, Config, GrammarStore, Highlighter, HtmlFormat};
 use paxhtml::bumpalo::Bump;
-use syntect::{
-    highlighting::ThemeSet,
-    html::{css_for_theme_with_class_style, ClassStyle, ClassedHTMLGenerator},
-    parsing::{SyntaxReference, SyntaxSet},
-    util::LinesWithEndings,
-};
+
+thread_local! {
+    static THREAD_HIGHLIGHTER: RefCell<Option<Highlighter>> = const { RefCell::new(None) };
+}
 
 pub struct SyntaxHighlighter {
-    pub syntax_set: SyntaxSet,
-    pub theme_set: ThemeSet,
+    store: Arc<GrammarStore>,
+    config: Config,
 }
 impl Default for SyntaxHighlighter {
     fn default() -> Self {
-        Self::new(&mut |_, _| {})
+        let config = Config {
+            html_format: HtmlFormat::CustomElements,
+            ..Default::default()
+        };
+        let highlighter = Highlighter::with_config(config.clone());
+        Self {
+            store: highlighter.store().clone(),
+            config,
+        }
     }
 }
 impl SyntaxHighlighter {
-    pub fn new(report: &mut impl FnMut(&'static str, std::time::Duration)) -> Self {
-        let now = std::time::Instant::now();
-        let syntax_set = syntect::dumps::from_binary(include_bytes!(
-            "../../assets/baked/syntax/syntax_set.packdump"
-        ));
-        report("Loaded syntax set", now.elapsed());
-
-        let now = std::time::Instant::now();
-        let theme_set = syntect::dumps::from_binary(include_bytes!(
-            "../../assets/baked/syntax/theme_set.packdump"
-        ));
-        report("Loaded theme set", now.elapsed());
-
-        Self {
-            syntax_set,
-            theme_set,
-        }
-    }
-
-    pub fn dark_theme(&self) -> &str {
-        "ayu-dark"
-    }
-
-    pub fn light_theme(&self) -> &str {
-        "ayu-light"
-    }
-
     pub fn dark_theme_css(&self) -> String {
-        css_for_theme_with_class_style(
-            &self.theme_set.themes[self.dark_theme()],
-            ClassStyle::Spaced,
-        )
-        .unwrap()
+        builtin::ayu_dark().to_css("[data-theme=\"dark\"]")
     }
 
     pub fn light_theme_css(&self) -> String {
-        css_for_theme_with_class_style(
-            &self.theme_set.themes[self.light_theme()],
-            ClassStyle::Spaced,
-        )
-        .unwrap()
+        builtin::ayu_light().to_css("[data-theme=\"light\"]")
     }
 
-    pub fn lookup_language(&self, language: Option<&str>) -> &SyntaxReference {
-        language
-            .and_then(|l| self.syntax_set.find_syntax_by_token(l))
-            .unwrap_or_else(|| self.syntax_set.find_syntax_by_name("plaintext").unwrap())
+    fn normalize_language(language: Option<&str>) -> &str {
+        match language {
+            Some("sh") => "bash",
+            // Languages not supported by arborium - fallback to plaintext
+            Some("re" | "pug") => "text",
+            Some(other) => other,
+            None => "text",
+        }
+    }
+
+    /// Get the display name for a language
+    pub fn language_name<'a>(&self, language: Option<&'a str>) -> &'a str {
+        Self::normalize_language(language)
     }
 
     /// Check if a language token is valid/recognized
     pub fn is_valid_language(&self, language: &str) -> bool {
-        self.syntax_set.find_syntax_by_token(language).is_some()
+        let normalized = Self::normalize_language(Some(language));
+        // Check if arborium can detect/use this language
+        normalized != "text" || language == "text"
     }
 
     /// Parse inline code with optional language prefix (e.g., "rs:Option<T>")
@@ -86,21 +72,27 @@ impl SyntaxHighlighter {
         }
         (None, code)
     }
+
     pub fn highlight_code<'bump>(
         &self,
         bump: &'bump Bump,
         language: Option<&str>,
         code: &str,
-    ) -> Result<paxhtml::Element<'bump>, syntect::Error> {
-        let syntax = self.lookup_language(language);
-        let mut html_generator = ClassedHTMLGenerator::new_with_class_style(
-            syntax,
-            &self.syntax_set,
-            ClassStyle::Spaced,
-        );
-        for line in LinesWithEndings::from(code) {
-            html_generator.parse_html_for_line_which_includes_newline(line)?;
-        }
-        Ok(paxhtml::Element::raw(bump, &html_generator.finalize()))
+    ) -> paxhtml::Element<'bump> {
+        let language = Self::normalize_language(language);
+        THREAD_HIGHLIGHTER.with(|cell| {
+            let mut hl_ref = cell.borrow_mut();
+            let highlighter = hl_ref.get_or_insert_with(|| {
+                Highlighter::with_store_and_config(self.store.clone(), self.config.clone())
+            });
+            match highlighter.highlight(language, code) {
+                Ok(html) => paxhtml::Element::raw(bump, &html),
+                // For unsupported languages, just return the escaped text
+                Err(arborium::Error::UnsupportedLanguage { .. }) => {
+                    paxhtml::Element::text(bump, code)
+                }
+                Err(e) => panic!("Syntax highlighting error: {e}"),
+            }
+        })
     }
 }

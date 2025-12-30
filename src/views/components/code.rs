@@ -21,9 +21,9 @@ pub fn code<'bump>(
                     w-fit lowercase text-xs sticky -left-2 \
                     {FONT_STYLE} italic \
                 ")}>
-                    {syntax.lookup_language(lang).name.as_str()}
+                    {syntax.language_name(lang)}
                 </pre>
-                {syntax.highlight_code(bump, lang, code).unwrap()}
+                {syntax.highlight_code(bump, lang, code)}
             </code>
         </pre>
     }
