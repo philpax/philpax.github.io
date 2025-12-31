@@ -637,7 +637,7 @@ version = "0.1.0"
 [[package]]
 name = "paxhtml"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git?branch=bumpalo#1d07558c19c62751ba3a7b4d18c90e8581c446de"
+source = "git+https://github.com/philpax/paxhtml.git#045439818428470e1c56b6420d5f7ec110268ec5"
 dependencies = [
  "bumpalo",
  "html-escape",
@@ -650,7 +650,7 @@ dependencies = [
 [[package]]
 name = "paxhtml_macro"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git?branch=bumpalo#1d07558c19c62751ba3a7b4d18c90e8581c446de"
+source = "git+https://github.com/philpax/paxhtml.git#045439818428470e1c56b6420d5f7ec110268ec5"
 dependencies = [
  "convert_case",
  "paxhtml_parser",
@@ -662,7 +662,7 @@ dependencies = [
 [[package]]
 name = "paxhtml_parser"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git?branch=bumpalo#1d07558c19c62751ba3a7b4d18c90e8581c446de"
+source = "git+https://github.com/philpax/paxhtml.git#045439818428470e1c56b6420d5f7ec110268ec5"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -673,7 +673,7 @@ dependencies = [
 [[package]]
 name = "paxhtml_tailwind"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git?branch=bumpalo#1d07558c19c62751ba3a7b4d18c90e8581c446de"
+source = "git+https://github.com/philpax/paxhtml.git#045439818428470e1c56b6420d5f7ec110268ec5"
 
 [[package]]
 name = "paxsite"

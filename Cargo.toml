@@ -22,8 +22,8 @@ fontdb = "0.22"
 rayon = "1.10"
 
 [dependencies]
-paxhtml = { git = "https://github.com/philpax/paxhtml.git", branch = "bumpalo" }
-paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git", branch = "bumpalo" }
+paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
+paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
 # paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
 
