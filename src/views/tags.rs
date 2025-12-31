@@ -9,7 +9,7 @@ use crate::{
     },
 };
 
-pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
@@ -53,7 +53,7 @@ pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'b
     )
 }
 
-pub fn tag<'bump, 'a>(context: ViewContext<'bump, 'a>, tag_id: &str) -> paxhtml::Document<'bump> {
+pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
 

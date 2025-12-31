@@ -32,19 +32,23 @@ pub struct ViewContextBase<'a> {
     pub fast: bool,
 }
 impl<'a> ViewContextBase<'a> {
-    /// Create a ViewContext with a bump allocator
-    pub fn with_bump<'bump>(&self, bump: &'bump Bump) -> ViewContext<'bump, 'a> {
+    /// Create a ViewContext with a bump allocator.
+    /// The bump lifetime must be shorter than the base context lifetime.
+    pub fn with_bump<'bump>(&self, bump: &'bump Bump) -> ViewContext<'bump>
+    where
+        'a: 'bump,
+    {
         ViewContext { bump, base: *self }
     }
 }
 
 /// Full view context with bump allocator
 #[derive(Copy, Clone)]
-pub struct ViewContext<'bump, 'a> {
-    pub bump: &'bump Bump,
+pub struct ViewContext<'a> {
+    pub bump: &'a Bump,
     base: ViewContextBase<'a>,
 }
-impl<'bump, 'a> std::ops::Deref for ViewContext<'bump, 'a> {
+impl<'a> std::ops::Deref for ViewContext<'a> {
     type Target = ViewContextBase<'a>;
     fn deref(&self) -> &Self::Target {
         &self.base
@@ -118,7 +122,7 @@ pub struct SocialMeta {
 }
 impl SocialMeta {
     /// The full title of the page, including the website name
-    pub fn full_title(&self, context: ViewContext) -> String {
+    pub fn full_title(&self, context: &ViewContext) -> String {
         let mut title = context.website_name.to_string();
         if let Some(meta_title) = &self.title {
             title = format!("{title}: {meta_title}");
@@ -126,7 +130,7 @@ impl SocialMeta {
         title
     }
 
-    pub fn into_social_meta(self, context: ViewContext) -> HashMap<String, String> {
+    pub fn into_social_meta(self, context: &ViewContext) -> HashMap<String, String> {
         HashMap::from_iter(
             [
                 ("og:title", self.title.clone()),
@@ -156,22 +160,22 @@ impl SocialMeta {
     }
 }
 
-pub fn layout<'bump, 'a>(
-    context: ViewContext<'bump, 'a>,
+pub fn layout<'a>(
+    context: ViewContext<'a>,
     meta: SocialMeta,
     current_page: CurrentPage,
-    inner: Element<'bump>,
-) -> paxhtml::Document<'bump> {
+    inner: Element<'a>,
+) -> paxhtml::Document<'a> {
     let bump = context.bump;
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
             <html lang="en-AU" class="w-[100vw]">
                 <head>
-                    <title>{meta.full_title(context)}</title>
+                    <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    #{meta.into_social_meta(context).into_iter().map(|(k, v)| {
+                    #{meta.into_social_meta(&context).into_iter().map(|(k, v)| {
                         html! { in bump;
                             <meta property={k} content={v} />
                         }

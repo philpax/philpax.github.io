@@ -13,7 +13,7 @@ pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
 pub const POST_BODY_MARGIN_CLASS: &str =
     "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0";
 
-pub fn tags<'bump>(bump: &'bump Bump, document: &Document) -> paxhtml::Element<'bump> {
+pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
     document
         .tags()
         .map(|t| {
@@ -31,7 +31,7 @@ pub fn tags<'bump>(bump: &'bump Bump, document: &Document) -> paxhtml::Element<'
         .unwrap_or_default()
 }
 
-pub fn date<'bump>(bump: &'bump Bump, document: &Document) -> paxhtml::Element<'bump> {
+pub fn date<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
     crate::elements::date_with_chrono(
         bump,
         document
@@ -49,11 +49,11 @@ pub enum PostBody {
     Short,
 }
 
-pub fn post<'bump, 'a>(
-    context: ViewContext<'bump, 'a>,
+pub fn post<'a>(
+    context: ViewContext<'a>,
     document: &Document,
     post_body: PostBody,
-) -> paxhtml::Element<'bump> {
+) -> paxhtml::Element<'a> {
     let bump = context.bump;
     let route_path = document.route_path();
     let url = route_path.url_path();
@@ -170,19 +170,19 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     }
 }
 
-fn document_to_html_list<'bump, 'a>(
-    context: ViewContext<'bump, 'a>,
+fn document_to_html_list<'a>(
+    context: ViewContext<'a>,
     document: &Document,
-) -> Option<paxhtml::Element<'bump>> {
+) -> Option<paxhtml::Element<'a>> {
     let bump = context.bump;
     let heading_hierarchy =
         HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?);
 
-    fn build_list_recursively<'bump>(
-        bump: &'bump Bump,
-        children: &[HeadingHierarchy<'bump>],
+    fn build_list_recursively<'a>(
+        bump: &'a Bump,
+        children: &[HeadingHierarchy<'a>],
         toplevel: bool,
-    ) -> paxhtml::Element<'bump> {
+    ) -> paxhtml::Element<'a> {
         if children.is_empty() {
             return paxhtml::Element::Empty;
         }
@@ -220,14 +220,14 @@ fn document_to_html_list<'bump, 'a>(
         }
     }
 
-    fn build_list_item_recursively<'bump>(
-        bump: &'bump Bump,
+    fn build_list_item_recursively<'a>(
+        bump: &'a Bump,
         HeadingHierarchy {
             heading,
             heading_text,
             children,
-        }: &HeadingHierarchy<'bump>,
-    ) -> paxhtml::Element<'bump> {
+        }: &HeadingHierarchy<'a>,
+    ) -> paxhtml::Element<'a> {
         html! { in bump;
             <li>
                 <Link underline target={format!("#{}", util::slugify(heading_text))}>

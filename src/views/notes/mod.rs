@@ -9,10 +9,10 @@ use crate::{
 
 use super::*;
 
-pub fn note<'bump, 'a>(
-    context: ViewContext<'bump, 'a>,
+pub fn note<'a>(
+    context: ViewContext<'a>,
     note: &Document,
-) -> paxhtml::Document<'bump> {
+) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let display_path = &note.display_path;
 
@@ -89,10 +89,10 @@ pub fn note<'bump, 'a>(
     )
 }
 
-fn notes_hierarchy<'bump, 'a>(
-    context: ViewContext<'bump, 'a>,
+fn notes_hierarchy<'a>(
+    context: ViewContext<'a>,
     active_document: &Document,
-) -> paxhtml::Element<'bump> {
+) -> paxhtml::Element<'a> {
     let bump = context.bump;
     html! { in bump;
         <ul class="list-none m-0 p-0 break-words overflow-hidden">

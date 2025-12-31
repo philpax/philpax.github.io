@@ -12,16 +12,16 @@ use crate::{
 
 pub use markdown::mdast::Node;
 
-pub struct MarkdownConverter<'bump, 'a> {
-    pub context: ViewContext<'bump, 'a>,
+pub struct MarkdownConverter<'a> {
+    pub context: ViewContext<'a>,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
     pub sidenotes_enabled: bool,
 }
-impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
-    pub fn new(context: ViewContext<'bump, 'a>) -> Self {
+impl<'a> MarkdownConverter<'a> {
+    pub fn new(context: ViewContext<'a>) -> Self {
         Self {
             context,
             footnotes: HashMap::new(),
@@ -46,7 +46,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
         self
     }
 
-    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'bump> {
+    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
         let bump = self.context.bump;
         let b = Builder::new(bump);
 
@@ -279,7 +279,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
         &mut self,
         nodes: &[Node],
         parent_node: Option<&Node>,
-    ) -> paxhtml::Element<'bump> {
+    ) -> paxhtml::Element<'a> {
         let b = paxhtml::builder::Builder::new(self.context.bump);
         b.fragment(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
@@ -327,16 +327,16 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct HeadingHierarchy<'bump> {
-    pub heading: paxhtml::Element<'bump>,
+pub struct HeadingHierarchy<'a> {
+    pub heading: paxhtml::Element<'a>,
     pub heading_text: String,
-    pub children: Vec<HeadingHierarchy<'bump>>,
+    pub children: Vec<HeadingHierarchy<'a>>,
 }
-impl<'bump> HeadingHierarchy<'bump> {
+impl<'a> HeadingHierarchy<'a> {
     pub fn new(
-        heading: paxhtml::Element<'bump>,
+        heading: paxhtml::Element<'a>,
         heading_text: impl Into<String>,
-        children: impl IntoIterator<Item = HeadingHierarchy<'bump>>,
+        children: impl IntoIterator<Item = HeadingHierarchy<'a>>,
     ) -> Self {
         Self {
             heading,
@@ -344,15 +344,15 @@ impl<'bump> HeadingHierarchy<'bump> {
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node<'a>(
-        context: ViewContext<'bump, 'a>,
+    pub fn from_node(
+        context: ViewContext<'a>,
         node: &Node,
-    ) -> Vec<HeadingHierarchy<'bump>> {
+    ) -> Vec<HeadingHierarchy<'a>> {
         let mut headings = Vec::new();
         collect_headings(context, node, &mut headings);
 
         let mut result = Vec::new();
-        let mut stack: Vec<(u8, HeadingHierarchy<'bump>)> = Vec::new();
+        let mut stack: Vec<(u8, HeadingHierarchy<'a>)> = Vec::new();
 
         for (depth, heading, heading_text) in headings {
             while let Some((prev_depth, _)) = stack.last() {
@@ -380,10 +380,10 @@ impl<'bump> HeadingHierarchy<'bump> {
             }
         }
 
-        fn collect_headings<'bump, 'a>(
-            context: ViewContext<'bump, 'a>,
+        fn collect_headings<'a>(
+            context: ViewContext<'a>,
             node: &Node,
-            headings: &mut Vec<(u8, paxhtml::Element<'bump>, String)>,
+            headings: &mut Vec<(u8, paxhtml::Element<'a>, String)>,
         ) {
             if let Some(children) = node.children() {
                 for child in children {

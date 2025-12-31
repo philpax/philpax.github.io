@@ -93,7 +93,7 @@ mod colours {
 
 // Note: This component uses ViewContext so it's kept as a regular function
 // rather than using the custom component syntax
-pub fn music_library<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Element<'bump> {
+pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     let bump = context.bump;
     if context.fast {
         return html! { in bump;
@@ -395,7 +395,7 @@ pub fn music_library<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Ele
     }
 }
 
-fn group<'bump>(bump: &'bump Bump, group: &OutputGroup) -> paxhtml::Element<'bump> {
+fn group<'a>(bump: &'a Bump, group: &OutputGroup) -> paxhtml::Element<'a> {
     html! { in bump;
         <section>
             <heading>
@@ -418,11 +418,11 @@ fn group<'bump>(bump: &'bump Bump, group: &OutputGroup) -> paxhtml::Element<'bum
     }
 }
 
-fn track<'bump>(
-    bump: &'bump Bump,
+fn track<'a>(
+    bump: &'a Bump,
     group: &OutputGroup,
     track: &OutputTrack,
-) -> paxhtml::Element<'bump> {
+) -> paxhtml::Element<'a> {
     let track_number = match (track.disc_number, track.track) {
         (Some(disc_number), Some(track_number)) => format!("{disc_number}.{track_number}"),
         (Some(disc_number), None) => format!("{disc_number}.?"),

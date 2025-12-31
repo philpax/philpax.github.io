@@ -10,7 +10,7 @@ use crate::{
     },
 };
 
-pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
     let list_88x31 = [
