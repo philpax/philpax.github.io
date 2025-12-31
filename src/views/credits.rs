@@ -1,13 +1,13 @@
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo;
 
 use super::*;
 
 use crate::{markdown::MarkdownConverter, views::posts};
 
-pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
+pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let content = &context.content;
     layout(
-        bump,
         context,
         SocialMeta {
             title: None,
@@ -28,7 +28,7 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
                     <h2>"Credits"</h2>
                 </a>
                 <div class={format!("post-body {}", posts::POST_BODY_MARGIN_CLASS)}>
-                    {MarkdownConverter::new(bump, context).with_sidenotes().convert(&content.credits.description, None)}
+                    {MarkdownConverter::new(context).with_sidenotes().convert(&content.credits.description, None)}
                 </div>
             </article>
         },

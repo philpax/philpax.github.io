@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use paxhtml::bumpalo::Bump;
 use paxhtml::builder::Builder;
 
 use crate::{
@@ -14,8 +13,7 @@ use crate::{
 pub use markdown::mdast::Node;
 
 pub struct MarkdownConverter<'bump, 'a> {
-    pub bump: &'bump Bump,
-    pub context: ViewContext<'a>,
+    pub context: ViewContext<'bump, 'a>,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
     pub footnote_counter: HashMap<String, usize>,
@@ -23,9 +21,8 @@ pub struct MarkdownConverter<'bump, 'a> {
     pub sidenotes_enabled: bool,
 }
 impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
-    pub fn new(bump: &'bump Bump, context: ViewContext<'a>) -> Self {
+    pub fn new(context: ViewContext<'bump, 'a>) -> Self {
         Self {
-            bump,
             context,
             footnotes: HashMap::new(),
             without_blocking_elements: false,
@@ -50,7 +47,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'bump> {
-        let bump = self.bump;
+        let bump = self.context.bump;
         let b = Builder::new(bump);
 
         // Only gather footnotes at the root level (when there's no parent)
@@ -196,7 +193,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
 
                 let element = paxhtml::parse_html(bump, &h.value).expect("failed to parse HTML"); // todo: make this a fallible result
                 if element.tag() == Some("MusicLibrary") {
-                    return components::music_library(bump, self.context);
+                    return components::music_library(self.context);
                 }
 
                 element
@@ -218,7 +215,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
                         number
                     });
 
-                let children = vec![MarkdownConverter::new(bump, self.context)
+                let children = vec![MarkdownConverter::new(self.context)
                     .without_blocking_elements()
                     .convert_many(&definition, None)];
 
@@ -283,7 +280,7 @@ impl<'bump, 'a> MarkdownConverter<'bump, 'a> {
         nodes: &[Node],
         parent_node: Option<&Node>,
     ) -> paxhtml::Element<'bump> {
-        let b = paxhtml::builder::Builder::new(self.bump);
+        let b = paxhtml::builder::Builder::new(self.context.bump);
         b.fragment(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
 
@@ -347,13 +344,12 @@ impl<'bump> HeadingHierarchy<'bump> {
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(
-        bump: &'bump Bump,
-        context: ViewContext,
+    pub fn from_node<'a>(
+        context: ViewContext<'bump, 'a>,
         node: &Node,
     ) -> Vec<HeadingHierarchy<'bump>> {
         let mut headings = Vec::new();
-        collect_headings(bump, context, node, &mut headings);
+        collect_headings(context, node, &mut headings);
 
         let mut result = Vec::new();
         let mut stack: Vec<(u8, HeadingHierarchy<'bump>)> = Vec::new();
@@ -384,9 +380,8 @@ impl<'bump> HeadingHierarchy<'bump> {
             }
         }
 
-        fn collect_headings<'bump>(
-            bump: &'bump Bump,
-            context: ViewContext,
+        fn collect_headings<'bump, 'a>(
+            context: ViewContext<'bump, 'a>,
             node: &Node,
             headings: &mut Vec<(u8, paxhtml::Element<'bump>, String)>,
         ) {
@@ -395,13 +390,13 @@ impl<'bump> HeadingHierarchy<'bump> {
                     if let Node::Heading(heading) = child {
                         headings.push((
                             heading.depth,
-                            MarkdownConverter::new(bump, context)
+                            MarkdownConverter::new(context)
                                 .without_blocking_elements()
                                 .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
                     }
-                    collect_headings(bump, context, child, headings); // Recurse into all children
+                    collect_headings(context, child, headings); // Recurse into all children
                 }
             }
         }
@@ -416,13 +411,15 @@ mod tests {
     use crate::{
         content::{parse_markdown, Content},
         syntax::SyntaxHighlighter,
+        views::ViewContextBase,
     };
+    use paxhtml::bumpalo::Bump;
 
-    fn view_context_for_syntax_highlighter<'a>(
+    fn view_context_base<'a>(
         syntax: &'a SyntaxHighlighter,
         content: &'a Content,
-    ) -> ViewContext<'a> {
-        ViewContext {
+    ) -> ViewContextBase<'a> {
+        ViewContextBase {
             website_author: "test",
             website_name: "test",
             website_description: "test",
@@ -450,8 +447,8 @@ mod tests {
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
-        let context = view_context_for_syntax_highlighter(&syntax, &content);
         let bump = Bump::new();
+        let context = view_context_base(&syntax, &content).with_bump(&bump);
 
         fn hh<'bump>(
             bump: &'bump Bump,
@@ -465,7 +462,7 @@ mod tests {
             )
         }
 
-        let result = HH::from_node(&bump, context, &ast);
+        let result = HH::from_node(context, &ast);
         let expected = vec![
             hh(
                 &bump,
@@ -492,9 +489,9 @@ Here is some text with a footnote[^note1] and another[^note2].
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
-        let context = view_context_for_syntax_highlighter(&syntax, &content);
         let bump = Bump::new();
-        let mut converter = MarkdownConverter::new(&bump, context);
+        let context = view_context_base(&syntax, &content).with_bump(&bump);
+        let mut converter = MarkdownConverter::new(context);
 
         let result = converter.convert(&ast, None);
         let html = paxhtml::Document::new(&bump, [result])

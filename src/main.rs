@@ -189,7 +189,8 @@ fn main() -> anyhow::Result<()> {
             anyhow::Ok((syntax, tailwind_css?, content?))
         },
     )?;
-    let view_context = views::ViewContext {
+    // ViewContextBase can be shared across threads (no bump reference)
+    let view_context = views::ViewContextBase {
         website_author: "Philpax",
         website_name: "Philpax",
         website_description: concat!(
@@ -217,8 +218,8 @@ fn main() -> anyhow::Result<()> {
                 let post_route_path = doc.route_path();
 
                 let view = match doc.document_type {
-                    content::DocumentType::Blog => views::blog::post(&bump, view_context, doc),
-                    content::DocumentType::Update => views::updates::post(&bump, view_context, doc),
+                    content::DocumentType::Blog => views::blog::post(view_context.with_bump(&bump), doc),
+                    content::DocumentType::Update => views::updates::post(view_context.with_bump(&bump), doc),
                     content::DocumentType::Note => unreachable!(),
                 };
 
@@ -244,11 +245,12 @@ fn main() -> anyhow::Result<()> {
 
         fn write_note_folder(
             output_dir: &Path,
-            context: views::ViewContext,
+            context: views::ViewContextBase<'_>,
             folder: &content::DocumentFolderNode,
         ) -> anyhow::Result<()> {
             if let Some(index_document) = &folder.index_document {
-                views::notes::note(&Bump::new(), context, index_document).write_to_route(
+                let bump = Bump::new();
+                views::notes::note(context.with_bump(&bump), index_document).write_to_route(
                     output_dir,
                     Route::Note {
                         note_id: index_document.id.clone(),
@@ -262,7 +264,8 @@ fn main() -> anyhow::Result<()> {
                         write_note_folder(output_dir, context, folder)?;
                     }
                     content::DocumentNode::Document { document } => {
-                        views::notes::note(&Bump::new(), context, document).write_to_route(
+                        let bump = Bump::new();
+                        views::notes::note(context.with_bump(&bump), document).write_to_route(
                             output_dir,
                             Route::Note {
                                 note_id: document.id.clone(),
@@ -376,18 +379,24 @@ fn main() -> anyhow::Result<()> {
     }
 
     timer.step("Wrote blog index", || {
-        views::blog::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Blog)
+        let bump = Bump::new();
+        let result = views::blog::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Blog);
+        result
     })?;
 
     timer.step("Wrote updates index", || {
-        views::updates::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Updates)
+        let bump = Bump::new();
+        let result = views::updates::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Updates);
+        result
     })?;
 
     timer.step("Wrote tags", || {
-        views::tags::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Tags)?;
+        let bump = Bump::new();
+        views::tags::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Tags)?;
 
         for tag_id in content.tags.keys() {
-            views::tags::tag(&Bump::new(), view_context, tag_id).write_to_route(
+            let bump = Bump::new();
+            views::tags::tag(view_context.with_bump(&bump), tag_id).write_to_route(
                 output_dir,
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -398,14 +407,19 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote credits", || {
-        views::credits::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Credits)
+        let bump = Bump::new();
+        let result = views::credits::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Credits);
+        result
     })?;
 
     timer.step("Wrote frontpage", || {
-        views::frontpage::index(&Bump::new(), view_context)
+        let bump = Bump::new();
+        views::frontpage::index(view_context.with_bump(&bump))
             .write_to_route(output_dir, Route::Index)?;
-        views::redirect(&Bump::new(), &Route::Index.url_path())
-            .write_to_route(output_dir, Route::DeprecatedAbout)
+        let bump = Bump::new();
+        let result = views::redirect(&bump, &Route::Index.url_path())
+            .write_to_route(output_dir, Route::DeprecatedAbout);
+        result
     })?;
 
     timer.step("Wrote RSS feeds", || {

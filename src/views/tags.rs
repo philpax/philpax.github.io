@@ -1,4 +1,4 @@
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo;
 
 use super::*;
 use crate::{
@@ -9,12 +9,12 @@ use crate::{
     },
 };
 
-pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
+pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
     layout(
-        bump,
         context,
         SocialMeta {
             title: Some("Tags".to_string()),
@@ -53,11 +53,8 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
     )
 }
 
-pub fn tag<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
-    tag_id: &str,
-) -> paxhtml::Document<'bump> {
+pub fn tag<'bump, 'a>(context: ViewContext<'bump, 'a>, tag_id: &str) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let content = &context.content;
 
     // Collect all documents with this tag
@@ -73,7 +70,6 @@ pub fn tag<'bump>(
     tagged_documents.reverse();
 
     layout(
-        bump,
         context,
         SocialMeta {
             title: Some(format!("#{tag_id}")),
@@ -108,7 +104,7 @@ pub fn tag<'bump>(
                 <div class="*:mb-8">
                 #{
                     tagged_documents.iter().map(|doc| {
-                        posts::post(bump, context, doc, posts::PostBody::Description)
+                        posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
                 </div>

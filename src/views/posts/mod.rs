@@ -49,19 +49,19 @@ pub enum PostBody {
     Short,
 }
 
-pub fn post<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+pub fn post<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     document: &Document,
     post_body: PostBody,
 ) -> paxhtml::Element<'bump> {
+    let bump = context.bump;
     let route_path = document.route_path();
     let url = route_path.url_path();
 
     let post_body_rendered = match post_body {
         PostBody::Full => {
             let h3_classname = "text-lg font-bold";
-            let toc = document_to_html_list(bump, context, document);
+            let toc = document_to_html_list(context, document);
 
             let mut content_elements = vec![];
 
@@ -86,7 +86,7 @@ pub fn post<'bump>(
                 });
             }
 
-            let mut converter = MarkdownConverter::new(bump, context).with_sidenotes();
+            let mut converter = MarkdownConverter::new(context).with_sidenotes();
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
@@ -109,7 +109,7 @@ pub fn post<'bump>(
         }
         PostBody::Description => html! { in bump;
             <>
-                {MarkdownConverter::new(bump, context).convert(&document.description, None)}
+                {MarkdownConverter::new(context).convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
                         "Read more"
@@ -117,7 +117,7 @@ pub fn post<'bump>(
                 </p>
             </>
         },
-        PostBody::Short => MarkdownConverter::new(bump, context).convert(
+        PostBody::Short => MarkdownConverter::new(context).convert(
             document
                 .metadata
                 .short()
@@ -170,13 +170,13 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     }
 }
 
-fn document_to_html_list<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+fn document_to_html_list<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     document: &Document,
 ) -> Option<paxhtml::Element<'bump>> {
+    let bump = context.bump;
     let heading_hierarchy =
-        HeadingHierarchy::from_node(bump, context, document.rest_of_content.as_ref()?);
+        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?);
 
     fn build_list_recursively<'bump>(
         bump: &'bump Bump,

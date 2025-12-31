@@ -9,11 +9,11 @@ use crate::{
 
 use super::*;
 
-pub fn note<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+pub fn note<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     note: &Document,
 ) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let display_path = &note.display_path;
 
     let description = if note.rest_of_content.is_none() {
@@ -28,7 +28,6 @@ pub fn note<'bump>(
     let og_image_url = format!("{}{}", context.website_base_url, note.og_image_path());
 
     layout(
-        bump,
         context,
         SocialMeta {
             title: Some(display_path.last().unwrap().to_string()),
@@ -51,7 +50,7 @@ pub fn note<'bump>(
                 </label>
 
                 <div class="absolute left-0 right-0 bg-[var(--background-color)] border-l border-r border-b border-[var(--background-color-secondary)] shadow-lg p-4 z-50 hidden peer-checked:block">
-                    {notes_hierarchy(bump, context, note)}
+                    {notes_hierarchy(context, note)}
                 </div>
 
                 <div class="w-full mt-4">
@@ -77,7 +76,7 @@ pub fn note<'bump>(
                     </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {{
-                            let mut converter = MarkdownConverter::new(bump, context).with_sidenotes();
+                            let mut converter = MarkdownConverter::new(context).with_sidenotes();
                             paxhtml::builder::Builder::new(bump).fragment([
                                 converter.convert(&note.description, None),
                                 note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).unwrap_or(paxhtml::Element::Empty),
@@ -90,11 +89,11 @@ pub fn note<'bump>(
     )
 }
 
-fn notes_hierarchy<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+fn notes_hierarchy<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     active_document: &Document,
 ) -> paxhtml::Element<'bump> {
+    let bump = context.bump;
     html! { in bump;
         <ul class="list-none m-0 p-0 break-words overflow-hidden">
             {build_tree(bump, &context.content.notes.documents, active_document, 0)}

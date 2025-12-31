@@ -19,8 +19,9 @@ pub mod updates;
 pub mod components;
 use components::{Link, LinkProps};
 
+/// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
-pub struct ViewContext<'a> {
+pub struct ViewContextBase<'a> {
     pub website_author: &'a str,
     pub website_name: &'a str,
     pub website_description: &'a str,
@@ -29,6 +30,25 @@ pub struct ViewContext<'a> {
     pub content: &'a Content,
     pub generation_date: chrono::DateTime<chrono::Utc>,
     pub fast: bool,
+}
+impl<'a> ViewContextBase<'a> {
+    /// Create a ViewContext with a bump allocator
+    pub fn with_bump<'bump>(&self, bump: &'bump Bump) -> ViewContext<'bump, 'a> {
+        ViewContext { bump, base: *self }
+    }
+}
+
+/// Full view context with bump allocator
+#[derive(Copy, Clone)]
+pub struct ViewContext<'bump, 'a> {
+    pub bump: &'bump Bump,
+    base: ViewContextBase<'a>,
+}
+impl<'bump, 'a> std::ops::Deref for ViewContext<'bump, 'a> {
+    type Target = ViewContextBase<'a>;
+    fn deref(&self) -> &Self::Target {
+        &self.base
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -136,13 +156,13 @@ impl SocialMeta {
     }
 }
 
-pub fn layout<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+pub fn layout<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     meta: SocialMeta,
     current_page: CurrentPage,
     inner: Element<'bump>,
 ) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;

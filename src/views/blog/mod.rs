@@ -1,17 +1,17 @@
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo;
 
 use super::*;
 use crate::views::posts;
 
-pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
+pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let all_posts = context
         .content
         .blog
         .documents
         .iter()
-        .map(|doc| posts::post(bump, context, doc, posts::PostBody::Description));
+        .map(|doc| posts::post(context, doc, posts::PostBody::Description));
     layout(
-        bump,
         context,
         SocialMeta {
             title: None,
@@ -36,15 +36,13 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
     )
 }
 
-pub fn post<'bump>(
-    bump: &'bump Bump,
-    context: ViewContext,
+pub fn post<'bump, 'a>(
+    context: ViewContext<'bump, 'a>,
     document: &Document,
 ) -> paxhtml::Document<'bump> {
     let og_image_url = format!("{}{}", context.website_base_url, document.og_image_path());
 
     layout(
-        bump,
         context,
         SocialMeta {
             title: Some(document.metadata.title.clone()),
@@ -65,6 +63,6 @@ pub fn post<'bump>(
             article_tag: document.tags().map(|t| t.join(", ")),
         },
         CurrentPage::Blog,
-        posts::post(bump, context, document, posts::PostBody::Full),
+        posts::post(context, document, posts::PostBody::Full),
     )
 }

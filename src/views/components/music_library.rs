@@ -93,7 +93,8 @@ mod colours {
 
 // Note: This component uses ViewContext so it's kept as a regular function
 // rather than using the custom component syntax
-pub fn music_library<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Element<'bump> {
+pub fn music_library<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Element<'bump> {
+    let bump = context.bump;
     if context.fast {
         return html! { in bump;
             <div>

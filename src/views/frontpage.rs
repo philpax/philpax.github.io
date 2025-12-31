@@ -10,7 +10,8 @@ use crate::{
     },
 };
 
-pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
+pub fn index<'bump, 'a>(context: ViewContext<'bump, 'a>) -> paxhtml::Document<'bump> {
+    let bump = context.bump;
     let content = &context.content;
     let list_88x31 = [
         ("philpax.png", "https://philpax.me"),
@@ -24,7 +25,6 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
     ];
 
     layout(
-        bump,
         context,
         SocialMeta {
             title: None,
@@ -43,7 +43,7 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
             <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch" id="home-page-columns">
                 <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">
                     <div class="post-body p-0 *:mb-4">
-                        {MarkdownConverter::new(bump, context).convert(&content.about.description, None)}
+                        {MarkdownConverter::new(context).convert(&content.about.description, None)}
                     </div>
                 </article>
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
@@ -60,7 +60,7 @@ pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Documen
                                 .documents
                                 .iter()
                                 .take(5)
-                                .map(|doc| posts::post(bump, context, doc, posts::PostBody::Short))
+                                .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                         }
                         </div>
                     </div>
