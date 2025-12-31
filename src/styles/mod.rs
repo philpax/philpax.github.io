@@ -9,7 +9,10 @@ pub struct GenerateOutput {
     pub light_mode_icon: String,
 }
 
-pub fn generate(context: ViewContextBase<'_>, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
+pub fn generate(
+    context: ViewContextBase<'_>,
+    tailwind_output: &str,
+) -> anyhow::Result<GenerateOutput> {
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
@@ -89,24 +92,47 @@ pub fn generate(context: ViewContextBase<'_>, tailwind_output: &str) -> anyhow::
     })
 }
 
-pub fn generate_tailwind(fast: bool, use_global_tailwind: bool) -> anyhow::Result<String> {
+pub fn generate_tailwind(
+    fast: bool,
+    use_global_tailwind: bool,
+    report: &mut impl FnMut(&'static str, std::time::Duration),
+) -> anyhow::Result<String> {
+    let now = std::time::Instant::now();
     let hash = compute_tailwind_input_hash()?;
+    report("Computed input hash", now.elapsed());
 
     // Check cache first
+    let now = std::time::Instant::now();
     if let Some(cached) = get_cached_tailwind(hash) {
+        report("Loaded from cache", now.elapsed());
         return Ok(cached);
     }
+    report("Cache miss", now.elapsed());
 
     // Generate fresh
-    let tailwind_output = if use_global_tailwind {
+    let now = std::time::Instant::now();
+    let tailwind = if use_global_tailwind {
         paxhtml_tailwind::Tailwind::global()
     } else {
         paxhtml_tailwind::Tailwind::download(paxhtml_tailwind::RECOMMENDED_VERSION, fast)?
-    }
-    .generate_from_file(Path::new(TAILWIND_INPUT))?;
+    };
+    report(
+        if use_global_tailwind {
+            "Used global tailwind"
+        } else {
+            "Downloaded tailwind"
+        },
+        now.elapsed(),
+    );
+
+    let now = std::time::Instant::now();
+    let tailwind_output = tailwind.generate_from_file(Path::new(TAILWIND_INPUT))?;
+    report("Generated CSS", now.elapsed());
 
     // Cache the result
+    let now = std::time::Instant::now();
     save_tailwind_cache(hash, &tailwind_output)?;
+    report("Saved to cache", now.elapsed());
 
     Ok(tailwind_output)
 }

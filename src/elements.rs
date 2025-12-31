@@ -1,8 +1,8 @@
 #![allow(unused)]
 
 use chrono::Timelike;
-use paxhtml::bumpalo::Bump;
 use paxhtml::builder::Builder;
+use paxhtml::bumpalo::Bump;
 pub use paxhtml::{html, Element};
 
 pub fn date_with_chrono<'bump>(bump: &'bump Bump, date: chrono::NaiveDate) -> Element<'bump> {

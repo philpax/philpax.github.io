@@ -36,10 +36,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     )
 }
 
-pub fn post<'a>(
-    context: ViewContext<'a>,
-    document: &Document,
-) -> paxhtml::Document<'a> {
+pub fn post<'a>(context: ViewContext<'a>, document: &Document) -> paxhtml::Document<'a> {
     let og_image_url = format!("{}{}", context.website_base_url, document.og_image_path());
 
     layout(

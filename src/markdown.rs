@@ -275,11 +275,7 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    fn convert_many(
-        &mut self,
-        nodes: &[Node],
-        parent_node: Option<&Node>,
-    ) -> paxhtml::Element<'a> {
+    fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element<'a> {
         let b = paxhtml::builder::Builder::new(self.context.bump);
         b.fragment(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
@@ -344,10 +340,7 @@ impl<'a> HeadingHierarchy<'a> {
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(
-        context: ViewContext<'a>,
-        node: &Node,
-    ) -> Vec<HeadingHierarchy<'a>> {
+    pub fn from_node(context: ViewContext<'a>, node: &Node) -> Vec<HeadingHierarchy<'a>> {
         let mut headings = Vec::new();
         collect_headings(context, node, &mut headings);
 

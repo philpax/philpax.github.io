@@ -16,6 +16,7 @@ mod rss;
 mod serve;
 mod styles;
 mod syntax;
+mod timer;
 mod util;
 mod views;
 
@@ -105,44 +106,20 @@ impl From<Route> for RoutePath {
     }
 }
 
-struct Timer {
-    step: usize,
-    accumulated: std::time::Duration,
-}
-impl Timer {
-    pub fn new() -> Self {
-        Self {
-            step: 1,
-            accumulated: std::time::Duration::ZERO,
-        }
-    }
-    pub fn step<R>(&mut self, label: &str, f: impl FnOnce() -> R) -> R {
-        let now = std::time::Instant::now();
-        let result = f();
-        let elapsed = now.elapsed();
-        println!("{}. {} in {:?}", self.step, label, elapsed);
-        self.step += 1;
-        self.accumulated += elapsed;
-        result
-    }
-    pub fn finish(self) {
-        println!("Total time: {:?}", self.accumulated);
-    }
-}
-
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
     let use_global_tailwind =
         std::env::args().any(|arg| arg == "--use-global-tailwind" || arg == "-u");
+    let verbose = std::env::args().any(|arg| arg == "--verbose" || arg == "-v");
 
-    let mut timer = Timer::new();
+    let mut timer = timer::Timer::new(verbose);
 
     let output_dir = Path::new("public");
     #[cfg(feature = "serve")]
     let port = 8192;
 
     if !fast {
-        timer.step("Cleared output directory", || {
+        timer.step("Cleared output directory", |_| {
             if output_dir.is_dir() {
                 // Remove everything in the public directory; this is done manually
                 // to ensure that you can continue serving from the directory while
@@ -161,30 +138,78 @@ fn main() -> anyhow::Result<()> {
     } else {
         timer.step(
             "Fast mode enabled, skipping output directory clearing",
-            || anyhow::Ok(()),
+            |_| anyhow::Ok(()),
         )?;
     }
 
-    timer.step("Copied baked static content", || {
+    timer.step("Copied baked static content", |_| {
         util::copy_dir(Path::new("assets/baked/static"), output_dir)
     })?;
 
-    timer.step("Copied static content", || {
+    timer.step("Copied static content", |_| {
         util::copy_dir(Path::new("static"), output_dir)
     })?;
 
     // Run syntax loading, tailwind generation, and content reading in parallel
     let (syntax, tailwind_css, content) = timer.step(
         "Loaded syntax, generated Tailwind CSS, and read content",
-        || {
+        |substeps| {
+            use std::sync::Mutex;
+
+            // Collect timing reports from parallel tasks
+            let syntax_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
+                Mutex::new(Vec::new());
+            let tailwind_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
+                Mutex::new(Vec::new());
+            let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
+                Mutex::new(Vec::new());
+
             let ((syntax, tailwind_css), content) = rayon::join(
                 || {
-                    rayon::join(syntax::SyntaxHighlighter::default, || {
-                        styles::generate_tailwind(fast, use_global_tailwind)
+                    rayon::join(
+                        || {
+                            syntax::SyntaxHighlighter::new(&mut |label, elapsed| {
+                                syntax_reports.lock().unwrap().push((label, elapsed));
+                            })
+                        },
+                        || {
+                            styles::generate_tailwind(
+                                fast,
+                                use_global_tailwind,
+                                &mut |label, elapsed| {
+                                    tailwind_reports.lock().unwrap().push((label, elapsed));
+                                },
+                            )
+                        },
+                    )
+                },
+                || {
+                    content::Content::read(fast, &mut |label, elapsed| {
+                        content_reports.lock().unwrap().push((label, elapsed));
                     })
                 },
-                || content::Content::read(fast),
             );
+
+            // Report syntax timings
+            substeps.step_nested("Loaded syntax", |nested| {
+                for (label, elapsed) in syntax_reports.into_inner().unwrap() {
+                    nested.report(label, elapsed);
+                }
+            });
+
+            // Report tailwind timings
+            substeps.step_nested("Generated Tailwind CSS", |nested| {
+                for (label, elapsed) in tailwind_reports.into_inner().unwrap() {
+                    nested.report(label, elapsed);
+                }
+            });
+
+            // Report content timings
+            substeps.step_nested("Read content", |nested| {
+                for (label, elapsed) in content_reports.into_inner().unwrap() {
+                    nested.report(label, elapsed);
+                }
+            });
 
             anyhow::Ok((syntax, tailwind_css?, content?))
         },
@@ -205,24 +230,20 @@ fn main() -> anyhow::Result<()> {
         fast,
     };
 
-    timer.step("Wrote content", || {
+    timer.step("Wrote content", |substeps| {
         use rayon::prelude::*;
+        use std::sync::Mutex;
 
-        content
-            .blog
-            .documents
-            .par_iter()
-            .chain(content.updates.documents.par_iter())
-            .try_for_each(|doc| {
+        let blog_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
+        let updates_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
+
+        substeps.step_nested("Wrote blog", |nested| {
+            content.blog.documents.par_iter().try_for_each(|doc| {
+                let now = std::time::Instant::now();
                 let bump = Bump::new();
                 let post_route_path = doc.route_path();
 
-                let view = match doc.document_type {
-                    content::DocumentType::Blog => views::blog::post(view_context.with_bump(&bump), doc),
-                    content::DocumentType::Update => views::updates::post(view_context.with_bump(&bump), doc),
-                    content::DocumentType::Note => unreachable!(),
-                };
-
+                let view = views::blog::post(view_context.with_bump(&bump), doc);
                 view.write_to_route(output_dir, post_route_path.clone())?;
                 {
                     let post_output_dir = post_route_path.dir_path(output_dir);
@@ -234,56 +255,140 @@ fn main() -> anyhow::Result<()> {
                     }
                 }
 
-                // Write redirect for alternate_id if it exists
                 if let Some(alternate_route_path) = doc.alternate_route_path() {
                     views::redirect(&bump, &post_route_path.url_path())
                         .write_to_route(output_dir, alternate_route_path)?;
                 }
 
+                blog_reports
+                    .lock()
+                    .unwrap()
+                    .push((doc.id.join("/"), now.elapsed()));
                 anyhow::Ok(())
             })?;
 
-        fn write_note_folder(
-            output_dir: &Path,
-            context: views::ViewContextBase<'_>,
-            folder: &content::DocumentFolderNode,
-        ) -> anyhow::Result<()> {
-            if let Some(index_document) = &folder.index_document {
-                let bump = Bump::new();
-                views::notes::note(context.with_bump(&bump), index_document).write_to_route(
-                    output_dir,
-                    Route::Note {
-                        note_id: index_document.id.clone(),
-                    },
-                )?;
+            let mut reports = blog_reports.into_inner().unwrap();
+            reports.sort_by(|a, b| a.0.cmp(&b.0));
+            for (label, elapsed) in reports {
+                nested.report(&label, elapsed);
             }
+            anyhow::Ok(())
+        })?;
 
-            for child in folder.children.values() {
-                match child {
-                    content::DocumentNode::Folder(folder) => {
-                        write_note_folder(output_dir, context, folder)?;
-                    }
-                    content::DocumentNode::Document { document } => {
-                        let bump = Bump::new();
-                        views::notes::note(context.with_bump(&bump), document).write_to_route(
-                            output_dir,
-                            Route::Note {
-                                note_id: document.id.clone(),
-                            },
-                        )?;
+        substeps.step_nested("Wrote updates", |nested| {
+            content.updates.documents.par_iter().try_for_each(|doc| {
+                let now = std::time::Instant::now();
+                let bump = Bump::new();
+                let post_route_path = doc.route_path();
+
+                let view = views::updates::post(view_context.with_bump(&bump), doc);
+                view.write_to_route(output_dir, post_route_path.clone())?;
+                {
+                    let post_output_dir = post_route_path.dir_path(output_dir);
+                    for path in &doc.files {
+                        let output_path = post_output_dir.join(path.file_name().unwrap());
+                        std::fs::copy(path, &output_path).with_context(|| {
+                            format!("failed to copy content file {path:?} to {output_path:?}")
+                        })?;
                     }
                 }
-            }
-            Ok(())
-        }
 
-        write_note_folder(output_dir, view_context, &content.notes.documents)?;
+                if let Some(alternate_route_path) = doc.alternate_route_path() {
+                    views::redirect(&bump, &post_route_path.url_path())
+                        .write_to_route(output_dir, alternate_route_path)?;
+                }
+
+                updates_reports
+                    .lock()
+                    .unwrap()
+                    .push((doc.id.join("/"), now.elapsed()));
+                anyhow::Ok(())
+            })?;
+
+            let mut reports = updates_reports.into_inner().unwrap();
+            reports.sort_by(|a, b| a.0.cmp(&b.0));
+            for (label, elapsed) in reports {
+                nested.report(&label, elapsed);
+            }
+            anyhow::Ok(())
+        })?;
+
+        substeps.step_nested("Wrote notes", |nested| {
+            let notes_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
+
+            fn write_note_folder(
+                output_dir: &Path,
+                context: views::ViewContextBase<'_>,
+                folder: &content::DocumentFolderNode,
+                reports: &Mutex<Vec<(String, std::time::Duration)>>,
+            ) -> anyhow::Result<()> {
+                if let Some(index_document) = &folder.index_document {
+                    let now = std::time::Instant::now();
+                    let bump = Bump::new();
+                    let result = views::notes::note(context.with_bump(&bump), index_document)
+                        .write_to_route(
+                            output_dir,
+                            Route::Note {
+                                note_id: index_document.id.clone(),
+                            },
+                        );
+                    reports.lock().unwrap().push((
+                        if index_document.id.is_empty() {
+                            "index".to_string()
+                        } else {
+                            index_document.id.join("/")
+                        },
+                        now.elapsed(),
+                    ));
+                    result?;
+                }
+
+                for child in folder.children.values() {
+                    match child {
+                        content::DocumentNode::Folder(folder) => {
+                            write_note_folder(output_dir, context, folder, reports)?;
+                        }
+                        content::DocumentNode::Document { document } => {
+                            let now = std::time::Instant::now();
+                            let bump = Bump::new();
+                            let result = views::notes::note(context.with_bump(&bump), document)
+                                .write_to_route(
+                                    output_dir,
+                                    Route::Note {
+                                        note_id: document.id.clone(),
+                                    },
+                                );
+                            reports
+                                .lock()
+                                .unwrap()
+                                .push((document.id.join("/"), now.elapsed()));
+                            result?;
+                        }
+                    }
+                }
+                Ok(())
+            }
+
+            write_note_folder(
+                output_dir,
+                view_context,
+                &content.notes.documents,
+                &notes_reports,
+            )?;
+
+            let mut reports = notes_reports.into_inner().unwrap();
+            reports.sort_by(|a, b| a.0.cmp(&b.0));
+            for (label, elapsed) in reports {
+                nested.report(&label, elapsed);
+            }
+            anyhow::Ok(())
+        })?;
 
         anyhow::Ok(())
     })?;
 
     if !fast {
-        timer.step("Generated OG images", || {
+        timer.step("Generated OG images", |substeps| {
             use rayon::prelude::*;
 
             let og_images_dir = output_dir.join("og-images");
@@ -294,7 +399,9 @@ fn main() -> anyhow::Result<()> {
             std::fs::create_dir_all(og_images_dir.join("updates"))?;
             std::fs::create_dir_all(og_images_dir.join("notes"))?;
 
-            let generator = og_image::Generator::new(view_context.website_author.into())?;
+            let generator = substeps.step("Initialized generator", || {
+                og_image::Generator::new(view_context.website_author.into())
+            })?;
 
             // Helper function to generate OG image for a document
             fn generate_doc_image(
@@ -365,64 +472,82 @@ fn main() -> anyhow::Result<()> {
             collect_notes(&mut all_docs, &content.notes.documents);
 
             // Generate images in parallel
-            all_docs.par_iter().try_for_each(|doc| {
-                generate_doc_image(&generator, output_dir, &og_images_dir, doc)
+            substeps.step("Generated images", || {
+                all_docs.par_iter().try_for_each(|doc| {
+                    generate_doc_image(&generator, output_dir, &og_images_dir, doc)
+                })
             })?;
 
             anyhow::Ok(())
         })?;
     } else {
-        timer.step(
-            "Skipped OG image generation in fast mode",
-            || anyhow::Ok(()),
-        )?;
+        timer.step("Skipped OG image generation in fast mode", |_| {
+            anyhow::Ok(())
+        })?;
     }
 
-    timer.step("Wrote blog index", || {
+    timer.step("Wrote blog index", |_| {
         let bump = Bump::new();
-        let result = views::blog::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Blog);
+        let result = views::blog::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Blog);
         result
     })?;
 
-    timer.step("Wrote updates index", || {
+    timer.step("Wrote updates index", |_| {
         let bump = Bump::new();
-        let result = views::updates::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Updates);
+        let result = views::updates::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Updates);
         result
     })?;
 
-    timer.step("Wrote tags", || {
-        let bump = Bump::new();
-        views::tags::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Tags)?;
-
-        for tag_id in content.tags.keys() {
+    timer.step("Wrote tags", |substeps| {
+        substeps.step("Wrote tags index", || {
             let bump = Bump::new();
-            views::tags::tag(view_context.with_bump(&bump), tag_id).write_to_route(
-                output_dir,
-                Route::Tag {
-                    tag_id: tag_id.to_string(),
-                },
-            )?;
-        }
+            let result = views::tags::index(view_context.with_bump(&bump))
+                .write_to_route(output_dir, Route::Tags);
+            result
+        })?;
+
+        substeps.step("Wrote individual tags", || {
+            for tag_id in content.tags.keys() {
+                let bump = Bump::new();
+                views::tags::tag(view_context.with_bump(&bump), tag_id).write_to_route(
+                    output_dir,
+                    Route::Tag {
+                        tag_id: tag_id.to_string(),
+                    },
+                )?;
+            }
+            anyhow::Ok(())
+        })?;
+
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote credits", || {
+    timer.step("Wrote credits", |_| {
         let bump = Bump::new();
-        let result = views::credits::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Credits);
+        let result = views::credits::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Credits);
         result
     })?;
 
-    timer.step("Wrote frontpage", || {
-        let bump = Bump::new();
-        views::frontpage::index(view_context.with_bump(&bump))
-            .write_to_route(output_dir, Route::Index)?;
-        let bump = Bump::new();
-        let result = views::redirect(&bump, &Route::Index.url_path())
-            .write_to_route(output_dir, Route::DeprecatedAbout);
-        result
+    timer.step("Wrote frontpage", |substeps| {
+        substeps.step("Wrote index", || {
+            let bump = Bump::new();
+            let result = views::frontpage::index(view_context.with_bump(&bump))
+                .write_to_route(output_dir, Route::Index);
+            result
+        })?;
+        substeps.step("Wrote deprecated about redirect", || {
+            let bump = Bump::new();
+            let result = views::redirect(&bump, &Route::Index.url_path())
+                .write_to_route(output_dir, Route::DeprecatedAbout);
+            result
+        })?;
+        anyhow::Ok(())
     })?;
 
-    timer.step("Wrote RSS feeds", || {
+    timer.step("Wrote RSS feeds", |substeps| {
         for (route, collection, title_suffix, description) in [
             (
                 Route::BlogRss,
@@ -441,27 +566,39 @@ fn main() -> anyhow::Result<()> {
                 ),
             ),
         ] {
-            let output = rss::generate(
-                view_context,
-                collection,
-                title_suffix,
-                description,
-                route.clone(),
+            substeps.step(
+                &format!("Wrote {title_suffix} RSS"),
+                || -> anyhow::Result<()> {
+                    let output = rss::generate(
+                        view_context,
+                        collection,
+                        title_suffix,
+                        description,
+                        route.clone(),
+                    )?;
+                    RoutePath::from(route).write(output_dir, output)?;
+                    Ok(())
+                },
             )?;
-            RoutePath::from(route).write(output_dir, output)?;
         }
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote bundled styles", || {
-        let output = styles::generate(view_context, &tailwind_css)?;
-        RoutePath::from(Route::Styles).write(output_dir, output.css)?;
-        RoutePath::from(Route::DarkModeIcon).write(output_dir, output.dark_mode_icon)?;
-        RoutePath::from(Route::LightModeIcon).write(output_dir, output.light_mode_icon)?;
+    timer.step("Wrote bundled styles", |substeps| {
+        let output = substeps.step("Generated styles", || {
+            styles::generate(view_context, &tailwind_css)
+        })?;
+        substeps.step("Wrote CSS", || {
+            RoutePath::from(Route::Styles).write(output_dir, output.css)
+        })?;
+        substeps.step("Wrote icons", || {
+            RoutePath::from(Route::DarkModeIcon).write(output_dir, output.dark_mode_icon)?;
+            RoutePath::from(Route::LightModeIcon).write(output_dir, output.light_mode_icon)
+        })?;
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote bundled JavaScript", || {
+    timer.step("Wrote bundled JavaScript", |_| {
         RoutePath::from(Route::Scripts).write(output_dir, js::generate()?)?;
         anyhow::Ok(())
     })?;

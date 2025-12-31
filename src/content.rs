@@ -49,14 +49,26 @@ impl Content {
         }
     }
 
-    pub fn read(fast: bool) -> anyhow::Result<Self> {
+    pub fn read(
+        fast: bool,
+        report: &mut impl FnMut(&'static str, std::time::Duration),
+    ) -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
 
+        let now = std::time::Instant::now();
         let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
+        report("Read blog", now.elapsed());
+
+        let now = std::time::Instant::now();
         let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update)?;
+        report("Read updates", now.elapsed());
+
+        let now = std::time::Instant::now();
         let notes = NotesCollection::read(&path.join("notes"))?;
+        report("Read notes", now.elapsed());
 
         // Combine tags from both blog and updates
+        let now = std::time::Instant::now();
         let mut tags = HashMap::new();
         for document in blog.documents.iter().chain(updates.documents.iter()) {
             if let Some(taxonomies) = &document.metadata.taxonomies {
@@ -67,31 +79,51 @@ impl Content {
                 }
             }
         }
+        report("Built tags index", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let about = Document::read(
+            &path.join("about.md"),
+            vec!["about".to_string()],
+            vec!["About".to_string()],
+            DocumentType::Blog,
+        )?;
+        report("Read about", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let credits = Document::read(
+            &path.join("credits.md"),
+            vec!["credits".to_string()],
+            vec!["Credits".to_string()],
+            DocumentType::Blog,
+        )?;
+        report("Read credits", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let music_library = if fast {
+            Default::default()
+        } else {
+            serde_json::from_str::<blackbird_json_export_types::Output>(&std::fs::read_to_string(
+                MUSIC_LIBRARY_PATH,
+            )?)?
+        };
+        report(
+            if fast {
+                "Skipped music library"
+            } else {
+                "Read music library"
+            },
+            now.elapsed(),
+        );
 
         Ok(Content {
             blog,
             updates,
             notes,
             tags,
-            about: Document::read(
-                &path.join("about.md"),
-                vec!["about".to_string()],
-                vec!["About".to_string()],
-                DocumentType::Blog,
-            )?,
-            credits: Document::read(
-                &path.join("credits.md"),
-                vec!["credits".to_string()],
-                vec!["Credits".to_string()],
-                DocumentType::Blog,
-            )?,
-            music_library: if fast {
-                Default::default()
-            } else {
-                serde_json::from_str::<blackbird_json_export_types::Output>(
-                    &std::fs::read_to_string(MUSIC_LIBRARY_PATH)?,
-                )?
-            },
+            about,
+            credits,
+            music_library,
         })
     }
 
