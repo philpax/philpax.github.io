@@ -249,9 +249,9 @@ fn main() -> anyhow::Result<()> {
                     let post_output_dir = post_route_path.dir_path(output_dir);
                     for path in &doc.files {
                         let output_path = post_output_dir.join(path.file_name().unwrap());
-                        std::fs::copy(path, &output_path).with_context(|| {
-                            format!("failed to copy content file {path:?} to {output_path:?}")
-                        })?;
+                        util::copy_or_symlink(path, &output_path, view_context.fast).with_context(
+                            || format!("failed to copy content file {path:?} to {output_path:?}"),
+                        )?;
                     }
                 }
 
@@ -287,9 +287,9 @@ fn main() -> anyhow::Result<()> {
                     let post_output_dir = post_route_path.dir_path(output_dir);
                     for path in &doc.files {
                         let output_path = post_output_dir.join(path.file_name().unwrap());
-                        std::fs::copy(path, &output_path).with_context(|| {
-                            format!("failed to copy content file {path:?} to {output_path:?}")
-                        })?;
+                        util::copy_or_symlink(path, &output_path, view_context.fast).with_context(
+                            || format!("failed to copy content file {path:?} to {output_path:?}"),
+                        )?;
                     }
                 }
 
