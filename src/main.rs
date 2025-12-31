@@ -1,6 +1,7 @@
 use std::path::Path;
 
 use anyhow::Context;
+use paxhtml::bumpalo::Bump;
 use paxhtml::RoutePath;
 
 use crate::content::DocumentId;
@@ -49,11 +50,6 @@ pub enum Route {
     DarkModeIcon,
     LightModeIcon,
 }
-impl From<Route> for RoutePath {
-    fn from(route: Route) -> Self {
-        route.route_path()
-    }
-}
 impl Route {
     pub fn route_path(&self) -> RoutePath {
         match self {
@@ -101,6 +97,11 @@ impl Route {
     }
     pub fn abs_url(&self, domain: &str) -> String {
         self.route_path().abs_url(domain)
+    }
+}
+impl From<Route> for RoutePath {
+    fn from(route: Route) -> Self {
+        route.route_path()
     }
 }
 
@@ -212,11 +213,12 @@ fn main() -> anyhow::Result<()> {
             .par_iter()
             .chain(content.updates.documents.par_iter())
             .try_for_each(|doc| {
+                let bump = Bump::new();
                 let post_route_path = doc.route_path();
 
                 let view = match doc.document_type {
-                    content::DocumentType::Blog => views::blog::post(view_context, doc),
-                    content::DocumentType::Update => views::updates::post(view_context, doc),
+                    content::DocumentType::Blog => views::blog::post(&bump, view_context, doc),
+                    content::DocumentType::Update => views::updates::post(&bump, view_context, doc),
                     content::DocumentType::Note => unreachable!(),
                 };
 
@@ -233,7 +235,7 @@ fn main() -> anyhow::Result<()> {
 
                 // Write redirect for alternate_id if it exists
                 if let Some(alternate_route_path) = doc.alternate_route_path() {
-                    views::redirect(&post_route_path.url_path())
+                    views::redirect(&bump, &post_route_path.url_path())
                         .write_to_route(output_dir, alternate_route_path)?;
                 }
 
@@ -246,7 +248,7 @@ fn main() -> anyhow::Result<()> {
             folder: &content::DocumentFolderNode,
         ) -> anyhow::Result<()> {
             if let Some(index_document) = &folder.index_document {
-                views::notes::note(context, index_document).write_to_route(
+                views::notes::note(&Bump::new(), context, index_document).write_to_route(
                     output_dir,
                     Route::Note {
                         note_id: index_document.id.clone(),
@@ -260,7 +262,7 @@ fn main() -> anyhow::Result<()> {
                         write_note_folder(output_dir, context, folder)?;
                     }
                     content::DocumentNode::Document { document } => {
-                        views::notes::note(context, document).write_to_route(
+                        views::notes::note(&Bump::new(), context, document).write_to_route(
                             output_dir,
                             Route::Note {
                                 note_id: document.id.clone(),
@@ -374,18 +376,18 @@ fn main() -> anyhow::Result<()> {
     }
 
     timer.step("Wrote blog index", || {
-        views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
+        views::blog::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Blog)
     })?;
 
     timer.step("Wrote updates index", || {
-        views::updates::index(view_context).write_to_route(output_dir, Route::Updates)
+        views::updates::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Updates)
     })?;
 
     timer.step("Wrote tags", || {
-        views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
+        views::tags::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Tags)?;
 
         for tag_id in content.tags.keys() {
-            views::tags::tag(view_context, tag_id).write_to_route(
+            views::tags::tag(&Bump::new(), view_context, tag_id).write_to_route(
                 output_dir,
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -396,15 +398,14 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote credits", || {
-        views::credits::index(view_context).write_to_route(output_dir, Route::Credits)?;
-        anyhow::Ok(())
+        views::credits::index(&Bump::new(), view_context).write_to_route(output_dir, Route::Credits)
     })?;
 
     timer.step("Wrote frontpage", || {
-        views::frontpage::index(view_context).write_to_route(output_dir, Route::Index)?;
-        views::redirect(&Route::Index.url_path())
-            .write_to_route(output_dir, Route::DeprecatedAbout)?;
-        anyhow::Ok(())
+        views::frontpage::index(&Bump::new(), view_context)
+            .write_to_route(output_dir, Route::Index)?;
+        views::redirect(&Bump::new(), &Route::Index.url_path())
+            .write_to_route(output_dir, Route::DeprecatedAbout)
     })?;
 
     timer.step("Wrote RSS feeds", || {
@@ -433,29 +434,22 @@ fn main() -> anyhow::Result<()> {
                 description,
                 route.clone(),
             )?;
-            route.route_path().write(output_dir, output)?;
+            RoutePath::from(route).write(output_dir, output)?;
         }
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled styles", || {
         let output = styles::generate(view_context, &tailwind_css)?;
-        Route::Styles.route_path().write(output_dir, output.css)?;
-        Route::DarkModeIcon
-            .route_path()
-            .write(output_dir, output.dark_mode_icon)?;
-        Route::LightModeIcon
-            .route_path()
-            .write(output_dir, output.light_mode_icon)?;
+        RoutePath::from(Route::Styles).write(output_dir, output.css)?;
+        RoutePath::from(Route::DarkModeIcon).write(output_dir, output.dark_mode_icon)?;
+        RoutePath::from(Route::LightModeIcon).write(output_dir, output.light_mode_icon)?;
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled JavaScript", || {
-        anyhow::Ok(
-            Route::Scripts
-                .route_path()
-                .write(output_dir, js::generate()?)?,
-        )
+        RoutePath::from(Route::Scripts).write(output_dir, js::generate()?)?;
+        anyhow::Ok(())
     })?;
 
     timer.finish();

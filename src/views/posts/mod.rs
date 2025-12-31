@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
@@ -11,12 +13,12 @@ pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
 pub const POST_BODY_MARGIN_CLASS: &str =
     "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0";
 
-pub fn tags(document: &Document) -> paxhtml::Element {
+pub fn tags<'bump>(bump: &'bump Bump, document: &Document) -> paxhtml::Element<'bump> {
     document
         .tags()
         .map(|t| {
             let tags = t.iter().map(|tag| {
-                html! {
+                html! { in bump;
                     <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
                         <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                             {format!("#{tag}")}
@@ -24,13 +26,14 @@ pub fn tags(document: &Document) -> paxhtml::Element {
                     </li>
                 }
             });
-            html! { <ul class="list-none m-0 p-0 inline-block">#{tags}</ul> }
+            html! { in bump; <ul class="list-none m-0 p-0 inline-block">#{tags}</ul> }
         })
         .unwrap_or_default()
 }
 
-pub fn date(document: &Document) -> paxhtml::Element {
+pub fn date<'bump>(bump: &'bump Bump, document: &Document) -> paxhtml::Element<'bump> {
     crate::elements::date_with_chrono(
+        bump,
         document
             .metadata
             .datetime
@@ -46,21 +49,26 @@ pub enum PostBody {
     Short,
 }
 
-pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> paxhtml::Element {
+pub fn post<'bump>(
+    bump: &'bump Bump,
+    context: ViewContext,
+    document: &Document,
+    post_body: PostBody,
+) -> paxhtml::Element<'bump> {
     let route_path = document.route_path();
     let url = route_path.url_path();
 
     let post_body_rendered = match post_body {
         PostBody::Full => {
             let h3_classname = "text-lg font-bold";
-            let toc = document_to_html_list(context, document);
+            let toc = document_to_html_list(bump, context, document);
 
             let mut content_elements = vec![];
 
             // TOC sidebar (2xl only) - floats left into margin
             // Uses flex justify-end + w-max so longest item aligns to right edge of column
             if let Some(hierarchy_list) = toc.clone() {
-                content_elements.push(html! {
+                content_elements.push(html! { in bump;
                     <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                         <div class="w-max max-w-full">
                             <h3 class={h3_classname}>"Table of Contents"</h3>
@@ -73,17 +81,17 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
             }
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
-                content_elements.push(html! {
+                content_elements.push(html! { in bump;
                     <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
                 });
             }
 
-            let mut converter = MarkdownConverter::new(context).with_sidenotes();
+            let mut converter = MarkdownConverter::new(bump, context).with_sidenotes();
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
             if let Some(hierarchy_list) = toc {
-                content_elements.push(html! {
+                content_elements.push(html! { in bump;
                     <aside class="toc 2xl:hidden" id="toc-inline">
                         <h3 class={h3_classname}>"Table of Contents"</h3>
                         <div class={format!("{POST_BODY_CONTENT_MARGIN_LEFT_CLASS} [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
@@ -97,11 +105,11 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 content_elements.push(converter.convert(content, None));
             }
 
-            paxhtml::Element::from(content_elements)
+            paxhtml::builder::Builder::new(bump).fragment(content_elements)
         }
-        PostBody::Description => html! {
+        PostBody::Description => html! { in bump;
             <>
-                {MarkdownConverter::new(context).convert(&document.description, None)}
+                {MarkdownConverter::new(bump, context).convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
                         "Read more"
@@ -109,7 +117,7 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
                 </p>
             </>
         },
-        PostBody::Short => MarkdownConverter::new(context).convert(
+        PostBody::Short => MarkdownConverter::new(bump, context).convert(
             document
                 .metadata
                 .short()
@@ -121,30 +129,30 @@ pub fn post(context: ViewContext, document: &Document, post_body: PostBody) -> p
 
     let heading_class = post_body_to_heading_class(post_body);
 
-    html! {
+    html! { in bump;
         <article class="post">
             <header class="pb-0 mb-0">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     <div class="flex items-center gap-[var(--meta-spacing)]">
-                        {date(document)}
+                        {date(bump, document)}
                         " · "
                         <em>{document.document_type.to_string().to_lowercase()}</em>
                         " · "
                         {document.word_count.to_string()}
                         " words"
                     </div>
-                    {if document.tags().is_some_and(|t| !t.is_empty()) { html! { <>
+                    {if document.tags().is_some_and(|t| !t.is_empty()) { html! { in bump; <>
                         <div class="sm:hidden -mt-1">
-                            {tags(document)}
+                            {tags(bump, document)}
                         </div>
                         <div class="hidden sm:flex items-center gap-[var(--meta-spacing)]">
                             " · "
-                            {tags(document)}
+                            {tags(bump, document)}
                         </div>
-                    </> }} else { paxhtml::Element::Empty } }
+                    </> }} else { paxhtml::Element::Empty }}
                 </div>
                 <a href={url} class="flex items-center p-0 no-underline post-title">
-                    <h2 class={heading_class}>{break_on_colon(&document.metadata.title)}</h2>
+                    <h2 class={heading_class}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
             </header>
             <div class={format!("post-body {} {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" }, if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" })}>
@@ -162,11 +170,19 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     }
 }
 
-fn document_to_html_list(context: ViewContext, document: &Document) -> Option<paxhtml::Element> {
+fn document_to_html_list<'bump>(
+    bump: &'bump Bump,
+    context: ViewContext,
+    document: &Document,
+) -> Option<paxhtml::Element<'bump>> {
     let heading_hierarchy =
-        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?);
+        HeadingHierarchy::from_node(bump, context, document.rest_of_content.as_ref()?);
 
-    fn build_list_recursively(children: &[HeadingHierarchy], toplevel: bool) -> paxhtml::Element {
+    fn build_list_recursively<'bump>(
+        bump: &'bump Bump,
+        children: &[HeadingHierarchy<'bump>],
+        toplevel: bool,
+    ) -> paxhtml::Element<'bump> {
         if children.is_empty() {
             return paxhtml::Element::Empty;
         }
@@ -178,7 +194,7 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
             "list-none m-0 pl-6"
         };
 
-        html! {
+        html! { in bump;
             <ul class={ul_class}>
                 {if toplevel {
                     // Bodge: use lowercase introduction text if all of the headings are lowercase
@@ -189,7 +205,7 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
                         "Introduction"
                     };
 
-                    html! {
+                    html! { in bump;
                         <li>
                             <Link underline target={"#"}>
                                 {introduction_text}
@@ -199,27 +215,28 @@ fn document_to_html_list(context: ViewContext, document: &Document) -> Option<pa
                 } else {
                     paxhtml::Element::Empty
                 }}
-                #{children.iter().map(build_list_item_recursively)}
+                #{children.iter().map(|h| build_list_item_recursively(bump, h))}
             </ul>
         }
     }
 
-    fn build_list_item_recursively(
+    fn build_list_item_recursively<'bump>(
+        bump: &'bump Bump,
         HeadingHierarchy {
             heading,
             heading_text,
             children,
-        }: &HeadingHierarchy,
-    ) -> paxhtml::Element {
-        html! {
+        }: &HeadingHierarchy<'bump>,
+    ) -> paxhtml::Element<'bump> {
+        html! { in bump;
             <li>
                 <Link underline target={format!("#{}", util::slugify(heading_text))}>
                     {heading.clone()}
                 </Link>
-                {build_list_recursively(children, false)}
+                {build_list_recursively(bump, children, false)}
             </li>
         }
     }
 
-    Some(build_list_recursively(&heading_hierarchy, true)).filter(|e| !e.is_empty())
+    Some(build_list_recursively(bump, &heading_hierarchy, true)).filter(|e| !e.is_empty())
 }

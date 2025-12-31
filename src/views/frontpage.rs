@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use super::*;
 
 use crate::{
@@ -8,7 +10,7 @@ use crate::{
     },
 };
 
-pub fn index(context: ViewContext) -> paxhtml::Document {
+pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
     let content = &context.content;
     let list_88x31 = [
         ("philpax.png", "https://philpax.me"),
@@ -22,11 +24,12 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     ];
 
     layout(
+        bump,
         context,
         SocialMeta {
             title: None,
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Index.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: None,
@@ -36,11 +39,11 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_tag: None,
         },
         CurrentPage::Home,
-        html! {
+        html! { in bump;
             <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch" id="home-page-columns">
                 <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">
                     <div class="post-body p-0 *:mb-4">
-                        {MarkdownConverter::new(context).convert(&content.about.description, None)}
+                        {MarkdownConverter::new(bump, context).convert(&content.about.description, None)}
                     </div>
                 </article>
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
@@ -57,7 +60,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                                 .documents
                                 .iter()
                                 .take(5)
-                                .map(|doc| posts::post(context, doc, posts::PostBody::Short))
+                                .map(|doc| posts::post(bump, context, doc, posts::PostBody::Short))
                         }
                         </div>
                     </div>
@@ -75,14 +78,14 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
                                 .documents
                                 .iter()
                                 .take(5)
-                                .map(update_doc_item)
+                                .map(|doc| update_doc_item(bump, doc))
                         }
                         </ul>
                     </div>
 
                     <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{
-                        list_88x31.iter().map(|(img, url)| html! {
+                        list_88x31.iter().map(|(img, url)| html! { in bump;
                             <a href={url}>
                                 <img src={format!("/88x31/{img}")} alt={img} />
                             </a>
@@ -95,13 +98,13 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     )
 }
 
-fn update_doc_item(doc: &Document) -> paxhtml::Element {
+fn update_doc_item<'bump>(bump: &'bump Bump, doc: &Document) -> paxhtml::Element<'bump> {
     let date_str = doc
         .metadata
         .datetime
         .map(|dt| dt.date_naive().to_string())
         .unwrap_or_default();
-    html! {
+    html! { in bump;
         <li>
             <span class="text-[var(--color-secondary)]">{date_str}": "</span>
             <Link target={doc.route_path().url_path()}>

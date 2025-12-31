@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use super::*;
 use crate::{
     util,
@@ -7,16 +9,17 @@ use crate::{
     },
 };
 
-pub fn index(context: ViewContext) -> paxhtml::Document {
+pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
     let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
     tag_keys.sort();
 
     layout(
+        bump,
         context,
         SocialMeta {
             title: Some("Tags".to_string()),
             description: Some(format!("All tags on {}", context.website_name)),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Tags.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: None,
@@ -26,12 +29,12 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_tag: None,
         },
         CurrentPage::Tags,
-        html! {
+        html! { in bump;
             <ul class="list-none m-0 list-inside">
             #{
                 tag_keys.iter().map(|tag| {
                     let item_count = context.content.tags[*tag].len();
-                    html! {
+                    html! { in bump;
                         <li class="list-disc">
                             <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                                 {format!("#{tag}")}
@@ -50,7 +53,11 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     )
 }
 
-pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
+pub fn tag<'bump>(
+    bump: &'bump Bump,
+    context: ViewContext,
+    tag_id: &str,
+) -> paxhtml::Document<'bump> {
     let content = &context.content;
 
     // Collect all documents with this tag
@@ -66,11 +73,12 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
     tagged_documents.reverse();
 
     layout(
+        bump,
         context,
         SocialMeta {
             title: Some(format!("#{tag_id}")),
             description: Some(format!("All content tagged with {tag_id}")),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -85,7 +93,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
             article_tag: Some(tag_id.to_string()),
         },
         CurrentPage::Tags,
-        html! {
+        html! { in bump;
             <>
                 <header class="text-center mb-4">
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()}>
@@ -100,7 +108,7 @@ pub fn tag(context: ViewContext, tag_id: &str) -> paxhtml::Document {
                 <div class="*:mb-8">
                 #{
                     tagged_documents.iter().map(|doc| {
-                        posts::post(context, doc, posts::PostBody::Description)
+                        posts::post(bump, context, doc, posts::PostBody::Description)
                     })
                 }
                 </div>

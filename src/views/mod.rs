@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use crate::{
     content::{Content, Document},
     elements::*,
@@ -134,22 +136,23 @@ impl SocialMeta {
     }
 }
 
-pub fn layout(
+pub fn layout<'bump>(
+    bump: &'bump Bump,
     context: ViewContext,
     meta: SocialMeta,
     current_page: CurrentPage,
-    inner: Element,
-) -> paxhtml::Document {
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        html! {
+    inner: Element<'bump>,
+) -> paxhtml::Document<'bump> {
+    paxhtml::Document::new_with_doctype(
+        bump,
+        html! { in bump;
             <html lang="en-AU" class="w-[100vw]">
                 <head>
                     <title>{meta.full_title(context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     #{meta.into_social_meta(context).into_iter().map(|(k, v)| {
-                        html! {
+                        html! { in bump;
                             <meta property={k} content={v} />
                         }
                     })}
@@ -170,7 +173,7 @@ pub fn layout(
                                     CurrentPage::ALL_PAGES.iter().map(|page| {
                                         let is_active = *page == current_page;
                                         let bg_class = if is_active { "bg-[var(--color)]" } else { "bg-[var(--color-secondary)]" };
-                                        html! {
+                                        html! { in bump;
                                             <a href={page.url_path()} class={format!("text-center {} text-[var(--background-color)] lowercase hover:bg-[var(--color)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1", bg_class)}>{page.name()}</a>
                                         }
                                     })
@@ -197,7 +200,7 @@ pub fn layout(
                                 "paxsite"
                             </Link>
                             " on "
-                            {datetime_with_chrono(context.generation_date)}
+                            {datetime_with_chrono(bump, context.generation_date)}
                             "."
                         </div>
                         <div>
@@ -212,13 +215,13 @@ pub fn layout(
                 </body>
             </html>
         },
-    ])
+    )
 }
 
-pub fn redirect(to_url: &str) -> paxhtml::Document {
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        html! {
+pub fn redirect<'bump>(bump: &'bump Bump, to_url: &str) -> paxhtml::Document<'bump> {
+    paxhtml::Document::new_with_doctype(
+        bump,
+        html! { in bump;
             <html lang="en-AU">
                 <head>
                     <title>"Redirecting..."</title>
@@ -235,5 +238,5 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
                 </body>
             </html>
         },
-    ])
+    )
 }

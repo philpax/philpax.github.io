@@ -1,15 +1,18 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use super::*;
 
 use crate::{markdown::MarkdownConverter, views::posts};
 
-pub fn index(context: ViewContext) -> paxhtml::Document {
+pub fn index<'bump>(bump: &'bump Bump, context: ViewContext) -> paxhtml::Document<'bump> {
     let content = &context.content;
     layout(
+        bump,
         context,
         SocialMeta {
             title: None,
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Credits.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: None,
@@ -19,13 +22,13 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_tag: None,
         },
         CurrentPage::Home,
-        html! {
+        html! { in bump;
             <article>
                 <a href={Route::Credits.url_path()} class={posts::post_body_to_heading_class(posts::PostBody::Full)}>
                     <h2>"Credits"</h2>
                 </a>
                 <div class={format!("post-body {}", posts::POST_BODY_MARGIN_CLASS)}>
-                    {MarkdownConverter::new(context).with_sidenotes().convert(&content.credits.description, None)}
+                    {MarkdownConverter::new(bump, context).with_sidenotes().convert(&content.credits.description, None)}
                 </div>
             </article>
         },
