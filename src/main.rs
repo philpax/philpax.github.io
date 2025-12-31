@@ -230,161 +230,74 @@ fn main() -> anyhow::Result<()> {
         fast,
     };
 
-    timer.step("Wrote content", |substeps| {
+    timer.step("Wrote content", |_| {
         use rayon::prelude::*;
-        use std::sync::Mutex;
 
-        let blog_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
-        let updates_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
-
-        substeps.step_nested("Wrote blog", |nested| {
-            content.blog.documents.par_iter().try_for_each(|doc| {
-                let now = std::time::Instant::now();
-                let bump = Bump::new();
-                let post_route_path = doc.route_path();
-
-                let view = views::blog::post(view_context.with_bump(&bump), doc);
-                view.write_to_route(output_dir, post_route_path.clone())?;
-                {
-                    let post_output_dir = post_route_path.dir_path(output_dir);
-                    for path in &doc.files {
-                        let output_path = post_output_dir.join(path.file_name().unwrap());
-                        util::copy_or_symlink(path, &output_path, view_context.fast).with_context(
-                            || format!("failed to copy content file {path:?} to {output_path:?}"),
-                        )?;
-                    }
+        fn collect_notes<'a>(
+            folder: &'a content::DocumentFolderNode,
+            docs: &mut Vec<&'a content::Document>,
+        ) {
+            if let Some(doc) = &folder.index_document {
+                docs.push(doc);
+            }
+            for child in folder.children.values() {
+                match child {
+                    content::DocumentNode::Folder(folder) => collect_notes(folder, docs),
+                    content::DocumentNode::Document { document } => docs.push(document),
                 }
+            }
+        }
 
-                if let Some(alternate_route_path) = doc.alternate_route_path() {
-                    views::redirect(&bump, &post_route_path.url_path())
-                        .write_to_route(output_dir, alternate_route_path)?;
+        fn write_post(
+            output_dir: &Path,
+            view_context: views::ViewContextBase<'_>,
+            doc: &content::Document,
+            view: paxhtml::Document,
+        ) -> anyhow::Result<()> {
+            let route_path = doc.route_path();
+            view.write_to_route(output_dir, route_path.clone())?;
+
+            // Copy associated files
+            let post_output_dir = route_path.dir_path(output_dir);
+            for path in &doc.files {
+                let output_path = post_output_dir.join(path.file_name().unwrap());
+                util::copy_or_symlink(path, &output_path, view_context.fast)
+                    .with_context(|| format!("failed to copy {path:?} to {output_path:?}"))?;
+            }
+
+            // Write redirect for alternate URL if needed
+            if let Some(alternate_route_path) = doc.alternate_route_path() {
+                let bump = paxhtml::bumpalo::Bump::new();
+                views::redirect(&bump, &route_path.url_path())
+                    .write_to_route(output_dir, alternate_route_path)?;
+            }
+            Ok(())
+        }
+
+        let mut all_docs: Vec<&content::Document> = Vec::new();
+        all_docs.extend(&content.blog.documents);
+        all_docs.extend(&content.updates.documents);
+        collect_notes(&content.notes.documents, &mut all_docs);
+
+        all_docs.par_iter().try_for_each(|doc| {
+            let bump = Bump::new();
+            let ctx = view_context.with_bump(&bump);
+
+            match doc.document_type {
+                content::DocumentType::Blog => {
+                    let view = views::blog::post(ctx, doc);
+                    write_post(output_dir, view_context, doc, view)?;
                 }
-
-                blog_reports
-                    .lock()
-                    .unwrap()
-                    .push((doc.id.join("/"), now.elapsed()));
-                anyhow::Ok(())
-            })?;
-
-            let mut reports = blog_reports.into_inner().unwrap();
-            reports.sort_by(|a, b| a.0.cmp(&b.0));
-            for (label, elapsed) in reports {
-                nested.report(&label, elapsed);
+                content::DocumentType::Update => {
+                    let view = views::updates::post(ctx, doc);
+                    write_post(output_dir, view_context, doc, view)?;
+                }
+                content::DocumentType::Note => {
+                    views::notes::note(ctx, doc).write_to_route(output_dir, doc.route_path())?;
+                }
             }
             anyhow::Ok(())
-        })?;
-
-        substeps.step_nested("Wrote updates", |nested| {
-            content.updates.documents.par_iter().try_for_each(|doc| {
-                let now = std::time::Instant::now();
-                let bump = Bump::new();
-                let post_route_path = doc.route_path();
-
-                let view = views::updates::post(view_context.with_bump(&bump), doc);
-                view.write_to_route(output_dir, post_route_path.clone())?;
-                {
-                    let post_output_dir = post_route_path.dir_path(output_dir);
-                    for path in &doc.files {
-                        let output_path = post_output_dir.join(path.file_name().unwrap());
-                        util::copy_or_symlink(path, &output_path, view_context.fast).with_context(
-                            || format!("failed to copy content file {path:?} to {output_path:?}"),
-                        )?;
-                    }
-                }
-
-                if let Some(alternate_route_path) = doc.alternate_route_path() {
-                    views::redirect(&bump, &post_route_path.url_path())
-                        .write_to_route(output_dir, alternate_route_path)?;
-                }
-
-                updates_reports
-                    .lock()
-                    .unwrap()
-                    .push((doc.id.join("/"), now.elapsed()));
-                anyhow::Ok(())
-            })?;
-
-            let mut reports = updates_reports.into_inner().unwrap();
-            reports.sort_by(|a, b| a.0.cmp(&b.0));
-            for (label, elapsed) in reports {
-                nested.report(&label, elapsed);
-            }
-            anyhow::Ok(())
-        })?;
-
-        substeps.step_nested("Wrote notes", |nested| {
-            let notes_reports: Mutex<Vec<(String, std::time::Duration)>> = Mutex::new(Vec::new());
-
-            fn write_note_folder(
-                output_dir: &Path,
-                context: views::ViewContextBase<'_>,
-                folder: &content::DocumentFolderNode,
-                reports: &Mutex<Vec<(String, std::time::Duration)>>,
-            ) -> anyhow::Result<()> {
-                if let Some(index_document) = &folder.index_document {
-                    let now = std::time::Instant::now();
-                    let bump = Bump::new();
-                    let result = views::notes::note(context.with_bump(&bump), index_document)
-                        .write_to_route(
-                            output_dir,
-                            Route::Note {
-                                note_id: index_document.id.clone(),
-                            },
-                        );
-                    reports.lock().unwrap().push((
-                        if index_document.id.is_empty() {
-                            "index".to_string()
-                        } else {
-                            index_document.id.join("/")
-                        },
-                        now.elapsed(),
-                    ));
-                    result?;
-                }
-
-                for child in folder.children.values() {
-                    match child {
-                        content::DocumentNode::Folder(folder) => {
-                            write_note_folder(output_dir, context, folder, reports)?;
-                        }
-                        content::DocumentNode::Document { document } => {
-                            let now = std::time::Instant::now();
-                            let bump = Bump::new();
-                            let result = views::notes::note(context.with_bump(&bump), document)
-                                .write_to_route(
-                                    output_dir,
-                                    Route::Note {
-                                        note_id: document.id.clone(),
-                                    },
-                                );
-                            reports
-                                .lock()
-                                .unwrap()
-                                .push((document.id.join("/"), now.elapsed()));
-                            result?;
-                        }
-                    }
-                }
-                Ok(())
-            }
-
-            write_note_folder(
-                output_dir,
-                view_context,
-                &content.notes.documents,
-                &notes_reports,
-            )?;
-
-            let mut reports = notes_reports.into_inner().unwrap();
-            reports.sort_by(|a, b| a.0.cmp(&b.0));
-            for (label, elapsed) in reports {
-                nested.report(&label, elapsed);
-            }
-            anyhow::Ok(())
-        })?;
-
-        anyhow::Ok(())
+        })
     })?;
 
     if !fast {
