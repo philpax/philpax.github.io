@@ -143,11 +143,11 @@ fn main() -> anyhow::Result<()> {
     }
 
     timer.step("Copied baked static content", |_| {
-        util::copy_dir(Path::new("assets/baked/static"), output_dir)
+        util::copy_dir(Path::new("assets/baked/static"), output_dir, fast)
     })?;
 
     timer.step("Copied static content", |_| {
-        util::copy_dir(Path::new("static"), output_dir)
+        util::copy_dir(Path::new("static"), output_dir, fast)
     })?;
 
     // Run syntax loading, tailwind generation, and content reading in parallel

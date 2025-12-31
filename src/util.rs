@@ -47,7 +47,7 @@ pub fn number_to_comma_separated_string(number: usize) -> String {
     output
 }
 
-pub fn copy_dir(source: &Path, destination: &Path) -> std::io::Result<()> {
+pub fn copy_dir(source: &Path, destination: &Path, fast: bool) -> std::io::Result<()> {
     if !source.is_dir() {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -67,9 +67,9 @@ pub fn copy_dir(source: &Path, destination: &Path) -> std::io::Result<()> {
 
         let path = entry.path();
         if file_type.is_dir() {
-            copy_dir(&path, &destination)?;
+            copy_dir(&path, &destination, fast)?;
         } else {
-            std::fs::copy(&path, &destination)?;
+            copy_or_symlink(&path, &destination, fast)?;
         }
     }
 
