@@ -1,6 +1,7 @@
 use std::path::Path;
 
 use anyhow::Context;
+use paxhtml::bumpalo::Bump;
 use paxhtml::RoutePath;
 
 use crate::content::DocumentId;
@@ -49,11 +50,6 @@ pub enum Route {
     DarkModeIcon,
     LightModeIcon,
 }
-impl From<Route> for RoutePath {
-    fn from(route: Route) -> Self {
-        route.route_path()
-    }
-}
 impl Route {
     pub fn route_path(&self) -> RoutePath {
         match self {
@@ -101,6 +97,11 @@ impl Route {
     }
     pub fn abs_url(&self, domain: &str) -> String {
         self.route_path().abs_url(domain)
+    }
+}
+impl From<Route> for RoutePath {
+    fn from(route: Route) -> Self {
+        route.route_path()
     }
 }
 
@@ -188,7 +189,8 @@ fn main() -> anyhow::Result<()> {
             anyhow::Ok((syntax, tailwind_css?, content?))
         },
     )?;
-    let view_context = views::ViewContext {
+    // ViewContextBase can be shared across threads (no bump reference)
+    let view_context = views::ViewContextBase {
         website_author: "Philpax",
         website_name: "Philpax",
         website_description: concat!(
@@ -212,11 +214,12 @@ fn main() -> anyhow::Result<()> {
             .par_iter()
             .chain(content.updates.documents.par_iter())
             .try_for_each(|doc| {
+                let bump = Bump::new();
                 let post_route_path = doc.route_path();
 
                 let view = match doc.document_type {
-                    content::DocumentType::Blog => views::blog::post(view_context, doc),
-                    content::DocumentType::Update => views::updates::post(view_context, doc),
+                    content::DocumentType::Blog => views::blog::post(view_context.with_bump(&bump), doc),
+                    content::DocumentType::Update => views::updates::post(view_context.with_bump(&bump), doc),
                     content::DocumentType::Note => unreachable!(),
                 };
 
@@ -233,7 +236,7 @@ fn main() -> anyhow::Result<()> {
 
                 // Write redirect for alternate_id if it exists
                 if let Some(alternate_route_path) = doc.alternate_route_path() {
-                    views::redirect(&post_route_path.url_path())
+                    views::redirect(&bump, &post_route_path.url_path())
                         .write_to_route(output_dir, alternate_route_path)?;
                 }
 
@@ -242,11 +245,12 @@ fn main() -> anyhow::Result<()> {
 
         fn write_note_folder(
             output_dir: &Path,
-            context: views::ViewContext,
+            context: views::ViewContextBase<'_>,
             folder: &content::DocumentFolderNode,
         ) -> anyhow::Result<()> {
             if let Some(index_document) = &folder.index_document {
-                views::notes::note(context, index_document).write_to_route(
+                let bump = Bump::new();
+                views::notes::note(context.with_bump(&bump), index_document).write_to_route(
                     output_dir,
                     Route::Note {
                         note_id: index_document.id.clone(),
@@ -260,7 +264,8 @@ fn main() -> anyhow::Result<()> {
                         write_note_folder(output_dir, context, folder)?;
                     }
                     content::DocumentNode::Document { document } => {
-                        views::notes::note(context, document).write_to_route(
+                        let bump = Bump::new();
+                        views::notes::note(context.with_bump(&bump), document).write_to_route(
                             output_dir,
                             Route::Note {
                                 note_id: document.id.clone(),
@@ -374,18 +379,24 @@ fn main() -> anyhow::Result<()> {
     }
 
     timer.step("Wrote blog index", || {
-        views::blog::index(view_context).write_to_route(output_dir, Route::Blog)
+        let bump = Bump::new();
+        let result = views::blog::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Blog);
+        result
     })?;
 
     timer.step("Wrote updates index", || {
-        views::updates::index(view_context).write_to_route(output_dir, Route::Updates)
+        let bump = Bump::new();
+        let result = views::updates::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Updates);
+        result
     })?;
 
     timer.step("Wrote tags", || {
-        views::tags::index(view_context).write_to_route(output_dir, Route::Tags)?;
+        let bump = Bump::new();
+        views::tags::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Tags)?;
 
         for tag_id in content.tags.keys() {
-            views::tags::tag(view_context, tag_id).write_to_route(
+            let bump = Bump::new();
+            views::tags::tag(view_context.with_bump(&bump), tag_id).write_to_route(
                 output_dir,
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -396,15 +407,19 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote credits", || {
-        views::credits::index(view_context).write_to_route(output_dir, Route::Credits)?;
-        anyhow::Ok(())
+        let bump = Bump::new();
+        let result = views::credits::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Credits);
+        result
     })?;
 
     timer.step("Wrote frontpage", || {
-        views::frontpage::index(view_context).write_to_route(output_dir, Route::Index)?;
-        views::redirect(&Route::Index.url_path())
-            .write_to_route(output_dir, Route::DeprecatedAbout)?;
-        anyhow::Ok(())
+        let bump = Bump::new();
+        views::frontpage::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Index)?;
+        let bump = Bump::new();
+        let result = views::redirect(&bump, &Route::Index.url_path())
+            .write_to_route(output_dir, Route::DeprecatedAbout);
+        result
     })?;
 
     timer.step("Wrote RSS feeds", || {
@@ -433,29 +448,22 @@ fn main() -> anyhow::Result<()> {
                 description,
                 route.clone(),
             )?;
-            route.route_path().write(output_dir, output)?;
+            RoutePath::from(route).write(output_dir, output)?;
         }
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled styles", || {
         let output = styles::generate(view_context, &tailwind_css)?;
-        Route::Styles.route_path().write(output_dir, output.css)?;
-        Route::DarkModeIcon
-            .route_path()
-            .write(output_dir, output.dark_mode_icon)?;
-        Route::LightModeIcon
-            .route_path()
-            .write(output_dir, output.light_mode_icon)?;
+        RoutePath::from(Route::Styles).write(output_dir, output.css)?;
+        RoutePath::from(Route::DarkModeIcon).write(output_dir, output.dark_mode_icon)?;
+        RoutePath::from(Route::LightModeIcon).write(output_dir, output.light_mode_icon)?;
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled JavaScript", || {
-        anyhow::Ok(
-            Route::Scripts
-                .route_path()
-                .write(output_dir, js::generate()?)?,
-        )
+        RoutePath::from(Route::Scripts).write(output_dir, js::generate()?)?;
+        anyhow::Ok(())
     })?;
 
     timer.finish();

@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use paxhtml::builder::Builder;
+
 use crate::{
     elements as e,
     views::{
@@ -7,7 +9,6 @@ use crate::{
         ViewContext,
     },
 };
-use paxhtml::builder as b;
 
 pub use markdown::mdast::Node;
 
@@ -45,16 +46,17 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element {
+    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+        let b = Builder::new(bump);
+
         // Only gather footnotes at the root level (when there's no parent)
         if parent_node.is_none() {
             self.gather_footnote_definitions(node);
         }
 
         match node {
-            Node::Root(r) => {
-                paxhtml::Element::from_iter(r.children.iter().map(|n| self.convert(n, Some(node))))
-            }
+            Node::Root(r) => b.fragment(r.children.iter().map(|n| self.convert(n, Some(node)))),
 
             Node::Heading(h) => {
                 let children = self.convert_many(&h.children, Some(node));
@@ -70,27 +72,27 @@ impl<'a> MarkdownConverter<'a> {
                         value => panic!("Heading depth {value} is not supported"),
                     };
 
-                    e::h_with_id(resolved_depth, class, true)(children)
+                    e::h_with_id(bump, resolved_depth, class, true, children)
                 }
             }
-            Node::Text(t) => b::text(&t.value),
+            Node::Text(t) => b.text(&t.value),
             Node::Paragraph(p) => {
                 let children = self.convert_many(&p.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b::p([])(children)
+                    b.p([])(children)
                 }
             }
-            Node::Strong(s) => b::strong([])(self.convert_many(&s.children, Some(node))),
-            Node::Emphasis(e) => b::em([])(self.convert_many(&e.children, Some(node))),
-            Node::Delete(d) => b::s([])(self.convert_many(&d.children, Some(node))),
+            Node::Strong(s) => b.strong([])(self.convert_many(&s.children, Some(node))),
+            Node::Emphasis(em) => b.em([])(self.convert_many(&em.children, Some(node))),
+            Node::Delete(d) => b.s([])(self.convert_many(&d.children, Some(node))),
             Node::List(l) => {
                 let children = self.convert_many(&l.children, Some(node));
                 if l.ordered {
-                    b::ol([("class", "list-decimal pl-8").into()])(children)
+                    b.ol([b.attr(("class", "list-decimal pl-8"))])(children)
                 } else {
-                    b::ul([("class", "list-disc pl-8").into()])(children)
+                    b.ul([b.attr(("class", "list-disc pl-8"))])(children)
                 }
             }
             Node::ListItem(li) => {
@@ -110,8 +112,7 @@ impl<'a> MarkdownConverter<'a> {
                     .count()
                     == 1;
 
-                let class =
-                    paxhtml::Attribute::from(("class", "*:mb-2 [&>*:last-child]:mb-0 mb-1"));
+                let class = b.attr(("class", "*:mb-2 [&>*:last-child]:mb-0 mb-1"));
                 if has_one_paragraph {
                     let mut children = Vec::new();
                     for child in &li.children {
@@ -121,24 +122,27 @@ impl<'a> MarkdownConverter<'a> {
                             children.push(self.convert(child, Some(node)));
                         }
                     }
-                    b::li([class])(children)
+                    b.li([class])(b.fragment(children))
                 } else {
-                    b::li([class])(self.convert_many(&li.children, Some(node)))
+                    b.li([class])(self.convert_many(&li.children, Some(node)))
                 }
             }
-            Node::Code(c) => components::code(self.context.syntax, c.lang.as_deref(), &c.value),
-            Node::Blockquote(b) => {
-                let children = self.convert_many(&b.children, Some(node));
+            Node::Code(c) => {
+                components::code(bump, self.context.syntax, c.lang.as_deref(), &c.value)
+            }
+            Node::Blockquote(bq) => {
+                let children = self.convert_many(&bq.children, Some(node));
                 if self.without_blocking_elements {
-                    b::q([])(children)
+                    b.q([])(children)
                 } else {
-                    b::blockquote([])(children)
+                    b.blockquote([])(children)
                 }
             }
-            Node::Break(_) => b::br([]),
+            Node::Break(_) => b.br([]),
             Node::InlineCode(c) => {
                 let (lang, code) = self.context.syntax.parse_inline_code(&c.value);
                 components::inline_code(
+                    bump,
                     self.context.syntax,
                     !matches!(parent_node, Some(Node::Heading(_))),
                     lang,
@@ -155,31 +159,27 @@ impl<'a> MarkdownConverter<'a> {
                     || i.url.to_lowercase().ends_with(".ogv");
 
                 if is_video {
-                    b::video([
-                        ("src", i.url.clone()).into(),
-                        ("controls", "true").into(),
-                        ("loop", "true").into(),
-                        (
+                    b.video([
+                        b.attr(("src", i.url.clone())),
+                        b.attr(("controls", "true")),
+                        b.attr(("loop", "true")),
+                        b.attr((
                             "class",
-                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
-                                .to_string(),
-                        )
-                            .into(),
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block",
+                        )),
                     ])(paxhtml::Element::Empty)
                 } else {
-                    b::a([("href", i.url.clone()).into()])(b::img([
-                        ("src", i.url.clone()).into(),
-                        ("alt", i.alt.clone()).into(),
-                        (
+                    b.a([b.attr(("href", i.url.clone()))])(b.img([
+                        b.attr(("src", i.url.clone())),
+                        b.attr(("alt", i.alt.clone())),
+                        b.attr((
                             "class",
-                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block"
-                                .to_string(),
-                        )
-                            .into(),
+                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block",
+                        )),
                     ]))
                 }
             }
-            Node::Link(l) => paxhtml::html! {
+            Node::Link(l) => paxhtml::html! { in bump;
                 <Link underline target={l.url.clone()}>
                     #{l.children.iter().map(|n| self.convert(n, Some(node)))}
                 </Link>
@@ -191,7 +191,7 @@ impl<'a> MarkdownConverter<'a> {
                     return paxhtml::Element::Empty;
                 }
 
-                let element = paxhtml::parse_html(&h.value).expect("failed to parse HTML"); // todo: make this a fallible result
+                let element = paxhtml::parse_html(bump, &h.value).expect("failed to parse HTML"); // todo: make this a fallible result
                 if element.tag() == Some("MusicLibrary") {
                     return components::music_library(self.context);
                 }
@@ -220,7 +220,7 @@ impl<'a> MarkdownConverter<'a> {
                     .convert_many(&definition, None)];
 
                 let sidenotes_enabled = self.sidenotes_enabled;
-                paxhtml::html! {
+                paxhtml::html! { in bump;
                     <Footnote identifier={footnote_number.to_string()} sidenotes_enabled={sidenotes_enabled}>
                         #{children}
                     </Footnote>
@@ -233,7 +233,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b::table([("class", "w-full border-collapse border border-[var(--color-secondary)] rounded-lg overflow-hidden").into()])(children)
+                    b.table([b.attr(("class", "w-full border-collapse border border-[var(--color-secondary)] rounded-lg overflow-hidden"))])(children)
                 }
             }
             Node::TableRow(t) => {
@@ -241,7 +241,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b::tr([("class", "border-b border-[var(--color-secondary)]").into()])(children)
+                    b.tr([b.attr(("class", "border-b border-[var(--color-secondary)]"))])(children)
                 }
             }
             Node::TableCell(t) => {
@@ -249,7 +249,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b::td([("class", "px-4 py-3 text-sm text-[var(--text-color)] border-r border-[var(--color-secondary)] last:border-r-0").into()])(children)
+                    b.td([b.attr(("class", "px-4 py-3 text-sm text-[var(--text-color)] border-r border-[var(--color-secondary)] last:border-r-0"))])(children)
                 }
             }
 
@@ -275,8 +275,13 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element {
-        paxhtml::Element::from_iter(nodes.iter().map(|n| self.convert(n, parent_node)))
+    fn convert_many(
+        &mut self,
+        nodes: &[Node],
+        parent_node: Option<&Node>,
+    ) -> paxhtml::Element<'a> {
+        let b = paxhtml::builder::Builder::new(self.context.bump);
+        b.fragment(nodes.iter().map(|n| self.convert(n, parent_node)))
     }
 
     /// We use a pre-pass to gather footnote definitions, so that we can render them in the correct
@@ -322,29 +327,32 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct HeadingHierarchy {
-    pub heading: paxhtml::Element,
+pub struct HeadingHierarchy<'a> {
+    pub heading: paxhtml::Element<'a>,
     pub heading_text: String,
-    pub children: Vec<HeadingHierarchy>,
+    pub children: Vec<HeadingHierarchy<'a>>,
 }
-impl HeadingHierarchy {
+impl<'a> HeadingHierarchy<'a> {
     pub fn new(
-        heading: impl Into<paxhtml::Element>,
+        heading: paxhtml::Element<'a>,
         heading_text: impl Into<String>,
-        children: impl IntoIterator<Item = HeadingHierarchy>,
+        children: impl IntoIterator<Item = HeadingHierarchy<'a>>,
     ) -> Self {
         Self {
-            heading: heading.into(),
+            heading,
             heading_text: heading_text.into(),
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(context: ViewContext, node: &Node) -> Vec<HeadingHierarchy> {
+    pub fn from_node(
+        context: ViewContext<'a>,
+        node: &Node,
+    ) -> Vec<HeadingHierarchy<'a>> {
         let mut headings = Vec::new();
         collect_headings(context, node, &mut headings);
 
         let mut result = Vec::new();
-        let mut stack: Vec<(u8, HeadingHierarchy)> = Vec::new();
+        let mut stack: Vec<(u8, HeadingHierarchy<'a>)> = Vec::new();
 
         for (depth, heading, heading_text) in headings {
             while let Some((prev_depth, _)) = stack.last() {
@@ -372,10 +380,10 @@ impl HeadingHierarchy {
             }
         }
 
-        fn collect_headings(
-            context: ViewContext,
+        fn collect_headings<'a>(
+            context: ViewContext<'a>,
             node: &Node,
-            headings: &mut Vec<(u8, paxhtml::Element, String)>,
+            headings: &mut Vec<(u8, paxhtml::Element<'a>, String)>,
         ) {
             if let Some(children) = node.children() {
                 for child in children {
@@ -403,13 +411,15 @@ mod tests {
     use crate::{
         content::{parse_markdown, Content},
         syntax::SyntaxHighlighter,
+        views::ViewContextBase,
     };
+    use paxhtml::bumpalo::Bump;
 
-    fn view_context_for_syntax_highlighter<'a>(
+    fn view_context_base<'a>(
         syntax: &'a SyntaxHighlighter,
         content: &'a Content,
-    ) -> ViewContext<'a> {
-        ViewContext {
+    ) -> ViewContextBase<'a> {
+        ViewContextBase {
             website_author: "test",
             website_name: "test",
             website_description: "test",
@@ -437,23 +447,34 @@ mod tests {
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
-        let context = view_context_for_syntax_highlighter(&syntax, &content);
+        let bump = Bump::new();
+        let context = view_context_base(&syntax, &content).with_bump(&bump);
 
-        fn hh(heading: impl Into<String>, children: impl IntoIterator<Item = HH>) -> HH {
-            let heading = heading.into();
-            HH::new(heading.clone(), heading, children)
+        fn hh<'bump>(
+            bump: &'bump Bump,
+            heading: &str,
+            children: impl IntoIterator<Item = HH<'bump>>,
+        ) -> HH<'bump> {
+            HH::new(
+                Builder::new(bump).text(heading),
+                heading.to_string(),
+                children,
+            )
         }
 
-        assert_eq!(
-            HH::from_node(context, &ast),
-            vec![
-                hh(
-                    "test",
-                    [hh("test123", [hh("test456", [])]), hh("test789", []),],
-                ),
-                hh("test2", []),
-            ]
-        )
+        let result = HH::from_node(context, &ast);
+        let expected = vec![
+            hh(
+                &bump,
+                "test",
+                [
+                    hh(&bump, "test123", [hh(&bump, "test456", [])]),
+                    hh(&bump, "test789", []),
+                ],
+            ),
+            hh(&bump, "test2", []),
+        ];
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -468,11 +489,14 @@ Here is some text with a footnote[^note1] and another[^note2].
         let ast = parse_markdown(input);
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
-        let context = view_context_for_syntax_highlighter(&syntax, &content);
+        let bump = Bump::new();
+        let context = view_context_base(&syntax, &content).with_bump(&bump);
         let mut converter = MarkdownConverter::new(context);
 
         let result = converter.convert(&ast, None);
-        let html = paxhtml::Document::new([result]).write_to_string().unwrap();
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
 
         // Check that footnote references use numeric counters
         assert!(html.contains("footnote-1"));

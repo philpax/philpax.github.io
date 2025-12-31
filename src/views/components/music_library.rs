@@ -1,4 +1,5 @@
 use blackbird_json_export_types::{OutputGroup, OutputTrack};
+use paxhtml::bumpalo::{self, Bump};
 use paxhtml::html;
 
 use crate::{util, views::ViewContext};
@@ -92,9 +93,10 @@ mod colours {
 
 // Note: This component uses ViewContext so it's kept as a regular function
 // rather than using the custom component syntax
-pub fn music_library(context: ViewContext) -> paxhtml::Element {
+pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
+    let bump = context.bump;
     if context.fast {
-        return html! {
+        return html! { in bump;
             <div>
                 <p>"Music library (SKIPPED)"</p>
             </div>
@@ -249,7 +251,7 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
         .filter(|t| t.starred)
         .count();
 
-    html! {
+    html! { in bump;
         <>
             <style>
                 {style}
@@ -277,11 +279,11 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
                     </label>
                 </div>
                 <div class="font-sans text-white music-library p-3 flex flex-col gap-8" id="music-library-container">
-                    #{music_library.iter().map(group)}
+                    #{music_library.iter().map(|g| group(bump, g))}
                 </div>
             </div>
             <script>
-                {paxhtml::Element::Raw { html: r#"
+                {paxhtml::Element::raw(bump, r#"
                 document.addEventListener('DOMContentLoaded', () => {
                     // Helper: Get album artist from a section
                     const getAlbumArtist = (element) => {
@@ -387,14 +389,14 @@ pub fn music_library(context: ViewContext) -> paxhtml::Element {
 
                     likesCheckbox.addEventListener('change', filterByLikes);
                 });
-                "#.into() }}
+                "#)}
             </script>
         </>
     }
 }
 
-fn group(group: &OutputGroup) -> paxhtml::Element {
-    html! {
+fn group<'a>(bump: &'a Bump, group: &OutputGroup) -> paxhtml::Element<'a> {
+    html! { in bump;
         <section>
             <heading>
                 <h3 class="artist" style={format!("color: {}", colours::string_to_colour(&group.artist))}>{&group.artist}</h3>
@@ -403,20 +405,24 @@ fn group(group: &OutputGroup) -> paxhtml::Element {
                         <a class="album-link">
                             {&group.album}
                         </a> {
-                            group.year.map(|y| html! { <span class="album-year">{format!(" ({y})")}</span> }).unwrap_or_default()
+                            group.year.map(|y| html! { in bump; <span class="album-year">{format!(" ({y})")}</span> }).unwrap_or_default()
                         }
                     </h4>
                     <span class="album-length">{seconds_to_hms_string(group.duration, false)} <span class="heart">{if group.starred { "♥" } else { " " }}</span></span>
                 </div>
             </heading>
             <div>
-                #{group.tracks.iter().map(|t| track(group, t))}
+                #{group.tracks.iter().map(|t| track(bump, group, t))}
             </div>
         </section>
     }
 }
 
-fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
+fn track<'a>(
+    bump: &'a Bump,
+    group: &OutputGroup,
+    track: &OutputTrack,
+) -> paxhtml::Element<'a> {
     let track_number = match (track.disc_number, track.track) {
         (Some(disc_number), Some(track_number)) => format!("{disc_number}.{track_number}"),
         (Some(disc_number), None) => format!("{disc_number}.?"),
@@ -429,7 +435,7 @@ fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
         .as_ref()
         .filter(|artist| **artist != group.artist)
         .map(|artist| {
-            html! {
+            html! { in bump;
                 <span class="artist" style={format!("color: {}", colours::string_to_colour(artist))}>
                     {artist.as_str()}
                 </span>
@@ -437,7 +443,7 @@ fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
         });
 
     let duration = track.duration.map(|duration| {
-        html! {
+        html! { in bump;
             <span>
                 {seconds_to_hms_string(duration, false)}
             </span>
@@ -445,14 +451,14 @@ fn track(group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element {
     });
 
     let play_count = track.play_count.map(|count| {
-        html! {
+        html! { in bump;
             <span class="play-count">
                 {count.to_string()}
             </span>
         }
     });
 
-    html! {
+    html! { in bump;
         <a class="track">
             <span class="number">{track_number}</span>
             <span class="middle">

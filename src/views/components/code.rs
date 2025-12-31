@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use crate::{
     syntax::SyntaxHighlighter,
     views::{CODE_FONT_STYLE, FONT_STYLE},
@@ -5,8 +7,13 @@ use crate::{
 
 // Note: This component uses references so it's kept as a regular function
 // rather than using the custom component syntax
-pub fn code(syntax: &SyntaxHighlighter, lang: Option<&str>, code: &str) -> paxhtml::Element {
-    paxhtml::html! {
+pub fn code<'bump>(
+    bump: &'bump Bump,
+    syntax: &SyntaxHighlighter,
+    lang: Option<&str>,
+    code: &str,
+) -> paxhtml::Element<'bump> {
+    paxhtml::html! { in bump;
         <pre class="code text-sm p-2 overflow-x-auto max-w-(--centered-content-width) mx-auto">
             <code class={CODE_FONT_STYLE}>
                 <pre class={format!("\
@@ -16,7 +23,7 @@ pub fn code(syntax: &SyntaxHighlighter, lang: Option<&str>, code: &str) -> paxht
                 ")}>
                     {syntax.lookup_language(lang).name.as_str()}
                 </pre>
-                {syntax.highlight_code(lang, code).unwrap()}
+                {syntax.highlight_code(bump, lang, code).unwrap()}
             </code>
         </pre>
     }

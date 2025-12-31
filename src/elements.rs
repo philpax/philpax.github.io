@@ -1,71 +1,78 @@
 #![allow(unused)]
 
 use chrono::Timelike;
-pub use paxhtml::{builder::Element, html};
+use paxhtml::bumpalo::Bump;
+use paxhtml::builder::Builder;
+pub use paxhtml::{html, Element};
 
-use paxhtml::builder::*;
-
-pub fn date_with_chrono(date: chrono::NaiveDate) -> Element {
+pub fn date_with_chrono<'bump>(bump: &'bump Bump, date: chrono::NaiveDate) -> Element<'bump> {
+    let b = Builder::new(bump);
     let date = date.to_string();
-    time([
-        ("datetime", date.as_str()).into(),
-        ("title", date.as_str()).into(),
-    ])(date.clone())
+    b.time([
+        b.attr(("datetime", date.as_str())),
+        b.attr(("title", date.as_str())),
+    ])(b.text(&date))
 }
 
-pub fn datetime_with_chrono<TZ: chrono::TimeZone>(date: chrono::DateTime<TZ>) -> Element {
-    time([
-        ("datetime", date.to_rfc3339()).into(),
-        ("title", date.to_rfc2822()).into(),
-    ])(date.with_nanosecond(0).unwrap().to_rfc3339())
+pub fn datetime_with_chrono<'bump, TZ: chrono::TimeZone>(
+    bump: &'bump Bump,
+    date: chrono::DateTime<TZ>,
+) -> Element<'bump> {
+    let b = Builder::new(bump);
+    b.time([
+        b.attr(("datetime", date.to_rfc3339())),
+        b.attr(("title", date.to_rfc2822())),
+    ])(b.text(&date.with_nanosecond(0).unwrap().to_rfc3339()))
 }
 
-pub fn break_on_colon(value: &str) -> Element {
-    Element::from_iter(value.split(": ").enumerate().map(|(i, s)| {
+pub fn break_on_colon<'bump>(bump: &'bump Bump, value: &str) -> Element<'bump> {
+    let b = Builder::new(bump);
+    b.fragment(value.split(": ").enumerate().map(|(i, s)| {
         let s = s.replace("-", "\u{2011}");
         if i > 0 {
-            Element::from([
-                text(": "),
-                span([("style", "display: inline-block").into()])(s),
+            b.fragment([
+                b.text(": "),
+                b.span([b.attr(("style", "display: inline-block"))])(b.text(&s)),
             ])
         } else {
-            span([("style", "display: inline-block").into()])(s)
+            b.span([b.attr(("style", "display: inline-block"))])(b.text(&s))
         }
     }))
 }
 
 /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-pub fn h_with_id<E: Into<Element>>(
+pub fn h_with_id<'bump>(
+    bump: &'bump Bump,
     depth: u8,
     class: &str,
     with_link: bool,
-) -> impl FnOnce(E) -> Element + use<'_, E> {
-    move |children: E| {
-        let children = children.into();
-        let id = crate::util::slugify(&children.inner_text());
+    children: Element<'bump>,
+) -> Element<'bump> {
+    let b = Builder::new(bump);
+    let id = crate::util::slugify(&children.inner_text(bump));
 
-        let children = if with_link {
-            a([
-                ("href", format!("#{id}")).into(),
-                ("class", "no-underline".to_string()).into(),
-            ])(children)
-        } else {
-            children
-        };
+    let children = if with_link {
+        b.a([
+            b.attr(("href", format!("#{id}"))),
+            b.attr(("class", "no-underline")),
+        ])(children)
+    } else {
+        children
+    };
 
-        tag(
-            format!("h{depth}"),
-            vec![("id", id).into(), ("class", class.to_string()).into()],
-            false,
-        )(children)
-    }
+    b.tag(
+        &format!("h{depth}"),
+        [b.attr(("id", id.as_str())), b.attr(("class", class))],
+        false,
+    )(children)
 }
+
 macro_rules! generate_hs_with_id {
     ($(($fn_ident:ident, $depth:literal)),*) => {
         $(
         /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
-        pub fn $fn_ident(element: impl Into<Element>, class: &str) -> Element {
-            h_with_id($depth, class, false)(element)
+        pub fn $fn_ident<'bump>(bump: &'bump Bump, element: Element<'bump>, class: &str) -> Element<'bump> {
+            h_with_id(bump, $depth, class, false, element)
         }
         )*
     };

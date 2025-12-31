@@ -1,7 +1,7 @@
 use std::hash::{Hash, Hasher};
 use std::path::Path;
 
-use crate::views::ViewContext;
+use crate::views::ViewContextBase;
 
 pub struct GenerateOutput {
     pub css: String,
@@ -9,7 +9,7 @@ pub struct GenerateOutput {
     pub light_mode_icon: String,
 }
 
-pub fn generate(context: ViewContext, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
+pub fn generate(context: ViewContextBase<'_>, tailwind_output: &str) -> anyhow::Result<GenerateOutput> {
     let (property_sets, remaining) =
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();

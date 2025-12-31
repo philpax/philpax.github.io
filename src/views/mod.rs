@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use crate::{
     content::{Content, Document},
     elements::*,
@@ -17,8 +19,9 @@ pub mod updates;
 pub mod components;
 use components::{Link, LinkProps};
 
+/// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
-pub struct ViewContext<'a> {
+pub struct ViewContextBase<'a> {
     pub website_author: &'a str,
     pub website_name: &'a str,
     pub website_description: &'a str,
@@ -27,6 +30,29 @@ pub struct ViewContext<'a> {
     pub content: &'a Content,
     pub generation_date: chrono::DateTime<chrono::Utc>,
     pub fast: bool,
+}
+impl<'a> ViewContextBase<'a> {
+    /// Create a ViewContext with a bump allocator.
+    /// The bump lifetime must be shorter than the base context lifetime.
+    pub fn with_bump<'bump>(&self, bump: &'bump Bump) -> ViewContext<'bump>
+    where
+        'a: 'bump,
+    {
+        ViewContext { bump, base: *self }
+    }
+}
+
+/// Full view context with bump allocator
+#[derive(Copy, Clone)]
+pub struct ViewContext<'a> {
+    pub bump: &'a Bump,
+    base: ViewContextBase<'a>,
+}
+impl<'a> std::ops::Deref for ViewContext<'a> {
+    type Target = ViewContextBase<'a>;
+    fn deref(&self) -> &Self::Target {
+        &self.base
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -96,7 +122,7 @@ pub struct SocialMeta {
 }
 impl SocialMeta {
     /// The full title of the page, including the website name
-    pub fn full_title(&self, context: ViewContext) -> String {
+    pub fn full_title(&self, context: &ViewContext) -> String {
         let mut title = context.website_name.to_string();
         if let Some(meta_title) = &self.title {
             title = format!("{title}: {meta_title}");
@@ -104,7 +130,7 @@ impl SocialMeta {
         title
     }
 
-    pub fn into_social_meta(self, context: ViewContext) -> HashMap<String, String> {
+    pub fn into_social_meta(self, context: &ViewContext) -> HashMap<String, String> {
         HashMap::from_iter(
             [
                 ("og:title", self.title.clone()),
@@ -134,22 +160,23 @@ impl SocialMeta {
     }
 }
 
-pub fn layout(
-    context: ViewContext,
+pub fn layout<'a>(
+    context: ViewContext<'a>,
     meta: SocialMeta,
     current_page: CurrentPage,
-    inner: Element,
-) -> paxhtml::Document {
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        html! {
+    inner: Element<'a>,
+) -> paxhtml::Document<'a> {
+    let bump = context.bump;
+    paxhtml::Document::new_with_doctype(
+        bump,
+        html! { in bump;
             <html lang="en-AU" class="w-[100vw]">
                 <head>
-                    <title>{meta.full_title(context)}</title>
+                    <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    #{meta.into_social_meta(context).into_iter().map(|(k, v)| {
-                        html! {
+                    #{meta.into_social_meta(&context).into_iter().map(|(k, v)| {
+                        html! { in bump;
                             <meta property={k} content={v} />
                         }
                     })}
@@ -170,7 +197,7 @@ pub fn layout(
                                     CurrentPage::ALL_PAGES.iter().map(|page| {
                                         let is_active = *page == current_page;
                                         let bg_class = if is_active { "bg-[var(--color)]" } else { "bg-[var(--color-secondary)]" };
-                                        html! {
+                                        html! { in bump;
                                             <a href={page.url_path()} class={format!("text-center {} text-[var(--background-color)] lowercase hover:bg-[var(--color)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1", bg_class)}>{page.name()}</a>
                                         }
                                     })
@@ -197,7 +224,7 @@ pub fn layout(
                                 "paxsite"
                             </Link>
                             " on "
-                            {datetime_with_chrono(context.generation_date)}
+                            {datetime_with_chrono(bump, context.generation_date)}
                             "."
                         </div>
                         <div>
@@ -212,13 +239,13 @@ pub fn layout(
                 </body>
             </html>
         },
-    ])
+    )
 }
 
-pub fn redirect(to_url: &str) -> paxhtml::Document {
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        html! {
+pub fn redirect<'bump>(bump: &'bump Bump, to_url: &str) -> paxhtml::Document<'bump> {
+    paxhtml::Document::new_with_doctype(
+        bump,
+        html! { in bump;
             <html lang="en-AU">
                 <head>
                     <title>"Redirecting..."</title>
@@ -235,5 +262,5 @@ pub fn redirect(to_url: &str) -> paxhtml::Document {
                 </body>
             </html>
         },
-    ])
+    )
 }

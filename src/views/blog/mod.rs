@@ -1,7 +1,10 @@
+use paxhtml::bumpalo;
+
 use super::*;
 use crate::views::posts;
 
-pub fn index(context: ViewContext) -> paxhtml::Document {
+pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
+    let bump = context.bump;
     let all_posts = context
         .content
         .blog
@@ -13,7 +16,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
         SocialMeta {
             title: None,
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.route_path().abs_url(context.website_base_url)),
+            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Blog.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: None,
@@ -23,7 +26,7 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
             article_tag: None,
         },
         CurrentPage::Blog,
-        html! {
+        html! { in bump;
             <>
                 <div class="*:mb-8">
                     #{all_posts}
@@ -33,7 +36,10 @@ pub fn index(context: ViewContext) -> paxhtml::Document {
     )
 }
 
-pub fn post(context: ViewContext, document: &Document) -> paxhtml::Document {
+pub fn post<'a>(
+    context: ViewContext<'a>,
+    document: &Document,
+) -> paxhtml::Document<'a> {
     let og_image_url = format!("{}{}", context.website_base_url, document.og_image_path());
 
     layout(

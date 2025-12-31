@@ -1,13 +1,25 @@
-#[derive(Default)]
+use paxhtml::bumpalo::{self, Bump};
+use paxhtml::DefaultIn;
+
 #[allow(dead_code)]
-pub struct FootnoteProps {
+pub struct FootnoteProps<'bump> {
     pub identifier: String,
-    pub children: Vec<paxhtml::Element>,
+    pub children: Option<paxhtml::Element<'bump>>,
     #[allow(dead_code)]
     pub class: Option<String>,
     /// When true, footnotes display as sidenotes on wide screens (2xl+).
     /// When false, footnotes are always inline.
     pub sidenotes_enabled: bool,
+}
+impl DefaultIn<'_> for FootnoteProps<'_> {
+    fn default_in(_bump: &Bump) -> Self {
+        Self {
+            identifier: String::new(),
+            children: None,
+            class: None,
+            sidenotes_enabled: false,
+        }
+    }
 }
 
 /// Footnote component with dual display:
@@ -19,11 +31,11 @@ pub struct FootnoteProps {
 /// Uses only inline elements (<span>, <small>) to avoid breaking <p> tags.
 /// Based on Tufte CSS sidenote pattern.
 #[allow(non_snake_case, dead_code)]
-pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
+pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtml::Element<'bump> {
     let id = format!("footnote-{}", props.identifier);
     let sidenote_id = format!("sidenote-{}", props.identifier);
     let ref_id = format!("fnref-{}", props.identifier);
-    let children = paxhtml::Element::from(props.children);
+    let children = props.children.unwrap_or(paxhtml::Element::Empty);
 
     // Styling for the inline footnote reference (sup)
     let sup_class = "\
@@ -34,7 +46,7 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
 
     // When sidenotes are disabled, render inline-only footnote
     if !props.sidenotes_enabled {
-        return paxhtml::html! {
+        return paxhtml::html! { in bump;
             <span class="footnote m-0" id={ref_id}>
                 <input r#type="checkbox" id={id.clone()} class="peer hidden" autocomplete="off" />
                 <label r#for={id} class="inline-block cursor-pointer select-none">
@@ -64,7 +76,10 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
         text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4\
     ";
 
-    paxhtml::html! {
+    // Clone children for use in both inline and sidenote display
+    let children_clone = children.clone();
+
+    paxhtml::html! { in bump;
         <span class="footnote m-0" id={ref_id.clone()}>
             // Checkbox for inline toggle (small screens only)
             <input r#type="checkbox" id={id.clone()} class="peer hidden 2xl:hidden" autocomplete="off" />
@@ -85,7 +100,7 @@ pub fn Footnote(props: FootnoteProps) -> paxhtml::Element {
 
             // Inline popup content (small screens only) - toggled by checkbox
             <span class="footnote-inline hidden max-2xl:peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1 [&_a]:text-[var(--background-color)] [&_a]:decoration-[var(--background-color-secondary)] [&_a:hover]:text-[var(--background-color-secondary)]">
-                {children.clone()}
+                {children_clone}
             </span>
 
             // Sidenote content (wide screens) - floats into right margin

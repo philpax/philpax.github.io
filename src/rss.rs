@@ -1,12 +1,14 @@
+use paxhtml::bumpalo::Bump;
+
 use crate::{
     content::{Document, DocumentCollection},
     markdown::MarkdownConverter,
-    views::ViewContext,
+    views::ViewContextBase,
     Route,
 };
 
 pub fn generate(
-    context: ViewContext,
+    context: ViewContextBase<'_>,
     collection: &DocumentCollection,
     title_suffix: &str,
     description: &str,
@@ -45,7 +47,8 @@ pub fn generate(
     )?)?)
 }
 
-fn build_item(context: ViewContext, doc: &Document) -> rss::Item {
+fn build_item(context: ViewContextBase<'_>, doc: &Document) -> rss::Item {
+    let bump = Bump::new();
     let url = format!(
         "{}{}",
         context.website_base_url,
@@ -57,10 +60,12 @@ fn build_item(context: ViewContext, doc: &Document) -> rss::Item {
         .permalink(false)
         .build();
 
-    let description =
-        paxhtml::Document::new([MarkdownConverter::new(context).convert(&doc.description, None)])
-            .write_to_string()
-            .unwrap();
+    let description = paxhtml::Document::new(
+        &bump,
+        [MarkdownConverter::new(context.with_bump(&bump)).convert(&doc.description, None)],
+    )
+    .write_to_string()
+    .unwrap();
 
     rss::ItemBuilder::default()
         .title(doc.metadata.title.clone())

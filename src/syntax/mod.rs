@@ -1,3 +1,4 @@
+use paxhtml::bumpalo::Bump;
 use syntect::{
     highlighting::ThemeSet,
     html::{css_for_theme_with_class_style, ClassStyle, ClassedHTMLGenerator},
@@ -73,11 +74,12 @@ impl SyntaxHighlighter {
         }
         (None, code)
     }
-    pub fn highlight_code(
+    pub fn highlight_code<'bump>(
         &self,
+        bump: &'bump Bump,
         language: Option<&str>,
         code: &str,
-    ) -> Result<paxhtml::Element, syntect::Error> {
+    ) -> Result<paxhtml::Element<'bump>, syntect::Error> {
         let syntax = self.lookup_language(language);
         let mut html_generator = ClassedHTMLGenerator::new_with_class_style(
             syntax,
@@ -87,8 +89,6 @@ impl SyntaxHighlighter {
         for line in LinesWithEndings::from(code) {
             html_generator.parse_html_for_line_which_includes_newline(line)?;
         }
-        Ok(paxhtml::Element::Raw {
-            html: html_generator.finalize(),
-        })
+        Ok(paxhtml::Element::raw(bump, &html_generator.finalize()))
     }
 }

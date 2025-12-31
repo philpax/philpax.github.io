@@ -1,3 +1,5 @@
+use paxhtml::bumpalo::{self, Bump};
+
 use crate::{
     content::{DocumentFolderNode, DocumentNode},
     markdown::MarkdownConverter,
@@ -7,7 +9,11 @@ use crate::{
 
 use super::*;
 
-pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
+pub fn note<'a>(
+    context: ViewContext<'a>,
+    note: &Document,
+) -> paxhtml::Document<'a> {
+    let bump = context.bump;
     let display_path = &note.display_path;
 
     let description = if note.rest_of_content.is_none() {
@@ -36,7 +42,7 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
             article_tag: None,
         },
         CurrentPage::Notes,
-        html! {
+        html! { in bump;
             <div class="relative">
                 <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
                 <label r#for="nav-toggle" class="block w-full px-4 py-2 bg-[var(--background-color-secondary)] text-[var(--color)] text-center cursor-pointer hover:bg-[var(--background-color-secondary)] transition-colors duration-200 lowercase select-none">
@@ -53,27 +59,27 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
                             let mut elements = vec![];
                             for (index, component) in display_path.iter().enumerate() {
                                 if index != 0 {
-                                    elements.push(html! { <span class="text-[var(--color-secondary)]">{" · "}</span> });
+                                    elements.push(html! { in bump; <span class="text-[var(--color-secondary)]">{" · "}</span> });
                                 }
                                 let class = if index == display_path.len() - 1 {
                                     "italic"
                                 } else {
                                     "text-[var(--color-secondary)]"
                                 };
-                                elements.push(html! { <span class={class}>{component}</span> });
+                                elements.push(html! { in bump; <span class={class}>{component}</span> });
                             }
-                            elements
+                            paxhtml::builder::Builder::new(bump).fragment(elements)
                         }}
                     </h2>
                     <div class="text-[var(--color-secondary)] text-sm mb-2">
-                        {datetime_with_chrono(note.metadata.datetime.unwrap())}
+                        {datetime_with_chrono(bump, note.metadata.datetime.unwrap())}
                     </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {{
                             let mut converter = MarkdownConverter::new(context).with_sidenotes();
-                            paxhtml::Element::from_iter([
+                            paxhtml::builder::Builder::new(bump).fragment([
                                 converter.convert(&note.description, None),
-                                note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).into(),
+                                note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).unwrap_or(paxhtml::Element::Empty),
                             ])
                         }}
                     </div>
@@ -83,19 +89,24 @@ pub fn note(context: ViewContext, note: &Document) -> paxhtml::Document {
     )
 }
 
-fn notes_hierarchy(context: ViewContext, active_document: &Document) -> paxhtml::Element {
-    html! {
+fn notes_hierarchy<'a>(
+    context: ViewContext<'a>,
+    active_document: &Document,
+) -> paxhtml::Element<'a> {
+    let bump = context.bump;
+    html! { in bump;
         <ul class="list-none m-0 p-0 break-words overflow-hidden">
-            {build_tree(&context.content.notes.documents, active_document, 0)}
+            {build_tree(bump, &context.content.notes.documents, active_document, 0)}
         </ul>
     }
 }
 
-fn build_tree(
+fn build_tree<'bump>(
+    bump: &'bump Bump,
     folder_node: &DocumentFolderNode,
     active_document: &Document,
     depth: usize,
-) -> paxhtml::Element {
+) -> paxhtml::Element<'bump> {
     let checkbox_id = format!(
         "folder-{}-{}",
         depth,
@@ -108,7 +119,7 @@ fn build_tree(
         } else {
             None
         };
-        html! {
+        html! { in bump;
             <Link target={document.route_path().url_path()} additional_classes={additional_classes}>
                 {document.metadata.title.clone()}
             </Link>
@@ -120,12 +131,12 @@ fn build_tree(
         .as_ref()
         .map(render_document)
         .unwrap_or_else(|| {
-            html! {
+            html! { in bump;
                 <span class="text-[var(--color-secondary)]">{folder_node.folder_name.clone()}</span>
             }
         });
 
-    html! {
+    html! { in bump;
         <li class="break-words list-none">
             <input r#type="checkbox" id={checkbox_id} class="peer sr-only" checked autocomplete="off" />
             <div class="flex items-center gap-0">
@@ -140,10 +151,10 @@ fn build_tree(
             <ul class="list-disc list-inside m-0 hidden peer-checked:block ml-4">
                 #{folder_node.children.values().map(|node| match node {
                     DocumentNode::Folder(folder_node) => {
-                        build_tree(folder_node, active_document, depth + 1)
+                        build_tree(bump, folder_node, active_document, depth + 1)
                     }
                     DocumentNode::Document { document } => {
-                        html! {
+                        html! { in bump;
                             <li class="break-words">
                                 {render_document(document)}
                             </li>
