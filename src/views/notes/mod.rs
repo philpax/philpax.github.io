@@ -9,10 +9,7 @@ use crate::{
 
 use super::*;
 
-pub fn note<'a>(
-    context: ViewContext<'a>,
-    note: &Document,
-) -> paxhtml::Document<'a> {
+pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let display_path = &note.display_path;
 

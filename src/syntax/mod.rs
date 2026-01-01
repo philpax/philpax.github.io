@@ -12,17 +12,29 @@ pub struct SyntaxHighlighter {
 }
 impl Default for SyntaxHighlighter {
     fn default() -> Self {
-        Self {
-            syntax_set: syntect::dumps::from_binary(include_bytes!(
-                "../../assets/baked/syntax/syntax_set.packdump"
-            )),
-            theme_set: syntect::dumps::from_binary(include_bytes!(
-                "../../assets/baked/syntax/theme_set.packdump"
-            )),
-        }
+        Self::new(&mut |_, _| {})
     }
 }
 impl SyntaxHighlighter {
+    pub fn new(report: &mut impl FnMut(&'static str, std::time::Duration)) -> Self {
+        let now = std::time::Instant::now();
+        let syntax_set = syntect::dumps::from_binary(include_bytes!(
+            "../../assets/baked/syntax/syntax_set.packdump"
+        ));
+        report("Loaded syntax set", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let theme_set = syntect::dumps::from_binary(include_bytes!(
+            "../../assets/baked/syntax/theme_set.packdump"
+        ));
+        report("Loaded theme set", now.elapsed());
+
+        Self {
+            syntax_set,
+            theme_set,
+        }
+    }
+
     pub fn dark_theme(&self) -> &str {
         "ayu-dark"
     }

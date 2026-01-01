@@ -49,14 +49,26 @@ impl Content {
         }
     }
 
-    pub fn read(fast: bool) -> anyhow::Result<Self> {
+    pub fn read(
+        fast: bool,
+        report: &mut impl FnMut(&'static str, std::time::Duration),
+    ) -> anyhow::Result<Self> {
         let path = PathBuf::from("content");
 
-        let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
-        let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update)?;
-        let notes = NotesCollection::read(&path.join("notes"))?;
+        let now = std::time::Instant::now();
+        let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog, fast)?;
+        report("Read blog", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update, fast)?;
+        report("Read updates", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let notes = NotesCollection::read(&path.join("notes"), fast)?;
+        report("Read notes", now.elapsed());
 
         // Combine tags from both blog and updates
+        let now = std::time::Instant::now();
         let mut tags = HashMap::new();
         for document in blog.documents.iter().chain(updates.documents.iter()) {
             if let Some(taxonomies) = &document.metadata.taxonomies {
@@ -67,31 +79,53 @@ impl Content {
                 }
             }
         }
+        report("Built tags index", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let about = Document::read(
+            &path.join("about.md"),
+            vec!["about".to_string()],
+            vec!["About".to_string()],
+            DocumentType::Blog,
+            fast,
+        )?;
+        report("Read about", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let credits = Document::read(
+            &path.join("credits.md"),
+            vec!["credits".to_string()],
+            vec!["Credits".to_string()],
+            DocumentType::Blog,
+            fast,
+        )?;
+        report("Read credits", now.elapsed());
+
+        let now = std::time::Instant::now();
+        let music_library = if fast {
+            Default::default()
+        } else {
+            serde_json::from_str::<blackbird_json_export_types::Output>(&std::fs::read_to_string(
+                MUSIC_LIBRARY_PATH,
+            )?)?
+        };
+        report(
+            if fast {
+                "Skipped music library"
+            } else {
+                "Read music library"
+            },
+            now.elapsed(),
+        );
 
         Ok(Content {
             blog,
             updates,
             notes,
             tags,
-            about: Document::read(
-                &path.join("about.md"),
-                vec!["about".to_string()],
-                vec!["About".to_string()],
-                DocumentType::Blog,
-            )?,
-            credits: Document::read(
-                &path.join("credits.md"),
-                vec!["credits".to_string()],
-                vec!["Credits".to_string()],
-                DocumentType::Blog,
-            )?,
-            music_library: if fast {
-                Default::default()
-            } else {
-                serde_json::from_str::<blackbird_json_export_types::Output>(
-                    &std::fs::read_to_string(MUSIC_LIBRARY_PATH)?,
-                )?
-            },
+            about,
+            credits,
+            music_library,
         })
     }
 
@@ -116,7 +150,11 @@ impl DocumentCollection {
         }
     }
 
-    fn read(collection_path: &Path, document_type: DocumentType) -> anyhow::Result<Self> {
+    fn read(
+        collection_path: &Path,
+        document_type: DocumentType,
+        fast: bool,
+    ) -> anyhow::Result<Self> {
         let documents = {
             let mut documents = vec![];
             for entry in std::fs::read_dir(collection_path)? {
@@ -141,6 +179,7 @@ impl DocumentCollection {
                     vec![id.clone()],
                     vec![id],
                     document_type,
+                    fast,
                 )?);
             }
             documents.sort_by_key(|d| d.metadata.datetime);
@@ -201,10 +240,11 @@ impl NotesCollection {
         }
     }
 
-    fn read(collection_path: &Path) -> anyhow::Result<Self> {
+    fn read(collection_path: &Path, fast: bool) -> anyhow::Result<Self> {
         fn find_documents(
             collection_path: &Path,
             path: &Path,
+            fast: bool,
         ) -> anyhow::Result<DocumentFolderNode> {
             const HOME_NAME: &str = "Home";
 
@@ -239,6 +279,7 @@ impl NotesCollection {
                     display_path_to_id(&display_name),
                     display_name,
                     DocumentType::Note,
+                    fast,
                 )?)
             } else {
                 None
@@ -258,7 +299,7 @@ impl NotesCollection {
                 if path.is_dir() {
                     documents.insert(
                         document_name,
-                        DocumentNode::Folder(find_documents(collection_path, &path)?),
+                        DocumentNode::Folder(find_documents(collection_path, &path, fast)?),
                     );
                     continue;
                 }
@@ -272,6 +313,7 @@ impl NotesCollection {
                                 document_id,
                                 display_path,
                                 DocumentType::Note,
+                                fast,
                             )?,
                         },
                     );
@@ -285,7 +327,7 @@ impl NotesCollection {
         }
 
         Ok(NotesCollection {
-            documents: find_documents(collection_path, collection_path)?,
+            documents: find_documents(collection_path, collection_path, fast)?,
         })
     }
 }
@@ -345,6 +387,7 @@ impl Document {
         id: DocumentId,
         display_path: Vec<String>,
         document_type: DocumentType,
+        fast: bool,
     ) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
@@ -362,11 +405,11 @@ impl Document {
 
             (metadata, content_raw)
         } else {
-            let mut path_datetime = get_file_datetime(path)?;
+            let mut path_datetime = get_file_datetime(path, fast)?;
 
             // HACK: Use the music library's modification datetime if it's in use + it's newer than the actual file
             if file.contains("<MusicLibrary") {
-                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH))?;
+                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH), fast)?;
                 if library_datetime > path_datetime {
                     path_datetime = library_datetime;
                 }
@@ -541,7 +584,15 @@ pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
     markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
 }
 
-fn get_file_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+fn get_file_datetime(path: &Path, fast: bool) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    // In fast mode, skip git and just use file mtime
+    if fast {
+        let metadata = std::fs::metadata(path)?;
+        let modified = metadata.modified()?;
+        let datetime = chrono::DateTime::from(modified);
+        return Ok(datetime.with_timezone(&chrono::Utc));
+    }
+
     // Try to get the last commit time from Git first
     let git_output = Command::new("git")
         .args(["log", "-1", "--format=%cI", "--", path.to_str().unwrap()])

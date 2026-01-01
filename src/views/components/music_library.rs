@@ -418,11 +418,7 @@ fn group<'a>(bump: &'a Bump, group: &OutputGroup) -> paxhtml::Element<'a> {
     }
 }
 
-fn track<'a>(
-    bump: &'a Bump,
-    group: &OutputGroup,
-    track: &OutputTrack,
-) -> paxhtml::Element<'a> {
+fn track<'a>(bump: &'a Bump, group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element<'a> {
     let track_number = match (track.disc_number, track.track) {
         (Some(disc_number), Some(track_number)) => format!("{disc_number}.{track_number}"),
         (Some(disc_number), None) => format!("{disc_number}.?"),
