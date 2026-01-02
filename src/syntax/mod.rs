@@ -26,12 +26,12 @@ impl Default for SyntaxHighlighter {
     }
 }
 impl SyntaxHighlighter {
-    pub fn dark_theme_css(&self) -> String {
-        builtin::ayu_dark().to_css("[data-theme=\"dark\"]")
+    pub fn dark_theme_css(&self, selector: &str) -> String {
+        builtin::ayu_dark().to_css(selector)
     }
 
-    pub fn light_theme_css(&self) -> String {
-        builtin::ayu_light().to_css("[data-theme=\"light\"]")
+    pub fn light_theme_css(&self, selector: &str) -> String {
+        builtin::ayu_light().to_css(selector)
     }
 
     fn normalize_language(language: Option<&str>) -> &str {

@@ -17,8 +17,10 @@ pub fn generate(
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
     let light_mode = property_sets.get(paxcss::LIGHT_MODE).unwrap();
-    let syntax_dark = context.syntax.dark_theme_css();
-    let syntax_light = context.syntax.light_theme_css();
+    let syntax_dark_root = context.syntax.dark_theme_css("pre.code");
+    let syntax_dark_explicit = context.syntax.dark_theme_css(":root.dark-theme pre.code");
+    let syntax_light_root = context.syntax.light_theme_css("pre.code");
+    let syntax_light_explicit = context.syntax.light_theme_css(":root.light-theme pre.code");
     let css = format!(
         r#"
 /* --- THEMES --- */
@@ -45,22 +47,14 @@ pub fn generate(
 {tailwind_output}
 
 /* --- SYNTAX HIGHLIGHTING (DARK) --- */
-:root {{
-{syntax_dark}
-}}
-:root.dark-theme {{
-{syntax_dark}
-}}
+{syntax_dark_root}
+{syntax_dark_explicit}
 
 /* --- SYNTAX HIGHLIGHTING (LIGHT) --- */
 @media (prefers-color-scheme: light) {{
-:root {{
-{syntax_light}
+{syntax_light_root}
 }}
-}}
-:root.light-theme {{
-{syntax_light}
-}}
+{syntax_light_explicit}
 "#,
     )
     .trim()
