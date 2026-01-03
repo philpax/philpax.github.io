@@ -31,10 +31,7 @@ impl SyntaxHighlighter {
 
     fn normalize_language(language: Option<&str>) -> &str {
         match language {
-            Some("sh") => "bash",
-            // Languages not supported by arborium - fallback to plaintext
-            Some("re" | "pug") => "text",
-            Some(other) => other,
+            Some(lang) => arborium::detect_language(lang).unwrap_or(lang),
             None => "text",
         }
     }
@@ -80,7 +77,9 @@ impl SyntaxHighlighter {
         match highlighter.highlight(language, code) {
             Ok(html) => Ok(paxhtml::Element::raw(bump, &html)),
             Err(arborium::Error::UnsupportedLanguage { language }) => {
-                eprintln!("warning: unsupported language '{language}', rendering as plain text");
+                if language != "text" {
+                    eprintln!("warning: unsupported language '{language}', rendering as plain text");
+                }
                 Ok(paxhtml::Element::text(bump, code))
             }
             Err(e) => Err(e),
