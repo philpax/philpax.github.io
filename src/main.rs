@@ -157,8 +157,6 @@ fn main() -> anyhow::Result<()> {
             use std::sync::Mutex;
 
             // Collect timing reports from parallel tasks
-            let syntax_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
-                Mutex::new(Vec::new());
             let tailwind_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
                 Mutex::new(Vec::new());
             let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
@@ -166,22 +164,15 @@ fn main() -> anyhow::Result<()> {
 
             let ((syntax, tailwind_css), content) = rayon::join(
                 || {
-                    rayon::join(
-                        || {
-                            syntax::SyntaxHighlighter::new(&mut |label, elapsed| {
-                                syntax_reports.lock().unwrap().push((label, elapsed));
-                            })
-                        },
-                        || {
-                            styles::generate_tailwind(
-                                fast,
-                                use_global_tailwind,
-                                &mut |label, elapsed| {
-                                    tailwind_reports.lock().unwrap().push((label, elapsed));
-                                },
-                            )
-                        },
-                    )
+                    rayon::join(syntax::SyntaxHighlighter::default, || {
+                        styles::generate_tailwind(
+                            fast,
+                            use_global_tailwind,
+                            &mut |label, elapsed| {
+                                tailwind_reports.lock().unwrap().push((label, elapsed));
+                            },
+                        )
+                    })
                 },
                 || {
                     content::Content::read(fast, &mut |label, elapsed| {
@@ -189,13 +180,6 @@ fn main() -> anyhow::Result<()> {
                     })
                 },
             );
-
-            // Report syntax timings
-            substeps.step_nested("Loaded syntax", |nested| {
-                for (label, elapsed) in syntax_reports.into_inner().unwrap() {
-                    nested.report(label, elapsed);
-                }
-            });
 
             // Report tailwind timings
             substeps.step_nested("Generated Tailwind CSS", |nested| {
