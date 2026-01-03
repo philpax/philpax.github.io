@@ -78,7 +78,9 @@ impl SyntaxHighlighter {
             Ok(html) => Ok(paxhtml::Element::raw(bump, &html)),
             Err(arborium::Error::UnsupportedLanguage { language }) => {
                 if language != "text" {
-                    eprintln!("warning: unsupported language '{language}', rendering as plain text");
+                    eprintln!(
+                        "warning: unsupported language '{language}', rendering as plain text"
+                    );
                 }
                 Ok(paxhtml::Element::text(bump, code))
             }

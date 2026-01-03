@@ -17,10 +17,10 @@ pub fn generate(
         paxcss::extract_prefixed_property_sets(include_str!("website.css"));
     let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
     let light_mode = property_sets.get(paxcss::LIGHT_MODE).unwrap();
-    let syntax_dark_root = context.syntax.dark_theme_css("pre.code");
-    let syntax_dark_explicit = context.syntax.dark_theme_css(":root.dark-theme pre.code");
-    let syntax_light_root = context.syntax.light_theme_css("pre.code");
-    let syntax_light_explicit = context.syntax.light_theme_css(":root.light-theme pre.code");
+    let syntax_dark_root = context.syntax.dark_theme_css(".code");
+    let syntax_dark_explicit = context.syntax.dark_theme_css(":root.dark-theme .code");
+    let syntax_light_root = context.syntax.light_theme_css(".code");
+    let syntax_light_explicit = context.syntax.light_theme_css(":root.light-theme .code");
     let css = format!(
         r#"
 /* --- THEMES --- */
