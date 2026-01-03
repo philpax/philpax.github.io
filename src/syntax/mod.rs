@@ -1,12 +1,7 @@
-use std::cell::RefCell;
 use std::sync::Arc;
 
 use arborium::{theme::builtin, Config, GrammarStore, Highlighter, HtmlFormat};
 use paxhtml::bumpalo::Bump;
-
-thread_local! {
-    static THREAD_HIGHLIGHTER: RefCell<Option<Highlighter>> = const { RefCell::new(None) };
-}
 
 pub struct SyntaxHighlighter {
     store: Arc<GrammarStore>,
@@ -78,21 +73,17 @@ impl SyntaxHighlighter {
         bump: &'bump Bump,
         language: Option<&str>,
         code: &str,
-    ) -> paxhtml::Element<'bump> {
+    ) -> Result<paxhtml::Element<'bump>, arborium::Error> {
         let language = Self::normalize_language(language);
-        THREAD_HIGHLIGHTER.with(|cell| {
-            let mut hl_ref = cell.borrow_mut();
-            let highlighter = hl_ref.get_or_insert_with(|| {
-                Highlighter::with_store_and_config(self.store.clone(), self.config.clone())
-            });
-            match highlighter.highlight(language, code) {
-                Ok(html) => paxhtml::Element::raw(bump, &html),
-                // For unsupported languages, just return the escaped text
-                Err(arborium::Error::UnsupportedLanguage { .. }) => {
-                    paxhtml::Element::text(bump, code)
-                }
-                Err(e) => panic!("Syntax highlighting error: {e}"),
+        let mut highlighter =
+            Highlighter::with_store_and_config(self.store.clone(), self.config.clone());
+        match highlighter.highlight(language, code) {
+            Ok(html) => Ok(paxhtml::Element::raw(bump, &html)),
+            Err(arborium::Error::UnsupportedLanguage { language }) => {
+                eprintln!("warning: unsupported language '{language}', rendering as plain text");
+                Ok(paxhtml::Element::text(bump, code))
             }
-        })
+            Err(e) => Err(e),
+        }
     }
 }

@@ -1,3 +1,4 @@
+use anyhow::Context;
 use paxhtml::bumpalo::{self, Bump};
 
 use crate::{
@@ -12,8 +13,13 @@ pub fn code<'bump>(
     syntax: &SyntaxHighlighter,
     lang: Option<&str>,
     code: &str,
-) -> paxhtml::Element<'bump> {
-    paxhtml::html! { in bump;
+    error_context: &str,
+) -> anyhow::Result<paxhtml::Element<'bump>> {
+    let highlighted = syntax
+        .highlight_code(bump, lang, code)
+        .with_context(|| format!("failed to highlight code block ({error_context})"))?;
+
+    Ok(paxhtml::html! { in bump;
         <pre class="code text-sm p-2 overflow-x-auto max-w-(--centered-content-width) mx-auto">
             <code class={CODE_FONT_STYLE}>
                 <pre class={format!("\
@@ -23,8 +29,8 @@ pub fn code<'bump>(
                 ")}>
                     {syntax.language_name(lang)}
                 </pre>
-                {syntax.highlight_code(bump, lang, code)}
+                {highlighted}
             </code>
         </pre>
-    }
+    })
 }

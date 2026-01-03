@@ -61,7 +61,7 @@ pub fn post<'a>(
     let post_body_rendered = match post_body {
         PostBody::Full => {
             let h3_classname = "text-lg font-bold";
-            let toc = document_to_html_list(context, document);
+            let toc = document_to_html_list(context, document, &url);
 
             let mut content_elements = vec![];
 
@@ -86,7 +86,7 @@ pub fn post<'a>(
                 });
             }
 
-            let mut converter = MarkdownConverter::new(context).with_sidenotes();
+            let mut converter = MarkdownConverter::new(context, &url).with_sidenotes();
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
@@ -109,7 +109,7 @@ pub fn post<'a>(
         }
         PostBody::Description => html! { in bump;
             <>
-                {MarkdownConverter::new(context).convert(&document.description, None)}
+                {MarkdownConverter::new(context, &url).convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
                         "Read more"
@@ -117,7 +117,7 @@ pub fn post<'a>(
                 </p>
             </>
         },
-        PostBody::Short => MarkdownConverter::new(context).convert(
+        PostBody::Short => MarkdownConverter::new(context, &url).convert(
             document
                 .metadata
                 .short()
@@ -173,10 +173,11 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
 fn document_to_html_list<'a>(
     context: ViewContext<'a>,
     document: &Document,
+    error_context: &str,
 ) -> Option<paxhtml::Element<'a>> {
     let bump = context.bump;
     let heading_hierarchy =
-        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?);
+        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?, error_context);
 
     fn build_list_recursively<'a>(
         bump: &'a Bump,

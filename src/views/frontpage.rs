@@ -43,7 +43,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch" id="home-page-columns">
                 <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">
                     <div class="post-body p-0 *:mb-4">
-                        {MarkdownConverter::new(context).convert(&content.about.description, None)}
+                        {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
                     </div>
                 </article>
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">

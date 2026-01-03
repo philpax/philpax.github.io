@@ -1,3 +1,4 @@
+use anyhow::Context;
 use paxhtml::bumpalo::{self, Bump};
 
 use crate::{syntax::SyntaxHighlighter, views::CODE_FONT_STYLE};
@@ -10,10 +11,15 @@ pub fn inline_code<'bump>(
     styled: bool,
     lang: Option<&str>,
     code: &str,
-) -> paxhtml::Element<'bump> {
-    paxhtml::html! { in bump;
+    error_context: &str,
+) -> anyhow::Result<paxhtml::Element<'bump>> {
+    let highlighted = syntax
+        .highlight_code(bump, lang, code)
+        .with_context(|| format!("failed to highlight inline code ({error_context})"))?;
+
+    Ok(paxhtml::html! { in bump;
         <code class={if styled { format!("code text-sm p-1 m-y-0.5 {CODE_FONT_STYLE}") } else { format!("code {CODE_FONT_STYLE}") }}>
-            {syntax.highlight_code(bump, lang, code)}
+            {highlighted}
         </code>
-    }
+    })
 }

@@ -60,9 +60,13 @@ fn build_item(context: ViewContextBase<'_>, doc: &Document) -> rss::Item {
         .permalink(false)
         .build();
 
+    let error_context = format!("rss: {}", doc.route_path().url_path());
     let description = paxhtml::Document::new(
         &bump,
-        [MarkdownConverter::new(context.with_bump(&bump)).convert(&doc.description, None)],
+        [
+            MarkdownConverter::new(context.with_bump(&bump), &error_context)
+                .convert(&doc.description, None),
+        ],
     )
     .write_to_string()
     .unwrap();

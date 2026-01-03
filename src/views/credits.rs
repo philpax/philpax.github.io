@@ -28,7 +28,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     <h2>"Credits"</h2>
                 </a>
                 <div class={format!("post-body {}", posts::POST_BODY_MARGIN_CLASS)}>
-                    {MarkdownConverter::new(context).with_sidenotes().convert(&content.credits.description, None)}
+                    {MarkdownConverter::new(context, Route::Credits.url_path()).with_sidenotes().convert(&content.credits.description, None)}
                 </div>
             </article>
         },

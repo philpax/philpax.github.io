@@ -19,9 +19,10 @@ pub struct MarkdownConverter<'a> {
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
     pub sidenotes_enabled: bool,
+    pub error_context: String,
 }
 impl<'a> MarkdownConverter<'a> {
-    pub fn new(context: ViewContext<'a>) -> Self {
+    pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
         Self {
             context,
             footnotes: HashMap::new(),
@@ -29,6 +30,7 @@ impl<'a> MarkdownConverter<'a> {
             footnote_counter: HashMap::new(),
             next_footnote_number: 1,
             sidenotes_enabled: false,
+            error_context: error_context.into(),
         }
     }
 
@@ -127,9 +129,14 @@ impl<'a> MarkdownConverter<'a> {
                     b.li([class])(self.convert_many(&li.children, Some(node)))
                 }
             }
-            Node::Code(c) => {
-                components::code(bump, self.context.syntax, c.lang.as_deref(), &c.value)
-            }
+            Node::Code(c) => components::code(
+                bump,
+                self.context.syntax,
+                c.lang.as_deref(),
+                &c.value,
+                &self.error_context,
+            )
+            .expect("failed to highlight code block"),
             Node::Blockquote(bq) => {
                 let children = self.convert_many(&bq.children, Some(node));
                 if self.without_blocking_elements {
@@ -147,7 +154,9 @@ impl<'a> MarkdownConverter<'a> {
                     !matches!(parent_node, Some(Node::Heading(_))),
                     lang,
                     code,
+                    &self.error_context,
                 )
+                .expect("failed to highlight inline code")
             }
             Node::Image(i) => {
                 // Check if the URL ends with a video extension
@@ -215,7 +224,7 @@ impl<'a> MarkdownConverter<'a> {
                         number
                     });
 
-                let children = vec![MarkdownConverter::new(self.context)
+                let children = vec![MarkdownConverter::new(self.context, &self.error_context)
                     .without_blocking_elements()
                     .convert_many(&definition, None)];
 
@@ -340,9 +349,13 @@ impl<'a> HeadingHierarchy<'a> {
             children: children.into_iter().collect(),
         }
     }
-    pub fn from_node(context: ViewContext<'a>, node: &Node) -> Vec<HeadingHierarchy<'a>> {
+    pub fn from_node(
+        context: ViewContext<'a>,
+        node: &Node,
+        error_context: &str,
+    ) -> Vec<HeadingHierarchy<'a>> {
         let mut headings = Vec::new();
-        collect_headings(context, node, &mut headings);
+        collect_headings(context, node, &mut headings, error_context);
 
         let mut result = Vec::new();
         let mut stack: Vec<(u8, HeadingHierarchy<'a>)> = Vec::new();
@@ -377,19 +390,20 @@ impl<'a> HeadingHierarchy<'a> {
             context: ViewContext<'a>,
             node: &Node,
             headings: &mut Vec<(u8, paxhtml::Element<'a>, String)>,
+            error_context: &str,
         ) {
             if let Some(children) = node.children() {
                 for child in children {
                     if let Node::Heading(heading) = child {
                         headings.push((
                             heading.depth,
-                            MarkdownConverter::new(context)
+                            MarkdownConverter::new(context, error_context)
                                 .without_blocking_elements()
                                 .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
                     }
-                    collect_headings(context, child, headings); // Recurse into all children
+                    collect_headings(context, child, headings, error_context); // Recurse into all children
                 }
             }
         }
@@ -455,7 +469,7 @@ mod tests {
             )
         }
 
-        let result = HH::from_node(context, &ast);
+        let result = HH::from_node(context, &ast, "test");
         let expected = vec![
             hh(
                 &bump,
@@ -484,7 +498,7 @@ Here is some text with a footnote[^note1] and another[^note2].
         let content = Content::empty();
         let bump = Bump::new();
         let context = view_context_base(&syntax, &content).with_bump(&bump);
-        let mut converter = MarkdownConverter::new(context);
+        let mut converter = MarkdownConverter::new(context, "test");
 
         let result = converter.convert(&ast, None);
         let html = paxhtml::Document::new(&bump, [result])
