@@ -67,14 +67,23 @@ def format_date(dt: datetime) -> str:
 
 
 def format_date_range(created: datetime, closed: datetime | None, state: str) -> str:
-    """Format the date range for display."""
+    """Format the date range for display, eliding shared components."""
     created_str = format_date(created)
 
     if state == "open":
         return f"{created_str} - present"
 
     if closed and closed.date() != created.date():
-        return f"{created_str} - {format_date(closed)}"
+        if created.year == closed.year:
+            if created.month == closed.month:
+                # Same month and year: "November 8-12, 2025"
+                return f"{created.strftime('%B')} {created.day}-{closed.day}, {created.year}"
+            else:
+                # Same year, different month: "November 9 - December 14, 2025"
+                return f"{created.strftime('%B')} {created.day} - {closed.strftime('%B')} {closed.day}, {created.year}"
+        else:
+            # Different year: full dates
+            return f"{created_str} - {format_date(closed)}"
 
     return created_str
 
