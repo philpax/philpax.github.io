@@ -4,7 +4,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{Link, LinkProps},
+    views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps},
 };
 
 pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
@@ -71,7 +71,10 @@ pub fn post<'a>(
                 content_elements.push(html! { in bump;
                     <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                         <div class="w-max max-w-full">
-                            <h3 class={h3_classname}>"Table of Contents"</h3>
+                            <h3 class={h3_classname}>
+                                <HeadingAnchor target={"#toc-sticky".to_string()} />
+                                "Table of Contents"
+                            </h3>
                             <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                                 {hierarchy_list}
                             </div>
@@ -93,7 +96,10 @@ pub fn post<'a>(
             if let Some(hierarchy_list) = toc {
                 content_elements.push(html! { in bump;
                     <aside class="toc 2xl:hidden" id="toc-inline">
-                        <h3 class={h3_classname}>"Table of Contents"</h3>
+                        <h3 class={h3_classname}>
+                            <HeadingAnchor target={"#toc-inline".to_string()} />
+                            "Table of Contents"
+                        </h3>
                         <div class={format!("{POST_BODY_CONTENT_MARGIN_LEFT_CLASS} [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
                             {hierarchy_list}
                         </div>

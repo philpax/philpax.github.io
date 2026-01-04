@@ -2,6 +2,9 @@ mod link;
 #[allow(unused_imports)]
 pub use link::*;
 
+mod heading_anchor;
+pub use heading_anchor::*;
+
 mod footnote;
 #[allow(unused_imports)]
 pub use footnote::*;

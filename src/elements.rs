@@ -5,6 +5,8 @@ use paxhtml::builder::Builder;
 use paxhtml::bumpalo::Bump;
 pub use paxhtml::{html, Element};
 
+use crate::views::components::{HeadingAnchor, HeadingAnchorProps};
+
 pub fn date_with_chrono<'bump>(bump: &'bump Bump, date: chrono::NaiveDate) -> Element<'bump> {
     let b = Builder::new(bump);
     let date = date.to_string();
@@ -40,7 +42,7 @@ pub fn break_on_colon<'bump>(bump: &'bump Bump, value: &str) -> Element<'bump> {
     }))
 }
 
-/// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
+/// Accepts a `with_link` attribute that will add a `#` anchor link before the heading.
 pub fn h_with_id<'bump>(
     bump: &'bump Bump,
     depth: u8,
@@ -52,10 +54,12 @@ pub fn h_with_id<'bump>(
     let id = crate::util::slugify(&children.inner_text(bump));
 
     let children = if with_link {
-        b.a([
-            b.attr(("href", format!("#{id}"))),
-            b.attr(("class", "no-underline")),
-        ])(children)
+        html! { in bump;
+            <>
+                <HeadingAnchor target={format!("#{id}")} />
+                {children}
+            </>
+        }
     } else {
         children
     };
