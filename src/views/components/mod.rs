@@ -17,3 +17,6 @@ pub use code::*;
 
 mod music_library;
 pub use music_library::*;
+
+mod diff_stats;
+pub use diff_stats::*;

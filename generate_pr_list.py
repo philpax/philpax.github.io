@@ -150,7 +150,7 @@ def generate_markdown(repos: dict[str, list[dict]]) -> str:
             deletions = pr["deletions"]
 
             date_range = format_date_range(created, closed, state)
-            lines.append(f"- [{title}]({url}) ({date_range}) +{additions}/-{deletions}")
+            lines.append(f"- [{title}]({url}) ({date_range}, <DiffStats add={additions} sub={deletions} />)")
         lines.append("")
 
     return "\n".join(lines)

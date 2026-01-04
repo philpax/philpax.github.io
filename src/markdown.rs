@@ -220,6 +220,19 @@ impl<'a> MarkdownConverter<'a> {
                 if element.tag() == Some("MusicLibrary") {
                     return components::music_library(self.context);
                 }
+                if element.tag() == Some("DiffStats") {
+                    let add = element
+                        .attr("add")
+                        .and_then(|a| a.value.as_ref())
+                        .and_then(|v| v.as_int())
+                        .unwrap_or(0) as u32;
+                    let sub = element
+                        .attr("sub")
+                        .and_then(|a| a.value.as_ref())
+                        .and_then(|v| v.as_int())
+                        .unwrap_or(0) as u32;
+                    return components::diff_stats(bump, add, sub);
+                }
 
                 element
             }
