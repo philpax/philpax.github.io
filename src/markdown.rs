@@ -16,6 +16,7 @@ pub struct MarkdownConverter<'a> {
     pub context: ViewContext<'a>,
     pub footnotes: HashMap<String, Vec<Node>>,
     pub without_blocking_elements: bool,
+    pub strip_links: bool,
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
     pub sidenotes_enabled: bool,
@@ -27,6 +28,7 @@ impl<'a> MarkdownConverter<'a> {
             context,
             footnotes: HashMap::new(),
             without_blocking_elements: false,
+            strip_links: false,
             footnote_counter: HashMap::new(),
             next_footnote_number: 1,
             sidenotes_enabled: false,
@@ -45,6 +47,13 @@ impl<'a> MarkdownConverter<'a> {
     /// Only use this for full article pages (blog, updates, notes).
     pub fn with_sidenotes(mut self) -> Self {
         self.sidenotes_enabled = true;
+        self
+    }
+
+    /// Strip links, rendering only their text content.
+    /// Useful for TOC generation where nested links are invalid.
+    pub fn strip_links(mut self) -> Self {
+        self.strip_links = true;
         self
     }
 
@@ -188,11 +197,18 @@ impl<'a> MarkdownConverter<'a> {
                     ]))
                 }
             }
-            Node::Link(l) => paxhtml::html! { in bump;
-                <Link underline target={l.url.clone()}>
-                    #{l.children.iter().map(|n| self.convert(n, Some(node)))}
-                </Link>
-            },
+            Node::Link(l) => {
+                let children = self.convert_many(&l.children, Some(node));
+                if self.strip_links {
+                    children
+                } else {
+                    paxhtml::html! { in bump;
+                        <Link underline target={l.url.clone()}>
+                            {children}
+                        </Link>
+                    }
+                }
+            }
             Node::Html(h) => {
                 // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
                 // in the middle of the string and actual content follows, but it's good enough for now.
@@ -399,6 +415,7 @@ impl<'a> HeadingHierarchy<'a> {
                             heading.depth,
                             MarkdownConverter::new(context, error_context)
                                 .without_blocking_elements()
+                                .strip_links()
                                 .convert(child, Some(child)),
                             inner_text(child, None).trim().to_string(),
                         ));
