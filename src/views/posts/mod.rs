@@ -16,14 +16,14 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
         .map(|t| {
             let tags = t.iter().map(|tag| {
                 html! { in bump;
-                    <li class="inline-block mr-[var(--meta-spacing)] last:mr-0">
+                    <li class="flex-shrink-0 mr-[var(--meta-spacing)] last:mr-0">
                         <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                             {format!("#{tag}")}
                         </Link>
                     </li>
                 }
             });
-            html! { in bump; <ul class="list-none m-0 p-0 inline-block">#{tags}</ul> }
+            html! { in bump; <ul class="list-none m-0 p-0 flex flex-nowrap overflow-x-auto min-w-0">#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -136,7 +136,7 @@ pub fn post<'a>(
         <article class="post">
             <header class="pb-0 mb-0">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
-                    <div class="flex items-center gap-[var(--meta-spacing)]">
+                    <div class="flex items-center gap-[var(--meta-spacing)] whitespace-nowrap flex-shrink-0">
                         {date(bump, document)}
                         " · "
                         <em>{document.document_type.to_string().to_lowercase()}</em>
@@ -145,10 +145,10 @@ pub fn post<'a>(
                         " words"
                     </div>
                     {if document.tags().is_some_and(|t| !t.is_empty()) { html! { in bump; <>
-                        <div class="sm:hidden -mt-1">
+                        <div class="sm:hidden -mt-1 min-w-0">
                             {tags(bump, document)}
                         </div>
-                        <div class="hidden sm:flex items-center gap-[var(--meta-spacing)]">
+                        <div class="hidden sm:flex items-center gap-[var(--meta-spacing)] min-w-0">
                             " · "
                             {tags(bump, document)}
                         </div>
