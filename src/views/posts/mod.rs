@@ -7,9 +7,6 @@ use crate::{
     views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps},
 };
 
-pub const POST_BODY_CONTENT_MARGIN_LEFT_CLASS: &str = "ml-4";
-// uses `POST_BODY_CONTENT_MARGIN_LEFT_CLASS` for child paragraphs; can't construct dynamically
-// because tailwind looks for full class names
 pub const POST_BODY_MARGIN_CLASS: &str =
     "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0";
 
@@ -100,7 +97,7 @@ pub fn post<'a>(
                             <HeadingAnchor target={"#toc-inline".to_string()} />
                             "Table of Contents"
                         </h3>
-                        <div class={format!("{POST_BODY_CONTENT_MARGIN_LEFT_CLASS} [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
+                        <div class={format!("[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
                             {hierarchy_list}
                         </div>
                     </aside>
