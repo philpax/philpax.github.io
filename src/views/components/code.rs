@@ -1,5 +1,5 @@
 use anyhow::Context;
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo::Bump;
 
 use crate::{
     syntax::SyntaxHighlighter,

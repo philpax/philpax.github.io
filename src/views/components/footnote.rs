@@ -1,4 +1,4 @@
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo::Bump;
 use paxhtml::DefaultIn;
 
 #[allow(dead_code)]

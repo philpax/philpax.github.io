@@ -1,5 +1,3 @@
-use paxhtml::bumpalo;
-
 use super::*;
 
 use crate::{markdown::MarkdownConverter, views::posts};

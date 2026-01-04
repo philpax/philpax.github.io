@@ -1,5 +1,5 @@
 use blackbird_json_export_types::{OutputGroup, OutputTrack};
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo::Bump;
 use paxhtml::html;
 
 use crate::{util, views::ViewContext};

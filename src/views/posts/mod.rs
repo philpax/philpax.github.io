@@ -1,4 +1,4 @@
-use paxhtml::bumpalo::{self, Bump};
+use paxhtml::bumpalo::Bump;
 
 use super::*;
 use crate::{
