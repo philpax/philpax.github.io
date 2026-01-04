@@ -13,7 +13,7 @@ from datetime import datetime
 
 AUTHOR = "philpax"
 OWNERS = ["philpax", "jc2mp", "ferrobrew", "genresinspace"]
-SINCE_DATE = "2024-11-03"
+SINCE_DATE = "2025-11-01"
 CACHE_FILE = "PR.json"
 OUTPUT_FILE = "PR.md"
 
@@ -96,6 +96,9 @@ def fetch_all_pr_data() -> dict[str, list[dict]]:
         prs = fetch_prs(owner)
         all_prs.extend(prs)
 
+    # Filter to only merged PRs
+    all_prs = [pr for pr in all_prs if pr["state"].upper() == "MERGED"]
+
     # Group by repository
     repos: dict[str, list[dict]] = defaultdict(list)
     for pr in all_prs:
@@ -134,6 +137,21 @@ def load_cached_data() -> dict[str, list[dict]] | None:
         return None
 
 
+def filter_pr_data(repos: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """Filter PRs to only include merged PRs created on or after SINCE_DATE."""
+    since = datetime.fromisoformat(SINCE_DATE)
+    filtered = {}
+    for repo_name, prs in repos.items():
+        filtered_prs = [
+            pr for pr in prs
+            if pr["state"].upper() == "MERGED"
+            and parse_date(pr["createdAt"]).replace(tzinfo=None) >= since
+        ]
+        if filtered_prs:
+            filtered[repo_name] = filtered_prs
+    return filtered
+
+
 def save_cached_data(data: dict[str, list[dict]]) -> None:
     """Save PR data to cache file."""
     with open(CACHE_FILE, "w") as f:
@@ -143,8 +161,8 @@ def save_cached_data(data: dict[str, list[dict]]) -> None:
 
 def generate_markdown(repos: dict[str, list[dict]]) -> str:
     """Generate markdown output from PR data."""
-    # Sort repos by their first (oldest) PR's creation date
-    sorted_repos = sorted(repos.items(), key=lambda x: x[1][0]["createdAt"])
+    # Sort repos by their first (oldest) PR's creation date, then by name
+    sorted_repos = sorted(repos.items(), key=lambda x: (x[1][0]["createdAt"], x[0]))
 
     lines = []
     for repo_name, prs in sorted_repos:
@@ -175,6 +193,9 @@ def main():
         save_cached_data(data)
     else:
         print(f"Using cached data from {CACHE_FILE}", file=sys.stderr)
+
+    # Filter to merged PRs since SINCE_DATE
+    data = filter_pr_data(data)
 
     # Generate and write markdown
     markdown = generate_markdown(data)
