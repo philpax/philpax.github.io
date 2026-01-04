@@ -6,7 +6,6 @@
   --background-color-secondary: #6f4c9a;
   --code-label-bg: hsl(220, 27%, 20%);
   --code-label-color: #ffffff;
-  --code-inline-bg: #bfbdb60f;
 }
 
 --light-mode {
@@ -16,7 +15,6 @@
   --background-color-secondary: #dcc8ff;
   --code-label-bg: #e0dce5;
   --code-label-color: #5c6166;
-  --code-inline-bg: #5c61660f;
 }
 
 /* Root variables */
@@ -59,9 +57,4 @@
 /* Code blocks */
 code span {
   display: inline;
-}
-
-/* Inline code background */
-code.code {
-  background-color: var(--code-inline-bg);
 }

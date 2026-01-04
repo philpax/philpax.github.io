@@ -48,8 +48,6 @@ pub enum Route {
     Scripts,
     Icon,
     Favicon,
-    DarkModeIcon,
-    LightModeIcon,
 }
 impl Route {
     pub fn route_path(&self) -> RoutePath {
@@ -89,8 +87,6 @@ impl Route {
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
             Route::Favicon => RoutePath::new([], "favicon.ico".to_string()),
-            Route::DarkModeIcon => RoutePath::new(["phosphor"], "moon.svg".to_string()),
-            Route::LightModeIcon => RoutePath::new(["phosphor"], "sun.svg".to_string()),
         }
     }
     pub fn url_path(&self) -> String {
@@ -487,10 +483,6 @@ fn main() -> anyhow::Result<()> {
         })?;
         substeps.step("Wrote CSS", || {
             RoutePath::from(Route::Styles).write(output_dir, output.css)
-        })?;
-        substeps.step("Wrote icons", || {
-            RoutePath::from(Route::DarkModeIcon).write(output_dir, output.dark_mode_icon)?;
-            RoutePath::from(Route::LightModeIcon).write(output_dir, output.light_mode_icon)
         })?;
         anyhow::Ok(())
     })?;

@@ -1,5 +1,16 @@
 @import "tailwindcss" source("../");
 
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not(.light *)) {
+      @slot;
+    }
+  }
+}
+
 @utility decoration-skip-ink-none {
   text-decoration-skip-ink: none;
 }

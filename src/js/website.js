@@ -1,25 +1,52 @@
-function getThemeCookie() {
-  let themeCookie = document.cookie
-    .split(";")
-    .find((c) => c.trim().startsWith("theme="));
-  if (themeCookie) {
-    return themeCookie.split("=")[1].trim();
+const ICON_URLS = {
+  light: "/phosphor/sun.svg",
+  dark: "/phosphor/moon.svg",
+  system: "/phosphor/monitor.svg",
+  arrow: "/phosphor/arrow-right.svg",
+};
+
+// Cache for fetched SVGs
+const iconCache = {};
+
+async function fetchSvg(url) {
+  if (iconCache[url]) {
+    return iconCache[url];
   }
-  return null;
+
+  const response = await fetch(url);
+  const svgText = await response.text();
+  iconCache[url] = svgText;
+  return svgText;
 }
 
-// Set initial theme from cookie immediately
-{
-  let savedTheme = getThemeCookie();
-  if (savedTheme) {
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark-theme");
-      document.documentElement.classList.add("light-theme");
-    } else {
-      document.documentElement.classList.remove("light-theme");
-      document.documentElement.classList.add("dark-theme");
-    }
-  }
+function createIconContainer() {
+  const container = document.createElement("div");
+  container.className = "flex items-center gap-1";
+  container.innerHTML = '<div class="w-4 h-4"></div><div class="w-4 h-4"></div><div class="w-4 h-4"></div>';
+  return container;
+}
+
+async function updateIconContainer(container, currentTheme, nextTheme) {
+  const [currentSvg, arrowSvg, nextSvg] = await Promise.all([
+    fetchSvg(ICON_URLS[currentTheme]),
+    fetchSvg(ICON_URLS.arrow),
+    fetchSvg(ICON_URLS[nextTheme]),
+  ]);
+
+  const slots = container.querySelectorAll("div");
+  slots[0].innerHTML = currentSvg;
+  slots[0].querySelector("svg").setAttribute("width", "16");
+  slots[0].querySelector("svg").setAttribute("height", "16");
+  slots[0].title = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1) + " Mode";
+
+  slots[1].innerHTML = arrowSvg;
+  slots[1].querySelector("svg").setAttribute("width", "16");
+  slots[1].querySelector("svg").setAttribute("height", "16");
+
+  slots[2].innerHTML = nextSvg;
+  slots[2].querySelector("svg").setAttribute("width", "16");
+  slots[2].querySelector("svg").setAttribute("height", "16");
+  slots[2].title = nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1) + " Mode";
 }
 
 function createThemeSwitcher() {
@@ -28,56 +55,75 @@ function createThemeSwitcher() {
     console.log("Header links not found");
     return;
   }
+
   let a = document.createElement("a");
-  let img = document.createElement("img");
-  img.className = "m-auto w-6 h-6";
-  updateSwitcherIcon(img, isLightMode());
+  let container = createIconContainer();
+
+  // Determine current state and update icon
+  function getCurrentTheme() {
+    return localStorage.getItem("theme"); // 'light', 'dark', or null (system)
+  }
+
+  function getNextTheme(current) {
+    if (current === "light") return "dark";
+    if (current === "dark") return "system";
+    return "light";
+  }
+
+  function updateSwitcherIcon() {
+    const current = getCurrentTheme() || "system";
+    const next = getNextTheme(current);
+    updateIconContainer(container, current, next);
+  }
+
+  function setTheme(theme) {
+    document.documentElement.classList.remove("dark", "light");
+    if (theme === "dark" || theme === "light") {
+      document.documentElement.classList.add(theme);
+      localStorage.setItem("theme", theme);
+    } else {
+      localStorage.removeItem("theme");
+    }
+    updateSwitcherIcon();
+  }
+
+  function cycleTheme() {
+    const current = getCurrentTheme();
+
+    if (current === "light") {
+      // Light → Dark
+      setTheme("dark");
+    } else if (current === "dark") {
+      // Dark → System
+      setTheme("system");
+    } else {
+      // System → Light
+      setTheme("light");
+    }
+  }
+
+  // Initialize icon based on current state
+  updateSwitcherIcon();
+
   a.href = "#";
   a.className =
     "bg-[var(--color-secondary)] text-[var(--background-color)] hover:bg-[var(--color)] py-2 px-4 transition-colors duration-200 flex items-center justify-center md:mb-0";
 
   a.addEventListener("click", function (e) {
     e.preventDefault();
-    let isLight = isLightMode();
-    if (isLight) {
-      document.documentElement.classList.remove("light-theme");
-      document.documentElement.classList.add("dark-theme");
-      document.cookie = "theme=dark;path=/;max-age=31536000";
-    } else {
-      document.documentElement.classList.remove("dark-theme");
-      document.documentElement.classList.add("light-theme");
-      document.cookie = "theme=light;path=/;max-age=31536000";
-    }
-    updateSwitcherIcon(img, !isLight);
+    cycleTheme();
   });
 
-  a.appendChild(img);
+  a.appendChild(container);
   headerLinks.append(a);
 
-  // Add media query listener
-  let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: light)");
+  // Listen for system theme changes
+  let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
   colorSchemeQuery.addEventListener("change", function (e) {
-    // Only update if no theme cookie is set
-    if (!getThemeCookie()) {
-      updateSwitcherIcon(img, e.matches);
+    if (!getCurrentTheme()) {
+      // In system mode, no need to update DOM class since CSS handles it
     }
   });
-
-  function isLightMode() {
-    let themeCookie = getThemeCookie();
-    if (themeCookie) {
-      return themeCookie === "light";
-    }
-    return (
-      window.matchMedia("(prefers-color-scheme: light)").matches ||
-      document.documentElement.classList.contains("light-theme")
-    );
-  }
-
-  function updateSwitcherIcon(img, isLightMode) {
-    img.src = isLightMode ? "LIGHT_MODE_ICON" : "DARK_MODE_ICON";
-    img.alt = isLightMode ? "Light Mode" : "Dark Mode";
-  }
 }
 
 function initScrollSpy() {
