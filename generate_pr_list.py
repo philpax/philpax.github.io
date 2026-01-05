@@ -62,8 +62,8 @@ def parse_date(date_str: str) -> datetime | None:
 
 
 def format_date(dt: datetime) -> str:
-    """Format datetime as 'Month Day, Year'."""
-    return dt.strftime("%B %-d, %Y")
+    """Format datetime as 'Month Day'."""
+    return dt.strftime("%B %-d")
 
 
 def format_date_range(created: datetime, closed: datetime | None, state: str) -> str:
@@ -74,16 +74,12 @@ def format_date_range(created: datetime, closed: datetime | None, state: str) ->
         return f"{created_str} - present"
 
     if closed and closed.date() != created.date():
-        if created.year == closed.year:
-            if created.month == closed.month:
-                # Same month and year: "November 8-12, 2025"
-                return f"{created.strftime('%B')} {created.day}-{closed.day}, {created.year}"
-            else:
-                # Same year, different month: "November 9 - December 14, 2025"
-                return f"{created.strftime('%B')} {created.day} - {closed.strftime('%B')} {closed.day}, {created.year}"
+        if created.month == closed.month:
+            # Same month: "November 8-12"
+            return f"{created.strftime('%B')} {created.day}-{closed.day}"
         else:
-            # Different year: full dates
-            return f"{created_str} - {format_date(closed)}"
+            # Different month: "November 9 - December 14"
+            return f"{created.strftime('%B')} {created.day} - {closed.strftime('%B')} {closed.day}"
 
     return created_str
 
