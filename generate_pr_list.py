@@ -84,16 +84,25 @@ def format_date_range(created: datetime, closed: datetime | None, state: str) ->
     return created_str
 
 
-def fetch_all_pr_data() -> dict[str, list[dict]]:
-    """Fetch all PR data from GitHub and return grouped by repo."""
-    all_prs = []
+def fetch_all_pr_data(cached_data: dict[str, list[dict]] | None = None) -> dict[str, list[dict]]:
+    """Fetch all PR data from GitHub and return grouped by repo.
 
+    Uses cached_data to avoid re-fetching diff stats for known PRs.
+    """
+    # Build lookup of cached PRs by URL
+    cached_prs: dict[str, dict] = {}
+    if cached_data:
+        for prs in cached_data.values():
+            for pr in prs:
+                cached_prs[pr["url"]] = pr
+
+    all_prs = []
     for owner in OWNERS:
         prs = fetch_prs(owner)
         all_prs.extend(prs)
 
-    # Filter to only merged PRs
-    all_prs = [pr for pr in all_prs if pr["state"].upper() == "MERGED"]
+    # Filter out open PRs
+    all_prs = [pr for pr in all_prs if pr["state"].upper() != "OPEN"]
 
     # Group by repository
     repos: dict[str, list[dict]] = defaultdict(list)
@@ -108,18 +117,28 @@ def fetch_all_pr_data() -> dict[str, list[dict]]:
     for repo_prs in public_repos.values():
         repo_prs.sort(key=lambda p: p["createdAt"])
 
-    # Fetch diff stats for all PRs
-    total_prs = sum(len(prs) for prs in public_repos.values())
-    print(f"Fetching diff stats for {total_prs} PRs...", file=sys.stderr)
-    pr_count = 0
-    for repo_prs in public_repos.values():
-        for pr in repo_prs:
-            pr_count += 1
-            print(f"\r  {pr_count}/{total_prs}", end="", file=sys.stderr)
+    # Fetch diff stats only for PRs not in cache
+    prs_needing_stats = [
+        pr for repo_prs in public_repos.values()
+        for pr in repo_prs
+        if pr["url"] not in cached_prs
+    ]
+
+    if prs_needing_stats:
+        print(f"Fetching diff stats for {len(prs_needing_stats)} new PRs...", file=sys.stderr)
+        for i, pr in enumerate(prs_needing_stats, 1):
+            print(f"\r  {i}/{len(prs_needing_stats)}", end="", file=sys.stderr)
             additions, deletions = fetch_pr_diff_stats(pr["url"])
             pr["additions"] = additions
             pr["deletions"] = deletions
-    print(file=sys.stderr)
+        print(file=sys.stderr)
+
+    # Copy diff stats from cache for known PRs
+    for repo_prs in public_repos.values():
+        for pr in repo_prs:
+            if pr["url"] in cached_prs:
+                pr["additions"] = cached_prs[pr["url"]]["additions"]
+                pr["deletions"] = cached_prs[pr["url"]]["deletions"]
 
     return public_repos
 
@@ -134,13 +153,13 @@ def load_cached_data() -> dict[str, list[dict]] | None:
 
 
 def filter_pr_data(repos: dict[str, list[dict]]) -> dict[str, list[dict]]:
-    """Filter PRs to only include merged PRs created on or after SINCE_DATE."""
+    """Filter PRs to only include closed PRs created on or after SINCE_DATE."""
     since = datetime.fromisoformat(SINCE_DATE)
     filtered = {}
     for repo_name, prs in repos.items():
         filtered_prs = [
             pr for pr in prs
-            if pr["state"].upper() == "MERGED"
+            if pr["state"].upper() != "OPEN"
             and parse_date(pr["createdAt"]).replace(tzinfo=None) >= since
         ]
         if filtered_prs:
@@ -173,24 +192,21 @@ def generate_markdown(repos: dict[str, list[dict]]) -> str:
             deletions = pr["deletions"]
 
             date_range = format_date_range(created, closed, state)
-            lines.append(f"- [{title}]({url}) ({date_range}, <DiffStats add={additions} sub={deletions} />)")
+            closed_marker = ", **closed**" if state.upper() == "CLOSED" else ""
+            lines.append(f"- [{title}]({url}) ({date_range}, <DiffStats add={additions} sub={deletions} />{closed_marker})")
         lines.append("")
 
     return "\n".join(lines)
 
 
 def main():
-    refresh = "--refresh" in sys.argv
+    # Always fetch fresh PR list, using cache for diff stats
+    cached_data = load_cached_data()
+    print("Fetching PR data from GitHub...", file=sys.stderr)
+    data = fetch_all_pr_data(cached_data)
+    save_cached_data(data)
 
-    # Load from cache or fetch fresh data
-    if refresh or (data := load_cached_data()) is None:
-        print("Fetching PR data from GitHub...", file=sys.stderr)
-        data = fetch_all_pr_data()
-        save_cached_data(data)
-    else:
-        print(f"Using cached data from {CACHE_FILE}", file=sys.stderr)
-
-    # Filter to merged PRs since SINCE_DATE
+    # Filter to closed PRs since SINCE_DATE
     data = filter_pr_data(data)
 
     # Generate and write markdown
