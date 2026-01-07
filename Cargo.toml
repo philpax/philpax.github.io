@@ -62,6 +62,7 @@ resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }
 rayon = { workspace = true }
+gix = { version = "0.72", default-features = false, features = ["revision"] }
 
 [features]
 serve = ["dep:sha1"]

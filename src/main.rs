@@ -500,6 +500,9 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
+    // Save git date cache for faster subsequent runs
+    content::save_git_date_cache();
+
     timer.finish();
 
     #[cfg(feature = "serve")]

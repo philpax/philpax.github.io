@@ -1,7 +1,6 @@
 use std::{
     collections::{BTreeMap, HashMap},
     path::{Path, PathBuf},
-    process::Command,
 };
 
 use anyhow::Context;
@@ -387,7 +386,7 @@ impl Document {
         id: DocumentId,
         display_path: Vec<String>,
         document_type: DocumentType,
-        fast: bool,
+        _fast: bool,
     ) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
@@ -405,11 +404,11 @@ impl Document {
 
             (metadata, content_raw)
         } else {
-            let mut path_datetime = get_file_datetime(path, fast)?;
+            let mut path_datetime = get_file_datetime(path)?;
 
             // HACK: Use the music library's modification datetime if it's in use + it's newer than the actual file
             if file.contains("<MusicLibrary") {
-                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH), fast)?;
+                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH))?;
                 if library_datetime > path_datetime {
                     path_datetime = library_datetime;
                 }
@@ -584,25 +583,10 @@ pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
     markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
 }
 
-fn get_file_datetime(path: &Path, fast: bool) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
-    // In fast mode, skip git and just use file mtime
-    if fast {
-        let metadata = std::fs::metadata(path)?;
-        let modified = metadata.modified()?;
-        let datetime = chrono::DateTime::from(modified);
-        return Ok(datetime.with_timezone(&chrono::Utc));
-    }
-
-    // Try to get the last commit time from Git first
-    let git_output = Command::new("git")
-        .args(["log", "-1", "--format=%cI", "--", path.to_str().unwrap()])
-        .output();
-
-    if let Some(output) = git_output.ok().filter(|o| o.status.success()) {
-        let timestamp = String::from_utf8_lossy(&output.stdout).trim().to_string();
-        if let Ok(datetime) = chrono::DateTime::parse_from_rfc3339(&timestamp) {
-            return Ok(datetime.with_timezone(&chrono::Utc));
-        }
+fn get_file_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    // Try to get the last commit time from Git using gitoxide
+    if let Ok(datetime) = get_git_datetime(path) {
+        return Ok(datetime);
     }
 
     // Fallback to file modification time
@@ -610,4 +594,141 @@ fn get_file_datetime(path: &Path, fast: bool) -> anyhow::Result<chrono::DateTime
     let modified = metadata.modified()?;
     let datetime = chrono::DateTime::from(modified);
     Ok(datetime.with_timezone(&chrono::Utc))
+}
+
+// --- Git date caching ---
+
+const GIT_DATE_CACHE_PATH: &str = "target/git-date-cache.json";
+
+#[derive(serde::Serialize, serde::Deserialize, Default)]
+struct GitDateCache {
+    /// HEAD commit ID when cache was built
+    head_commit: String,
+    /// Map of file path -> (blob OID hex, timestamp seconds)
+    files: HashMap<PathBuf, (String, i64)>,
+}
+
+/// Global cache shared across threads (used by rayon workers)
+static GIT_DATE_CACHE: std::sync::OnceLock<std::sync::Mutex<GitDateCache>> =
+    std::sync::OnceLock::new();
+
+thread_local! {
+    /// Cached git repository for commit date lookups (per-thread, not Sync).
+    static GIT_REPO: std::cell::OnceCell<gix::Repository> = const { std::cell::OnceCell::new() };
+}
+
+fn get_git_date_cache() -> &'static std::sync::Mutex<GitDateCache> {
+    GIT_DATE_CACHE.get_or_init(|| {
+        let cache = load_git_date_cache().unwrap_or_default();
+        std::sync::Mutex::new(cache)
+    })
+}
+
+fn get_git_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    GIT_REPO.with(|repo_cell| {
+        let repo = repo_cell.get_or_init(|| {
+            let mut repo = gix::discover(".").expect("Failed to discover git repository");
+            repo.object_cache_size_if_unset(4 * 1024 * 1024);
+            repo
+        });
+
+        let head = repo.head_commit()?;
+        let head_id_hex = head.id.to_hex().to_string();
+        let head_tree = head.tree()?;
+
+        // Get current blob ID for this file in HEAD
+        let current_entry = head_tree.lookup_entry_by_path(path)?;
+        let Some(current_entry) = current_entry else {
+            anyhow::bail!("File not in HEAD tree");
+        };
+        let current_blob_hex = current_entry.oid().to_hex().to_string();
+
+        // Check cache
+        let cache_mutex = get_git_date_cache();
+        let mut cache = cache_mutex.lock().unwrap();
+
+        // Check if cache is valid for current HEAD
+        if cache.head_commit == head_id_hex {
+            if let Some((cached_blob, timestamp)) = cache.files.get(path) {
+                if cached_blob == &current_blob_hex {
+                    let datetime = chrono::DateTime::from_timestamp(*timestamp, 0)
+                        .ok_or_else(|| anyhow::anyhow!("Invalid cached timestamp"))?;
+                    return Ok(datetime.with_timezone(&chrono::Utc));
+                }
+            }
+        } else if !cache.head_commit.is_empty() {
+            // HEAD changed, clear old entries
+            cache.head_commit = head_id_hex.clone();
+            cache.files.clear();
+        } else {
+            cache.head_commit = head_id_hex.clone();
+        }
+
+        // Cache miss - compute the timestamp (release lock during computation)
+        drop(cache);
+        let datetime = compute_file_commit_time(repo, path)?;
+
+        // Update cache
+        let mut cache = cache_mutex.lock().unwrap();
+        cache
+            .files
+            .insert(path.to_path_buf(), (current_blob_hex, datetime.timestamp()));
+
+        Ok(datetime)
+    })
+}
+
+fn compute_file_commit_time(
+    repo: &gix::Repository,
+    path: &Path,
+) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    let head = repo.head_commit()?;
+
+    // Walk commits from HEAD until we find one that touched this file
+    for info in repo.rev_walk([head.id]).all()? {
+        let info = info?;
+        let commit = info.object()?;
+        let tree = commit.tree()?;
+
+        let current_entry = tree.lookup_entry_by_path(path)?;
+        let Some(current_entry) = current_entry else {
+            break;
+        };
+
+        let mut parents = commit.parent_ids();
+        if let Some(parent_id) = parents.next() {
+            let parent = repo.find_commit(parent_id)?;
+            let parent_tree = parent.tree()?;
+            let parent_entry = parent_tree.lookup_entry_by_path(path)?;
+
+            if parent_entry.as_ref().map(|e| e.oid()) != Some(current_entry.oid()) {
+                let time = commit.time()?;
+                let datetime = chrono::DateTime::from_timestamp(time.seconds, 0)
+                    .ok_or_else(|| anyhow::anyhow!("Invalid timestamp"))?;
+                return Ok(datetime.with_timezone(&chrono::Utc));
+            }
+        } else {
+            let time = commit.time()?;
+            let datetime = chrono::DateTime::from_timestamp(time.seconds, 0)
+                .ok_or_else(|| anyhow::anyhow!("Invalid timestamp"))?;
+            return Ok(datetime.with_timezone(&chrono::Utc));
+        }
+    }
+
+    anyhow::bail!("File not found in git history")
+}
+
+fn load_git_date_cache() -> Option<GitDateCache> {
+    let content = std::fs::read_to_string(GIT_DATE_CACHE_PATH).ok()?;
+    serde_json::from_str(&content).ok()
+}
+
+pub fn save_git_date_cache() {
+    if let Some(cache_mutex) = GIT_DATE_CACHE.get() {
+        if let Ok(cache) = cache_mutex.lock() {
+            if let Ok(content) = serde_json::to_string_pretty(&*cache) {
+                let _ = std::fs::write(GIT_DATE_CACHE_PATH, content);
+            }
+        }
+    }
 }
