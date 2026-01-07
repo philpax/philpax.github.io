@@ -55,15 +55,15 @@ impl Content {
         let path = PathBuf::from("content");
 
         let now = std::time::Instant::now();
-        let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog, fast)?;
+        let blog = DocumentCollection::read(&path.join("blog"), DocumentType::Blog)?;
         report("Read blog", now.elapsed());
 
         let now = std::time::Instant::now();
-        let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update, fast)?;
+        let updates = DocumentCollection::read(&path.join("updates"), DocumentType::Update)?;
         report("Read updates", now.elapsed());
 
         let now = std::time::Instant::now();
-        let notes = NotesCollection::read(&path.join("notes"), fast)?;
+        let notes = NotesCollection::read(&path.join("notes"))?;
         report("Read notes", now.elapsed());
 
         // Combine tags from both blog and updates
@@ -86,7 +86,6 @@ impl Content {
             vec!["about".to_string()],
             vec!["About".to_string()],
             DocumentType::Blog,
-            fast,
         )?;
         report("Read about", now.elapsed());
 
@@ -96,7 +95,6 @@ impl Content {
             vec!["credits".to_string()],
             vec!["Credits".to_string()],
             DocumentType::Blog,
-            fast,
         )?;
         report("Read credits", now.elapsed());
 
@@ -149,11 +147,7 @@ impl DocumentCollection {
         }
     }
 
-    fn read(
-        collection_path: &Path,
-        document_type: DocumentType,
-        fast: bool,
-    ) -> anyhow::Result<Self> {
+    fn read(collection_path: &Path, document_type: DocumentType) -> anyhow::Result<Self> {
         let documents = {
             let mut documents = vec![];
             for entry in std::fs::read_dir(collection_path)? {
@@ -178,7 +172,6 @@ impl DocumentCollection {
                     vec![id.clone()],
                     vec![id],
                     document_type,
-                    fast,
                 )?);
             }
             documents.sort_by_key(|d| d.metadata.datetime);
@@ -239,11 +232,10 @@ impl NotesCollection {
         }
     }
 
-    fn read(collection_path: &Path, fast: bool) -> anyhow::Result<Self> {
+    fn read(collection_path: &Path) -> anyhow::Result<Self> {
         fn find_documents(
             collection_path: &Path,
             path: &Path,
-            fast: bool,
         ) -> anyhow::Result<DocumentFolderNode> {
             const HOME_NAME: &str = "Home";
 
@@ -278,7 +270,6 @@ impl NotesCollection {
                     display_path_to_id(&display_name),
                     display_name,
                     DocumentType::Note,
-                    fast,
                 )?)
             } else {
                 None
@@ -298,7 +289,7 @@ impl NotesCollection {
                 if path.is_dir() {
                     documents.insert(
                         document_name,
-                        DocumentNode::Folder(find_documents(collection_path, &path, fast)?),
+                        DocumentNode::Folder(find_documents(collection_path, &path)?),
                     );
                     continue;
                 }
@@ -312,7 +303,6 @@ impl NotesCollection {
                                 document_id,
                                 display_path,
                                 DocumentType::Note,
-                                fast,
                             )?,
                         },
                     );
@@ -326,7 +316,7 @@ impl NotesCollection {
         }
 
         Ok(NotesCollection {
-            documents: find_documents(collection_path, collection_path, fast)?,
+            documents: find_documents(collection_path, collection_path)?,
         })
     }
 }
@@ -386,7 +376,6 @@ impl Document {
         id: DocumentId,
         display_path: Vec<String>,
         document_type: DocumentType,
-        _fast: bool,
     ) -> anyhow::Result<Self> {
         let file =
             std::fs::read_to_string(path).with_context(|| format!("failed to read {path:?}"))?;
