@@ -608,8 +608,14 @@ struct GitDateCache {
     files: HashMap<PathBuf, (String, i64)>,
 }
 
-/// Global cache shared across threads (used by rayon workers)
-static GIT_DATE_CACHE: std::sync::OnceLock<std::sync::Mutex<GitDateCache>> =
+/// Global cache state
+struct GitDateCacheState {
+    cache: GitDateCache,
+    /// Whether HEAD matches the cached HEAD (if true, we can trust cache without tree lookups)
+    head_validated: bool,
+}
+
+static GIT_DATE_CACHE: std::sync::OnceLock<std::sync::RwLock<GitDateCacheState>> =
     std::sync::OnceLock::new();
 
 thread_local! {
@@ -617,14 +623,59 @@ thread_local! {
     static GIT_REPO: std::cell::OnceCell<gix::Repository> = const { std::cell::OnceCell::new() };
 }
 
-fn get_git_date_cache() -> &'static std::sync::Mutex<GitDateCache> {
+fn get_git_date_cache() -> &'static std::sync::RwLock<GitDateCacheState> {
     GIT_DATE_CACHE.get_or_init(|| {
         let cache = load_git_date_cache().unwrap_or_default();
-        std::sync::Mutex::new(cache)
+        std::sync::RwLock::new(GitDateCacheState {
+            cache,
+            head_validated: false,
+        })
     })
 }
 
+/// Initialize git date cache by validating HEAD. Call once at startup.
+pub fn init_git_date_cache() {
+    let cache_lock = get_git_date_cache();
+    let mut state = cache_lock.write().unwrap();
+
+    if state.head_validated {
+        return;
+    }
+
+    // Get current HEAD
+    let Ok(repo) = gix::discover(".") else {
+        return;
+    };
+    let Ok(head) = repo.head_commit() else {
+        return;
+    };
+    let head_id_hex = head.id.to_hex().to_string();
+
+    if state.cache.head_commit == head_id_hex {
+        state.head_validated = true;
+    } else {
+        state.cache.head_commit = head_id_hex;
+        state.cache.files.clear();
+        state.head_validated = true;
+    }
+}
+
 fn get_git_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+    let cache_lock = get_git_date_cache();
+
+    // Fast path: check if cache is already validated and has this file (read lock only)
+    {
+        let state = cache_lock.read().unwrap();
+        if state.head_validated {
+            if let Some((_, timestamp)) = state.cache.files.get(path) {
+                let datetime = chrono::DateTime::from_timestamp(*timestamp, 0)
+                    .ok_or_else(|| anyhow::anyhow!("Invalid cached timestamp"))?;
+                return Ok(datetime.with_timezone(&chrono::Utc));
+            }
+        }
+    }
+
+    // Need repo access - either for HEAD validation or cache miss
     GIT_REPO.with(|repo_cell| {
         let repo = repo_cell.get_or_init(|| {
             let mut repo = gix::discover(".").expect("Failed to discover git repository");
@@ -632,47 +683,60 @@ fn get_git_datetime(path: &Path) -> anyhow::Result<chrono::DateTime<chrono::Utc>
             repo
         });
 
-        let head = repo.head_commit()?;
-        let head_id_hex = head.id.to_hex().to_string();
-        let head_tree = head.tree()?;
-
-        // Get current blob ID for this file in HEAD
-        let current_entry = head_tree.lookup_entry_by_path(path)?;
-        let Some(current_entry) = current_entry else {
-            anyhow::bail!("File not in HEAD tree");
-        };
-        let current_blob_hex = current_entry.oid().to_hex().to_string();
-
-        // Check cache
-        let cache_mutex = get_git_date_cache();
-        let mut cache = cache_mutex.lock().unwrap();
-
-        // Check if cache is valid for current HEAD
-        if cache.head_commit == head_id_hex {
-            if let Some((cached_blob, timestamp)) = cache.files.get(path) {
-                if cached_blob == &current_blob_hex {
+        // Check with read lock first
+        {
+            let state = cache_lock.read().unwrap();
+            if state.head_validated {
+                if let Some((_, timestamp)) = state.cache.files.get(path) {
                     let datetime = chrono::DateTime::from_timestamp(*timestamp, 0)
                         .ok_or_else(|| anyhow::anyhow!("Invalid cached timestamp"))?;
                     return Ok(datetime.with_timezone(&chrono::Utc));
                 }
             }
-        } else if !cache.head_commit.is_empty() {
-            // HEAD changed, clear old entries
-            cache.head_commit = head_id_hex.clone();
-            cache.files.clear();
-        } else {
-            cache.head_commit = head_id_hex.clone();
         }
 
-        // Cache miss - compute the timestamp (release lock during computation)
-        drop(cache);
+        // Need write lock for validation or cache update
+        let mut state = cache_lock.write().unwrap();
+
+        // Validate HEAD once per run (if not already done)
+        if !state.head_validated {
+            let head = repo.head_commit()?;
+            let head_id_hex = head.id.to_hex().to_string();
+
+            if state.cache.head_commit == head_id_hex {
+                state.head_validated = true;
+            } else {
+                state.cache.head_commit = head_id_hex;
+                state.cache.files.clear();
+                state.head_validated = true;
+            }
+        }
+
+        // Check cache again (may have been populated by init or another thread)
+        if let Some((_, timestamp)) = state.cache.files.get(path) {
+            let datetime = chrono::DateTime::from_timestamp(*timestamp, 0)
+                .ok_or_else(|| anyhow::anyhow!("Invalid cached timestamp"))?;
+            return Ok(datetime.with_timezone(&chrono::Utc));
+        }
+
+        // Cache miss - compute timestamp (release lock during computation)
+        drop(state);
         let datetime = compute_file_commit_time(repo, path)?;
 
-        // Update cache
-        let mut cache = cache_mutex.lock().unwrap();
-        cache
+        // Get blob OID for cache storage
+        let head = repo.head_commit()?;
+        let head_tree = head.tree()?;
+        let blob_hex = head_tree
+            .lookup_entry_by_path(path)?
+            .map(|e| e.oid().to_hex().to_string())
+            .unwrap_or_default();
+
+        // Update cache (write lock)
+        let mut state = cache_lock.write().unwrap();
+        state
+            .cache
             .files
-            .insert(path.to_path_buf(), (current_blob_hex, datetime.timestamp()));
+            .insert(path.to_path_buf(), (blob_hex, datetime.timestamp()));
 
         Ok(datetime)
     })
@@ -683,6 +747,9 @@ fn compute_file_commit_time(
     path: &Path,
 ) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
     let head = repo.head_commit()?;
+
+    // Track the last valid commit time for this file (for shallow clone handling)
+    let mut last_valid_time = None;
 
     // Walk commits from HEAD until we find one that touched this file
     for info in repo.rev_walk([head.id]).all()? {
@@ -695,9 +762,16 @@ fn compute_file_commit_time(
             break;
         };
 
+        // Track this as the last valid commit containing the file
+        last_valid_time = Some(commit.time()?);
+
         let mut parents = commit.parent_ids();
         if let Some(parent_id) = parents.next() {
-            let parent = repo.find_commit(parent_id)?;
+            // In shallow clones, the parent might not exist
+            let Ok(parent) = repo.find_commit(parent_id) else {
+                // Shallow boundary - use the last commit we could see
+                break;
+            };
             let parent_tree = parent.tree()?;
             let parent_entry = parent_tree.lookup_entry_by_path(path)?;
 
@@ -715,6 +789,13 @@ fn compute_file_commit_time(
         }
     }
 
+    // If we hit shallow boundary, use the last valid commit time
+    if let Some(time) = last_valid_time {
+        let datetime = chrono::DateTime::from_timestamp(time.seconds, 0)
+            .ok_or_else(|| anyhow::anyhow!("Invalid timestamp"))?;
+        return Ok(datetime.with_timezone(&chrono::Utc));
+    }
+
     anyhow::bail!("File not found in git history")
 }
 
@@ -724,9 +805,9 @@ fn load_git_date_cache() -> Option<GitDateCache> {
 }
 
 pub fn save_git_date_cache() {
-    if let Some(cache_mutex) = GIT_DATE_CACHE.get() {
-        if let Ok(cache) = cache_mutex.lock() {
-            if let Ok(content) = serde_json::to_string_pretty(&*cache) {
+    if let Some(cache_lock) = GIT_DATE_CACHE.get() {
+        if let Ok(state) = cache_lock.read() {
+            if let Ok(content) = serde_json::to_string_pretty(&state.cache) {
                 let _ = std::fs::write(GIT_DATE_CACHE_PATH, content);
             }
         }

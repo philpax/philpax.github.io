@@ -114,6 +114,9 @@ fn main() -> anyhow::Result<()> {
 
     let mut timer = timer::Timer::new(verbose);
 
+    // Initialize git date cache early (validates HEAD once)
+    content::init_git_date_cache();
+
     let output_dir = Path::new("public");
     #[cfg(feature = "serve")]
     let port = 8192;
