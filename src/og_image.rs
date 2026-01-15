@@ -1,5 +1,5 @@
 use anyhow::Result;
-use base64::{engine::general_purpose::STANDARD, Engine};
+use base64::{Engine, engine::general_purpose::STANDARD};
 use chrono::{DateTime, Utc};
 use image::{GenericImageView, ImageEncoder, ImageReader};
 use std::{io::Cursor, path::Path, sync::Arc};
@@ -143,14 +143,14 @@ fn generate_svg(
         );
 
         // Add last modified date if different from published date
-        if let Some(lm) = last_modified {
-            if lm.date_naive() != dt.date_naive() {
-                let lm_str = lm.format("%Y-%m-%d").to_string();
-                let escaped_lm_str = escape_xml(&lm_str);
-                svg.push_str(&format!(
+        if let Some(lm) = last_modified
+            && lm.date_naive() != dt.date_naive()
+        {
+            let lm_str = lm.format("%Y-%m-%d").to_string();
+            let escaped_lm_str = escape_xml(&lm_str);
+            svg.push_str(&format!(
                     r#"<text x="{date_text_x}" y="{updated_date_text_y}" font-size="{UPDATED_DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">updated {escaped_lm_str}</text>"#
                 ));
-            }
         }
 
         svg

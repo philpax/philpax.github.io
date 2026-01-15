@@ -1,5 +1,5 @@
-use paxhtml::bumpalo::Bump;
 use paxhtml::DefaultIn;
+use paxhtml::bumpalo::Bump;
 
 #[allow(dead_code)]
 pub struct FootnoteProps<'bump> {

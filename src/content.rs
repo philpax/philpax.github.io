@@ -7,7 +7,7 @@ use std::{
 use anyhow::Context;
 use serde::Deserialize;
 
-use crate::{util, Route, RoutePath};
+use crate::{Route, RoutePath, util};
 
 pub type DocumentId = Vec<String>;
 pub type Tag = String;

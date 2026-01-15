@@ -3,7 +3,7 @@
 use chrono::Timelike;
 use paxhtml::builder::Builder;
 use paxhtml::bumpalo::Bump;
-pub use paxhtml::{html, Element};
+pub use paxhtml::{Element, html};
 
 use crate::views::components::{HeadingAnchor, HeadingAnchorProps};
 

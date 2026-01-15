@@ -1,10 +1,10 @@
 use paxhtml::bumpalo::Bump;
 
 use crate::{
+    Route,
     content::{Document, DocumentCollection},
     markdown::MarkdownConverter,
     views::ViewContextBase,
-    Route,
 };
 
 pub fn generate(

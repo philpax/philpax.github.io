@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use anyhow::Context;
-use paxhtml::bumpalo::Bump;
 use paxhtml::RoutePath;
+use paxhtml::bumpalo::Bump;
 
 use crate::content::DocumentId;
 
@@ -382,24 +382,23 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote blog index", |_| {
         let bump = Bump::new();
-        let result = views::blog::index(view_context.with_bump(&bump))
-            .write_to_route(output_dir, Route::Blog);
-        result
+
+        views::blog::index(view_context.with_bump(&bump)).write_to_route(output_dir, Route::Blog)
     })?;
 
     timer.step("Wrote updates index", |_| {
         let bump = Bump::new();
-        let result = views::updates::index(view_context.with_bump(&bump))
-            .write_to_route(output_dir, Route::Updates);
-        result
+
+        views::updates::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Updates)
     })?;
 
     timer.step("Wrote tags", |substeps| {
         substeps.step("Wrote tags index", || {
             let bump = Bump::new();
-            let result = views::tags::index(view_context.with_bump(&bump))
-                .write_to_route(output_dir, Route::Tags);
-            result
+
+            views::tags::index(view_context.with_bump(&bump))
+                .write_to_route(output_dir, Route::Tags)
         })?;
 
         substeps.step("Wrote individual tags", || {
@@ -420,23 +419,23 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote credits", |_| {
         let bump = Bump::new();
-        let result = views::credits::index(view_context.with_bump(&bump))
-            .write_to_route(output_dir, Route::Credits);
-        result
+
+        views::credits::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::Credits)
     })?;
 
     timer.step("Wrote frontpage", |substeps| {
         substeps.step("Wrote index", || {
             let bump = Bump::new();
-            let result = views::frontpage::index(view_context.with_bump(&bump))
-                .write_to_route(output_dir, Route::Index);
-            result
+
+            views::frontpage::index(view_context.with_bump(&bump))
+                .write_to_route(output_dir, Route::Index)
         })?;
         substeps.step("Wrote deprecated about redirect", || {
             let bump = Bump::new();
-            let result = views::redirect(&bump, &Route::Index.url_path())
-                .write_to_route(output_dir, Route::DeprecatedAbout);
-            result
+
+            views::redirect(&bump, &Route::Index.url_path())
+                .write_to_route(output_dir, Route::DeprecatedAbout)
         })?;
         anyhow::Ok(())
     })?;

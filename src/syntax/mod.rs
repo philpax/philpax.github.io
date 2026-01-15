@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use arborium::{theme::builtin, Config, GrammarStore, Highlighter, HtmlFormat};
+use arborium::{Config, GrammarStore, Highlighter, HtmlFormat, theme::builtin};
 use paxhtml::bumpalo::Bump;
 
 pub struct SyntaxHighlighter {

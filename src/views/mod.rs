@@ -1,10 +1,10 @@
 use paxhtml::bumpalo::Bump;
 
 use crate::{
+    Route,
     content::{Content, Document},
     elements::*,
     syntax::SyntaxHighlighter,
-    Route,
 };
 use std::collections::HashMap;
 

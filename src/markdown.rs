@@ -5,8 +5,8 @@ use paxhtml::builder::Builder;
 use crate::{
     elements as e,
     views::{
-        components::{self, Footnote, FootnoteProps, Link, LinkProps},
         ViewContext,
+        components::{self, Footnote, FootnoteProps, Link, LinkProps},
     },
 };
 
@@ -253,9 +253,11 @@ impl<'a> MarkdownConverter<'a> {
                         number
                     });
 
-                let children = vec![MarkdownConverter::new(self.context, &self.error_context)
-                    .without_blocking_elements()
-                    .convert_many(&definition, None)];
+                let children = vec![
+                    MarkdownConverter::new(self.context, &self.error_context)
+                        .without_blocking_elements()
+                        .convert_many(&definition, None),
+                ];
 
                 let sidenotes_enabled = self.sidenotes_enabled;
                 paxhtml::html! { in bump;
@@ -335,10 +337,10 @@ impl<'a> MarkdownConverter<'a> {
 }
 
 pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {
-    if let Some(ignore_node) = ignore_node {
-        if ignore_node(node) {
-            return String::new();
-        }
+    if let Some(ignore_node) = ignore_node
+        && ignore_node(node)
+    {
+        return String::new();
     }
 
     if let Node::Text(text) = node {
@@ -446,7 +448,7 @@ impl<'a> HeadingHierarchy<'a> {
 mod tests {
     use super::*;
     use crate::{
-        content::{parse_markdown, Content},
+        content::{Content, parse_markdown},
         syntax::SyntaxHighlighter,
         views::ViewContextBase,
     };
