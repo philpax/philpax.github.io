@@ -21,6 +21,7 @@ The `-F serve` flag enables the `serve` feature, which adds a local dev server t
 **For agents:** Assume the user has this `cargo-watch` process running. This means:
 - **Always run** `cargo clippy` and `cargo fmt` after making changes to verify correctness
 - **Do NOT run** `cargo build` or `cargo run` - the watch process handles rebuilds automatically
+- **NEVER use release mode** (`--release`) - it provides no benefit for this project and significantly slows down iteration
 
 ### System Dependencies
 
