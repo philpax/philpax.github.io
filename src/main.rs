@@ -1,4 +1,5 @@
 use std::path::Path;
+use std::sync::Arc;
 
 use anyhow::Context;
 use paxhtml::RoutePath;
@@ -191,7 +192,7 @@ fn main() -> anyhow::Result<()> {
                 }
             });
 
-            anyhow::Ok((syntax, tailwind_css?, content?))
+            anyhow::Ok((syntax, tailwind_css?, Arc::new(content?)))
         },
     )?;
     // ViewContextBase can be shared across threads (no bump reference)
@@ -280,105 +281,19 @@ fn main() -> anyhow::Result<()> {
         })
     })?;
 
-    if !fast {
-        timer.step("Generated OG images", |substeps| {
-            use rayon::prelude::*;
-
-            let og_images_dir = output_dir.join("og-images");
-            std::fs::create_dir_all(&og_images_dir)?;
-
-            // Create subdirectories
-            std::fs::create_dir_all(og_images_dir.join("blog"))?;
-            std::fs::create_dir_all(og_images_dir.join("updates"))?;
-            std::fs::create_dir_all(og_images_dir.join("notes"))?;
-
-            let generator = substeps.step("Initialized generator", || {
-                og_image::Generator::new(view_context.website_author.into())
-            })?;
-
-            // Helper function to generate OG image for a document
-            fn generate_doc_image(
-                generator: &og_image::Generator,
-                output_dir: &Path,
-                og_images_dir: &Path,
-                doc: &content::Document,
-            ) -> anyhow::Result<()> {
-                let (post_type, type_subdir) = match doc.document_type {
-                    content::DocumentType::Blog => ("blog", "blog"),
-                    content::DocumentType::Update => ("update", "updates"),
-                    content::DocumentType::Note => ("note", "notes"),
-                };
-
-                let hero_image_path = doc.hero_filename_and_alt.as_ref().map(|(filename, _)| {
-                    doc.route_path()
-                        .with_filename(filename)
-                        .file_path(output_dir)
-                });
-
-                let options = og_image::OgImageOptions {
-                    post_type: post_type.to_string(),
-                    title: doc.metadata.title.clone(),
-                    datetime: doc.metadata.datetime,
-                    last_modified: doc.metadata.last_modified,
-                    hero_image_path: hero_image_path.as_deref(),
-                };
-
-                let type_dir = og_images_dir.join(type_subdir);
-                let filename = format!("{}.png", doc.id.join("-"));
-                let output_path = type_dir.join(&filename);
-
-                generator
-                    .generate(&options, &output_path)
-                    .with_context(|| {
-                        format!("Failed to generate OG image for {}", doc.metadata.title)
-                    })?;
-
-                Ok(())
-            }
-
-            // Collect all documents
-            let mut all_docs = Vec::new();
-
-            // Add blog posts and updates
-            all_docs.extend(content.blog.documents.iter());
-            all_docs.extend(content.updates.documents.iter());
-
-            // Recursively collect notes
-            fn collect_notes<'a>(
-                docs: &mut Vec<&'a content::Document>,
-                folder: &'a content::DocumentFolderNode,
-            ) {
-                if let Some(index_document) = &folder.index_document {
-                    docs.push(index_document);
-                }
-                for child in folder.children.values() {
-                    match child {
-                        content::DocumentNode::Folder(folder) => {
-                            collect_notes(docs, folder);
-                        }
-                        content::DocumentNode::Document { document } => {
-                            docs.push(document);
-                        }
-                    }
-                }
-            }
-
-            collect_notes(&mut all_docs, &content.notes.documents);
-
-            // Generate images in parallel
-            substeps.step("Generated images", || {
-                all_docs.par_iter().try_for_each(|doc| {
-                    generate_doc_image(&generator, output_dir, &og_images_dir, doc)
-                })
-            })?;
-
-            anyhow::Ok(())
-        })?;
+    // Spawn OG image generation in a background thread (non-blocking)
+    let og_image_handle = if !fast {
+        Some(og_image::spawn_generation(
+            Arc::clone(&content),
+            output_dir,
+            view_context.website_author,
+        ))
     } else {
         timer.step("Skipped OG image generation in fast mode", |_| {
             anyhow::Ok(())
         })?;
-    }
+        None
+    };
 
     timer.step("Wrote blog index", |_| {
         let bump = Bump::new();
@@ -492,14 +407,36 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.finish();
-
+    // Handle OG image generation completion
     #[cfg(feature = "serve")]
-    serve::serve(
-        output_dir,
-        port,
-        std::env::args().any(|arg| arg == "--public" || arg == "-p"),
-    )?;
+    {
+        // In serve mode, let OG images generate in the background while serving
+        if og_image_handle.is_some() {
+            timer.report("OG images", "generating in background");
+        }
+        timer.finish();
+
+        // Pass the handle to serve so it can report when done
+        serve::serve(
+            output_dir,
+            port,
+            std::env::args().any(|arg| arg == "--public" || arg == "-p"),
+            og_image_handle,
+        )?;
+    }
+
+    #[cfg(not(feature = "serve"))]
+    {
+        // In production mode, wait for OG images to complete before finishing
+        if let Some(handle) = og_image_handle {
+            timer.step("Generated OG images", |_| {
+                handle
+                    .join()
+                    .map_err(|_| anyhow::anyhow!("OG image generation thread panicked"))?
+            })?;
+        }
+        timer.finish();
+    }
 
     Ok(())
 }

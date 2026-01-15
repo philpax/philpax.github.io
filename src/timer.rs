@@ -27,6 +27,12 @@ impl Timer {
         result
     }
 
+    #[cfg(feature = "serve")]
+    pub fn report(&mut self, label: &str, message: &str) {
+        println!("{}. {} ({})", self.step, label, message);
+        self.step += 1;
+    }
+
     pub fn finish(self) {
         println!("Total time: {:?}", self.accumulated);
     }

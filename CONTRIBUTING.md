@@ -133,6 +133,13 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
   }}
   ```
 
+### Code Organization
+
+Within each module, organize code as follows:
+1. **Public API first** - all `pub` structs, enums, and functions at the top
+2. **Private implementation below** - constants, helper functions, and internal types
+3. **Order by use** - private items should appear in the order they're called/used by the public API (topological order)
+
 ### Directory Structure
 
 | Directory | Purpose |

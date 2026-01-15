@@ -1,17 +1,19 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use base64::{Engine, engine::general_purpose::STANDARD};
 use chrono::{DateTime, Utc};
 use image::{GenericImageView, ImageEncoder, ImageReader};
-use std::{io::Cursor, path::Path, sync::Arc};
+use rayon::prelude::*;
+use std::{io::Cursor, path::Path, sync::Arc, thread::JoinHandle};
 
-const IMAGE_WIDTH: u32 = 1200;
-const IMAGE_HEIGHT: u32 = 630;
-const SIDE_PADDING: f32 = 40.0; // Padding on each side
+use crate::content::{Content, Document, DocumentFolderNode, DocumentNode, DocumentType};
 
-#[derive(Default)]
+// -----------------------------------------------------------------------------
+// Public API
+// -----------------------------------------------------------------------------
+
 pub struct OgImageOptions<'a> {
-    pub post_type: String,
-    pub title: String,
+    pub document_type: DocumentType,
+    pub title: &'a str,
     pub datetime: Option<DateTime<Utc>>,
     pub last_modified: Option<DateTime<Utc>>,
     pub hero_image_path: Option<&'a Path>,
@@ -50,8 +52,8 @@ impl Generator {
 
         // Generate SVG
         let svg_content = generate_svg(
-            &options.post_type,
-            &options.title,
+            options.document_type,
+            options.title,
             &self.author,
             options.datetime.as_ref(),
             options.last_modified.as_ref(),
@@ -85,113 +87,72 @@ impl Generator {
     }
 }
 
-/// Generate SVG content for the OG image
-fn generate_svg(
-    post_type: &str,
-    title: &str,
+/// Spawns OG image generation in a background thread.
+/// Returns a JoinHandle that can be used to wait for completion.
+pub fn spawn_generation(
+    content: Arc<Content>,
+    output_dir: &Path,
     author: &str,
-    datetime: Option<&DateTime<Utc>>,
-    last_modified: Option<&DateTime<Utc>>,
-    og_base_url: &str,
-) -> String {
-    const TEXT_COLOR: &str = "#ffffff";
-    const SECONDARY_TEXT_COLOR: &str = "#cccccc"; // --color-secondary from stylesheet
-    const BOTTOM_MARGIN: f32 = 40.0;
-    const TOP_PADDING: f32 = 40.0;
-    const TYPE_FONT_SIZE: f32 = 30.0;
-    const AUTHOR_FONT_SIZE: f32 = 40.0;
-    const DATE_FONT_SIZE: f32 = 30.0;
-    const UPDATED_DATE_FONT_SIZE: f32 = 20.0;
+) -> JoinHandle<Result<()>> {
+    let output_dir = output_dir.to_path_buf();
+    let author = author.to_string();
 
-    // Calculate dynamic title font size based on length
-    // let title_font_size = calculate_title_font_size(&options.title);
-    let title_font_size = 40.0;
+    std::thread::spawn(move || {
+        let og_images_dir = output_dir.join("og-images");
+        std::fs::create_dir_all(&og_images_dir)?;
 
-    // Text positioning
-    let title_x = SIDE_PADDING;
-    let title_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
-    let type_x = SIDE_PADDING;
-    let type_y = title_y - title_font_size - 4.0;
-    let author_text_x = IMAGE_WIDTH as f32 - SIDE_PADDING;
-    let author_text_y = TOP_PADDING + AUTHOR_FONT_SIZE;
-    let date_text_x = author_text_x;
-    let date_text_y = author_text_y + DATE_FONT_SIZE + 6.0;
-    let updated_date_text_y = date_text_y + UPDATED_DATE_FONT_SIZE + 4.0;
+        // Create subdirectories
+        std::fs::create_dir_all(og_images_dir.join("blog"))?;
+        std::fs::create_dir_all(og_images_dir.join("updates"))?;
+        std::fs::create_dir_all(og_images_dir.join("notes"))?;
 
-    // Truncate the title to a maximum length, ending with a ... if truncated
-    const MAX_TITLE_LENGTH: usize = 50;
-    let title = if title.len() > MAX_TITLE_LENGTH {
-        format!(
-            "{}...",
-            title.chars().take(MAX_TITLE_LENGTH).collect::<String>()
-        )
-    } else {
-        title.to_string()
-    };
+        let generator = Generator::new(author)?;
 
-    // Escape XML special characters and lowercase
-    let post_type = escape_xml(&post_type.to_lowercase());
-    let title = escape_xml(&title);
-    let author = escape_xml(&author.to_lowercase());
+        // Collect all documents
+        let mut all_docs: Vec<&Document> = Vec::new();
+        all_docs.extend(&content.blog.documents);
+        all_docs.extend(&content.updates.documents);
+        collect_notes(&mut all_docs, &content.notes.documents);
 
-    // Format date if present
-    let date_element = if let Some(dt) = datetime {
-        let date_str = dt.format("%Y-%m-%d").to_string();
-        let escaped_date_str = escape_xml(&date_str);
-        let mut svg = format!(
-            r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">{escaped_date_str}</text>"#
-        );
+        // Generate images in parallel
+        all_docs.par_iter().try_for_each(|doc| {
+            let hero_image_path = doc.hero_filename_and_alt.as_ref().map(|(filename, _)| {
+                doc.route_path()
+                    .with_filename(filename)
+                    .file_path(&output_dir)
+            });
 
-        // Add last modified date if different from published date
-        if let Some(lm) = last_modified
-            && lm.date_naive() != dt.date_naive()
-        {
-            let lm_str = lm.format("%Y-%m-%d").to_string();
-            let escaped_lm_str = escape_xml(&lm_str);
-            svg.push_str(&format!(
-                    r#"<text x="{date_text_x}" y="{updated_date_text_y}" font-size="{UPDATED_DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">updated {escaped_lm_str}</text>"#
-                ));
-        }
+            let options = OgImageOptions {
+                document_type: doc.document_type,
+                title: &doc.metadata.title,
+                datetime: doc.metadata.datetime,
+                last_modified: doc.metadata.last_modified,
+                hero_image_path: hero_image_path.as_deref(),
+            };
 
-        svg
-    } else {
-        String::new()
-    };
+            let subdir = type_subdir(doc.document_type);
+            let type_dir = og_images_dir.join(subdir);
+            let filename = format!("{}.png", doc.id.join("-"));
+            let output_path = type_dir.join(&filename);
 
-    format!(
-        r#"<?xml version="1.0" encoding="UTF-8"?>
-<svg width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style>
-      @font-face {{
-        font-family: 'Literata';
-        src: url('/fonts/Literata.woff2') format('woff2');
-      }}
-      text {{
-        font-family: 'Literata', serif;
-      }}
-    </style>
-  </defs>
+            generator
+                .generate(&options, &output_path)
+                .with_context(|| {
+                    format!("Failed to generate OG image for {}", doc.metadata.title)
+                })?;
 
-  <image href="{og_base_url}" x="0" y="0" width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}"/>
-
-  {date_element}
-  <text x="{type_x}" y="{type_y}" font-size="{TYPE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}">{post_type}</text>
-  <text x="{title_x}" y="{title_y}" font-size="{title_font_size}px" fill="{TEXT_COLOR}">{title}</text>
-
-  <text x="{author_text_x}" y="{author_text_y}" font-size="{AUTHOR_FONT_SIZE}px" text-anchor="end" fill="{TEXT_COLOR}">{author}</text>
-</svg>"#
-    )
+            Ok(())
+        })
+    })
 }
 
-/// Escape XML special characters
-fn escape_xml(s: &str) -> String {
-    s.replace('&', "&amp;")
-        .replace('<', "&lt;")
-        .replace('>', "&gt;")
-        .replace('"', "&quot;")
-        .replace('\'', "&apos;")
-}
+// -----------------------------------------------------------------------------
+// Private implementation (in order of use)
+// -----------------------------------------------------------------------------
+
+const IMAGE_WIDTH: u32 = 1200;
+const IMAGE_HEIGHT: u32 = 630;
+const SIDE_PADDING: f32 = 40.0;
 
 /// Create a blurred and darkened background image from a hero image
 fn create_blurred_darkened_background(hero_path: &Path) -> Result<String> {
@@ -261,4 +222,133 @@ fn create_blurred_darkened_background(hero_path: &Path) -> Result<String> {
 
     let base64_data = STANDARD.encode(&png_bytes);
     Ok(format!("data:image/png;base64,{base64_data}"))
+}
+
+/// Generate SVG content for the OG image
+fn generate_svg(
+    document_type: DocumentType,
+    title: &str,
+    author: &str,
+    datetime: Option<&DateTime<Utc>>,
+    last_modified: Option<&DateTime<Utc>>,
+    og_base_url: &str,
+) -> String {
+    const TEXT_COLOR: &str = "#ffffff";
+    const SECONDARY_TEXT_COLOR: &str = "#cccccc";
+    const BOTTOM_MARGIN: f32 = 40.0;
+    const TOP_PADDING: f32 = 40.0;
+    const TYPE_FONT_SIZE: f32 = 30.0;
+    const AUTHOR_FONT_SIZE: f32 = 40.0;
+    const DATE_FONT_SIZE: f32 = 30.0;
+    const UPDATED_DATE_FONT_SIZE: f32 = 20.0;
+
+    let title_font_size = 40.0;
+
+    // Text positioning
+    let title_x = SIDE_PADDING;
+    let title_y = IMAGE_HEIGHT as f32 - BOTTOM_MARGIN;
+    let type_x = SIDE_PADDING;
+    let type_y = title_y - title_font_size - 4.0;
+    let author_text_x = IMAGE_WIDTH as f32 - SIDE_PADDING;
+    let author_text_y = TOP_PADDING + AUTHOR_FONT_SIZE;
+    let date_text_x = author_text_x;
+    let date_text_y = author_text_y + DATE_FONT_SIZE + 6.0;
+    let updated_date_text_y = date_text_y + UPDATED_DATE_FONT_SIZE + 4.0;
+
+    // Truncate the title to a maximum length, ending with a ... if truncated
+    const MAX_TITLE_LENGTH: usize = 50;
+    let title = if title.len() > MAX_TITLE_LENGTH {
+        format!(
+            "{}...",
+            title.chars().take(MAX_TITLE_LENGTH).collect::<String>()
+        )
+    } else {
+        title.to_string()
+    };
+
+    // Escape XML special characters and lowercase
+    let post_type = escape_xml(&document_type.to_string().to_lowercase());
+    let title = escape_xml(&title);
+    let author = escape_xml(&author.to_lowercase());
+
+    // Format date if present
+    let date_element = if let Some(dt) = datetime {
+        let date_str = dt.format("%Y-%m-%d").to_string();
+        let escaped_date_str = escape_xml(&date_str);
+        let mut svg = format!(
+            r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">{escaped_date_str}</text>"#
+        );
+
+        // Add last modified date if different from published date
+        if let Some(lm) = last_modified
+            && lm.date_naive() != dt.date_naive()
+        {
+            let lm_str = lm.format("%Y-%m-%d").to_string();
+            let escaped_lm_str = escape_xml(&lm_str);
+            svg.push_str(&format!(
+                    r#"<text x="{date_text_x}" y="{updated_date_text_y}" font-size="{UPDATED_DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">updated {escaped_lm_str}</text>"#
+                ));
+        }
+
+        svg
+    } else {
+        String::new()
+    };
+
+    format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<svg width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @font-face {{
+        font-family: 'Literata';
+        src: url('/fonts/Literata.woff2') format('woff2');
+      }}
+      text {{
+        font-family: 'Literata', serif;
+      }}
+    </style>
+  </defs>
+
+  <image href="{og_base_url}" x="0" y="0" width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}"/>
+
+  {date_element}
+  <text x="{type_x}" y="{type_y}" font-size="{TYPE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}">{post_type}</text>
+  <text x="{title_x}" y="{title_y}" font-size="{title_font_size}px" fill="{TEXT_COLOR}">{title}</text>
+
+  <text x="{author_text_x}" y="{author_text_y}" font-size="{AUTHOR_FONT_SIZE}px" text-anchor="end" fill="{TEXT_COLOR}">{author}</text>
+</svg>"#
+    )
+}
+
+fn escape_xml(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&apos;")
+}
+
+fn collect_notes<'a>(docs: &mut Vec<&'a Document>, folder: &'a DocumentFolderNode) {
+    if let Some(doc) = &folder.index_document {
+        docs.push(doc);
+    }
+    for child in folder.children.values() {
+        match child {
+            DocumentNode::Folder(folder) => {
+                collect_notes(docs, folder);
+            }
+            DocumentNode::Document { document } => {
+                docs.push(document);
+            }
+        }
+    }
+}
+
+fn type_subdir(document_type: DocumentType) -> &'static str {
+    match document_type {
+        DocumentType::Blog => "blog",
+        DocumentType::Update => "updates",
+        DocumentType::Note => "notes",
+    }
 }

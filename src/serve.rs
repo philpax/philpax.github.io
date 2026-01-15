@@ -3,15 +3,40 @@ use std::{
     io::{Read, Write},
     net::{TcpListener, TcpStream},
     path::{Path, PathBuf},
+    thread::JoinHandle,
+    time::Instant,
 };
 
 use base64::Engine;
 use sha1::Digest;
 
-pub fn serve(output_dir: &Path, port: u16, public: bool) -> anyhow::Result<()> {
+pub fn serve(
+    output_dir: &Path,
+    port: u16,
+    public: bool,
+    og_image_handle: Option<JoinHandle<anyhow::Result<()>>>,
+) -> anyhow::Result<()> {
     let addr = format!("{}:{}", if public { "0.0.0.0" } else { "127.0.0.1" }, port);
     println!("Serving at http://{addr}");
     println!("Hit CTRL-C to stop");
+
+    // Spawn a thread to wait for OG image generation to complete
+    if let Some(handle) = og_image_handle {
+        std::thread::spawn(move || {
+            let start = Instant::now();
+            match handle.join() {
+                Ok(Ok(())) => {
+                    println!("OG images generated in {:?}", start.elapsed());
+                }
+                Ok(Err(e)) => {
+                    eprintln!("OG image generation failed: {e:?}");
+                }
+                Err(_) => {
+                    eprintln!("OG image generation thread panicked");
+                }
+            }
+        });
+    }
 
     let listener =
         TcpListener::bind(addr).map_err(|e| anyhow::anyhow!("Failed to bind to address: {}", e))?;
