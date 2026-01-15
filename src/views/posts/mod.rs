@@ -138,6 +138,16 @@ pub fn post<'a>(
                 <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     <div class="flex items-center gap-[var(--meta-spacing)] whitespace-nowrap flex-shrink-0">
                         {date(bump, document)}
+                        {(post_body == PostBody::Full)
+                            .then(|| document.metadata.datetime.zip(document.metadata.last_modified))
+                            .flatten()
+                            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
+                            .map(|(_, modified)| html! { in bump;
+                                <>
+                                    " · updated "
+                                    {crate::elements::date_with_chrono(bump, modified.date_naive())}
+                                </>
+                            })}
                         " · "
                         <em>{document.document_type.to_string().to_lowercase()}</em>
                         " · "

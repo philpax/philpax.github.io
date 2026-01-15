@@ -369,6 +369,7 @@ impl Document {
                 title: "".to_string(),
                 short: None,
                 datetime: None,
+                last_modified: None,
                 taxonomies: None,
             },
             description: markdown::mdast::Node::Root(markdown::mdast::Root {
@@ -400,25 +401,28 @@ impl Document {
                 ));
             }
 
-            let metadata: DocumentMetadata = toml::from_str(parts[1])?;
+            let mut metadata: DocumentMetadata = toml::from_str(parts[1])?;
+            let file_dates = get_file_dates(path, fast)?;
+            metadata.last_modified = Some(file_dates.last_commit);
             let content_raw = parts[2];
 
             (metadata, content_raw)
         } else {
-            let mut path_datetime = get_file_datetime(path, fast)?;
+            let mut file_dates = get_file_dates(path, fast)?;
 
             // HACK: Use the music library's modification datetime if it's in use + it's newer than the actual file
             if file.contains("<MusicLibrary") {
-                let library_datetime = get_file_datetime(Path::new(MUSIC_LIBRARY_PATH), fast)?;
-                if library_datetime > path_datetime {
-                    path_datetime = library_datetime;
+                let library_dates = get_file_dates(Path::new(MUSIC_LIBRARY_PATH), fast)?;
+                if library_dates.last_commit > file_dates.last_commit {
+                    file_dates.last_commit = library_dates.last_commit;
                 }
             }
 
             let metadata = DocumentMetadata {
                 title: display_path.last().cloned().unwrap(),
                 short: None,
-                datetime: Some(path_datetime),
+                datetime: Some(file_dates.first_commit),
+                last_modified: Some(file_dates.last_commit),
                 taxonomies: None,
             };
 
@@ -567,6 +571,8 @@ pub struct DocumentMetadata {
     short: Option<String>,
     #[serde(with = "toml_datetime_compat", default)]
     pub datetime: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(skip)]
+    pub last_modified: Option<chrono::DateTime<chrono::Utc>>,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 impl DocumentMetadata {
@@ -584,30 +590,64 @@ pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
     markdown::to_mdast(md, &markdown::ParseOptions::gfm()).unwrap()
 }
 
-fn get_file_datetime(path: &Path, fast: bool) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
-    // In fast mode, skip git and just use file mtime
-    if fast {
+struct FileDates {
+    first_commit: chrono::DateTime<chrono::Utc>,
+    last_commit: chrono::DateTime<chrono::Utc>,
+}
+
+fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
+    // Helper to get file mtime
+    let get_mtime = || -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
         let metadata = std::fs::metadata(path)?;
         let modified = metadata.modified()?;
         let datetime = chrono::DateTime::from(modified);
-        return Ok(datetime.with_timezone(&chrono::Utc));
+        Ok(datetime.with_timezone(&chrono::Utc))
+    };
+
+    // In fast mode, skip git and just use file mtime for both
+    if fast {
+        let mtime = get_mtime()?;
+        return Ok(FileDates {
+            first_commit: mtime,
+            last_commit: mtime,
+        });
     }
 
-    // Try to get the last commit time from Git first
+    // Get all commit dates in one Git call
     let git_output = Command::new("git")
-        .args(["log", "-1", "--format=%cI", "--", path.to_str().unwrap()])
+        .args([
+            "log",
+            "--format=%cI",
+            "--follow",
+            "--",
+            path.to_str().unwrap(),
+        ])
         .output();
 
     if let Some(output) = git_output.ok().filter(|o| o.status.success()) {
-        let timestamp = String::from_utf8_lossy(&output.stdout).trim().to_string();
-        if let Ok(datetime) = chrono::DateTime::parse_from_rfc3339(&timestamp) {
-            return Ok(datetime.with_timezone(&chrono::Utc));
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let dates: Vec<chrono::DateTime<chrono::Utc>> = stdout
+            .lines()
+            .filter_map(|line| {
+                chrono::DateTime::parse_from_rfc3339(line.trim())
+                    .ok()
+                    .map(|dt| dt.with_timezone(&chrono::Utc))
+            })
+            .collect();
+
+        if !dates.is_empty() {
+            return Ok(FileDates {
+                // First line is most recent commit, last line is first commit
+                last_commit: dates[0],
+                first_commit: dates[dates.len() - 1],
+            });
         }
     }
 
     // Fallback to file modification time
-    let metadata = std::fs::metadata(path)?;
-    let modified = metadata.modified()?;
-    let datetime = chrono::DateTime::from(modified);
-    Ok(datetime.with_timezone(&chrono::Utc))
+    let mtime = get_mtime()?;
+    Ok(FileDates {
+        first_commit: mtime,
+        last_commit: mtime,
+    })
 }

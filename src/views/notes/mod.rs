@@ -70,6 +70,15 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                     </h2>
                     <div class="text-[var(--color-secondary)] text-sm mb-2">
                         {datetime_with_chrono(bump, note.metadata.datetime.unwrap())}
+                        {note.metadata.datetime
+                            .zip(note.metadata.last_modified)
+                            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
+                            .map(|(_, modified)| html! { in bump;
+                                <>
+                                    " · updated "
+                                    {datetime_with_chrono(bump, modified)}
+                                </>
+                            })}
                     </div>
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {{

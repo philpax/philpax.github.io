@@ -13,6 +13,7 @@ pub struct OgImageOptions<'a> {
     pub post_type: String,
     pub title: String,
     pub datetime: Option<DateTime<Utc>>,
+    pub last_modified: Option<DateTime<Utc>>,
     pub hero_image_path: Option<&'a Path>,
 }
 
@@ -53,6 +54,7 @@ impl Generator {
             &options.title,
             &self.author,
             options.datetime.as_ref(),
+            options.last_modified.as_ref(),
             &bg_data_url,
         );
 
@@ -89,6 +91,7 @@ fn generate_svg(
     title: &str,
     author: &str,
     datetime: Option<&DateTime<Utc>>,
+    last_modified: Option<&DateTime<Utc>>,
     og_base_url: &str,
 ) -> String {
     const TEXT_COLOR: &str = "#ffffff";
@@ -98,6 +101,7 @@ fn generate_svg(
     const TYPE_FONT_SIZE: f32 = 30.0;
     const AUTHOR_FONT_SIZE: f32 = 40.0;
     const DATE_FONT_SIZE: f32 = 30.0;
+    const UPDATED_DATE_FONT_SIZE: f32 = 20.0;
 
     // Calculate dynamic title font size based on length
     // let title_font_size = calculate_title_font_size(&options.title);
@@ -112,6 +116,7 @@ fn generate_svg(
     let author_text_y = TOP_PADDING + AUTHOR_FONT_SIZE;
     let date_text_x = author_text_x;
     let date_text_y = author_text_y + DATE_FONT_SIZE + 6.0;
+    let updated_date_text_y = date_text_y + UPDATED_DATE_FONT_SIZE + 4.0;
 
     // Truncate the title to a maximum length, ending with a ... if truncated
     const MAX_TITLE_LENGTH: usize = 50;
@@ -133,9 +138,22 @@ fn generate_svg(
     let date_element = if let Some(dt) = datetime {
         let date_str = dt.format("%Y-%m-%d").to_string();
         let escaped_date_str = escape_xml(&date_str);
-        format!(
+        let mut svg = format!(
             r#"<text x="{date_text_x}" y="{date_text_y}" font-size="{DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">{escaped_date_str}</text>"#
-        )
+        );
+
+        // Add last modified date if different from published date
+        if let Some(lm) = last_modified {
+            if lm.date_naive() != dt.date_naive() {
+                let lm_str = lm.format("%Y-%m-%d").to_string();
+                let escaped_lm_str = escape_xml(&lm_str);
+                svg.push_str(&format!(
+                    r#"<text x="{date_text_x}" y="{updated_date_text_y}" font-size="{UPDATED_DATE_FONT_SIZE}px" fill="{SECONDARY_TEXT_COLOR}" text-anchor="end">updated {escaped_lm_str}</text>"#
+                ));
+            }
+        }
+
+        svg
     } else {
         String::new()
     };

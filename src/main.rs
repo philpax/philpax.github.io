@@ -319,6 +319,7 @@ fn main() -> anyhow::Result<()> {
                     post_type: post_type.to_string(),
                     title: doc.metadata.title.clone(),
                     datetime: doc.metadata.datetime,
+                    last_modified: doc.metadata.last_modified,
                     hero_image_path: hero_image_path.as_deref(),
                 };
 
