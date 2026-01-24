@@ -198,6 +198,13 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::Link(l) => {
+                if l.url.is_empty() {
+                    eprintln!(
+                        "warning: empty link target in {}: [{}]()",
+                        self.error_context,
+                        inner_text(node, None).trim()
+                    );
+                }
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
                     children
