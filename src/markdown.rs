@@ -151,7 +151,9 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     b.q([])(children)
                 } else {
-                    b.blockquote([])(children)
+                    b.blockquote([
+                        b.attr(("class", "border-l-4 border-(--color-secondary) pl-4 italic"))
+                    ])(children)
                 }
             }
             Node::Break(_) => b.br([]),
