@@ -1,0 +1,42 @@
+<https://fosdem.org/2026/schedule/event/QU9UF3-slang-cross-platform-inference/>
+
+<!-- more -->
+
+- Slang
+  - originally a NVIDIA initiative, but donated to Khronos in 2024
+  - in a way, superset of WGSL/WESL/Naga
+  - programming language for the GPU, but also the compiler for that language
+- So why Slang?
+  - Open-source, open-governance
+  - Write your shader once, runs everywhere
+  - Supports both compute and rendering
+  - Not limited by the lowest-common-denominator, like WebGPU
+  - Autodiff built in, but Crozet hasn't used it; could be useful for traning
+  - Most importantly, it has modern syntax; so much nicer than WGSL or GLSL
+  - Supports reflection; can ask the compiler for information about your shaders. Can have the compiler allocate binding sets, and then ask the compiler how it was done
+  - See Khronos's BOF presentation at SIGGRAPH 2025: <https://www.khronos.org/assets/uploads/developers/presentations/Slang_BOF_SIGGRAPH_2025.pdf>
+- Using Slang in Rust
+  - The compiler is written in C++, but there are Rust bindings
+  - Crozet wrote a small wrapper (`minislang`) to make it nicer to work with
+  - Need to write a RHI (rendering hardware interface?) to translate Slang's commands to each graphics API - `slang-hal` - only for the GPU API, not for the shaders
+  - Utilities/libraries built atop slang:
+    - `stensor` for tensor manipulation - new library because he needs these operations to be reusable from other domains
+    - `slai` - physics simulations etc
+- Slang in action
+  - Structured buffers are not global variables, like they are in other shading languages, but actual arguments to kernels; makes it easier to maintain
+  - Slang has a built-in module system, so you don't need a preprocessor or anything like that; can reuse code across your codebase or other libraries
+  - Write kernel launch - no binding groups, no backend choice - it's all handled for you
+- `slai`: dimforge is working on Slang AI
+  - Very incomplete right now, still in the experimentation phase
+  - Have implemented Gemma + Whisper model
+  - See `wgml` for a purely WebGPU implementation
+- What's next?
+  - Still targeting the single-source GPU scientific computing dream
+  - Close to ideal, but no package manager, no CPU/GPU code sharing, incomplete IDE support
+  - Last experiment; Rust-GPU, more at the end of the year
+  - Also have a focus on generating datasets for AI stuff using GPU-based phyics simulations
+- Question: Does it have support for generics?
+  - `[wasn't paying attention]`
+- Question: Game engine integration?
+  - Theoretically possible, just need to be careful about staying in the same API
+  - Bevy is exclusively WebGPU; Slang could generate the WGSL, and use them directly
