@@ -16,3 +16,8 @@
 - Getting clever gets to 302 GFLOP/s.
 - Manually unrolling some code from 1x8 to 2x16 changes the balance of instructions, allowing for more raw compute throughput - 1.64 TFLOP/s.
 - Doing 4x32 changes the balance even more in favour of the FMAs - 2.94 TFLOP/s.
+- To get faster would require doing more-than-one-unit-of-work-per-cycle. This is not normally possible, but you can take advantage of the hardware to get more throughput.
+  - Using the Tensor Compute units, it is possible to run computations in parallel with the regular CPU cores; these can be used to increase the throughput further.
+  - 7.05 TFLOP/s.
+- Adjusting the sequence of operations can remove the dependency on loading A, which allows for parallelising the loading and FMA.
+- 10.25 TFLOP/s.
