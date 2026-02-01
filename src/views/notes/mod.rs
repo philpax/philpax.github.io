@@ -143,9 +143,13 @@ fn build_tree<'bump>(
             }
         });
 
+    let checked_attr = (depth < 2)
+        .then(|| paxhtml::Attribute::boolean(bump, "checked"))
+        .into_iter();
+
     html! { in bump;
         <li class="break-words list-none">
-            <input r#type="checkbox" id={checkbox_id} class="peer sr-only" checked autocomplete="off" />
+            <input r#type="checkbox" id={checkbox_id} class="peer sr-only" {checked_attr} autocomplete="off" />
             <div class="flex items-center gap-0">
                 <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--color-secondary)] hover:text-[var(--color)] transition-colors w-4">
                     <span class="peer-checked:hidden">{"▶"}</span>
