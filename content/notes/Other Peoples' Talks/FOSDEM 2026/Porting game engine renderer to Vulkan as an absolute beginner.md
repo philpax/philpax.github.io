@@ -1,0 +1,55 @@
+<https://fosdem.org/2026/schedule/event/MPK3RV-porting_game_engine_to_vulkan/>
+
+<!-- more -->
+
+- As the title says: porting a game engine to Vulkan without experience in Vulkan, or even game engine propers
+- The game engine being ported: Overte, open-source social VR
+  - Custom game engine and renderer
+  - Renderer with multiple backends - starting with OpenGL 4.1/4.5/GLES
+- Graphics API comparison
+  - OpenGL: development ended in 2017, single-threaded, state-based, high-level
+  - Vulkan: modern API, multithreaded, stateless, low-level
+- Benefits from porting to Vulkan:
+  - Compatibility can be improved because OpenGL drivers are often broken or subject to performance regressions (AMD, NVIDIA, Apple respectively)
+  - Overte is a VR application, so it needs to be as high-performance as possible; it is difficult to utilise the GPU correctly with OpenGL, and avoiding stuttering from single-threaded uploads
+  - Validation layers are also very beneficial
+  - No runtime shader compilation required; don't need GLSL. Can take up to two minutes to start with OpenGL.
+    - SPIR-V is much faster to compile
+- Challenges:
+  - New paradigm; totally different
+  - Complexity; it is very low-level
+  - Memory management; need to track all of the resources; cannot allocate memory in pieces, need to allocate big chunks and manage yourself
+  - Supporting custom GLSL shaders; there are UGC shaders, which complicates deployment. Need to ship some kind of compiler with Overte itself
+- Lots of resources: official resources (<https://vulkan.org/learn>), the Vulkan guide (<https:/vkguide.dev>), the Vulkan C++ examples and demos (<https://github.com/SaschaWillems/Vulkan>)
+  - Vulkan usually needs a lot of boilerplate code, but you can use theirs
+- Very useful: [Renderdoc](https://renderdoc.org)
+  - Frame-by-frame capture, including interactive editing
+  - Can also analyse performance
+- Validation layers: can detect improper Vulkan API usage at layers
+  - Just plugging through the validation errors
+- [Vulkan Memory Allocator](https://gpuopen.com/vulkan-memory-allocator/) manages memory for you and has diagnostic features
+  - Used by Ubisoft and Dolphin
+  - Single-header library, MIT licence
+- Render Hardware Interface
+  - It's how the renderer tells backends what to do
+  - State-based, with 60 commands in total
+  - Frame can be serialised to file
+- A renderer backend takes RHI commands and interprets them, tracks pipeline state, uploads resources, and generates command buffers for Vulkan
+- For OpenGL, you can just write shaders and set state; for Vulkan, you need to manage your shader / cache yourself
+  - Building a pipeline cache and tracking them with a key
+- Object lifetime management
+  - Managing the lifetime of objects yourself
+  - Renderer objects have backend objects coupled to them
+  - A recycler needs to deal with Vulkan objects that were destroyed on another thread
+  - Also need to deal with per-frame data
+- Supporting both OpenGL and Vulkan with the same shader code
+  - Separate headers for different backends
+  - Using macros to mask over inputs/outputs differences
+- Future work
+  - Uploading textures from another threads
+  - Improving memory management
+  - Mipmap streaming
+  - VR/multview support
+  - Variable rate shading / foveated rendering
+- Question: What is the purpose of the command recording?
+  - Can replay RHI commands against different backends and debug implementations
