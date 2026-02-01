@@ -38,6 +38,7 @@ dependencies = [
  "arborium-lua",
  "arborium-nix",
  "arborium-python",
+ "arborium-ruby",
  "arborium-theme",
  "arborium-toml",
  "arborium-tree-sitter",
@@ -150,6 +151,17 @@ name = "arborium-python"
 version = "2.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52aa943e2ee443c23f6355001c06ff95c41615d5ae5bc1fc4ceb8b151dab9b94"
+dependencies = [
+ "arborium-sysroot",
+ "cc",
+ "tree-sitter-language",
+]
+
+[[package]]
+name = "arborium-ruby"
+version = "2.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fa523a7cde9b4bcafdf55c1bdafb71fe89670e616b53a735d1a071da06db9134"
 dependencies = [
  "arborium-sysroot",
  "cc",

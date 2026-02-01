@@ -19,6 +19,7 @@ arborium = { version = "2.4", default-features = false, features = [
     "lang-lua",
     "lang-nix",
     "lang-python",
+    "lang-ruby",
     "lang-toml",
 ] }
 image = { version = "0.25.1", features = [
@@ -85,6 +86,7 @@ arborium-javascript.opt-level = 3
 arborium-lua.opt-level = 3
 arborium-nix.opt-level = 3
 arborium-python.opt-level = 3
+arborium-ruby.opt-level = 3
 arborium-theme.opt-level = 3
 arborium-toml.opt-level = 3
 arborium-tree-sitter.opt-level = 3

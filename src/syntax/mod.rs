@@ -36,6 +36,13 @@ impl SyntaxHighlighter {
         }
     }
 
+    fn highlight_language(language: &str) -> &str {
+        match language {
+            "crystal" => "ruby",
+            lang => lang,
+        }
+    }
+
     /// Get the display name for a language
     pub fn language_name<'a>(&self, language: Option<&'a str>) -> &'a str {
         Self::normalize_language(language)
@@ -43,7 +50,7 @@ impl SyntaxHighlighter {
 
     /// Check if a language token is valid/recognized
     pub fn is_valid_language(&self, language: &str) -> bool {
-        let normalized = Self::normalize_language(Some(language));
+        let normalized = Self::highlight_language(Self::normalize_language(Some(language)));
         // Check if arborium can detect/use this language
         normalized != "text" || language == "text"
     }
@@ -71,7 +78,7 @@ impl SyntaxHighlighter {
         language: Option<&str>,
         code: &str,
     ) -> Result<paxhtml::Element<'bump>, arborium::Error> {
-        let language = Self::normalize_language(language);
+        let language = Self::highlight_language(Self::normalize_language(language));
         let mut highlighter =
             Highlighter::with_store_and_config(self.store.clone(), self.config.clone());
         match highlighter.highlight(language, code) {
