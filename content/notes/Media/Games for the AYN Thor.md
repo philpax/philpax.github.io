@@ -37,6 +37,8 @@ This is a list of games that I am considering playing on my AYN Thor. I believe 
 - Shin Megami Tensei: Devil Summoner: Soul Hackers
 - Shin Megami Tensei: Strange Journey Redux
 - Fire Emblem: Awakening
+- Persona Q: Shadow of the Labyrinth
+- Persona Q2: New Cinema Labyrinth
 
 ## Wii U
 - The Legend of Zelda: The Wind Waker HD
