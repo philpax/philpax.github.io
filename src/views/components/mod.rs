@@ -20,3 +20,6 @@ pub use music_library::*;
 
 mod diff_stats;
 pub use diff_stats::*;
+
+mod notes_index;
+pub use notes_index::*;

@@ -89,3 +89,18 @@ generate_hs_with_id![
     (h5_with_id, 5),
     (h6_with_id, 6)
 ];
+
+pub fn ul<'bump>(bump: &'bump Bump, children: Element<'bump>) -> Element<'bump> {
+    let b = Builder::new(bump);
+    b.ul([b.attr(("class", "list-disc pl-8"))])(children)
+}
+
+pub fn ol<'bump>(bump: &'bump Bump, children: Element<'bump>) -> Element<'bump> {
+    let b = Builder::new(bump);
+    b.ol([b.attr(("class", "list-decimal pl-8"))])(children)
+}
+
+pub fn li<'bump>(bump: &'bump Bump, children: Element<'bump>) -> Element<'bump> {
+    let b = Builder::new(bump);
+    b.li([b.attr(("class", "*:mb-2 [&>*:last-child]:mb-0 mb-1"))])(children)
+}

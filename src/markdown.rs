@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use paxhtml::builder::Builder;
 
 use crate::{
+    content::DocumentId,
     elements as e,
     views::{
         ViewContext,
@@ -21,6 +22,7 @@ pub struct MarkdownConverter<'a> {
     pub next_footnote_number: usize,
     pub sidenotes_enabled: bool,
     pub error_context: String,
+    pub current_note_id: Option<DocumentId>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -33,6 +35,7 @@ impl<'a> MarkdownConverter<'a> {
             next_footnote_number: 1,
             sidenotes_enabled: false,
             error_context: error_context.into(),
+            current_note_id: None,
         }
     }
 
@@ -54,6 +57,12 @@ impl<'a> MarkdownConverter<'a> {
     /// Useful for TOC generation where nested links are invalid.
     pub fn strip_links(mut self) -> Self {
         self.strip_links = true;
+        self
+    }
+
+    /// Set the current note ID for `<NotesIndex />` component support.
+    pub fn with_note_id(mut self, id: DocumentId) -> Self {
+        self.current_note_id = Some(id);
         self
     }
 
@@ -101,9 +110,9 @@ impl<'a> MarkdownConverter<'a> {
             Node::List(l) => {
                 let children = self.convert_many(&l.children, Some(node));
                 if l.ordered {
-                    b.ol([b.attr(("class", "list-decimal pl-8"))])(children)
+                    e::ol(bump, children)
                 } else {
-                    b.ul([b.attr(("class", "list-disc pl-8"))])(children)
+                    e::ul(bump, children)
                 }
             }
             Node::ListItem(li) => {
@@ -123,7 +132,6 @@ impl<'a> MarkdownConverter<'a> {
                     .count()
                     == 1;
 
-                let class = b.attr(("class", "*:mb-2 [&>*:last-child]:mb-0 mb-1"));
                 if has_one_paragraph {
                     let mut children = Vec::new();
                     for child in &li.children {
@@ -133,9 +141,9 @@ impl<'a> MarkdownConverter<'a> {
                             children.push(self.convert(child, Some(node)));
                         }
                     }
-                    b.li([class])(b.fragment(children))
+                    e::li(bump, b.fragment(children))
                 } else {
-                    b.li([class])(self.convert_many(&li.children, Some(node)))
+                    e::li(bump, self.convert_many(&li.children, Some(node)))
                 }
             }
             Node::Code(c) => components::code(
@@ -228,6 +236,11 @@ impl<'a> MarkdownConverter<'a> {
                 let element = paxhtml::parse_html(bump, &h.value).expect("failed to parse HTML"); // todo: make this a fallible result
                 if element.tag() == Some("MusicLibrary") {
                     return components::music_library(self.context);
+                }
+                if element.tag() == Some("NotesIndex")
+                    && let Some(note_id) = &self.current_note_id
+                {
+                    return components::notes_index(self.context, note_id);
                 }
                 if element.tag() == Some("DiffStats") {
                     let add = element

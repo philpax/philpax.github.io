@@ -89,7 +89,9 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                     <div class={posts::POST_BODY_MARGIN_CLASS}>
                         {{
                             let error_context = format!("note: {}", note.id.join("/"));
-                            let mut converter = MarkdownConverter::new(context, &error_context).with_sidenotes();
+                            let mut converter = MarkdownConverter::new(context, &error_context)
+                                .with_sidenotes()
+                                .with_note_id(note.id.clone());
                             paxhtml::builder::Builder::new(bump).fragment([
                                 converter.convert(&note.description, None),
                                 note.rest_of_content.as_ref().map(|content| converter.convert(content, None)).unwrap_or(paxhtml::Element::Empty),
