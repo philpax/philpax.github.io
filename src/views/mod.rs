@@ -77,7 +77,7 @@ impl CurrentPage {
             CurrentPage::Home => Route::Index.url_path(),
             CurrentPage::Blog => Route::Blog.url_path(),
             CurrentPage::Updates => Route::Updates.url_path(),
-            CurrentPage::Notes => Route::Notes.url_path(),
+            CurrentPage::Notes => Route::Note { note_id: vec![] }.url_path(),
             CurrentPage::Tags => Route::Tags.url_path(),
         }
     }

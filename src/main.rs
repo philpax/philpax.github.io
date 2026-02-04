@@ -32,7 +32,6 @@ pub enum Route {
     UpdatePost {
         post_id: DocumentId,
     },
-    Notes,
     Note {
         note_id: DocumentId,
     },
@@ -70,7 +69,6 @@ impl Route {
                     .chain(post_id.iter().map(|s| s.as_str())),
                 None,
             ),
-            Route::Notes => RoutePath::new(["notes"], None),
             Route::Note { note_id } => RoutePath::new(
                 ["notes"]
                     .iter()

@@ -24,13 +24,33 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
     let og_image_url = format!("{}{}", context.website_base_url, note.og_image_path());
 
+    let breadcrumbs: Vec<(&str, Vec<String>)> = std::iter::once(("Notes", vec![]))
+        .chain(
+            display_path
+                .iter()
+                .zip(0..note.id.len())
+                .map(|(name, i)| (name.as_str(), note.id[..=i].to_vec())),
+        )
+        .collect();
+    let last = breadcrumbs.len() - 1;
+    let elements: Vec<_> = breadcrumbs.into_iter().enumerate().flat_map(|(i, (label, note_id))| {
+        let separator = (i != 0).then(|| html! { in bump; <span class="text-[var(--color-secondary)]">{" · "}</span> });
+        let additional_classes = if i == last { "italic hover:text-[var(--color)]" } else { "text-[var(--color-secondary)]" };
+        let link = html! { in bump;
+            <Link target={Route::Note { note_id }.url_path()} additional_classes={additional_classes.to_string()}>
+                {label}
+            </Link>
+        };
+        separator.into_iter().chain(std::iter::once(link))
+    }).collect();
+
     layout(
         context,
         SocialMeta {
             title: Some(display_path.last().unwrap().to_string()),
             description: Some(description),
             image: Some(og_image_url.clone()),
-            url: Some(Route::Notes.abs_url(context.website_base_url)),
+            url: Some(Route::Note { note_id: vec![] }.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),
@@ -43,7 +63,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             <div class="relative">
                 <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
                 <label r#for="nav-toggle" class="block w-full px-4 py-2 bg-[var(--background-color-secondary)] text-[var(--color)] text-center cursor-pointer hover:bg-[var(--background-color-secondary)] transition-colors duration-200 lowercase select-none">
-                    "Other Notes"
+                    "All Notes"
                 </label>
 
                 <div class="absolute left-0 right-0 bg-[var(--background-color)] border-l border-r border-b border-[var(--background-color-secondary)] shadow-lg p-4 z-50 hidden peer-checked:block">
@@ -52,31 +72,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
                 <div class="w-full mt-4">
                     <h2 class="text-3xl font-bold">
-                        {{
-                            let mut elements = vec![];
-                            for (index, component) in display_path.iter().enumerate() {
-                                if index != 0 {
-                                    elements.push(html! { in bump; <span class="text-[var(--color-secondary)]">{" · "}</span> });
-                                }
-                                let is_last = index == display_path.len() - 1;
-                                let target = if index < note.id.len() {
-                                    Route::Note { note_id: note.id[..=index].to_vec() }.url_path()
-                                } else {
-                                    Route::Notes.url_path()
-                                };
-                                let additional_classes = if is_last {
-                                    "italic hover:text-[var(--color)]"
-                                } else {
-                                    "text-[var(--color-secondary)]"
-                                };
-                                elements.push(html! { in bump;
-                                    <Link target={target} additional_classes={additional_classes.to_string()}>
-                                        {component}
-                                    </Link>
-                                });
-                            }
-                            paxhtml::builder::Builder::new(bump).fragment(elements)
-                        }}
+                        #{elements}
                     </h2>
                     <div class="text-[var(--color-secondary)] text-sm mb-2">
                         {datetime_with_chrono(bump, note.metadata.datetime.unwrap())}
