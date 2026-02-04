@@ -160,6 +160,6 @@ Within each module, organize code as follows:
 
 ## CI Requirements
 
-- **Clippy warnings are errors**: CI runs `cargo clippy -- -D warnings`
+- **Clippy warnings are errors**: CI runs `cargo clippy --all-targets --all-features --all -- -D warnings`
 - **All workspace tests must pass**: CI runs `cargo test --workspace`
 - Always run `cargo clippy` and `cargo fmt` before committing

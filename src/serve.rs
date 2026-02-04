@@ -132,11 +132,11 @@ fn decode_percent_encoding(path: &str) -> PathBuf {
                 .next()
                 .and_then(|c1| chars.next().map(|c2| format!("{}{}", c1, c2)));
 
-            if let Some(hex) = hex {
-                if let Ok(byte) = u8::from_str_radix(&hex, 16) {
-                    result.push(byte as char);
-                    continue;
-                }
+            if let Some(hex) = hex
+                && let Ok(byte) = u8::from_str_radix(&hex, 16)
+            {
+                result.push(byte as char);
+                continue;
             }
         }
         result.push(c);
