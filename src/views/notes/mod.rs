@@ -58,12 +58,22 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                                 if index != 0 {
                                     elements.push(html! { in bump; <span class="text-[var(--color-secondary)]">{" · "}</span> });
                                 }
-                                let class = if index == display_path.len() - 1 {
-                                    "italic"
+                                let is_last = index == display_path.len() - 1;
+                                let target = if index < note.id.len() {
+                                    Route::Note { note_id: note.id[..=index].to_vec() }.url_path()
+                                } else {
+                                    Route::Notes.url_path()
+                                };
+                                let additional_classes = if is_last {
+                                    "italic hover:text-[var(--color)]"
                                 } else {
                                     "text-[var(--color-secondary)]"
                                 };
-                                elements.push(html! { in bump; <span class={class}>{component}</span> });
+                                elements.push(html! { in bump;
+                                    <Link target={target} additional_classes={additional_classes.to_string()}>
+                                        {component}
+                                    </Link>
+                                });
                             }
                             paxhtml::builder::Builder::new(bump).fragment(elements)
                         }}
