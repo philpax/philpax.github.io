@@ -68,11 +68,12 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
     ";
 
     // Sidenote: hidden on small screens, floats right into right margin on 2xl+
+    // Fixed width (w-80 = 20rem) with negative margin calculated to anchor left edge
+    // at 1rem past content edge: -mr = -(width + gap) = -(20rem + 1rem) = -21rem
     let sidenote_class = "\
         sidenote hidden \
         2xl:block 2xl:float-right 2xl:clear-right \
-        2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] \
-        2xl:-mr-[calc((100vw-var(--body-content-width))/2-3rem)] \
+        2xl:w-80 2xl:ml-4 2xl:-mr-[21rem] \
         text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4\
     ";
 
