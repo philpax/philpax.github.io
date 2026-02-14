@@ -178,6 +178,12 @@ impl<'a> MarkdownConverter<'a> {
                 .expect("failed to highlight inline code")
             }
             Node::Image(i) => {
+                if i.url.is_empty() {
+                    eprintln!(
+                        "warning: empty image source in {}: ![{}]()",
+                        self.error_context, i.alt
+                    );
+                }
                 // Check if the URL ends with a video extension
                 let is_video = i.url.to_lowercase().ends_with(".mp4")
                     || i.url.to_lowercase().ends_with(".webm")
