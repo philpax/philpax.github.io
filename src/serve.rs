@@ -14,25 +14,25 @@ pub fn serve(
     output_dir: &Path,
     port: u16,
     public: bool,
-    og_image_handle: Option<JoinHandle<anyhow::Result<()>>>,
+    background_tasks: Vec<(&'static str, JoinHandle<anyhow::Result<()>>)>,
 ) -> anyhow::Result<()> {
     let addr = format!("{}:{}", if public { "0.0.0.0" } else { "127.0.0.1" }, port);
     println!("Serving at http://{addr}");
     println!("Hit CTRL-C to stop");
 
-    // Spawn a thread to wait for OG image generation to complete
-    if let Some(handle) = og_image_handle {
+    // Spawn threads to wait for background tasks to complete
+    for (name, handle) in background_tasks {
         std::thread::spawn(move || {
             let start = Instant::now();
             match handle.join() {
                 Ok(Ok(())) => {
-                    println!("OG images generated in {:?}", start.elapsed());
+                    println!("{name} generated in {:?}", start.elapsed());
                 }
                 Ok(Err(e)) => {
-                    eprintln!("OG image generation failed: {e:?}");
+                    eprintln!("{name} generation failed: {e:?}");
                 }
                 Err(_) => {
-                    eprintln!("OG image generation thread panicked");
+                    eprintln!("{name} generation thread panicked");
                 }
             }
         });

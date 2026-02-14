@@ -9,6 +9,7 @@ use crate::content::DocumentId;
 
 mod content;
 mod elements;
+mod image_store;
 mod js;
 mod markdown;
 mod og_image;
@@ -193,6 +194,10 @@ fn main() -> anyhow::Result<()> {
             anyhow::Ok((syntax, tailwind_css?, Arc::new(content?)))
         },
     )?;
+    let image_store = timer.step("Built image store", |_| {
+        anyhow::Ok(Arc::new(image_store::ImageStore::new(&content)))
+    })?;
+
     // ViewContextBase can be shared across threads (no bump reference)
     let view_context = views::ViewContextBase {
         website_author: "Philpax",
@@ -204,6 +209,7 @@ fn main() -> anyhow::Result<()> {
         ),
         website_base_url: "https://philpax.me",
         content: &content,
+        image_store: &image_store,
         syntax: &syntax,
         generation_date: chrono::Utc::now(),
         fast,
@@ -280,7 +286,7 @@ fn main() -> anyhow::Result<()> {
         })
     })?;
 
-    // Spawn OG image generation in a background thread (non-blocking)
+    // Spawn background image generation tasks (non-blocking)
     let og_image_handle = if !fast {
         Some(og_image::spawn_generation(
             Arc::clone(&content),
@@ -293,6 +299,9 @@ fn main() -> anyhow::Result<()> {
         })?;
         None
     };
+
+    let preview_handle =
+        Some(Arc::clone(&image_store).spawn_preview_generation(Arc::clone(&content), output_dir));
 
     timer.step("Wrote blog index", |_| {
         let bump = Bump::new();
@@ -406,32 +415,38 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    // Handle OG image generation completion
+    // Collect background tasks
+    let mut background_tasks: Vec<(&'static str, std::thread::JoinHandle<anyhow::Result<()>>)> =
+        Vec::new();
+    if let Some(handle) = og_image_handle {
+        background_tasks.push(("OG images", handle));
+    }
+    if let Some(handle) = preview_handle {
+        background_tasks.push(("Image previews", handle));
+    }
+
     #[cfg(feature = "serve")]
     {
-        // In serve mode, let OG images generate in the background while serving
-        if og_image_handle.is_some() {
-            timer.report("OG images", "generating in background");
+        for (name, _) in &background_tasks {
+            timer.report(name, "generating in background");
         }
         timer.finish();
 
-        // Pass the handle to serve so it can report when done
         serve::serve(
             output_dir,
             port,
             std::env::args().any(|arg| arg == "--public" || arg == "-p"),
-            og_image_handle,
+            background_tasks,
         )?;
     }
 
     #[cfg(not(feature = "serve"))]
     {
-        // In production mode, wait for OG images to complete before finishing
-        if let Some(handle) = og_image_handle {
-            timer.step("Generated OG images", |_| {
+        for (name, handle) in background_tasks {
+            timer.step(&format!("Generated {name}"), |_| {
                 handle
                     .join()
-                    .map_err(|_| anyhow::anyhow!("OG image generation thread panicked"))?
+                    .map_err(|_| anyhow::anyhow!("{name} generation thread panicked"))?
             })?;
         }
         timer.finish();

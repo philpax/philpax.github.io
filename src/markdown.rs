@@ -203,8 +203,16 @@ impl<'a> MarkdownConverter<'a> {
                         )),
                     ])(paxhtml::Element::Empty)
                 } else {
+                    let is_local = !i.url.starts_with("http://")
+                        && !i.url.starts_with("https://")
+                        && !i.url.starts_with("//");
+                    let src_url = if is_local {
+                        self.context.image_store.resolve_preview_url(&i.url)
+                    } else {
+                        i.url.clone()
+                    };
                     b.a([b.attr(("href", i.url.clone()))])(b.img([
-                        b.attr(("src", i.url.clone())),
+                        b.attr(("src", src_url)),
                         b.attr(("alt", i.alt.clone())),
                         b.attr((
                             "class",
@@ -485,6 +493,7 @@ mod tests {
     fn view_context_base<'a>(
         syntax: &'a SyntaxHighlighter,
         content: &'a Content,
+        image_store: &'a crate::image_store::ImageStore,
     ) -> ViewContextBase<'a> {
         ViewContextBase {
             website_author: "test",
@@ -493,6 +502,7 @@ mod tests {
             website_base_url: "test",
             syntax,
             content,
+            image_store,
             generation_date: chrono::Utc::now(),
             fast: false,
         }
@@ -515,7 +525,8 @@ mod tests {
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
         let bump = Bump::new();
-        let context = view_context_base(&syntax, &content).with_bump(&bump);
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
 
         fn hh<'bump>(
             bump: &'bump Bump,
@@ -557,7 +568,8 @@ Here is some text with a footnote[^note1] and another[^note2].
         let syntax = SyntaxHighlighter::default();
         let content = Content::empty();
         let bump = Bump::new();
-        let context = view_context_base(&syntax, &content).with_bump(&bump);
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
         let mut converter = MarkdownConverter::new(context, "test");
 
         let result = converter.convert(&ast, None);

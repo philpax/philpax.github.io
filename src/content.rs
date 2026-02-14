@@ -129,6 +129,27 @@ impl Content {
         })
     }
 
+    /// Iterates over all associated files across all documents.
+    pub fn all_associated_files(&self) -> impl Iterator<Item = &PathBuf> {
+        fn collect_note_files(
+            folder: &DocumentFolderNode,
+        ) -> Box<dyn Iterator<Item = &PathBuf> + '_> {
+            let index_files = folder.index_document.iter().flat_map(|d| d.files.iter());
+            let child_files = folder.children.values().flat_map(|node| match node {
+                DocumentNode::Folder(f) => collect_note_files(f),
+                DocumentNode::Document { document } => Box::new(document.files.iter()),
+            });
+            Box::new(index_files.chain(child_files))
+        }
+
+        self.blog
+            .documents
+            .iter()
+            .flat_map(|d| d.files.iter())
+            .chain(self.updates.documents.iter().flat_map(|d| d.files.iter()))
+            .chain(collect_note_files(&self.notes.documents))
+    }
+
     pub fn document_by_id(&self, id: &DocumentId) -> Option<&Document> {
         self.blog
             .document_by_id(id)

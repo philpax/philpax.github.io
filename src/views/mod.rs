@@ -4,6 +4,7 @@ use crate::{
     Route,
     content::{Content, Document},
     elements::*,
+    image_store::ImageStore,
     syntax::SyntaxHighlighter,
 };
 use std::collections::HashMap;
@@ -28,6 +29,7 @@ pub struct ViewContextBase<'a> {
     pub website_base_url: &'a str,
     pub syntax: &'a SyntaxHighlighter,
     pub content: &'a Content,
+    pub image_store: &'a ImageStore,
     pub generation_date: chrono::DateTime<chrono::Utc>,
     pub fast: bool,
 }
