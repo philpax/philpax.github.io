@@ -57,28 +57,15 @@ pub fn post<'a>(
 
     let post_body_rendered = match post_body {
         PostBody::Full => {
-            let h3_classname = "text-lg font-bold";
-            let toc = document_to_html_list(context, document, &url);
+            let toc = document
+                .rest_of_content
+                .as_ref()
+                .and_then(|node| document_to_html_list(context, node, &url));
+            let (toc_sidebar, toc_inline) = toc_elements(bump, toc);
 
             let mut content_elements = vec![];
 
-            // TOC sidebar (2xl only) - floats left into margin
-            // Uses flex justify-end + w-max so longest item aligns to right edge of column
-            if let Some(hierarchy_list) = toc.clone() {
-                content_elements.push(html! { in bump;
-                    <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
-                        <div class="w-max max-w-full">
-                            <h3 class={h3_classname}>
-                                <HeadingAnchor target={"#toc-sticky".to_string()} />
-                                "Table of Contents"
-                            </h3>
-                            <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
-                                {hierarchy_list}
-                            </div>
-                        </div>
-                    </aside>
-                });
-            }
+            content_elements.extend(toc_sidebar);
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 content_elements.push(html! { in bump;
@@ -90,19 +77,7 @@ pub fn post<'a>(
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
-            if let Some(hierarchy_list) = toc {
-                content_elements.push(html! { in bump;
-                    <aside class="toc 2xl:hidden" id="toc-inline">
-                        <h3 class={h3_classname}>
-                            <HeadingAnchor target={"#toc-inline".to_string()} />
-                            "Table of Contents"
-                        </h3>
-                        <div class={format!("[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]")}>
-                            {hierarchy_list}
-                        </div>
-                    </aside>
-                });
-            }
+            content_elements.extend(toc_inline);
 
             if let Some(content) = document.rest_of_content.as_ref() {
                 content_elements.push(converter.convert(content, None));
@@ -183,14 +158,54 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     }
 }
 
-fn document_to_html_list<'a>(
+/// Render the TOC sidebar (2xl sticky) and inline TOC (smaller screens) from a heading list.
+/// Returns `(sidebar, inline)` — both `None` if there are no headings.
+pub fn toc_elements<'a>(
+    bump: &'a Bump,
+    toc: Option<paxhtml::Element<'a>>,
+) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
+    let h3_classname = "text-lg font-bold";
+
+    let sidebar = toc.clone().map(|hierarchy_list| {
+        html! { in bump;
+            <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
+                <div class="w-max max-w-full">
+                    <h3 class={h3_classname}>
+                        <HeadingAnchor target={"#toc-sticky".to_string()} />
+                        "Table of Contents"
+                    </h3>
+                    <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                        {hierarchy_list}
+                    </div>
+                </div>
+            </aside>
+        }
+    });
+
+    let inline = toc.map(|hierarchy_list| {
+        html! { in bump;
+            <aside class="toc 2xl:hidden" id="toc-inline">
+                <h3 class={h3_classname}>
+                    <HeadingAnchor target={"#toc-inline".to_string()} />
+                    "Table of Contents"
+                </h3>
+                <div class="[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                    {hierarchy_list}
+                </div>
+            </aside>
+        }
+    });
+
+    (sidebar, inline)
+}
+
+pub fn document_to_html_list<'a>(
     context: ViewContext<'a>,
-    document: &Document,
+    node: &markdown::mdast::Node,
     error_context: &str,
 ) -> Option<paxhtml::Element<'a>> {
     let bump = context.bump;
-    let heading_hierarchy =
-        HeadingHierarchy::from_node(context, document.rest_of_content.as_ref()?, error_context);
+    let heading_hierarchy = HeadingHierarchy::from_node(context, node, error_context);
 
     fn build_list_recursively<'a>(
         bump: &'a Bump,
