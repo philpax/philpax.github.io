@@ -168,16 +168,18 @@ fn build_tree<'bump>(
                 </div>
             </div>
             <ul class="list-disc list-inside m-0 hidden peer-checked:block ml-4">
-                #{folder_node.children.values().map(|node| match node {
-                    DocumentNode::Folder(folder_node) => {
-                        build_tree(bump, folder_node, active_document, depth + 1)
+                #{folder_node.children.values().map(|node| {
+                    if let DocumentNode::Folder(folder_node) = node && !folder_node.is_leaf() {
+                        return build_tree(bump, folder_node, active_document, depth + 1);
                     }
-                    DocumentNode::Document { document } => {
-                        html! { in bump;
-                            <li class="break-words">
-                                {render_document(document)}
-                            </li>
-                        }
+                    let document = match node {
+                        DocumentNode::Folder(f) => f.index_document.as_ref().unwrap(),
+                        DocumentNode::Document { document } => document,
+                    };
+                    html! { in bump;
+                        <li class="break-words">
+                            {render_document(document)}
+                        </li>
                     }
                 })}
             </ul>

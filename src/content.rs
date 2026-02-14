@@ -332,6 +332,12 @@ impl NotesCollection {
 }
 
 impl DocumentFolderNode {
+    /// A leaf folder has an index document but no children,
+    /// so it should be treated as a single note rather than an expandable folder.
+    pub fn is_leaf(&self) -> bool {
+        self.index_document.is_some() && self.children.is_empty()
+    }
+
     pub fn find_folder_for_document(&self, id: &DocumentId) -> Option<&DocumentFolderNode> {
         if let Some(doc) = &self.index_document
             && doc.id == *id

@@ -20,11 +20,14 @@ pub fn notes_index<'a>(context: ViewContext<'a>, note_id: &DocumentId) -> paxhtm
         .expect("NotesIndex: folder not found");
 
     let mut items = Vec::new();
-    // Subfolders first
+    // Subfolders first (skip leaf folders — they're rendered with documents below)
     for node in folder.children.values() {
         let DocumentNode::Folder(subfolder) = node else {
             continue;
         };
+        if subfolder.is_leaf() {
+            continue;
+        }
         let Some(index_doc) = &subfolder.index_document else {
             continue;
         };
@@ -37,10 +40,14 @@ pub fn notes_index<'a>(context: ViewContext<'a>, note_id: &DocumentId) -> paxhtm
             },
         ));
     }
-    // Documents
+    // Documents (and leaf folders, which are treated as single notes)
     for node in folder.children.values() {
-        let DocumentNode::Document { document } = node else {
-            continue;
+        let document = match node {
+            DocumentNode::Document { document } => document,
+            DocumentNode::Folder(subfolder) if subfolder.is_leaf() => {
+                subfolder.index_document.as_ref().unwrap()
+            }
+            _ => continue,
         };
         items.push(e::li(
             bump,

@@ -272,7 +272,8 @@ fn main() -> anyhow::Result<()> {
                     write_post(output_dir, view_context, doc, view)?;
                 }
                 content::DocumentType::Note => {
-                    views::notes::note(ctx, doc).write_to_route(output_dir, doc.route_path())?;
+                    let view = views::notes::note(ctx, doc);
+                    write_post(output_dir, view_context, doc, view)?;
                 }
             }
             anyhow::Ok(())
