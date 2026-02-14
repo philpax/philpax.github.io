@@ -20,17 +20,19 @@ pub fn code<'bump>(
         .with_context(|| format!("failed to highlight code block ({error_context})"))?;
 
     Ok(paxhtml::html! { in bump;
-        <pre class="code text-sm p-2 overflow-x-auto max-w-(--centered-content-width) mx-auto">
-            <code class={CODE_FONT_STYLE}>
-                <pre class={format!("\
-                    bg-(--code-label-bg) text-(--code-label-color) -mt-2 mb-1 -ml-2 py-0.5 px-1 \
-                    w-fit lowercase text-xs sticky -left-2 \
-                    {FONT_STYLE} italic \
-                ")}>
-                    {syntax.language_name(lang)}
-                </pre>
-                {highlighted}
-            </code>
-        </pre>
+        <div class="code-block relative max-w-(--centered-content-width) mx-auto">
+            <pre class="code text-sm p-2 overflow-x-auto">
+                <code class={CODE_FONT_STYLE}>
+                    <pre class={format!("\
+                        bg-(--code-label-bg) text-(--code-label-color) -mt-2 mb-1 -ml-2 py-0.5 px-1 \
+                        w-fit lowercase text-xs sticky -left-2 \
+                        {FONT_STYLE} italic \
+                    ")}>
+                        {syntax.language_name(lang)}
+                    </pre>
+                    {highlighted}
+                </code>
+            </pre>
+        </div>
     })
 }

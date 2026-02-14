@@ -189,7 +189,44 @@ function initScrollSpy() {
   updateActiveLink();
 }
 
+function initCodeCopyButtons() {
+  const COPY_ICON =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/></svg>';
+  const CHECK_ICON =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>';
+
+  document.querySelectorAll(".code-block").forEach(function (block) {
+    var btn = document.createElement("button");
+    btn.className =
+      "absolute top-1 right-1 p-1 rounded text-(--color-secondary) hover:text-(--color) cursor-pointer transition-colors duration-200";
+    btn.title = "Copy code";
+    btn.innerHTML = COPY_ICON;
+
+    btn.addEventListener("click", function () {
+      var code = block.querySelector("code");
+      if (!code) return;
+
+      // Get text content, skipping the language label (first <pre> child)
+      var text = "";
+      code.childNodes.forEach(function (node) {
+        if (node.nodeName === "PRE") return;
+        text += node.textContent;
+      });
+
+      navigator.clipboard.writeText(text.trim()).then(function () {
+        btn.innerHTML = CHECK_ICON;
+        setTimeout(function () {
+          btn.innerHTML = COPY_ICON;
+        }, 2000);
+      });
+    });
+
+    block.appendChild(btn);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   createThemeSwitcher();
   initScrollSpy();
+  initCodeCopyButtons();
 });
