@@ -160,7 +160,7 @@ impl<'a> MarkdownConverter<'a> {
                     b.q([])(children)
                 } else {
                     b.blockquote([
-                        b.attr(("class", "border-l-4 border-(--color-secondary) pl-4 italic"))
+                        b.attr(("class", "border-l-4 border-(--color-secondary) pl-3 italic"))
                     ])(children)
                 }
             }
