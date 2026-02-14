@@ -76,7 +76,7 @@ impl<'a> MarkdownConverter<'a> {
         }
 
         match node {
-            Node::Root(r) => b.fragment(r.children.iter().map(|n| self.convert(n, Some(node)))),
+            Node::Root(r) => self.convert_many(&r.children, Some(node)),
 
             Node::Heading(h) => {
                 let children = self.convert_many(&h.children, Some(node));
@@ -247,6 +247,18 @@ impl<'a> MarkdownConverter<'a> {
                     return paxhtml::Element::Empty;
                 }
 
+                // Guard stray closing tags for custom elements (e.g. </CityPoster>)
+                // These are handled by try_convert_paired_element in convert_many
+                if h.value.trim().starts_with("</")
+                    && h.value
+                        .trim()
+                        .chars()
+                        .nth(2)
+                        .is_some_and(|c| c.is_ascii_uppercase())
+                {
+                    return paxhtml::Element::Empty;
+                }
+
                 let element = paxhtml::parse_html(bump, &h.value).expect("failed to parse HTML"); // todo: make this a fallible result
                 if element.tag() == Some("MusicLibrary") {
                     return components::music_library(self.context);
@@ -352,8 +364,140 @@ impl<'a> MarkdownConverter<'a> {
     }
 
     fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element<'a> {
-        let b = paxhtml::builder::Builder::new(self.context.bump);
-        b.fragment(nodes.iter().map(|n| self.convert(n, parent_node)))
+        let bump = self.context.bump;
+        let b = paxhtml::builder::Builder::new(bump);
+
+        let mut elements = Vec::new();
+        let mut i = 0;
+        while i < nodes.len() {
+            if let Some((element, end_idx)) = self.try_convert_paired_element(nodes, i, parent_node)
+            {
+                elements.push(self.handle_paired_element(element));
+                i = end_idx + 1;
+            } else {
+                elements.push(self.convert(&nodes[i], parent_node));
+                i += 1;
+            }
+        }
+
+        b.fragment(elements)
+    }
+
+    /// Try to detect and parse a paired custom element starting at position `i`.
+    ///
+    /// Custom elements are identified by an opening `Node::Html` whose value starts
+    /// with `<` followed by an uppercase letter. The function scans forward for a
+    /// matching closing tag, converts the body nodes between them, and returns a
+    /// complete paxhtml Element with children.
+    fn try_convert_paired_element(
+        &mut self,
+        nodes: &[Node],
+        i: usize,
+        parent_node: Option<&Node>,
+    ) -> Option<(paxhtml::Element<'a>, usize)> {
+        let bump = self.context.bump;
+
+        let Node::Html(open) = &nodes[i] else {
+            return None;
+        };
+        let trimmed = open.value.trim();
+
+        // Must start with `<` followed by an uppercase letter (custom component)
+        if !trimmed.starts_with('<')
+            || trimmed
+                .chars()
+                .nth(1)
+                .is_none_or(|c| !c.is_ascii_uppercase())
+        {
+            return None;
+        }
+
+        // Parse the opening tag to get the tag name and check if it's void (self-closing).
+        // Void elements like `<MusicLibrary />` are not paired and are handled by `convert`.
+        let (tag_name, _, void) = paxhtml::parse_opening_tag(trimmed).ok()?;
+        if void {
+            return None;
+        }
+
+        // Find the matching closing tag
+        let closing_tag = format!("</{tag_name}>");
+        let mut end_idx = None;
+        for (j, node) in nodes.iter().enumerate().skip(i + 1) {
+            if let Node::Html(close) = node
+                && close.value.trim() == closing_tag
+            {
+                end_idx = Some(j);
+                break;
+            }
+        }
+
+        let end_idx = match end_idx {
+            Some(idx) => idx,
+            None => {
+                eprintln!(
+                    "warning: unclosed <{tag_name}> tag in {}",
+                    self.error_context
+                );
+                return None;
+            }
+        };
+
+        // Convert body nodes between opening and closing tags
+        let body_nodes = &nodes[i + 1..end_idx];
+        let body_elements: Vec<_> = body_nodes
+            .iter()
+            .map(|n| self.convert(n, parent_node))
+            .collect();
+
+        // Build the complete element with children
+        let element = paxhtml::parse_element_with_children(bump, trimmed, body_elements)
+            .expect("failed to parse paired element opening tag");
+
+        Some((element, end_idx))
+    }
+
+    /// Dispatch a parsed paired custom element to the appropriate component handler.
+    fn handle_paired_element(&self, element: paxhtml::Element<'a>) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+
+        // Destructure to avoid borrow-after-move issues
+        let paxhtml::Element::Tag {
+            name,
+            attributes,
+            children,
+            ..
+        } = element
+        else {
+            return paxhtml::Element::Empty;
+        };
+
+        match name.as_str() {
+            "CityPoster" => {
+                let image_attr = attributes
+                    .iter()
+                    .find(|a| a.key.as_str() == "image")
+                    .and_then(|a| a.value_as_str())
+                    .unwrap_or_else(|| {
+                        panic!(
+                            "CityPoster missing 'image' attribute in {}",
+                            self.error_context
+                        )
+                    });
+                let small_url = self
+                    .context
+                    .image_store
+                    .resolve_small_preview_url(image_attr);
+                let body = paxhtml::Element::Fragment { children };
+                components::city_poster(bump, image_attr, &small_url, body)
+            }
+            _ => {
+                eprintln!(
+                    "warning: unknown custom element <{name}> in {}",
+                    self.error_context
+                );
+                paxhtml::Element::Empty
+            }
+        }
     }
 
     /// We use a pre-pass to gather footnote definitions, so that we can render them in the correct

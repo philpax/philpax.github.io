@@ -23,3 +23,6 @@ pub use diff_stats::*;
 
 mod notes_index;
 pub use notes_index::*;
+
+mod city_poster;
+pub use city_poster::*;

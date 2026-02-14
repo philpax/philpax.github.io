@@ -10,6 +10,8 @@ use rayon::prelude::*;
 
 /// Images larger than this in either dimension get a resized preview.
 const PREVIEW_MAX_DIMENSION: u32 = 1536;
+/// Small preview width for compact layouts (e.g. CityPoster component).
+const SMALL_PREVIEW_MAX_WIDTH: u32 = 384;
 
 const IMAGE_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "gif", "webp"];
 
@@ -47,27 +49,13 @@ impl ImageStore {
     /// Returns the preview filename for an image if it needs one, otherwise the original filename.
     /// The `url` should be a relative path like `foo.png` or `./foo.png`.
     pub fn resolve_preview_url(&self, url: &str) -> String {
-        let path = Path::new(url);
-        if !is_image_path(path) {
-            return url.to_string();
-        }
+        self.resolve_preview_url_with_suffix(url, "_preview")
+    }
 
-        // Check if any source in the store has a matching filename that needs a preview
-        let filename = match path.file_name() {
-            Some(f) => f,
-            None => return url.to_string(),
-        };
-
-        if self
-            .needs_preview
-            .iter()
-            .any(|p| p.file_name() == Some(filename))
-        {
-            let preview = preview_path(path);
-            preview.to_string_lossy().into_owned()
-        } else {
-            url.to_string()
-        }
+    /// Returns the small preview filename for an image if it needs one, otherwise the original filename.
+    /// Small previews are 384px wide, intended for compact layouts like CityPoster.
+    pub fn resolve_small_preview_url(&self, url: &str) -> String {
+        self.resolve_preview_url_with_suffix(url, "_small")
     }
 
     /// Spawn a background thread to generate preview images for all documents.
@@ -105,11 +93,21 @@ impl ImageStore {
                 let post_output_dir = doc.route_path().dir_path(&output_dir);
                 for path in &doc.files {
                     if self.needs_preview(path) {
-                        let preview_filename = preview_path(Path::new(path.file_name().unwrap()));
+                        let filename = Path::new(path.file_name().unwrap());
+
+                        let preview_filename = suffixed_path(filename, "_preview");
                         let preview_output =
                             post_output_dir.join(preview_filename.file_name().unwrap());
-                        self.write_preview(path, &preview_output)
+                        self.write_preview(path, &preview_output, PREVIEW_MAX_DIMENSION)
                             .with_context(|| format!("failed to generate preview for {path:?}"))?;
+
+                        let small_filename = suffixed_path(filename, "_small");
+                        let small_output =
+                            post_output_dir.join(small_filename.file_name().unwrap());
+                        self.write_preview(path, &small_output, SMALL_PREVIEW_MAX_WIDTH)
+                            .with_context(|| {
+                                format!("failed to generate small preview for {path:?}")
+                            })?;
                     }
                 }
                 anyhow::Ok(())
@@ -118,15 +116,43 @@ impl ImageStore {
     }
 }
 impl ImageStore {
+    fn resolve_preview_url_with_suffix(&self, url: &str, suffix: &str) -> String {
+        let path = Path::new(url);
+        if !is_image_path(path) {
+            return url.to_string();
+        }
+
+        let filename = match path.file_name() {
+            Some(f) => f,
+            None => return url.to_string(),
+        };
+
+        if self
+            .needs_preview
+            .iter()
+            .any(|p| p.file_name() == Some(filename))
+        {
+            let preview = suffixed_path(path, suffix);
+            preview.to_string_lossy().into_owned()
+        } else {
+            url.to_string()
+        }
+    }
+
     /// Generate the preview file for a source image to the given output path.
-    fn write_preview(&self, source: &Path, preview_output_path: &Path) -> anyhow::Result<bool> {
+    fn write_preview(
+        &self,
+        source: &Path,
+        preview_output_path: &Path,
+        max_dimension: u32,
+    ) -> anyhow::Result<bool> {
         if !self.needs_preview(source) {
             return Ok(false);
         }
         let img = image::ImageReader::open(source)?.decode()?;
         let resized = img.resize(
-            PREVIEW_MAX_DIMENSION,
-            PREVIEW_MAX_DIMENSION,
+            max_dimension,
+            max_dimension,
             image::imageops::FilterType::Lanczos3,
         );
         resized.save(preview_output_path)?;
@@ -141,9 +167,9 @@ fn is_image_path(path: &Path) -> bool {
         .is_some_and(|e| IMAGE_EXTENSIONS.contains(&e.to_lowercase().as_str()))
 }
 
-/// Returns the preview path for an image (e.g. `foo.png` -> `foo_preview.png`).
-fn preview_path(path: &Path) -> PathBuf {
+/// Returns a suffixed path for an image (e.g. `foo.png` with `_preview` -> `foo_preview.png`).
+fn suffixed_path(path: &Path, suffix: &str) -> PathBuf {
     let stem = path.file_stem().unwrap().to_string_lossy();
     let ext = path.extension().unwrap().to_string_lossy();
-    path.with_file_name(format!("{stem}_preview.{ext}"))
+    path.with_file_name(format!("{stem}{suffix}.{ext}"))
 }
