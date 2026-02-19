@@ -30,7 +30,7 @@ I generated the full set of commands and ran them in parallel using [mprocs](htt
 
 # The result
 
-![All the posters on the wall]()
+![All the posters on the wall](./IMG_7118.jpg)
 
 What follows is every city, grouped by country, with the command used to generate it and the reasoning behind the colour scheme and font choices.
 
