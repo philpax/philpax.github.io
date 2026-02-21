@@ -4,7 +4,7 @@ Recently, as part of [some](https://github.com/Wayfarer-Labs/owl-control/pull/53
 
 Before I continue, there are two things I should say:
 
-- please don't use Python for this if you can, at all, avoid it. In fact, just [don't use Python](/notes/programming/reasons-i-do-not-like-python/).
+- please don't use Python for this if you can, at all, avoid it. In fact, just [don't use Python](Reasons_I_do_not_like_Python.md).
 - check [this issue](https://github.com/astral-sh/uv/issues/5802) first; it is possible that by the time you've read this, `uv` has already shipped a first-class solution for this
 
 Anyway, you must first get `uv`, your codebase, its `pyproject.toml`, and its `uv.lock` to the user's machine. An installer will do for this.

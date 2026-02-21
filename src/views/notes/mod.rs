@@ -103,7 +103,8 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
                             let mut converter = MarkdownConverter::new(context, &error_context)
                                 .with_sidenotes()
-                                .with_note_id(note.id.clone());
+                                .with_note_id(note.id.clone())
+                                .with_source_path(note.source_path.clone());
                             content_elements.push(converter.convert(&note.description, None));
 
                             content_elements.extend(toc_inline);

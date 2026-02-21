@@ -72,7 +72,7 @@ Similarly, I'm considering backporting all of this Lua tech to this website: ess
 
 There are optimisations that are available to me: the Rust SSG is built in debug mode and generates the entire website every time, which means that building the Lua-SSG-host in release mode and pairing it with a persistent DAG that only rebuilds what's necessary would immediately cut down the generation time. I'll figure it out once I come to it; I suspect that this website is small enough that the overhead is basically irrelevant.
 
-Anyway! Lua! What a language! Twenty years on from my first use of it, and I'm still finding ways to experiment with it. It's by no means a perfect language, but its cuteness and pragmatic design makes up for that in spades. As I suggested in [reasons I do not like Python](/notes/programming/reasons-i-do-not-like-python/), it's honest about what it is.
+Anyway! Lua! What a language! Twenty years on from my first use of it, and I'm still finding ways to experiment with it. It's by no means a perfect language, but its cuteness and pragmatic design makes up for that in spades. As I suggested in [reasons I do not like Python](../../notes/Programming/Reasons_I_do_not_like_Python.md), it's honest about what it is.
 
 # genresin.space
 
@@ -117,13 +117,13 @@ _Aaaanyway_, I did a few minor fixes and added YouTube search links to each arti
   I've tried automating the detection of this, but as I'd have to run API queries for each playlist, I'm likely to hit the quota relatively quickly. It deserves a manual examination anyway; I need to see what remains with my own eyes.
 
 - a _styling pass_ to clean up some of the messier aspects of its visual appearance. The more time I spend with it, the less happy I am with it, but again, it's gotta get out the door. I think I'll keep it to tweaking the colour scheme, spacing, and fonts. There will always be more time to fix it later.
-- and the thing I'm fearing the most: _mobile and tablet support_. GiS is currently desktop-only. This is a two-part challenge: the first is getting the damn graph to work on mobile, which is non-trivial (see [my previous musings on this](/updates/ups-and-downs-and-sides-to-sides/#genresinspace)), and the second is to make the UI work in space-constrained environments (e.g. a portrait phone).
+- and the thing I'm fearing the most: _mobile and tablet support_. GiS is currently desktop-only. This is a two-part challenge: the first is getting the damn graph to work on mobile, which is non-trivial (see [my previous musings on this](../ups-and-downs-and-sides-to-sides/index.md#genresinspace)), and the second is to make the UI work in space-constrained environments (e.g. a portrait phone).
 
   I think I just need to sit down and work this out. Worst comes to worst, I can disable the graph entirely and let users explore graph-space by clicking through links: it won't be ideal, but it'll at least let them interact with the data.
 
 # gpu
 
-As mentioned in [the last episode](/updates/only-so-much-steam/#computer), my GPU - a 6700XT that really should not have been failing so soon - was struggling to maintain its grasp on life, which forced me to switch to my iGPU. Unfortunately, I was still seeing issues with random freezes, which I assumed was due to a lack of VRAM on the iGPU, and I was missing my ability to attend the weekly VRChat meetups I run, so I accepted my friend's offer of a RTX 3080 at mates' rates.
+As mentioned in [the last episode](../only-so-much-steam/index.md#computer), my GPU - a 6700XT that really should not have been failing so soon - was struggling to maintain its grasp on life, which forced me to switch to my iGPU. Unfortunately, I was still seeing issues with random freezes, which I assumed was due to a lack of VRAM on the iGPU, and I was missing my ability to attend the weekly VRChat meetups I run, so I accepted my friend's offer of a RTX 3080 at mates' rates.
 
 It has been wonderful being able to play games again - I replayed the entire Battlefield 3 campaign to test the 3080 - and to participate in social VR events. Delightfully, I'm discovering that this performs better than the 6700XT by some margin, even though they shouldn't be _that_ far apart: I'm getting a solid 144FPS in Beat Saber, which is genuinely surprising, as I just assumed that the game couldn't actually run at full framerate. A silly assumption, perhaps, but a 6700XT should have been plenty for that! I assume that it was struggling in other ways.
 

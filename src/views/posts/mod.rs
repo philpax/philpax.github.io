@@ -73,7 +73,9 @@ pub fn post<'a>(
                 });
             }
 
-            let mut converter = MarkdownConverter::new(context, &url).with_sidenotes();
+            let mut converter = MarkdownConverter::new(context, &url)
+                .with_sidenotes()
+                .with_source_path(document.source_path.clone());
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
@@ -87,7 +89,9 @@ pub fn post<'a>(
         }
         PostBody::Description => html! { in bump;
             <>
-                {MarkdownConverter::new(context, &url).convert(&document.description, None)}
+                {MarkdownConverter::new(context, &url)
+                    .with_source_path(document.source_path.clone())
+                    .convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
                         "Read more"
@@ -95,14 +99,16 @@ pub fn post<'a>(
                 </p>
             </>
         },
-        PostBody::Short => MarkdownConverter::new(context, &url).convert(
-            document
-                .metadata
-                .short()
-                .as_ref()
-                .unwrap_or(&document.description),
-            None,
-        ),
+        PostBody::Short => MarkdownConverter::new(context, &url)
+            .with_source_path(document.source_path.clone())
+            .convert(
+                document
+                    .metadata
+                    .short()
+                    .as_ref()
+                    .unwrap_or(&document.description),
+                None,
+            ),
     };
 
     let heading_class = post_body_to_heading_class(post_body);

@@ -21,7 +21,7 @@ As part of my work for Wayfarer Labs, I work on OWL Control, which is an applica
 
 ![A screenshot of my first attempt at making Just Cause 3 VR](./225540_screenshots_2016-01-18_00001.jpg)
 
-I'm a long-time VR obsessive, as evidenced by one of my few blog posts being [a review of the Oculus Rift Developer Kit 2](/blog/ocufabulous/). As part of that obsession, I've tried on and off over the years to bring my favourite games to VR so that I can fully appreciate them; these efforts usually end in failure for one reason or another, but they're always learning experiences.
+I'm a long-time VR obsessive, as evidenced by one of my few blog posts being [a review of the Oculus Rift Developer Kit 2](../../blog/ocufabulous/index.md). As part of that obsession, I've tried on and off over the years to bring my favourite games to VR so that I can fully appreciate them; these efforts usually end in failure for one reason or another, but they're always learning experiences.
 
 The above screenshot is an example of such an effort. I attempted to wire up the then-nascent Oculus SDK into the game, complete with a first-person perspective, so that I could play the game in VR - and if you're familiar with how VR rendering works, you'll notice that I got decently far... or did I?
 
@@ -85,7 +85,7 @@ I believe this should be possible, thanks to the somewhat-generous commenting th
 
 # blackbird
 
-It's been a bit, so here's a quick recap: [blackbird](https://github.com/philpax/blackbird) is my personal music player; it is a client for the [OpenSubsonic protocol](https://opensubsonic.netlify.app/), targeting a Navidrome server that I self-host. Until two months ago, it wasn't much of a music player; it could certainly play music, don't get me wrong, but it was incapable of automatically queueing up new music, didn't have album art or a volume slider, and suffered from all other kinds of omissions. Luckily, [it got better](/updates/its-finally-a-music-player/).
+It's been a bit, so here's a quick recap: [blackbird](https://github.com/philpax/blackbird) is my personal music player; it is a client for the [OpenSubsonic protocol](https://opensubsonic.netlify.app/), targeting a Navidrome server that I self-host. Until two months ago, it wasn't much of a music player; it could certainly play music, don't get me wrong, but it was incapable of automatically queueing up new music, didn't have album art or a volume slider, and suffered from all other kinds of omissions. Luckily, [it got better](../its-finally-a-music-player/index.md).
 
 Last week, I implemented a revolutionary new feature: the ability to search the library. I know, I know, I'm taking a bow. It's not perfect - it's not the prettiest, it's a separate modal instead of inline filtering, the hotkey is a bit unreliable at times - but it does the job, which is all I can really ask for:
 

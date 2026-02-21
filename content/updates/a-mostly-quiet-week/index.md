@@ -42,7 +42,7 @@ I believe [NotNite](https://notnite.com/) may have already done something simila
 
 I made a fair bit of progress, but not nearly as much as I'd like. I went down several detours that, while useful research, were not ultimately germane to the problem I have at hand. Still, I'm back on track and I think the weekend should be a sufficient opportunity to get back on track. It is a bit sad that I have to sequester myself off to ensure that I continue making forward progress on this, but it should all be over in a few weeks. Aside from having to write the retrospective, anyway.
 
-As part of this project, I trained a FLUX.1-dev LoRA, which is not a conceptually difficult operation, but given that my server runs NixOS, was far more difficult than it needed to be. I've written up my experience in [a note](/notes/ai/training-a-flux-lora-locally-with-nixos/), but man, what a gnarly time. The LoRA doesn't work all that well, which makes me feel great about having spent at least six hours on various attempts, but it's just part of the process.
+As part of this project, I trained a FLUX.1-dev LoRA, which is not a conceptually difficult operation, but given that my server runs NixOS, was far more difficult than it needed to be. I've written up my experience in [a note](../../notes/AI/Training_a_FLUX_LoRA_locally_with_NixOS.md), but man, what a gnarly time. The LoRA doesn't work all that well, which makes me feel great about having spent at least six hours on various attempts, but it's just part of the process.
 
 # website
 
