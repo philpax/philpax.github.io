@@ -17,9 +17,9 @@ And being the industrious individual that I am, I endeavoured to drain those cre
 
 <!-- more -->
 
-# Takeaways
+# The Primer
 
-I started off relatively slow; the Claude Code Web interface was buggy and crude - and truth be told, it still is - but, once I found my cadence, it grabbed me and didn't let go. Days turned to nights turned to days, all while attending to my day job, but the siren call of Claude credits kept calling to me.
+I started off relatively slow; the Claude Code Web interface was buggy and crude - as I'll detail in a bit - but, once I found my cadence, it grabbed me and didn't let go. Days turned to nights turned to days, all while attending to my day job, but the siren call of Claude credits kept calling to me.
 
 Around halfway through this period (they extended it to ~~collect more training data~~ as mea culpa for the bugginess of CCW), I found myself in the position of mending some of the more complex PRs with Claude Code locally. In exercising this, I was exhausting my regular Claude credits - being a mere Pro peon, of course - so, just for a little bit, I thought I'd upgrade to Max and 5x my limits.
 
@@ -28,6 +28,33 @@ Regrettably, that increased the amount of free credits I had from 250 USD to 100
 By now, you have seen the length of this post and its table of contents. I want you to know that, despite all of my efforts, despite the hundreds of PRs I submitted to dozens of projects, I was only able to get down to ~460 USD of credit in the time period.
 
 Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of my "big swings" were during November.
+
+# Takeaways
+
+Given how long it has taken me to write this post, I have largely forgotten a lot of the minute-to-minute takeaways I had from the experience, but here follows a high-level explanation of my thoughts. Worth noting that it took me two months to write this post up: the sheer amount of work done required a similarly sheer amount of work to document, and I found myself putting it off as to avoid confronting it. Nonetheless, we persist.
+
+## Claude Code Web
+Claude Code Web was insanely buggy, and still is (at least from having tried it again over the last few weeks). It will frequently stop responding to you, lose your messages, require prodding to continue and will break down after a certain number of commits. It has a limited understanding of its own environment, and frequently requires handholding around more unconventional toolchains.
+
+Functionality-wise, you cannot easily work _with_ it - it's very much aimed as an in-and-out endeavour, and working on the same branch that it is working on can often lead to pain. Speaking of branches, you can't control which branch it'll use; it will always instantiate a new branch from your main branch, which means you can't easily continue existing branches. This is especially irritating given the commit-breakage from above; continuing long-lived work is quite tedious.
+
+That being said, there is certainly an appeal to the interaction model, which is why I've continued to use it on and off. Being able to kick off work while doing something else is compelling _if_ you know that it will do what you expect it to do. One's sense of its capabilities grows with use, but you can never be sure; I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
+
+## Token Anxiety
+I hesitate to say this out loud, given its initial reception, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
+
+This was especially exacerbated by the numerical value attached to the credits. I saw the number and felt driven to bring it to zero by dispatching as much work as humanly possible - and in some cases, beyond humanly possible - and it led to rather unhealthy use practices. During the worst of it in November, I found myself sleeping extremely late - sometimes, not at all - so that I could send off more work to be done, review it, and test it. It may have been one of the most productive months of my life, but it was also profoundly self-destructive. This breadth of work led me to experience what I'd describe as mini-burnout, where I was unable to engage with anything I'd touched as a result of the anxiety.
+
+I cut down on the amount of work I was doing on my own projects during this period - especially as I was meant to be on holiday! - and took some time to recover. For the most part, I'm fine now - back to a healthier rhythm, in touch with my network, engaging in other hobbies - but, if left unchecked, I could see myself (and others who share my personality type) slipping right back into it again.
+
+## The End of Coding?
+I have written a single-digit percentage of code by hand since November. [This is not an uncommon sentiment](https://simonwillison.net/2026/Jan/4/inflection/), but I want to emphasise it: our profession _has_ fundamentally changed, and the aftershocks from this will rumble throughout as the industry catches up.
+
+This doesn't apply for all domains to the same degree: there are many tasks and languages for which the models do not perform at the same standard, or for which they make novice mistakes. I'm not convinced that bulwark will hold forever, but even if it does: the rest of the industry does _not_ consist of these domains, and I very strongly suspect that fewer people per company will be required to do the same amount of work in most areas of programming endeavour.
+
+The optimist may suggest that a thousand flowers will bloom as a result of this: after all, if everyone has much more leverage available to them, at least a few of those people will be industrious enough to strike it out on their own and build their own futures. I'd like to say that I believe in this - that there will be something for everyone in some form - but I fear things will not be so neat.
+
+I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there?
 
 # [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
 
@@ -39,7 +66,7 @@ Once you have that understanding, you need to be able to use it within your mod 
 
 However, as part of this, you need to be able to represent and manipulate the game's data structures. Because we're relying on a reverse-engineered representation, we do not have a complete picture of these structures, and even when we do, they are not guaranteed to match the representation of the language our mod is written in. Additionally, not all mods are written in the same language. This makes representing these structures challenging and often language-specific.[^clientstructs]
 
-[^clientstructs]: As an example of such a solution, [FFXIVClientStructs]() documents Final Fantasy XIV's internal structures for C# and the IDA decompiler. The latter effort is supported through a Python script that ingests a [monster YAML file](), which works, but, well, look at it...
+[^clientstructs]: As an example of such a solution, [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs) documents Final Fantasy XIV's internal structures for C# and the IDA decompiler. The latter effort is supported through a Python script that ingests a [monster YAML file](https://github.com/aers/FFXIVClientStructs/blob/main/ida/data.yml), which works, but, well, look at it...
 
 Pyxis is an effort to solve this: these structures are defined separately from your implementation language, and then compiled to a byte-perfect representation of that structure for your language. It has been in use in a few projects - none truly released, as it were - but, being a side project of a side project, I have never dedicated the time to fill in the potholes and address the features you'd come to expect from a modern language.
 
