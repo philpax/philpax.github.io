@@ -17,7 +17,7 @@ Nonetheless, I'd say it's been a relatively productive three weeks, with the mai
 
 ![blackbird as of 2025-09-18](./2025-09-18.png)
 
-Above is a screenshot of `blackbird`, circa six days ago. It has already changed a bit since then, but I'm still nailing down some of the specifics, so that's a matter for the next update. No, what I'd like to draw your eye to is how different it looks to [the last time it was featured here](/updates/when-you-add-an-updates-section/#blackbird). I have been quite busy indeed!
+Above is a screenshot of `blackbird`, circa six days ago. It has already changed a bit since then, but I'm still nailing down some of the specifics, so that's a matter for the next update. No, what I'd like to draw your eye to is how different it looks to [the last time it was featured here](../when-you-add-an-updates-section/index.md#blackbird). I have been quite busy indeed!
 
 ## korean text
 
@@ -111,7 +111,7 @@ There's still plenty to backfill, but I'm off to a good start, and the local GDP
 
 ## mending my library
 
-Once I had the raw material for my library, I needed to retag it to bring it to its full potential. To do this, I initially started fixing them up by hand, but after investigating my options, I started to use [beets](https://beets.io/) for this work. I'll be honest: I was initially avoiding it because it was written in Python, which I [do my best to avoid](/notes/programming/reasons-i-do-not-like-python/), but NixOS made it easy enough to ignore the sickness that laid underneath.[^naming]
+Once I had the raw material for my library, I needed to retag it to bring it to its full potential. To do this, I initially started fixing them up by hand, but after investigating my options, I started to use [beets](https://beets.io/) for this work. I'll be honest: I was initially avoiding it because it was written in Python, which I [do my best to avoid](../../notes/Programming/Reasons_I_do_not_like_Python.md), but NixOS made it easy enough to ignore the sickness that laid underneath.[^naming]
 
 [^naming]: That being said, the project is called _beets_, but the CLI is called `beet`. Sickness. I blame Python for this, one way or another.
 
@@ -144,7 +144,7 @@ The last time I wrote an update, I was thinking about converting this website to
 
 ## music library
 
-I think that was the right decision, because it's enabled me to build this [music library note](/notes/personal/music/), which presents my library with styling designed to ape `blackbird`. This is statically generated - it's quite the large HTML file - and it's based on a JSON export from `blackbird`. I was able to do this with relative ease by pulling in the export types from `blackbird`; it wouldn't have been that much harder in Lua, but having type safety is always welcome.
+I think that was the right decision, because it's enabled me to build this [music library note](../../notes/Personal/Music.md), which presents my library with styling designed to ape `blackbird`. This is statically generated - it's quite the large HTML file - and it's based on a JSON export from `blackbird`. I was able to do this with relative ease by pulling in the export types from `blackbird`; it wouldn't have been that much harder in Lua, but having type safety is always welcome.
 
 The fun thing about this is that the JSON is versioned, so I can see how my music library changes over time, including albums coming and going, changing of tags, and starring of tracks. This has already proven to be quite helpful for observing the changes made by the retagging process; you can see the full history [here](https://github.com/philpax/philpax.github.io/commits/main/assets/baked/music.json), in which you can see my tagging rework bordered on the obsessive.
 
@@ -152,17 +152,17 @@ That being said, parsing that much JSON and emitting that much HTML actually tak
 
 ## misc writing
 
-I wrote up some not-blog-post notes in the last three weeks. The first is a small treatise on [studying Swedish and Japanese simultaneously](/notes/personal/studying-swedish-and-japanese-simultaneously/); it's not all that detailed right now, but I hope to extend it over time. As with the music library, I look forward to seeing how this changes over time; I want it to reflect my thinking on the most productive way to study.
+I wrote up some not-blog-post notes in the last three weeks. The first is a small treatise on [studying Swedish and Japanese simultaneously](../../notes/Personal/Studying_Swedish_and_Japanese_simultaneously.md); it's not all that detailed right now, but I hope to extend it over time. As with the music library, I look forward to seeing how this changes over time; I want it to reflect my thinking on the most productive way to study.
 
-The second is a brief note on [shipping Python code to users' machines using uv](/notes/programming/using-uv-to-ship-a-python-application/). I really, really don't think you should do this. It's messy and prone to breaking, even with the angelic presence of `uv`; Python is just not well-designed for operation in arbitrary environments. Still, I managed to get it working in a relatively reproducible fashion, so I've documented it for whatever poor soul needs to do this next.
+The second is a brief note on [shipping Python code to users' machines using uv](../../notes/Programming/Using_uv_to_ship_a_Python_application.md). I really, really don't think you should do this. It's messy and prone to breaking, even with the angelic presence of `uv`; Python is just not well-designed for operation in arbitrary environments. Still, I managed to get it working in a relatively reproducible fashion, so I've documented it for whatever poor soul needs to do this next.
 
 # system administration
 
-Finally, to close things out, some relatively sedate system administration business. I finally set up automatic internal backups on [my home server](/notes/hardware/server/) with the help of Claude; every week, my data is synchronised to other internal hard drives to provide some degree of redundancy. However, I'm not really happy or done with this: the hard drives are heterogeneous, there's no remote backup, and the source of truth is an external hard drive.
+Finally, to close things out, some relatively sedate system administration business. I finally set up automatic internal backups on [my home server](../../notes/Hardware/Server.md) with the help of Claude; every week, my data is synchronised to other internal hard drives to provide some degree of redundancy. However, I'm not really happy or done with this: the hard drives are heterogeneous, there's no remote backup, and the source of truth is an external hard drive.
 
 I'd like to fix this by replacing all of the internal hard drives with a ZFS drive pool of high-capacity HDDs, making those the source of truth, and then making the external drive the backup. Additionally, for the most important data, I'd like to back everything up to a Hetzner storage box automatically. The only reason I haven't done this yet is because the capital outlay for such a HDD array is quite high, especially in Europe; I'll re-evaluate once [Datablocks' white-label definitely-not-Seagate-despite-what-the-link-says 22TB hard drives](https://datablocks.dev/products/seagate-exos-x22-22-tb-sata-white-label-hard-drive) are back in stock.
 
-I mentioned setting up [a study machine](/updates/two-weeks-go-by/#study-machine) to help me with my language study. The grinding noise eventually got to me; after investigating my options to rectify it, I gave in and ordered a slightly newer machine from Tradera (the Swedish equivalent to eBay): a HP EliteDesk 800 Generation 2. Unfortunately, I did not look closely enough at the photos: it's not thin-client sized, and is closer to a mini-ATX HTPC. Still, it's small enough to not be an issue.
+I mentioned setting up [a study machine](../two-weeks-go-by/index.md#study-machine) to help me with my language study. The grinding noise eventually got to me; after investigating my options to rectify it, I gave in and ordered a slightly newer machine from Tradera (the Swedish equivalent to eBay): a HP EliteDesk 800 Generation 2. Unfortunately, I did not look closely enough at the photos: it's not thin-client sized, and is closer to a mini-ATX HTPC. Still, it's small enough to not be an issue.
 
 It is much quieter than the Dell machine it's replacing, and it's capable of doing 4k60Hz[^refreshrate]. I was hoping that I could just carry my existing install over to the new machine, but the HP UEFI refused to boot the MBR-based NixOS install. Luckily, it being NixOS, it was trivial to reinstall and redeploy: I was back to where I was within an hour. I just had to back up my home directory, reinstall, copy my home directory back, and run my configuration-sync script. Sometimes, using NixOS is actually worth it! ...only sometimes, though.
 

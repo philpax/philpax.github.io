@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, path::PathBuf};
 
 use paxhtml::builder::Builder;
 
@@ -23,6 +23,7 @@ pub struct MarkdownConverter<'a> {
     pub sidenotes_enabled: bool,
     pub error_context: String,
     pub current_note_id: Option<DocumentId>,
+    pub source_path: Option<PathBuf>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -36,7 +37,15 @@ impl<'a> MarkdownConverter<'a> {
             sidenotes_enabled: false,
             error_context: error_context.into(),
             current_note_id: None,
+            source_path: None,
         }
+    }
+
+    /// Set the source path of the document being converted, enabling resolution of
+    /// relative `.md` links to their output URLs.
+    pub fn with_source_path(mut self, path: PathBuf) -> Self {
+        self.source_path = Some(path);
+        self
     }
 
     /// Don't generate any elements that would otherwise cause a `<p>` to self-close;
@@ -64,6 +73,28 @@ impl<'a> MarkdownConverter<'a> {
     pub fn with_note_id(mut self, id: DocumentId) -> Self {
         self.current_note_id = Some(id);
         self
+    }
+
+    /// If the URL points to a `.md` file and we have a source path, resolve it
+    /// to the corresponding output route URL. Panics on broken `.md` links.
+    fn resolve_link_url(&self, url: &str) -> String {
+        let is_md_link = url.ends_with(".md") || url.contains(".md#");
+        let is_absolute_url = url.contains("://");
+        if !is_md_link || is_absolute_url {
+            return url.to_string();
+        }
+        let Some(source_path) = &self.source_path else {
+            return url.to_string();
+        };
+        self.context
+            .content
+            .resolve_markdown_link(source_path, url)
+            .unwrap_or_else(|| {
+                panic!(
+                    "Broken .md link in {}: could not resolve '{}'",
+                    self.error_context, url
+                )
+            })
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
@@ -229,12 +260,13 @@ impl<'a> MarkdownConverter<'a> {
                         inner_text(node, None).trim()
                     );
                 }
+                let url = self.resolve_link_url(&l.url);
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
                     children
                 } else {
                     paxhtml::html! { in bump;
-                        <Link underline target={l.url.clone()}>
+                        <Link underline target={url}>
                             {children}
                         </Link>
                     }

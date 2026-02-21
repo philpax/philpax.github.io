@@ -34,6 +34,7 @@ pub struct Content {
     pub about: Document,
     pub credits: Document,
     pub music_library: blackbird_json_export_types::Output,
+    source_path_to_route: HashMap<PathBuf, String>,
 }
 impl Content {
     #[cfg(test)]
@@ -46,6 +47,7 @@ impl Content {
             about: Document::empty(),
             credits: Document::empty(),
             music_library: blackbird_json_export_types::Output::new(),
+            source_path_to_route: HashMap::new(),
         }
     }
 
@@ -118,6 +120,41 @@ impl Content {
             now.elapsed(),
         );
 
+        let now = std::time::Instant::now();
+        let source_path_to_route = {
+            let mut map = HashMap::new();
+            let insert = |map: &mut HashMap<PathBuf, String>, doc: &Document| {
+                map.insert(doc.source_path.clone(), doc.route_path().url_path());
+            };
+            for doc in &blog.documents {
+                insert(&mut map, doc);
+            }
+            for doc in &updates.documents {
+                insert(&mut map, doc);
+            }
+            fn insert_notes(map: &mut HashMap<PathBuf, String>, folder: &DocumentFolderNode) {
+                if let Some(doc) = &folder.index_document {
+                    map.insert(doc.source_path.clone(), doc.route_path().url_path());
+                }
+                for node in folder.children.values() {
+                    match node {
+                        DocumentNode::Folder(f) => insert_notes(map, f),
+                        DocumentNode::Document { document } => {
+                            map.insert(
+                                document.source_path.clone(),
+                                document.route_path().url_path(),
+                            );
+                        }
+                    }
+                }
+            }
+            insert_notes(&mut map, &notes.documents);
+            insert(&mut map, &about);
+            insert(&mut map, &credits);
+            map
+        };
+        report("Built source path index", now.elapsed());
+
         Ok(Content {
             blog,
             updates,
@@ -126,6 +163,35 @@ impl Content {
             about,
             credits,
             music_library,
+            source_path_to_route,
+        })
+    }
+
+    /// Resolves a relative `.md` link from a document's source path to the corresponding route URL.
+    /// Fragments (e.g. `#section`) are preserved.
+    /// Returns `None` if the resolved path doesn't correspond to any known document.
+    pub fn resolve_markdown_link(
+        &self,
+        from_source_path: &Path,
+        relative_link: &str,
+    ) -> Option<String> {
+        // Split off fragment
+        let (path_part, fragment) = match relative_link.split_once('#') {
+            Some((p, f)) => (p, Some(f)),
+            None => (relative_link, None),
+        };
+
+        // Resolve against the directory containing the source file
+        let base_dir = from_source_path.parent()?;
+        let resolved = base_dir.join(path_part);
+        let normalized = normalize_path(&resolved);
+
+        // Look up the route
+        let route_url = self.source_path_to_route.get(&normalized)?;
+
+        Some(match fragment {
+            Some(f) => format!("{route_url}#{f}"),
+            None => route_url.clone(),
         })
     }
 
@@ -275,7 +341,7 @@ impl NotesCollection {
                     .strip_prefix(collection_path)
                     .unwrap()
                     .iter()
-                    .map(|s| s.to_string_lossy().to_string())
+                    .map(|s| s.to_string_lossy().replace('_', " "))
                     .collect();
                 if output.is_empty() {
                     output.push(HOME_NAME.to_string());
@@ -382,6 +448,7 @@ pub struct Document {
     pub alternate_id: Option<DocumentId>,
     pub display_path: Vec<String>,
     pub document_type: DocumentType,
+    pub source_path: PathBuf,
     pub metadata: DocumentMetadata,
     pub description: markdown::mdast::Node,
     pub rest_of_content: Option<markdown::mdast::Node>,
@@ -409,6 +476,7 @@ impl Document {
             alternate_id: None,
             display_path: vec![],
             document_type: DocumentType::Blog,
+            source_path: PathBuf::new(),
             metadata: DocumentMetadata {
                 title: "".to_string(),
                 short: None,
@@ -549,6 +617,7 @@ impl Document {
             alternate_id,
             display_path,
             document_type,
+            source_path: path.to_path_buf(),
             metadata,
             description,
             rest_of_content,
@@ -694,4 +763,88 @@ fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
         first_commit: mtime,
         last_commit: mtime,
     })
+}
+
+fn normalize_path(path: &Path) -> PathBuf {
+    let mut components = Vec::new();
+    for component in path.components() {
+        match component {
+            std::path::Component::ParentDir => {
+                components.pop();
+            }
+            std::path::Component::CurDir => {}
+            c => components.push(c),
+        }
+    }
+    components.iter().collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_normalize_path() {
+        assert_eq!(
+            normalize_path(Path::new("content/notes/Hardware/../Programming/foo.md")),
+            PathBuf::from("content/notes/Programming/foo.md")
+        );
+        assert_eq!(
+            normalize_path(Path::new("content/notes/./Hardware/Laptop.md")),
+            PathBuf::from("content/notes/Hardware/Laptop.md")
+        );
+        assert_eq!(
+            normalize_path(Path::new("a/b/c/../../d.md")),
+            PathBuf::from("a/d.md")
+        );
+    }
+
+    #[test]
+    fn test_resolve_markdown_link() {
+        let mut content = Content::empty();
+        content.source_path_to_route.insert(
+            PathBuf::from("content/notes/Programming/Reasons_I_do_not_like_Python.md"),
+            "/notes/programming/reasons-i-do-not-like-python/".to_string(),
+        );
+        content.source_path_to_route.insert(
+            PathBuf::from("content/blog/ocufabulous/index.md"),
+            "/blog/ocufabulous/".to_string(),
+        );
+
+        // Same directory
+        assert_eq!(
+            content.resolve_markdown_link(
+                Path::new("content/notes/Programming/Using_uv.md"),
+                "Reasons_I_do_not_like_Python.md"
+            ),
+            Some("/notes/programming/reasons-i-do-not-like-python/".to_string())
+        );
+
+        // Parent traversal
+        assert_eq!(
+            content.resolve_markdown_link(
+                Path::new("content/notes/Hardware/VR_Headsets.md"),
+                "../../blog/ocufabulous/index.md"
+            ),
+            Some("/blog/ocufabulous/".to_string())
+        );
+
+        // With fragment
+        assert_eq!(
+            content.resolve_markdown_link(
+                Path::new("content/notes/Programming/Using_uv.md"),
+                "Reasons_I_do_not_like_Python.md#section"
+            ),
+            Some("/notes/programming/reasons-i-do-not-like-python/#section".to_string())
+        );
+
+        // Non-existent target
+        assert_eq!(
+            content.resolve_markdown_link(
+                Path::new("content/notes/Programming/Using_uv.md"),
+                "nonexistent.md"
+            ),
+            None
+        );
+    }
 }
