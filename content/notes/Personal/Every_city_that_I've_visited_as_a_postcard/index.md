@@ -1,26 +1,28 @@
-One day, I was looking at Bluesky and saw [olaren](https://bsky.app/profile/olaren.dev) [post](https://bsky.app/profile/olaren.dev/post/3mdbekwx5as2u) about [her fork of maptoposter](https://git.olaren.dev/Olaren/maptoposter), based on [originalankur's original](https://github.com/originalankur/maptoposter). Her fork is designed to emphasise transit networks, which I am ideologically primed to love (#fuckcars, btw).
+While doomscrolling Bluesky one day, I saw [olaren](https://bsky.app/profile/olaren.dev) [post](https://bsky.app/profile/olaren.dev/post/3mdbekwx5as2u) about [her fork of maptoposter](https://git.olaren.dev/Olaren/maptoposter), based on [originalankur's original](https://github.com/originalankur/maptoposter). `maptoposter` is a Python program that takes map coordinates and a radius, and then produces a printable poster using OpenStreetMap data; her fork is designed to emphasise transit networks, which I am ideologically primed to love (#fuckcars, btw).
 
 Upon seeing the post, my empty walls, and my [Canon Selphy CP1500](https://www.usa.canon.com/shop/p/selphy-cp1500) (a postcard photo printer), an idea came to mind. I decided I'd print a poster for every city I've spent any amount of substantive time in - places I've either been to many times, or visited as an adult with memories worth keeping - and put them up on the wall in the order in which I first visited them.
 
 <!-- more -->
 
-I [forked maptoposter myself](https://github.com/philpax/maptoposter/pull/1) (a fork of a fork!) to add support for custom fonts, configurable output sizes, and to handle rendering the ocean correctly (turns out nobody's tried to posterise Sydney. _Good._). The idea was to use the font of each city's transit system, and to use a shared colour system for every city within the same country.
+I [forked maptoposter myself](https://github.com/philpax/maptoposter/pull/1) (a fork of a fork!) to add support for custom fonts, configurable output sizes (e.g. the 4x6 postcards I'm printing), and to handle rendering the ocean correctly (turns out nobody's tried to posterise Sydney. _Good._). My thinking was that I'd use the font of each city's transit system, and pair that with a theme for each country, providing some degree of consistency across cities.
 
 # Proving the concept
 
-I started out with Melbourne and Stockholm - the two cities that I've lived in for extended periods - and picked out a colour scheme and font for each. Melbourne was assigned the `terracotta` theme with **Neo Sans Pro** (Metro Trains Melbourne's old brand font; more details below), and Stockholm was assigned the `ocean` theme with **FF Meta** (used by SL, Stockholm's transit authority). The results came out well:
+I decided I'd test the concept by producing and printing Melbourne and Stockholm - the two cities that I've lived in for extended periods - and picked out a colour scheme and font for each. I had Claude generate a preview of a random location[^location] across every theme, and then used tha to asssign the usual two themes. I gave Melbourne the `terracotta` theme with **Neo Sans Pro** (Metro Trains Melbourne's old brand font; more details below), and Stockholm was assigned the `ocean` theme with **FF Meta** (used by SL, Stockholm's transit authority). The results came out well:
 
 ![Melbourne and Stockholm proof of concept](./stockholm_and_melbourne.jpg)
 
 With the concept proven, it was time to scale up.
 
+[^location]: Sydney, Nova Scotia, Canada, if you must know: I found it funny to use Sydney, but not _that_ Sydney, and I needed something with as few OSM nodes as possible to speed up the production process.
+
 # Scaling up
 
-I compiled a list of 27 cities across 17 countries[^cities] and started working with Claude to assign colour schemes and research fonts. Conveniently, there are exactly 17 existing colour themes in maptoposter and 17 countries on my list, so every country gets its own scheme.
+I compiled a list of 27 cities across 17 countries[^cities] and started working with Claude to assign colour schemes and research fonts. Conveniently, there are exactly 17 existing colour themes in maptoposter and 17 countries on my list, so every country had a one-to-one theme mapping. I suspect that I will have to produce more themes when I visit more countries, but I think that's a good problem to have.
 
 [^cities]: I have been to more cities than this, but I either don't remember them or they were stopovers. I was tempted to put Hong Kong in, but my time outside was limited to about five or six hours, so it felt unfair to claim visiting status for that. Cool airport train, though!
 
-The font research was one of the more tedious aspects of the process. I wanted to use the *actual* font for each city wherever possible, and only settle for a substitute where the real font was either undocumented, proprietary with no public equivalent, or simply didn't exist (some cities just don't have a distinctive font, as far as I can tell. Please correct me if I'm wrong.). Claude's initial suggestions were decent, but relied on reuse of existing fonts where a more appropriate font couldn't be found (e.g. sharing **Neo Sans Pro**, assigned to Melbourne, with Brisbane and Adelaide, and such).
+The font research was one of the more tedious aspects of the process. I wanted to use the *actual* font for each city wherever possible, and only settle for a substitute where the real font was either undocumented, proprietary with no public equivalent, or simply didn't exist (some cities just don't have a distinctive font, as far as I can tell. Please correct me if I'm wrong). Claude's initial suggestions were decent, but relied on reuse of existing fonts where a more appropriate font couldn't be found (e.g. sharing **Neo Sans Pro**, assigned to Melbourne, with Brisbane and Adelaide, and such).
 
 After a bit of back and forth, we were able to secure more accurate fonts through research (i.e. broadening the scope and looking at government guidelines to see what fonts are traditionally used for their branding), and for where a documented font could not be found, we elected to use fonts that spoke to the vibe of each city. I say "we" here, but it was largely Claude with some prodding from me, and I have to say that I'm pretty happy with the choices. They may not be typographically-accurate, but they're vibe-accurate, at least in my heart!
 
