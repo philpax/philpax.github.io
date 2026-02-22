@@ -66,7 +66,7 @@ impl Content {
         report("Read updates", now.elapsed());
 
         let now = std::time::Instant::now();
-        let notes = NotesCollection::read(&path.join("notes"), fast)?;
+        let mut notes = NotesCollection::read(&path.join("notes"), fast)?;
         report("Read notes", now.elapsed());
 
         // Combine tags from both blog and updates
@@ -133,18 +133,19 @@ impl Content {
                 insert(&mut map, doc);
             }
             fn insert_notes(map: &mut HashMap<PathBuf, String>, folder: &DocumentFolderNode) {
-                if let Some(doc) = &folder.index_document {
+                if let Some(DocumentLeafNode::Document(doc)) = &folder.index {
                     map.insert(doc.source_path.clone(), doc.route_path().url_path());
                 }
                 for node in folder.children.values() {
                     match node {
                         DocumentNode::Folder(f) => insert_notes(map, f),
-                        DocumentNode::Document { document } => {
+                        DocumentNode::Leaf(DocumentLeafNode::Document(document)) => {
                             map.insert(
                                 document.source_path.clone(),
                                 document.route_path().url_path(),
                             );
                         }
+                        DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => {}
                     }
                 }
             }
@@ -154,6 +155,10 @@ impl Content {
             map
         };
         report("Built source path index", now.elapsed());
+
+        let now = std::time::Instant::now();
+        notes.resolve_redirects(&source_path_to_route)?;
+        report("Resolved note redirects", now.elapsed());
 
         Ok(Content {
             blog,
@@ -200,10 +205,23 @@ impl Content {
         fn collect_note_files(
             folder: &DocumentFolderNode,
         ) -> Box<dyn Iterator<Item = &PathBuf> + '_> {
-            let index_files = folder.index_document.iter().flat_map(|d| d.files.iter());
+            let index_files = folder
+                .index
+                .iter()
+                .filter_map(|n| {
+                    if let DocumentLeafNode::Document(d) = n {
+                        Some(d)
+                    } else {
+                        None
+                    }
+                })
+                .flat_map(|d| d.files.iter());
             let child_files = folder.children.values().flat_map(|node| match node {
                 DocumentNode::Folder(f) => collect_note_files(f),
-                DocumentNode::Document { document } => Box::new(document.files.iter()),
+                DocumentNode::Leaf(DocumentLeafNode::Document(document)) => {
+                    Box::new(document.files.iter())
+                }
+                DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => Box::new(std::iter::empty()),
             });
             Box::new(index_files.chain(child_files))
         }
@@ -299,8 +317,21 @@ impl DocumentCollection {
 }
 
 #[derive(Debug)]
+pub struct RedirectNode {
+    pub id: DocumentId,
+    pub target_url: String,
+    source_path: PathBuf,
+}
+
+#[derive(Debug)]
+pub enum DocumentLeafNode {
+    Document(Box<Document>),
+    Redirect(RedirectNode),
+}
+
+#[derive(Debug)]
 pub struct DocumentFolderNode {
-    pub index_document: Option<Document>,
+    pub index: Option<DocumentLeafNode>,
     pub folder_name: String,
     pub children: BTreeMap<String, DocumentNode>,
 }
@@ -308,7 +339,7 @@ pub struct DocumentFolderNode {
 #[derive(Debug)]
 pub enum DocumentNode {
     Folder(DocumentFolderNode),
-    Document { document: Document },
+    Leaf(DocumentLeafNode),
 }
 
 #[derive(Debug)]
@@ -320,7 +351,7 @@ impl NotesCollection {
     pub fn empty() -> Self {
         Self {
             documents: DocumentFolderNode {
-                index_document: None,
+                index: None,
                 folder_name: "".to_string(),
                 children: Default::default(),
             },
@@ -357,15 +388,39 @@ impl NotesCollection {
                 display_path.iter().map(|s| util::slugify(s)).collect()
             }
 
+            fn read_leaf(
+                path: &Path,
+                id: DocumentId,
+                display_path: Vec<String>,
+                fast: bool,
+            ) -> anyhow::Result<DocumentLeafNode> {
+                let raw = std::fs::read_to_string(path)
+                    .with_context(|| format!("failed to read {path:?}"))?;
+                if let Some(raw_target) = extract_redirect_target(&raw) {
+                    return Ok(DocumentLeafNode::Redirect(RedirectNode {
+                        id,
+                        target_url: raw_target,
+                        source_path: path.to_path_buf(),
+                    }));
+                }
+                Ok(DocumentLeafNode::Document(Box::new(Document::read(
+                    path,
+                    id,
+                    display_path,
+                    DocumentType::Note,
+                    fast,
+                )?)))
+            }
+
             let mut documents = BTreeMap::new();
             let display_name = path_to_display_name(collection_path, path);
             let folder_name = display_name.last().cloned().unwrap();
-            let index_document = if path.join("index.md").exists() {
-                Some(Document::read(
-                    &path.join("index.md"),
+            let index = if path.join("index.md").exists() {
+                let index_path = path.join("index.md");
+                Some(read_leaf(
+                    &index_path,
                     display_path_to_id(&display_name),
                     display_name,
-                    DocumentType::Note,
                     fast,
                 )?)
             } else {
@@ -394,20 +449,12 @@ impl NotesCollection {
                 if path.extension().is_some_and(|e| e == "md") {
                     documents.insert(
                         document_name,
-                        DocumentNode::Document {
-                            document: Document::read(
-                                &path,
-                                document_id,
-                                display_path,
-                                DocumentType::Note,
-                                fast,
-                            )?,
-                        },
+                        DocumentNode::Leaf(read_leaf(&path, document_id, display_path, fast)?),
                     );
                 }
             }
             Ok(DocumentFolderNode {
-                index_document,
+                index,
                 folder_name,
                 children: documents,
             })
@@ -416,17 +463,69 @@ impl NotesCollection {
         let documents = find_documents(collection_path, collection_path, fast)?;
         Ok(NotesCollection { documents })
     }
+
+    pub fn resolve_redirects(
+        &mut self,
+        source_path_to_route: &HashMap<PathBuf, String>,
+    ) -> anyhow::Result<()> {
+        fn resolve_in_folder(
+            folder: &mut DocumentFolderNode,
+            source_path_to_route: &HashMap<PathBuf, String>,
+        ) -> anyhow::Result<()> {
+            if let Some(DocumentLeafNode::Redirect(r)) = &mut folder.index {
+                r.target_url = resolve_redirect(r, source_path_to_route)?;
+            }
+            for node in folder.children.values_mut() {
+                match node {
+                    DocumentNode::Folder(f) => resolve_in_folder(f, source_path_to_route)?,
+                    DocumentNode::Leaf(DocumentLeafNode::Redirect(r)) => {
+                        r.target_url = resolve_redirect(r, source_path_to_route)?;
+                    }
+                    DocumentNode::Leaf(DocumentLeafNode::Document(_)) => {}
+                }
+            }
+            Ok(())
+        }
+
+        fn resolve_redirect(
+            r: &RedirectNode,
+            source_path_to_route: &HashMap<PathBuf, String>,
+        ) -> anyhow::Result<String> {
+            let base_dir = r.source_path.parent().ok_or_else(|| {
+                anyhow::anyhow!("redirect has no parent dir: {:?}", r.source_path)
+            })?;
+            let resolved = normalize_path(&base_dir.join(&r.target_url));
+            source_path_to_route.get(&resolved).cloned().ok_or_else(|| {
+                anyhow::anyhow!(
+                    "redirect target {:?} in {:?} does not resolve to a known document",
+                    r.target_url,
+                    r.source_path
+                )
+            })
+        }
+
+        resolve_in_folder(&mut self.documents, source_path_to_route)
+    }
 }
 
 impl DocumentFolderNode {
-    /// A leaf folder has an index document but no children,
+    /// A leaf folder has an index but no children,
     /// so it should be treated as a single note rather than an expandable folder.
     pub fn is_leaf(&self) -> bool {
-        self.index_document.is_some() && self.children.is_empty()
+        self.index.is_some() && self.children.is_empty()
+    }
+
+    pub fn has_visible_content(&self) -> bool {
+        matches!(self.index, Some(DocumentLeafNode::Document(_)))
+            || self.children.values().any(|node| match node {
+                DocumentNode::Folder(f) => f.has_visible_content(),
+                DocumentNode::Leaf(DocumentLeafNode::Document(_)) => true,
+                DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => false,
+            })
     }
 
     pub fn find_folder_for_document(&self, id: &DocumentId) -> Option<&DocumentFolderNode> {
-        if let Some(doc) = &self.index_document
+        if let Some(DocumentLeafNode::Document(doc)) = &self.index
             && doc.id == *id
         {
             return Some(self);
@@ -763,6 +862,13 @@ fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
         first_commit: mtime,
         last_commit: mtime,
     })
+}
+
+fn extract_redirect_target(content: &str) -> Option<String> {
+    content
+        .trim()
+        .strip_prefix("#REDIRECT=")
+        .map(|t| t.trim().to_string())
 }
 
 fn normalize_path(path: &Path) -> PathBuf {

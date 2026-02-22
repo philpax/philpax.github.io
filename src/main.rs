@@ -221,14 +221,22 @@ fn main() -> anyhow::Result<()> {
         fn collect_notes<'a>(
             folder: &'a content::DocumentFolderNode,
             docs: &mut Vec<&'a content::Document>,
+            redirects: &mut Vec<&'a content::RedirectNode>,
         ) {
-            if let Some(doc) = &folder.index_document {
-                docs.push(doc);
+            match &folder.index {
+                Some(content::DocumentLeafNode::Document(doc)) => docs.push(doc.as_ref()),
+                Some(content::DocumentLeafNode::Redirect(r)) => redirects.push(r),
+                None => {}
             }
             for child in folder.children.values() {
                 match child {
-                    content::DocumentNode::Folder(folder) => collect_notes(folder, docs),
-                    content::DocumentNode::Document { document } => docs.push(document),
+                    content::DocumentNode::Folder(f) => collect_notes(f, docs, redirects),
+                    content::DocumentNode::Leaf(content::DocumentLeafNode::Document(doc)) => {
+                        docs.push(doc.as_ref())
+                    }
+                    content::DocumentNode::Leaf(content::DocumentLeafNode::Redirect(r)) => {
+                        redirects.push(r)
+                    }
                 }
             }
         }
@@ -260,9 +268,10 @@ fn main() -> anyhow::Result<()> {
         }
 
         let mut all_docs: Vec<&content::Document> = Vec::new();
+        let mut all_redirects: Vec<&content::RedirectNode> = Vec::new();
         all_docs.extend(&content.blog.documents);
         all_docs.extend(&content.updates.documents);
-        collect_notes(&content.notes.documents, &mut all_docs);
+        collect_notes(&content.notes.documents, &mut all_docs, &mut all_redirects);
 
         all_docs.par_iter().try_for_each(|doc| {
             let bump = Bump::new();
@@ -282,6 +291,17 @@ fn main() -> anyhow::Result<()> {
                     write_post(output_dir, view_context, doc, view)?;
                 }
             }
+            anyhow::Ok(())
+        })?;
+
+        all_redirects.par_iter().try_for_each(|r| {
+            let bump = Bump::new();
+            views::redirect(&bump, &r.target_url).write_to_route(
+                output_dir,
+                Route::Note {
+                    note_id: r.id.clone(),
+                },
+            )?;
             anyhow::Ok(())
         })
     })?;

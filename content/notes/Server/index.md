@@ -1,5 +1,1 @@
-Notes on self-hosting, server administration, and infrastructure.
-
-<!-- more -->
-
-<NotesIndex />
+#REDIRECT=../Sysadmin/Server/index.md

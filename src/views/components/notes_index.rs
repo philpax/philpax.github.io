@@ -2,7 +2,7 @@ use paxhtml::builder::Builder;
 use paxhtml::html;
 
 use crate::{
-    content::{DocumentId, DocumentNode},
+    content::{DocumentId, DocumentLeafNode, DocumentNode},
     elements as e,
     views::{
         ViewContext,
@@ -28,7 +28,7 @@ pub fn notes_index<'a>(context: ViewContext<'a>, note_id: &DocumentId) -> paxhtm
         if subfolder.is_leaf() {
             continue;
         }
-        let Some(index_doc) = &subfolder.index_document else {
+        let Some(DocumentLeafNode::Document(index_doc)) = &subfolder.index else {
             continue;
         };
         items.push(e::li(
@@ -43,9 +43,12 @@ pub fn notes_index<'a>(context: ViewContext<'a>, note_id: &DocumentId) -> paxhtm
     // Documents (and leaf folders, which are treated as single notes)
     for node in folder.children.values() {
         let document = match node {
-            DocumentNode::Document { document } => document,
+            DocumentNode::Leaf(DocumentLeafNode::Document(document)) => document.as_ref(),
             DocumentNode::Folder(subfolder) if subfolder.is_leaf() => {
-                subfolder.index_document.as_ref().unwrap()
+                match subfolder.index.as_ref().unwrap() {
+                    DocumentLeafNode::Document(d) => d.as_ref(),
+                    DocumentLeafNode::Redirect(_) => continue,
+                }
             }
             _ => continue,
         };

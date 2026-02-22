@@ -68,7 +68,7 @@ impl ImageStore {
         let output_dir = output_dir.to_path_buf();
 
         std::thread::spawn(move || {
-            use crate::content::{DocumentFolderNode, DocumentNode};
+            use crate::content::{DocumentFolderNode, DocumentLeafNode, DocumentNode};
 
             let mut all_docs: Vec<&crate::content::Document> = Vec::new();
             all_docs.extend(&content.blog.documents);
@@ -77,13 +77,16 @@ impl ImageStore {
                 folder: &'a DocumentFolderNode,
                 docs: &mut Vec<&'a crate::content::Document>,
             ) {
-                if let Some(doc) = &folder.index_document {
-                    docs.push(doc);
+                if let Some(DocumentLeafNode::Document(doc)) = &folder.index {
+                    docs.push(doc.as_ref());
                 }
                 for child in folder.children.values() {
                     match child {
                         DocumentNode::Folder(folder) => collect_notes(folder, docs),
-                        DocumentNode::Document { document } => docs.push(document),
+                        DocumentNode::Leaf(DocumentLeafNode::Document(document)) => {
+                            docs.push(document.as_ref())
+                        }
+                        DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => {}
                     }
                 }
             }

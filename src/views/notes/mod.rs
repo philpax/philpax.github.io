@@ -1,7 +1,7 @@
 use paxhtml::bumpalo::Bump;
 
 use crate::{
-    content::{DocumentFolderNode, DocumentNode},
+    content::{DocumentFolderNode, DocumentLeafNode, DocumentNode},
     markdown::MarkdownConverter,
     util,
     views::components::{Link, LinkProps},
@@ -160,8 +160,15 @@ fn build_tree<'bump>(
     };
 
     let index_item = folder_node
-        .index_document
+        .index
         .as_ref()
+        .and_then(|n| {
+            if let DocumentLeafNode::Document(d) = n {
+                Some(d.as_ref())
+            } else {
+                None
+            }
+        })
         .map(render_document)
         .unwrap_or_else(|| {
             html! { in bump;
@@ -186,19 +193,24 @@ fn build_tree<'bump>(
                 </div>
             </div>
             <ul class="list-disc list-inside m-0 hidden peer-checked:block ml-4">
-                #{folder_node.children.values().map(|node| {
-                    if let DocumentNode::Folder(folder_node) = node && !folder_node.is_leaf() {
-                        return build_tree(bump, folder_node, active_document, depth + 1);
+                #{folder_node.children.values().filter_map(|node| {
+                    if let DocumentNode::Folder(f) = node && !f.is_leaf() {
+                        if !f.has_visible_content() { return None; }
+                        return Some(build_tree(bump, f, active_document, depth + 1));
                     }
                     let document = match node {
-                        DocumentNode::Folder(f) => f.index_document.as_ref().unwrap(),
-                        DocumentNode::Document { document } => document,
+                        DocumentNode::Folder(f) => match f.index.as_ref().unwrap() {
+                            DocumentLeafNode::Document(d) => d.as_ref(),
+                            DocumentLeafNode::Redirect(_) => return None,
+                        },
+                        DocumentNode::Leaf(DocumentLeafNode::Document(d)) => d.as_ref(),
+                        DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => return None,
                     };
-                    html! { in bump;
+                    Some(html! { in bump;
                         <li class="break-words">
                             {render_document(document)}
                         </li>
-                    }
+                    })
                 })}
             </ul>
         </li>

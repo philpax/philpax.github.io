@@ -5,7 +5,9 @@ use image::{GenericImageView, ImageEncoder, ImageReader};
 use rayon::prelude::*;
 use std::{io::Cursor, path::Path, sync::Arc, thread::JoinHandle};
 
-use crate::content::{Content, Document, DocumentFolderNode, DocumentNode, DocumentType};
+use crate::content::{
+    Content, Document, DocumentFolderNode, DocumentLeafNode, DocumentNode, DocumentType,
+};
 
 // -----------------------------------------------------------------------------
 // Public API
@@ -330,17 +332,18 @@ fn escape_xml(s: &str) -> String {
 }
 
 fn collect_notes<'a>(docs: &mut Vec<&'a Document>, folder: &'a DocumentFolderNode) {
-    if let Some(doc) = &folder.index_document {
-        docs.push(doc);
+    if let Some(DocumentLeafNode::Document(doc)) = &folder.index {
+        docs.push(doc.as_ref());
     }
     for child in folder.children.values() {
         match child {
             DocumentNode::Folder(folder) => {
                 collect_notes(docs, folder);
             }
-            DocumentNode::Document { document } => {
-                docs.push(document);
+            DocumentNode::Leaf(DocumentLeafNode::Document(document)) => {
+                docs.push(document.as_ref());
             }
+            DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => {}
         }
     }
 }
