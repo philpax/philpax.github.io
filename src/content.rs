@@ -121,43 +121,54 @@ impl Content {
         );
 
         let now = std::time::Instant::now();
-        let source_path_to_route = {
-            let mut map = HashMap::new();
-            let insert = |map: &mut HashMap<PathBuf, String>, doc: &Document| {
-                map.insert(doc.source_path.clone(), doc.route_path().url_path());
+        let (source_path_to_route, source_path_to_og_image) = {
+            let mut routes = HashMap::new();
+            let mut og_images = HashMap::new();
+            let insert = |routes: &mut HashMap<PathBuf, String>,
+                          og_images: &mut HashMap<PathBuf, String>,
+                          doc: &Document| {
+                routes.insert(doc.source_path.clone(), doc.route_path().url_path());
+                og_images.insert(doc.source_path.clone(), doc.og_image_path());
             };
             for doc in &blog.documents {
-                insert(&mut map, doc);
+                insert(&mut routes, &mut og_images, doc);
             }
             for doc in &updates.documents {
-                insert(&mut map, doc);
+                insert(&mut routes, &mut og_images, doc);
             }
-            fn insert_notes(map: &mut HashMap<PathBuf, String>, folder: &DocumentFolderNode) {
+            fn insert_notes(
+                routes: &mut HashMap<PathBuf, String>,
+                og_images: &mut HashMap<PathBuf, String>,
+                folder: &DocumentFolderNode,
+            ) {
                 if let Some(DocumentLeafNode::Document(doc)) = &folder.index {
-                    map.insert(doc.source_path.clone(), doc.route_path().url_path());
+                    routes.insert(doc.source_path.clone(), doc.route_path().url_path());
+                    og_images.insert(doc.source_path.clone(), doc.og_image_path());
                 }
                 for node in folder.children.values() {
                     match node {
-                        DocumentNode::Folder(f) => insert_notes(map, f),
+                        DocumentNode::Folder(f) => insert_notes(routes, og_images, f),
                         DocumentNode::Leaf(DocumentLeafNode::Document(document)) => {
-                            map.insert(
+                            routes.insert(
                                 document.source_path.clone(),
                                 document.route_path().url_path(),
                             );
+                            og_images
+                                .insert(document.source_path.clone(), document.og_image_path());
                         }
                         DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => {}
                     }
                 }
             }
-            insert_notes(&mut map, &notes.documents);
-            insert(&mut map, &about);
-            insert(&mut map, &credits);
-            map
+            insert_notes(&mut routes, &mut og_images, &notes.documents);
+            insert(&mut routes, &mut og_images, &about);
+            insert(&mut routes, &mut og_images, &credits);
+            (routes, og_images)
         };
         report("Built source path index", now.elapsed());
 
         let now = std::time::Instant::now();
-        notes.resolve_redirects(&source_path_to_route)?;
+        notes.resolve_redirects(&source_path_to_route, &source_path_to_og_image)?;
         report("Resolved note redirects", now.elapsed());
 
         Ok(Content {
@@ -320,6 +331,7 @@ impl DocumentCollection {
 pub struct RedirectNode {
     pub id: DocumentId,
     pub target_url: String,
+    pub target_og_image_path: Option<String>,
     source_path: PathBuf,
 }
 
@@ -400,6 +412,7 @@ impl NotesCollection {
                     return Ok(DocumentLeafNode::Redirect(RedirectNode {
                         id,
                         target_url: raw_target,
+                        target_og_image_path: None,
                         source_path: path.to_path_buf(),
                     }));
                 }
@@ -467,19 +480,28 @@ impl NotesCollection {
     pub fn resolve_redirects(
         &mut self,
         source_path_to_route: &HashMap<PathBuf, String>,
+        source_path_to_og_image: &HashMap<PathBuf, String>,
     ) -> anyhow::Result<()> {
         fn resolve_in_folder(
             folder: &mut DocumentFolderNode,
             source_path_to_route: &HashMap<PathBuf, String>,
+            source_path_to_og_image: &HashMap<PathBuf, String>,
         ) -> anyhow::Result<()> {
             if let Some(DocumentLeafNode::Redirect(r)) = &mut folder.index {
-                r.target_url = resolve_redirect(r, source_path_to_route)?;
+                let (url, og) = resolve_redirect(r, source_path_to_route, source_path_to_og_image)?;
+                r.target_url = url;
+                r.target_og_image_path = og;
             }
             for node in folder.children.values_mut() {
                 match node {
-                    DocumentNode::Folder(f) => resolve_in_folder(f, source_path_to_route)?,
+                    DocumentNode::Folder(f) => {
+                        resolve_in_folder(f, source_path_to_route, source_path_to_og_image)?
+                    }
                     DocumentNode::Leaf(DocumentLeafNode::Redirect(r)) => {
-                        r.target_url = resolve_redirect(r, source_path_to_route)?;
+                        let (url, og) =
+                            resolve_redirect(r, source_path_to_route, source_path_to_og_image)?;
+                        r.target_url = url;
+                        r.target_og_image_path = og;
                     }
                     DocumentNode::Leaf(DocumentLeafNode::Document(_)) => {}
                 }
@@ -490,21 +512,31 @@ impl NotesCollection {
         fn resolve_redirect(
             r: &RedirectNode,
             source_path_to_route: &HashMap<PathBuf, String>,
-        ) -> anyhow::Result<String> {
+            source_path_to_og_image: &HashMap<PathBuf, String>,
+        ) -> anyhow::Result<(String, Option<String>)> {
             let base_dir = r.source_path.parent().ok_or_else(|| {
                 anyhow::anyhow!("redirect has no parent dir: {:?}", r.source_path)
             })?;
             let resolved = normalize_path(&base_dir.join(&r.target_url));
-            source_path_to_route.get(&resolved).cloned().ok_or_else(|| {
-                anyhow::anyhow!(
-                    "redirect target {:?} in {:?} does not resolve to a known document",
-                    r.target_url,
-                    r.source_path
-                )
-            })
+            let url = source_path_to_route
+                .get(&resolved)
+                .cloned()
+                .ok_or_else(|| {
+                    anyhow::anyhow!(
+                        "redirect target {:?} in {:?} does not resolve to a known document",
+                        r.target_url,
+                        r.source_path
+                    )
+                })?;
+            let og_image = source_path_to_og_image.get(&resolved).cloned();
+            Ok((url, og_image))
         }
 
-        resolve_in_folder(&mut self.documents, source_path_to_route)
+        resolve_in_folder(
+            &mut self.documents,
+            source_path_to_route,
+            source_path_to_og_image,
+        )
     }
 }
 

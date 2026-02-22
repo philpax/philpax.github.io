@@ -215,6 +215,17 @@ fn main() -> anyhow::Result<()> {
         fast,
     };
 
+    fn write_redirect(
+        output_dir: &Path,
+        to_url: &str,
+        og_image_url: Option<&str>,
+        route_path: impl Into<RoutePath>,
+    ) -> anyhow::Result<()> {
+        let bump = paxhtml::bumpalo::Bump::new();
+        views::redirect(&bump, to_url, og_image_url).write_to_route(output_dir, route_path)?;
+        Ok(())
+    }
+
     timer.step("Wrote content", |_| {
         use rayon::prelude::*;
 
@@ -260,9 +271,14 @@ fn main() -> anyhow::Result<()> {
 
             // Write redirect for alternate URL if needed
             if let Some(alternate_route_path) = doc.alternate_route_path() {
-                let bump = paxhtml::bumpalo::Bump::new();
-                views::redirect(&bump, &route_path.url_path())
-                    .write_to_route(output_dir, alternate_route_path)?;
+                let og_image_url =
+                    format!("{}{}", view_context.website_base_url, doc.og_image_path());
+                write_redirect(
+                    output_dir,
+                    &route_path.url_path(),
+                    Some(&og_image_url),
+                    alternate_route_path,
+                )?;
             }
             Ok(())
         }
@@ -295,9 +311,14 @@ fn main() -> anyhow::Result<()> {
         })?;
 
         all_redirects.par_iter().try_for_each(|r| {
-            let bump = Bump::new();
-            views::redirect(&bump, &r.target_url).write_to_route(
+            let og_image_url = r
+                .target_og_image_path
+                .as_deref()
+                .map(|p| format!("{}{}", view_context.website_base_url, p));
+            write_redirect(
                 output_dir,
+                &r.target_url,
+                og_image_url.as_deref(),
                 Route::Note {
                     note_id: r.id.clone(),
                 },
@@ -375,10 +396,12 @@ fn main() -> anyhow::Result<()> {
                 .write_to_route(output_dir, Route::Index)
         })?;
         substeps.step("Wrote deprecated about redirect", || {
-            let bump = Bump::new();
-
-            views::redirect(&bump, &Route::Index.url_path())
-                .write_to_route(output_dir, Route::DeprecatedAbout)
+            write_redirect(
+                output_dir,
+                &Route::Index.url_path(),
+                None,
+                Route::DeprecatedAbout,
+            )
         })?;
         anyhow::Ok(())
     })?;

@@ -245,7 +245,11 @@ pub fn layout<'a>(
     )
 }
 
-pub fn redirect<'bump>(bump: &'bump Bump, to_url: &str) -> paxhtml::Document<'bump> {
+pub fn redirect<'bump>(
+    bump: &'bump Bump,
+    to_url: &str,
+    og_image_url: Option<&str>,
+) -> paxhtml::Document<'bump> {
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
@@ -254,6 +258,9 @@ pub fn redirect<'bump>(bump: &'bump Bump, to_url: &str) -> paxhtml::Document<'bu
                     <title>"Redirecting..."</title>
                     <meta charset="utf-8" />
                     <meta httpEquiv="refresh" content={format!("0; url={to_url}")} />
+                    {og_image_url.map(|url| html! { in bump;
+                        <meta property="og:image" content={url} />
+                    })}
                 </head>
                 <body>
                     <p>"Redirecting..."</p>
