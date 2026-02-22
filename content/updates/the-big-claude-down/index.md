@@ -72,7 +72,9 @@ The optimist may suggest that a thousand flowers will bloom as a result of this:
 
 I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there? What does it mean to be a programmer? What does this mean for white-collar work as a whole? What does it mean for _work_ as a whole? These are questions that I'm still pondering, and am certainly not equipped to answer in this particular post. But you should start thinking about them, too.
 
-# [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
+# Projects
+
+## [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
 
 Pyxis is a schema language for memory structures that I have been working on on-and-off for the last few years. The process of modding games (and other applications) starts with reverse-engineering: using a variety of techniques and tools, one comes to understand behaviours of interest in the application, and how data flows through to enable those behaviours, and how that data is structured.
 
@@ -123,7 +125,7 @@ Of course, these last two months have allowed me to address that. Let us begin.
 - [Refactor test assertions to use exact structural matching](https://github.com/ferrobrew/pyxis/pull/83) (December 18, <DiffStats add=515 sub=547 />)
 - [Organize semantic tests into category-based modules](https://github.com/ferrobrew/pyxis/pull/84) (December 18, <DiffStats add=3373 sub=3223 />)
 
-# [philpax/perchance-interpreter](https://github.com/philpax/perchance-interpreter)
+## [philpax/perchance-interpreter](https://github.com/philpax/perchance-interpreter)
 [Perchance](https://perchance.org/welcome) is
 
 > a platform for creating and sharing random generators
@@ -160,7 +162,7 @@ I assume you can see where this is going. I extracted the base documentation for
 - [Refactor evaluator into multiple modules](https://github.com/philpax/perchance-interpreter/pull/19) (November 19, <DiffStats add=3394 sub=3089 />)
 - [refactor: remove non-functional tree view from trace display](https://github.com/philpax/perchance-interpreter/pull/20) (November 23, <DiffStats add=17 sub=374 />)
 
-# [philpax/paxcord](https://github.com/philpax/paxcord)
+## [philpax/paxcord](https://github.com/philpax/paxcord)
 `paxcord` is my personal Discord bot, optimised for my own use cases. Notably, I am a fan of the Lua programming language, and I've carried that into this here bot by giving it fairly extensive Lua scripting capabilities. The work here was primarily in extending that capability to the point of near-absurdity.
 
 - [Add Perchance Interpreter as Lua Dependency](https://github.com/philpax/paxcord/pull/3) (November 12, <DiffStats add=58 sub=0 />)
@@ -170,7 +172,7 @@ I assume you can see where this is going. I extracted the base documentation for
 - [feat: add reply handler for interaction responses](https://github.com/philpax/paxcord/pull/7) (December 16-17, <DiffStats add=815 sub=72 />)
 - [Check if Lua accesses first message in chain](https://github.com/philpax/paxcord/pull/8) (December 17, <DiffStats add=5 sub=0 />)
 
-# [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
+## [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
 A decade ago, I was a developer on the [multiplayer mod for Just Cause 2](https://jc-mp.com/). I slowly phased out my involvement over the years - what with university and employment obligations - and primarily remained as an occasional community presence, helping people out where I could and whatnot (ask me sometime about the follies of achievements).
 
 In 2021, a [OVH datacentre](https://www.datacenterdynamics.com/en/analysis/ovhcloud-fire-france-data-center/) burnt down. Unfortunately, that also happened to be the datacentre in which the JC2-MP website and all of the surrounding infrastructure was hosted; we had backups, but they were out of date, and the other members of the team were as similarly detached as me, which meant that our website remained down for the next few years.
@@ -189,7 +191,7 @@ This SSG was effectively "done" months ago, but I couldn't deploy it due to a pe
 - [Update wikitext parsing functionality](https://github.com/jc2mp/jc2mp.github.io/pull/3) (November 18, <DiffStats add=49 sub=27 />)
 - [Add basic search to MediaWiki static site generator](https://github.com/jc2mp/jc2mp.github.io/pull/4) (November 18, <DiffStats add=568 sub=21 />)
 
-# [philpax/blackbird](https://github.com/philpax/blackbird)
+## [philpax/blackbird](https://github.com/philpax/blackbird)
 blackbird is my personal music player software, optimised for my own tastes in what a music player should do and how it should operate. I grew up using foobar2000 in a very specific way - library view only - and as I started using other operating systems more regularly, I wanted a way to both carry that experience with me and to be able to stream my music from my own server, regardless of where I was.
 
 The latter was easy enough to solve with [Navidrome](https://www.navidrome.org/), which implements the (Open)Subsonic protocol, but the former showed itself to be much more difficult: the majority of existing Subsonic clients optimised for iTunes / Spotify-like music libraries, which are heavily playlist-oriented and do not present your entire library in a single linear list. After much hemming and hawing, and after being goaded by a friend building their own client, I embarked upon the process of developing my own.
@@ -221,7 +223,7 @@ I'd say that this has generally gone [quite well](/tags/blackbird/), but the thi
 - [Add GTK initialization for Linux tray icon](https://github.com/philpax/blackbird/pull/49) (November 23, <DiffStats add=21 sub=3 />)
 
 
-# [philpax/paxboard](https://github.com/philpax/paxboard)
+## [philpax/paxboard](https://github.com/philpax/paxboard)
 paxboard is my personal self-hosted home page. I am pathologically afraid of YAML, so existing solutions like [homepage](https://gethomepage.dev/) didn't sit right with me; additionally, I wanted to be able to easily display custom information, like the status of my AI models. My initial version of this was written in Rust and was entirely server-rendered using [paxhtml](#philpaxpaxhtml), as I was in a particularly `paxhtml`-y mood.
 
 I'd grown to reconsider this, especially because I wanted cleanly-delivered live updates, so one of the first things I did was to [rewrite the codebase in TypeScript and React](https://github.com/philpax/paxboard/pull/11) (November 14, <DiffStats add=4521 sub=2515 />), making it much easier to iterate (including live edits to the "deployed" version). I then proceeded to [add world clocks for major cities](https://github.com/philpax/paxboard/pull/12) (November 14-15, <DiffStats add=160 sub=0 />) and make it possible to [copy the times of those world clocks to  theclipboard](https://github.com/philpax/paxboard/pull/13) (November 16, <DiffStats add=81 sub=1 />).
@@ -230,7 +232,7 @@ I then rounded things out by adding [weather displays for Stockholm and Melbourn
 
 This is a relatively small bit of bespoke software, but it's something that I would have otherwise given up on if it weren't for the ease of maintenance. Of course, one could argue that the correct thing to do would be to use the existing software - but like with blackbird, I want something that fits _me_.
 
-# [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
+## [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
 [ComfyUI](https://www.comfy.org/) is an open-source node-based program for composing AI synthesis workflows (image generation, video generation, etc). The user composes a graph of nodes that describes the flow of data through the various steps in a synthesis pipeline, and then runs this graph to produce an output.
 
 To help external users make use of the wide ecosystem, it offers an API that can be used to run these workflows. Unfortunately, this API is poorly-designed and even more poorly documented, so using it correctly is both troublesome and tedious. In late 2024, I developed a Rust library for interfacing with this API with a _very_ strongly typed API in mind, as befitting the Rust ethos: the goal was to make it difficult to "hold it wrong", while guiding users along the happy path.
@@ -245,7 +247,7 @@ I have yet to release it to [crates.io](https://crates.io), as I wanted to compl
 - [Format code + formatting CI](https://github.com/philpax/rucomfyui/pull/15) (December 3, <DiffStats add=192 sub=70 />)
 - [Build API workflow to Rust/Lua converter](https://github.com/philpax/rucomfyui/pull/16) (December 7-11, <DiffStats add=2712 sub=0 />)
 
-# [ferrobrew/ida-c-splitter](https://github.com/ferrobrew/ida-c-splitter)
+## [ferrobrew/ida-c-splitter](https://github.com/ferrobrew/ida-c-splitter)
 While working on [my VR mod for Just Cause 3](../one-day-ill-finish-a-vr-mod/index.md), I found myself wanting to traverse the entirety of IDA's decompilation output for the debug build of the game: the primary benefit of this is that searching for references to class fields between functions, something which is very difficult in IDA proper, becomes a mere text search.
 
 Unfortunately, the file that IDA produces for JC3 is 500MB, which the vast majority of text editors will break down on, and it's hardly an ideal experience in the ones that _do_ survive. After staring at the output for a while in Sublime Text, I realised that it was well-structured enough to build a tool that split the output into a hierarchical folder structure, organised by classes and such, making it significantly more legible to traditional code navigation tools.
@@ -262,7 +264,7 @@ I'd like to say that this helped me continue my work on JC3, but as you can see,
 
 [^jc3]: Also, Square Enix released a patch to de-Denuvo the game, which I would appreciate in any other context, but it would have required me to rework all of my existing reverse engineering work to support the clean binary, which I haven't been able to motivate myself to do. I would quite like to return to this some day.
 
-# [philpax/paxhtml](https://github.com/philpax/paxhtml)
+## [philpax/paxhtml](https://github.com/philpax/paxhtml)
 paxhtml is a Rust library for generating HTML, used primarily by my website. The existing solutions that I found for this were incomplete, not pragmatic enough, or not really amenable to use in a SSG. It offers both a builder API and a proc macro for building trees of elements, which are then processed into "render elements" that represent the actual HTML to be generated.
 
 I have updated the library as required to accomodate the needs of its consumers.
@@ -272,7 +274,7 @@ I have updated the library as required to accomodate the needs of its consumers.
 - [Use bumpalo allocator for everything](https://github.com/philpax/paxhtml/pull/3) (December 30-31, <DiffStats add=1171 sub=532 />)
 - [refactor: remove mlua support + owned elements](https://github.com/philpax/paxhtml/pull/4) (December 31, <DiffStats add=1 sub=744 />)
 
-# [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
+## [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
 This very here website. A long, long time ago, I hosted a Ruby/[Sinatra](https://sinatrarb.com/) server for my website that was completely unreproducible, but was fully hackable; a less-long time ago, I switched this over to a [Zola](https://getzola.org/)-generated static site, which was fully reproducible, but completely unhackable.
 
 In an effort to thread the needle and set up a reproducible _and_ hackable solution, I developed my own Rust SSG. As with many of these things, I didn't do it because it was easy; I did it because I thought it would be easy. It took me the better part of a year to put together a design and structure I was happy with, which was largely an unforced error - turns out that people pre-design their websites in Figma for a reason.
@@ -288,7 +290,7 @@ With that being said, though, it's done, and it works, so the only thing that re
 - [Performance optimisations](https://github.com/philpax/philpax.github.io/pull/20) (December 31 - January 1, <DiffStats add=490 sub=215 />)
 - [feat: switch to gitoxide for commit date lookups](https://github.com/philpax/philpax.github.io/pull/21) (January 7, <DiffStats add=1805 sub=157 />, **closed**)
 
-# [philpax/nixos-configuration](https://github.com/philpax/nixos-configuration)
+## [philpax/nixos-configuration](https://github.com/philpax/nixos-configuration)
 The majority of my systems run on NixOS. Without LLMs, I would have given up on Nix almost immediately: but they have freed me to overlook its incredibly ugly language and focus on the substance. The changes I made here were relatively straightforward refactoring changes, but I appreciated being able to tick them off my to-do list while working on other things.
 
 - [Organize dotfiles config by machine](https://github.com/philpax/nixos-configuration/pull/14) (November 17-18, <DiffStats add=16 sub=9 />)
@@ -296,7 +298,7 @@ The majority of my systems run on NixOS. Without LLMs, I would have given up on 
 - [Set up SSH agent for all operations](https://github.com/philpax/nixos-configuration/pull/16) (November 20, <DiffStats add=19 sub=7 />)
 - [Extract shared developer services for reuse](https://github.com/philpax/nixos-configuration/pull/17) (November 20, <DiffStats add=36 sub=34 />)
 
-# [philpax/prismata](https://github.com/philpax/prismata)
+## [philpax/prismata](https://github.com/philpax/prismata)
 Prismata is a research prototype that I built out at one of my former employers, with the intention of experimenting with an AI co-creation workflow in a voxel world. After receiving permission, I open-sourced it and did some minor cleanup work to make it usable once again.
 
 The first step was to [set up a frontend deployment workflow](https://github.com/philpax/prismata/pull/8) (November 17-18, <DiffStats add=91 sub=0 />); unfortunately, in doing so, I discovered that the version of Bevy/wgpu it was targeting used experimental rendering features that were no longer supported in modern browsers.
@@ -307,7 +309,7 @@ I had to go in there towards the end to restore some of the behaviour that had b
 
 [^bevyupdate]: Truth be told, this would not be that difficult. The most frustrating part is that I had to fork several dependencies to update them to Bevy 0.17, so I'd have to do the same thing again for 0.18. Not difficult, just annoying.
 
-# [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
+## [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
 As part of my work for [genresin.space](#genresinspacegenresinspacegithubio), I needed a way to reliably parse wikitext within Rust. I use [a fork](https://github.com/philpax/parse-wiki-text-2) of [parse-wiki-text-2](https://github.com/soerenmeier/parse-wiki-text-2), which is itself a fork of [parse_wiki_text](https://crates.io/crates/parse_wiki_text) (wherever you are, Fredrik, thank you for your service 🫡). However, PWT produces a stream of nodes: it does not actually produce a tree, at least not in the sense you'd expect from a traditional parser.
 
 I believe that this was an intentional decision, as anyone who has worked with wikitext can tell you that it is a demonic format that will accept all kinds of malformed input and keep trucking. For my purposes, I needed something that could take the tag soup and pull it into an AST that I could then render or process as required; from this, `wikitest_simplified` was born, and it has been evolved since to support more and more of the madness that permeates the wikitext of both Wikipedia and [the JC2-MP wiki](#philpaxjc2mpgithubio-jc2mpjc2mpgithubio).
@@ -318,7 +320,7 @@ Some time after this, I realised it would be beneficial to demonstrate what the 
 
 [^design]: That being said, I'd be lying if I said I wasn't considering setting up a unified design language and using it across all of my tools.
 
-# [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
+## [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
 [genresin.space](https://genresin.space/) is a project I've been noodling on for the last year. Using `wikitext_simplified` and a lot of machinery, it extracts information about every music genre with an infobox from the English Wikipedia (offline - I'm not hitting the live website!), and then renders it as an explorable graph (as in graph theory, not charts), so that you can explore how genres influence and are influenced by each other.
 
 It has been functionally complete for some time, but polishing it to the point where it captures what I'm going for and works well on every platform has proven to be troublesome. Thankfully, Worker Claude has been able to unblock some of the more pernicious work. The first change was purely procedural: [splitting the build and deploy CI workflows](https://github.com/genresinspace/genresinspace.github.io/pull/36) (November 20, <DiffStats add=23 sub=44 />).
@@ -329,36 +331,36 @@ The next steps were to improve the UI on mobile by [making it properly responsiv
 
 Finally, I'd been unhappy with the colour scheme in use for some time _and_ wanted to support light mode, so I [let Claude take a crack at that](https://github.com/genresinspace/genresinspace.github.io/pull/39) (November 23-24, <DiffStats add=282 sub=110 />). It wasn't perfect, but it was certainly an improvement, and one that I have continued to develop. (But that's for the next update.)
 
-# [philpax/openxrs](https://github.com/philpax/openxrs)
+## [philpax/openxrs](https://github.com/philpax/openxrs)
 [openxrs](https://github.com/Ralith/openxrs) is a Rust library (not mine!) for interacting with OpenXR, the standard for interfacing with XR hardware. As part of my work on the VR mod for JC3, I wanted a D3D11 integration example for `openxrs`, so I used my pre-existing fork and produced such [an example](https://github.com/philpax/openxrs/pull/1) (November 21, <DiffStats add=914 sub=0 />, **closed**), which worked beautifully.
 
 I then closed this PR and extracted the example into an [independent repo](https://github.com/philpax/d3d11-openxr-example). I would have preferred to skip directly to this step, but I wanted to make sure Claude had the necessary context to navigate `openxrs` without having to look up individual files.
 
-# [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
+## [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
 After completing [ida-c-splitter](#ferrobrewida-c-splitter), I posted about it in a reverse-engineering-related Discord, and someone messaged me to ask if I could vibe-code something for them with my credits. As I found myself with a need to exhaust these credits, I took them up on their request, and started piping their prompts and test files directly into Claude.
 
 This essentially makes this a vibe-vibe-coded project: not only was the actual programming delegated, the task of issuing the delegation was itself delegated. I find this amusing.
 
 In any case, I won't detail the PRs here - there were nearly 40 of them, and it involved a significant amount of back and forth between all three parties involved. It exists now and it works, but I haven't personally used it, and I couldn't tell you how any of it works. How do I feel about that? Unsure; I certainly don't claim any ownership over it, despite it being under my username.
 
-# [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
+## [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
 [egui-directx11](https://github.com/NekomaruQwQ/egui-directx11) is a DirectX 11 renderer for the [egui](https://egui.rs) immediate UI library. I have a project for Just Cause 2 that I wanted to use `egui` for, but unfortunately, JC2 uses DirectX 10 (one of the few games to do so!). A friend and I backported `egui-directx11` to DirectX 10 some time ago, and that served us well.
 
 However, I found myself wanting to update that project to the latest version of its dependencies, and that included `egui`, which meant I'd have to update `egui-directx10`. I was well within my hammer-swinging phase by this point, so [swing away I did](https://github.com/ferrobrew/egui-directx10/pull/2) (November 23-24, <DiffStats add=1662 sub=773 />). This was largely successful, but there remains a persistent bug with the text rendering that neither Claude or I were able to figure out.
 
 Luckily, this project is non-essential, and I'm pretty sure that we're the only people on this planet who want to use `egui` with DirectX 10, so I'm content with leaving it as-is.
 
-# [ferrobrew/re-utilities](https://github.com/ferrobrew/re-utilities)
+## [ferrobrew/re-utilities](https://github.com/ferrobrew/re-utilities)
 `re-utilities` is a library that a friend and I created to house, you'll never believe this, Utilities for Reverse Engineering. (Honestly, I can't stand the name, but we have yet to choose a better one.)
 
 The first port of call was maintenance, in [updating windows-rs to version 0.62](https://github.com/ferrobrew/re-utilities/pull/11) (November 26, <DiffStats add=73 sub=27 />). The second was to make it a better library by [replacing anyhow with custom error enums](https://github.com/ferrobrew/re-utilities/pull/12)[^anyhow] (November 26, <DiffStats add=610 sub=129 />). Nothing too difficult, but certainly not without tedium for a human.
 
 [^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro. With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
 
-# [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
+## [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
 As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. Not to beat a dead horse, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) (November 26, <DiffStats add=65 sub=53 />).
 
-# [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
+## [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
 As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
 
 The biggest change was to switch our existing definitions over to use [real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) (December 17, <DiffStats add=2472 sub=2570 />), as was implemented the same day. Watching all of the redundancy disappear brought a tear to my eye.
