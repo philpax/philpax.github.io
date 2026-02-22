@@ -7,6 +7,8 @@ datetime = 2026-02-22T18:00:00Z
 tags=["ai", "pyxis", "website", "genresinspace", "blackbird", "perchanceinterpreter", "paxcord", "jc2mp", "paxboard", "rucomfyui", "idacsplitter", "paxhtml", "nixos", "prismata", "wikitextsimplified", "reutilities"]
 +++
 
+_With apologies to [Nine Inch Nails](https://www.youtube.com/watch?v=9gg2p7_PnTQ)._
+
 Prior to this update, I was attempting to maintain a cadence of one to two weeks, sometimes slipping to three, between updates.
 
 Unfortunately, in early November, I received this email:
@@ -14,6 +16,8 @@ Unfortunately, in early November, I received this email:
 IMAGEHERE
 
 And being the industrious individual that I am, I endeavoured to drain those credits before they expired. I apologise in advance for what you're about to see.
+
+<!-- TODO: move to blog, remove dot-pointed PRs, add subheadings for each section, add images for each section, add a hero image (a nondescript silhouette falling down amongst a sea of Claude Code crabs?), general edit pass, punch up introduction -->
 
 <!-- more -->
 
@@ -23,25 +27,37 @@ I started off relatively slow; the Claude Code Web interface was buggy and crude
 
 Around halfway through this period (they extended it to ~~collect more training data~~ as mea culpa for the bugginess of CCW), I found myself in the position of mending some of the more complex PRs with Claude Code locally. In exercising this, I was exhausting my regular Claude credits - being a mere Pro peon, of course - so, just for a little bit, I thought I'd upgrade to Max and 5x my limits.
 
-Regrettably, that increased the amount of free credits I had from 250 USD to 1000 USD. This posed a much, much more intractable barrier to overcome, but try I did. Every project I could think of, that belonged to me, and that I was willing to submit sloppy PRs to, received sloppy PRs.
+Regrettably, that increased the amount of free credits I had from 250 USD to 1000 USD. This posed a much, much more intractable barrier to overcome, but try I did. Every project I could think of, that belonged to me, and that I was willing to submit sloppy PRs to, received sloppy PRs.[^sloppy]
+
+[^sloppy]: "sloppy" in the sense that they came straight out of an agent, not that they were, you know, sloppily implemented. I made sure that they did what they were supposed to do, or left the codebase in a state where the work could be continued.
 
 By now, you have seen the length of this post and its table of contents. I want you to know that, despite all of my efforts, despite the hundreds of PRs I submitted to dozens of projects, I was only able to get down to ~460 USD of credit in the time period.
 
-Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of my "big swings" were during November.
+Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of the big swings were during November.
 
 # Takeaways
+Given how long it has taken me to write this post, I have largely forgotten a lot of the minute-to-minute takeaways I had from the experience, but here follows a high-level overview of my thoughts. I'm frontloading these as the remaining five thousand words are largely not of interest to the casual reader, outside of acting as proof that I did what I said I did.
 
-Given how long it has taken me to write this post, I have largely forgotten a lot of the minute-to-minute takeaways I had from the experience, but here follows a high-level explanation of my thoughts. Worth noting that it took me two months to write this post up: the sheer amount of work done required a similarly sheer amount of work to document, and I found myself putting it off as to avoid confronting it. Nonetheless, we persist.
+It is worth noting that it took me two months to write this post up: the sheer amount of work done required a similarly sheer amount of work to document, and I found myself putting it off as to avoid confronting it. Nonetheless, we persist.
 
-## Claude Code Web
+## Waiter, This Claude Code Web Is Raw
 Claude Code Web was insanely buggy, and still is (at least from having tried it again over the last few weeks). It will frequently stop responding to you, lose your messages, require prodding to continue and will break down after a certain number of commits. It has a limited understanding of its own environment, and frequently requires handholding around more unconventional toolchains.
 
 Functionality-wise, you cannot easily work _with_ it - it's very much aimed as an in-and-out endeavour, and working on the same branch that it is working on can often lead to pain. Speaking of branches, you can't control which branch it'll use; it will always instantiate a new branch from your main branch, which means you can't easily continue existing branches. This is especially irritating given the commit-breakage from above; continuing long-lived work is quite tedious.
 
 That being said, there is certainly an appeal to the interaction model, which is why I've continued to use it on and off. Being able to kick off work while doing something else is compelling _if_ you know that it will do what you expect it to do. One's sense of its capabilities grows with use, but you can never be sure; I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
 
+## Context Is King
+This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the happier both of you will be.
+
+What this means is that you should be paying attention to where it stumbles, and _writing documentation_ (or having it do it for you!) to capture that pain point and how to resolve it. If it's chafing against the CI, tell it what to check ahead of time. If it's repeatedly making the same kinds of code style mistakes, write down the specific nuances it's getting wrong. If it doesn't know what to test against, let it know.
+
+Not only will this benefit your agent, it'll also benefit _you_, as well as other human developers. I've always considered myself a proponent of good documentation, but an agent finally gives me a way to model how other developers might consume the paltry documentation that I've put together, and boy, have I found my codebases wanting in places. Fixing this really does pay off.
+
+As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING.md` and, only if necessary, using agent-specific documentation (e.g. `CLAUDE.md`) to direct your agent to that file. To the greatest possible extent, you want to make sure that the context that your human programmers and your agents share are identical. Any drift will make at least one of those parties unhappy.
+
 ## Token Anxiety
-I hesitate to say this out loud, given its initial reception, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
+I hesitate to say this out loud, given how the linked post was received, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
 
 This was especially exacerbated by the numerical value attached to the credits. I saw the number and felt driven to bring it to zero by dispatching as much work as humanly possible - and in some cases, beyond humanly possible - and it led to rather unhealthy use practices. During the worst of it in November, I found myself sleeping extremely late - sometimes, not at all - so that I could send off more work to be done, review it, and test it. It may have been one of the most productive months of my life, but it was also profoundly self-destructive. This breadth of work led me to experience what I'd describe as mini-burnout, where I was unable to engage with anything I'd touched as a result of the anxiety.
 
@@ -54,7 +70,7 @@ This doesn't apply for all domains to the same degree: there are many tasks and 
 
 The optimist may suggest that a thousand flowers will bloom as a result of this: after all, if everyone has much more leverage available to them, at least a few of those people will be industrious enough to strike it out on their own and build their own futures. I'd like to say that I believe in this - that there will be something for everyone in some form - but I fear things will not be so neat.
 
-I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there?
+I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there? What does it mean to be a programmer? What does this mean for white-collar work as a whole? What does it mean for _work_ as a whole? These are questions that I'm still pondering, and am certainly not equipped to answer in this particular post. But you should start thinking about them, too.
 
 # [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
 
@@ -257,6 +273,12 @@ I have updated the library as required to accomodate the needs of its consumers.
 - [refactor: remove mlua support + owned elements](https://github.com/philpax/paxhtml/pull/4) (December 31, <DiffStats add=1 sub=744 />)
 
 # [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
+This very here website. A long, long time ago, I hosted a Ruby/[Sinatra](https://sinatrarb.com/) server for my website that was completely unreproducible, but was fully hackable; a less-long time ago, I switched this over to a [Zola](https://getzola.org/)-generated static site, which was fully reproducible, but completely unhackable.
+
+In an effort to thread the needle and set up a reproducible _and_ hackable solution, I developed my own Rust SSG. As with many of these things, I didn't do it because it was easy; I did it because I thought it would be easy. It took me the better part of a year to put together a design and structure I was happy with, which was largely an unforced error - turns out that people pre-design their websites in Figma for a reason.
+
+With that being said, though, it's done, and it works, so the only thing that remained was to make it better, which I did.
+
 - [Add custom components support ](https://github.com/philpax/philpax.github.io/pull/13) (November 17-18, <DiffStats add=122 sub=78 />)
 - [Add custom social media preview image generation](https://github.com/philpax/philpax.github.io/pull/14) (November 22-23, <DiffStats add=755 sub=48 />)
 - [feat(styles): improve light mode color palette](https://github.com/philpax/philpax.github.io/pull/15) (November 23, <DiffStats add=4 sub=4 />)
@@ -297,65 +319,46 @@ Some time after this, I realised it would be beneficial to demonstrate what the 
 [^design]: That being said, I'd be lying if I said I wasn't considering setting up a unified design language and using it across all of my tools.
 
 # [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
-- [Debug iOS crash issue deep dive](https://github.com/genresinspace/genresinspace.github.io/pull/35) (November 20, <DiffStats add=223 sub=51 />)
-- [Optimize CI to separate build and deploy](https://github.com/genresinspace/genresinspace.github.io/pull/36) (November 20, <DiffStats add=23 sub=44 />)
-- [Make graph UI responsive for mobile and tablet](https://github.com/genresinspace/genresinspace.github.io/pull/37) (November 20-21, <DiffStats add=195 sub=52 />)
-- [Add sidebar snap positions for mobile drag](https://github.com/genresinspace/genresinspace.github.io/pull/38) (November 21, <DiffStats add=41 sub=10 />)
-- [Add light mode and harmonize colors](https://github.com/genresinspace/genresinspace.github.io/pull/39) (November 23-24, <DiffStats add=282 sub=110 />)
+[genresin.space](https://genresin.space/) is a project I've been noodling on for the last year. Using `wikitext_simplified` and a lot of machinery, it extracts information about every music genre with an infobox from the English Wikipedia (offline - I'm not hitting the live website!), and then renders it as an explorable graph (as in graph theory, not charts), so that you can explore how genres influence and are influenced by each other.
+
+It has been functionally complete for some time, but polishing it to the point where it captures what I'm going for and works well on every platform has proven to be troublesome. Thankfully, Worker Claude has been able to unblock some of the more pernicious work. The first change was purely procedural: [splitting the build and deploy CI workflows](https://github.com/genresinspace/genresinspace.github.io/pull/36) (November 20, <DiffStats add=23 sub=44 />).
+
+Claude's intervention began to pay off with something that had been bothering me for a long time: mobile support. I'd designed GiS with desktop in mind, but still wanted to provide a decent experience on mobile. Unfortunately, there was a particularly troubling issue that had me tearing my hair out: after a few seconds, the graph would crash Safari on iOS, and without a Mac, I had no way of debugging the problem, outside of disabling things at random. To my pleasure - and I'll admit, to some degree, annoynace - Claude was able to resolve this by [tweaking a few parameters](https://github.com/genresinspace/genresinspace.github.io/pull/35) (November 20, <DiffStats add=223 sub=51 />).
+
+The next steps were to improve the UI on mobile by [making it properly responsive, including handling a vertical layout](https://github.com/genresinspace/genresinspace.github.io/pull/37) (November 20-21, <DiffStats add=195 sub=52 />), and by adding [snap positions for the sidebar](https://github.com/genresinspace/genresinspace.github.io/pull/38) (November 21, <DiffStats add=41 sub=10 />).
+
+Finally, I'd been unhappy with the colour scheme in use for some time _and_ wanted to support light mode, so I [let Claude take a crack at that](https://github.com/genresinspace/genresinspace.github.io/pull/39) (November 23-24, <DiffStats add=282 sub=110 />). It wasn't perfect, but it was certainly an improvement, and one that I have continued to develop. (But that's for the next update.)
 
 # [philpax/openxrs](https://github.com/philpax/openxrs)
-- [Add D3D11 triangle example with spinning RGB triangle](https://github.com/philpax/openxrs/pull/1) (November 21, <DiffStats add=914 sub=0 />, **closed**)
+[openxrs](https://github.com/Ralith/openxrs) is a Rust library (not mine!) for interacting with OpenXR, the standard for interfacing with XR hardware. As part of my work on the VR mod for JC3, I wanted a D3D11 integration example for `openxrs`, so I used my pre-existing fork and produced such [an example](https://github.com/philpax/openxrs/pull/1) (November 21, <DiffStats add=914 sub=0 />, **closed**), which worked beautifully.
+
+I then closed this PR and extracted the example into an [independent repo](https://github.com/philpax/d3d11-openxr-example). I would have preferred to skip directly to this step, but I wanted to make sure Claude had the necessary context to navigate `openxrs` without having to look up individual files.
 
 # [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
-- [Parse DWARF debug info to reconstruct C files](https://github.com/philpax/dwarf-c-reconstructor/pull/1) (November 22, <DiffStats add=3149 sub=3 />)
-- [Refactor code and add argument parsing](https://github.com/philpax/dwarf-c-reconstructor/pull/2) (November 22, <DiffStats add=2840 sub=2854 />)
-- [Look up byte size from parsed types](https://github.com/philpax/dwarf-c-reconstructor/pull/3) (November 22, <DiffStats add=67 sub=9 />)
-- [More functionality](https://github.com/philpax/dwarf-c-reconstructor/pull/4) (November 23, <DiffStats add=891 sub=129 />)
-- [More features and fixes](https://github.com/philpax/dwarf-c-reconstructor/pull/5) (November 23, <DiffStats add=575 sub=114 />)
-- [More fixes](https://github.com/philpax/dwarf-c-reconstructor/pull/6) (November 26-27, <DiffStats add=207 sub=34 />)
-- [Verify reconstructor output on all samples](https://github.com/philpax/dwarf-c-reconstructor/pull/7) (November 27, <DiffStats add=140 sub=34 />)
-- [Fix memory function hook declaration](https://github.com/philpax/dwarf-c-reconstructor/pull/8) (November 30, <DiffStats add=416 sub=143 />)
-- [Sort labels in drawing function](https://github.com/philpax/dwarf-c-reconstructor/pull/9) (December 2, <DiffStats add=233 sub=145 />)
-- [Fix function body brace wrapping regression](https://github.com/philpax/dwarf-c-reconstructor/pull/10) (December 6, <DiffStats add=42 sub=6 />)
-- [Fix spacing around pointer asterisks in type generation](https://github.com/philpax/dwarf-c-reconstructor/pull/11) (December 6, <DiffStats add=3 sub=4 />)
-- [Remove duplicate typedef definitions from compilation units](https://github.com/philpax/dwarf-c-reconstructor/pull/12) (December 6, <DiffStats add=60 sub=36 />)
-- [Fix class method parameter extraction and definition generation](https://github.com/philpax/dwarf-c-reconstructor/pull/13) (December 6, <DiffStats add=669 sub=349 />)
-- [Add workflow dispatch for release automation](https://github.com/philpax/dwarf-c-reconstructor/pull/14) (December 6, <DiffStats add=50 sub=0 />)
-- [Add workflow_call and workflow_dispatch to release workflow](https://github.com/philpax/dwarf-c-reconstructor/pull/15) (December 6, <DiffStats add=26 sub=2 />)
-- [Fix pointer and reference formatting style](https://github.com/philpax/dwarf-c-reconstructor/pull/16) (December 7, <DiffStats add=14 sub=6 />)
-- [Fix class definition generation in facebin CU](https://github.com/philpax/dwarf-c-reconstructor/pull/17) (December 7, <DiffStats add=128 sub=2 />)
-- [Refactor long tuples into struct types](https://github.com/philpax/dwarf-c-reconstructor/pull/18) (December 7, <DiffStats add=209 sub=293 />)
-- [Fix deduplication for namespaced types](https://github.com/philpax/dwarf-c-reconstructor/pull/19) (December 7, <DiffStats add=115 sub=24 />)
-- [Remove empty braces from forward declared classes](https://github.com/philpax/dwarf-c-reconstructor/pull/20) (December 7, <DiffStats add=20 sub=0 />)
-- [Fix workflow dispatch trigger in release workflow](https://github.com/philpax/dwarf-c-reconstructor/pull/21) (December 7, <DiffStats add=2 sub=0 />)
-- [Generate nested types with correct file placement](https://github.com/philpax/dwarf-c-reconstructor/pull/22) (December 7, <DiffStats add=73 sub=5 />)
-- [Add verbose class usage option](https://github.com/philpax/dwarf-c-reconstructor/pull/23) (December 7, <DiffStats add=59 sub=24 />)
-- [Fix namespace and typedef code generation](https://github.com/philpax/dwarf-c-reconstructor/pull/24) (December 7, <DiffStats add=25 sub=0 />)
-- [Add default public accessibility to class members](https://github.com/philpax/dwarf-c-reconstructor/pull/25) (December 7, <DiffStats add=6 sub=14 />)
-- [Fix missing arguments in generated header declarations](https://github.com/philpax/dwarf-c-reconstructor/pull/26) (December 8, <DiffStats add=16 sub=4 />)
-- [Skip unnamed forward declared structs](https://github.com/philpax/dwarf-c-reconstructor/pull/27) (December 8, <DiffStats add=5 sub=0 />)
-- [Fix namespace scope in class definitions](https://github.com/philpax/dwarf-c-reconstructor/pull/28) (December 8, <DiffStats add=125 sub=27 />)
-- [Add option to skip namespace indentation](https://github.com/philpax/dwarf-c-reconstructor/pull/29) (December 8, <DiffStats add=19 sub=4 />)
-- [Add verbose class usage option to compiler](https://github.com/philpax/dwarf-c-reconstructor/pull/30) (December 24, <DiffStats add=31 sub=24 />)
-- [Fix duplicate namespace declarations in code generation](https://github.com/philpax/dwarf-c-reconstructor/pull/31) (December 24, <DiffStats add=70 sub=7 />)
-- [Add empty lines around namespace brackets](https://github.com/philpax/dwarf-c-reconstructor/pull/32) (December 24, <DiffStats add=12 sub=0 />)
-- [Fix missing base class declaration generation](https://github.com/philpax/dwarf-c-reconstructor/pull/33) (December 24, <DiffStats add=114 sub=38 />)
-- [Remove class prefix from inheritance declarations](https://github.com/philpax/dwarf-c-reconstructor/pull/34) (December 24, <DiffStats add=12 sub=2 />)
-- [Refactor code for better maintainability](https://github.com/philpax/dwarf-c-reconstructor/pull/35) (December 24, <DiffStats add=3453 sub=3276 />)
-- [Add line numbers to forward declared elements](https://github.com/philpax/dwarf-c-reconstructor/pull/36) (December 26, <DiffStats add=4 sub=0 />)
-- [Fix duplicate namespace declarations in generated code](https://github.com/philpax/dwarf-c-reconstructor/pull/37) (December 26, <DiffStats add=90 sub=6 />)
-- [Fix duplicate enum definitions in generated file anonymous types](https://github.com/philpax/dwarf-c-reconstructor/pull/38) (December 26, <DiffStats add=326 sub=14 />)
-- [Fix duplicate typedef for mpColor struct logic](https://github.com/philpax/dwarf-c-reconstructor/pull/39) (December 26, <DiffStats add=37 sub=62 />)
+After completing [ida-c-splitter](#ferrobrewida-c-splitter), I posted about it in a reverse-engineering-related Discord, and someone messaged me to ask if I could vibe-code something for them with my credits. As I found myself with a need to exhaust these credits, I took them up on their request, and started piping their prompts and test files directly into Claude.
+
+This essentially makes this a vibe-vibe-coded project: not only was the actual programming delegated, the task of issuing the delegation was itself delegated. I find this amusing.
+
+In any case, I won't detail the PRs here - there were nearly 40 of them, and it involved a significant amount of back and forth between all three parties involved. It exists now and it works, but I haven't personally used it, and I couldn't tell you how any of it works. How do I feel about that? Unsure; I certainly don't claim any ownership over it, despite it being under my username.
 
 # [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
-- [Merge upstream](https://github.com/ferrobrew/egui-directx10/pull/2) (November 23-24, <DiffStats add=1662 sub=773 />)
+[egui-directx11](https://github.com/NekomaruQwQ/egui-directx11) is a DirectX 11 renderer for the [egui](https://egui.rs) immediate UI library. I have a project for Just Cause 2 that I wanted to use `egui` for, but unfortunately, JC2 uses DirectX 10 (one of the few games to do so!). A friend and I backported `egui-directx11` to DirectX 10 some time ago, and that served us well.
+
+However, I found myself wanting to update that project to the latest version of its dependencies, and that included `egui`, which meant I'd have to update `egui-directx10`. I was well within my hammer-swinging phase by this point, so [swing away I did](https://github.com/ferrobrew/egui-directx10/pull/2) (November 23-24, <DiffStats add=1662 sub=773 />). This was largely successful, but there remains a persistent bug with the text rendering that neither Claude or I were able to figure out.
+
+Luckily, this project is non-essential, and I'm pretty sure that we're the only people on this planet who want to use `egui` with DirectX 10, so I'm content with leaving it as-is.
 
 # [ferrobrew/re-utilities](https://github.com/ferrobrew/re-utilities)
-- [Update windows-rs to version 0.62](https://github.com/ferrobrew/re-utilities/pull/11) (November 26, <DiffStats add=73 sub=27 />)
-- [Replace anyhow with custom error enums](https://github.com/ferrobrew/re-utilities/pull/12) (November 26, <DiffStats add=610 sub=129 />)
+`re-utilities` is a library that a friend and I created to house, you'll never believe this, Utilities for Reverse Engineering. (Honestly, I can't stand the name, but we have yet to choose a better one.)
+
+The first port of call was maintenance, in [updating windows-rs to version 0.62](https://github.com/ferrobrew/re-utilities/pull/11) (November 26, <DiffStats add=73 sub=27 />). The second was to make it a better library by [replacing anyhow with custom error enums](https://github.com/ferrobrew/re-utilities/pull/12)[^anyhow] (November 26, <DiffStats add=610 sub=129 />). Nothing too difficult, but certainly not without tedium for a human.
+
+[^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro. With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
 
 # [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
-- [feat: upgrade to Bevy 0.17](https://github.com/ferrobrew/bevy-headless-console/pull/2) (November 26, <DiffStats add=65 sub=53 />)
+As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. Not to beat a dead horse, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) (November 26, <DiffStats add=65 sub=53 />).
 
 # [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
-- [Real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) (December 17, <DiffStats add=2472 sub=2570 />)
+As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
+
+The biggest change was to switch our existing definitions over to use [real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) (December 17, <DiffStats add=2472 sub=2570 />), as was implemented the same day. Watching all of the redundancy disappear brought a tear to my eye.
