@@ -67,7 +67,6 @@ One of:
 
 ## PC
 
-- RTX 5090 or equivalent. Preferably NVIDIA for their ML features. How else will I play Cyberpunk 2077 in VR with pathtracing? (Not a serious predicament, unless you're in a position to buy me a 5090, in which case it is.)
 - open-back headphones. My ATH-M50s have served me well, but I'm ready to move on.
 - good speakers, preferably with a subwoofer
 
