@@ -41,7 +41,7 @@ Instead, I decided to resurrect an [old PR](https://github.com/RustAudio/cpal/pu
 
 Aside from that, I added album starring in addition to track starring. I still haven't implemented the shuffle methods I mentioned last time, but I suspect that an AI agent would make quick work of that; the only reason I haven't done it yet is because I need to figure out what icons I'll use for those modes. I'm kind of tempted to collapse these modes and have them be submenus under Repeat and Shuffle.
 
-I'm also not really sold on the way likes/stars are shown; the red heart is quite garish, and the transition between the states (the 4 permutations of `{starred, hovered}`) is not always obvious. Nonetheless, I've replicated the hearts on the [music page](../../notes/Personal/Music.md).
+I'm also not really sold on the way likes/stars are shown; the red heart is quite garish, and the transition between the states (the 4 permutations of `{starred, hovered}`) is not always obvious. Nonetheless, I've replicated the hearts on the [music page](../../notes/Media/Music.md).
 
 Finally, I introduced localiser-based case-insensitive alphanumeric sorting for the library, so that artists and albums are sorted more in line with how a human (e.g. me) would expect them to be. This was most useful for `Various Artists`, as I've special-cased that to ignore the date (given that none of these albums are by the _same `Various Artists`_). The main payoff is that _Science Fiction Jazz, Volume 3_ is sorted before _Science Fiction Jazz, Volume 10_, but you can see the full diff [here](https://github.com/philpax/philpax.github.io/commit/fb88976b454862d4329b475465b0813ccc11fd61).
 
