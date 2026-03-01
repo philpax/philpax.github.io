@@ -1,0 +1,63 @@
+<https://fosdem.org/2026/schedule/event/MMTW7N-openxr-advances-open-source-gaming/>
+
+<!-- more -->
+
+- Latest news on the OpenXR side of things
+- Updates on what Collabora is doing with Monado
+- Collabora:
+  - Main maintainers of OpenXR
+  - Working with Khronos for many years
+  - Making FOSS work for Fortune 500 customers for 20 years
+- Spatial entities, extensions:
+  - Persistent points in physical spaces
+  - Basis for scene understanding and spatial reasoning
+  - Standardised tracking for QR/Aruco/April codes
+  - Discover and correlate entities across sessions
+  - Util extensions for persisting and unpersisting
+  - Identifying planes with semantics (wall, table, etc)
+- Multi-app
+  - Being worked on extensively
+  - Not published
+  - Have multiple apps interact spatially, and render correctly againts each other (occlusion, cross-lighting, etc)
+  - MR games + desktop tools
+- Best-practices validation layers
+  - Best-practices validation layer for problematic API usage
+  - Technically valid, but suboptimal patterns that cause performance/cross-runtim eissues
+  - Early warnings during development
+  - Improving portability + runtime consistency across XR platforms
+  - Helps developers create more robust XR apps
+- Tutorial project
+  - Step-by-step guide for building an OpenXR app from setup to advanced features
+  - Practical instructions, sample code, downloadable examples
+  - Core topics: instance/session creation, graphics integration, input/interactions/extensions
+  - Teaching OpenXR fundamentals
+- OpenXR compliance boundary only covers the OpenXR API + implementations - _not game engines_
+- Adding more transparency
+  - Putting together matrices: Runtime Support Matrix and Client Support Matrix/Middleware Support Matrix
+- Monado is the first fully-conformant open-source OpenXR implementation
+  - Across all three platforms
+  - It's a XR laboratory that allows you to test code without vendor black boxes/high costs
+  - Headset makers can use it to enable thei rhardware
+  - It's also accessible for academic research
+- Monado 25.1.0
+  - Async for non-blocking spatial queries
+  - Hand-tracking data support
+  - Native Linux drivers for Pico 4 Ultra / Xreal Air 2 Ultra
+  - Google Cardboard capture
+- Godot
+  - Native Vulkan renderer optimiesd for low-latency
+  - In-headset engine for edit+build entirely within VR
+  - Integration funded by Khronos
+  - Improves consistency, implements spatial entities, a bunch of other cool things
+- LOVR
+  - More features, including new render models
+  - Nvidia CloudXR support
+  - More recent OpenXR feature support coming
+  - Maintainer has also joined Khronos
+- StereoKit
+- Contact Collabora if you're working on cool hardware or want a job
+- Question: What is the process to update the matrix?
+  - Runtime is run against the validation tests
+  - Middleware is self-report, good-faith, not checked
+- Question: Can users check for compliance of their software against a device?
+  - No easy way without a device rn

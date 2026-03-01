@@ -1,5 +1,1 @@
-Notes taken while watching talks by other people.
-
-<!-- more -->
-
-<NotesIndex />
+#REDIRECT=../Talks/Other_People/index.md

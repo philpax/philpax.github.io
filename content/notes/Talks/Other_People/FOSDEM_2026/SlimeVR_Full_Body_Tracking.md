@@ -1,0 +1,49 @@
+<https://fosdem.org/2026/schedule/event/TBFSCP-slimevr/>
+
+<!-- more -->
+
+- Take a bunch of small trackers with IMUs, put them on your body, connect them to a device, and then determine pose
+- How it happened:
+  - "fuck around and find out"
+  - Wanted a way to track body in 2020, but lighthouse tracking is absurdly expensive
+  - Android app that could be run on your phone, and then putting your phone on your hip
+    - Limited, but can get more immersion because you can twist your hip and bend down
+    - Joined the Discord server and asked if it would be possible to combine an ESP32 + IMU to substitute for the phone
+    - Went ahead with it
+    - Ended up assembling a bunch more kits and hacking something together
+  - First version of the server using Java and Swing
+    - Very awful UX
+- How it's going
+  - Open-source, so people started rebuilding it
+  - TypeScript / React / Tauri (Rust) / Kotlin / Proper UX
+- Stack is low-key insane: 6 different languages (C, C++, Java, Kotlin, Rust, TypeScript)
+  - The server is still Java/Kotlin
+  - Java is being removed in the future
+- Very open-source from the start: Apache 2/MIT
+  - Including the hardware
+  - Other people were able to produce the hardware before Slime could, which essentially acted as free bug-testing for them before doing mass-production
+  - People built their own variations with better IMUs and this fed back into the mass-production
+  - 186 contributors on GitHub
+    - Half of them are probably translators, but a lot of people contribute in general
+- Very big DIY community
+  - If you have a microcontroller and an IMU, you can put something together yourself
+  - Be careful with lithium batteries...
+- Can be found on website, Discord, Bluesky, YouTube
+- Can buy from Crowd Supply; butterflies are at <https://slimevr.dev/smol>
+- Question: Do you have a quickstart guide?
+  - Yes, for both DIY + official
+- Question: What is the hardware?
+  - Previous generation: Espressif chips over Wi-Fi. Built on Arduino framework, but using PlatformIO.
+- Question: Can it be used with VRChat?
+  - Main user; what it was literally built for.
+  - Demo was for more experimental mocap.
+- Question: Why not copyleft?
+  - Really hate GPL + copyleft
+  - Didn't want to take contributions at gunpoint
+  - Wanted it to be simple and easy, and encourage a community spirit of contributing back
+  - Lots of the maintainers think similarly
+- Question: Mobile support for motion capture?
+  - Can actually already do that; server already runs on Android. iOS is planned, but very complicated
+  - Can also run on Raspberry Pi and on standalone headsets
+  - Server also supports recording BVH motion capture, but still experimental
+  - If more people use it, there will be more development
