@@ -21,6 +21,7 @@ arborium = { version = "2.4", default-features = false, features = [
     "lang-python",
     "lang-ruby",
     "lang-toml",
+    "lang-powershell"
 ] }
 image = { version = "0.25.1", features = [
     "png",
