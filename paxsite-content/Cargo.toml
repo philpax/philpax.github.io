@@ -1,0 +1,12 @@
+[package]
+name = "paxsite-content"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+toml = { workspace = true }
+toml-datetime-compat = { workspace = true }
+paxhtml = { workspace = true }

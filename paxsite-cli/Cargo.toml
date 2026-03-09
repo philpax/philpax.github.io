@@ -1,0 +1,10 @@
+[package]
+name = "paxsite-cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = { workspace = true }
+chrono = { workspace = true }
+paxsite-content = { path = "../paxsite-content" }
+inquire = "0.7"

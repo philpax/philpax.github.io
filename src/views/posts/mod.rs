@@ -104,7 +104,7 @@ pub fn post<'a>(
             .convert(
                 document
                     .metadata
-                    .short()
+                    .short_markdown()
                     .as_ref()
                     .unwrap_or(&document.description),
                 None,

@@ -1,6 +1,6 @@
 use std::path::Path;
 
-pub use paxhtml::util::slugify;
+pub use paxsite_content::slugify;
 
 /// Copy a file, or create a symlink in fast mode
 pub fn copy_or_symlink(source: &Path, destination: &Path, fast: bool) -> std::io::Result<()> {
