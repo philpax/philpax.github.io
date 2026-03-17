@@ -33,7 +33,7 @@ Regrettably, that increased the amount of free credits I had from 250 USD to 100
 
 By now, you have seen the length of this post and its table of contents. I want you to know that, despite all of my efforts, despite the hundreds of PRs I submitted to dozens of projects, I was only able to get down to ~460 USD of credit in the time period.
 
-Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of the big swings were during November.
+Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of the big swings were during November. This post, then, covers the period between November 6, 2025 and January 7, 2026.
 
 # Takeaways
 Given how long it has taken me to write this post, I have largely forgotten a lot of the minute-to-minute takeaways I had from the experience, but here follows a high-level overview of my thoughts. I'm frontloading these as the remaining five thousand words are largely not of interest to the casual reader, outside of acting as proof that I did what I said I did.
@@ -48,7 +48,7 @@ Functionality-wise, you cannot easily work _with_ it - it's very much aimed as a
 That being said, there is certainly an appeal to the interaction model, which is why I've continued to use it on and off. Being able to kick off work while doing something else is compelling _if_ you know that it will do what you expect it to do. One's sense of its capabilities grows with use, but you can never be sure; I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
 
 ## Context Is King
-This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the happier both of you will be.
+This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the easier you will make your own life.
 
 What this means is that you should be paying attention to where it stumbles, and _writing documentation_ (or having it do it for you!) to capture that pain point and how to resolve it. If it's chafing against the CI, tell it what to check ahead of time. If it's repeatedly making the same kinds of code style mistakes, write down the specific nuances it's getting wrong. If it doesn't know what to test against, let it know.
 
@@ -227,7 +227,7 @@ I'd say that this has generally gone [quite well](/tags/blackbird/), but the thi
 ## [philpax/paxboard](https://github.com/philpax/paxboard)
 paxboard is my personal self-hosted home page. I am pathologically afraid of YAML, so existing solutions like [homepage](https://gethomepage.dev/) didn't sit right with me; additionally, I wanted to be able to easily display custom information, like the status of my AI models. My initial version of this was written in Rust and was entirely server-rendered using [paxhtml](#philpaxpaxhtml), as I was in a particularly `paxhtml`-y mood.
 
-I'd grown to reconsider this, especially because I wanted cleanly-delivered live updates, so one of the first things I did was to [rewrite the codebase in TypeScript and React](https://github.com/philpax/paxboard/pull/11) (November 14, <DiffStats add=4521 sub=2515 />), making it much easier to iterate (including live edits to the "deployed" version). I then proceeded to [add world clocks for major cities](https://github.com/philpax/paxboard/pull/12) (November 14-15, <DiffStats add=160 sub=0 />) and make it possible to [copy the times of those world clocks to  theclipboard](https://github.com/philpax/paxboard/pull/13) (November 16, <DiffStats add=81 sub=1 />).
+I'd grown to reconsider this, especially because I wanted cleanly-delivered live updates, so one of the first things I did was to [rewrite the codebase in TypeScript and React](https://github.com/philpax/paxboard/pull/11) (November 14, <DiffStats add=4521 sub=2515 />), making it much easier to iterate (including live edits to the "deployed" version). I then proceeded to [add world clocks for major cities](https://github.com/philpax/paxboard/pull/12) (November 14-15, <DiffStats add=160 sub=0 />) and make it possible to [copy the times of those world clocks to the clipboard](https://github.com/philpax/paxboard/pull/13) (November 16, <DiffStats add=81 sub=1 />).
 
 I then rounded things out by adding [weather displays for Stockholm and Melbourne](https://github.com/philpax/paxboard/pull/14) (November 16, <DiffStats add=295 sub=2 />) and [a system stats view for monitoring the state of my server](https://github.com/philpax/paxboard/pull/15) (November 23, <DiffStats add=1724 sub=20 />).
 
