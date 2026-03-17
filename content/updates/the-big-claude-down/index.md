@@ -293,12 +293,13 @@ With that being said, though, it's done, and it works, so the only thing that re
 - [feat: switch to gitoxide for commit date lookups](https://github.com/philpax/philpax.github.io/pull/21) (January 7, <DiffStats add=1805 sub=157 />, **closed**)
 
 ## [philpax/nixos-configuration](https://github.com/philpax/nixos-configuration)
-The majority of my systems run on NixOS. Without LLMs, I would have given up on Nix almost immediately: but they have freed me to overlook its incredibly ugly language and focus on the substance. The changes I made here were relatively straightforward refactoring changes, but I appreciated being able to tick them off my to-do list while working on other things.
+The majority of my systems run on NixOS. Without LLMs, I would have given up on Nix almost immediately: but they have freed me to overlook its incredibly ugly language and focus on effective administration.
 
-- [Organize dotfiles config by machine](https://github.com/philpax/nixos-configuration/pull/14) (November 17-18, <DiffStats add=16 sub=9 />)
-- [Add automatic lock and sleep timers](https://github.com/philpax/nixos-configuration/pull/15) (November 20, <DiffStats add=42 sub=2 />)
-- [Set up SSH agent for all operations](https://github.com/philpax/nixos-configuration/pull/16) (November 20, <DiffStats add=19 sub=7 />)
-- [Extract shared developer services for reuse](https://github.com/philpax/nixos-configuration/pull/17) (November 20, <DiffStats add=36 sub=34 />)
+During early November, I acquired [a ThinkPad T480s](../../notes/Hardware/Laptop.md). The changes I made here were relatively straightforward refactoring changes to enable bring-up of NixOS on that laptop, while still sharing configs with my other machines, but I appreciated being able to tick them off my to-do list while working on other things.
+
+My sync script was copying all of my dotfiles over to every machine, which was suboptimal, as not all of them applied - thankfully, that was a [pretty easy fix](https://github.com/philpax/nixos-configuration/pull/14) (November 17-18, <DiffStats add=16 sub=9 />). I then added [automatic locking to Niri](https://github.com/philpax/nixos-configuration/pull/15) (November 20, <DiffStats add=42 sub=2 />), and properly [set up my SSH agent across machines](https://github.com/philpax/nixos-configuration/pull/16) (November 20, <DiffStats add=19 sub=7 />).
+
+The last thing I did here was to [extract out common developer tooling and services](https://github.com/philpax/nixos-configuration/pull/17) (November 20, <DiffStats add=36 sub=34 />) so that my laptop could benefit from the same tooling as my server, and vice versa.
 
 ## [philpax/prismata](https://github.com/philpax/prismata)
 Prismata is a research prototype that I built out at one of my former employers, with the intention of experimenting with an AI co-creation workflow in a voxel world. After receiving permission, I open-sourced it and did some minor cleanup work to make it usable once again.
