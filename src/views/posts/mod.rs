@@ -4,7 +4,9 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps},
+    views::components::{
+        HeadingAnchor, HeadingAnchorProps, IsoDate, IsoDateProps, Link, LinkProps,
+    },
 };
 
 pub const POST_BODY_MARGIN_CLASS: &str =
@@ -29,14 +31,12 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
 }
 
 pub fn date<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
-    crate::elements::date_with_chrono(
-        bump,
-        document
-            .metadata
-            .datetime
-            .unwrap_or_else(|| panic!("No datetime for {document}"))
-            .date_naive(),
-    )
+    let date = document
+        .metadata
+        .datetime
+        .unwrap_or_else(|| panic!("No datetime for {document}"))
+        .date_naive();
+    paxhtml::html! { in bump; <IsoDate date={date} /> }
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -126,7 +126,7 @@ pub fn post<'a>(
                             .map(|(_, modified)| html! { in bump;
                                 <>
                                     " · updated "
-                                    {crate::elements::date_with_chrono(bump, modified.date_naive())}
+                                    <IsoDate date={modified.date_naive()} />
                                 </>
                             })}
                         " · "

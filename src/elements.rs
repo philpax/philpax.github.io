@@ -1,31 +1,10 @@
 #![allow(unused)]
 
-use chrono::Timelike;
 use paxhtml::builder::Builder;
 use paxhtml::bumpalo::Bump;
 pub use paxhtml::{Element, html};
 
 use crate::views::components::{HeadingAnchor, HeadingAnchorProps};
-
-pub fn date_with_chrono<'bump>(bump: &'bump Bump, date: chrono::NaiveDate) -> Element<'bump> {
-    let b = Builder::new(bump);
-    let date = date.to_string();
-    b.time([
-        b.attr(("datetime", date.as_str())),
-        b.attr(("title", date.as_str())),
-    ])(b.text(&date))
-}
-
-pub fn datetime_with_chrono<'bump, TZ: chrono::TimeZone>(
-    bump: &'bump Bump,
-    date: chrono::DateTime<TZ>,
-) -> Element<'bump> {
-    let b = Builder::new(bump);
-    b.time([
-        b.attr(("datetime", date.to_rfc3339())),
-        b.attr(("title", date.to_rfc2822())),
-    ])(b.text(&date.with_nanosecond(0).unwrap().to_rfc3339()))
-}
 
 pub fn break_on_colon<'bump>(bump: &'bump Bump, value: &str) -> Element<'bump> {
     let b = Builder::new(bump);

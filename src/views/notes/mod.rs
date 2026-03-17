@@ -4,7 +4,7 @@ use crate::{
     content::{DocumentFolderNode, DocumentLeafNode, DocumentNode},
     markdown::MarkdownConverter,
     util,
-    views::components::{Link, LinkProps},
+    views::components::{IsoDatetime, IsoDatetimeProps, Link, LinkProps},
 };
 
 use super::*;
@@ -75,14 +75,14 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                         #{elements}
                     </h2>
                     <div class="text-[var(--color-secondary)] text-sm mb-2">
-                        {datetime_with_chrono(bump, note.metadata.datetime.unwrap())}
+                        {html! { in bump; <IsoDatetime datetime={note.metadata.datetime.unwrap()} /> }}
                         {note.metadata.datetime
                             .zip(note.metadata.last_modified)
                             .filter(|(published, modified)| published.date_naive() != modified.date_naive())
                             .map(|(_, modified)| html! { in bump;
                                 <>
                                     " · updated "
-                                    {datetime_with_chrono(bump, modified)}
+                                    <IsoDatetime datetime={modified} />
                                 </>
                             })}
                     </div>

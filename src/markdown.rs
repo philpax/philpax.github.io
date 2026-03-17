@@ -313,6 +313,44 @@ impl<'a> MarkdownConverter<'a> {
                         .unwrap_or(0) as u32;
                     return components::diff_stats(bump, add, sub);
                 }
+                if element.tag() == Some("MonthDayDate") {
+                    let date = element
+                        .attr("date")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDate requires 'date' attribute")
+                        .to_string();
+                    let noyear = element.attr("noyear").is_some();
+                    return components::MonthDayDate(
+                        bump,
+                        components::MonthDayDateProps {
+                            date,
+                            noyear,
+                            ..paxhtml::DefaultIn::default_in(bump)
+                        },
+                    );
+                }
+                if element.tag() == Some("MonthDayDateRange") {
+                    let start = element
+                        .attr("start")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDateRange requires 'start' attribute")
+                        .to_string();
+                    let end = element
+                        .attr("end")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDateRange requires 'end' attribute")
+                        .to_string();
+                    let noyear = element.attr("noyear").is_some();
+                    return components::MonthDayDateRange(
+                        bump,
+                        components::MonthDayDateRangeProps {
+                            start,
+                            end,
+                            noyear,
+                            ..paxhtml::DefaultIn::default_in(bump)
+                        },
+                    );
+                }
 
                 element
             }

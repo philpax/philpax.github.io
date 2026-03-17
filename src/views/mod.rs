@@ -18,7 +18,7 @@ pub mod tags;
 pub mod updates;
 
 pub mod components;
-use components::{Link, LinkProps};
+use components::{IsoDatetime, IsoDatetimeProps, Link, LinkProps};
 
 /// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
@@ -169,6 +169,8 @@ pub fn layout<'a>(
     inner: Element<'a>,
 ) -> paxhtml::Document<'a> {
     let bump = context.bump;
+    let generation_date_element =
+        html! { in bump; <IsoDatetime datetime={context.generation_date} /> };
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
@@ -227,7 +229,7 @@ pub fn layout<'a>(
                                 "paxsite"
                             </Link>
                             " on "
-                            {datetime_with_chrono(bump, context.generation_date)}
+                            {generation_date_element}
                             "."
                         </div>
                         <div>

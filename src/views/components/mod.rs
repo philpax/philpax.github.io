@@ -26,3 +26,6 @@ pub use notes_index::*;
 
 mod city_poster;
 pub use city_poster::*;
+
+mod date;
+pub use date::*;
