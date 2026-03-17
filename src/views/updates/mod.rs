@@ -47,7 +47,7 @@ pub fn post<'a>(
             description: Some(
                 document
                     .metadata
-                    .short()
+                    .short_markdown()
                     .unwrap_or_else(|| document.description.clone())
                     .to_string(),
             ),

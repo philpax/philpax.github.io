@@ -1,5 +1,1 @@
-Notes from talks at FOSDEM 2026.
-
-<!-- more -->
-
-<NotesIndex />
+#REDIRECT=../../Talks/Other_People/FOSDEM_2026/index.md

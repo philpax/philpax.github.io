@@ -144,7 +144,7 @@ The last time I wrote an update, I was thinking about converting this website to
 
 ## music library
 
-I think that was the right decision, because it's enabled me to build this [music library note](../../notes/Personal/Music.md), which presents my library with styling designed to ape `blackbird`. This is statically generated - it's quite the large HTML file - and it's based on a JSON export from `blackbird`. I was able to do this with relative ease by pulling in the export types from `blackbird`; it wouldn't have been that much harder in Lua, but having type safety is always welcome.
+I think that was the right decision, because it's enabled me to build this [music library note](../../notes/Media/Music.md), which presents my library with styling designed to ape `blackbird`. This is statically generated - it's quite the large HTML file - and it's based on a JSON export from `blackbird`. I was able to do this with relative ease by pulling in the export types from `blackbird`; it wouldn't have been that much harder in Lua, but having type safety is always welcome.
 
 The fun thing about this is that the JSON is versioned, so I can see how my music library changes over time, including albums coming and going, changing of tags, and starring of tracks. This has already proven to be quite helpful for observing the changes made by the retagging process; you can see the full history [here](https://github.com/philpax/philpax.github.io/commits/main/assets/baked/music.json), in which you can see my tagging rework bordered on the obsessive.
 

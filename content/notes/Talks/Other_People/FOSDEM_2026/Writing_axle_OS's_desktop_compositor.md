@@ -1,0 +1,56 @@
+<https://fosdem.org/2026/schedule/event/ZC7LBJ-writing_axle_oss_desktop_compositor/>
+
+<!-- more -->
+
+- No GPU driver; all software-rendered
+- Can be pretty difficult to render an interactive UI with a playable framerate on the CPU
+- Talk is about the work required to make this actually interactive
+- Axle OS as a whole, including the userspace, is about a hundred-thousand lines of code
+  - The window manager is 5-6k lines of code
+- It's pretty simple, conceptually, to build a compositor:
+  - documents on a desk - a "desk top" - and each of these have a z-index
+- The compositor has a big framebuffer, and each application has its own framebuffer
+- When the application is ready to render, the window manager draws its decoration, then copies ("blits") the application framebuffer into the desktop
+- The simple render strategy:
+  - Draw backround
+  - Loop over the windows and draw them
+  - Draw the cursor
+- But of course, we don't clear the frames, so we get cursor and window trails
+- Really cool live demo using the real compositor!
+- Every time we draw the frame, we clear the canvas. This works pretty well, and we could stop here, but... it's pretty slow
+  - This approach has low effort and low bugs, but it's not at all fast
+- Overdraw results in a lot of wasted work - when we draw over something that was already rendered, there was no point in rendering the content underneath
+- To work around this, we can split up the visible regions for each application and figure out what we actually need to render
+- It is beneficial to merge adjacent rectangles as extra rectangles are expensive to render
+- This is, again, conceptually simple, but there are literal edge cases to consider
+- Ended up writing lots of unit tests to verify the "business logic"
+- One of the main operations we end up doing in a compositor is to query what a rectangle intersects with
+  - To help with this, we can pick a data structure for spatial indexing
+  - Rectangle list O(n^2) can be optimised to O(n log n) with a R-tree
+- When applied, this increases FPS from 1 FPS to 11 FPS
+- The next optimisation: only redraw what has actually changed, instead of redrawing everything all the time
+  - This requires a significant amount of re-engineering, as state management is required for each of these
+- To begin with, we need to redraw the entire frame whenever the mouse is moved; the compositor will queue up full redraws
+  - However, you can optimise further by only redrawing the area in which the cursor has moved (unioning previous cursor and last cursor)
+- Whenever a region is dirtied, we queue redraws for that region (background, windows, etc)
+- Whenever we drag a window, we do a full redraw for the affected region
+  - This extends to other window manipulation: z-order switches, interacting with buttons, etc
+- Also need to do similar things for shortcuts: interaction, on initial draw, etc
+- To help debug, added a way to record actions and replay them with a visual recording, making it easy to do a visual-diff when writing optimisations
+- Easy way to make glitch art, though - lots of fun demos of broken optimisations
+- Question: Would it make sense to multithread the drawing process between regions?
+  - The slow part is still writing to the video memory
+  - axleOS is SMP-compatible, but doesn't support multithreading processes
+  - You could theoretically multithread, but it's probably not the best play - the real solution is just to write a GPU driver
+    - Target a really old GPU that's well-documented
+      - All of these cards aren't that interesting, because they don't support high-resolution desktops
+    - Target a modern GPU
+      - Apparently reasonable thing to do some day, but they're very complex today
+    - Target a paravirtualised GPU driver
+      - Don't want to commit to having a different rendering path for virtualised hardware
+- Question: Does it make sense to switch between brute-forcing and compositing based on the workload?
+  - It is possible, but didn't try because bifurcating the code paths would introduce bugs, and that would suck for hobby OSes
+- Question: You say it's a memcpy, but this is rectangular
+  - Yes, it's a memcpy per row
+- Question: Isn't VGA dead? Can't you use VESA?
+   - This is theoretically possible, yeah, didn't look into it

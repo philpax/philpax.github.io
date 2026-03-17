@@ -2,7 +2,7 @@ use paxhtml::bumpalo::Bump;
 
 use crate::{
     Route,
-    content::{Content, Document},
+    content::{Content, Document, DocumentMetadataExt},
     elements::*,
     image_store::ImageStore,
     syntax::SyntaxHighlighter,

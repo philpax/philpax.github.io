@@ -1,0 +1,73 @@
+<https://fosdem.org/2026/schedule/event/DKKE8W-self-learning-compiler-docc/>
+
+<!-- more -->
+
+- We live in the age of hardware accelerators; there's a new announcement every month
+- As a user, we need to figure out which accelerator to target
+  - And then there's the tradeoff between portability and capability
+  - Best performance or best portability?
+- Example stack: PyTorch atop MLIR atop Mapping (Streams/Cores/Threads/SIMD) atop HW-specific compiler atop the ISA
+- Want to build an optimising compiler that takes any frontend and targets any backend
+- The representation in use is Structured Stateful DataFlow MultiGraphs ("SDFG")
+  - A graph of variables and operations that can be composed with outer loops to build larger operations (e.g. a multiply operation can be nested thrice to produce a matmul)
+  - Format expresses dataflow and controlflow at the same time
+  - Structured: loops, easire to analyse, no irregular control flow, still maps most algorithms
+  - Cannot represent things like branch-out, but that's OK because most pseudocode is structured
+  - Address / condition calculations are separate from the dataflow and simplified
+    - The more separate they are, the more parallel the problem is
+- `docc` core:
+  - SDFG + serialization + analysis (data dep, parallelism, polyhedral loop analysis) + optimisation passes
+  - Produces C/C++ code
+- Frontend has Python code
+  - Can write regular-ish Python code with a decorator
+  - Library will parse the code and convert it to C/C++ code through the core (i.e. SDFG conversion)
+- Also working on a frontend to ingest PyTorch code and/or MLIR code
+- On the target side:
+  - Generic host
+  - OpenMP
+  - Google Highway (vectorisation)
+  - CUDA
+- To focus on CUDA:
+  - Offloading of computation
+  - Need to generate kernel code / host code / memory transfer
+  - Optimising: eliminating redundant transfers, like removing intermediate host transfers that can reside entirely on the GPU; ditto with read-only data
+- NPBench: popular Python benchmark using a bunch of decorators to support other backends
+  - NumPy is the baseline
+  - Achieving some speedups; not a straight win
+  - The CUDA code works, despite the code not being optimised for the GPU, but it's also not a clear win
+    - Does beat the CUPY implementation in a few places though
+- But how do we map this code to arbitrary hardware targets?
+  - Each architecture has their own solutions; NVIDIA looks very different to Tenstorrent
+    - Tenstorrent has to go through all of the cores to feed data to specific cores, which the software has to optimise for (e.g. reducing number of transfers to maximise locality)
+  - If you do all of this right, you get a good-performing kernel
+  - The current meta is to expert handwrite kernels for specific operations on specific hardware
+  - Hardware-agnostic solutions already work, but they don't match the handwritten performance
+- As an example: CUDA matmul is significantly more involved than the raw algorithm
+  - Accelerator initialisation
+  - Data transfer
+  - HW-managed outer loops
+  - Matching hardware count for loops
+  - Offload the data
+  - Read all data sequentially
+  - Fetch data into local memory
+  - Accumulate results differently
+  - etc etc
+- Manual kernel engineering
+  - These are mostly general transformations
+  - With domain knowledge, you can pick these transformations and how they compose to see how the base algorithm translates to that particular configuration of hardware: the "recipe"
+  - Back to the matmul example: can map the matmul's outer loops to chunked outer loops that correspond to the GPU's chunks
+  - Similarly, can break the inner code up for optimal execution on cores
+- So the recipes make sense, but how can you find the recipe for a given target?
+  - The standard solution is autotuning: systematically search through all options, find best results, but inefficient to do locally
+- Daisytuner caches the results for a given accelerator
+  - Many accelerators / architectures
+  - The same ISA can still have changes due to the microarch
+  - We don't want to find an exact match, we want to find a similar match for (algorithm, target) and adapt it
+  - This classification is done by a neural network
+  - Fed by a farm of machines with bare-metal profiling that finds the best recipe
+  - It is self-learning: feeding new data works as expected
+- Showcase:
+  - Polybench existing benchmark
+  - Current database is not that large
+  - Transfer-tuning benefitted some benchmarks by a factor of 2; some got slower, but that's going to be fixed
+- Link: <https://github.com/daisytuner/docc>

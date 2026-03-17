@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss"]
+members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -21,6 +21,7 @@ arborium = { version = "2.4", default-features = false, features = [
     "lang-python",
     "lang-ruby",
     "lang-toml",
+    "lang-powershell"
 ] }
 image = { version = "0.25.1", features = [
     "png",
@@ -31,33 +32,39 @@ resvg = "0.44"
 usvg = "0.44"
 fontdb = "0.22"
 rayon = "1.10"
-
-[dependencies]
+chrono = { version = "0.4.37", default-features = false, features = [
+    "std",
+    "now",
+] }
+toml = "0.8.12"
+toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
 paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
 # paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
-
 blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git" }
 # blackbird-json-export-types = { path = "../blackbird/blackbird-json-export-types" }
+
+[dependencies]
+paxhtml = { workspace = true }
+paxhtml_tailwind = { workspace = true }
+blackbird-json-export-types = { workspace = true }
 
 # serve
 sha1 = { version = "0.10.6", optional = true }
 
 anyhow = { workspace = true }
 base64 = "0.22.1"
-chrono = { version = "0.4.37", default-features = false, features = [
-    "std",
-    "now",
-] }
+chrono = { workspace = true }
 markdown = "1.0.0"
 rss = { version = "2.0.7", features = ["atom"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
 arborium = { workspace = true }
-toml = "0.8.12"
+toml = { workspace = true }
 paxcss = { path = "paxcss" }
-toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
+paxsite-content = { path = "paxsite-content" }
+toml-datetime-compat = { workspace = true }
 image = { workspace = true }
 resvg = { workspace = true }
 usvg = { workspace = true }
