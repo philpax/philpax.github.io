@@ -371,3 +371,7 @@ As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had 
 As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
 
 The biggest change was to switch our existing definitions over to use [real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) (December 17, <DiffStats add=2472 sub=2570 />), as was implemented the same day. Watching all of the redundancy disappear brought a tear to my eye.
+
+# Conclusion
+
+TODO, but mostly see takeaways. Include a collapsible with the chronological timeline of every PR, as well as a final tally of +/- lines. Talk about how effective his was, and how much of my backlog I blew away, and how liberating that was for a time... but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
