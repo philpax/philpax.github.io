@@ -165,12 +165,13 @@ I assume you can see where this is going. I extracted the base documentation for
 ## [philpax/paxcord](https://github.com/philpax/paxcord)
 `paxcord` is my personal Discord bot, optimised for my own use cases. Notably, I am a fan of the Lua programming language, and I've carried that into this here bot by giving it fairly extensive Lua scripting capabilities. The work here was primarily in extending that capability to the point of near-absurdity.
 
-- [Add Perchance Interpreter as Lua Dependency](https://github.com/philpax/paxcord/pull/3) (November 12, <DiffStats add=58 sub=0 />)
-- [Add Lua currency conversion function](https://github.com/philpax/paxcord/pull/4) (November 12, <DiffStats add=702 sub=19 />)
-- [Convert Discord commands to slash commands](https://github.com/philpax/paxcord/pull/5) (November 16 - December 3, <DiffStats add=1208 sub=844 />)
-- [Integrate rucomfyui](https://github.com/philpax/paxcord/pull/6) (December 3, <DiffStats add=554 sub=29 />)
-- [feat: add reply handler for interaction responses](https://github.com/philpax/paxcord/pull/7) (December 16-17, <DiffStats add=815 sub=72 />)
-- [Check if Lua accesses first message in chain](https://github.com/philpax/paxcord/pull/8) (December 17, <DiffStats add=5 sub=0 />)
+The first step was to [integrate the above Perchance interpreter](https://github.com/philpax/paxcord/pull/3) (November 12, <DiffStats add=58 sub=0 />), such that I could test out the generator in a social capacity. Once I had my fun with that, I started to think about a new way to interact with Lua, and decided I'd best prepare for it by [exposing currency conversion to Lua](https://github.com/philpax/paxcord/pull/4) (November 12, <DiffStats add=702 sub=19 />).
+
+The integration method was simple in concept, but troublesome in execution - it was to [convert our existing Rust commands to Lua](https://github.com/philpax/paxcord/pull/5) (November 16 - December 3, <DiffStats add=1208 sub=844 />), making them much easier to iterate on and to add new commands with. This proved to be troublesome within the Claude Code Web framework, sa can be seen from the time taken: I had to iterate on the interface and test it extensively.
+
+After that, well, I could finally do what I was working towards. Apologies for [the spoilers](#philpaxrucomfyui), but my end goal for the Lua conversion was always to [integrate rucomfyui](https://github.com/philpax/paxcord/pull/6) (December 3, <DiffStats add=554 sub=29 />), so that I could combine Perchance (for prompt generation) and an AI image model for social procedural-generative art. And it worked!
+
+Finally, to close out, I added a [Lua reply handler](https://github.com/philpax/paxcord/pull/7) (December 16-17, <DiffStats add=815 sub=72 />) to allow continuing generation chains, and fixed [a bug where the first message was not present in the reply handler](https://github.com/philpax/paxcord/pull/8) (December 17, <DiffStats add=5 sub=0 />).
 
 ## [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
 A decade ago, I was a developer on the [multiplayer mod for Just Cause 2](https://jc-mp.com/). I slowly phased out my involvement over the years - what with university and employment obligations - and primarily remained as an occasional community presence, helping people out where I could and whatnot (ask me sometime about the follies of achievements).
