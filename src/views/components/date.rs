@@ -3,22 +3,19 @@ use paxhtml::DefaultIn;
 use paxhtml::builder::Builder;
 use paxhtml::bumpalo::Bump;
 
-#[allow(dead_code)]
-pub struct IsoDateProps<'bump> {
+pub struct IsoDateProps {
     pub date: chrono::NaiveDate,
-    pub children: Option<paxhtml::Element<'bump>>,
 }
-impl DefaultIn<'_> for IsoDateProps<'_> {
+impl DefaultIn<'_> for IsoDateProps {
     fn default_in(_bump: &Bump) -> Self {
         Self {
             date: Default::default(),
-            children: None,
         }
     }
 }
 
-#[allow(non_snake_case, dead_code)]
-pub fn IsoDate<'bump>(bump: &'bump Bump, props: IsoDateProps<'bump>) -> paxhtml::Element<'bump> {
+#[allow(non_snake_case)]
+pub fn IsoDate<'bump>(bump: &'bump Bump, props: IsoDateProps) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
     let date = props.date.to_string();
     b.time([
@@ -27,25 +24,19 @@ pub fn IsoDate<'bump>(bump: &'bump Bump, props: IsoDateProps<'bump>) -> paxhtml:
     ])(b.text(&date))
 }
 
-#[allow(dead_code)]
-pub struct IsoDatetimeProps<'bump> {
+pub struct IsoDatetimeProps {
     pub datetime: chrono::DateTime<chrono::Utc>,
-    pub children: Option<paxhtml::Element<'bump>>,
 }
-impl DefaultIn<'_> for IsoDatetimeProps<'_> {
+impl DefaultIn<'_> for IsoDatetimeProps {
     fn default_in(_bump: &Bump) -> Self {
         Self {
             datetime: Default::default(),
-            children: None,
         }
     }
 }
 
-#[allow(non_snake_case, dead_code)]
-pub fn IsoDatetime<'bump>(
-    bump: &'bump Bump,
-    props: IsoDatetimeProps<'bump>,
-) -> paxhtml::Element<'bump> {
+#[allow(non_snake_case)]
+pub fn IsoDatetime<'bump>(bump: &'bump Bump, props: IsoDatetimeProps) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
     b.time([
         b.attr(("datetime", props.datetime.to_rfc3339())),
@@ -53,27 +44,21 @@ pub fn IsoDatetime<'bump>(
     ])(b.text(&props.datetime.with_nanosecond(0).unwrap().to_rfc3339()))
 }
 
-#[allow(dead_code)]
-pub struct MonthDayDateProps<'bump> {
+pub struct MonthDayDateProps {
     pub date: String,
     pub noyear: bool,
-    pub children: Option<paxhtml::Element<'bump>>,
 }
-impl DefaultIn<'_> for MonthDayDateProps<'_> {
+impl DefaultIn<'_> for MonthDayDateProps {
     fn default_in(_bump: &Bump) -> Self {
         Self {
             date: String::new(),
             noyear: false,
-            children: None,
         }
     }
 }
 
-#[allow(non_snake_case, dead_code)]
-pub fn MonthDayDate<'bump>(
-    bump: &'bump Bump,
-    props: MonthDayDateProps<'bump>,
-) -> paxhtml::Element<'bump> {
+#[allow(non_snake_case)]
+pub fn MonthDayDate<'bump>(bump: &'bump Bump, props: MonthDayDateProps) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
     let (year, month, day) = parse_date(&props.date);
     let display = if props.noyear {
@@ -87,28 +72,25 @@ pub fn MonthDayDate<'bump>(
     ])(b.text(&display))
 }
 
-#[allow(dead_code)]
-pub struct MonthDayDateRangeProps<'bump> {
+pub struct MonthDayDateRangeProps {
     pub start: String,
     pub end: String,
     pub noyear: bool,
-    pub children: Option<paxhtml::Element<'bump>>,
 }
-impl DefaultIn<'_> for MonthDayDateRangeProps<'_> {
+impl DefaultIn<'_> for MonthDayDateRangeProps {
     fn default_in(_bump: &Bump) -> Self {
         Self {
             start: String::new(),
             end: String::new(),
             noyear: false,
-            children: None,
         }
     }
 }
 
-#[allow(non_snake_case, dead_code)]
+#[allow(non_snake_case)]
 pub fn MonthDayDateRange<'bump>(
     bump: &'bump Bump,
-    props: MonthDayDateRangeProps<'bump>,
+    props: MonthDayDateRangeProps,
 ) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
     let (sy, sm, sd) = parse_date(&props.start);

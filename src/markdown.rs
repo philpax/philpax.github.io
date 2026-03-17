@@ -322,11 +322,7 @@ impl<'a> MarkdownConverter<'a> {
                     let noyear = element.attr("noyear").is_some();
                     return components::MonthDayDate(
                         bump,
-                        components::MonthDayDateProps {
-                            date,
-                            noyear,
-                            ..paxhtml::DefaultIn::default_in(bump)
-                        },
+                        components::MonthDayDateProps { date, noyear },
                     );
                 }
                 if element.tag() == Some("MonthDayDateRange") {
@@ -347,7 +343,6 @@ impl<'a> MarkdownConverter<'a> {
                             start,
                             end,
                             noyear,
-                            ..paxhtml::DefaultIn::default_in(bump)
                         },
                     );
                 }

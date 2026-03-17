@@ -1,7 +1,6 @@
 use paxhtml::DefaultIn;
 use paxhtml::bumpalo::Bump;
 
-#[allow(dead_code)]
 pub struct LinkProps<'bump> {
     pub underline: bool,
     pub title: Option<String>,
@@ -21,7 +20,7 @@ impl DefaultIn<'_> for LinkProps<'_> {
     }
 }
 
-#[allow(non_snake_case, dead_code)]
+#[allow(non_snake_case)]
 pub fn Link<'bump>(bump: &'bump Bump, props: LinkProps<'bump>) -> paxhtml::Element<'bump> {
     let children = props.children.unwrap_or(paxhtml::Element::Empty);
     let title = props
