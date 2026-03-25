@@ -49,6 +49,13 @@ Functionality-wise, you could not easily work _with_ it - it was very much posit
 
 Despite the shortcomings I experienced, I'd be lying if I didn't admit that there is certainly an appeal to the interaction model. Being able to kick off work while doing something else is compelling _if_ you can be confident that it will produce what you expect it to produce. One's sense of its capabilities grows with use, but you can never be sure, especially with larger tasks. I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
 
+## You Really Can Just Build Things, But...
+- should you?
+- need to apply discernment in what you choose to build and how you choose to build it
+- I'm happy with what I've built here, but I was definitely stretching myself towards the end of the credits to find literally anything that I could point the Claude Code Cannon at
+- I ended up using it as an opportunity to update old code, instead: it doesn't necessarily have to be feature work you do, even though that's fun and exciting, but long-overdue maintenance
+- you still need to have good product sense, I'm afraid, although the agents do have some degree of taste, especially if you bring your own to the table
+
 ## Context Is King
 This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the easier you will make your own life.
 
@@ -57,6 +64,45 @@ What this means is that you should be paying attention to where it stumbles, and
 Not only will this benefit your agent, it'll also benefit _you_, as well as other human developers. I've always considered myself a proponent of good documentation, but an agent finally gives me a way to model how other developers might consume the paltry documentation that I've put together, and boy, have I found my codebases wanting in places. Fixing this really does pay off.
 
 As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING.md` and, only if necessary, using agent-specific documentation (e.g. `CLAUDE.md`) to direct your agent to that file. To the greatest possible extent, you want to make sure that the context that your human programmers and your agents share are identical. Any drift will make at least one of those parties unhappy.
+
+## Quality Drops As Much As You're Willing To Let It Drop
+- a common sentiment is that AI can and will make the quality of your code worse
+- I would agree with this to an extent, but there are nuances to it
+- for some of these, I have freely let the quality drop, but that's because it doesn't matter for those projects; I'm willing to tolerate nonoptimality if it gets the job done
+- this is especially true for the projects for which the blast radius is limited: misrendering something, for example, is a visual glitch, not a showstopper
+- some of these projects have vibe-coded UIs with the vibe-coded aesthetic: purple and green gradients, Inter, etc. but you know, that's fine, they're demos - it doesn't matter if they look like slop if they communicate the concept!
+- however, just because it _can_ drag the quality of your project down doesn't mean it _will_; you control the buttons you press
+- providing context can help amelioriate this significantly by giving it the information it needs to write code in your codebase's register
+- you should be accountable for the code you produce, and that means reviewing the agent's output to make sure it meets standards, including your own personal standards
+- deslop freely and frequently: [generating code is cheap](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/), so build up your raw code-matter and [sculpt it](https://eikopf.bearblog.dev/subtractive-synthesis/) until it's actually good
+- and of course, the corollary applies: you can use AI to generate all of the rigour that you, as a human, would have been otherwise too effort/time-pressed to do yourself. there's no excuse not to write tests, design more stringent APIs, write better documentation, and push the quality frontier. see what [Oxide have to say about this](https://oxide-and-friends.transistor.fm/episodes/engineering-rigor-in-the-llm-age).
+
+## Reviewing Is A Bottleneck
+- in addition to the above, there's no getting around it: at a certain point, _you_ are the impediment to getting more work done
+- it doesn't matter if you can dispatch a thousand agents to do ten thousand units of work if you're still reviewing one unit at a time
+- there are three answers to this, all of which I have utilised to some extent:
+  - accept that you can only review so much, and pace yourself accordingly
+  - accept the slop, either for now (and promise you'll clean it up later), or forever (because it doesn't matter if your one-time-use script is full of holes)
+  - enlist other LLMs to help review the changes you've made
+- which one is the right answer for you, and in which proportion, is a question that depends on your risk tolerance, what your expected output is, and the blast radius of the software
+- in an ideal world, we would not ship more than we can verify, and we would not push ourselves beyond our limits
+- but you gotta do what you gotta do, so do what you can to make sure you're being responsible, and ensure your team is, too
+
+## Synchronisation Is A Bottleneck
+- the vast majority of these projects are open-source and solo endeavours
+- this means I was free to take very, very big swings, and knock out major changes in one go, according to my taste and my schedule
+- this... is not generally the case
+- at work, where I was also using agents, I was considerably more sedate: I was working on brownfield(-ish) projects with other people, and ensuring that we are all on the same page is more important than raw throughput
+- I certainly could have opened up the slop tap, but then I'd have to explain what I did to my coworkers, and then I'd have to go through the same exercise when they spread slop sauce all over my changes
+- this also ties into the reviewing bottleneck, and a similar kind of laissez-faire will be necessary to get maximal throughput, which is not necessarily a good thing
+- of course, I'm describing _inter_-contributor synchronisation, but _intra_-contributor synchronisation is a problem, too
+- for some of these, I had multiple PRs open at the same time for the same project, and making sure they didn't step over each other toes' ended up being quite frustrating
+- luckily,
+
+<BlueskyPost post="https://bsky.app/profile/segyges.bsky.social/post/3mdwkxdqjy22z" />
+
+- so it's not as irritating as it might otherwise be. it's also a good chance to explore other paradigms, like [stacked diffs](https://newsletter.pragmaticengineer.com/p/stacked-diffs) or [jujutsu](https://jj-vcs.dev/)
+- I expect to see more solutions to this in future. for my sake, I hope they are not [Gas Town](https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04)-shaped.
 
 ## Token Anxiety
 I hesitate to say this out loud, given how the linked post was received, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
@@ -74,7 +120,20 @@ It's out of my system now, and I don't think it'll come back, at least not to th
 ## The End of Coding?
 I have written a single-digit percentage of code by hand since November. [This is not an uncommon sentiment](https://simonwillison.net/2026/Jan/4/inflection/), but I want to emphasise it: our profession _has_ fundamentally changed, and the aftershocks from this will rumble throughout as the industry catches up.
 
+- the agents really have improved. I've been using them for the last few years in progressive increments, from asking ChatGPT to produce a function for me in 2023, to using Copilot to autocomplete code, to using Cursor to generate code in-place in 2024, to using Cursor to do more agentic work with the Claudes, to using Claude Code directly in 2025, to now
+- the step change at each stage has been noticeable, but Sonnet/Opus 4.5 are more like a hill change
+- far more autonomous, far more capable of Doing What You Want at scale, especially on greenfield
+- within this period, CC wrote a complete interpreter from scratch using a vague spec, refactored and rebuilt much of an existing (albeit small) compiler to extend its functionality and improve its robustness, significantly improved the backend of my music player, etc
+- these are not trivial tasks! most junior / intermediate programmers would struggle with managing the complexity here
+
 This doesn't apply for all domains to the same degree: there are many tasks and languages for which the models do not perform at the same standard, or for which they make novice mistakes. I'm not convinced that bulwark will hold forever, but even if it does: the rest of the industry does _not_ consist of these domains, and I very strongly suspect that fewer people per company will be required to do the same amount of work in most areas of programming endeavour.
+
+- it's also not clear to me what will happen to the industry pipeline here
+- it was already very hard to justify hiring juniors when seniors were readily available and can be almost immediately useful
+- it's going to be so much worse when seniors can use LLMs to replace the output of all of the juniors that they would have otherwise tasked
+- the forward-thinking thing to do is to invest in juniors to keep the pipeline alive, and to enjoy the fuzzy feelings of mentoring the next generation and such
+- but we all know that's not how things work, and I don't have any clear answers here
+- perhaps juniors can push further and faster with LLMs themselves? perhaps they can blaze their own path? but that's not going to be for everyone, and these services cost money
 
 The optimist may suggest that a thousand flowers will bloom as a result of this: after all, if everyone has much more leverage available to them, at least a few of those people will be industrious enough to strike it out on their own and build their own futures. I'd like to say that I believe in this - that there will be something for everyone in some form - but I fear things will not be so neat.
 
