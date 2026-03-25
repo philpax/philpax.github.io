@@ -83,6 +83,7 @@ I don't know. More thought is necessary here. What does an optimistic version of
 # Projects
 
 ## [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
+IMAGEHERE: Pyxis viewer
 
 Pyxis is a schema language for memory structures that I have been working on on-and-off for the last few years. The process of modding games (and other applications) starts with reverse-engineering: using a variety of techniques and tools, one comes to understand behaviours of interest in the application, and how data flows through to enable those behaviours, and how that data is structured.
 
@@ -134,6 +135,8 @@ Of course, these last two months have allowed me to address that. Let us begin.
 - [Organize semantic tests into category-based modules](https://github.com/ferrobrew/pyxis/pull/84) (<MonthDayDate date="2025-12-18" noyear />, <DiffStats add=3373 sub=3223 />)
 
 ## [philpax/perchance-interpreter](https://github.com/philpax/perchance-interpreter)
+![Vibe-coded frontend for the Perchance interpreter](./perchance-interpreter-1.png)
+
 [Perchance](https://perchance.org/welcome) is
 
 > a platform for creating and sharing random generators
@@ -148,7 +151,7 @@ Unfortunately, the Perchance interpreter and language is much like MediaWiki and
 
 I've wanted to address this for a long, long time. I - [and others](https://github.com/utoxin/PyChance) - have attempted to do this in the past, but the scope of the task is just too large to do without a few weeks of time dedicated to the task, which I was unable to offer.
 
-I assume you can see where this is going. I extracted the base documentation for Perchance as a Markdown document, raised my Claude Code hammer, and then I proceeded to [Build Rust interpreter for Perchance template language](https://github.com/philpax/perchance-interpreter/pull/1) (<MonthDayDateRange start="2025-11-11" end="2025-11-12" noyear />, <DiffStats add=5102 sub=2 />).
+I assume you can see where this is going. I extracted the base documentation for Perchance as a Markdown document, raised my Claude Code hammer, and then I proceeded to [build a Rust interpreter for Perchance](https://github.com/philpax/perchance-interpreter/pull/1) (<MonthDayDateRange start="2025-11-11" end="2025-11-12" noyear />, <DiffStats add=5102 sub=2 />).
 
 - [Add multiline string tests to project](https://github.com/philpax/perchance-interpreter/pull/2) (<MonthDayDate date="2025-11-12" noyear />, <DiffStats add=480 sub=8 />)
 - [Fix multiline list selection test failure](https://github.com/philpax/perchance-interpreter/pull/3) (<MonthDayDate date="2025-11-12" noyear />, <DiffStats add=80 sub=15 />)
@@ -166,11 +169,16 @@ I assume you can see where this is going. I extracted the base documentation for
 - [Add Ariadne diagnostics for all error types](https://github.com/philpax/perchance-interpreter/pull/15) (<MonthDayDateRange start="2025-11-16" end="2025-11-17" noyear />, <DiffStats add=1701 sub=578 />)
 - [Replace span fields with Spanned wrapper type](https://github.com/philpax/perchance-interpreter/pull/16) (<MonthDayDate date="2025-11-17" noyear />, <DiffStats add=569 sub=517 />)
 - [Implement missing functionality from README](https://github.com/philpax/perchance-interpreter/pull/17) (<MonthDayDate date="2025-11-19" noyear />, <DiffStats add=639 sub=25 />)
+
+![A trace view / debugger for a given Perchance generation, as part of the frontend](./perchance-interpreter-2.png)
+
 - [Add generator execution tracing debugger](https://github.com/philpax/perchance-interpreter/pull/18) (<MonthDayDate date="2025-11-19" noyear />, <DiffStats add=1512 sub=85 />)
 - [Refactor evaluator into multiple modules](https://github.com/philpax/perchance-interpreter/pull/19) (<MonthDayDate date="2025-11-19" noyear />, <DiffStats add=3394 sub=3089 />)
 - [refactor: remove non-functional tree view from trace display](https://github.com/philpax/perchance-interpreter/pull/20) (<MonthDayDate date="2025-11-23" noyear />, <DiffStats add=17 sub=374 />)
 
 ## [philpax/paxcord](https://github.com/philpax/paxcord)
+IMAGEHERE: paxcord demonstrating agentic generation through Lua script
+
 `paxcord` is my personal Discord bot, optimised for my own use cases. Notably, I am a fan of the Lua programming language, and I've carried that into this here bot by giving it fairly extensive Lua scripting capabilities. The work here was primarily in extending that capability to the point of near-absurdity.
 
 The first step was to [integrate the above Perchance interpreter](https://github.com/philpax/paxcord/pull/3) (<MonthDayDate date="2025-11-12" noyear />, <DiffStats add=58 sub=0 />), such that I could test out the generator in a social capacity. Once I had my fun with that, I started to think about a new way to interact with Lua, and decided I'd best prepare for it by [exposing currency conversion to Lua](https://github.com/philpax/paxcord/pull/4) (<MonthDayDate date="2025-11-12" noyear />, <DiffStats add=702 sub=19 />).
@@ -201,6 +209,8 @@ This SSG was effectively "done" months ago, but I couldn't deploy it due to a pe
 - [Add basic search to MediaWiki static site generator](https://github.com/jc2mp/jc2mp.github.io/pull/4) (<MonthDayDate date="2025-11-18" noyear />, <DiffStats add=568 sub=21 />)
 
 ## [philpax/blackbird](https://github.com/philpax/blackbird)
+IMAGEHERE: blackbird
+
 blackbird is my personal music player software, optimised for my own tastes in what a music player should do and how it should operate. I grew up using foobar2000 in a very specific way - library view only - and as I started using other operating systems more regularly, I wanted a way to both carry that experience with me and to be able to stream my music from my own server, regardless of where I was.
 
 The latter was easy enough to solve with [Navidrome](https://www.navidrome.org/), which implements the (Open)Subsonic protocol, but the former showed itself to be much more difficult: the majority of existing Subsonic clients optimised for iTunes / Spotify-like music libraries, which are heavily playlist-oriented and do not present your entire library in a single linear list. After much hemming and hawing, and after being goaded by a friend building their own client, I embarked upon the process of developing my own.
@@ -233,6 +243,8 @@ I'd say that this has generally gone [quite well](/tags/blackbird/), but the thi
 
 
 ## [philpax/paxboard](https://github.com/philpax/paxboard)
+IMAGEHERE: paxboard, as it looked three months ago
+
 paxboard is my personal self-hosted home page. I am pathologically afraid of YAML, so existing solutions like [homepage](https://gethomepage.dev/) didn't sit right with me; additionally, I wanted to be able to easily display custom information, like the status of my AI models. My initial version of this was written in Rust and was entirely server-rendered using [paxhtml](#philpaxpaxhtml), as I was in a particularly `paxhtml`-y mood.
 
 I'd grown to reconsider this, especially because I wanted cleanly-delivered live updates, so one of the first things I did was to [rewrite the codebase in TypeScript and React](https://github.com/philpax/paxboard/pull/11) (<MonthDayDate date="2025-11-14" noyear />, <DiffStats add=4521 sub=2515 />), making it much easier to iterate (including live edits to the "deployed" version). I then proceeded to [add world clocks for major cities](https://github.com/philpax/paxboard/pull/12) (<MonthDayDateRange start="2025-11-14" end="2025-11-15" noyear />, <DiffStats add=160 sub=0 />) and make it possible to [copy the times of those world clocks to the clipboard](https://github.com/philpax/paxboard/pull/13) (<MonthDayDate date="2025-11-16" noyear />, <DiffStats add=81 sub=1 />).
@@ -242,6 +254,8 @@ I then rounded things out by adding [weather displays for Stockholm and Melbourn
 This is a relatively small bit of bespoke software, but it's something that I would have otherwise given up on if it weren't for the ease of maintenance. Of course, one could argue that the correct thing to do would be to use the existing software - but like with blackbird, I want something that fits _me_.
 
 ## [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
+IMAGEHERE: rucomfyui node graph
+
 [ComfyUI](https://www.comfy.org/) is an open-source node-based program for composing AI synthesis workflows (image generation, video generation, etc). The user composes a graph of nodes that describes the flow of data through the various steps in a synthesis pipeline, and then runs this graph to produce an output.
 
 To help external users make use of the wide ecosystem, it offers an API that can be used to run these workflows. Unfortunately, this API is poorly-designed and even more poorly documented, so using it correctly is both troublesome and tedious. In late 2024, I developed a Rust library for interfacing with this API with a _very_ strongly typed API in mind, as befitting the Rust ethos: the goal was to make it difficult to "hold it wrong", while guiding users along the happy path.
@@ -289,6 +303,8 @@ Later on, I was doing some performance optimisations on my website - which build
 Finally, as part of the above bump allocator work, I discovered that I had to keep a non-bump-allocated representation around for the Lua bindings I'd produced for `paxhtml` in a [previous edition, for paxboard](../an-even-quieter-week/index.md#paxboard). As I'd already stopped using these bindings in [paxboard](#philpaxpaxboard) in November, I weighed up my options, and came to a conclusion: [it was time for the Lua bindings, and their vestigial owned representation, to go](https://github.com/philpax/paxhtml/pull/4) (<MonthDayDate date="2025-12-31" noyear />, <DiffStats add=1 sub=744 />). Claude had surfaced this earlier in the planning phase, but I hadn't realised how much I'd hate having two representations until it was laid bare to me.
 
 ## [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
+IMAGEHERE: dark mode and light mode of same article, side by side
+
 This very here website. A long, long time ago, I hosted a Ruby/[Sinatra](https://sinatrarb.com/) server for my website that was completely unreproducible, but was fully hackable; a less-long time ago, I switched this over to a [Zola](https://getzola.org/)-generated static site, which was fully reproducible, but completely unhackable.
 
 In an effort to thread the needle and set up a reproducible _and_ hackable solution, I developed my own Rust SSG. As with many of these things, I didn't do it because it was easy; I did it because I thought it would be easy. It took me the better part of a year to put together a design and structure I was happy with, which was largely an unforced error - turns out that people pre-design their websites in Figma for a reason.
@@ -319,6 +335,8 @@ My sync script was copying all of my dotfiles over to every machine, which was s
 The last thing I did here was to [extract out common developer tooling and services](https://github.com/philpax/nixos-configuration/pull/17) (<MonthDayDate date="2025-11-20" noyear />, <DiffStats add=36 sub=34 />) so that my laptop could benefit from the same tooling as my server, and vice versa.
 
 ## [philpax/prismata](https://github.com/philpax/prismata)
+IMAGEHERE: Prismata voxels
+
 Prismata is a research prototype that I built out at one of my former employers, with the intention of experimenting with an AI co-creation workflow in a voxel world. After receiving permission, I open-sourced it and did some minor cleanup work to make it usable once again.
 
 The first step was to [set up a frontend deployment workflow](https://github.com/philpax/prismata/pull/8) (<MonthDayDateRange start="2025-11-17" end="2025-11-18" noyear />, <DiffStats add=91 sub=0 />); unfortunately, in doing so, I discovered that the version of Bevy/wgpu it was targeting used experimental rendering features that were no longer supported in modern browsers.
@@ -330,17 +348,21 @@ I had to go in there towards the end to restore some of the behaviour that had b
 [^bevyupdate]: Truth be told, this would not be that difficult. The most frustrating part is that I had to fork several dependencies to update them to Bevy 0.17, so I'd have to do the same thing again for 0.18. Not difficult, just annoying.
 
 ## [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
+![A vibe-coded frontend for `wikitext_simplified`](./wikitext-simplified.png)
+
 As part of my work for [genresin.space](#genresinspacegenresinspacegithubio), I needed a way to reliably parse wikitext within Rust. I use [a fork](https://github.com/philpax/parse-wiki-text-2) of [parse-wiki-text-2](https://github.com/soerenmeier/parse-wiki-text-2), which is itself a fork of [parse_wiki_text](https://crates.io/crates/parse_wiki_text) (wherever you are, Fredrik, thank you for your service 🫡). However, PWT produces a stream of nodes: it does not actually produce a tree, at least not in the sense you'd expect from a traditional parser.
 
 I believe that this was an intentional decision, as anyone who has worked with wikitext can tell you that it is a demonic format that will accept all kinds of malformed input and keep trucking. For my purposes, I needed something that could take the tag soup and pull it into an AST that I could then render or process as required; from this, `wikitest_simplified` was born, and it has been evolved since to support more and more of the madness that permeates the wikitext of both Wikipedia and [the JC2-MP wiki](#philpaxjc2mpgithubio-jc2mpjc2mpgithubio).
 
 The first change that I tasked Claude with completing was to propagate the start and end positions of every node through [Span and Spanned types](https://github.com/philpax/wikitext_simplified/pull/1) (<MonthDayDateRange start="2025-11-17" end="2025-11-18" noyear />, <DiffStats add=510 sub=457 />), allowing for better downstream handling.
 
-Some time after this, I realised it would be beneficial to demonstrate what the library actually does, so I had a [React frontend](https://github.com/philpax/wikitext_simplified/pull/2) (<MonthDayDate date="2025-12-25" noyear />, <DiffStats add=5710 sub=1 />) built. It is subject to the Pure Vibe Code aesthetic, much like [the Perchance interpreter](#philpaxperchance-interpreter), but I'm okay with that: it's just a demo, after all.[^design]
+Some time after this, I realised it would be beneficial to demonstrate what the library actually does, so I had a [React frontend](https://github.com/philpax/wikitext_simplified/pull/2) (<MonthDayDate date="2025-12-25" noyear />, <DiffStats add=5710 sub=1 />) built. It is subject to the Pure Vibe Code aesthetic, much like [the Perchance interpreter](#philpaxperchance-interpreter), but I'm okay with that: it's just [a demo](https://philpax.me/experimental/wikitext/), after all.[^design]
 
 [^design]: That being said, I'd be lying if I said I wasn't considering setting up a unified design language and using it across all of my tools.
 
 ## [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
+IMAGEHERE: GiS as it appeared three months ago
+
 [genresin.space](https://genresin.space/) is a project I've been noodling on for the last year. Using `wikitext_simplified` and a lot of machinery, it extracts information about every music genre with an infobox from the English Wikipedia (offline - I'm not hitting the live website!), and then renders it as an explorable graph (as in graph theory, not charts), so that you can explore how genres influence and are influenced by each other.
 
 It has been functionally complete for some time, but polishing it to the point where it captures what I'm going for and works well on every platform has proven to be troublesome. Thankfully, Worker Claude has been able to unblock some of the more pernicious work. The first change was purely procedural: [splitting the build and deploy CI workflows](https://github.com/genresinspace/genresinspace.github.io/pull/36) (<MonthDayDate date="2025-11-20" noyear />, <DiffStats add=23 sub=44 />).
@@ -357,6 +379,8 @@ Finally, I'd been unhappy with the colour scheme in use for some time _and_ want
 I then closed this PR and extracted the example into an [independent repo](https://github.com/philpax/d3d11-openxr-example). I would have preferred to skip directly to this step, but I wanted to make sure Claude had the necessary context to navigate `openxrs` without having to look up individual files.
 
 ## [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
+![A GitHub screenshot showing *many* PRs for dwarf-c-reconstructor](./dwarf-c-reconstructor.png)
+
 After completing [ida-c-splitter](#ferrobrewida-c-splitter), I posted about it in a reverse-engineering-related Discord, and someone messaged me to ask if I could vibe-code something for them with my credits. As I found myself with a need to exhaust these credits, I took them up on their request, and started piping their prompts and test files directly into Claude.
 
 This essentially makes this a vibe-vibe-coded project: not only was the actual programming delegated, the task of issuing the delegation was itself delegated. I find this amusing.
@@ -385,6 +409,8 @@ The first port of call was maintenance, in [updating windows-rs to version 0.62]
 As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. Not to beat a dead horse, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) (<MonthDayDate date="2025-11-26" noyear />, <DiffStats add=65 sub=53 />).
 
 ## [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
+IMAGEHERE: GitHub file tree, including one of the defs shown
+
 As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
 
 The biggest change was to switch our existing definitions over to use [real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) (<MonthDayDate date="2025-12-17" noyear />, <DiffStats add=2472 sub=2570 />), as was implemented the same day. Watching all of the redundancy disappear brought a tear to my eye.
