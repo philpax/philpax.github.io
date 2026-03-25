@@ -11,5 +11,4 @@ toml = { workspace = true }
 toml-datetime-compat = { workspace = true }
 paxhtml = { workspace = true }
 serde_json = { workspace = true }
-base64 = { workspace = true }
 ureq = { workspace = true }

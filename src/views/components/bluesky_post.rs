@@ -4,19 +4,15 @@ use paxsite_content::bluesky::{BlueskyPostData, Facet, FacetFeature};
 use super::{IsoDatetime, IsoDatetimeProps, Link, LinkProps};
 
 pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml::Element<'bump> {
-    let avatar = post
-        .author_avatar_base64
-        .as_ref()
-        .zip(post.author_avatar_mime.as_ref())
-        .map(|(data, mime)| {
-            paxhtml::html! { in bump;
-                <img
-                    src={format!("data:{mime};base64,{data}")}
-                    alt=""
-                    class="w-10 h-10 rounded-full flex-shrink-0"
-                />
-            }
-        });
+    let avatar = post.author_avatar_filename.as_ref().map(|filename| {
+        paxhtml::html! { in bump;
+            <img
+                src={filename.as_str()}
+                alt=""
+                class="w-10 h-10 rounded-full flex-shrink-0"
+            />
+        }
+    });
 
     let parse_datetime = |s: &str| {
         chrono::DateTime::parse_from_rfc3339(s)

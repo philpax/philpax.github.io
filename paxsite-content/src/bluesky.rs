@@ -4,7 +4,6 @@ use std::{
 };
 
 use anyhow::Context;
-use base64::{Engine, engine::general_purpose::STANDARD as BASE64};
 use serde::{Deserialize, Serialize};
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -28,8 +27,7 @@ pub struct BlueskyPostData {
     pub url: String,
     pub author_display_name: String,
     pub author_handle: String,
-    pub author_avatar_base64: Option<String>,
-    pub author_avatar_mime: Option<String>,
+    pub author_avatar_filename: Option<String>,
     pub text: String,
     pub facets: Vec<Facet>,
     pub created_at: String,
@@ -56,8 +54,10 @@ pub enum FacetFeature {
 
 // ── Public functions ─────────────────────────────────────────────────────────
 
-/// Returns true if the given path is a Bluesky cache file that should be
+/// Returns true if the given path is a Bluesky cache JSON file that should be
 /// excluded from the document's associated files list.
+/// Avatar images use the same prefix but are *not* excluded — they need to be
+/// copied to output so the rendered post can reference them.
 pub fn is_cache_file(path: &Path) -> bool {
     path.file_name().is_some_and(|f| {
         let f = f.to_string_lossy();
@@ -85,7 +85,7 @@ pub fn ensure_posts_cached(
             serde_json::from_str(&json)
                 .with_context(|| format!("failed to parse cache file {cache_file:?}"))?
         } else {
-            let data = fetch_post(url)?;
+            let data = fetch_post(url, content_dir)?;
             let json = serde_json::to_string_pretty(&data)?;
             std::fs::write(&cache_file, &json)
                 .with_context(|| format!("failed to write cache file {cache_file:?}"))?;
@@ -115,22 +115,22 @@ fn cache_path(content_dir: &Path, rkey: &str) -> PathBuf {
     content_dir.join(format!("{BLUESKY_CACHE_PREFIX}{rkey}.json"))
 }
 
-fn fetch_post(url: &str) -> anyhow::Result<BlueskyPostData> {
+fn fetch_post(url: &str, content_dir: &Path) -> anyhow::Result<BlueskyPostData> {
     let (handle, rkey) = parse_bsky_url(url)?;
 
     let did = resolve_handle(handle)?;
     let at_uri = format!("at://{did}/app.bsky.feed.post/{rkey}");
     let post = get_post(url, &at_uri)?;
 
-    let (avatar_base64, avatar_mime) = match &post.author.avatar {
-        Some(avatar_url) => match fetch_avatar(avatar_url) {
-            Ok((data, mime)) => (Some(data), Some(mime)),
+    let avatar_filename = match &post.author.avatar {
+        Some(avatar_url) => match fetch_avatar(avatar_url, content_dir, &did) {
+            Ok(filename) => Some(filename),
             Err(e) => {
                 eprintln!("warning: failed to fetch avatar for {handle}: {e}");
-                (None, None)
+                None
             }
         },
-        None => (None, None),
+        None => None,
     };
 
     let facets = post
@@ -158,8 +158,7 @@ fn fetch_post(url: &str) -> anyhow::Result<BlueskyPostData> {
         url: url.to_string(),
         author_display_name: post.author.display_name.unwrap_or_default(),
         author_handle: post.author.handle,
-        author_avatar_base64: avatar_base64,
-        author_avatar_mime: avatar_mime,
+        author_avatar_filename: avatar_filename,
         text: post.record.text,
         facets,
         created_at: post.record.created_at,
@@ -208,8 +207,8 @@ fn get_post(display_url: &str, at_uri: &str) -> anyhow::Result<PostView> {
         .with_context(|| format!("no post returned for {display_url}"))
 }
 
-/// Fetches an avatar image and returns it as (base64_data, content_type).
-fn fetch_avatar(avatar_url: &str) -> anyhow::Result<(String, String)> {
+/// Fetches an avatar image, saves it to `content_dir`, and returns the filename.
+fn fetch_avatar(avatar_url: &str, content_dir: &Path, did: &str) -> anyhow::Result<String> {
     const MAX_AVATAR_SIZE: u64 = 5 * 1024 * 1024; // 5 MB
 
     let response = ureq::get(avatar_url).call()?;
@@ -219,13 +218,21 @@ fn fetch_avatar(avatar_url: &str) -> anyhow::Result<(String, String)> {
         .and_then(|v| v.to_str().ok())
         .unwrap_or("image/jpeg")
         .to_string();
+    let ext = match content_type.as_str() {
+        "image/png" => "png",
+        "image/webp" => "webp",
+        _ => "jpg",
+    };
     let bytes = response
         .into_body()
         .with_config()
         .limit(MAX_AVATAR_SIZE)
         .read_to_vec()?;
-    let encoded = BASE64.encode(&bytes);
-    Ok((encoded, content_type))
+
+    let sanitised_did = did.replace(':', "-");
+    let filename = format!("{BLUESKY_CACHE_PREFIX}{sanitised_did}.{ext}");
+    std::fs::write(content_dir.join(&filename), &bytes)?;
+    Ok(filename)
 }
 
 // ── API response types for getPosts ──────────────────────────────────────────
