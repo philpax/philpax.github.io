@@ -65,6 +65,12 @@ This was especially exacerbated by the numerical value attached to the credits. 
 
 I cut down on the amount of work I was doing on my own projects during this period - especially as I was meant to be on holiday! - and took some time to recover. For the most part, I'm fine now - back to a healthier rhythm, in touch with my network, engaging in other hobbies - but, if left unchecked, I could see myself (and others who share my personality type) slipping right back into it again.
 
+With that being said, I suspect that at least a significant portion of _my_ particular display here was a result of the behaviour described in this post by Ethan Mollick:
+
+<BlueskyPost post="https://bsky.app/profile/emollick.bsky.social/post/3mhg6h2jnzk2v" />
+
+It's out of my system now, and I don't think it'll come back, at least not to the same extent. I hope, anyway!
+
 ## The End of Coding?
 I have written a single-digit percentage of code by hand since November. [This is not an uncommon sentiment](https://simonwillison.net/2026/Jan/4/inflection/), but I want to emphasise it: our profession _has_ fundamentally changed, and the aftershocks from this will rumble throughout as the industry catches up.
 

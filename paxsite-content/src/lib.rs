@@ -9,6 +9,8 @@ use serde::{Deserialize, Serialize};
 
 pub use paxhtml::util::slugify;
 
+pub mod bluesky;
+
 // ── Constants ───────────────────────────────────────────────────────────────
 
 pub type DocumentId = Vec<String>;
@@ -183,6 +185,9 @@ impl Document {
             if path.is_dir() {
                 continue;
             }
+            if bluesky::is_cache_file(&path) {
+                continue;
+            }
             if let Some(filename) = path.file_name() {
                 let filename = filename.to_string_lossy();
                 if filename == "hero.jpg" {
@@ -297,6 +302,21 @@ impl<D> DocumentFolderNode<D> {
                 DocumentNode::Leaf(DocumentLeafNode::Document(_)) => true,
                 DocumentNode::Leaf(DocumentLeafNode::Redirect(_)) => false,
             })
+    }
+
+    pub fn all_documents(&self) -> Vec<&D> {
+        let mut docs = Vec::new();
+        if let Some(DocumentLeafNode::Document(doc)) = &self.index {
+            docs.push(doc.as_ref());
+        }
+        for child in self.children.values() {
+            match child {
+                DocumentNode::Folder(f) => docs.extend(f.all_documents()),
+                DocumentNode::Leaf(DocumentLeafNode::Document(doc)) => docs.push(doc.as_ref()),
+                _ => {}
+            }
+        }
+        docs
     }
 
     pub fn map_documents<E>(self, f: &mut impl FnMut(D) -> E) -> DocumentFolderNode<E> {

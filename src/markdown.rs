@@ -325,6 +325,29 @@ impl<'a> MarkdownConverter<'a> {
                         components::MonthDayDateProps { date, noyear },
                     );
                 }
+                if element.tag() == Some("BlueskyPost") {
+                    let url = element
+                        .attr("post")
+                        .and_then(|a| a.value_as_str())
+                        .unwrap_or_else(|| {
+                            panic!(
+                                "BlueskyPost requires 'post' attribute in {}",
+                                self.error_context
+                            )
+                        });
+                    let post_data =
+                        self.context
+                            .content
+                            .bluesky_posts
+                            .get(url)
+                            .unwrap_or_else(|| {
+                                panic!(
+                                    "BlueskyPost data not found for {url} in {}",
+                                    self.error_context
+                                )
+                            });
+                    return components::bluesky_post(bump, post_data);
+                }
                 if element.tag() == Some("MonthDayDateRange") {
                     let start = element
                         .attr("start")
@@ -339,11 +362,7 @@ impl<'a> MarkdownConverter<'a> {
                     let noyear = element.attr("noyear").is_some();
                     return components::MonthDayDateRange(
                         bump,
-                        components::MonthDayDateRangeProps {
-                            start,
-                            end,
-                            noyear,
-                        },
+                        components::MonthDayDateRangeProps { start, end, noyear },
                     );
                 }
 
