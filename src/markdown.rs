@@ -122,8 +122,9 @@ impl<'a> MarkdownConverter<'a> {
                         6 => "text-xs font-bold",
                         value => panic!("Heading depth {value} is not supported"),
                     };
+                    let contains_links = contains_link(&h.children);
 
-                    e::h_with_id(bump, resolved_depth, class, true, children)
+                    e::h_with_id(bump, resolved_depth, class, true, contains_links, children)
                 }
             }
             Node::Text(t) => b.text(&t.value),
@@ -598,6 +599,15 @@ impl<'a> MarkdownConverter<'a> {
             }
         }
     }
+}
+
+fn contains_link(nodes: &[Node]) -> bool {
+    nodes.iter().any(|node| {
+        matches!(node, Node::Link(_))
+            || node
+                .children()
+                .is_some_and(|children| contains_link(children))
+    })
 }
 
 pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {

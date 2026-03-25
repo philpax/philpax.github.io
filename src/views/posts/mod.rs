@@ -5,7 +5,7 @@ use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
     views::components::{
-        HeadingAnchor, HeadingAnchorProps, IsoDate, IsoDateProps, Link, LinkProps,
+        IsoDate, IsoDateProps, Link, LinkProps,
     },
 };
 
@@ -177,8 +177,9 @@ pub fn toc_elements<'a>(
             <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                 <div class="w-max max-w-full">
                     <h3 class={h3_classname}>
-                        <HeadingAnchor target={"#toc-sticky".to_string()} />
-                        "Table of Contents"
+                        <Link underline target={"#toc-sticky".to_string()}>
+                            "Table of Contents"
+                        </Link>
                     </h3>
                     <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                         {hierarchy_list}
@@ -192,8 +193,9 @@ pub fn toc_elements<'a>(
         html! { in bump;
             <aside class="toc 2xl:hidden" id="toc-inline">
                 <h3 class={h3_classname}>
-                    <HeadingAnchor target={"#toc-inline".to_string()} />
-                    "Table of Contents"
+                    <Link underline target={"#toc-inline".to_string()}>
+                        "Table of Contents"
+                    </Link>
                 </h3>
                 <div class="[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                     {hierarchy_list}

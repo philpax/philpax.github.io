@@ -4,7 +4,7 @@ use paxhtml::builder::Builder;
 use paxhtml::bumpalo::Bump;
 pub use paxhtml::{Element, html};
 
-use crate::views::components::{HeadingAnchor, HeadingAnchorProps};
+use crate::views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps};
 
 pub fn break_on_colon<'bump>(bump: &'bump Bump, value: &str) -> Element<'bump> {
     let b = Builder::new(bump);
@@ -22,22 +22,33 @@ pub fn break_on_colon<'bump>(bump: &'bump Bump, value: &str) -> Element<'bump> {
 }
 
 /// Accepts a `with_link` attribute that will add a `#` anchor link before the heading.
+/// If `contains_links` is false, the entire heading text is wrapped in a link to itself.
+/// If `contains_links` is true, only a `#` prefix is added (to avoid nested `<a>` tags).
 pub fn h_with_id<'bump>(
     bump: &'bump Bump,
     depth: u8,
     class: &str,
     with_link: bool,
+    contains_links: bool,
     children: Element<'bump>,
 ) -> Element<'bump> {
     let b = Builder::new(bump);
     let id = crate::util::slugify(&children.inner_text(bump));
 
     let children = if with_link {
-        html! { in bump;
-            <>
-                <HeadingAnchor target={format!("#{id}")} />
-                {children}
-            </>
+        if contains_links {
+            html! { in bump;
+                <>
+                    <HeadingAnchor target={format!("#{id}")} />
+                    {children}
+                </>
+            }
+        } else {
+            html! { in bump;
+                <Link underline target={format!("#{id}")}>
+                    {children}
+                </Link>
+            }
         }
     } else {
         children
@@ -55,7 +66,7 @@ macro_rules! generate_hs_with_id {
         $(
         /// Accepts a `with_link` attribute that will wrap the children in a link to the heading.
         pub fn $fn_ident<'bump>(bump: &'bump Bump, element: Element<'bump>, class: &str) -> Element<'bump> {
-            h_with_id(bump, $depth, class, false, element)
+            h_with_id(bump, $depth, class, false, false, element)
         }
         )*
     };
