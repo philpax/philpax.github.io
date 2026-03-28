@@ -40,12 +40,24 @@ Given how long it has taken me to write this post, I have largely forgotten a lo
 
 It is worth noting that it took me two months to write this post up: the sheer amount of work done required a similarly sheer amount of work to document, and I found myself putting it off as to avoid confronting it. Nonetheless, we persist.
 
+- talk about how some of this is also based on experiences I've had since, but I'll do my best to quarantine it to what I learnt during that two-month period
+
 ## Waiter, This Claude Code Web Is Raw
 Claude Code Web was insanely buggy. I say "was" as it seems to have been rebuilt in the last few weeks; I would consider most of the feedback here to no longer be relevant.
 
 With that being said, though, it would frequently stop responding to me, lose my messages, would require prodding to continue and would break down after a certain number of commits, with a new session required to get it back on track. It has a limited understanding of its own environment, and frequently requires handholding around more unconventional toolchains.
 
 Functionality-wise, you could not easily work _with_ it - it was very much positioned as an in-and-out endeavour, and working on the same branch that it is working on can often lead to pain. Speaking of branches, you couldn't control which branch it would work from; it would always instantiate a new branch from your main branch, which means you couldn't easily continue existing branches without prompting it. This was especially irritating given the commit-breakage from above; continuing long-lived work was quite tedious. Thankfully, this has been resolved as part of its refresh.
+
+- paradoxically, it also encourages you to continue working on the same PR (because parallel work with the same root is frustrating), but there's no mechanism for queueing up work
+- this led me to having to manually feed the agent with work once it was complete with a subtask, which does not seem ideal as a working pattern
+- this has improved in the meantime
+
+- the web-based methodology also meant that I had to frequently pull down the changes, try them out locally, and then give next steps
+- this is very slow and unpleasant, and I would not have done it if it were not for the free credits
+- comparatively, running Claude Code locally is _much_ more freeing: I can dictate my changes, observe the result, and iterate quickly
+- this one factor alone would stop me from using web-based agents for anything more than work that I can estimate will be one-shottable, or for work that I'm happy to pick up at a later date
+- I would assume the vibe-coding platforms aim to address this by providing live previews, but you will never catch me using Lovable
 
 Despite the shortcomings I experienced, I'd be lying if I didn't admit that there is certainly an appeal to the interaction model. Being able to kick off work while doing something else is compelling _if_ you can be confident that it will produce what you expect it to produce. One's sense of its capabilities grows with use, but you can never be sure, especially with larger tasks. I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
 
@@ -76,6 +88,17 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - you should be accountable for the code you produce, and that means reviewing the agent's output to make sure it meets standards, including your own personal standards
 - deslop freely and frequently: [generating code is cheap](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/), so build up your raw code-matter and [sculpt it](https://eikopf.bearblog.dev/subtractive-synthesis/) until it's actually good
 - and of course, the corollary applies: you can use AI to generate all of the rigour that you, as a human, would have been otherwise too effort/time-pressed to do yourself. there's no excuse not to write tests, design more stringent APIs, write better documentation, and push the quality frontier. see what [Oxide have to say about this](https://oxide-and-friends.transistor.fm/episodes/engineering-rigor-in-the-llm-age).
+
+# The Siren Call of The Slop Stack
+
+- the agents will pull you towards [their preferred stacks](https://amplifying.ai/research/claude-code-picks), where preferred comes from the common folklore of the internet, RLHF on data from [underpaid and exploited data workers](https://cwa-union.org/ghost-workers-ai-machine), RLHF on data from [less underpaid data workers](https://builtin.com/articles/train-ai-side-hustle), or RLHF on the taste of whichever employee was processing the data that day
+- most of the time, this choice is fine, and honestly, I've given into the call much of the time
+- this means I've doubled down on React + TypeScript + Tailwind as my frontend stack, for example
+- however, you should be aware that this is not always the right choice, and that there are other solutions worth considering, too
+- as a somewhat dire example - I had a passing interest in Svelte(Kit), but never engaged that interest because it didn't seem beneficial enough to do
+- now that the agents are especially good at the SlopStack™️, I'm just not that inclined to spend time on SK. at the same time, I could just be growing too old and employed to spend my free time learning new frameworks to do the same thing
+- however, I do think it could go the other way: for example, you could use an AI to help you learn these lesser-known frameworks with more reactive feedback
+- even if their inherent knowledge is wrong or out of date, they're excellent at consulting reference documentation, and can thus self-correct reasonably well
 
 ## Reviewing Is A Bottleneck
 - in addition to the above, there's no getting around it: at a certain point, _you_ are the impediment to getting more work done
@@ -474,4 +497,4 @@ The biggest change was to switch our existing definitions over to use [real gene
 
 # Conclusion
 
-TODO, but mostly see takeaways. Include a collapsible with the chronological timeline of every PR, as well as a final tally of +/- lines. Talk about how effective his was, and how much of my backlog I blew away, and how liberating that was for a time... but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
+TODO, but mostly see takeaways. Include a collapsible with the chronological timeline of every PR (where the bars also contain the diff amounts; strongly desaturated if closed), as well as a final tally of +/- lines. Talk about how effective his was, and how much of my backlog I blew away, and how liberating that was for a time... but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
