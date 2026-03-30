@@ -4,9 +4,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{
-        IsoDate, IsoDateProps, Link, LinkProps,
-    },
+    views::components::{IsoDate, IsoDateProps, Link, LinkProps},
 };
 
 pub const POST_BODY_MARGIN_CLASS: &str =

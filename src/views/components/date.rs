@@ -47,12 +47,14 @@ pub fn IsoDatetime<'bump>(bump: &'bump Bump, props: IsoDatetimeProps) -> paxhtml
 pub struct MonthDayDateProps {
     pub date: String,
     pub noyear: bool,
+    pub short: bool,
 }
 impl DefaultIn<'_> for MonthDayDateProps {
     fn default_in(_bump: &Bump) -> Self {
         Self {
             date: String::new(),
             noyear: false,
+            short: false,
         }
     }
 }
@@ -61,11 +63,8 @@ impl DefaultIn<'_> for MonthDayDateProps {
 pub fn MonthDayDate<'bump>(bump: &'bump Bump, props: MonthDayDateProps) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
     let (year, month, day) = parse_date(&props.date);
-    let display = if props.noyear {
-        format_date(month, day, None)
-    } else {
-        format_date(month, day, Some(year))
-    };
+    let year = (!props.noyear).then_some(year);
+    let display = format_date(month, day, year, props.short);
     b.time([
         b.attr(("datetime", props.date.as_str())),
         b.attr(("title", props.date.as_str())),
@@ -76,6 +75,7 @@ pub struct MonthDayDateRangeProps {
     pub start: String,
     pub end: String,
     pub noyear: bool,
+    pub short: bool,
 }
 impl DefaultIn<'_> for MonthDayDateRangeProps {
     fn default_in(_bump: &Bump) -> Self {
@@ -83,6 +83,7 @@ impl DefaultIn<'_> for MonthDayDateRangeProps {
             start: String::new(),
             end: String::new(),
             noyear: false,
+            short: false,
         }
     }
 }
@@ -97,11 +98,11 @@ pub fn MonthDayDateRange<'bump>(
     let (ey, em, ed) = parse_date(&props.end);
 
     let cross_year = sy != ey;
-    let show_year = !props.noyear || cross_year;
+    let show_year = !props.noyear;
 
     if sm == em && !cross_year {
-        // Same month, same year: "November 8–12" or "November 8–12, 2025"
-        let start_display = format_date(sm, sd, None);
+        // Same month, same year: "Nov 8–12" or "Nov 8–12, 2025"
+        let start_display = format_date(sm, sd, None, props.short);
         let end_display = if show_year {
             format!("{}, {}", ed, ey)
         } else {
@@ -120,10 +121,14 @@ pub fn MonthDayDateRange<'bump>(
         ])
     } else {
         // Different months or cross-year
-        let start_year = if cross_year { Some(sy) } else { None };
+        let start_year = if cross_year && show_year {
+            Some(sy)
+        } else {
+            None
+        };
         let end_year = if show_year { Some(ey) } else { None };
-        let start_display = format_date(sm, sd, start_year);
-        let end_display = format_date(em, ed, end_year);
+        let start_display = format_date(sm, sd, start_year, props.short);
+        let end_display = format_date(em, ed, end_year, props.short);
         b.fragment([
             b.time([
                 b.attr(("datetime", props.start.as_str())),
@@ -146,27 +151,45 @@ fn parse_date(s: &str) -> (u32, u32, u32) {
     (parts[0], parts[1], parts[2])
 }
 
-fn month_name(month: u32) -> &'static str {
-    match month {
-        1 => "January",
-        2 => "February",
-        3 => "March",
-        4 => "April",
-        5 => "May",
-        6 => "June",
-        7 => "July",
-        8 => "August",
-        9 => "September",
-        10 => "October",
-        11 => "November",
-        12 => "December",
-        _ => panic!("invalid month: {month}"),
+fn month_name(month: u32, short: bool) -> &'static str {
+    if short {
+        match month {
+            1 => "Jan",
+            2 => "Feb",
+            3 => "Mar",
+            4 => "Apr",
+            5 => "May",
+            6 => "Jun",
+            7 => "Jul",
+            8 => "Aug",
+            9 => "Sep",
+            10 => "Oct",
+            11 => "Nov",
+            12 => "Dec",
+            _ => panic!("invalid month: {month}"),
+        }
+    } else {
+        match month {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => panic!("invalid month: {month}"),
+        }
     }
 }
 
-fn format_date(month: u32, day: u32, year: Option<u32>) -> String {
+fn format_date(month: u32, day: u32, year: Option<u32>, short: bool) -> String {
     match year {
-        Some(y) => format!("{} {}, {}", month_name(month), day, y),
-        None => format!("{} {}", month_name(month), day),
+        Some(y) => format!("{} {}, {}", month_name(month, short), day, y),
+        None => format!("{} {}", month_name(month, short), day),
     }
 }

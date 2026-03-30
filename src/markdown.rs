@@ -301,19 +301,6 @@ impl<'a> MarkdownConverter<'a> {
                 {
                     return components::notes_index(self.context, note_id);
                 }
-                if element.tag() == Some("DiffStats") {
-                    let add = element
-                        .attr("add")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    let sub = element
-                        .attr("sub")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    return components::diff_stats(bump, add, sub);
-                }
                 if element.tag() == Some("MonthDayDate") {
                     let date = element
                         .attr("date")
@@ -323,7 +310,11 @@ impl<'a> MarkdownConverter<'a> {
                     let noyear = element.attr("noyear").is_some();
                     return components::MonthDayDate(
                         bump,
-                        components::MonthDayDateProps { date, noyear },
+                        components::MonthDayDateProps {
+                            date,
+                            noyear,
+                            short: false,
+                        },
                     );
                 }
                 if element.tag() == Some("BlueskyPost") {
@@ -349,6 +340,42 @@ impl<'a> MarkdownConverter<'a> {
                             });
                     return components::bluesky_post(bump, post_data);
                 }
+                if element.tag() == Some("PrMeta") {
+                    let date = element
+                        .attr("date")
+                        .and_then(|a| a.value_as_str())
+                        .map(|s| s.to_string());
+                    let start = element
+                        .attr("start")
+                        .and_then(|a| a.value_as_str())
+                        .map(|s| s.to_string());
+                    let end = element
+                        .attr("end")
+                        .and_then(|a| a.value_as_str())
+                        .map(|s| s.to_string());
+                    let add = element
+                        .attr("add")
+                        .and_then(|a| a.value.as_ref())
+                        .and_then(|v| v.as_int())
+                        .unwrap_or(0) as u32;
+                    let sub = element
+                        .attr("sub")
+                        .and_then(|a| a.value.as_ref())
+                        .and_then(|v| v.as_int())
+                        .unwrap_or(0) as u32;
+                    let closed = element.attr("closed").is_some();
+                    return components::pr_meta(
+                        bump,
+                        components::PrMetaProps {
+                            date,
+                            start,
+                            end,
+                            add,
+                            sub,
+                            closed,
+                        },
+                    );
+                }
                 if element.tag() == Some("MonthDayDateRange") {
                     let start = element
                         .attr("start")
@@ -363,7 +390,12 @@ impl<'a> MarkdownConverter<'a> {
                     let noyear = element.attr("noyear").is_some();
                     return components::MonthDayDateRange(
                         bump,
-                        components::MonthDayDateRangeProps { start, end, noyear },
+                        components::MonthDayDateRangeProps {
+                            start,
+                            end,
+                            noyear,
+                            short: false,
+                        },
                     );
                 }
 

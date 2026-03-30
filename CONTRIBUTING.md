@@ -137,6 +137,8 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
   }}
   ```
 
+- Prefer the `html!` macro for all view/component code. The `Builder` API should only be used in `src/markdown.rs` where programmatic element construction is necessary; everywhere else, use `html!` for readability and consistency.
+
 ### `paxhtml` `html!` Macro Syntax
 
 The `html!` macro uses JSX-like syntax with some Rust-specific extensions:
@@ -193,7 +195,8 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 **Void (self-closing) components:**
 - `<MusicLibrary />` — Interactive music library display
 - `<NotesIndex />` — Hierarchical notes navigator (only in notes)
-- `<DiffStats add=128 sub=1 />` — GitHub-style diff statistics
+- `<PrMeta date="2025-11-06" add=128 sub=1 />` — Inline pill row with date and diff stats (always noyear)
+- `<PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />` — Date range variant with optional `closed` badge
 - `<MonthDayDate date="2025-11-06" noyear />` — Formatted date
 - `<MonthDayDateRange start="2025-11-06" end="2025-12-14" noyear />` — Date range
 - `<BlueskyPost post="https://bsky.app/profile/handle/post/rkey" />` — Archived Bluesky post embed (data fetched and cached as JSON next to the markdown file on first build)
