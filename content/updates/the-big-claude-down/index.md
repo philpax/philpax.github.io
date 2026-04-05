@@ -132,6 +132,10 @@ I hesitate to say this out loud, given how the linked post was received, but [to
 
 This was especially exacerbated by the numerical value attached to the credits. I saw the number and felt driven to bring it to zero by dispatching as much work as humanly possible - and in some cases, beyond humanly possible - and it led to rather unhealthy use practices. During the worst of it in November, I found myself sleeping extremely late - sometimes, not at all - so that I could send off more work to be done, review it, and test it. It may have been one of the most productive months of my life, but it was also profoundly self-destructive. This breadth of work led me to experience what I'd describe as mini-burnout, where I was unable to engage with anything I'd touched as a result of the anxiety.
 
+- not the only one to describe this, see Yegge of Gas Town fame[^yegge]: <https://steve-yegge.medium.com/the-ai-vampire-eda6e4f07163>
+
+[^yegge]: and other famous works, of course, but Gas Town is what he is known for this years
+
 I cut down on the amount of work I was doing on my own projects during this period - especially as I was meant to be on holiday! - and took some time to recover. For the most part, I'm fine now - back to a healthier rhythm, in touch with my network, engaging in other hobbies - but, if left unchecked, I could see myself (and others who share my personality type) slipping right back into it again.
 
 With that being said, I suspect that at least a significant portion of _my_ particular display here was a result of the behaviour described in this post by Ethan Mollick:
@@ -279,6 +283,8 @@ After that, well, I could finally do what I was working towards. Apologies for [
 Finally, to close out, I added a [Lua reply handler](https://github.com/philpax/paxcord/pull/7) <PrMeta start="2025-12-16" end="2025-12-17" add=815 sub=72 /> to allow continuing generation chains, and fixed [a bug where the first message was not present in the reply handler](https://github.com/philpax/paxcord/pull/8) <PrMeta date="2025-12-17" add=5 sub=0 />.
 
 ## [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
+![A screenshot of the JC2-MP wiki, as rendered by this bespoke SSG](./jcmp-wiki.png)
+
 A decade ago, I was a developer on the [multiplayer mod for Just Cause 2](https://jc-mp.com/). I slowly phased out my involvement over the years - what with university and employment obligations - and primarily remained as an occasional community presence, helping people out where I could and whatnot (ask me sometime about the follies of achievements).
 
 In 2021, a [OVH datacentre](https://www.datacenterdynamics.com/en/analysis/ovhcloud-fire-france-data-center/) burnt down. Unfortunately, that also happened to be the datacentre in which the JC2-MP website and all of the surrounding infrastructure was hosted; we had backups, but they were out of date, and the other members of the team were as similarly detached as me, which meant that our website remained down for the next few years.
@@ -316,7 +322,7 @@ On startup, blackbird fetches the entire library's metadata from the server, and
 
 I then proceeded to blast through my feature backlog: [adding a lyrics view](https://github.com/philpax/blackbird/pull/36) <PrMeta date="2025-11-18" add=388 sub=34 />, [searching through typing](https://github.com/philpax/blackbird/pull/37) <PrMeta date="2025-11-18" add=187 sub=4 />, an [Apple-style letter display in the scrollbar](https://github.com/philpax/blackbird/pull/38) <PrMeta date="2025-11-18" add=129 sub=0 />, [a fix for that display](https://github.com/philpax/blackbird/pull/39) <PrMeta date="2025-11-18" add=101 sub=48 />, and a [separate search window, openable through a global keybind](https://github.com/philpax/blackbird/pull/41) <PrMeta date="2025-11-19" add=223 sub=155 />.
 
-After this, some cleanup and consolidation was required, so I [moved all of thhe keybindings to the configuration file](https://github.com/philpax/blackbird/pull/42) <PrMeta date="2025-11-19" add=228 sub=25 />, [refactored the UI code to be more modular](https://github.com/philpax/blackbird/pull/43) <PrMeta date="2025-11-19" add=1336 sub=1234 />, and ["fixed" an issue where the pseudorandom shuffle algorithm would take me to the same tracks](https://github.com/philpax/blackbird/pull/44) <PrMeta date="2025-11-19" add=30 sub=3 />[^shuffle]
+After this, some cleanup and consolidation was required, so I [moved all of the keybindings to the configuration file](https://github.com/philpax/blackbird/pull/42) <PrMeta date="2025-11-19" add=228 sub=25 />, [refactored the UI code to be more modular](https://github.com/philpax/blackbird/pull/43) <PrMeta date="2025-11-19" add=1336 sub=1234 />, and ["fixed" an issue where the pseudorandom shuffle algorithm would take me to the same tracks](https://github.com/philpax/blackbird/pull/44) <PrMeta date="2025-11-19" add=30 sub=3 />[^shuffle]
 
 [^shuffle]: Another case where I'm not sure it's actually been fixed properly, but it doesn't bother me enough to look further into it. I should do a statistical analysis of where the shuffle algorithm leads me over time, though. Claude! _Claude!_ We have work to do!
 
