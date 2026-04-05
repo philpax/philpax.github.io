@@ -13,7 +13,7 @@ Prior to this update, I was attempting to maintain a cadence of one to two weeks
 
 Unfortunately, in early November, I received this email:
 
-IMAGEHERE
+![An email from Anthropic telling me that I had $250 in Claude Code credits to use within two weeks](./claude-code.png)
 
 And being the industrious individual that I am, I endeavoured to drain those credits before they expired. I apologise in advance for what you're about to see.
 
@@ -340,7 +340,7 @@ Once that was done, I formally [opened and merged the PR for JC2-MP's GitHub Pag
 That last one would have taken me a few days at normal speed, I think: generating the initial index, getting the JavaScript progressive enhancement to work properly, optimising the index, and augmenting the index with the information required for smart-ish retrieval. When iteration is extremely quick, though, it doesn't hurt to try different approaches out and to explore the possibility space.
 
 ## [philpax/blackbird](https://github.com/philpax/blackbird)
-IMAGEHERE: blackbird
+![blackbird playing some music](./blackbird.png)
 
 blackbird is my personal music player software, optimised for my own tastes in what a music player should do and how it should operate. I grew up using foobar2000 in a very specific way - library view only - and as I started using other operating systems more regularly, I wanted a way to both carry that experience with me and to be able to stream my music from my own server, regardless of where I was.
 
@@ -371,7 +371,7 @@ To close out, I [applied a few fixes to the `nix-shell`](https://github.com/phil
 As a whole, I would argue that the use of Claude Code (Web) was worth it for blackbird alone: within a span of a few days, I was able to burn through my entire feature backlog and make it the music player that I wanted - nay, _needed_ - it to be. I'm quite happy with the outcome here.
 
 ## [philpax/paxboard](https://github.com/philpax/paxboard)
-IMAGEHERE: paxboard, as it looked three months ago
+![paxboard showing world clocks + weather displays](./paxboard.png)
 
 paxboard is my personal self-hosted home page. I am pathologically afraid of YAML, so existing solutions like [homepage](https://gethomepage.dev/) didn't sit right with me; additionally, I wanted to be able to easily display custom information, like the status of my AI models. My initial version of this was written in Rust and was entirely server-rendered using [paxhtml](#philpaxpaxhtml), as I was in a particularly `paxhtml`-y mood.
 
@@ -459,7 +459,7 @@ Later on, I was doing some performance optimisations on my website - which build
 Finally, as part of the above bump allocator work, I discovered that I had to keep a non-bump-allocated representation around for the Lua bindings I'd produced for `paxhtml` in a [previous edition, for paxboard](../an-even-quieter-week/index.md#paxboard). As I'd already stopped using these bindings in [paxboard](#philpaxpaxboard) in November, I weighed up my options, and came to a conclusion: [it was time for the Lua bindings, and their vestigial owned representation, to go](https://github.com/philpax/paxhtml/pull/4) <PrMeta date="2025-12-31" add=1 sub=744 />. Claude had surfaced this earlier in the planning phase, but I hadn't realised how much I'd hate having two representations until it was laid bare to me.
 
 ## [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
-IMAGEHERE: dark mode and light mode of same article, side by side
+![Dark and light mode screenshots of an update post on this website](./website.png)
 
 This very here website. A long, long time ago, I hosted a Ruby/[Sinatra](https://sinatrarb.com/) server for my website that was completely unreproducible, but was fully hackable; a less-long time ago, I switched this over to a [Zola](https://getzola.org/)-generated static site, which was fully reproducible, but completely unhackable.
 
@@ -497,7 +497,7 @@ Prismata is a research prototype that I built out at one of my former employers,
 
 The first step was to [set up a frontend deployment workflow](https://github.com/philpax/prismata/pull/8) <PrMeta start="2025-11-17" end="2025-11-18" add=91 sub=0 />; unfortunately, in doing so, I discovered that the version of Bevy/wgpu it was targeting used experimental rendering features that were no longer supported in modern browsers.
 
-Normally, I would have given up about here, but on a lark, I decided I'd give it a try: I tasked Claude with [porting it to the then-latest Bevy version](https://github.com/philpax/prismata/pull/9) <PrMeta date="2025-11-18" add=3484 sub=2527 closed />. And it was actually making decent headway! Unfortunately, Claude Code Web broke down and refused to accept any more prompts, which forced me to create [a new PR to complete the migration](https://github.com/philpax/prismata/pull/10) <PrMeta start="2025-11-18" end="2025-12-25" add=4112 sub=3444 />.
+Normally, I would have given up about here, but on a lark, I decided I'd let my buddy at it: I tasked Claude with [porting it to the then-latest Bevy version](https://github.com/philpax/prismata/pull/9) <PrMeta date="2025-11-18" add=3484 sub=2527 closed />. And it was actually making decent headway! Unfortunately, Claude Code Web broke down and refused to accept any more prompts, which forced me to create [a new PR to complete the migration](https://github.com/philpax/prismata/pull/10) <PrMeta start="2025-11-18" end="2025-12-25" add=4112 sub=3444 />.
 
 I had to go in there towards the end to restore some of the behaviour that had broken between ports, but given that I was jumping this across three versions of Bevy and through several major changes to the ECS, I'm quite happy with how everything worked out. Not sure if I'm emotionally ready to queue up the update to Bevy 0.18, though.[^bevyupdate]
 
@@ -517,7 +517,7 @@ Some time after this, I realised it would be beneficial to demonstrate what the 
 [^design]: That being said, I'd be lying if I said I wasn't considering setting up a unified design language and using it across all of my tools.
 
 ## [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
-IMAGEHERE: GiS as it appeared three months ago
+![genresin.space in action](./genresinspace.png)
 
 [genresin.space](https://genresin.space/) is a project I've been noodling on for the last year. Using `wikitext_simplified` and a lot of machinery, it extracts information about every music genre with an infobox from the English Wikipedia (offline - I'm not hitting the live website!), and then renders it as an explorable graph (as in graph theory, not charts), so that you can explore how genres influence and are influenced by each other.
 
