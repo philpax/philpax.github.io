@@ -204,7 +204,7 @@ I don't know. More thought is necessary here. What does an optimistic version of
 # Projects
 
 ## [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
-IMAGEHERE: Pyxis viewer
+![The Pyxis viewer, showing the `Character` type from Just Cause 2](./pyxis.png)
 
 Pyxis is a schema language for memory structures that I have been working on on-and-off for the last few years. The process of modding games (and other applications) starts with reverse-engineering: using a variety of techniques and tools, one comes to understand behaviours of interest in the application, and how data flows through to enable those behaviours, and how that data is structured.
 
@@ -308,7 +308,7 @@ Finally, I [refactored the evaluator into multiple modules](https://github.com/p
 As a whole, I'm quite happy with how this turned out. As mentioned at the start, I have always wanted an alternate embeddable implementation for Perchance, and now one exists. I do not think it is perfect: I am sure that there are behavioural differences to the original, and bugs that permeate the codebase that I have not explicitly named and corrected, but these are fixable issues in a way that "an embeddable Perchance interpreter does not exist" was not.
 
 ## [philpax/paxcord](https://github.com/philpax/paxcord)
-IMAGEHERE: paxcord demonstrating agentic generation through Lua script
+![paxcord being used to play image generation telephone](./paxcord.png)
 
 `paxcord` is my personal Discord bot, optimised for my own use cases. Notably, I am a fan of the Lua programming language, and I've carried that into this here bot by giving it fairly extensive Lua scripting capabilities. The work here was primarily in extending that capability to the point of near-absurdity.
 
@@ -382,7 +382,7 @@ I then rounded things out by adding [weather displays for Stockholm and Melbourn
 This is a relatively small bit of bespoke software, but it's something that I would have otherwise given up on if it weren't for the ease of maintenance. Of course, one could argue that the correct thing to do would be to use the existing software - but like with blackbird, I want something that fits _me_.
 
 ## [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
-IMAGEHERE: rucomfyui node graph
+![rucomfyui node graph demo, showing a SDXL generation](./rucomfyui.png)
 
 [ComfyUI](https://www.comfy.org/) is an open-source node-based program for composing AI synthesis workflows (image generation, video generation, etc). The user composes a graph of nodes that describes the flow of data through the various steps in a synthesis pipeline, and then runs this graph to produce an output.
 
@@ -403,6 +403,8 @@ During the process of getting Lua support in, I noticed that we weren't enforcin
 Finally, I built [a tool to take an arbitrary API workflow graph and convert it to its equivalent Rust and Lua `rucomfyui` equivalents](https://github.com/philpax/rucomfyui/pull/16) <PrMeta start="2025-12-07" end="2025-12-11" add=2712 sub=0 />. This is something that most other ComfyUI consumer libraries have, and it is very handy to have: you can interactively build up your workflow in the regular ComfyUI UI (or, say, our egui node graph), and then convert that to a programmatic description that can be varied as required.
 
 ## [ferrobrew/ida-c-splitter](https://github.com/ferrobrew/ida-c-splitter)
+![`ida-c-splitter` output, as viewed in Zed](./ida-c-splitter.png)
+
 While working on [my VR mod for Just Cause 3](../one-day-ill-finish-a-vr-mod/index.md), I found myself wanting to traverse the entirety of IDA's decompilation output for the debug build of the game: the primary benefit of this is that searching for references to class fields between functions, something which is very difficult in IDA proper, becomes a mere text search.
 
 Unfortunately, the file that IDA produces for JC3 is 500MB, which the vast majority of text editors will break down on, and it's hardly an ideal experience in the ones that _do_ survive. After staring at the output for a while in Sublime Text, I realised that it was well-structured enough to build a tool that split the output into a hierarchical folder structure, organised by classes and such, making it significantly more legible to traditional code navigation tools.
@@ -422,6 +424,30 @@ I'd like to say that this helped me continue my work on JC3, but as you can see,
 With that being said, though, I suspect that the split-decompilation would be quite amenable to analysis by a coding agent, and I'm excited to give that a try sometime - perhaps it can answer questions about the decompiled code the same way it can with regular codebases?
 
 ## [philpax/paxhtml](https://github.com/philpax/paxhtml)
+```rust
+pub struct HeadingAnchorProps {
+    pub target: String,
+}
+impl DefaultIn<'_> for HeadingAnchorProps {
+    fn default_in(_bump: &Bump) -> Self {
+        Self {
+            target: String::new(),
+        }
+    }
+}
+
+/// An anchor link used before headings and in TOC entries.
+#[allow(non_snake_case)]
+pub fn HeadingAnchor<'bump>(
+    bump: &'bump Bump,
+    props: HeadingAnchorProps,
+) -> paxhtml::Element<'bump> {
+    paxhtml::html! { in bump;
+        <Link target={props.target} underline additionalClasses={"mr-1".to_string()}>"#"</Link>
+    }
+}
+```
+
 paxhtml is a Rust library for generating HTML, used primarily by my website. The existing solutions that I found for this were incomplete, not pragmatic enough, or not really amenable for use in a SSG. It offers both a builder API and a proc macro for building trees of elements, which are then processed into "render elements" that represent the actual HTML to be generated.
 
 I have updated the library as required to accomodate the needs of its consumers (i.e. my other projects using it). One of the bigger changes was to [add support for interpolating custom components in the macro](https://github.com/philpax/paxhtml/pull/1) <PrMeta date="2025-11-17" add=334 sub=32 />, so that I could easily embed bespoke components into views for this website. This was previously done by interpolating a function call without named arguments or optionals, which led to poor UX; instead, the macro now expands a custom tag into a function call with a struct for args, similar to what other Rust JSX-likes do.
@@ -465,7 +491,7 @@ My sync script was copying all of my dotfiles over to every machine, which was s
 The last thing I did here was to [extract out common developer tooling and services](https://github.com/philpax/nixos-configuration/pull/17) <PrMeta date="2025-11-20" add=36 sub=34 /> so that my laptop could benefit from the same tooling as my server, and vice versa.
 
 ## [philpax/prismata](https://github.com/philpax/prismata)
-IMAGEHERE: Prismata voxels
+![Prismata "gameplay", demonstrating painting with voxels and then shooting physics-simulated boxes](./prismata.mp4)
 
 Prismata is a research prototype that I built out at one of my former employers, with the intention of experimenting with an AI co-creation workflow in a voxel world. After receiving permission, I open-sourced it and did some minor cleanup work to make it usable once again.
 
@@ -522,6 +548,8 @@ With that being said, I don't think Claude Code Web was quite the right fit for 
 I won't detail the PRs here - there were nearly 40 of them, and it involved a significant amount of back and forth between all three parties involved. It exists now and it works, but I haven't personally used it, and I couldn't tell you how any of it works. How do I feel about that? Unsure; I certainly don't claim any ownership over it, despite it being under my username. Indeed, despite this being ostensibly aligned with [ferrobrew](https://ferrobrew.github.io)'s mandate, I explicitly chose not to put it there: I'm not comfortable with associating my comrade with something for which neither of us have looked at the code.
 
 ## [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
+![The `egui` demo, as rendered by `egui-directx10`](./egui-directx10.png)
+
 [egui-directx11](https://github.com/NekomaruQwQ/egui-directx11) is a DirectX 11 renderer for the [egui](https://egui.rs) immediate UI library. I have a project for Just Cause 2 that I wanted to use `egui` for, but unfortunately, JC2 uses DirectX 10 (one of the few games to do so!). A friend and I backported `egui-directx11` to DirectX 10 some time ago, and that served us well.
 
 However, I found myself wanting to update that project to the latest version of its dependencies, and that included `egui`, which meant I'd have to update `egui-directx10`. I was well within my hammer-swinging phase by this point, so [swing away I did](https://github.com/ferrobrew/egui-directx10/pull/2) <PrMeta start="2025-11-23" end="2025-11-24" add=1662 sub=773 />. This was largely successful, but there remains a persistent bug with the text rendering that neither Claude or I were able to figure out.
@@ -536,10 +564,12 @@ The first port of call was maintenance, in [updating windows-rs to version 0.62]
 [^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro.<br/><br/>With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
 
 ## [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
+![`bevy-headless-console`, running in a terminal](./bevy-headless-console.png)
+
 As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. Not to beat a dead horse, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) <PrMeta date="2025-11-26" add=65 sub=53 />.
 
 ## [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
-IMAGEHERE: GitHub file tree, including one of the defs shown
+![Screenshot of Zed showing a definition from `pyxis-defs`, using Rust syntax highlighting](./pyxis-defs.png)
 
 As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
 
