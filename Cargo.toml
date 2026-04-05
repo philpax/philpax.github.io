@@ -20,6 +20,7 @@ arborium = { version = "2.4", default-features = false, features = [
     "lang-nix",
     "lang-python",
     "lang-ruby",
+    "lang-rust",
     "lang-toml",
     "lang-powershell"
 ] }
