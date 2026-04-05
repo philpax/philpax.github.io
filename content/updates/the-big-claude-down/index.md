@@ -185,7 +185,7 @@ Pyxis is a schema language for memory structures that I have been working on on-
 
 Once you have that understanding, you need to be able to use it within your mod to affect some change in the game. Modifying code is a relatively-solved problem: you can "detour" functions such that, when they are executed, they will instead execute your code, through which you can intervene and change the game's behaviour. Combine enough of these detours - or patches[^patches] - and you can direct the game as you wish.
 
-[^patches]: Instead of detouring functions and replacing their behaviour/the arguments with which they are called, you can instead patch individual instructions for isolated behavioural changes. You can go surprisingly far with this: disabling a single condition and making it always-on or always-off can radically alter a game: after all, all God Mode does is disable your ability to take damage.
+[^patches]: Instead of detouring functions and replacing their behaviour/the arguments with which they are called, you can instead patch individual instructions for isolated behavioural changes.<br/><br/>You can go surprisingly far with this: disabling a single condition and making it always-on or always-off can radically alter a game: after all, all God Mode does is disable your ability to take damage.
 
 However, as part of this, you need to be able to represent and manipulate the game's data structures. Because we're relying on a reverse-engineered representation, we do not have a complete picture of these structures, and even when we do, they are not guaranteed to match the representation of the language our mod is written in. Additionally, not all mods are written in the same language. This makes representing these structures challenging and often language-specific.[^clientstructs]
 
@@ -276,7 +276,7 @@ With these changes, I now had a fully-functional Perchance interpeter, at least 
 
 ![A trace view / debugger for a given Perchance generation, as part of the frontend](./perchance-interpreter-2.png)
 
-That was particularly inspired, I think. Of course, I'm not wholly happy with how it worked; I ended up later [removing the tree view that I had in the original PR](https://github.com/philpax/perchance-interpreter/pull/20) <PrMeta date="2025-11-23" add=17 sub=374 />, but I think these are resolvable issues. I think it is tremendously cool that this is now possible, and figuring out what your generator is actually doing is now much less tedious than the guess-and-check method that authors previously had to resort to.
+That was particularly inspired, I think. Of course, I'm not wholly happy with how it worked; I ended up later [removing the tree view that I had in the original PR](https://github.com/philpax/perchance-interpreter/pull/20) <PrMeta date="2025-11-23" add=17 sub=374 />, and there are still a few bugs in the trace view (including items being shown that do not contribute to the final output), but I think these are resolvable issues. I think it is tremendously cool that this is now possible, and debugging your generator is now much less tedious than the traditional guess-and-check method.
 
 Finally, I [refactored the evaluator into multiple modules](https://github.com/philpax/perchance-interpreter/pull/19) <PrMeta date="2025-11-19" add=3394 sub=3089 />. A rather dull note to close out on, but one important to note, I think: left to their own devices, the agents will produce repetitive slop, but you can also use them to unslop by having them refactor the code to a better state, especially if you've actually looked at the code and can see where they're deficient.
 
@@ -394,6 +394,8 @@ I'd like to say that this helped me continue my work on JC3, but as you can see,
 
 [^jc3]: Also, Square Enix released a patch to de-Denuvo the game, which I would appreciate in any other context, but it would have required me to rework all of my existing reverse engineering work to support the clean binary, which I haven't been able to motivate myself to do. I would quite like to return to this some day.
 
+With that being said, though, I suspect that the split-decompilation would be quite amenable to analysis by a coding agent, and I'm excited to give that a try sometime - perhaps it can answer questions about the decompiled code the same way it can with regular codebases?
+
 ## [philpax/paxhtml](https://github.com/philpax/paxhtml)
 paxhtml is a Rust library for generating HTML, used primarily by my website. The existing solutions that I found for this were incomplete, not pragmatic enough, or not really amenable for use in a SSG. It offers both a builder API and a proc macro for building trees of elements, which are then processed into "render elements" that represent the actual HTML to be generated.
 
@@ -448,7 +450,7 @@ Normally, I would have given up about here, but on a lark, I decided I'd give it
 
 I had to go in there towards the end to restore some of the behaviour that had broken between ports, but given that I was jumping this across three versions of Bevy and through several major changes to the ECS, I'm quite happy with how everything worked out. Not sure if I'm emotionally ready to queue up the update to Bevy 0.18, though.[^bevyupdate]
 
-[^bevyupdate]: Truth be told, this would not be that difficult. The most frustrating part is that I had to fork several dependencies to update them to Bevy 0.17, so I'd have to do the same thing again for 0.18. Not difficult, just annoying.
+[^bevyupdate]: Truth be told, this would not be that difficult. The most frustrating part is that I had to fork several dependencies to update them to Bevy 0.17, so I'd have to do the same thing again for 0.18. Not difficult, just annoying.<br/><br/>**EDITOR'S NOTE**: In the time it has taken for me to write this, Bevy 0.19's release is fast-approaching. Guess I'll wait for that!
 
 ## [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
 ![A vibe-coded frontend for `wikitext_simplified`](./wikitext-simplified.png)
@@ -506,7 +508,7 @@ Luckily, this project is non-essential, and I'm pretty sure that we're the only 
 
 The first port of call was maintenance, in [updating windows-rs to version 0.62](https://github.com/ferrobrew/re-utilities/pull/11) <PrMeta date="2025-11-26" add=73 sub=27 />. The second was to make it a better library by [replacing anyhow with custom error enums](https://github.com/ferrobrew/re-utilities/pull/12)[^anyhow] <PrMeta date="2025-11-26" add=610 sub=129 />. Nothing too difficult, but certainly not without tedium for a human.
 
-[^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro. With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
+[^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro.<br/><br/>With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
 
 ## [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
 As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. Not to beat a dead horse, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) <PrMeta date="2025-11-26" add=65 sub=53 />.
