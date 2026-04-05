@@ -89,7 +89,18 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - deslop freely and frequently: [generating code is cheap](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/), so build up your raw code-matter and [sculpt it](https://eikopf.bearblog.dev/subtractive-synthesis/) until it's actually good
 - and of course, the corollary applies: you can use AI to generate all of the rigour that you, as a human, would have been otherwise too effort/time-pressed to do yourself. there's no excuse not to write tests, design more stringent APIs, write better documentation, and push the quality frontier. see what [Oxide have to say about this](https://oxide-and-friends.transistor.fm/episodes/engineering-rigor-in-the-llm-age).
 
-# The Siren Call of The Slop Stack
+## Codebase Amnestics
+- the more you lean on AI, the less you build a memory for what the codebase actually looks like at both the structural and ground level
+- reviewing the diffs is fine, yes, you can make sure that it isn't making any mistakes and that it fits into the vision you have
+- but you won't actually build up an understanding of the codebase as a whole, and you will find yourself having to ask the AI to find you things
+- the problem can compound if you do not build this memory and let the AI produce as it sees fit, as now it will produce duplicates of existing functionality - neither party involved here has the ambient awareness required to maintain codebase hygiene
+- having the AI write documentation, as well as engaging in periodic refactoring passes, as mentioned above, can help with this
+- but fundamentally, you need to actually be looking at what's being produced at closer-than-review frequencies, and building that mental model
+- as with the quality, I will freely admit that I did not do this for all of these projects: it simply does not matter, as the codebases are small enough or the scope constrained enough that loading the codebase into your own context on demand is sufficient
+- however, for larger projects, you must be careful about this. do not let yourself be blinded by the ease of creation: you must also eventually pay the cost of comprehension, lest you create a singularity of code that will tear your project apart
+- see [this post by Lalit Maganti](https://lalitm.com/post/building-syntaqlite-ai/) for another account of this problem, among others
+
+## The Siren Call of The Slop Stack
 
 - the agents will pull you towards [their preferred stacks](https://amplifying.ai/research/claude-code-picks), where preferred comes from the common folklore of the internet, RLHF on data from [underpaid and exploited data workers](https://cwa-union.org/ghost-workers-ai-machine), RLHF on data from [less underpaid data workers](https://builtin.com/articles/train-ai-side-hustle), or RLHF on the taste of whichever employee was processing the data that day
 - most of the time, this choice is fine, and honestly, I've given into the call much of the time
@@ -134,7 +145,7 @@ This was especially exacerbated by the numerical value attached to the credits. 
 
 - not the only one to describe this, see Yegge of Gas Town fame[^yegge]: <https://steve-yegge.medium.com/the-ai-vampire-eda6e4f07163>
 
-[^yegge]: and other famous works, of course, but Gas Town is what he is known for this years
+[^yegge]: and other famous works, of course, but Gas Town is what he is known for this year
 
 I cut down on the amount of work I was doing on my own projects during this period - especially as I was meant to be on holiday! - and took some time to recover. For the most part, I'm fine now - back to a healthier rhythm, in touch with my network, engaging in other hobbies - but, if left unchecked, I could see myself (and others who share my personality type) slipping right back into it again.
 
@@ -163,6 +174,13 @@ I have written a single-digit percentage of code by hand since November. [This i
 - within this period, CC wrote [a complete interpreter from scratch with a vague spec](#philpaxperchance-interpreter), [refactored and rebuilt much of an existing (albeit small) compiler to extend its functionality and improve its robustness](#ferrobrewpyxis), [significantly improved my music player](#philpaxblackbird), etc
 - these are not trivial tasks! most junior / intermediate programmers would struggle with managing the complexity here
 
+- I also specifically used the word "coding", not "programming", in this heading
+- for now, "programming", the art of understanding and autonomously solving problems on the computer, is safe: you need to understand the domain in which you're operating, and the space of potential solutions
+- however, code monkeys - in all that pejorative captures - are probably going to struggle
+- that is: people who take very specific specifications and translate them to code, with limited room for creativity. a machine now exists that can do their job at much lower cost and at scale
+- this is unfortunate, in the sense that all job loss is unfortunate: but this has always seemed to me a likely development
+- I hope we invent a way for them to land on their feet
+
 This doesn't apply for all domains to the same degree: there are many tasks and languages for which the models do not perform at the same standard, or for which they make novice mistakes. I'm not convinced that bulwark will hold forever, but even if it does: the rest of the industry does _not_ consist of these domains, and I very strongly suspect that fewer people per company will be required to do the same amount of work in most areas of programming endeavour.
 
 - it's also not clear to me what will happen to the industry pipeline here
@@ -175,6 +193,13 @@ This doesn't apply for all domains to the same degree: there are many tasks and 
 The optimist may suggest that a thousand flowers will bloom as a result of this: after all, if everyone has much more leverage available to them, at least a few of those people will be industrious enough to strike it out on their own and build their own futures. I'd like to say that I believe in this - that there will be something for everyone in some form - but I fear things will not be so neat.
 
 I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there? What does it mean to be a programmer? What does this mean for white-collar work as a whole? What does it mean for _work_ as a whole? These are questions that I'm still pondering, and am certainly not equipped to answer in this particular post. But you should start thinking about them, too.
+
+- and of course, this is assuming the agents don't continue to move further up the stack
+- I am still necessary because I provide ideas, relevant context, and act as a constraining force to ensure that the agents do not wallow in their own slop
+- but there's no reason to believe that this will be the case forever: I already consult with Claude whenever I embark on a new endeavour to scope out the problem space and to find any potential blockers
+- in due time, all of this will be made autonomous
+- I say this all the time, with varying levels of fear attached, but it is worth internalising: at this rate, the vast majority of the profession will be unemployable in due time, and this contagion is likely to spread to other professions, even if their work is not as easy to automate
+- so let's do our best to figure out how we survive in a world that looks like that!
 
 # Projects
 
