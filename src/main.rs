@@ -341,8 +341,11 @@ fn main() -> anyhow::Result<()> {
         None
     };
 
-    let preview_handle =
-        Some(Arc::clone(&image_store).spawn_preview_generation(Arc::clone(&content), output_dir));
+    let preview_handle = Some(Arc::clone(&image_store).spawn_preview_generation(
+        Arc::clone(&content),
+        output_dir,
+        fast,
+    ));
 
     timer.step("Wrote blog index", |_| {
         let bump = Bump::new();
