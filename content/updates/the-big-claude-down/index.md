@@ -155,6 +155,23 @@ With that being said, I suspect that at least a significant portion of _my_ part
 
 It's out of my system now, and I don't think it'll come back, at least not to the same extent. I hope, anyway!
 
+## Are We All Anthropic's Serfs now?
+
+- to do this, I needed a Claude Code subscription
+- in the process of doing it, I upgraded my subscription
+- I am paying an AI company to do work: and even though I generally like that company's vibes, there's no denying that, to maintain this amount of leverage, I will need to keep paying
+- so far, we are largely in the industry's growth phase: your money can take you reasonably far
+- this has shifted in some ways: over the month of April, the amount of tokens you get for your quota has significantly diminished, likely because they either cannot offer to subsidise as much, or because their demand overwhelms their supply
+- nonetheless, it is not lost on me that we are now operating at Anthropic or OpenAI's whims; their outages, denials of service, or other such disruptions can and will have a material impact on what you can do
+- this is likely to be the case for the frontier, and will continue to be the case going forward, right until they run out of juice - if they do
+- but if you're willing to relax your desire to be at the frontier, options open up
+- the Chinese models are fast-followers, a few months behind, and have competitive rates
+- some of them, although perhaps a decreasing amount, are even open-weights
+- and that's where I think things will go. at the time of writing, Qwen 3.6 has recently come out, and do you know what? both 27B and 35B-A3B both work as coding agents. they're not as smart as Claude, they make more mistakes, and they're not nearly as worldly: but by God, they can write code autonomously with guidance
+- something that required me to pay $20/month minimum to a provider who can rugpull me at any moment now runs on [my server](../../notes/Hardware/Server.md), and I have already started to use it in lieu of Claude for the tasks that don't require frontier intelligence
+- this is something I intend on writing more about in future, once I've had more experience with it all
+- it may be jagged, it may be rough, it may require an investment to run: but, at least for now, we are not beholden to the fate of serfs
+
 ## If You Don't Think About It, It Can't Hurt You: Ethics
 - of course, the ethics of the industry could have its own post written about it, or several
 - there is nuance here - it's not an ethical black hole - but I'm also not going to pretend that it's entirely rosy, either; it's far from it
