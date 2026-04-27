@@ -20,7 +20,7 @@
   - Complexity; it is very low-level
   - Memory management; need to track all of the resources; cannot allocate memory in pieces, need to allocate big chunks and manage yourself
   - Supporting custom GLSL shaders; there are UGC shaders, which complicates deployment. Need to ship some kind of compiler with Overte itself
-- Lots of resources: official resources (<https://vulkan.org/learn>), the Vulkan guide (<https:/vkguide.dev>), the Vulkan C++ examples and demos (<https://github.com/SaschaWillems/Vulkan>)
+- Lots of resources: official resources (<https://vulkan.org/learn>), the Vulkan guide (<https://vkguide.dev>), the Vulkan C++ examples and demos (<https://github.com/SaschaWillems/Vulkan>)
   - Vulkan usually needs a lot of boilerplate code, but you can use theirs
 - Very useful: [Renderdoc](https://renderdoc.org)
   - Frame-by-frame capture, including interactive editing
