@@ -233,12 +233,12 @@ However, as part of this, you need to be able to represent and manipulate the ga
 
 [^clientstructs]: As an example of such a solution, [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs) documents Final Fantasy XIV's internal structures for C# and the IDA decompiler. The latter effort is supported through a Python script that ingests a [monster YAML file](https://github.com/aers/FFXIVClientStructs/blob/main/ida/data.yml), which works, but, well, look at it...
 
-Pyxis is an effort to solve this: these structures are defined separately from your implementation language, and then compiled to a byte-perfect representation of that structure for your language. It has been in use in a few projects - none truly released, as it were - but, being a side project of a side project, I have never dedicated the time to fill in the potholes and address the features you'd come to expect from a modern language.
+Pyxis is an effort to solve this: these structures are defined separately from your implementation language, and then compiled to a byte-perfect representation of that structure for your language. It has been in use in a few projects - none truly released, as it were - but, being a side project of a side project, I have never dedicated the time to fill in the potholes and address the features you'd come to expect from a modern language. The issue list grew longer and longer, with no resolution in sight.
 
 Of course, these last two months have allowed me to address that. Let us begin.
 
-- [Add associated functions support to enums](https://github.com/ferrobrew/pyxis/pull/42) <PrMeta date="2025-11-06" add=128 sub=1 />
-- [Update repository with small changes](https://github.com/ferrobrew/pyxis/pull/43) <PrMeta date="2025-11-06" add=1 sub=4 />
+As Pyxis is patterned after Rust, I often find myself wanting features that Rust has in Pyxis, which led me to add [associated functions support for enums](https://github.com/ferrobrew/pyxis/pull/42) <PrMeta date="2025-11-06" add=128 sub=1 />. I made sure that [the CI used the same testing methodology as I did](https://github.com/ferrobrew/pyxis/pull/43) <PrMeta date="2025-11-06" add=1 sub=4 />, to help Claude Code work autonomously.
+
 - [Add free-standing function support to Pyxis compiler](https://github.com/ferrobrew/pyxis/pull/44) <PrMeta date="2025-11-06" add=219 sub=22 />
 - [Implement `min_size` attribute](https://github.com/ferrobrew/pyxis/pull/45) <PrMeta date="2025-11-06" add=298 sub=7 />
 - [Replace `syn` parser with `chumsky`](https://github.com/ferrobrew/pyxis/pull/46) <PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />
