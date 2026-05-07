@@ -73,7 +73,8 @@ pub fn post<'a>(
 
             let mut converter = MarkdownConverter::new(context, &url)
                 .with_sidenotes()
-                .with_source_path(document.source_path.clone());
+                .with_source_path(document.source_path.clone())
+                .with_document_base_url(url.clone());
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
@@ -89,6 +90,7 @@ pub fn post<'a>(
             <>
                 {MarkdownConverter::new(context, &url)
                     .with_source_path(document.source_path.clone())
+                    .with_document_base_url(url.clone())
                     .convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
@@ -99,6 +101,7 @@ pub fn post<'a>(
         },
         PostBody::Short => MarkdownConverter::new(context, &url)
             .with_source_path(document.source_path.clone())
+            .with_document_base_url(url.clone())
             .convert(
                 document
                     .metadata

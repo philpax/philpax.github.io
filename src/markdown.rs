@@ -24,6 +24,7 @@ pub struct MarkdownConverter<'a> {
     pub error_context: String,
     pub current_note_id: Option<DocumentId>,
     pub source_path: Option<PathBuf>,
+    pub document_base_url: Option<String>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -38,6 +39,7 @@ impl<'a> MarkdownConverter<'a> {
             error_context: error_context.into(),
             current_note_id: None,
             source_path: None,
+            document_base_url: None,
         }
     }
 
@@ -45,6 +47,15 @@ impl<'a> MarkdownConverter<'a> {
     /// relative `.md` links to their output URLs.
     pub fn with_source_path(mut self, path: PathBuf) -> Self {
         self.source_path = Some(path);
+        self
+    }
+
+    /// Set the document's base URL (e.g. `/updates/the-big-claude-down/`), so that
+    /// relative URLs in images and links resolve against the document rather than the
+    /// page being rendered. Required when rendering a document's content on a page that
+    /// isn't the document's own URL (e.g. index views).
+    pub fn with_document_base_url(mut self, url: impl Into<String>) -> Self {
+        self.document_base_url = Some(url.into());
         self
     }
 
@@ -73,6 +84,26 @@ impl<'a> MarkdownConverter<'a> {
     pub fn with_note_id(mut self, id: DocumentId) -> Self {
         self.current_note_id = Some(id);
         self
+    }
+
+    /// If the URL is a relative path (not absolute, not a fragment, not external) and
+    /// we have a `document_base_url`, prefix it so it resolves against the document
+    /// rather than the page being rendered.
+    fn resolve_relative_url(&self, url: &str) -> String {
+        if url.is_empty()
+            || url.starts_with('#')
+            || url.starts_with('/')
+            || url.contains("://")
+            || url.starts_with("mailto:")
+            || url.starts_with("tel:")
+        {
+            return url.to_string();
+        }
+        let Some(base) = &self.document_base_url else {
+            return url.to_string();
+        };
+        let stripped = url.strip_prefix("./").unwrap_or(url);
+        format!("{base}{stripped}")
     }
 
     /// If the URL points to a `.md` file and we have a source path, resolve it
@@ -226,7 +257,7 @@ impl<'a> MarkdownConverter<'a> {
 
                 if is_video {
                     b.video([
-                        b.attr(("src", i.url.clone())),
+                        b.attr(("src", self.resolve_relative_url(&i.url))),
                         b.attr(("controls", "true")),
                         b.attr(("loop", "true")),
                         b.attr((
@@ -243,8 +274,8 @@ impl<'a> MarkdownConverter<'a> {
                     } else {
                         i.url.clone()
                     };
-                    b.a([b.attr(("href", i.url.clone()))])(b.img([
-                        b.attr(("src", src_url)),
+                    b.a([b.attr(("href", self.resolve_relative_url(&i.url)))])(b.img([
+                        b.attr(("src", self.resolve_relative_url(&src_url))),
                         b.attr(("alt", i.alt.clone())),
                         b.attr((
                             "class",
@@ -261,7 +292,7 @@ impl<'a> MarkdownConverter<'a> {
                         inner_text(node, None).trim()
                     );
                 }
-                let url = self.resolve_link_url(&l.url);
+                let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
                     children
@@ -605,7 +636,12 @@ impl<'a> MarkdownConverter<'a> {
                     .image_store
                     .resolve_small_preview_url(image_attr);
                 let body = paxhtml::Element::Fragment { children };
-                components::city_poster(bump, image_attr, &small_url, body)
+                components::city_poster(
+                    bump,
+                    &self.resolve_relative_url(image_attr),
+                    &self.resolve_relative_url(&small_url),
+                    body,
+                )
             }
             _ => {
                 eprintln!(
