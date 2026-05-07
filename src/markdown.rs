@@ -25,6 +25,7 @@ pub struct MarkdownConverter<'a> {
     pub current_note_id: Option<DocumentId>,
     pub source_path: Option<PathBuf>,
     pub document_base_url: Option<String>,
+    pub website_base_url: Option<String>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -40,6 +41,7 @@ impl<'a> MarkdownConverter<'a> {
             current_note_id: None,
             source_path: None,
             document_base_url: None,
+            website_base_url: None,
         }
     }
 
@@ -56,6 +58,15 @@ impl<'a> MarkdownConverter<'a> {
     /// isn't the document's own URL (e.g. index views).
     pub fn with_document_base_url(mut self, url: impl Into<String>) -> Self {
         self.document_base_url = Some(url.into());
+        self
+    }
+
+    /// Set the website's base URL (e.g. `https://philpax.me`). When set, site-absolute
+    /// paths like `/og-images/foo.png` are rewritten to fully-absolute URLs, and
+    /// relative URLs are also rooted against the website. Used for RSS, where feed
+    /// readers don't share a site context.
+    pub fn with_website_base_url(mut self, url: impl Into<String>) -> Self {
+        self.website_base_url = Some(url.into());
         self
     }
 
@@ -86,18 +97,25 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// If the URL is a relative path (not absolute, not a fragment, not external) and
-    /// we have a `document_base_url`, prefix it so it resolves against the document
-    /// rather than the page being rendered.
+    /// Rewrite a URL so it resolves correctly when rendered outside the document's own
+    /// page. Relative paths are rooted at `document_base_url`; if `website_base_url` is
+    /// also set, site-absolute paths (`/foo`) are made fully absolute too. External,
+    /// fragment, protocol-relative, `mailto:`, and `tel:` URLs are left alone.
     fn resolve_relative_url(&self, url: &str) -> String {
         if url.is_empty()
             || url.starts_with('#')
-            || url.starts_with('/')
+            || url.starts_with("//")
             || url.contains("://")
             || url.starts_with("mailto:")
             || url.starts_with("tel:")
         {
             return url.to_string();
+        }
+        if url.starts_with('/') {
+            return match &self.website_base_url {
+                Some(host) => format!("{host}{url}"),
+                None => url.to_string(),
+            };
         }
         let Some(base) = &self.document_base_url else {
             return url.to_string();

@@ -66,6 +66,9 @@ fn build_item(context: ViewContextBase<'_>, doc: &Document) -> rss::Item {
         &bump,
         [
             MarkdownConverter::new(context.with_bump(&bump), &error_context)
+                .with_source_path(doc.source_path.clone())
+                .with_document_base_url(url.clone())
+                .with_website_base_url(context.website_base_url)
                 .convert(&doc.description, None),
         ],
     )
