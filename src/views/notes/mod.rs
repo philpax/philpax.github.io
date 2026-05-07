@@ -57,6 +57,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             article_published_time: None,
             article_modified_time: note.metadata.datetime,
             article_tag: None,
+            noindex: false,
         },
         CurrentPage::Notes,
         html! { in bump;

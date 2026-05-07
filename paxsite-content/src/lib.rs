@@ -65,6 +65,8 @@ pub struct DocumentMetadata {
     pub datetime: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(skip)]
     pub last_modified: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(default)]
+    pub draft: bool,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 
@@ -126,6 +128,7 @@ impl Document {
                 short: None,
                 datetime: None,
                 last_modified: None,
+                draft: false,
                 taxonomies: None,
             },
             description_raw: String::new(),
@@ -163,6 +166,7 @@ impl Document {
                 short: None,
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
+                draft: false,
                 taxonomies: None,
             };
 
@@ -539,9 +543,14 @@ impl Content {
             fast,
         )?;
 
-        // Build tags index
+        // Build tags index (excludes drafts so they don't appear in tag listings)
         let mut tags: HashMap<Tag, Vec<DocumentId>> = HashMap::new();
-        for document in blog.documents.iter().chain(updates.documents.iter()) {
+        for document in blog
+            .documents
+            .iter()
+            .chain(updates.documents.iter())
+            .filter(|d| !d.metadata.draft)
+        {
             if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
                     tags.entry(tag.clone())
@@ -617,7 +626,7 @@ impl Content {
         })
     }
 
-    /// Returns all unique tags sorted alphabetically.
+    /// Returns all unique tags sorted alphabetically. Drafts are excluded.
     pub fn all_tags(&self) -> Vec<Tag> {
         let mut tags = BTreeSet::new();
         for document in self
@@ -625,6 +634,7 @@ impl Content {
             .documents
             .iter()
             .chain(self.updates.documents.iter())
+            .filter(|d| !d.metadata.draft)
         {
             if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
@@ -808,6 +818,10 @@ pub fn generate_frontmatter(metadata: &DocumentMetadata) -> String {
 
     if let Some(dt) = metadata.datetime {
         output.push_str(&format!("datetime = {}\n", dt.format("%Y-%m-%dT%H:%M:%SZ")));
+    }
+
+    if metadata.draft {
+        output.push_str("draft = true\n");
     }
 
     if let Some(taxonomies) = &metadata.taxonomies {

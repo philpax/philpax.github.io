@@ -17,6 +17,7 @@ pub fn generate(
     let items = collection
         .documents
         .iter()
+        .filter(|d| !d.metadata.draft)
         .map(|doc| build_item(context, doc))
         .collect::<Vec<_>>();
 

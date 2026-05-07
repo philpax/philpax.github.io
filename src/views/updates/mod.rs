@@ -8,6 +8,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         .updates
         .documents
         .iter()
+        .filter(|d| !d.metadata.draft)
         .map(|doc| posts::post(context, doc, posts::PostBody::Description));
     layout(
         context,
@@ -22,6 +23,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             article_published_time: None,
             article_modified_time: None,
             article_tag: None,
+            noindex: false,
         },
         CurrentPage::Updates,
         html! { in bump;
@@ -59,6 +61,7 @@ pub fn post<'a>(
             article_published_time: document.metadata.datetime,
             article_modified_time: None,
             article_tag: document.tags().map(|t| t.join(", ")),
+            noindex: document.metadata.draft,
         },
         CurrentPage::Updates,
         posts::post(context, document, posts::PostBody::Full),

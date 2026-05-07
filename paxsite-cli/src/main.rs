@@ -88,6 +88,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
         short: Some(short),
         datetime: Some(datetime),
         last_modified: None,
+        draft: false,
         taxonomies: Some(DocumentTaxonomies {
             tags: selected_tags,
         }),

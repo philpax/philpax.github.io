@@ -2,6 +2,7 @@
 title = "Reflections on six months of agentic programming"
 short = "Since November, I have written a single-digit percentage of code by hand. What does that mean for me? What does that mean for all of us?"
 datetime = 2026-05-10T18:00:00Z
+draft = true
 
 [taxonomies]
 tags=["ai", "ethics"]

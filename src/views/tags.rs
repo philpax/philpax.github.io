@@ -25,6 +25,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             article_published_time: None,
             article_modified_time: None,
             article_tag: None,
+            noindex: false,
         },
         CurrentPage::Tags,
         html! { in bump;
@@ -85,6 +86,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
             article_published_time: None,
             article_modified_time: None,
             article_tag: Some(tag_id.to_string()),
+            noindex: false,
         },
         CurrentPage::Tags,
         html! { in bump;

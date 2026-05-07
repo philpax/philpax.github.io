@@ -121,6 +121,8 @@ pub struct SocialMeta {
     article_modified_time: Option<chrono::DateTime<chrono::Utc>>,
     /// A tag describing the article (for OpenGraph article type)
     article_tag: Option<String>,
+    /// Whether to instruct robots not to index this page
+    noindex: bool,
 }
 impl SocialMeta {
     /// The full title of the page, including the website name
@@ -179,6 +181,9 @@ pub fn layout<'a>(
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    {meta.noindex.then(|| html! { in bump;
+                        <meta name="robots" content="noindex, nofollow" />
+                    })}
                     #{meta.into_social_meta(&context).into_iter().map(|(k, v)| {
                         html! { in bump;
                             <meta property={k} content={v} />

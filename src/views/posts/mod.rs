@@ -146,8 +146,18 @@ pub fn post<'a>(
                 <a href={url} class="flex items-center p-0 no-underline post-title">
                     <h2 class={heading_class}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
+                {document.metadata.draft.then(|| html! { in bump;
+                    <div class="my-2 p-4 bg-[var(--color)] text-[var(--background-color)] text-center flex flex-col gap-2">
+                        <div class="text-3xl">"DRAFT"</div>
+                        <div>"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+                    </div>
+                })}
             </header>
-            <div class={format!("post-body {} {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" }, if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" })}>
+            <div class={format!(
+                "post-body {} {}",
+                if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" },
+                if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" }
+            )}>
                 {post_body_rendered}
             </div>
         </article>

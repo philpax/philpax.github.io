@@ -37,6 +37,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             article_published_time: None,
             article_modified_time: None,
             article_tag: None,
+            noindex: false,
         },
         CurrentPage::Home,
         html! { in bump;
@@ -49,7 +50,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
                     <div>
                         // TODO: remove this `if` once we have >=5 posts always
-                        {(content.blog.documents.len() < 5).then(|| html! { in bump;
+                        {(content.blog.documents.iter().filter(|d| !d.metadata.draft).count() < 5).then(|| html! { in bump;
                             <h3 class="text-3xl font-bold mb-2 italic">
                                 <Link target={Route::Blog.url_path()}>
                                     "posts"
@@ -62,6 +63,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .blog
                                 .documents
                                 .iter()
+                                .filter(|d| !d.metadata.draft)
                                 .take(5)
                                 .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                         }
@@ -80,6 +82,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .updates
                                 .documents
                                 .iter()
+                                .filter(|d| !d.metadata.draft)
                                 .take(5)
                                 .map(|doc| update_doc_item(bump, doc))
                         }
