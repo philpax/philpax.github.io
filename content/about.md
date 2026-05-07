@@ -9,6 +9,10 @@ G'day! I'm Philpax[^1], a creative polyglot programmer/engineer, and I'm passion
 
 My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden.[^3]
 
+I currently work at [Overworld](https://over.world/), but have previously worked at [Ambient](https://ambient.run/), [Avalanche Studios](https://avalanchestudios.com/), [Lexer](https://www.lexer.io/), and more.
+
+In the open-source world, I [designed the GGUF file format for llama.cpp](https://github.com/ggml-org/ggml/pull/302), co-developed [Just Cause 2: Multiplayer](https://jc-mp.com/), and design and run the plugin bureaucracy for [Dalamud](https://dalamud.dev/).[^ffxiv]
+
 [^2]: IPA `/mɪθʌn/`. also, unbelievably, he/him.
 [^3]: Yes, the temperature differential makes me sick every time I switch hemispheres.
 
@@ -21,7 +25,8 @@ I've worked with every layer of the stack - from the little electrons racing aro
 - low-level and embedded programming
 - virtual and augmented reality
 - artificial intelligence productionisation
-- human-computer interface research
+
+[^ffxiv]: I played through A Realm Reborn as a White Mage and quit shortly after. This means I have spent years of my life on an ecosystem for a game that I have barely played. Someone's gotta oil the bureaucratic gears!
 
 If you'd like to know more about what I've worked on or built, why not check out my [GitHub](https://github.com/philpax)?
 

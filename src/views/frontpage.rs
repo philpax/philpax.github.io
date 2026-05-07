@@ -48,11 +48,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 </article>
                 <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
                     <div>
-                        <h3 class="text-3xl font-bold mb-2 italic">
-                            <Link target={Route::Blog.url_path()}>
-                                "posts"
-                            </Link>
-                        </h3>
+                        // TODO: remove this `if` once we have >=5 posts always
+                        {(content.blog.documents.len() < 5).then(|| html! { in bump;
+                            <h3 class="text-3xl font-bold mb-2 italic">
+                                <Link target={Route::Blog.url_path()}>
+                                    "posts"
+                                </Link>
+                            </h3>
+                        })}
                         <div class="*:mb-6">
                         #{
                             content
