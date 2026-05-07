@@ -1,7 +1,7 @@
 +++
 title = "the big claude down"
 short = "two months, a holiday, and a lot of Claude: a terrifying predicament"
-datetime = 2026-02-22T18:00:00Z
+datetime = 2026-05-08T18:00:00Z
 
 [taxonomies]
 tags=["ai", "pyxis", "website", "genresinspace", "blackbird", "perchanceinterpreter", "paxcord", "jc2mp", "paxboard", "rucomfyui", "idacsplitter", "paxhtml", "nixos", "prismata", "wikitextsimplified", "reutilities"]
@@ -15,13 +15,13 @@ Unfortunately, in early November, I received this email:
 
 ![An email from Anthropic telling me that I had $250 in Claude Code credits to use within two weeks](./claude-code.png)
 
-And being the industrious individual that I am, I endeavoured to drain those credits before they expired. I apologise in advance for what you're about to see.
+And being the industrious individual that I am, I endeavoured to drain those credits before they expired. This led to the two most productive months of my programming career, and a four month delay in documenting them.
 
-<!-- TODO: move to blog, remove dot-pointed PRs, add subheadings for each section, add images for each section, add a hero image (a nondescript silhouette falling down amongst a sea of Claude Code crabs?), general edit pass, punch up introduction -->
+<!-- TODO: general edit pass, punch up introduction -->
 
 <!-- more -->
 
-# The Primer
+# the primer
 
 I started off relatively slow; the Claude Code Web interface was buggy and crude - as I'll detail in a bit - but, once I found my cadence, it grabbed me and didn't let go. Days turned to nights turned to days, all while attending to my day job, but the siren song of Claude credits kept calling to me.
 
@@ -35,192 +35,7 @@ By now, you have seen the length of this post and its table of contents. I want 
 
 Of course, I kept going; throughout December, while I was on holiday, I snuck in PRs, reviewed old PRs, and continued to indulge my madness. This update includes that work, too, but the majority of the big swings were during November. This post, then, covers the period between <MonthDayDate date="2025-11-06" /> and <MonthDayDate date="2026-01-07" />.
 
-# Takeaways
-Given how long it has taken me to write this post, I have largely forgotten a lot of the minute-to-minute takeaways I had from the experience, but here follows a high-level overview of my thoughts. I'm frontloading these as the remaining five thousand words are largely not of interest to the casual reader, outside of acting as proof that I did what I said I did.
-
-It is worth noting that it took me two months to write this post up: the sheer amount of work done required a similarly sheer amount of work to document, and I found myself putting it off as to avoid confronting it. Nonetheless, we persist.
-
-- talk about how some of this is also based on experiences I've had since, but I'll do my best to quarantine it to what I learnt during that two-month period
-
-## Waiter, This Claude Code Web Is Raw
-Claude Code Web was insanely buggy. I say "was" as it seems to have been rebuilt in the last few weeks; I would consider most of the feedback here to no longer be relevant.
-
-With that being said, though, it would frequently stop responding to me, lose my messages, would require prodding to continue and would break down after a certain number of commits, with a new session required to get it back on track. It has a limited understanding of its own environment, and frequently requires handholding around more unconventional toolchains.
-
-Functionality-wise, you could not easily work _with_ it - it was very much positioned as an in-and-out endeavour, and working on the same branch that it is working on can often lead to pain. Speaking of branches, you couldn't control which branch it would work from; it would always instantiate a new branch from your main branch, which means you couldn't easily continue existing branches without prompting it. This was especially irritating given the commit-breakage from above; continuing long-lived work was quite tedious. Thankfully, this has been resolved as part of its refresh.
-
-- paradoxically, it also encourages you to continue working on the same PR (because parallel work with the same root is frustrating), but there's no mechanism for queueing up work
-- this led me to having to manually feed the agent with work once it was complete with a subtask, which does not seem ideal as a working pattern
-- this has improved in the meantime
-
-- the web-based methodology also meant that I had to frequently pull down the changes, try them out locally, and then give next steps
-- this is very slow and unpleasant, and I would not have done it if it were not for the free credits
-- comparatively, running Claude Code locally is _much_ more freeing: I can dictate my changes, observe the result, and iterate quickly
-- this one factor alone would stop me from using web-based agents for anything more than work that I can estimate will be one-shottable, or for work that I'm happy to pick up at a later date
-- I would assume the vibe-coding platforms aim to address this by providing live previews, but you will never catch me using Lovable
-
-Despite the shortcomings I experienced, I'd be lying if I didn't admit that there is certainly an appeal to the interaction model. Being able to kick off work while doing something else is compelling _if_ you can be confident that it will produce what you expect it to produce. One's sense of its capabilities grows with use, but you can never be sure, especially with larger tasks. I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
-
-## You Really Can Just Build Things, But...
-- should you?
-- need to apply discernment in what you choose to build and how you choose to build it
-- I'm happy with what I've built here, but I was definitely stretching myself towards the end of the credits to find literally anything that I could point the Claude Code Cannon at
-- I ended up using it as an opportunity to update old code, instead: it doesn't necessarily have to be feature work you do, even though that's fun and exciting, but long-overdue maintenance
-- you still need to have good product sense, I'm afraid, although the agents do have some degree of taste, especially if you bring your own to the table
-
-## Context Is King
-This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the easier you will make your own life.
-
-What this means is that you should be paying attention to where it stumbles, and _writing documentation_ (or having it do it for you!) to capture that pain point and how to resolve it. If it's chafing against the CI, tell it what to check ahead of time. If it's repeatedly making the same kinds of code style mistakes, write down the specific nuances it's getting wrong. If it doesn't know what to test against, let it know.
-
-Not only will this benefit your agent, it'll also benefit _you_, as well as other human developers. I've always considered myself a proponent of good documentation, but an agent finally gives me a way to model how other developers might consume the paltry documentation that I've put together, and boy, have I found my codebases wanting in places. Fixing this really does pay off.
-
-As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING.md` and, only if necessary, using agent-specific documentation (e.g. `CLAUDE.md`) to direct your agent to that file. To the greatest possible extent, you want to make sure that the context that your human programmers and your agents share are identical. Any drift will make at least one of those parties unhappy.
-
-## Quality Drops As Much As You're Willing To Let It Drop
-- a common sentiment is that AI can and will make the quality of your code worse
-- I would agree with this to an extent, but there are nuances to it
-- for some of these, I have freely let the quality drop, but that's because it doesn't matter for those projects; I'm willing to tolerate nonoptimality if it gets the job done
-- this is especially true for the projects for which the blast radius is limited: misrendering something, for example, is a visual glitch, not a showstopper
-- some of these projects have vibe-coded UIs with the vibe-coded aesthetic: purple and green gradients, Inter, etc. but you know, that's fine, they're demos - it doesn't matter if they look like slop if they communicate the concept!
-- however, just because it _can_ drag the quality of your project down doesn't mean it _will_; you control the buttons you press
-- providing context can help amelioriate this significantly by giving it the information it needs to write code in your codebase's register
-- you should be accountable for the code you produce, and that means reviewing the agent's output to make sure it meets standards, including your own personal standards
-- deslop freely and frequently: [generating code is cheap](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/), so build up your raw code-matter and [sculpt it](https://eikopf.bearblog.dev/subtractive-synthesis/) until it's actually good
-- and of course, the corollary applies: you can use AI to generate all of the rigour that you, as a human, would have been otherwise too effort/time-pressed to do yourself. there's no excuse not to write tests, design more stringent APIs, write better documentation, and push the quality frontier. see what [Oxide have to say about this](https://oxide-and-friends.transistor.fm/episodes/engineering-rigor-in-the-llm-age).
-
-## Codebase Amnestics
-- the more you lean on AI, the less you build a memory for what the codebase actually looks like at both the structural and ground level
-- reviewing the diffs is fine, yes, you can make sure that it isn't making any mistakes and that it fits into the vision you have
-- but you won't actually build up an understanding of the codebase as a whole, and you will find yourself having to ask the AI to find you things
-- the problem can compound if you do not build this memory and let the AI produce as it sees fit, as now it will produce duplicates of existing functionality - neither party involved here has the ambient awareness required to maintain codebase hygiene
-- having the AI write documentation, as well as engaging in periodic refactoring passes, as mentioned above, can help with this
-- but fundamentally, you need to actually be looking at what's being produced at closer-than-review frequencies, and building that mental model
-- as with the quality, I will freely admit that I did not do this for all of these projects: it simply does not matter, as the codebases are small enough or the scope constrained enough that loading the codebase into your own context on demand is sufficient
-- however, for larger projects, you must be careful about this. do not let yourself be blinded by the ease of creation: you must also eventually pay the cost of comprehension, lest you create a singularity of code that will tear your project apart
-- see [this post by Lalit Maganti](https://lalitm.com/post/building-syntaqlite-ai/) for another account of this problem, among others
-
-## The Siren Call of The Slop Stack
-
-- the agents will pull you towards [their preferred stacks](https://amplifying.ai/research/claude-code-picks), where preferred comes from the common folklore of the internet, RLHF on data from [underpaid and exploited data workers](https://cwa-union.org/ghost-workers-ai-machine), RLHF on data from [less underpaid data workers](https://builtin.com/articles/train-ai-side-hustle), or RLHF on the taste of whichever employee was processing the data that day
-- most of the time, this choice is fine, and honestly, I've given into the call much of the time
-- this means I've doubled down on React + TypeScript + Tailwind as my frontend stack, for example
-- however, you should be aware that this is not always the right choice, and that there are other solutions worth considering, too
-- as a somewhat dire example - I had a passing interest in Svelte(Kit), but never engaged that interest because it didn't seem beneficial enough to do
-- now that the agents are especially good at the SlopStack™️, I'm just not that inclined to spend time on SK. at the same time, I could just be growing too old and employed to spend my free time learning new frameworks to do the same thing
-- however, I do think it could go the other way: for example, you could use an AI to help you learn these lesser-known frameworks with more reactive feedback
-- even if their inherent knowledge is wrong or out of date, they're excellent at consulting reference documentation, and can thus self-correct reasonably well
-
-## Reviewing Is A Bottleneck
-- in addition to the above, there's no getting around it: at a certain point, _you_ are the impediment to getting more work done
-- it doesn't matter if you can dispatch a thousand agents to do ten thousand units of work if you're still reviewing one unit at a time
-- there are three answers to this, all of which I have utilised to some extent:
-  - accept that you can only review so much, and pace yourself accordingly
-  - accept the slop, either for now (and promise you'll clean it up later), or forever (because it doesn't matter if your one-time-use script is full of holes)
-  - enlist other LLMs to help review the changes you've made
-- which one is the right answer for you, and in which proportion, is a question that depends on your risk tolerance, what your expected output is, and the blast radius of the software
-- in an ideal world, we would not ship more than we can verify, and we would not push ourselves beyond our limits
-- but you gotta do what you gotta do, so do what you can to make sure you're being responsible, and ensure your team is, too
-
-## Synchronisation Is A Bottleneck
-- the vast majority of these projects are open-source and solo endeavours
-- this means I was free to take very, very big swings, and knock out major changes in one go, according to my taste and my schedule
-- this... is not generally the case
-- at work, where I was also using agents, I was considerably more sedate: I was working on brownfield(-ish) projects with other people, and ensuring that we are all on the same page is more important than raw throughput
-- I certainly could have opened up the slop tap, but then I'd have to explain what I did to my coworkers, and then I'd have to go through the same exercise when they spread slop sauce all over my changes
-- this also ties into the reviewing bottleneck, and a similar kind of laissez-faire will be necessary to get maximal throughput, which is not necessarily a good thing
-- of course, I'm describing _inter_-contributor synchronisation, but _intra_-contributor synchronisation is a problem, too
-- for some of these, I had multiple PRs open at the same time for the same project, and making sure they didn't step over each other toes' ended up being quite frustrating
-- luckily,
-
-<BlueskyPost post="https://bsky.app/profile/segyges.bsky.social/post/3mdwkxdqjy22z" />
-
-- so it's not as irritating as it might otherwise be. it's also a good chance to explore other paradigms, like [stacked diffs](https://newsletter.pragmaticengineer.com/p/stacked-diffs) or [jujutsu](https://jj-vcs.dev/)
-- I expect to see more solutions to this in future. for my sake, I hope they are not [Gas Town](https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04)-shaped.
-
-## Token Anxiety
-I hesitate to say this out loud, given how the linked post was received, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
-
-This was especially exacerbated by the numerical value attached to the credits. I saw the number and felt driven to bring it to zero by dispatching as much work as humanly possible - and in some cases, beyond humanly possible - and it led to rather unhealthy use practices. During the worst of it in November, I found myself sleeping extremely late - sometimes, not at all - so that I could send off more work to be done, review it, and test it. It may have been one of the most productive months of my life, but it was also profoundly self-destructive. This breadth of work led me to experience what I'd describe as mini-burnout, where I was unable to engage with anything I'd touched as a result of the anxiety.
-
-- not the only one to describe this, see Yegge of Gas Town fame[^yegge]: <https://steve-yegge.medium.com/the-ai-vampire-eda6e4f07163>
-
-[^yegge]: and other famous works, of course, but Gas Town is what he is known for this year
-
-I cut down on the amount of work I was doing on my own projects during this period - especially as I was meant to be on holiday! - and took some time to recover. For the most part, I'm fine now - back to a healthier rhythm, in touch with my network, engaging in other hobbies - but, if left unchecked, I could see myself (and others who share my personality type) slipping right back into it again.
-
-With that being said, I suspect that at least a significant portion of _my_ particular display here was a result of the behaviour described in this post by Ethan Mollick:
-
-<BlueskyPost post="https://bsky.app/profile/emollick.bsky.social/post/3mhg6h2jnzk2v" />
-
-It's out of my system now, and I don't think it'll come back, at least not to the same extent. I hope, anyway!
-
-## Are We All Anthropic's Serfs now?
-
-- to do this, I needed a Claude Code subscription
-- in the process of doing it, I upgraded my subscription
-- I am paying an AI company to do work: and even though I generally like that company's vibes, there's no denying that, to maintain this amount of leverage, I will need to keep paying
-- so far, we are largely in the industry's growth phase: your money can take you reasonably far
-- this has shifted in some ways: over the month of April, the amount of tokens you get for your quota has significantly diminished, likely because they either cannot offer to subsidise as much, or because their demand overwhelms their supply
-- nonetheless, it is not lost on me that we are now operating at Anthropic or OpenAI's whims; their outages, denials of service, or other such disruptions can and will have a material impact on what you can do
-- this is likely to be the case for the frontier, and will continue to be the case going forward, right until they run out of juice - if they do
-- but if you're willing to relax your desire to be at the frontier, options open up
-- the Chinese models are fast-followers, a few months behind, and have competitive rates
-- some of them, although perhaps a decreasing amount, are even open-weights
-- and that's where I think things will go. at the time of writing, Qwen 3.6 has recently come out, and do you know what? both 27B and 35B-A3B both work as coding agents. they're not as smart as Claude, they make more mistakes, and they're not nearly as worldly: but by God, they can write code autonomously with guidance
-- something that required me to pay $20/month minimum to a provider who can rugpull me at any moment now runs on [my server](../../notes/Hardware/Server.md), and I have already started to use it in lieu of Claude for the tasks that don't require frontier intelligence
-- this is something I intend on writing more about in future, once I've had more experience with it all
-- it may be jagged, it may be rough, it may require an investment to run: but, at least for now, we are not beholden to the fate of serfs
-
-## If You Don't Think About It, It Can't Hurt You: Ethics
-- of course, the ethics of the industry could have its own post written about it, or several
-- there is nuance here - it's not an ethical black hole - but I'm also not going to pretend that it's entirely rosy, either; it's far from it
-- there's no shortage of issues: the mass-reallocation of resources, the training of people's replacements using their own work, the shoehorned-in haphazard deployments, the mass-production of violating imagery, the destruction of recorded truth, etc
-- many, but not all, of these problems are a consequence of capitalism: but that doesn't help us when we all live in capitalist societies
-- it is something to think about as we use these services, but I also believe the cat is firmly out of the bag and the best thing we can do is to push for less-harmful choices
-- Anthropic have shown themselves to be the least ethically compromised of the major providers, but I'm under no illusions that this will remain the case forever, especially given their allegiance to the US
-- my hope is that local models will catch up, and the hardware to run them will get cheaper
-- at the same time, our societies are not well-placed to handle a world in which everyone has informational (super)weaponry
-
-## The End of Coding?
-I have written a single-digit percentage of code by hand since November. [This is not an uncommon sentiment](https://simonwillison.net/2026/Jan/4/inflection/), but I want to emphasise it: our profession _has_ fundamentally changed, and the aftershocks from this will rumble throughout as the industry catches up.
-
-- the agents really have improved. I've been using them for the last few years in progressive increments, from asking ChatGPT to produce a function for me in 2023, to using Copilot to autocomplete code, to using Cursor to generate code in-place in 2024, to using Cursor to do more agentic work with the Claudes, to using Claude Code directly in 2025, to now
-- the step change at each stage has been noticeable, but Sonnet/Opus 4.5 are more like a hill change
-- far more autonomous, far more capable of Doing What You Want at scale, especially on greenfield
-- within this period, CC wrote [a complete interpreter from scratch with a vague spec](#philpaxperchance-interpreter), [refactored and rebuilt much of an existing (albeit small) compiler to extend its functionality and improve its robustness](#ferrobrewpyxis), [significantly improved my music player](#philpaxblackbird), etc
-- these are not trivial tasks! most junior / intermediate programmers would struggle with managing the complexity here
-
-- I also specifically used the word "coding", not "programming", in this heading
-- for now, "programming", the art of understanding and autonomously solving problems on the computer, is safe: you need to understand the domain in which you're operating, and the space of potential solutions
-- however, code monkeys - in all that pejorative captures - are probably going to struggle
-- that is: people who take very specific specifications and translate them to code, with limited room for creativity. a machine now exists that can do their job at much lower cost and at scale
-- this is unfortunate, in the sense that all job loss is unfortunate: but this has always seemed to me a likely development
-- I hope we invent a way for them to land on their feet
-
-This doesn't apply for all domains to the same degree: there are many tasks and languages for which the models do not perform at the same standard, or for which they make novice mistakes. I'm not convinced that bulwark will hold forever, but even if it does: the rest of the industry does _not_ consist of these domains, and I very strongly suspect that fewer people per company will be required to do the same amount of work in most areas of programming endeavour.
-
-- it's also not clear to me what will happen to the industry pipeline here
-- it was already very hard to justify hiring juniors when seniors were readily available and can be almost immediately useful
-- it's going to be so much worse when seniors can use LLMs to replace the output of all of the juniors that they would have otherwise tasked
-- the forward-thinking thing to do is to invest in juniors to keep the pipeline alive, and to enjoy the fuzzy feelings of mentoring the next generation and such
-- but we all know that's not how things work, and I don't have any clear answers here
-- perhaps juniors can push further and faster with LLMs themselves? perhaps they can blaze their own path? but that's not going to be for everyone, and these services cost money
-
-The optimist may suggest that a thousand flowers will bloom as a result of this: after all, if everyone has much more leverage available to them, at least a few of those people will be industrious enough to strike it out on their own and build their own futures. I'd like to say that I believe in this - that there will be something for everyone in some form - but I fear things will not be so neat.
-
-I don't know. More thought is necessary here. What does an optimistic version of the future look like, and how do we get there? What does it mean to be a programmer? What does this mean for white-collar work as a whole? What does it mean for _work_ as a whole? These are questions that I'm still pondering, and am certainly not equipped to answer in this particular post. But you should start thinking about them, too.
-
-- and of course, this is assuming the agents don't continue to move further up the stack
-- I am still necessary because I provide ideas, relevant context, and act as a constraining force to ensure that the agents do not wallow in their own slop
-- but there's no reason to believe that this will be the case forever: I already consult with Claude whenever I embark on a new endeavour to scope out the problem space and to find any potential blockers
-- in due time, all of this will be made autonomous
-- I say this all the time, with varying levels of fear attached, but it is worth internalising: at this rate, the vast majority of the profession will be unemployable in due time, and this contagion is likely to spread to other professions, even if their work is not as easy to automate
-- so let's do our best to figure out how we survive in a world that looks like that!
-
-# Projects
-
-## [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
+# [ferrobrew/pyxis](https://github.com/ferrobrew/pyxis)
 ![The Pyxis viewer, showing the `Character` type from Just Cause 2](./pyxis.png)
 
 Pyxis is a schema language for memory structures that I have been working on on-and-off for the last few years. The process of modding games (and other applications) starts with reverse-engineering: using a variety of techniques and tools, one comes to understand behaviours of interest in the application, and how data flows through to enable those behaviours, and how that data is structured.
@@ -267,7 +82,7 @@ After that, I added [atomic integer and boolean primitives](https://github.com/f
 
 To finish, I tended to the test infrastructure. I [refactored the test assertions to use exact structural matching against error variants](https://github.com/ferrobrew/pyxis/pull/83) <PrMeta date="2025-12-18" add=515 sub=547 />, and [split the 3200-line semantic test file into per-feature modules](https://github.com/ferrobrew/pyxis/pull/84) <PrMeta date="2025-12-18" add=3373 sub=3223 /> (`basic_resolution.rs`, `imports.rs`, `enums.rs`, `generics.rs`, and so on). These were long-overdue refactors that I was putting off, as a result of the activation energy required to get them going, but it's hard _not_ to do them when they're one prompt away.
 
-## [philpax/perchance-interpreter](https://github.com/philpax/perchance-interpreter)
+# [philpax/perchance-interpreter](https://github.com/philpax/perchance-interpreter)
 ![Vibe-coded frontend for the Perchance interpreter](./perchance-interpreter-1.png)
 
 [Perchance](https://perchance.org/welcome) is
@@ -319,7 +134,7 @@ Finally, I [refactored the evaluator into multiple modules](https://github.com/p
 
 As a whole, I'm quite happy with how this turned out. As mentioned at the start, I have always wanted an alternate embeddable implementation for Perchance, and now one exists. I do not think it is perfect: I am sure that there are behavioural differences to the original, and bugs that permeate the codebase that I have not explicitly named and corrected, but these are fixable issues in a way that "an embeddable Perchance interpreter does not exist" was not.
 
-## [philpax/paxcord](https://github.com/philpax/paxcord)
+# [philpax/paxcord](https://github.com/philpax/paxcord)
 ![paxcord being used to play image generation telephone](./paxcord.png)
 
 `paxcord` is my personal Discord bot, optimised for my own use cases. Notably, I am a fan of the Lua programming language, and I've carried that into this here bot by giving it fairly extensive Lua scripting capabilities. The work here was primarily in extending that capability to the point of near-absurdity.
@@ -332,7 +147,7 @@ After that, well, I could finally do what I was working towards. Apologies for [
 
 Finally, to close out, I added a [Lua reply handler](https://github.com/philpax/paxcord/pull/7) <PrMeta start="2025-12-16" end="2025-12-17" add=815 sub=72 /> to allow continuing generation chains, and fixed [a bug where the first message was not present in the reply handler](https://github.com/philpax/paxcord/pull/8) <PrMeta date="2025-12-17" add=5 sub=0 />.
 
-## [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
+# [philpax/jc2mp.github.io](https://github.com/philpax/jc2mp.github.io) / [jc2mp/jc2mp.github.io](https://github.com/jc2mp/jc2mp.github.io)
 ![A screenshot of the JC2-MP wiki, as rendered by this bespoke SSG](./jcmp-wiki.png)
 
 A decade ago, I was a developer on the [multiplayer mod for Just Cause 2](https://jc-mp.com/). I slowly phased out my involvement over the years - what with university and employment obligations - and primarily remained as an occasional community presence, helping people out where I could and whatnot (ask me sometime about the follies of achievements).
@@ -351,7 +166,7 @@ Once that was done, I formally [opened and merged the PR for JC2-MP's GitHub Pag
 
 That last one would have taken me a few days at normal speed, I think: generating the initial index, getting the JavaScript progressive enhancement to work properly, optimising the index, and augmenting the index with the information required for smart-ish retrieval. When iteration is extremely quick, though, it doesn't hurt to try different approaches out and to explore the possibility space.
 
-## [philpax/blackbird](https://github.com/philpax/blackbird)
+# [philpax/blackbird](https://github.com/philpax/blackbird)
 ![blackbird playing some music](./blackbird.png)
 
 blackbird is my personal music player software, optimised for my own tastes in what a music player should do and how it should operate. I grew up using foobar2000 in a very specific way - library view only - and as I started using other operating systems more regularly, I wanted a way to both carry that experience with me and to be able to stream my music from my own server, regardless of where I was.
@@ -382,7 +197,7 @@ To close out, I [applied a few fixes to the `nix-shell`](https://github.com/phil
 
 As a whole, I would argue that the use of Claude Code (Web) was worth it for blackbird alone: within a span of a few days, I was able to burn through my entire feature backlog and make it the music player that I wanted - nay, _needed_ - it to be. I'm quite happy with the outcome here.
 
-## [philpax/paxboard](https://github.com/philpax/paxboard)
+# [philpax/paxboard](https://github.com/philpax/paxboard)
 ![paxboard showing world clocks + weather displays](./paxboard.png)
 
 paxboard is my personal self-hosted home page. I am pathologically afraid of YAML, so existing solutions like [homepage](https://gethomepage.dev/) didn't sit right with me; additionally, I wanted to be able to easily display custom information, like the status of my AI models. My initial version of this was written in Rust and was entirely server-rendered using [paxhtml](#philpaxpaxhtml), as I was in a particularly `paxhtml`-y mood.
@@ -393,7 +208,7 @@ I then rounded things out by adding [weather displays for Stockholm and Melbourn
 
 This is a relatively small bit of bespoke software, but it's something that I would have otherwise given up on if it weren't for the ease of maintenance. Of course, one could argue that the correct thing to do would be to use the existing software - but like with blackbird, I want something that fits _me_.
 
-## [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
+# [philpax/rucomfyui](https://github.com/philpax/rucomfyui)
 ![rucomfyui node graph demo, showing a SDXL generation](./rucomfyui.png)
 
 [ComfyUI](https://www.comfy.org/) is an open-source node-based program for composing AI synthesis workflows (image generation, video generation, etc). The user composes a graph of nodes that describes the flow of data through the various steps in a synthesis pipeline, and then runs this graph to produce an output.
@@ -414,7 +229,7 @@ During the process of getting Lua support in, I noticed that we weren't enforcin
 
 Finally, I built [a tool to take an arbitrary API workflow graph and convert it to its equivalent Rust and Lua `rucomfyui` equivalents](https://github.com/philpax/rucomfyui/pull/16) <PrMeta start="2025-12-07" end="2025-12-11" add=2712 sub=0 />. This is something that most other ComfyUI consumer libraries have, and it is very handy to have: you can interactively build up your workflow in the regular ComfyUI UI (or, say, our egui node graph), and then convert that to a programmatic description that can be varied as required.
 
-## [ferrobrew/ida-c-splitter](https://github.com/ferrobrew/ida-c-splitter)
+# [ferrobrew/ida-c-splitter](https://github.com/ferrobrew/ida-c-splitter)
 ![`ida-c-splitter` output, as viewed in Zed](./ida-c-splitter.png)
 
 While working on [my VR mod for Just Cause 3](../one-day-ill-finish-a-vr-mod/index.md), I found myself wanting to traverse the entirety of IDA's decompilation output for the debug build of the game: the primary benefit of this is that searching for references to class fields between functions, something which is very difficult in IDA proper, becomes a mere text search.
@@ -435,7 +250,7 @@ I'd like to say that this helped me continue my work on JC3, but as you can see,
 
 With that being said, though, I suspect that the split-decompilation would be quite amenable to analysis by a coding agent, and I'm excited to give that a try sometime - perhaps it can answer questions about the decompiled code the same way it can with regular codebases?
 
-## [philpax/paxhtml](https://github.com/philpax/paxhtml)
+# [philpax/paxhtml](https://github.com/philpax/paxhtml)
 ```rust
 pub struct HeadingAnchorProps {
     pub target: String,
@@ -470,7 +285,7 @@ Later on, I was doing some performance optimisations on my website - which build
 
 Finally, as part of the above bump allocator work, I discovered that I had to keep a non-bump-allocated representation around for the Lua bindings I'd produced for `paxhtml` in a [previous edition, for paxboard](../an-even-quieter-week/index.md#paxboard). As I'd already stopped using these bindings in [paxboard](#philpaxpaxboard) in November, I weighed up my options, and came to a conclusion: [it was time for the Lua bindings, and their vestigial owned representation, to go](https://github.com/philpax/paxhtml/pull/4) <PrMeta date="2025-12-31" add=1 sub=744 />. Claude had surfaced this earlier in the planning phase, but I hadn't realised how much I'd hate having two representations until it was laid bare to me.
 
-## [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
+# [philpax/philpax.github.io](https://github.com/philpax/philpax.github.io)
 ![Dark and light mode screenshots of an update post on this website](./website.png)
 
 This very here website. A long, long time ago, I hosted a Ruby/[Sinatra](https://sinatrarb.com/) server for my website that was completely unreproducible, but was fully hackable; a less-long time ago, I switched this over to a [Zola](https://getzola.org/)-generated static site, which was fully reproducible, but completely unhackable.
@@ -493,7 +308,7 @@ So that's what I did: I switched [paxhtml](#philpaxpaxhtml) over to use bump all
 
 Finally, my SSG shells out to `git` to get the update dates for each document. I consider this to be inelegant - my generator shouldn't need to run `git` to build properly - so I figured I'd try out an experiment and [use the Rust-native `gitoxide` instead](https://github.com/philpax/philpax.github.io/pull/21) <PrMeta date="2026-01-07" add=1805 sub=157 closed />. Unfortunately, this came with multiple costs: `gitoxide` does not have a convenient operation for getting the last-update-timestamp of a given file (which led to an immense amount of code bloat), and compiling it requires compiling much of a VCS (which led to an immense amount of compile-time bloat). As a result, I chose not to merge this: but I'm glad that it only took me some delegation to discover this, and not the better part of a day!
 
-## [philpax/nixos-configuration](https://github.com/philpax/nixos-configuration)
+# [philpax/nixos-configuration](https://github.com/philpax/nixos-configuration)
 The majority of my systems run on NixOS. Without LLMs, I would have given up on Nix almost immediately: but they have freed me to overlook its incredibly ugly language and focus on effective administration.
 
 During early November, I acquired [a ThinkPad T480s](../../notes/Hardware/Laptop.md). The changes I made here were relatively straightforward refactoring changes to enable bring-up of NixOS on that laptop, while still sharing configs with my other machines, but I appreciated being able to tick them off my to-do list while working on other things.
@@ -502,7 +317,7 @@ My sync script was copying all of my dotfiles over to every machine, which was s
 
 The last thing I did here was to [extract out common developer tooling and services](https://github.com/philpax/nixos-configuration/pull/17) <PrMeta date="2025-11-20" add=36 sub=34 /> so that my laptop could benefit from the same tooling as my server, and vice versa.
 
-## [philpax/prismata](https://github.com/philpax/prismata)
+# [philpax/prismata](https://github.com/philpax/prismata)
 ![Prismata "gameplay", demonstrating painting with voxels and then shooting physics-simulated boxes](./prismata.mp4)
 
 Prismata is a research prototype that I built out at one of my former employers, with the intention of experimenting with an AI co-creation workflow in a voxel world. After receiving permission, I open-sourced it and did some minor cleanup work to make it usable once again.
@@ -515,7 +330,7 @@ I had to go in there towards the end to restore some of the behaviour that had b
 
 [^bevyupdate]: Truth be told, this would not be that difficult. The most frustrating part is that I had to fork several dependencies to update them to Bevy 0.17, so I'd have to do the same thing again for 0.18. Not difficult, just annoying.<br/><br/>**EDITOR'S NOTE**: In the time it has taken for me to write this, Bevy 0.19's release is fast-approaching. Guess I'll wait for that!
 
-## [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
+# [philpax/wikitext_simplified](https://github.com/philpax/wikitext_simplified)
 ![A vibe-coded frontend for `wikitext_simplified`](./wikitext-simplified.png)
 
 As part of my work for [genresin.space](#genresinspacegenresinspacegithubio), I needed a way to reliably parse wikitext within Rust. I use [a fork](https://github.com/philpax/parse-wiki-text-2) of [parse-wiki-text-2](https://github.com/soerenmeier/parse-wiki-text-2), which is itself a fork of [parse_wiki_text](https://crates.io/crates/parse_wiki_text) (wherever you are, Fredrik, thank you for your service 🫡). However, PWT produces a stream of nodes: it does not actually produce a tree, at least not in the sense you'd expect from a traditional parser.
@@ -528,7 +343,7 @@ Some time after this, I realised it would be beneficial to demonstrate what the 
 
 [^design]: That being said, I'd be lying if I said I wasn't considering setting up a unified design language and using it across all of my tools.
 
-## [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
+# [genresinspace/genresinspace.github.io](https://github.com/genresinspace/genresinspace.github.io)
 ![genresin.space in action](./genresinspace.png)
 
 [genresin.space](https://genresin.space/) is a project I've been noodling on for the last year. Using `wikitext_simplified` and a lot of machinery, it extracts information about every music genre with an infobox from the English Wikipedia (offline - I'm not hitting the live website!), and then renders it as an explorable graph (as in graph theory, not charts), so that you can explore how genres influence and are influenced by each other.
@@ -541,12 +356,12 @@ The next steps were to improve the UI on mobile by [making it properly responsiv
 
 Finally, I'd been unhappy with the colour scheme in use for some time _and_ wanted to support light mode, so I [let Claude take a crack at that](https://github.com/genresinspace/genresinspace.github.io/pull/39) <PrMeta start="2025-11-23" end="2025-11-24" add=282 sub=110 />. It wasn't perfect, but it was certainly an improvement, and one that I have continued to develop. (But that's for the next update.)
 
-## [philpax/openxrs](https://github.com/philpax/openxrs)
+# [philpax/openxrs](https://github.com/philpax/openxrs)
 [openxrs](https://github.com/Ralith/openxrs) is a Rust library (not mine!) for interacting with OpenXR, the standard for interfacing with XR hardware. As part of my work on the VR mod for JC3, I wanted a D3D11 integration example for `openxrs`, so I used my pre-existing fork and produced such [an example](https://github.com/philpax/openxrs/pull/1) <PrMeta date="2025-11-21" add=914 sub=0 closed />, which worked beautifully.
 
 I then closed this PR and extracted the example into an [independent repo](https://github.com/philpax/d3d11-openxr-example). I would have preferred to skip directly to this step, but I wanted to make sure Claude had the necessary context to navigate `openxrs` without having to look up individual files.
 
-## [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
+# [philpax/dwarf-c-reconstructor](https://github.com/philpax/dwarf-c-reconstructor)
 ![A GitHub screenshot showing *many* PRs for dwarf-c-reconstructor](./dwarf-c-reconstructor.png)
 
 After completing [ida-c-splitter](#ferrobrewida-c-splitter), I posted about it in a reverse-engineering-related Discord, and someone messaged me to ask if I could vibe-code something for them with my credits. As I found myself with a need to exhaust these credits, I took them up on their request, and started piping their prompts and test files directly into Claude.
@@ -559,7 +374,7 @@ With that being said, I don't think Claude Code Web was quite the right fit for 
 
 I won't detail the PRs here - there were nearly 40 of them, and it involved a significant amount of back and forth between all three parties involved. It exists now and it works, but I haven't personally used it, and I couldn't tell you how any of it works. How do I feel about that? Unsure; I certainly don't claim any ownership over it, despite it being under my username. Indeed, despite this being ostensibly aligned with [ferrobrew](https://ferrobrew.github.io)'s mandate, I explicitly chose not to put it there: I'm not comfortable with associating my comrade with something for which neither of us have looked at the code.
 
-## [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
+# [ferrobrew/egui-directx10](https://github.com/ferrobrew/egui-directx10)
 ![The `egui` demo, as rendered by `egui-directx10`](./egui-directx10.png)
 
 [egui-directx11](https://github.com/NekomaruQwQ/egui-directx11) is a DirectX 11 renderer for the [egui](https://egui.rs) immediate UI library. I have a project for Just Cause 2 that I wanted to use `egui` for, but unfortunately, JC2 uses DirectX 10 (one of the few games to do so!). A friend and I backported `egui-directx11` to DirectX 10 some time ago, and that served us well.
@@ -568,25 +383,29 @@ However, I found myself wanting to update that project to the latest version of 
 
 Luckily, this project is non-essential, and I'm pretty sure that we're the only people on this planet who want to use `egui` with DirectX 10, so I'm content with leaving it as-is.
 
-## [ferrobrew/re-utilities](https://github.com/ferrobrew/re-utilities)
+# [ferrobrew/re-utilities](https://github.com/ferrobrew/re-utilities)
 `re-utilities` is a library that a friend and I created to house, you'll never believe this, Utilities for Reverse Engineering. (Honestly, I can't stand the name, but we have yet to choose a better one.)
 
 The first port of call was maintenance, in [updating windows-rs to version 0.62](https://github.com/ferrobrew/re-utilities/pull/11) <PrMeta date="2025-11-26" add=73 sub=27 />. The second was to make it a better library by [replacing anyhow with custom error enums](https://github.com/ferrobrew/re-utilities/pull/12)[^anyhow] <PrMeta date="2025-11-26" add=610 sub=129 />. Nothing too difficult, but certainly not without tedium for a human.
 
 [^anyhow]: `anyhow` is a Rust library for catch-all errors that makes it easy to handle any kind of error at the cost of removing specificity as to what the error was. The general guidance is to "use `anyhow` for applications, use `thiserror` for libraries", where `thiserror` is a library that offers code generation for structured errors through a procedural macro.<br/><br/>With the power of LLMs, it is now trivial to manually maintain these errors, and one fewer proc macro reduces compile times, even if only slightly.
 
-## [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
+# [ferrobrew/bevy-headless-console](https://github.com/ferrobrew/bevy-headless-console)
 ![`bevy-headless-console`, running in a terminal](./bevy-headless-console.png)
 
 As part of the JC2 work mentioned [above](#ferrobrewegui-directx10), I also had to update `bevy-headless-console` (our fork of `bevy-console` to remove all UI integration) to Bevy 0.17. We're practically eviscerating this dead horse now, but [this was one prompt](https://github.com/ferrobrew/bevy-headless-console/pull/2) <PrMeta date="2025-11-26" add=65 sub=53 />.
 
-## [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
+# [ferrobrew/pyxis-defs](https://github.com/ferrobrew/pyxis-defs)
 ![Screenshot of Zed showing a definition from `pyxis-defs`, using Rust syntax highlighting](./pyxis-defs.png)
 
 As part of the work done for [pyxis](#ferrobrewpyxis), I introduced a monorepo of all known Pyxis definitions for use in the viewer and to make it easier to test and develop sweeping changes to Pyxis itself.
 
 The biggest change was to switch our existing definitions over to use [real generics](https://github.com/ferrobrew/pyxis-defs/pull/1) <PrMeta date="2025-12-17" add=2472 sub=2570 />, as was implemented the same day. Watching all of the redundancy disappear brought a tear to my eye.
 
-# Conclusion
+# conclusion
 
-TODO, but mostly see takeaways. Include a collapsible with the chronological timeline of every PR (where the bars also contain the diff amounts; strongly desaturated if closed), as well as a final tally of +/- lines. Talk about how effective his was, and how much of my backlog I blew away, and how liberating that was for a time... but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
+- a collapsible with the chronological timeline of every PR (where the bars also contain the diff amounts; strongly desaturated if closed), as well as a final tally of +/- lines
+- Talk about how effective this was, 
+- how much of my backlog I blew away, how liberating that was for a time... 
+- but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
+- More details in a future blog post
