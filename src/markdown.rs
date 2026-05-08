@@ -7,7 +7,10 @@ use crate::{
     elements as e,
     views::{
         ViewContext,
-        components::{self, Footnote, FootnoteProps, Link, LinkProps},
+        components::{
+            self, Footnote, FootnoteProps, Link, LinkProps, PrEntry, pr_id_from_url,
+            tl_id_from_url,
+        },
     },
 };
 
@@ -26,6 +29,7 @@ pub struct MarkdownConverter<'a> {
     pub source_path: Option<PathBuf>,
     pub document_base_url: Option<String>,
     pub website_base_url: Option<String>,
+    pub pr_entries: Vec<PrEntry>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -42,7 +46,14 @@ impl<'a> MarkdownConverter<'a> {
             source_path: None,
             document_base_url: None,
             website_base_url: None,
+            pr_entries: Vec::new(),
         }
+    }
+
+    /// Provide a pre-collected list of PR entries (used to render `<PrTimeline />`).
+    pub fn with_pr_entries(mut self, entries: Vec<PrEntry>) -> Self {
+        self.pr_entries = entries;
+        self
     }
 
     /// Set the source path of the document being converted, enabling resolution of
@@ -390,40 +401,10 @@ impl<'a> MarkdownConverter<'a> {
                     return components::bluesky_post(bump, post_data);
                 }
                 if element.tag() == Some("PrMeta") {
-                    let date = element
-                        .attr("date")
-                        .and_then(|a| a.value_as_str())
-                        .map(|s| s.to_string());
-                    let start = element
-                        .attr("start")
-                        .and_then(|a| a.value_as_str())
-                        .map(|s| s.to_string());
-                    let end = element
-                        .attr("end")
-                        .and_then(|a| a.value_as_str())
-                        .map(|s| s.to_string());
-                    let add = element
-                        .attr("add")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    let sub = element
-                        .attr("sub")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    let closed = element.attr("closed").is_some();
-                    return components::pr_meta(
-                        bump,
-                        components::PrMetaProps {
-                            date,
-                            start,
-                            end,
-                            add,
-                            sub,
-                            closed,
-                        },
-                    );
+                    return render_pr_meta(bump, &element, None);
+                }
+                if element.tag() == Some("PrTimeline") {
+                    return components::pr_timeline(bump, &self.pr_entries);
                 }
                 if element.tag() == Some("MonthDayDateRange") {
                     let start = element
@@ -536,7 +517,11 @@ impl<'a> MarkdownConverter<'a> {
         let mut elements = Vec::new();
         let mut i = 0;
         while i < nodes.len() {
-            if let Some((element, end_idx)) = self.try_convert_paired_element(nodes, i, parent_node)
+            if let Some((element, end_idx)) = self.try_convert_pr_mention(nodes, i, parent_node) {
+                elements.push(element);
+                i = end_idx + 1;
+            } else if let Some((element, end_idx)) =
+                self.try_convert_paired_element(nodes, i, parent_node)
             {
                 elements.push(self.handle_paired_element(element));
                 i = end_idx + 1;
@@ -547,6 +532,56 @@ impl<'a> MarkdownConverter<'a> {
         }
 
         b.fragment(elements)
+    }
+
+    /// Detect a `[title](github-pr-url) <PrMeta ... />` pair and wrap it in a `<span>` with
+    /// a stable id so the timeline component can anchor-link to the inline mention.
+    fn try_convert_pr_mention(
+        &mut self,
+        nodes: &[Node],
+        i: usize,
+        parent_node: Option<&Node>,
+    ) -> Option<(paxhtml::Element<'a>, usize)> {
+        let Node::Link(link) = &nodes[i] else {
+            return None;
+        };
+        let pr_id = pr_id_from_url(&link.url)?;
+
+        let mut j = i + 1;
+        let prmeta_idx = loop {
+            if j >= nodes.len() {
+                return None;
+            }
+            match &nodes[j] {
+                Node::Text(t) if t.value.chars().all(char::is_whitespace) => j += 1,
+                Node::FootnoteReference(_) => j += 1,
+                Node::Html(h) if h.value.trim_start().starts_with("<PrMeta") => break j,
+                _ => return None,
+            }
+        };
+
+        let bump = self.context.bump;
+        let tl_id = tl_id_from_url(&link.url);
+        let mut children = Vec::with_capacity(prmeta_idx - i + 1);
+        for (idx, node) in nodes.iter().enumerate().take(prmeta_idx + 1).skip(i) {
+            if idx == prmeta_idx
+                && let Node::Html(h) = node
+                && let Ok(element) = paxhtml::parse_html(bump, &h.value)
+                && element.tag() == Some("PrMeta")
+            {
+                children.push(render_pr_meta(bump, &element, tl_id.clone()));
+            } else {
+                children.push(self.convert(node, parent_node));
+            }
+        }
+
+        let span = paxhtml::html! { in bump;
+            <span id={pr_id} class="scroll-mt-16 [&:target]:bg-[color-mix(in_srgb,var(--color-secondary)_25%,transparent)] [&:target]:rounded">
+                #{children}
+            </span>
+        };
+
+        Some((span, prmeta_idx))
     }
 
     /// Try to detect and parse a paired custom element starting at position `i`.
@@ -685,6 +720,38 @@ impl<'a> MarkdownConverter<'a> {
             }
         }
     }
+}
+
+fn render_pr_meta<'bump>(
+    bump: &'bump paxhtml::bumpalo::Bump,
+    element: &paxhtml::Element<'bump>,
+    tl_id: Option<String>,
+) -> paxhtml::Element<'bump> {
+    let attr_str = |key: &str| {
+        element
+            .attr(key)
+            .and_then(|a| a.value_as_str())
+            .map(|s| s.to_string())
+    };
+    let attr_u32 = |key: &str| {
+        element
+            .attr(key)
+            .and_then(|a| a.value.as_ref())
+            .and_then(|v| v.as_int())
+            .unwrap_or(0) as u32
+    };
+    components::pr_meta(
+        bump,
+        components::PrMetaProps {
+            date: attr_str("date"),
+            start: attr_str("start"),
+            end: attr_str("end"),
+            add: attr_u32("add"),
+            sub: attr_u32("sub"),
+            closed: element.attr("closed").is_some(),
+            tl_id,
+        },
+    )
 }
 
 fn contains_link(nodes: &[Node]) -> bool {

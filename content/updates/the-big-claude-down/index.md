@@ -404,8 +404,10 @@ The biggest change was to switch our existing definitions over to use [real gene
 
 # conclusion
 
-- a collapsible with the chronological timeline of every PR (where the bars also contain the diff amounts; strongly desaturated if closed), as well as a final tally of +/- lines
 - Talk about how effective this was, 
 - how much of my backlog I blew away, how liberating that was for a time... 
+
+<PrTimeline />
+
 - but then point out that I'm still at it, still grasping for total control over dozens of projects, and it's possible that AI is enabling my worst tendencies instead of freeing me from them.
 - More details in a future blog post

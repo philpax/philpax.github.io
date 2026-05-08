@@ -4,7 +4,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{IsoDate, IsoDateProps, Link, LinkProps},
+    views::components::{IsoDate, IsoDateProps, Link, LinkProps, collect_pr_entries},
 };
 
 pub const POST_BODY_MARGIN_CLASS: &str =
@@ -71,10 +71,17 @@ pub fn post<'a>(
                 });
             }
 
+            let pr_entries = document
+                .rest_of_content
+                .as_ref()
+                .map(|content| collect_pr_entries(bump, content))
+                .unwrap_or_default();
+
             let mut converter = MarkdownConverter::new(context, &url)
                 .with_sidenotes()
                 .with_source_path(document.source_path.clone())
-                .with_document_base_url(url.clone());
+                .with_document_base_url(url.clone())
+                .with_pr_entries(pr_entries);
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)

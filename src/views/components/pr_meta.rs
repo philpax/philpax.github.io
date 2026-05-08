@@ -1,7 +1,7 @@
 use paxhtml::bumpalo::Bump;
 use paxhtml::html;
 
-use super::{MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps};
+use super::{Link, LinkProps, MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps};
 
 pub struct PrMetaProps {
     pub date: Option<String>,
@@ -10,6 +10,7 @@ pub struct PrMetaProps {
     pub add: u32,
     pub sub: u32,
     pub closed: bool,
+    pub tl_id: Option<String>,
 }
 
 pub fn pr_meta<'bump>(bump: &'bump Bump, props: PrMetaProps) -> paxhtml::Element<'bump> {
@@ -42,15 +43,30 @@ pub fn pr_meta<'bump>(bump: &'bump Bump, props: PrMetaProps) -> paxhtml::Element
         }
     });
 
-    html! { in bump;
-        <span class="text-stone-500 dark:text-stone-400">
-            "("
+    let inner = html! { in bump;
+        <>
             {date_element}
             ", "
             <span class="text-emerald-700 dark:text-emerald-400">{format!("+{}", props.add)}</span>
             " "
             <span class="text-rose-700 dark:text-rose-400">{format!("-{}", props.sub)}</span>
             {closed_element}
+        </>
+    };
+
+    let body = match props.tl_id {
+        Some(id) => html! { in bump;
+            <Link underline title={"Jump to timeline entry".to_string()} target={format!("#{id}")}>
+                {inner}
+            </Link>
+        },
+        None => inner,
+    };
+
+    html! { in bump;
+        <span class="text-stone-500 dark:text-stone-400">
+            "("
+            {body}
             ")"
         </span>
     }
