@@ -1,4 +1,7 @@
-use std::{collections::HashMap, path::PathBuf};
+use std::{
+    collections::{HashMap, HashSet},
+    path::PathBuf,
+};
 
 use paxhtml::builder::Builder;
 
@@ -8,8 +11,7 @@ use crate::{
     views::{
         ViewContext,
         components::{
-            self, Footnote, FootnoteProps, Link, LinkProps, PrEntry, pr_id_from_url,
-            tl_id_from_url,
+            self, Footnote, FootnoteProps, Link, LinkProps, PrEntry, pr_id_from_url, tl_id_from_url,
         },
     },
 };
@@ -155,6 +157,46 @@ impl<'a> MarkdownConverter<'a> {
                     self.error_context, url
                 )
             })
+    }
+
+    /// Panic if a link's fragment doesn't correspond to a known anchor on the
+    /// target page. Validates same-page (`#frag`) links against the current
+    /// document's anchors and cross-page (`*.md#frag` or `/site/path/#frag`)
+    /// links against the target document's anchors. Skips external URLs and
+    /// any target whose route isn't tracked in the anchor registry.
+    fn validate_anchor_link(&self, raw_url: &str) {
+        let resolved: Option<String> = if let Some(frag) = raw_url.strip_prefix('#') {
+            Some(frag).filter(|f| !f.is_empty()).and_then(|f| {
+                self.document_base_url
+                    .as_deref()
+                    .map(|b| format!("{b}#{f}"))
+            })
+        } else if raw_url.ends_with(".md") || raw_url.contains(".md#") {
+            self.source_path
+                .as_deref()
+                .and_then(|p| self.context.content.resolve_markdown_link(p, raw_url))
+        } else if raw_url.starts_with('/') && !raw_url.contains("://") {
+            Some(raw_url.to_string())
+        } else {
+            None
+        };
+
+        let Some((route_url, fragment)) = resolved
+            .as_deref()
+            .and_then(|r| r.split_once('#'))
+            .filter(|(_, f)| !f.is_empty())
+        else {
+            return;
+        };
+
+        if let Some(anchors) = self.context.content.anchors.get(route_url)
+            && !anchors.contains(fragment)
+        {
+            panic!(
+                "Broken anchor link in {}: '{raw_url}' - '{route_url}#{fragment}' not found",
+                self.error_context
+            );
+        }
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
@@ -321,6 +363,7 @@ impl<'a> MarkdownConverter<'a> {
                         inner_text(node, None).trim()
                     );
                 }
+                self.validate_anchor_link(&l.url);
                 let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
@@ -761,6 +804,25 @@ fn contains_link(nodes: &[Node]) -> bool {
                 .children()
                 .is_some_and(|children| contains_link(children))
     })
+}
+
+/// Walk a markdown AST and collect the slug for every heading. The slug
+/// matches what `e::h_with_id` produces (`slugify(inner_text)`), so this is
+/// the canonical anchor set for in-document heading links.
+pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
+    fn walk(node: &Node, anchors: &mut HashSet<String>) {
+        if matches!(node, Node::Heading(_)) {
+            anchors.insert(crate::util::slugify(inner_text(node, None).trim()));
+        }
+        if let Some(children) = node.children() {
+            for child in children {
+                walk(child, anchors);
+            }
+        }
+    }
+    let mut anchors = HashSet::new();
+    walk(node, &mut anchors);
+    anchors
 }
 
 pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {

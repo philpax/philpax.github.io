@@ -1,7 +1,9 @@
 use paxhtml::bumpalo::Bump;
 use paxhtml::html;
 
-use super::{Link, LinkProps, MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps};
+use super::{
+    Link, LinkProps, MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps,
+};
 
 pub struct PrMetaProps {
     pub date: Option<String>,

@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     path::{Path, PathBuf},
 };
 
@@ -148,6 +148,10 @@ pub struct Content {
     pub credits: Document,
     pub music_library: blackbird_json_export_types::Output,
     pub bluesky_posts: HashMap<String, paxsite_content::bluesky::BlueskyPostData>,
+    /// Map from a document's route URL (e.g. `/blog/foo/`) to the set of
+    /// heading-slug anchors valid on that page. Used by `MarkdownConverter`
+    /// to validate `[a](#x)` and `[c](../c.md#d)` links at build time.
+    pub anchors: HashMap<String, HashSet<String>>,
 }
 impl Content {
     #[cfg(test)]
@@ -162,6 +166,7 @@ impl Content {
             credits: Document::empty(),
             music_library: blackbird_json_export_types::Output::new(),
             bluesky_posts: HashMap::new(),
+            anchors: HashMap::new(),
         }
     }
 
@@ -249,11 +254,16 @@ impl Content {
             credits,
             music_library,
             bluesky_posts: HashMap::new(),
+            anchors: HashMap::new(),
         };
 
         let now = std::time::Instant::now();
         content.bluesky_posts = content.load_bluesky_posts()?;
         report("Fetched Bluesky posts", now.elapsed());
+
+        let now = std::time::Instant::now();
+        content.anchors = content.build_anchor_registry();
+        report("Built anchor registry", now.elapsed());
 
         Ok(content)
     }
@@ -317,6 +327,24 @@ impl Content {
         self.blog
             .document_by_id(id)
             .or_else(|| self.updates.document_by_id(id))
+    }
+
+    /// Build a map from each document's route URL to its set of heading-slug
+    /// anchors. Keyed on the same route URLs that `resolve_markdown_link`
+    /// produces so cross-page lookups can be validated against the registry.
+    fn build_anchor_registry(&self) -> HashMap<String, HashSet<String>> {
+        let mut anchors = HashMap::new();
+        for doc in self.all_documents() {
+            let Some(route) = self.base.source_path_to_route.get(&doc.source_path) else {
+                continue;
+            };
+            let mut doc_anchors = super::markdown::collect_heading_anchors(&doc.description);
+            if let Some(rest) = &doc.rest_of_content {
+                doc_anchors.extend(super::markdown::collect_heading_anchors(rest));
+            }
+            anchors.insert(route.clone(), doc_anchors);
+        }
+        anchors
     }
 
     fn load_bluesky_posts(
