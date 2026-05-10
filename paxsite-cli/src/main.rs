@@ -16,12 +16,14 @@ fn main() -> anyhow::Result<()> {
 
     const CREATE: &str = "Create new content";
     const EDIT: &str = "Edit existing content";
+    const PUBLISH: &str = "Publish a draft";
 
-    let action = Select::new("What would you like to do?", vec![CREATE, EDIT]).prompt()?;
+    let action = Select::new("What would you like to do?", vec![CREATE, EDIT, PUBLISH]).prompt()?;
 
     match action {
         CREATE => create_content(&root)?,
         EDIT => edit_content(&root)?,
+        PUBLISH => publish_content()?,
         _ => unreachable!(),
     }
 
@@ -321,6 +323,45 @@ fn rename_note(
         new_path.display()
     );
 
+    Ok(())
+}
+
+fn publish_content() -> anyhow::Result<()> {
+    let content = paxsite_content::Content::read(true, true)?;
+    let drafts: Vec<&paxsite_content::Document> = content
+        .blog
+        .documents
+        .iter()
+        .chain(content.updates.documents.iter())
+        .filter(|d| d.metadata.draft)
+        .collect();
+
+    if drafts.is_empty() {
+        println!("No drafts to publish.");
+        return Ok(());
+    }
+
+    let display_items: Vec<String> = drafts
+        .iter()
+        .map(|d| format!("[{}] {}", d.document_type.dir_name(), d.metadata.title))
+        .collect();
+
+    let selection = Select::new("Select a draft to publish:", display_items.clone()).prompt()?;
+    let idx = display_items.iter().position(|s| *s == selection).unwrap();
+    publish_doc(drafts[idx])
+}
+
+fn publish_doc(doc: &paxsite_content::Document) -> anyhow::Result<()> {
+    if !doc.metadata.draft {
+        anyhow::bail!("{} is not a draft", doc.id.join("/"));
+    }
+
+    let (mut metadata, body) = read_frontmatter(&doc.source_path)?;
+    metadata.draft = false;
+    metadata.datetime = Some(chrono::Utc::now());
+    write_frontmatter(&doc.source_path, &metadata, &body)?;
+
+    println!("Published {}", doc.source_path.display());
     Ok(())
 }
 

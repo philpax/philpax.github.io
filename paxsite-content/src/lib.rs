@@ -850,7 +850,9 @@ pub fn read_frontmatter(path: &Path) -> anyhow::Result<(DocumentMetadata, String
         anyhow::bail!("invalid markdown file: missing frontmatter");
     }
     let metadata: DocumentMetadata = toml::from_str(parts[1])?;
-    let body = parts[2].to_string();
+    // Strip the newline that terminates the closing `+++` line; `generate_frontmatter`
+    // re-emits it, so keeping it here would duplicate it on round-trip.
+    let body = parts[2].strip_prefix('\n').unwrap_or(parts[2]).to_string();
     Ok((metadata, body))
 }
 
