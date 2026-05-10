@@ -1,8 +1,7 @@
 +++
 title = "the big claude down"
 short = "two months, a holiday, and a lot of Claude: a terrifying predicament"
-datetime = 2026-05-10T18:00:00Z
-draft = true
+datetime = 2026-05-10T21:05:45Z
 
 [taxonomies]
 tags=["ai", "pyxis", "website", "genresinspace", "blackbird", "perchanceinterpreter", "paxcord", "jc2mp", "paxboard", "rucomfyui", "idacsplitter", "paxhtml", "nixos", "prismata", "wikitextsimplified", "reutilities"]
