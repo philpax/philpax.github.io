@@ -124,7 +124,7 @@ pub fn post<'a>(
     html! { in bump;
         <article class="post">
             <header class="pb-0 mb-0">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
+                <div class="flex flex-col sm:flex-row sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
                     <div class="flex items-center gap-[var(--meta-spacing)] whitespace-nowrap flex-shrink-0">
                         {date(bump, document)}
                         {(post_body == PostBody::Full)
