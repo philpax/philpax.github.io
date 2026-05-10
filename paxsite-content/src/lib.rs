@@ -424,13 +424,12 @@ impl DocumentCollection<Document> {
                 anyhow::bail!("{index:?} does not exist");
             }
 
-            documents.push(Document::read(
-                &index,
-                vec![id.clone()],
-                vec![id],
-                document_type,
-                fast,
-            )?);
+            let document = Document::read(&index, vec![id.clone()], vec![id], document_type, fast)?;
+            #[cfg(not(feature = "draft"))]
+            if document.metadata.draft {
+                continue;
+            }
+            documents.push(document);
         }
         documents.sort_by_key(|d| d.metadata.datetime);
         documents.reverse();
