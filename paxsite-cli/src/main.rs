@@ -62,7 +62,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
         .context("Invalid datetime format")?
         .with_timezone(&chrono::Utc);
 
-    let content = paxsite_content::Content::read(true)?;
+    let content = paxsite_content::Content::read(true, true)?;
     let existing_tags = content.all_tags();
     let mut selected_tags: Vec<Tag> = if !existing_tags.is_empty() {
         inquire::MultiSelect::new("Select tags:", existing_tags).prompt()?
@@ -117,7 +117,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
 fn create_note(root: &Path) -> anyhow::Result<()> {
     let title = Text::new("Title:").prompt()?;
 
-    let content = paxsite_content::Content::read(true)?;
+    let content = paxsite_content::Content::read(true, true)?;
     let folder = select_note_folder(&content.notes.documents, &[])?;
 
     let path = note_path(root, &folder, &title);
@@ -143,7 +143,7 @@ fn edit_content(root: &Path) -> anyhow::Result<()> {
     const METADATA: &str = "Edit metadata";
     const RENAME: &str = "Rename/move";
 
-    let content = paxsite_content::Content::read(true)?;
+    let content = paxsite_content::Content::read(true, true)?;
     let items = content.all_content_items();
     if items.is_empty() {
         println!("No content found.");

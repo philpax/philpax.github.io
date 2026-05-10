@@ -405,6 +405,7 @@ impl DocumentCollection<Document> {
         collection_path: &Path,
         document_type: DocumentType,
         fast: bool,
+        include_drafts: bool,
     ) -> anyhow::Result<Self> {
         let mut documents = vec![];
         for entry in std::fs::read_dir(collection_path)? {
@@ -425,8 +426,7 @@ impl DocumentCollection<Document> {
             }
 
             let document = Document::read(&index, vec![id.clone()], vec![id], document_type, fast)?;
-            #[cfg(not(feature = "draft"))]
-            if document.metadata.draft {
+            if !include_drafts && document.metadata.draft {
                 continue;
             }
             documents.push(document);
@@ -516,13 +516,18 @@ impl Content {
         }
     }
 
-    pub fn read(fast: bool) -> anyhow::Result<Self> {
-        let blog =
-            DocumentCollection::read(&DocumentType::Blog.content_dir(), DocumentType::Blog, fast)?;
+    pub fn read(fast: bool, include_drafts: bool) -> anyhow::Result<Self> {
+        let blog = DocumentCollection::read(
+            &DocumentType::Blog.content_dir(),
+            DocumentType::Blog,
+            fast,
+            include_drafts,
+        )?;
         let updates = DocumentCollection::read(
             &DocumentType::Update.content_dir(),
             DocumentType::Update,
             fast,
+            include_drafts,
         )?;
         let mut notes = NotesCollection::read(&DocumentType::Note.content_dir(), fast)?;
 

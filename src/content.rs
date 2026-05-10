@@ -175,7 +175,7 @@ impl Content {
         report: &mut impl FnMut(&'static str, std::time::Duration),
     ) -> anyhow::Result<Self> {
         let now = std::time::Instant::now();
-        let raw = paxsite_content::Content::read(fast)?;
+        let raw = paxsite_content::Content::read(fast, cfg!(feature = "draft"))?;
         report("Read raw content", now.elapsed());
 
         let now = std::time::Instant::now();

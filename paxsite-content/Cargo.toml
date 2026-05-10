@@ -3,11 +3,6 @@ name = "paxsite-content"
 version = "0.1.0"
 edition = "2024"
 
-[features]
-# When enabled, draft documents are loaded from disk (and emitted by paxsite).
-# Without this feature, drafts are silently skipped at read time.
-draft = []
-
 [dependencies]
 anyhow = { workspace = true }
 serde = { workspace = true }
