@@ -10,6 +10,7 @@ tags=["ai", "ethics"]
 
 - follow-up post to my experiences in [the big claude down](../../updates/the-big-claude-down/index.md), among other things
 - actively changing over time, especially as new things keep happening
+- six months of 95-99% of code written by agents. hard to put an exact percentage on it, but I have spent the equivalent of tens of thousands of dollars of API-priced tokens in this period
 
 <!-- TODO: add a hero image (a nondescript silhouette falling down amongst a sea of Claude Code crabs?), general edit pass, punch up introduction -->
 
@@ -84,6 +85,11 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - however, I do think it could go the other way: for example, you could use an AI to help you learn these lesser-known frameworks with more reactive feedback
 - even if their inherent knowledge is wrong or out of date, they're excellent at consulting reference documentation, and can thus self-correct reasonably well
 
+- conversely, however: there's no excuse for making _bad_ choices in favour of expediency
+- I am a [certified Python-hater](../../notes/Programming/Reasons_I_do_not_like_Python.md), and now there's _really_ no reason to use it past the one-thousand line mark
+- prototype in whatever language you like, do whatever sins you need to do, but you have the tools to rapidly make your code production-ready (which I note is a different thing to productionizing!), so you should bloody well use them
+- that's right. I am no longer asking. Rewrite It In Rust. (bernie meme)
+
 ## Reviewing Is A Bottleneck
 - in addition to the above, there's no getting around it: at a certain point, _you_ are the impediment to getting more work done
 - it doesn't matter if you can dispatch a thousand agents to do ten thousand units of work if you're still reviewing one unit at a time
@@ -128,7 +134,7 @@ With that being said, I suspect that at least a significant portion of _my_ part
 
 It's out of my system now, and I don't think it'll come back, at least not to the same extent. I hope, anyway!
 
-## Are We All Anthropic's Serfs now?
+## Are We All Anthropic's Serfs Now?
 
 - to do this, I needed a Claude Code subscription
 - in the process of doing it, I upgraded my subscription
@@ -136,6 +142,7 @@ It's out of my system now, and I don't think it'll come back, at least not to th
 - so far, we are largely in the industry's growth phase: your money can take you reasonably far
 - this has shifted in some ways: over the month of April, the amount of tokens you get for your quota has significantly diminished, likely because they either cannot offer to subsidise as much, or because their demand overwhelms their supply
 - nonetheless, it is not lost on me that we are now operating at Anthropic or OpenAI's whims; their outages, denials of service, or other such disruptions can and will have a material impact on what you can do
+- whenever I lose access - whether that be due to outages or to running out of quota - it is troublesome, especially if I am in the middle of something intensive. the best analogy I can give you is that it feels like a hyperdrive failure: I can still get to where I'm going, but it's going to be much, _much_ slower, and I'll need to figure out where the hell I am first
 - this is likely to be the case for the frontier, and will continue to be the case going forward, right until they run out of juice - if they do
 - but if you're willing to relax your desire to be at the frontier, options open up
 - the Chinese models are fast-followers, a few months behind, and have competitive rates
@@ -151,6 +158,7 @@ It's out of my system now, and I don't think it'll come back, at least not to th
 - there's no shortage of issues: the mass-reallocation of resources, the training of people's replacements using their own work, the shoehorned-in haphazard deployments, the mass-production of violating imagery, the destruction of recorded truth, etc
 - even the "good" companies, like Anthropic, are prone to making missteps: [their willingness to work with a US government subject to democratic backsliding](https://www.cnbc.com/2026/05/01/pentagon-anthropic-blacklist-mythos-michael.html), their [using of the xAI Colossus datacenter](www.anthropic.com/news/higher-limits-spacex), and more
 - many, but not all, of these problems are a consequence of capitalism: but that doesn't help us when we all live in capitalist societies
+- I am insulated from the worst of the consequences: my employment is not tremendously precarious, I have savings, and I have a family I can fall back on: but this is not true for everyone, and a lot of people 
 - it is something to think about as we use these services, but I also believe the cat is firmly out of the bag and the best thing we can do is to push for less-harmful choices
 - Anthropic have shown themselves to be the least ethically compromised of the major providers, but I'm under no illusions that this will remain the case forever, especially given their allegiance to the US
 - my hope is that local models will catch up, and the hardware to run them will get cheaper
