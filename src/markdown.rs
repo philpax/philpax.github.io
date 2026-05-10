@@ -206,6 +206,7 @@ impl<'a> MarkdownConverter<'a> {
         // Only gather footnotes at the root level (when there's no parent)
         if parent_node.is_none() {
             self.gather_footnote_definitions(node);
+            self.validate_footnote_references(node);
         }
 
         match node {
@@ -475,11 +476,7 @@ impl<'a> MarkdownConverter<'a> {
                 element
             }
             Node::FootnoteReference(r) => {
-                let definition = self
-                    .footnotes
-                    .get(&r.identifier)
-                    .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
-                    .clone();
+                let definition = self.footnote_definition(&r.identifier).clone();
 
                 // Assign a numeric counter to this footnote reference
                 let footnote_number = self
@@ -763,6 +760,60 @@ impl<'a> MarkdownConverter<'a> {
             }
         }
     }
+
+    /// Panic on `[^ident]` patterns that aren't backed by a `[^ident]:` definition.
+    /// The markdown parser silently keeps such references as plain text rather than
+    /// emitting a `Node::FootnoteReference`, so we have to scan `Text` nodes ourselves.
+    fn validate_footnote_references(&self, node: &Node) {
+        if let Node::Text(t) = node {
+            for ident in scan_footnote_refs(&t.value) {
+                self.footnote_definition(ident);
+            }
+        }
+        if let Some(children) = node.children() {
+            for child in children {
+                self.validate_footnote_references(child);
+            }
+        }
+    }
+
+    /// Look up a footnote definition by identifier, or panic with a uniform
+    /// "broken footnote reference" message. Shared by `validate_footnote_references`
+    /// (the pre-pass over raw `[^ident]` text) and the `Node::FootnoteReference`
+    /// rendering arm so both paths emit the same error.
+    fn footnote_definition(&self, identifier: &str) -> &Vec<Node> {
+        self.footnotes.get(identifier).unwrap_or_else(|| {
+            panic!(
+                "Broken footnote reference in {}: '[^{identifier}]' — definition not found",
+                self.error_context
+            )
+        })
+    }
+}
+
+/// Scan a string for `[^ident]` footnote-reference patterns. Identifiers are
+/// non-empty and may not contain whitespace; everything else (including `Code`
+/// / `InlineCode` values) lives in non-`Text` nodes and is naturally skipped.
+fn scan_footnote_refs(text: &str) -> Vec<&str> {
+    let mut refs = Vec::new();
+    let bytes = text.as_bytes();
+    let mut i = 0;
+    while i + 2 < bytes.len() {
+        if bytes[i] == b'[' && bytes[i + 1] == b'^' {
+            let start = i + 2;
+            if let Some(rel) = bytes[start..].iter().position(|&b| b == b']') {
+                let end = start + rel;
+                let ident = &text[start..end];
+                if !ident.is_empty() && !ident.chars().any(char::is_whitespace) {
+                    refs.push(ident);
+                }
+                i = end + 1;
+                continue;
+            }
+        }
+        i += 1;
+    }
+    refs
 }
 
 fn render_pr_meta<'bump>(
