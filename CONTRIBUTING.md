@@ -47,7 +47,7 @@ This is a static site generator written in Rust that produces a personal blog/no
 
 ### Content Types
 
-Three document types defined in `src/content.rs`:
+Three document types defined in `paxsite-content/src/lib.rs`:
 
 1. **Blog** (`content/blog/`) - Long-form posts with TOML frontmatter
 2. **Update** (`content/updates/`) - Shorter updates with TOML frontmatter
@@ -96,11 +96,15 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
 
 | File | Purpose |
 |------|---------|
-| `src/content.rs` | Document parsing, metadata structures, Git date retrieval |
+| `paxsite-content/src/lib.rs` | Document types, metadata, reading content from disk, Git date retrieval |
+| `paxsite-content/src/bluesky.rs` | Bluesky API client, post caching, URL helpers |
+| `src/content.rs` | Wraps `paxsite-content` documents with parsed markdown ASTs, Bluesky post loading |
+| `src/markdown.rs` | Markdown AST to HTML conversion, custom component dispatch |
 | `src/views/posts/mod.rs` | Shared post rendering (header, body, tags) |
 | `src/views/blog/mod.rs` | Blog index and individual post pages |
 | `src/views/updates/mod.rs` | Updates index and individual update pages |
 | `src/views/notes/mod.rs` | Notes hierarchy and individual note pages |
+| `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
 | `src/og_image.rs` | OpenGraph image generation (1200x630 PNG) |
 | `src/main.rs` | Build orchestration, output generation |
 
@@ -133,6 +137,39 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
   }}
   ```
 
+- Prefer the `html!` macro for all view/component code. The `Builder` API should only be used in `src/markdown.rs` where programmatic element construction is necessary; everywhere else, use `html!` for readability and consistency.
+
+### `paxhtml` `html!` Macro Syntax
+
+The `html!` macro uses JSX-like syntax with some Rust-specific extensions:
+
+- **Arena allocator**: All `html!` invocations require `in bump;` to specify the arena:
+  ```rust
+  paxhtml::html! { in bump; <div>"hello"</div> }
+  ```
+- **Attribute values**: Expressions use `{expr}`, which calls `.to_string()` on the value. String literals and booleans work directly:
+  ```rust
+  <a href={url} class="my-class" disabled>...</a>
+  ```
+- **Attribute spread**: Use `{expr}` in attribute position (outside a `name={value}` pair) to spread an iterable of `paxhtml::Attribute`:
+  ```rust
+  let extra_attrs = some_condition.then(|| [
+      paxhtml::Attribute::new(bump, "target", "_blank"),
+      paxhtml::Attribute::new(bump, "rel", "noopener noreferrer"),
+  ]);
+  html! { in bump; <a href={url} {extra_attrs.into_iter().flatten()}>...</a> }
+  ```
+- **Child interpolation**: `{expr}` for single elements/text, `#{iter}` for iterating over collections:
+  ```rust
+  <ul>#{items.iter().map(|item| html! { in bump; <li>{item}</li> })}</ul>
+  ```
+- **Components**: PascalCase tags are treated as function calls. The function receives `(bump, Props)` where props are populated from attributes using `DefaultIn` for defaults:
+  ```rust
+  <Link external underline target={url}>"click me"</Link>
+  // Expands to: Link(bump, LinkProps { external: true, underline: true, target: url, ..DefaultIn::default_in(bump) })
+  ```
+- **Fragments**: Use `<>...</>` for fragment syntax, or `Builder::new(bump).fragment(iter)` programmatically
+
 ### Code Organization
 
 Within each module, organize code as follows:
@@ -151,11 +188,40 @@ Within each module, organize code as follows:
 | `content/` | Markdown content (blog/, updates/, notes/) |
 | `static/88x31/` | 88x31 button images for the frontpage (must be saved locally, no hotlinking) |
 
+### Custom Components in Markdown
+
+Custom components are written as PascalCase HTML tags in markdown and handled in `src/markdown.rs`:
+
+**Void (self-closing) components:**
+- `<MusicLibrary />` — Interactive music library display
+- `<NotesIndex />` — Hierarchical notes navigator (only in notes)
+- `<PrMeta date="2025-11-06" add=128 sub=1 />` — Inline pill row with date and diff stats (always noyear)
+- `<PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />` — Date range variant with optional `closed` badge
+- `<MonthDayDate date="2025-11-06" noyear />` — Formatted date
+- `<MonthDayDateRange start="2025-11-06" end="2025-12-14" noyear />` — Date range
+- `<BlueskyPost post="https://bsky.app/profile/handle/post/rkey" />` — Archived Bluesky post embed (data fetched and cached as JSON next to the markdown file on first build)
+
+**Paired (block) components:**
+- `<CityPoster image="path">...content...</CityPoster>` — Two-column layout with image and text
+
+Component implementations live in `src/views/components/`.
+
+### Bluesky Post Embeds
+
+`<BlueskyPost>` tags trigger automatic fetching and caching of post data from the Bluesky API:
+- On first encounter, the post data (text, facets, author info, avatar as base64, engagement metrics) is fetched and stored as `bluesky-{rkey}.json` next to the markdown file
+- Subsequent builds read from cache and never re-fetch (implicit archiving)
+- The fetch runs even in `--fast` mode since it only happens once per post
+- Fetching/caching logic lives in `paxsite-content/src/bluesky.rs`; rendering in `src/views/components/bluesky_post.rs`
+- All Bluesky URL construction is centralised in the bluesky module (`profile_url()`, `hashtag_url()`)
+
 ### Workspace Crates
 
 | Crate | Purpose |
 |-------|---------|
-| `paxsite` (root) | Main static site generator |
+| `paxsite` (root) | Main SSG: markdown rendering, views, build orchestration |
+| `paxsite-content` | Content layer: document types, disk I/O, frontmatter parsing, Git dates, Bluesky API/caching |
+| `paxsite-cli` | CLI tool for creating new content (blog posts, updates, notes) |
 | `paxcss` | CSS parsing utilities for extracting theme variables |
 | `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`) |
 

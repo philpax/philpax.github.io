@@ -4,7 +4,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps},
+    views::components::{IsoDate, IsoDateProps, Link, LinkProps, collect_pr_entries},
 };
 
 pub const POST_BODY_MARGIN_CLASS: &str =
@@ -29,14 +29,12 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
 }
 
 pub fn date<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
-    crate::elements::date_with_chrono(
-        bump,
-        document
-            .metadata
-            .datetime
-            .unwrap_or_else(|| panic!("No datetime for {document}"))
-            .date_naive(),
-    )
+    let date = document
+        .metadata
+        .datetime
+        .unwrap_or_else(|| panic!("No datetime for {document}"))
+        .date_naive();
+    paxhtml::html! { in bump; <IsoDate date={date} /> }
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -73,9 +71,17 @@ pub fn post<'a>(
                 });
             }
 
+            let pr_entries = document
+                .rest_of_content
+                .as_ref()
+                .map(|content| collect_pr_entries(bump, content))
+                .unwrap_or_default();
+
             let mut converter = MarkdownConverter::new(context, &url)
                 .with_sidenotes()
-                .with_source_path(document.source_path.clone());
+                .with_source_path(document.source_path.clone())
+                .with_document_base_url(url.clone())
+                .with_pr_entries(pr_entries);
             content_elements.push(converter.convert(&document.description, None));
 
             // Inline TOC for small screens (between description and rest of content)
@@ -91,6 +97,7 @@ pub fn post<'a>(
             <>
                 {MarkdownConverter::new(context, &url)
                     .with_source_path(document.source_path.clone())
+                    .with_document_base_url(url.clone())
                     .convert(&document.description, None)}
                 <p>
                     <Link underline target={url.clone()}>
@@ -101,6 +108,7 @@ pub fn post<'a>(
         },
         PostBody::Short => MarkdownConverter::new(context, &url)
             .with_source_path(document.source_path.clone())
+            .with_document_base_url(url.clone())
             .convert(
                 document
                     .metadata
@@ -126,7 +134,7 @@ pub fn post<'a>(
                             .map(|(_, modified)| html! { in bump;
                                 <>
                                     " · updated "
-                                    {crate::elements::date_with_chrono(bump, modified.date_naive())}
+                                    <IsoDate date={modified.date_naive()} />
                                 </>
                             })}
                         " · "
@@ -148,8 +156,18 @@ pub fn post<'a>(
                 <a href={url} class="flex items-center p-0 no-underline post-title">
                     <h2 class={heading_class}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
+                {document.metadata.draft.then(|| html! { in bump;
+                    <div class="my-2 p-4 bg-[var(--color)] text-[var(--background-color)] text-center flex flex-col gap-2">
+                        <div class="text-3xl">"DRAFT"</div>
+                        <div>"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+                    </div>
+                })}
             </header>
-            <div class={format!("post-body {} {}", if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" }, if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" })}>
+            <div class={format!(
+                "post-body {} {}",
+                if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" },
+                if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" }
+            )}>
                 {post_body_rendered}
             </div>
         </article>
@@ -177,8 +195,9 @@ pub fn toc_elements<'a>(
             <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                 <div class="w-max max-w-full">
                     <h3 class={h3_classname}>
-                        <HeadingAnchor target={"#toc-sticky".to_string()} />
-                        "Table of Contents"
+                        <Link underline target={"#toc-sticky".to_string()}>
+                            "Table of Contents"
+                        </Link>
                     </h3>
                     <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                         {hierarchy_list}
@@ -192,8 +211,9 @@ pub fn toc_elements<'a>(
         html! { in bump;
             <aside class="toc 2xl:hidden" id="toc-inline">
                 <h3 class={h3_classname}>
-                    <HeadingAnchor target={"#toc-inline".to_string()} />
-                    "Table of Contents"
+                    <Link underline target={"#toc-inline".to_string()}>
+                        "Table of Contents"
+                    </Link>
                 </h3>
                 <div class="[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
                     {hierarchy_list}

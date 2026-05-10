@@ -18,7 +18,7 @@ pub mod tags;
 pub mod updates;
 
 pub mod components;
-use components::{Link, LinkProps};
+use components::{IsoDatetime, IsoDatetimeProps, Link, LinkProps};
 
 /// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
@@ -121,6 +121,8 @@ pub struct SocialMeta {
     article_modified_time: Option<chrono::DateTime<chrono::Utc>>,
     /// A tag describing the article (for OpenGraph article type)
     article_tag: Option<String>,
+    /// Whether to instruct robots not to index this page
+    noindex: bool,
 }
 impl SocialMeta {
     /// The full title of the page, including the website name
@@ -169,6 +171,8 @@ pub fn layout<'a>(
     inner: Element<'a>,
 ) -> paxhtml::Document<'a> {
     let bump = context.bump;
+    let generation_date_element =
+        html! { in bump; <IsoDatetime datetime={context.generation_date} /> };
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
@@ -177,6 +181,9 @@ pub fn layout<'a>(
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    {meta.noindex.then(|| html! { in bump;
+                        <meta name="robots" content="noindex, nofollow" />
+                    })}
                     #{meta.into_social_meta(&context).into_iter().map(|(k, v)| {
                         html! { in bump;
                             <meta property={k} content={v} />
@@ -227,7 +234,7 @@ pub fn layout<'a>(
                                 "paxsite"
                             </Link>
                             " on "
-                            {datetime_with_chrono(bump, context.generation_date)}
+                            {generation_date_element}
                             "."
                         </div>
                         <div>

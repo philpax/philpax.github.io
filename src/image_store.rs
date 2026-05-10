@@ -60,10 +60,12 @@ impl ImageStore {
 
     /// Spawn a background thread to generate preview images for all documents.
     /// Returns a join handle that resolves when all previews are generated.
+    /// When `fast` is true, skips generating previews that already exist on disk.
     pub fn spawn_preview_generation(
         self: Arc<Self>,
         content: Arc<crate::content::Content>,
         output_dir: &Path,
+        fast: bool,
     ) -> JoinHandle<anyhow::Result<()>> {
         let output_dir = output_dir.to_path_buf();
 
@@ -101,16 +103,22 @@ impl ImageStore {
                         let preview_filename = suffixed_path(filename, "_preview");
                         let preview_output =
                             post_output_dir.join(preview_filename.file_name().unwrap());
-                        self.write_preview(path, &preview_output, PREVIEW_MAX_DIMENSION)
-                            .with_context(|| format!("failed to generate preview for {path:?}"))?;
+                        if !fast || !preview_output.exists() {
+                            self.write_preview(path, &preview_output, PREVIEW_MAX_DIMENSION)
+                                .with_context(|| {
+                                    format!("failed to generate preview for {path:?}")
+                                })?;
+                        }
 
                         let small_filename = suffixed_path(filename, "_small");
                         let small_output =
                             post_output_dir.join(small_filename.file_name().unwrap());
-                        self.write_preview(path, &small_output, SMALL_PREVIEW_MAX_WIDTH)
-                            .with_context(|| {
-                                format!("failed to generate small preview for {path:?}")
-                            })?;
+                        if !fast || !small_output.exists() {
+                            self.write_preview(path, &small_output, SMALL_PREVIEW_MAX_WIDTH)
+                                .with_context(|| {
+                                    format!("failed to generate small preview for {path:?}")
+                                })?;
+                        }
                     }
                 }
                 anyhow::Ok(())

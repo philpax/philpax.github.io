@@ -9,6 +9,8 @@ use serde::{Deserialize, Serialize};
 
 pub use paxhtml::util::slugify;
 
+pub mod bluesky;
+
 // ── Constants ───────────────────────────────────────────────────────────────
 
 pub type DocumentId = Vec<String>;
@@ -63,6 +65,8 @@ pub struct DocumentMetadata {
     pub datetime: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(skip)]
     pub last_modified: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(default)]
+    pub draft: bool,
     pub taxonomies: Option<DocumentTaxonomies>,
 }
 
@@ -124,6 +128,7 @@ impl Document {
                 short: None,
                 datetime: None,
                 last_modified: None,
+                draft: false,
                 taxonomies: None,
             },
             description_raw: String::new(),
@@ -161,6 +166,7 @@ impl Document {
                 short: None,
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
+                draft: false,
                 taxonomies: None,
             };
 
@@ -181,6 +187,9 @@ impl Document {
                 continue;
             }
             if path.is_dir() {
+                continue;
+            }
+            if bluesky::is_cache_file(&path) {
                 continue;
             }
             if let Some(filename) = path.file_name() {
@@ -299,6 +308,21 @@ impl<D> DocumentFolderNode<D> {
             })
     }
 
+    pub fn all_documents(&self) -> Vec<&D> {
+        let mut docs = Vec::new();
+        if let Some(DocumentLeafNode::Document(doc)) = &self.index {
+            docs.push(doc.as_ref());
+        }
+        for child in self.children.values() {
+            match child {
+                DocumentNode::Folder(f) => docs.extend(f.all_documents()),
+                DocumentNode::Leaf(DocumentLeafNode::Document(doc)) => docs.push(doc.as_ref()),
+                _ => {}
+            }
+        }
+        docs
+    }
+
     pub fn map_documents<E>(self, f: &mut impl FnMut(D) -> E) -> DocumentFolderNode<E> {
         DocumentFolderNode {
             index: self.index.map(|leaf| leaf.map_document(f)),
@@ -381,6 +405,7 @@ impl DocumentCollection<Document> {
         collection_path: &Path,
         document_type: DocumentType,
         fast: bool,
+        include_drafts: bool,
     ) -> anyhow::Result<Self> {
         let mut documents = vec![];
         for entry in std::fs::read_dir(collection_path)? {
@@ -400,13 +425,11 @@ impl DocumentCollection<Document> {
                 anyhow::bail!("{index:?} does not exist");
             }
 
-            documents.push(Document::read(
-                &index,
-                vec![id.clone()],
-                vec![id],
-                document_type,
-                fast,
-            )?);
+            let document = Document::read(&index, vec![id.clone()], vec![id], document_type, fast)?;
+            if !include_drafts && document.metadata.draft {
+                continue;
+            }
+            documents.push(document);
         }
         documents.sort_by_key(|d| d.metadata.datetime);
         documents.reverse();
@@ -493,13 +516,18 @@ impl Content {
         }
     }
 
-    pub fn read(fast: bool) -> anyhow::Result<Self> {
-        let blog =
-            DocumentCollection::read(&DocumentType::Blog.content_dir(), DocumentType::Blog, fast)?;
+    pub fn read(fast: bool, include_drafts: bool) -> anyhow::Result<Self> {
+        let blog = DocumentCollection::read(
+            &DocumentType::Blog.content_dir(),
+            DocumentType::Blog,
+            fast,
+            include_drafts,
+        )?;
         let updates = DocumentCollection::read(
             &DocumentType::Update.content_dir(),
             DocumentType::Update,
             fast,
+            include_drafts,
         )?;
         let mut notes = NotesCollection::read(&DocumentType::Note.content_dir(), fast)?;
 
@@ -519,9 +547,14 @@ impl Content {
             fast,
         )?;
 
-        // Build tags index
+        // Build tags index (excludes drafts so they don't appear in tag listings)
         let mut tags: HashMap<Tag, Vec<DocumentId>> = HashMap::new();
-        for document in blog.documents.iter().chain(updates.documents.iter()) {
+        for document in blog
+            .documents
+            .iter()
+            .chain(updates.documents.iter())
+            .filter(|d| !d.metadata.draft)
+        {
             if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
                     tags.entry(tag.clone())
@@ -597,7 +630,7 @@ impl Content {
         })
     }
 
-    /// Returns all unique tags sorted alphabetically.
+    /// Returns all unique tags sorted alphabetically. Drafts are excluded.
     pub fn all_tags(&self) -> Vec<Tag> {
         let mut tags = BTreeSet::new();
         for document in self
@@ -605,6 +638,7 @@ impl Content {
             .documents
             .iter()
             .chain(self.updates.documents.iter())
+            .filter(|d| !d.metadata.draft)
         {
             if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
@@ -790,6 +824,10 @@ pub fn generate_frontmatter(metadata: &DocumentMetadata) -> String {
         output.push_str(&format!("datetime = {}\n", dt.format("%Y-%m-%dT%H:%M:%SZ")));
     }
 
+    if metadata.draft {
+        output.push_str("draft = true\n");
+    }
+
     if let Some(taxonomies) = &metadata.taxonomies {
         output.push_str("\n[taxonomies]\n");
         let tags: Vec<String> = taxonomies
@@ -812,7 +850,9 @@ pub fn read_frontmatter(path: &Path) -> anyhow::Result<(DocumentMetadata, String
         anyhow::bail!("invalid markdown file: missing frontmatter");
     }
     let metadata: DocumentMetadata = toml::from_str(parts[1])?;
-    let body = parts[2].to_string();
+    // Strip the newline that terminates the closing `+++` line; `generate_frontmatter`
+    // re-emits it, so keeping it here would duplicate it on round-trip.
+    let body = parts[2].strip_prefix('\n').unwrap_or(parts[2]).to_string();
     Ok((metadata, body))
 }
 

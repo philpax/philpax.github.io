@@ -1,4 +1,7 @@
-use std::{collections::HashMap, path::PathBuf};
+use std::{
+    collections::{HashMap, HashSet},
+    path::PathBuf,
+};
 
 use paxhtml::builder::Builder;
 
@@ -7,7 +10,9 @@ use crate::{
     elements as e,
     views::{
         ViewContext,
-        components::{self, Footnote, FootnoteProps, Link, LinkProps},
+        components::{
+            self, Footnote, FootnoteProps, Link, LinkProps, PrEntry, pr_id_from_url, tl_id_from_url,
+        },
     },
 };
 
@@ -24,6 +29,9 @@ pub struct MarkdownConverter<'a> {
     pub error_context: String,
     pub current_note_id: Option<DocumentId>,
     pub source_path: Option<PathBuf>,
+    pub document_base_url: Option<String>,
+    pub website_base_url: Option<String>,
+    pub pr_entries: Vec<PrEntry>,
 }
 impl<'a> MarkdownConverter<'a> {
     pub fn new(context: ViewContext<'a>, error_context: impl Into<String>) -> Self {
@@ -38,13 +46,40 @@ impl<'a> MarkdownConverter<'a> {
             error_context: error_context.into(),
             current_note_id: None,
             source_path: None,
+            document_base_url: None,
+            website_base_url: None,
+            pr_entries: Vec::new(),
         }
+    }
+
+    /// Provide a pre-collected list of PR entries (used to render `<PrTimeline />`).
+    pub fn with_pr_entries(mut self, entries: Vec<PrEntry>) -> Self {
+        self.pr_entries = entries;
+        self
     }
 
     /// Set the source path of the document being converted, enabling resolution of
     /// relative `.md` links to their output URLs.
     pub fn with_source_path(mut self, path: PathBuf) -> Self {
         self.source_path = Some(path);
+        self
+    }
+
+    /// Set the document's base URL (e.g. `/updates/the-big-claude-down/`), so that
+    /// relative URLs in images and links resolve against the document rather than the
+    /// page being rendered. Required when rendering a document's content on a page that
+    /// isn't the document's own URL (e.g. index views).
+    pub fn with_document_base_url(mut self, url: impl Into<String>) -> Self {
+        self.document_base_url = Some(url.into());
+        self
+    }
+
+    /// Set the website's base URL (e.g. `https://philpax.me`). When set, site-absolute
+    /// paths like `/og-images/foo.png` are rewritten to fully-absolute URLs, and
+    /// relative URLs are also rooted against the website. Used for RSS, where feed
+    /// readers don't share a site context.
+    pub fn with_website_base_url(mut self, url: impl Into<String>) -> Self {
+        self.website_base_url = Some(url.into());
         self
     }
 
@@ -75,6 +110,33 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
+    /// Rewrite a URL so it resolves correctly when rendered outside the document's own
+    /// page. Relative paths are rooted at `document_base_url`; if `website_base_url` is
+    /// also set, site-absolute paths (`/foo`) are made fully absolute too. External,
+    /// fragment, protocol-relative, `mailto:`, and `tel:` URLs are left alone.
+    fn resolve_relative_url(&self, url: &str) -> String {
+        if url.is_empty()
+            || url.starts_with('#')
+            || url.starts_with("//")
+            || url.contains("://")
+            || url.starts_with("mailto:")
+            || url.starts_with("tel:")
+        {
+            return url.to_string();
+        }
+        if url.starts_with('/') {
+            return match &self.website_base_url {
+                Some(host) => format!("{host}{url}"),
+                None => url.to_string(),
+            };
+        }
+        let Some(base) = &self.document_base_url else {
+            return url.to_string();
+        };
+        let stripped = url.strip_prefix("./").unwrap_or(url);
+        format!("{base}{stripped}")
+    }
+
     /// If the URL points to a `.md` file and we have a source path, resolve it
     /// to the corresponding output route URL. Panics on broken `.md` links.
     fn resolve_link_url(&self, url: &str) -> String {
@@ -97,6 +159,46 @@ impl<'a> MarkdownConverter<'a> {
             })
     }
 
+    /// Panic if a link's fragment doesn't correspond to a known anchor on the
+    /// target page. Validates same-page (`#frag`) links against the current
+    /// document's anchors and cross-page (`*.md#frag` or `/site/path/#frag`)
+    /// links against the target document's anchors. Skips external URLs and
+    /// any target whose route isn't tracked in the anchor registry.
+    fn validate_anchor_link(&self, raw_url: &str) {
+        let resolved: Option<String> = if let Some(frag) = raw_url.strip_prefix('#') {
+            Some(frag).filter(|f| !f.is_empty()).and_then(|f| {
+                self.document_base_url
+                    .as_deref()
+                    .map(|b| format!("{b}#{f}"))
+            })
+        } else if raw_url.ends_with(".md") || raw_url.contains(".md#") {
+            self.source_path
+                .as_deref()
+                .and_then(|p| self.context.content.resolve_markdown_link(p, raw_url))
+        } else if raw_url.starts_with('/') && !raw_url.contains("://") {
+            Some(raw_url.to_string())
+        } else {
+            None
+        };
+
+        let Some((route_url, fragment)) = resolved
+            .as_deref()
+            .and_then(|r| r.split_once('#'))
+            .filter(|(_, f)| !f.is_empty())
+        else {
+            return;
+        };
+
+        if let Some(anchors) = self.context.content.anchors.get(route_url)
+            && !anchors.contains(fragment)
+        {
+            panic!(
+                "Broken anchor link in {}: '{raw_url}' - '{route_url}#{fragment}' not found",
+                self.error_context
+            );
+        }
+    }
+
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
         let bump = self.context.bump;
         let b = Builder::new(bump);
@@ -104,6 +206,7 @@ impl<'a> MarkdownConverter<'a> {
         // Only gather footnotes at the root level (when there's no parent)
         if parent_node.is_none() {
             self.gather_footnote_definitions(node);
+            self.validate_footnote_references(node);
         }
 
         match node {
@@ -122,8 +225,9 @@ impl<'a> MarkdownConverter<'a> {
                         6 => "text-xs font-bold",
                         value => panic!("Heading depth {value} is not supported"),
                     };
+                    let contains_links = contains_link(&h.children);
 
-                    e::h_with_id(bump, resolved_depth, class, true, children)
+                    e::h_with_id(bump, resolved_depth, class, true, contains_links, children)
                 }
             }
             Node::Text(t) => b.text(&t.value),
@@ -225,7 +329,7 @@ impl<'a> MarkdownConverter<'a> {
 
                 if is_video {
                     b.video([
-                        b.attr(("src", i.url.clone())),
+                        b.attr(("src", self.resolve_relative_url(&i.url))),
                         b.attr(("controls", "true")),
                         b.attr(("loop", "true")),
                         b.attr((
@@ -242,8 +346,8 @@ impl<'a> MarkdownConverter<'a> {
                     } else {
                         i.url.clone()
                     };
-                    b.a([b.attr(("href", i.url.clone()))])(b.img([
-                        b.attr(("src", src_url)),
+                    b.a([b.attr(("href", self.resolve_relative_url(&i.url)))])(b.img([
+                        b.attr(("src", self.resolve_relative_url(&src_url))),
                         b.attr(("alt", i.alt.clone())),
                         b.attr((
                             "class",
@@ -260,7 +364,8 @@ impl<'a> MarkdownConverter<'a> {
                         inner_text(node, None).trim()
                     );
                 }
-                let url = self.resolve_link_url(&l.url);
+                self.validate_anchor_link(&l.url);
+                let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
                     children
@@ -300,28 +405,78 @@ impl<'a> MarkdownConverter<'a> {
                 {
                     return components::notes_index(self.context, note_id);
                 }
-                if element.tag() == Some("DiffStats") {
-                    let add = element
-                        .attr("add")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    let sub = element
-                        .attr("sub")
-                        .and_then(|a| a.value.as_ref())
-                        .and_then(|v| v.as_int())
-                        .unwrap_or(0) as u32;
-                    return components::diff_stats(bump, add, sub);
+                if element.tag() == Some("MonthDayDate") {
+                    let date = element
+                        .attr("date")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDate requires 'date' attribute")
+                        .to_string();
+                    let noyear = element.attr("noyear").is_some();
+                    return components::MonthDayDate(
+                        bump,
+                        components::MonthDayDateProps {
+                            date,
+                            noyear,
+                            short: false,
+                        },
+                    );
+                }
+                if element.tag() == Some("BlueskyPost") {
+                    let url = element
+                        .attr("post")
+                        .and_then(|a| a.value_as_str())
+                        .unwrap_or_else(|| {
+                            panic!(
+                                "BlueskyPost requires 'post' attribute in {}",
+                                self.error_context
+                            )
+                        });
+                    let post_data =
+                        self.context
+                            .content
+                            .bluesky_posts
+                            .get(url)
+                            .unwrap_or_else(|| {
+                                panic!(
+                                    "BlueskyPost data not found for {url} in {}",
+                                    self.error_context
+                                )
+                            });
+                    return components::bluesky_post(bump, post_data);
+                }
+                if element.tag() == Some("PrMeta") {
+                    return render_pr_meta(bump, &element, None);
+                }
+                if element.tag() == Some("PrTimeline") {
+                    return components::pr_timeline(bump, &self.pr_entries);
+                }
+                if element.tag() == Some("MonthDayDateRange") {
+                    let start = element
+                        .attr("start")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDateRange requires 'start' attribute")
+                        .to_string();
+                    let end = element
+                        .attr("end")
+                        .and_then(|a| a.value_as_str())
+                        .expect("MonthDayDateRange requires 'end' attribute")
+                        .to_string();
+                    let noyear = element.attr("noyear").is_some();
+                    return components::MonthDayDateRange(
+                        bump,
+                        components::MonthDayDateRangeProps {
+                            start,
+                            end,
+                            noyear,
+                            short: false,
+                        },
+                    );
                 }
 
                 element
             }
             Node::FootnoteReference(r) => {
-                let definition = self
-                    .footnotes
-                    .get(&r.identifier)
-                    .unwrap_or_else(|| panic!("Footnote definition for {} not found", r.identifier))
-                    .clone();
+                let definition = self.footnote_definition(&r.identifier).clone();
 
                 // Assign a numeric counter to this footnote reference
                 let footnote_number = self
@@ -402,7 +557,11 @@ impl<'a> MarkdownConverter<'a> {
         let mut elements = Vec::new();
         let mut i = 0;
         while i < nodes.len() {
-            if let Some((element, end_idx)) = self.try_convert_paired_element(nodes, i, parent_node)
+            if let Some((element, end_idx)) = self.try_convert_pr_mention(nodes, i, parent_node) {
+                elements.push(element);
+                i = end_idx + 1;
+            } else if let Some((element, end_idx)) =
+                self.try_convert_paired_element(nodes, i, parent_node)
             {
                 elements.push(self.handle_paired_element(element));
                 i = end_idx + 1;
@@ -413,6 +572,56 @@ impl<'a> MarkdownConverter<'a> {
         }
 
         b.fragment(elements)
+    }
+
+    /// Detect a `[title](github-pr-url) <PrMeta ... />` pair and wrap it in a `<span>` with
+    /// a stable id so the timeline component can anchor-link to the inline mention.
+    fn try_convert_pr_mention(
+        &mut self,
+        nodes: &[Node],
+        i: usize,
+        parent_node: Option<&Node>,
+    ) -> Option<(paxhtml::Element<'a>, usize)> {
+        let Node::Link(link) = &nodes[i] else {
+            return None;
+        };
+        let pr_id = pr_id_from_url(&link.url)?;
+
+        let mut j = i + 1;
+        let prmeta_idx = loop {
+            if j >= nodes.len() {
+                return None;
+            }
+            match &nodes[j] {
+                Node::Text(t) if t.value.chars().all(char::is_whitespace) => j += 1,
+                Node::FootnoteReference(_) => j += 1,
+                Node::Html(h) if h.value.trim_start().starts_with("<PrMeta") => break j,
+                _ => return None,
+            }
+        };
+
+        let bump = self.context.bump;
+        let tl_id = tl_id_from_url(&link.url);
+        let mut children = Vec::with_capacity(prmeta_idx - i + 1);
+        for (idx, node) in nodes.iter().enumerate().take(prmeta_idx + 1).skip(i) {
+            if idx == prmeta_idx
+                && let Node::Html(h) = node
+                && let Ok(element) = paxhtml::parse_html(bump, &h.value)
+                && element.tag() == Some("PrMeta")
+            {
+                children.push(render_pr_meta(bump, &element, tl_id.clone()));
+            } else {
+                children.push(self.convert(node, parent_node));
+            }
+        }
+
+        let span = paxhtml::html! { in bump;
+            <span id={pr_id} class="scroll-mt-16 [&:target]:bg-[color-mix(in_srgb,var(--color-secondary)_25%,transparent)] [&:target]:rounded">
+                #{children}
+            </span>
+        };
+
+        Some((span, prmeta_idx))
     }
 
     /// Try to detect and parse a paired custom element starting at position `i`.
@@ -520,7 +729,12 @@ impl<'a> MarkdownConverter<'a> {
                     .image_store
                     .resolve_small_preview_url(image_attr);
                 let body = paxhtml::Element::Fragment { children };
-                components::city_poster(bump, image_attr, &small_url, body)
+                components::city_poster(
+                    bump,
+                    &self.resolve_relative_url(image_attr),
+                    &self.resolve_relative_url(&small_url),
+                    body,
+                )
             }
             _ => {
                 eprintln!(
@@ -546,6 +760,120 @@ impl<'a> MarkdownConverter<'a> {
             }
         }
     }
+
+    /// Panic on `[^ident]` patterns that aren't backed by a `[^ident]:` definition.
+    /// The markdown parser silently keeps such references as plain text rather than
+    /// emitting a `Node::FootnoteReference`, so we have to scan `Text` nodes ourselves.
+    fn validate_footnote_references(&self, node: &Node) {
+        if let Node::Text(t) = node {
+            for ident in scan_footnote_refs(&t.value) {
+                self.footnote_definition(ident);
+            }
+        }
+        if let Some(children) = node.children() {
+            for child in children {
+                self.validate_footnote_references(child);
+            }
+        }
+    }
+
+    /// Look up a footnote definition by identifier, or panic with a uniform
+    /// "broken footnote reference" message. Shared by `validate_footnote_references`
+    /// (the pre-pass over raw `[^ident]` text) and the `Node::FootnoteReference`
+    /// rendering arm so both paths emit the same error.
+    fn footnote_definition(&self, identifier: &str) -> &Vec<Node> {
+        self.footnotes.get(identifier).unwrap_or_else(|| {
+            panic!(
+                "Broken footnote reference in {}: '[^{identifier}]' — definition not found",
+                self.error_context
+            )
+        })
+    }
+}
+
+/// Scan a string for `[^ident]` footnote-reference patterns. Identifiers are
+/// non-empty and may not contain whitespace; everything else (including `Code`
+/// / `InlineCode` values) lives in non-`Text` nodes and is naturally skipped.
+fn scan_footnote_refs(text: &str) -> Vec<&str> {
+    let mut refs = Vec::new();
+    let bytes = text.as_bytes();
+    let mut i = 0;
+    while i + 2 < bytes.len() {
+        if bytes[i] == b'[' && bytes[i + 1] == b'^' {
+            let start = i + 2;
+            if let Some(rel) = bytes[start..].iter().position(|&b| b == b']') {
+                let end = start + rel;
+                let ident = &text[start..end];
+                if !ident.is_empty() && !ident.chars().any(char::is_whitespace) {
+                    refs.push(ident);
+                }
+                i = end + 1;
+                continue;
+            }
+        }
+        i += 1;
+    }
+    refs
+}
+
+fn render_pr_meta<'bump>(
+    bump: &'bump paxhtml::bumpalo::Bump,
+    element: &paxhtml::Element<'bump>,
+    tl_id: Option<String>,
+) -> paxhtml::Element<'bump> {
+    let attr_str = |key: &str| {
+        element
+            .attr(key)
+            .and_then(|a| a.value_as_str())
+            .map(|s| s.to_string())
+    };
+    let attr_u32 = |key: &str| {
+        element
+            .attr(key)
+            .and_then(|a| a.value.as_ref())
+            .and_then(|v| v.as_int())
+            .unwrap_or(0) as u32
+    };
+    components::pr_meta(
+        bump,
+        components::PrMetaProps {
+            date: attr_str("date"),
+            start: attr_str("start"),
+            end: attr_str("end"),
+            add: attr_u32("add"),
+            sub: attr_u32("sub"),
+            closed: element.attr("closed").is_some(),
+            tl_id,
+        },
+    )
+}
+
+fn contains_link(nodes: &[Node]) -> bool {
+    nodes.iter().any(|node| {
+        matches!(node, Node::Link(_))
+            || node
+                .children()
+                .is_some_and(|children| contains_link(children))
+    })
+}
+
+/// Walk a markdown AST and collect the slug for every heading. The slug
+/// matches what `e::h_with_id` produces (`slugify(inner_text)`), so this is
+/// the canonical anchor set for in-document heading links.
+pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
+    fn walk(node: &Node, anchors: &mut HashSet<String>) {
+        if matches!(node, Node::Heading(_)) {
+            anchors.insert(crate::util::slugify(inner_text(node, None).trim()));
+        }
+        if let Some(children) = node.children() {
+            for child in children {
+                walk(child, anchors);
+            }
+        }
+    }
+    let mut anchors = HashSet::new();
+    walk(node, &mut anchors);
+    anchors
 }
 
 pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {

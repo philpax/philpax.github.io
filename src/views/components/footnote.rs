@@ -1,12 +1,9 @@
 use paxhtml::DefaultIn;
 use paxhtml::bumpalo::Bump;
 
-#[allow(dead_code)]
 pub struct FootnoteProps<'bump> {
     pub identifier: String,
     pub children: Option<paxhtml::Element<'bump>>,
-    #[allow(dead_code)]
-    pub class: Option<String>,
     /// When true, footnotes display as sidenotes on wide screens (2xl+).
     /// When false, footnotes are always inline.
     pub sidenotes_enabled: bool,
@@ -16,7 +13,6 @@ impl DefaultIn<'_> for FootnoteProps<'_> {
         Self {
             identifier: String::new(),
             children: None,
-            class: None,
             sidenotes_enabled: false,
         }
     }
@@ -30,7 +26,7 @@ impl DefaultIn<'_> for FootnoteProps<'_> {
 ///
 /// Uses only inline elements (<span>, <small>) to avoid breaking <p> tags.
 /// Based on Tufte CSS sidenote pattern.
-#[allow(non_snake_case, dead_code)]
+#[allow(non_snake_case)]
 pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtml::Element<'bump> {
     let id = format!("footnote-{}", props.identifier);
     let sidenote_id = format!("sidenote-{}", props.identifier);

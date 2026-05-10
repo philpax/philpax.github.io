@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     path::{Path, PathBuf},
 };
 
@@ -147,6 +147,11 @@ pub struct Content {
     pub about: Document,
     pub credits: Document,
     pub music_library: blackbird_json_export_types::Output,
+    pub bluesky_posts: HashMap<String, paxsite_content::bluesky::BlueskyPostData>,
+    /// Map from a document's route URL (e.g. `/blog/foo/`) to the set of
+    /// heading-slug anchors valid on that page. Used by `MarkdownConverter`
+    /// to validate `[a](#x)` and `[c](../c.md#d)` links at build time.
+    pub anchors: HashMap<String, HashSet<String>>,
 }
 impl Content {
     #[cfg(test)]
@@ -160,6 +165,8 @@ impl Content {
             about: Document::empty(),
             credits: Document::empty(),
             music_library: blackbird_json_export_types::Output::new(),
+            bluesky_posts: HashMap::new(),
+            anchors: HashMap::new(),
         }
     }
 
@@ -168,7 +175,7 @@ impl Content {
         report: &mut impl FnMut(&'static str, std::time::Duration),
     ) -> anyhow::Result<Self> {
         let now = std::time::Instant::now();
-        let raw = paxsite_content::Content::read(fast)?;
+        let raw = paxsite_content::Content::read(fast, cfg!(feature = "draft"))?;
         report("Read raw content", now.elapsed());
 
         let now = std::time::Instant::now();
@@ -237,7 +244,7 @@ impl Content {
             source_path_to_og_image: raw.source_path_to_og_image,
         };
 
-        Ok(Content {
+        let mut content = Content {
             base,
             blog,
             updates,
@@ -246,7 +253,30 @@ impl Content {
             about,
             credits,
             music_library,
-        })
+            bluesky_posts: HashMap::new(),
+            anchors: HashMap::new(),
+        };
+
+        let now = std::time::Instant::now();
+        content.bluesky_posts = content.load_bluesky_posts()?;
+        report("Fetched Bluesky posts", now.elapsed());
+
+        let now = std::time::Instant::now();
+        content.anchors = content.build_anchor_registry();
+        report("Built anchor registry", now.elapsed());
+
+        Ok(content)
+    }
+
+    /// Returns an iterator over all documents in the content.
+    pub fn all_documents(&self) -> impl Iterator<Item = &Document> {
+        self.blog
+            .documents
+            .iter()
+            .chain(self.updates.documents.iter())
+            .chain(std::iter::once(&self.about))
+            .chain(std::iter::once(&self.credits))
+            .chain(self.notes.documents.all_documents())
     }
 
     /// Resolves a relative `.md` link from a document's source path to the corresponding route URL.
@@ -297,6 +327,57 @@ impl Content {
         self.blog
             .document_by_id(id)
             .or_else(|| self.updates.document_by_id(id))
+    }
+
+    /// Build a map from each document's route URL to its set of heading-slug
+    /// anchors. Keyed on the same route URLs that `resolve_markdown_link`
+    /// produces so cross-page lookups can be validated against the registry.
+    fn build_anchor_registry(&self) -> HashMap<String, HashSet<String>> {
+        let mut anchors = HashMap::new();
+        for doc in self.all_documents() {
+            let Some(route) = self.base.source_path_to_route.get(&doc.source_path) else {
+                continue;
+            };
+            let mut doc_anchors = super::markdown::collect_heading_anchors(&doc.description);
+            if let Some(rest) = &doc.rest_of_content {
+                doc_anchors.extend(super::markdown::collect_heading_anchors(rest));
+            }
+            anchors.insert(route.clone(), doc_anchors);
+        }
+        anchors
+    }
+
+    fn load_bluesky_posts(
+        &self,
+    ) -> anyhow::Result<HashMap<String, paxsite_content::bluesky::BlueskyPostData>> {
+        let mut posts = Vec::new();
+        for doc in self.all_documents() {
+            let content_dir = doc.source_path.parent().unwrap().to_path_buf();
+            extract_bluesky_urls(&doc.description, &content_dir, &mut posts);
+            if let Some(rest) = &doc.rest_of_content {
+                extract_bluesky_urls(rest, &content_dir, &mut posts);
+            }
+        }
+        paxsite_content::bluesky::ensure_posts_cached(&posts)
+    }
+}
+
+fn extract_bluesky_urls(
+    node: &markdown::mdast::Node,
+    content_dir: &Path,
+    out: &mut Vec<(String, PathBuf)>,
+) {
+    if let markdown::mdast::Node::Html(h) = node
+        && let Ok(element) = paxhtml::parse_html(&paxhtml::bumpalo::Bump::new(), h.value.trim())
+        && element.tag() == Some("BlueskyPost")
+        && let Some(url) = element.attr("post").and_then(|a| a.value_as_str())
+    {
+        out.push((url.to_string(), content_dir.to_path_buf()));
+    }
+    if let Some(children) = node.children() {
+        for child in children {
+            extract_bluesky_urls(child, content_dir, out);
+        }
     }
 }
 
