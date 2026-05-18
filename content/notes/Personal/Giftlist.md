@@ -77,6 +77,6 @@ One of:
 # Misc
 
 - My life would certainly be better with Fuji X-mount zoom lenses with autofocus. (It is _hard_ to track focus with manual-focus vintage lenses.) In order of priority:
-  - [Fujinon XF16-55mm F2.8 R LM WR](https://www.fujifilm-x.com/global/products/lenses/xf16-55mmf28-r-lm-wr/)
+  - [Fujinon XF16-55mm F2.8 R LM WR](https://www.fujifilm-x.com/global/products/lenses/xf16-55mmf28-r-lm-wr/) or [Fujinon XF16-80mm F4 R OIS WR](https://www.fujifilm-x.com/en-us/products/lenses/xf16-80mmf4-r-ois-wr/)
   - [Fujinon XF50-140mm F2.8 R LM OIS WR](https://www.fujifilm-x.com/global/products/lenses/xf50-140mmf28-r-lm-ois-wr/)
   - [Fujinon XF70-300mm F4-5.6 R LM OIS WR](https://www.fujifilm-x.com/global/products/lenses/xf70-300mmf4-56-r-lm-ois-wr/)
