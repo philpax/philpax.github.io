@@ -11,12 +11,20 @@ tags=["ai", "ethics"]
 - follow-up post to my experiences in [the big claude down](../../updates/the-big-claude-down/index.md), among other things
 - actively changing over time, especially as new things keep happening
 - six months of 95-99% of code written by agents. hard to put an exact percentage on it, but I have spent the equivalent of tens of thousands of dollars of API-priced tokens in this period
+- context: I'm a senior engineer, I've been writing code for nearly two decades, but I also consider myself to be a creative and someone in the business of creating things, not for profit, but for edification of the self and of the public. I consider myself to be someone with a great many ideas and with the skill and taste to execute upon those ideas - or at least, learn how to - but, crucially, without the time required to see them through
+- that, of course, has changed with AI, just as many things have, and many things are going to
+- so let me take a moment, or a few, to discuss how I'm feeling as the fourth year of the AI boom - dare I say, revolution - plays out, and as the agents come online
 
 <!-- TODO: add a hero image (a nondescript silhouette falling down amongst a sea of Claude Code crabs?), general edit pass, punch up introduction -->
 
 <!-- more -->
 
+The following reflections are structured into two sections: technical, where I discuss the practical aspects of working with agents, and philosophical, where I interrogate the wider-ranging impacts of their use upon their users, the field, and upon society as a whole. There is not a clear division between these; the microscale can affect the macroscale, but there are some topics that clearly fall on either side of the line.
+
+# Technical
 ## Waiter, This Claude Code Web Is Raw
+<!-- TODO: refactor to discuss how the design of and interaction with coding agents is still unsettled -->
+
 Claude Code Web was insanely buggy. I say "was" as it has been significantly improved since my use of it in anger; I would consider most of the feedback here to no longer be relevant.
 
 With that being said, though, it would frequently stop responding to me, lose my messages, would require prodding to continue and would break down after a certain number of commits, with a new session required to get it back on track. It has a limited understanding of its own environment, and frequently requires handholding around more unconventional toolchains.
@@ -34,13 +42,6 @@ Functionality-wise, you could not easily work _with_ it - it was very much posit
 - I would assume the vibe-coding platforms aim to address this by providing live previews, but you will never catch me using Lovable
 
 Despite the shortcomings I experienced, I'd be lying if I didn't admit that there is certainly an appeal to the interaction model. Being able to kick off work while doing something else is compelling _if_ you can be confident that it will produce what you expect it to produce. One's sense of its capabilities grows with use, but you can never be sure, especially with larger tasks. I suspect that the ability for it to learn from its operators' sensibilities, something certain to ship this year, will improve this.
-
-## You Really Can Just Build Things, But...
-- should you?
-- need to apply discernment in what you choose to build and how you choose to build it
-- I'm happy with what I've built here, but I was definitely stretching myself towards the end of the credits to find literally anything that I could point the Claude Code Cannon at
-- I ended up using it as an opportunity to update old code, instead: it doesn't necessarily have to be feature work you do, even though that's fun and exciting, but long-overdue maintenance
-- you still need to have good product sense, I'm afraid, although the agents do have some degree of taste, especially if you bring your own to the table
 
 ## Context Is King
 This is something that I failed to internalise until much later, and is better covered in [karashiiro's Coding Agents Are Easy, Actually](https://karashiiro.leaflet.pub/3mbfapvdvss2b) (disclosure: I proof-read and edited this post), but the idea is simple: the easier you make your agent's life, the easier you will make your own life.
@@ -75,7 +76,6 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - see [this post by Lalit Maganti](https://lalitm.com/post/building-syntaqlite-ai/) for another account of this problem, among others
 
 ## The Siren Call of The Slop Stack
-
 - the agents will pull you towards [their preferred stacks](https://amplifying.ai/research/claude-code-picks), where preferred comes from the common folklore of the internet, RLHF on data from [underpaid and exploited data workers](https://cwa-union.org/ghost-workers-ai-machine), RLHF on data from [less underpaid data workers](https://builtin.com/articles/train-ai-side-hustle), or RLHF on the taste of whichever employee was processing the data that day
 - most of the time, this choice is fine, and honestly, I've given into the call much of the time
 - this means I've doubled down on React + TypeScript + Tailwind as my frontend stack, for example
@@ -86,7 +86,7 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - even if their inherent knowledge is wrong or out of date, they're excellent at consulting reference documentation, and can thus self-correct reasonably well
 
 - conversely, however: there's no excuse for making _bad_ choices in favour of expediency
-- I am a [certified Python-hater](../../notes/Programming/Reasons_I_do_not_like_Python.md), and now there's _really_ no reason to use it past the one-thousand line mark
+- I am a [certified Python-hater](../../notes/Programming/Reasons_I_do_not_like_Python.md), and now there's _really_ no reason to use it past the one-thousand line mark, assuming that you are not subject to ecosystem constraints (and even those too are weakening as more and more people discover the power of `claude -p "rewrite it in Rust"`)
 - prototype in whatever language you like, do whatever sins you need to do, but you have the tools to rapidly make your code production-ready (which I note is a different thing to productionizing!), so you should bloody well use them
 - that's right. I am no longer asking. Rewrite It In Rust. (bernie meme)
 
@@ -117,6 +117,31 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - so it's not as irritating as it might otherwise be. it's also a good chance to explore other paradigms, like [stacked diffs](https://newsletter.pragmaticengineer.com/p/stacked-diffs) or [jujutsu](https://jj-vcs.dev/)
 - I expect to see more solutions to this in future. for my sake, I hope they are not [Gas Town](https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04)-shaped.
 
+## Are We All Anthropic's Serfs Now?
+- to do this, I needed a Claude Code subscription
+- in the process of doing it, I upgraded my subscription
+- I am paying an AI company to do work: and even though I generally like that company's vibes, there's no denying that, to maintain this amount of leverage, I will need to keep paying
+- so far, we are largely in the industry's growth phase: your money can take you reasonably far
+- this has shifted in some ways: over the month of April, the amount of tokens you get for your quota has significantly diminished, likely because they either cannot offer to subsidise as much, or because their demand overwhelms their supply
+- nonetheless, it is not lost on me that we are now operating at Anthropic or OpenAI's whims; their outages, denials of service, or other such disruptions can and will have a material impact on what you can do
+- whenever I lose access - whether that be due to outages or to running out of quota - it is troublesome, especially if I am in the middle of something intensive. the best analogy I can give you is that it feels like a hyperdrive failure: I can still get to where I'm going, but it's going to be much, _much_ slower, and I'll need to figure out where the hell I am first
+- this is likely to be the case for the frontier, and will continue to be the case going forward, right until they run out of juice - if they do
+- but if you're willing to relax your desire to be at the frontier, options open up
+- the Chinese models are fast-followers, a few months behind, and have competitive rates
+- some of them, although perhaps a decreasing amount, are even open-weights
+- and that's where I think things will go. at the time of writing, Qwen 3.6 has recently come out, and do you know what? both 27B and 35B-A3B both work as coding agents. they're not as smart as Claude, they make more mistakes, and they're not nearly as worldly: but by God, they can write code autonomously with guidance
+- something that required me to pay $20/month minimum to a provider who can rugpull me at any moment now runs on [my server](../../notes/Hardware/Server.md), and I have already started to use it in lieu of Claude for the tasks that don't require frontier intelligence
+- this is something I intend on writing more about in future, once I've had more experience with it all
+- it may be jagged, it may be rough, it may require an investment to run: but, at least for now, we are not beholden to the fate of serfs
+
+# Philosophical
+## You Really Can Just Build Things, But...
+- should you?
+- need to apply discernment in what you choose to build and how you choose to build it
+- I'm happy with what I've built here, but I was definitely stretching myself towards the end of the credits to find literally anything that I could point the Claude Code Cannon at
+- I ended up using it as an opportunity to update old code, instead: it doesn't necessarily have to be feature work you do, even though that's fun and exciting, but long-overdue maintenance
+- you still need to have good product sense, I'm afraid, although the agents do have some degree of taste, especially if you bring your own to the table
+
 ## Token Anxiety
 I hesitate to say this out loud, given how the linked post was received, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
 
@@ -134,23 +159,20 @@ With that being said, I suspect that at least a significant portion of _my_ part
 
 It's out of my system now, and I don't think it'll come back, at least not to the same extent. I hope, anyway!
 
-## Are We All Anthropic's Serfs Now?
-
-- to do this, I needed a Claude Code subscription
-- in the process of doing it, I upgraded my subscription
-- I am paying an AI company to do work: and even though I generally like that company's vibes, there's no denying that, to maintain this amount of leverage, I will need to keep paying
-- so far, we are largely in the industry's growth phase: your money can take you reasonably far
-- this has shifted in some ways: over the month of April, the amount of tokens you get for your quota has significantly diminished, likely because they either cannot offer to subsidise as much, or because their demand overwhelms their supply
-- nonetheless, it is not lost on me that we are now operating at Anthropic or OpenAI's whims; their outages, denials of service, or other such disruptions can and will have a material impact on what you can do
-- whenever I lose access - whether that be due to outages or to running out of quota - it is troublesome, especially if I am in the middle of something intensive. the best analogy I can give you is that it feels like a hyperdrive failure: I can still get to where I'm going, but it's going to be much, _much_ slower, and I'll need to figure out where the hell I am first
-- this is likely to be the case for the frontier, and will continue to be the case going forward, right until they run out of juice - if they do
-- but if you're willing to relax your desire to be at the frontier, options open up
-- the Chinese models are fast-followers, a few months behind, and have competitive rates
-- some of them, although perhaps a decreasing amount, are even open-weights
-- and that's where I think things will go. at the time of writing, Qwen 3.6 has recently come out, and do you know what? both 27B and 35B-A3B both work as coding agents. they're not as smart as Claude, they make more mistakes, and they're not nearly as worldly: but by God, they can write code autonomously with guidance
-- something that required me to pay $20/month minimum to a provider who can rugpull me at any moment now runs on [my server](../../notes/Hardware/Server.md), and I have already started to use it in lieu of Claude for the tasks that don't require frontier intelligence
-- this is something I intend on writing more about in future, once I've had more experience with it all
-- it may be jagged, it may be rough, it may require an investment to run: but, at least for now, we are not beholden to the fate of serfs
+## Did You Create This?
+- there is an unending debate in the artistic(-adjacent) world as to whether AI art is art.
+- for what it's worth, I think it is, and it would be hard for you to convince me otherwise. it's not usually _great_, nor does it usually ascend to the annals of Art&tm;, but there is no definition of art that would exclude AI art that would not exclude an extant form of art. I'm not fully in agreement with [Masley's argument](https://blog.andymasley.com/p/a-defense-of-ai-art), but it's close enough to my view that I'm willing to cite it
+- the reason I bring this up is because a topic of discussion in both that debate, and this debate, is "did _you_ really create this if you asked an AI to do it for you?"
+- this has been less of an issue to date as LLMs were not good enough to "take the wheel" for long enough to result in a meaningful dispute of ownership
+- but now they are, or are to a first-pass approximation: it is quite possible for you to amplify one prompt into an application that works, even if buggy
+- and there's an interesting parallel here in the AI art debate: one of the common refrains is that prompting for an artwork is more akin to commissioning an artwork than creating it yourself
+- I categorically reject this across both domains with an equally trite counter-argument: [Duchamp's _Fountain_](https://en.wikipedia.org/wiki/Fountain_(Duchamp)) demonstrates that found objects can be recontextualised into art and accepted as such, which trivially satisfies the base case for both art and code: merely finding something and presenting it can be sufficient for notability, and prompting _starts_ from there and gets more involved
+- even if you didn't write any of the code or lay down paint strokes yourself, it still reflects _your_ authorial intent, and what you present can be taken to be what you intended, even if you have delegated almost all of it away: because in doing so, you have made a decision in itself
+- similarly, there are plenty of artists who have delegated much of their work to their disciples, underlings, or employees, and are still considered the primary author of the work (i.e. auteurs). I won't deny that this is without controversy, but it is largely taken as a given by the majority of audiences and critics alike
+- there are reams and reams of words that can be produced, and the art and code is not entirely isomorphic in this argument-space, but there are more similarities than there are differences
+- it's for this reason that I also categorically reject half-in arguments, like [this post by Annie Sexton](https://annies-brain.offprint.app/a/3ml6zdf5f5f23-stuck-in-the-middle-being-an-engineer-artist-in-the-ai-era) (who I generally find agreeable): the solution to finding AI art objectionable and AI code acceptable isn't to reject the possibility of code being art to allow you to justify the use of AI for code, it's to accept that they are two sides of the same coin, with many of the same problems, and to own your own position <!-- TODO: make stronger -->
+- so yes: when I direct an agent in creating an application, or produce an artwork through iteration, I am responsible for its creation and I take ownership of it. these works would not exist without my hand, and the choices I made in their creation inform them. even if I use one prompt and send it out into the world, I am still making any number of choices: what led me to prompt this work here and now? how did I word my prompt? how much detail am I including? what AI am I using? how many alternatives did I consider? how am I presenting the work?
+- the answers to these questions belong to me, and so does the work
 
 ## If You Don't Think About It, It Can't Hurt You: Ethics
 - of course, the ethics of the industry could have its own post written about it, or several
@@ -158,7 +180,10 @@ It's out of my system now, and I don't think it'll come back, at least not to th
 - there's no shortage of issues: the mass-reallocation of resources, the training of people's replacements using their own work, the shoehorned-in haphazard deployments, the mass-production of violating imagery, the destruction of recorded truth, etc
 - even the "good" companies, like Anthropic, are prone to making missteps: [their willingness to work with a US government subject to democratic backsliding](https://www.cnbc.com/2026/05/01/pentagon-anthropic-blacklist-mythos-michael.html), their [using of the xAI Colossus datacenter](www.anthropic.com/news/higher-limits-spacex), and more
 - many, but not all, of these problems are a consequence of capitalism: but that doesn't help us when we all live in capitalist societies
-- I am insulated from the worst of the consequences: my employment is not tremendously precarious, I have savings, and I have a family I can fall back on: but this is not true for everyone, and a lot of people 
+- I am insulated from the worst of the consequences: my employment is not tremendously precarious, I have savings, and I have a family I can fall back on: but this is not true for everyone, and a lot of people
+- I am also somewhere between an IP abolitionist and an IP minimalist: I don't think you should be able to own ideas or representations of them, at least not in the way that you currently can
+- however, I recognise that that IP is a lifeline for many; even in its vulturous, corporate-dominated form, it still offers individual practitioners a chance at pushing back against total misuse
+- at the very least, we will need to start developing a solution for redistributing wealth from those it will naturally accummulate to (i.e. AI companies, their shareholders, and those whose fortunes are tied to that of the industry) to everyone else, and to ensure that we are not left for dead. the exact specifics of this are beyond me, but we need to start figuring out a way forward _now_, not later
 - it is something to think about as we use these services, but I also believe the cat is firmly out of the bag and the best thing we can do is to push for less-harmful choices
 - Anthropic have shown themselves to be the least ethically compromised of the major providers, but I'm under no illusions that this will remain the case forever, especially given their allegiance to the US
 - my hope is that local models will catch up, and the hardware to run them will get cheaper
