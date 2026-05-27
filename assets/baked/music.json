@@ -36,6 +36,32 @@
     "starred": true
   },
   {
+    "artist": "0b4k3",
+    "album": "[Unknown Album]",
+    "year": 2025,
+    "duration": 1135,
+    "tracks": [
+      {
+        "title": "DIVE",
+        "artist": "0b4k3",
+        "year": 2019,
+        "duration": 394
+      },
+      {
+        "title": "voices feat. kinu",
+        "artist": "0b4k3",
+        "year": 2021,
+        "duration": 358
+      },
+      {
+        "title": "voices feat. kinu (torchlight edit)",
+        "artist": "0b4k3",
+        "year": 2025,
+        "duration": 383
+      }
+    ]
+  },
+  {
     "artist": "2 Mello",
     "album": "Sounds of Tokyo‐To Future",
     "year": 2021,
@@ -5849,6 +5875,86 @@
     ]
   },
   {
+    "artist": "Ana Roxanne",
+    "album": "Poem 1",
+    "year": 2026,
+    "duration": 2278,
+    "tracks": [
+      {
+        "title": "The Age of Innocence",
+        "artist": "Ana Roxanne",
+        "track": 1,
+        "year": 2026,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "Berceuse in A‐flat minor, Op. 45",
+        "artist": "Ana Roxanne",
+        "track": 2,
+        "year": 2026,
+        "duration": 289,
+        "disc_number": 1
+      },
+      {
+        "title": "Keepsake",
+        "artist": "Ana Roxanne",
+        "track": 3,
+        "year": 2026,
+        "duration": 278,
+        "disc_number": 1
+      },
+      {
+        "title": "X",
+        "artist": "Ana Roxanne",
+        "track": 4,
+        "year": 2026,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "Untitled II",
+        "artist": "Ana Roxanne",
+        "track": 5,
+        "year": 2026,
+        "duration": 384,
+        "disc_number": 1
+      },
+      {
+        "title": "One Shall Sleep",
+        "artist": "Ana Roxanne",
+        "track": 6,
+        "year": 2026,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "Wishful (draft)",
+        "artist": "Ana Roxanne",
+        "track": 7,
+        "year": 2026,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Cover Me",
+        "artist": "Ana Roxanne",
+        "track": 8,
+        "year": 2026,
+        "duration": 226,
+        "disc_number": 1
+      },
+      {
+        "title": "Atonement",
+        "artist": "Ana Roxanne",
+        "track": 9,
+        "year": 2026,
+        "duration": 322,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Ancient Infinity Orchestra",
     "album": "It's Always About Love",
     "year": 2025,
@@ -6544,6 +6650,132 @@
         "disc_number": 1,
         "play_count": 3,
         "starred": true
+      }
+    ]
+  },
+  {
+    "artist": "Angine de Poitrine",
+    "album": "[Unknown Album]",
+    "year": 2024,
+    "duration": 343,
+    "tracks": [
+      {
+        "title": "SHERPA",
+        "artist": "Angine de Poitrine",
+        "year": 2024,
+        "duration": 343
+      }
+    ]
+  },
+  {
+    "artist": "Angine de Poitrine",
+    "album": "Vol.1",
+    "year": 2024,
+    "duration": 1974,
+    "tracks": [
+      {
+        "title": "Sherpa",
+        "artist": "Angine de Poitrine",
+        "track": 1,
+        "year": 2024,
+        "duration": 343,
+        "disc_number": 1
+      },
+      {
+        "title": "Tohogd",
+        "artist": "Angine de Poitrine",
+        "track": 2,
+        "year": 2024,
+        "duration": 244,
+        "disc_number": 1
+      },
+      {
+        "title": "Tamebsz",
+        "artist": "Angine de Poitrine",
+        "track": 3,
+        "year": 2024,
+        "duration": 476,
+        "disc_number": 1
+      },
+      {
+        "title": "Ababa Hotel",
+        "artist": "Angine de Poitrine",
+        "track": 4,
+        "year": 2024,
+        "duration": 385,
+        "disc_number": 1
+      },
+      {
+        "title": "Sahardnieh",
+        "artist": "Angine de Poitrine",
+        "track": 5,
+        "year": 2024,
+        "duration": 253,
+        "disc_number": 1
+      },
+      {
+        "title": "L’Aberek",
+        "artist": "Angine de Poitrine",
+        "track": 6,
+        "year": 2024,
+        "duration": 270,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Angine de Poitrine",
+    "album": "Vol.II",
+    "year": 2026,
+    "duration": 2213,
+    "tracks": [
+      {
+        "title": "Fabienk",
+        "artist": "Angine de Poitrine",
+        "track": 1,
+        "year": 2026,
+        "duration": 391,
+        "disc_number": 1
+      },
+      {
+        "title": "Mata Zyklek",
+        "artist": "Angine de Poitrine",
+        "track": 2,
+        "year": 2026,
+        "duration": 369,
+        "disc_number": 1
+      },
+      {
+        "title": "Sarniezz",
+        "artist": "Angine de Poitrine",
+        "track": 3,
+        "year": 2026,
+        "duration": 275,
+        "disc_number": 1
+      },
+      {
+        "title": "Utzp",
+        "artist": "Angine de Poitrine",
+        "track": 4,
+        "year": 2026,
+        "duration": 410,
+        "disc_number": 1
+      },
+      {
+        "title": "Yor Zarad",
+        "artist": "Angine de Poitrine",
+        "track": 5,
+        "year": 2026,
+        "duration": 389,
+        "disc_number": 1
+      },
+      {
+        "title": "Angor",
+        "artist": "Angine de Poitrine",
+        "track": 6,
+        "year": 2026,
+        "duration": 376,
+        "disc_number": 1
       }
     ]
   },
@@ -12767,6 +12999,190 @@
     ]
   },
   {
+    "artist": "BADBADNOTGOOD",
+    "album": "LateNightTales: BADBADNOTGOOD",
+    "year": 2017,
+    "duration": 8999,
+    "tracks": [
+      {
+        "title": "Olson",
+        "artist": "Boards of Canada",
+        "track": 1,
+        "year": 2017,
+        "duration": 91,
+        "disc_number": 1
+      },
+      {
+        "title": "Vida antiga",
+        "artist": "Erasmo Carlos",
+        "track": 2,
+        "year": 2017,
+        "duration": 203,
+        "disc_number": 1
+      },
+      {
+        "title": "Don’t Let Your Love Fade Away",
+        "artist": "Gene Williams",
+        "track": 3,
+        "year": 2017,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "People Make the World Go Round",
+        "artist": "The Chosen Few",
+        "track": 4,
+        "year": 2017,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "Home Is Where the Hatred Is",
+        "artist": "Esther Phillips",
+        "track": 5,
+        "year": 2017,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Oh Honey",
+        "artist": "Delegation",
+        "track": 6,
+        "year": 2017,
+        "duration": 359,
+        "disc_number": 1
+      },
+      {
+        "title": "Käes on aeg",
+        "artist": "Velly Joonas",
+        "track": 7,
+        "year": 2017,
+        "duration": 172,
+        "disc_number": 1
+      },
+      {
+        "title": "The Flower Called Nowhere",
+        "artist": "Stereolab",
+        "track": 8,
+        "year": 2017,
+        "duration": 295,
+        "disc_number": 1
+      },
+      {
+        "title": "Disco Dancer",
+        "artist": "Kiki Gyan",
+        "track": 9,
+        "year": 2017,
+        "duration": 416,
+        "disc_number": 1
+      },
+      {
+        "title": "Anchi Bale Game",
+        "artist": "Admas",
+        "track": 10,
+        "year": 2017,
+        "duration": 314,
+        "disc_number": 1
+      },
+      {
+        "title": "Sanza Nocturne",
+        "artist": "Francis Bebey",
+        "track": 11,
+        "year": 2017,
+        "duration": 351,
+        "disc_number": 1
+      },
+      {
+        "title": "For Love I Come",
+        "artist": "Thundercat",
+        "track": 12,
+        "year": 2017,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "West",
+        "artist": "River Tiber",
+        "track": 13,
+        "year": 2017,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Work",
+        "artist": "Charlotte Day Wilson",
+        "track": 14,
+        "year": 2017,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Don’t Talk (Put Your Head on My Shoulder)",
+        "artist": "The Beach Boys",
+        "track": 15,
+        "year": 2017,
+        "duration": 178,
+        "disc_number": 1
+      },
+      {
+        "title": "Baby",
+        "artist": "Donnie & Joe Emerson",
+        "track": 16,
+        "year": 2017,
+        "duration": 250,
+        "disc_number": 1
+      },
+      {
+        "title": "Lido",
+        "artist": "Les Prospection",
+        "track": 17,
+        "year": 2017,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "And I Love Her",
+        "artist": "Grady Tate",
+        "track": 18,
+        "year": 2017,
+        "duration": 287,
+        "disc_number": 1
+      },
+      {
+        "title": "To You",
+        "artist": "BADBADNOTGOOD",
+        "track": 19,
+        "year": 2017,
+        "duration": 145,
+        "disc_number": 1
+      },
+      {
+        "title": "The Meaning of Love",
+        "artist": "Steve Kuhn",
+        "track": 20,
+        "year": 2017,
+        "duration": 180,
+        "disc_number": 1
+      },
+      {
+        "title": "You, Me and Jim Beam",
+        "artist": "Lydia Lunch",
+        "track": 21,
+        "year": 2017,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "LateNightTales: BADBADNOTGOOD (continuous mix)",
+        "artist": "BADBADNOTGOOD",
+        "track": 22,
+        "year": 2017,
+        "duration": 4099,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Badlands",
     "album": "Nobody Dies",
     "year": 2025,
@@ -15323,6 +15739,102 @@
         "track": 5,
         "year": 2011,
         "duration": 189,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Black Country, New Road",
+    "album": "Forever Howlong",
+    "year": 2025,
+    "duration": 3135,
+    "tracks": [
+      {
+        "title": "Besties",
+        "artist": "Black Country, New Road",
+        "track": 1,
+        "year": 2025,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "The Big Spin",
+        "artist": "Black Country, New Road",
+        "track": 2,
+        "year": 2025,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Socks",
+        "artist": "Black Country, New Road",
+        "track": 3,
+        "year": 2025,
+        "duration": 367,
+        "disc_number": 1
+      },
+      {
+        "title": "Salem Sisters",
+        "artist": "Black Country, New Road",
+        "track": 4,
+        "year": 2025,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "Two Horses",
+        "artist": "Black Country, New Road",
+        "track": 5,
+        "year": 2025,
+        "duration": 386,
+        "disc_number": 1
+      },
+      {
+        "title": "Mary",
+        "artist": "Black Country, New Road",
+        "track": 6,
+        "year": 2025,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "Happy Birthday",
+        "artist": "Black Country, New Road",
+        "track": 7,
+        "year": 2025,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "For the Cold Country",
+        "artist": "Black Country, New Road",
+        "track": 8,
+        "year": 2025,
+        "duration": 387,
+        "disc_number": 1
+      },
+      {
+        "title": "Nancy Tries to Take the Night",
+        "artist": "Black Country, New Road",
+        "track": 9,
+        "year": 2025,
+        "duration": 396,
+        "disc_number": 1
+      },
+      {
+        "title": "Forever Howlong",
+        "artist": "Black Country, New Road",
+        "track": 10,
+        "year": 2025,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Goodbye (Don’t Tell Me)",
+        "artist": "Black Country, New Road",
+        "track": 11,
+        "year": 2025,
+        "duration": 257,
         "disc_number": 1
       }
     ]
@@ -20474,7 +20986,7 @@
         "year": 2012,
         "duration": 207,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       },
       {
@@ -21542,7 +22054,7 @@
         "year": 2001,
         "duration": 314,
         "disc_number": 1,
-        "play_count": 4,
+        "play_count": 5,
         "starred": true
       },
       {
@@ -21609,14 +22121,14 @@
     "artist": "Broken Social Scene",
     "album": "You Forgot It in People",
     "year": 2002,
-    "duration": 3373,
+    "duration": 3372,
     "tracks": [
       {
         "title": "Capture the Flag",
         "artist": "Broken Social Scene",
         "track": 1,
-        "year": 2002,
-        "duration": 129,
+        "year": 2003,
+        "duration": 128,
         "disc_number": 1,
         "play_count": 15,
         "starred": true
@@ -21625,7 +22137,7 @@
         "title": "KC Accidental",
         "artist": "Broken Social Scene",
         "track": 2,
-        "year": 2002,
+        "year": 2003,
         "duration": 230,
         "disc_number": 1,
         "play_count": 5
@@ -21634,7 +22146,7 @@
         "title": "Stars and Sons",
         "artist": "Broken Social Scene",
         "track": 3,
-        "year": 2002,
+        "year": 2003,
         "duration": 308,
         "disc_number": 1,
         "play_count": 3
@@ -21643,17 +22155,17 @@
         "title": "Almost Crimes",
         "artist": "Broken Social Scene",
         "track": 4,
-        "year": 2002,
+        "year": 2003,
         "duration": 262,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       },
       {
         "title": "Looks Just Like the Sun",
         "artist": "Broken Social Scene",
         "track": 5,
-        "year": 2002,
+        "year": 2003,
         "duration": 263,
         "disc_number": 1,
         "play_count": 2,
@@ -21663,7 +22175,7 @@
         "title": "Pacific Theme",
         "artist": "Broken Social Scene",
         "track": 6,
-        "year": 2002,
+        "year": 2003,
         "duration": 309,
         "disc_number": 1,
         "play_count": 4,
@@ -21673,7 +22185,7 @@
         "title": "Anthems for a Seventeen Year‐Old Girl",
         "artist": "Broken Social Scene",
         "track": 7,
-        "year": 2002,
+        "year": 2003,
         "duration": 275,
         "disc_number": 1,
         "play_count": 4
@@ -21682,17 +22194,17 @@
         "title": "Cause = Time",
         "artist": "Broken Social Scene",
         "track": 8,
-        "year": 2002,
+        "year": 2003,
         "duration": 330,
         "disc_number": 1,
-        "play_count": 9,
+        "play_count": 10,
         "starred": true
       },
       {
         "title": "Late Nineties Bedroom Rock for the Missionaries",
         "artist": "Broken Social Scene",
         "track": 9,
-        "year": 2002,
+        "year": 2003,
         "duration": 226,
         "disc_number": 1,
         "play_count": 3
@@ -21701,7 +22213,7 @@
         "title": "Shampoo Suicide",
         "artist": "Broken Social Scene",
         "track": 10,
-        "year": 2002,
+        "year": 2003,
         "duration": 245,
         "disc_number": 1,
         "play_count": 2
@@ -21710,7 +22222,7 @@
         "title": "Lover’s Spit",
         "artist": "Broken Social Scene",
         "track": 11,
-        "year": 2002,
+        "year": 2003,
         "duration": 382,
         "disc_number": 1,
         "play_count": 2
@@ -21719,8 +22231,8 @@
         "title": "I’m Still Your Fag",
         "artist": "Broken Social Scene",
         "track": 12,
-        "year": 2002,
-        "duration": 264,
+        "year": 2003,
+        "duration": 263,
         "disc_number": 1,
         "play_count": 5
       },
@@ -21728,7 +22240,7 @@
         "title": "Pitter Patter Goes My Heart",
         "artist": "Broken Social Scene",
         "track": 13,
-        "year": 2002,
+        "year": 2003,
         "duration": 144,
         "disc_number": 1,
         "play_count": 2
@@ -21975,6 +22487,110 @@
         "track": 14,
         "year": 2010,
         "duration": 125,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Broken Social Scene",
+    "album": "Remember the Humans",
+    "year": 2026,
+    "duration": 2983,
+    "tracks": [
+      {
+        "title": "Not Around Anymore",
+        "artist": "Broken Social Scene",
+        "track": 1,
+        "year": 2026,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "Only the Good I Keep",
+        "artist": "Broken Social Scene",
+        "track": 2,
+        "year": 2026,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "Mission Accomplished (Kingfisher)",
+        "artist": "Broken Social Scene",
+        "track": 3,
+        "year": 2026,
+        "duration": 193,
+        "disc_number": 1
+      },
+      {
+        "title": "The Call",
+        "artist": "Broken Social Scene",
+        "track": 4,
+        "year": 2026,
+        "duration": 253,
+        "disc_number": 1
+      },
+      {
+        "title": "Relief",
+        "artist": "Broken Social Scene",
+        "track": 5,
+        "year": 2026,
+        "duration": 208,
+        "disc_number": 1
+      },
+      {
+        "title": "And I Think of You",
+        "artist": "Broken Social Scene",
+        "track": 6,
+        "year": 2026,
+        "duration": 352,
+        "disc_number": 1
+      },
+      {
+        "title": "This Briefest Kiss",
+        "artist": "Broken Social Scene",
+        "track": 7,
+        "year": 2026,
+        "duration": 361,
+        "disc_number": 1
+      },
+      {
+        "title": "Life Within the Ground",
+        "artist": "Broken Social Scene",
+        "track": 8,
+        "year": 2026,
+        "duration": 263,
+        "disc_number": 1
+      },
+      {
+        "title": "Hey Amanda",
+        "artist": "Broken Social Scene",
+        "track": 9,
+        "year": 2026,
+        "duration": 210,
+        "disc_number": 1
+      },
+      {
+        "title": "Paying for Your Love",
+        "artist": "Broken Social Scene",
+        "track": 10,
+        "year": 2026,
+        "duration": 208,
+        "disc_number": 1
+      },
+      {
+        "title": "What Happens Now",
+        "artist": "Broken Social Scene",
+        "track": 11,
+        "year": 2026,
+        "duration": 328,
+        "disc_number": 1
+      },
+      {
+        "title": "Parking Lot Dreams",
+        "artist": "Broken Social Scene",
+        "track": 12,
+        "year": 2026,
+        "duration": 163,
         "disc_number": 1
       }
     ]
@@ -28731,6 +29347,238 @@
         "duration": 596,
         "disc_number": 1,
         "play_count": 1
+      }
+    ]
+  },
+  {
+    "artist": "CoLD SToRAGE",
+    "album": "wipE'out'': The Zero Gravity Soundtrack",
+    "year": 2023,
+    "duration": 7199,
+    "tracks": [
+      {
+        "title": "wipE’out’’ Intro (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 1,
+        "year": 2023,
+        "duration": 70,
+        "disc_number": 1
+      },
+      {
+        "title": "Hakapik Murder (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 2,
+        "year": 2023,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "Messij (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 3,
+        "year": 2023,
+        "duration": 316,
+        "disc_number": 1
+      },
+      {
+        "title": "Canada (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 4,
+        "year": 2023,
+        "duration": 372,
+        "disc_number": 1
+      },
+      {
+        "title": "Tenation (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 5,
+        "year": 2023,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "DOH‐T (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 6,
+        "year": 2023,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "Trancevaal (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 7,
+        "year": 2023,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "Surgeon (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 8,
+        "year": 2023,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "Cairodrome (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 9,
+        "year": 2023,
+        "duration": 317,
+        "disc_number": 1
+      },
+      {
+        "title": "Body in Motion (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 10,
+        "year": 2023,
+        "duration": 313,
+        "disc_number": 1
+      },
+      {
+        "title": "Cardinal Dancer (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 11,
+        "year": 2023,
+        "duration": 321,
+        "disc_number": 1
+      },
+      {
+        "title": "Cold Comfort (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 12,
+        "year": 2023,
+        "duration": 305,
+        "disc_number": 1
+      },
+      {
+        "title": "Kinkong (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 13,
+        "year": 2023,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Operatique (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 14,
+        "year": 2023,
+        "duration": 318,
+        "disc_number": 1
+      },
+      {
+        "title": "Plasticity (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 15,
+        "year": 2023,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Messij Extended (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 16,
+        "year": 2023,
+        "duration": 560,
+        "disc_number": 1
+      },
+      {
+        "title": "Argon (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 17,
+        "year": 2023,
+        "duration": 29,
+        "disc_number": 1
+      },
+      {
+        "title": "Phloem (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 18,
+        "year": 2023,
+        "duration": 24,
+        "disc_number": 1
+      },
+      {
+        "title": "Xenon (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 19,
+        "year": 2023,
+        "duration": 36,
+        "disc_number": 1
+      },
+      {
+        "title": "Xylem (2023 remaster)",
+        "artist": "CoLD SToRAGE",
+        "track": 20,
+        "year": 2023,
+        "duration": 25,
+        "disc_number": 1
+      },
+      {
+        "title": "wipE’out’’ Intro (µ‐Ziq remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 21,
+        "year": 2023,
+        "duration": 218,
+        "disc_number": 1
+      },
+      {
+        "title": "DOH‐T (Wordcolour remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 22,
+        "year": 2023,
+        "duration": 366,
+        "disc_number": 1
+      },
+      {
+        "title": "Xylem (Brainwaltzera remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 23,
+        "year": 2023,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "Canada (James Shinra remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 24,
+        "year": 2023,
+        "duration": 421,
+        "disc_number": 1
+      },
+      {
+        "title": "Messij (Kode9 remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 25,
+        "year": 2023,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
+        "title": "Trancevaal (Simo Cell remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 26,
+        "year": 2023,
+        "duration": 289,
+        "disc_number": 1
+      },
+      {
+        "title": "Cairodrome (Surgeons Girl remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 27,
+        "year": 2023,
+        "duration": 260,
+        "disc_number": 1
+      },
+      {
+        "title": "Messij (Datassette remix)",
+        "artist": "CoLD SToRAGE",
+        "track": 28,
+        "year": 2023,
+        "duration": 311,
+        "disc_number": 1
       }
     ]
   },
@@ -35878,6 +36726,54 @@
     ]
   },
   {
+    "artist": "Des Rocs",
+    "album": "This Is Our Life",
+    "year": 2020,
+    "duration": 1057,
+    "tracks": [
+      {
+        "title": "POS",
+        "artist": "Des Rocs",
+        "track": 1,
+        "year": 2020,
+        "duration": 126,
+        "disc_number": 1
+      },
+      {
+        "title": "This Is Our Life",
+        "artist": "Des Rocs",
+        "track": 2,
+        "year": 2020,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Nothing Personal",
+        "artist": "Des Rocs",
+        "track": 3,
+        "year": 2020,
+        "duration": 263,
+        "disc_number": 1
+      },
+      {
+        "title": "Pieces",
+        "artist": "Des Rocs",
+        "track": 4,
+        "year": 2020,
+        "duration": 220,
+        "disc_number": 1
+      },
+      {
+        "title": "Suicide Romantics",
+        "artist": "Des Rocs",
+        "track": 5,
+        "year": 2020,
+        "duration": 221,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Detektivbyrån",
     "album": "Hemvägen EP",
     "year": 2006,
@@ -36541,6 +37437,118 @@
         "track": 7,
         "year": 2012,
         "duration": 1545
+      }
+    ]
+  },
+  {
+    "artist": "Diverse System",
+    "album": "FIREWORKS.",
+    "year": 2025,
+    "duration": 3429,
+    "tracks": [
+      {
+        "title": "労働ROAD",
+        "artist": "Sakuzyo",
+        "track": 1,
+        "year": 2025,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Help",
+        "artist": "Juggernaut.",
+        "track": 2,
+        "year": 2025,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Move Or Die",
+        "artist": "Nhato",
+        "track": 3,
+        "year": 2025,
+        "duration": 369,
+        "disc_number": 1
+      },
+      {
+        "title": "Verhängnis",
+        "artist": "Katali",
+        "track": 4,
+        "year": 2025,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "727 DOMESTICS",
+        "artist": "REMO-CON",
+        "track": 5,
+        "year": 2025,
+        "duration": 360,
+        "disc_number": 1
+      },
+      {
+        "title": "freeurmind!",
+        "artist": "crayvxn",
+        "track": 6,
+        "year": 2025,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "Dizzy",
+        "artist": "Jerico",
+        "track": 7,
+        "year": 2025,
+        "duration": 300,
+        "disc_number": 1
+      },
+      {
+        "title": "Fire in the Back",
+        "artist": "sky_delta",
+        "track": 8,
+        "year": 2025,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "DRUM MACHINE",
+        "artist": "Tatsunoshin",
+        "track": 9,
+        "year": 2025,
+        "duration": 195,
+        "disc_number": 1
+      },
+      {
+        "title": "PM 11:56",
+        "artist": "Tanchiky",
+        "track": 10,
+        "year": 2025,
+        "duration": 247,
+        "disc_number": 1
+      },
+      {
+        "title": "超獣GIGA",
+        "artist": "Blacklolita",
+        "track": 11,
+        "year": 2025,
+        "duration": 310,
+        "disc_number": 1
+      },
+      {
+        "title": "Close Behind",
+        "artist": "MK",
+        "track": 12,
+        "year": 2025,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Hyperservice",
+        "artist": "callasoiled",
+        "track": 13,
+        "year": 2025,
+        "duration": 291,
+        "disc_number": 1
       }
     ]
   },
@@ -44896,7 +45904,7 @@
         "year": 2024,
         "duration": 147,
         "disc_number": 1,
-        "play_count": 27,
+        "play_count": 28,
         "starred": true
       }
     ]
@@ -44912,7 +45920,7 @@
         "artist": "femtanyl",
         "year": 2025,
         "duration": 158,
-        "play_count": 38,
+        "play_count": 40,
         "starred": true
       }
     ]
@@ -44931,6 +45939,110 @@
         "duration": 172,
         "disc_number": 1,
         "play_count": 107,
+        "starred": true
+      }
+    ]
+  },
+  {
+    "artist": "femtanyl",
+    "album": "MAN BITES DOG",
+    "year": 2026,
+    "duration": 1924,
+    "tracks": [
+      {
+        "title": "BODY THE PISTOL",
+        "artist": "femtanyl",
+        "track": 1,
+        "year": 2026,
+        "duration": 158,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "VIDEO NASTY",
+        "artist": "femtanyl",
+        "track": 2,
+        "year": 2026,
+        "duration": 182,
+        "disc_number": 1,
+        "play_count": 1
+      },
+      {
+        "title": "SICK OF IT",
+        "artist": "femtanyl",
+        "track": 3,
+        "year": 2026,
+        "duration": 190,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "HELLTARGET",
+        "artist": "femtanyl",
+        "track": 4,
+        "year": 2026,
+        "duration": 221,
+        "disc_number": 1,
+        "play_count": 1
+      },
+      {
+        "title": "CITY",
+        "artist": "femtanyl",
+        "track": 5,
+        "year": 2026,
+        "duration": 172,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "HEAD UP",
+        "artist": "femtanyl",
+        "track": 6,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1,
+        "play_count": 1
+      },
+      {
+        "title": "MY HEAD HURTS",
+        "artist": "femtanyl",
+        "track": 7,
+        "year": 2026,
+        "duration": 166,
+        "disc_number": 1,
+        "play_count": 1
+      },
+      {
+        "title": "SHOWS YOU THE WAY TO THE HIWAY",
+        "artist": "femtanyl",
+        "track": 8,
+        "year": 2026,
+        "duration": 162,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "MAN BITES DOG",
+        "artist": "femtanyl",
+        "track": 9,
+        "year": 2026,
+        "duration": 228,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "IS THIS IT",
+        "artist": "femtanyl",
+        "track": 10,
+        "year": 2026,
+        "duration": 237,
+        "disc_number": 1,
+        "play_count": 1,
         "starred": true
       }
     ]
@@ -46103,6 +47215,86 @@
         "duration": 492,
         "disc_number": 1,
         "play_count": 1
+      }
+    ]
+  },
+  {
+    "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+    "album": "Promises",
+    "year": 2020,
+    "duration": 2797,
+    "tracks": [
+      {
+        "title": "Promises: Movement 1",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 1,
+        "year": 2021,
+        "duration": 384,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 2",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 2,
+        "year": 2021,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 3",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 3,
+        "year": 2021,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 4",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 4,
+        "year": 2021,
+        "duration": 151,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 5",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 5,
+        "year": 2021,
+        "duration": 265,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 6",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 6,
+        "year": 2021,
+        "duration": 530,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 7",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 7,
+        "year": 2021,
+        "duration": 568,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 8",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 8,
+        "year": 2021,
+        "duration": 442,
+        "disc_number": 1
+      },
+      {
+        "title": "Promises: Movement 9",
+        "artist": "Floating Points, Pharoah Sanders & The London Symphony Orchestra",
+        "track": 9,
+        "year": 2021,
+        "duration": 150,
+        "disc_number": 1
       }
     ]
   },
@@ -49661,6 +50853,86 @@
   },
   {
     "artist": "GORE",
+    "album": "不可避の破壊",
+    "year": 2022,
+    "duration": 3146,
+    "tracks": [
+      {
+        "title": "Can't Get Her Out of My Head",
+        "artist": "GORE",
+        "track": 1,
+        "year": 2025,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "シティライト",
+        "artist": "GORE",
+        "track": 2,
+        "year": 2025,
+        "duration": 367,
+        "disc_number": 1
+      },
+      {
+        "title": "Late Evening Stroll on the Pier",
+        "artist": "GORE",
+        "track": 3,
+        "year": 2025,
+        "duration": 398,
+        "disc_number": 1
+      },
+      {
+        "title": "不可避の破壊",
+        "artist": "GORE",
+        "track": 4,
+        "year": 2025,
+        "duration": 348,
+        "disc_number": 1
+      },
+      {
+        "title": "内部闘争",
+        "artist": "GORE",
+        "track": 5,
+        "year": 2025,
+        "duration": 388,
+        "disc_number": 1
+      },
+      {
+        "title": "Sometimes Things Just Work Out",
+        "artist": "GORE",
+        "track": 6,
+        "year": 2025,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "Need a Light?",
+        "artist": "GORE",
+        "track": 7,
+        "year": 2025,
+        "duration": 392,
+        "disc_number": 1
+      },
+      {
+        "title": "Unspoiled Optimism",
+        "artist": "GORE",
+        "track": 8,
+        "year": 2025,
+        "duration": 390,
+        "disc_number": 1
+      },
+      {
+        "title": "Memories of Our Time at The Great Northern Hotel",
+        "artist": "GORE",
+        "track": 9,
+        "year": 2025,
+        "duration": 319,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "GORE",
     "album": "Crimson Club",
     "year": 2024,
     "duration": 4564,
@@ -49777,6 +51049,150 @@
       }
     ],
     "starred": true
+  },
+  {
+    "artist": "goreshit",
+    "album": "gnb",
+    "year": 2011,
+    "duration": 1598,
+    "tracks": [
+      {
+        "title": "fine night",
+        "artist": "goreshit",
+        "track": 1,
+        "year": 2011,
+        "duration": 316,
+        "disc_number": 1
+      },
+      {
+        "title": "dreamer",
+        "artist": "goreshit",
+        "track": 2,
+        "year": 2011,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "lonely",
+        "artist": "goreshit",
+        "track": 3,
+        "year": 2011,
+        "duration": 347,
+        "disc_number": 1
+      },
+      {
+        "title": "hold my hand",
+        "artist": "goreshit",
+        "track": 4,
+        "year": 2011,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "unnatural",
+        "artist": "goreshit",
+        "track": 5,
+        "year": 2011,
+        "duration": 382,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "goreshit",
+    "album": "rituals",
+    "year": 2013,
+    "duration": 1989,
+    "tracks": [
+      {
+        "title": "xenobeat",
+        "artist": "goreshit",
+        "track": 1,
+        "year": 2013,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "game over.",
+        "artist": "goreshit",
+        "track": 2,
+        "year": 2013,
+        "duration": 334,
+        "disc_number": 1
+      },
+      {
+        "title": "come find me",
+        "artist": "goreshit",
+        "track": 3,
+        "year": 2013,
+        "duration": 355,
+        "disc_number": 1
+      },
+      {
+        "title": "the devil's work",
+        "artist": "goreshit",
+        "track": 4,
+        "year": 2013,
+        "duration": 448,
+        "disc_number": 1
+      },
+      {
+        "title": "cause/effect",
+        "artist": "goreshit",
+        "track": 5,
+        "year": 2013,
+        "duration": 321,
+        "disc_number": 1
+      },
+      {
+        "title": "fleshbound",
+        "artist": "goreshit",
+        "track": 6,
+        "year": 2013,
+        "duration": 376,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "goreshit",
+    "album": "nrrv3-0.37a",
+    "year": 2014,
+    "duration": 975,
+    "tracks": [
+      {
+        "title": "amiga flu",
+        "artist": "goreshit",
+        "track": 1,
+        "year": 2014,
+        "duration": 235,
+        "disc_number": 1
+      },
+      {
+        "title": "kikoken (hyper mode)",
+        "artist": "goreshit",
+        "track": 2,
+        "year": 2014,
+        "duration": 252,
+        "disc_number": 1
+      },
+      {
+        "title": "kimble rave (alpha)",
+        "artist": "goreshit",
+        "track": 3,
+        "year": 2014,
+        "duration": 177,
+        "disc_number": 1
+      },
+      {
+        "title": "kimble rave (beta)",
+        "artist": "goreshit",
+        "track": 4,
+        "year": 2014,
+        "duration": 310,
+        "disc_number": 1
+      }
+    ]
   },
   {
     "artist": "goreshit",
@@ -52345,7 +53761,7 @@
         "year": 2019,
         "duration": 247,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       },
       {
@@ -53727,6 +55143,62 @@
         "track": 12,
         "year": 2025,
         "duration": 380,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "HEALTH",
+    "album": "R‐TYPE III",
+    "year": 2026,
+    "duration": 1317,
+    "tracks": [
+      {
+        "title": "VIBE COP (LIL TEXAS RMX)",
+        "artist": "HEALTH",
+        "track": 1,
+        "year": 2026,
+        "duration": 168,
+        "disc_number": 1
+      },
+      {
+        "title": "YOU DIED (HIDEOUTS x SETH RMX)",
+        "artist": "HEALTH",
+        "track": 2,
+        "year": 2026,
+        "duration": 177,
+        "disc_number": 1
+      },
+      {
+        "title": "TRASH DECADE (HAKITA RMX)",
+        "artist": "HEALTH",
+        "track": 3,
+        "year": 2026,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "DON’T KILL YOURSELF (PERTURBATOR RMX)",
+        "artist": "HEALTH",
+        "track": 4,
+        "year": 2026,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "SHRED ENVY (PICTUREPLANE RMX)",
+        "artist": "HEALTH",
+        "track": 5,
+        "year": 2026,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "UNLOVED (ZETRA RMX)",
+        "artist": "HEALTH",
+        "track": 6,
+        "year": 2026,
+        "duration": 241,
         "disc_number": 1
       }
     ]
@@ -56595,6 +58067,110 @@
     ]
   },
   {
+    "artist": "Igorrr",
+    "album": "Amen",
+    "year": 2025,
+    "duration": 2654,
+    "tracks": [
+      {
+        "title": "Dæmoni",
+        "artist": "Igorrr",
+        "track": 1,
+        "year": 2025,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Headbutt",
+        "artist": "Igorrr",
+        "track": 2,
+        "year": 2025,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Limbo",
+        "artist": "Igorrr",
+        "track": 3,
+        "year": 2025,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "Blastbeat Falafel",
+        "artist": "Igorrr",
+        "track": 4,
+        "year": 2025,
+        "duration": 194,
+        "disc_number": 1
+      },
+      {
+        "title": "ADHD",
+        "artist": "Igorrr",
+        "track": 5,
+        "year": 2025,
+        "duration": 273,
+        "disc_number": 1
+      },
+      {
+        "title": "2020",
+        "artist": "Igorrr",
+        "track": 6,
+        "year": 2025,
+        "duration": 12,
+        "disc_number": 1
+      },
+      {
+        "title": "Mustard Mucous",
+        "artist": "Igorrr",
+        "track": 7,
+        "year": 2025,
+        "duration": 185,
+        "disc_number": 1
+      },
+      {
+        "title": "Infestis",
+        "artist": "Igorrr",
+        "track": 8,
+        "year": 2025,
+        "duration": 326,
+        "disc_number": 1
+      },
+      {
+        "title": "Ancient Sun",
+        "artist": "Igorrr",
+        "track": 9,
+        "year": 2025,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "Pure Disproportionate Black & White Nihilism",
+        "artist": "Igorrr",
+        "track": 10,
+        "year": 2025,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Étude n°120",
+        "artist": "Igorrr",
+        "track": 11,
+        "year": 2025,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "Silence",
+        "artist": "Igorrr",
+        "track": 12,
+        "year": 2025,
+        "duration": 346,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Ike Quebec",
     "album": "Soul Samba",
     "year": 1962,
@@ -56695,6 +58271,70 @@
         "track": 12,
         "year": 1962,
         "duration": 208,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "il:lo",
+    "album": "Vega EP",
+    "year": 2017,
+    "duration": 1832,
+    "tracks": [
+      {
+        "title": "0404",
+        "artist": "il:lo",
+        "track": 1,
+        "year": 2017,
+        "duration": 243,
+        "disc_number": 1
+      },
+      {
+        "title": "Vega",
+        "artist": "il:lo",
+        "track": 2,
+        "year": 2017,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "Opale",
+        "artist": "il:lo",
+        "track": 3,
+        "year": 2017,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Lundja",
+        "artist": "il:lo",
+        "track": 4,
+        "year": 2017,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
+        "title": "Kelele",
+        "artist": "il:lo",
+        "track": 5,
+        "year": 2017,
+        "duration": 323,
+        "disc_number": 1
+      },
+      {
+        "title": "Jhana",
+        "artist": "il:lo",
+        "track": 6,
+        "year": 2017,
+        "duration": 285,
+        "disc_number": 1
+      },
+      {
+        "title": "Neukölln",
+        "artist": "il:lo",
+        "track": 7,
+        "year": 2017,
+        "duration": 290,
         "disc_number": 1
       }
     ]
@@ -61830,7 +63470,7 @@
         "year": 2002,
         "duration": 182,
         "disc_number": 1,
-        "play_count": 1,
+        "play_count": 2,
         "starred": true
       },
       {
@@ -65664,6 +67304,70 @@
         "track": 22,
         "year": 2007,
         "duration": 169,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Kelly Moran",
+    "album": "Ultraviolet",
+    "year": 2018,
+    "duration": 2702,
+    "tracks": [
+      {
+        "title": "Autowave",
+        "artist": "Kelly Moran",
+        "track": 1,
+        "year": 2018,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Helix",
+        "artist": "Kelly Moran",
+        "track": 2,
+        "year": 2018,
+        "duration": 528,
+        "disc_number": 1
+      },
+      {
+        "title": "Water Music",
+        "artist": "Kelly Moran",
+        "track": 3,
+        "year": 2018,
+        "duration": 389,
+        "disc_number": 1
+      },
+      {
+        "title": "Nereid",
+        "artist": "Kelly Moran",
+        "track": 4,
+        "year": 2018,
+        "duration": 607,
+        "disc_number": 1
+      },
+      {
+        "title": "In Parallel",
+        "artist": "Kelly Moran",
+        "track": 5,
+        "year": 2018,
+        "duration": 380,
+        "disc_number": 1
+      },
+      {
+        "title": "Halogen",
+        "artist": "Kelly Moran",
+        "track": 6,
+        "year": 2018,
+        "duration": 435,
+        "disc_number": 1
+      },
+      {
+        "title": "Radian",
+        "artist": "Kelly Moran",
+        "track": 7,
+        "year": 2018,
+        "duration": 170,
         "disc_number": 1
       }
     ]
@@ -74241,6 +75945,94 @@
   },
   {
     "artist": "Mabisyo",
+    "album": "Bootleg Tapes, V.1",
+    "year": 2023,
+    "duration": 3157,
+    "tracks": [
+      {
+        "title": "He Is The Victory Card",
+        "artist": "Mabisyo",
+        "track": 1,
+        "year": 2023,
+        "duration": 348,
+        "disc_number": 1
+      },
+      {
+        "title": "There Is a Secret Behind The Toys",
+        "artist": "Mabisyo",
+        "track": 2,
+        "year": 2023,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "They Have Achieved Many Miracles So Far",
+        "artist": "Mabisyo",
+        "track": 3,
+        "year": 2023,
+        "duration": 387,
+        "disc_number": 1
+      },
+      {
+        "title": "The Symbol Of Revolution",
+        "artist": "Mabisyo",
+        "track": 4,
+        "year": 2023,
+        "duration": 468,
+        "disc_number": 1
+      },
+      {
+        "title": "The Regent Of God Valley - Interlude",
+        "artist": "Mabisyo",
+        "track": 5,
+        "year": 2023,
+        "duration": 288,
+        "disc_number": 1
+      },
+      {
+        "title": "He Is Above The Gods",
+        "artist": "Mabisyo",
+        "track": 6,
+        "year": 2023,
+        "duration": 317,
+        "disc_number": 1
+      },
+      {
+        "title": "The Freest Man On The Sea",
+        "artist": "Mabisyo",
+        "track": 7,
+        "year": 2023,
+        "duration": 292,
+        "disc_number": 1
+      },
+      {
+        "title": "Nothing Is Real In a World Of Toys",
+        "artist": "Mabisyo",
+        "track": 8,
+        "year": 2023,
+        "duration": 285,
+        "disc_number": 1
+      },
+      {
+        "title": "Inside a Whale",
+        "artist": "Mabisyo",
+        "track": 9,
+        "year": 2023,
+        "duration": 390,
+        "disc_number": 1
+      },
+      {
+        "title": "Punishment Of The Gods - Outro",
+        "artist": "Mabisyo",
+        "track": 10,
+        "year": 2023,
+        "duration": 168,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Mabisyo",
     "album": "Everything Is Still Under Control",
     "year": 2024,
     "duration": 1469,
@@ -75457,7 +77249,8 @@
         "year": 2025,
         "duration": 173,
         "disc_number": 1,
-        "play_count": 2
+        "play_count": 3,
+        "starred": true
       },
       {
         "title": "ID Crisis Angel",
@@ -75512,6 +77305,124 @@
         "duration": 268,
         "disc_number": 1,
         "play_count": 2
+      }
+    ]
+  },
+  {
+    "artist": "Machine Girl",
+    "album": "PsychoWarrior: MG Ultra X: The Remixes [Minus One]",
+    "year": 2026,
+    "duration": 3049,
+    "tracks": [
+      {
+        "title": "We Don't Give a Fuck (Goreshit remix)",
+        "artist": "Machine Girl",
+        "track": 1,
+        "year": 2026,
+        "duration": 300,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "Come on Baby, Scrape My Data (DJ Smokey remix)",
+        "artist": "Machine Girl",
+        "track": 2,
+        "year": 2026,
+        "duration": 210,
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
+      },
+      {
+        "title": "Ignore the Vore (Yesterdayneverhappened remix)",
+        "artist": "Machine Girl",
+        "track": 3,
+        "year": 2026,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Creeping Up From the Pit (Heavee remix)",
+        "artist": "Machine Girl",
+        "track": 4,
+        "year": 2026,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Psychowar (Machine Girl remix)",
+        "artist": "Machine Girl",
+        "track": 5,
+        "year": 2026,
+        "duration": 487,
+        "disc_number": 1
+      },
+      {
+        "title": "OG Innermission",
+        "artist": "Machine Girl",
+        "track": 6,
+        "year": 2026,
+        "duration": 97,
+        "disc_number": 1
+      },
+      {
+        "title": "Dual Wield (Femtanyl remix)",
+        "artist": "Machine Girl",
+        "track": 7,
+        "year": 2026,
+        "duration": 232,
+        "disc_number": 1,
+        "play_count": 4,
+        "starred": true
+      },
+      {
+        "title": "ID Crisis Angel (Foodman remix)",
+        "artist": "Machine Girl",
+        "track": 8,
+        "year": 2026,
+        "duration": 213,
+        "disc_number": 1
+      },
+      {
+        "title": "Down to the Essence (Mun Sing remix)",
+        "artist": "Machine Girl",
+        "track": 9,
+        "year": 2026,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "Despite Having No Money at All I'm Just Another Rat in the Mall (DV-I remix)",
+        "artist": "Machine Girl",
+        "track": 10,
+        "year": 2026,
+        "duration": 206,
+        "disc_number": 1
+      },
+      {
+        "title": "Phantom Doom (KAVARI remix)",
+        "artist": "Machine Girl",
+        "track": 11,
+        "year": 2026,
+        "duration": 202,
+        "disc_number": 1
+      },
+      {
+        "title": "Dread Architect (Doormouse remix)",
+        "artist": "Machine Girl",
+        "track": 12,
+        "year": 2026,
+        "duration": 260,
+        "disc_number": 1
+      },
+      {
+        "title": "I-Void Destroyer (Giant Claw remix)",
+        "artist": "Machine Girl",
+        "track": 13,
+        "year": 2026,
+        "duration": 190,
+        "disc_number": 1
       }
     ]
   },
@@ -75701,6 +77612,278 @@
         "track": 10,
         "year": 2014,
         "duration": 252,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Madvillain",
+    "album": "Madvillainy",
+    "year": 2002,
+    "duration": 2782,
+    "tracks": [
+      {
+        "title": "The Illest Villains",
+        "artist": "Madvillain",
+        "track": 1,
+        "year": 2004,
+        "duration": 115,
+        "disc_number": 1
+      },
+      {
+        "title": "Accordion",
+        "artist": "Madvillain",
+        "track": 2,
+        "year": 2004,
+        "duration": 118,
+        "disc_number": 1
+      },
+      {
+        "title": "Meat Grinder",
+        "artist": "Madvillain",
+        "track": 3,
+        "year": 2004,
+        "duration": 131,
+        "disc_number": 1
+      },
+      {
+        "title": "Bistro",
+        "artist": "Madvillain",
+        "track": 4,
+        "year": 2004,
+        "duration": 67,
+        "disc_number": 1
+      },
+      {
+        "title": "Raid",
+        "artist": "Madvillain feat. M.E.D. aka Medaphoar",
+        "track": 5,
+        "year": 2004,
+        "duration": 150,
+        "disc_number": 1
+      },
+      {
+        "title": "America’s Most Blunted",
+        "artist": "Madvillain feat. Lord Quas",
+        "track": 6,
+        "year": 2004,
+        "duration": 234,
+        "disc_number": 1
+      },
+      {
+        "title": "Sickfit (instrumental)",
+        "artist": "Madvillain",
+        "track": 7,
+        "year": 2004,
+        "duration": 81,
+        "disc_number": 1
+      },
+      {
+        "title": "Rainbows",
+        "artist": "Madvillain",
+        "track": 8,
+        "year": 2004,
+        "duration": 171,
+        "disc_number": 1
+      },
+      {
+        "title": "Curls",
+        "artist": "Madvillain",
+        "track": 9,
+        "year": 2004,
+        "duration": 95,
+        "disc_number": 1
+      },
+      {
+        "title": "Do Not Fire! (instrumental)",
+        "artist": "Madvillain",
+        "track": 10,
+        "year": 2004,
+        "duration": 52,
+        "disc_number": 1
+      },
+      {
+        "title": "Money Folder",
+        "artist": "Madvillain",
+        "track": 11,
+        "year": 2004,
+        "duration": 182,
+        "disc_number": 1
+      },
+      {
+        "title": "Shadows of Tomorrow",
+        "artist": "Madvillain feat. Lord Quas",
+        "track": 12,
+        "year": 2004,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "Operation Lifesaver aka Mint Test",
+        "artist": "Madvillain",
+        "track": 13,
+        "year": 2004,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "Figaro",
+        "artist": "Madvillain",
+        "track": 14,
+        "year": 2004,
+        "duration": 145,
+        "disc_number": 1
+      },
+      {
+        "title": "Hardcore Hustle",
+        "artist": "Madvillain feat. Wildchild",
+        "track": 15,
+        "year": 2004,
+        "duration": 81,
+        "disc_number": 1
+      },
+      {
+        "title": "Strange Ways",
+        "artist": "Madvillain",
+        "track": 16,
+        "year": 2004,
+        "duration": 111,
+        "disc_number": 1
+      },
+      {
+        "title": "Fancy Clown",
+        "artist": "Madvillain feat. Viktor Vaughn",
+        "track": 17,
+        "year": 2004,
+        "duration": 115,
+        "disc_number": 1
+      },
+      {
+        "title": "Eye",
+        "artist": "Madvillain feat. Stacy Epps",
+        "track": 18,
+        "year": 2004,
+        "duration": 117,
+        "disc_number": 1
+      },
+      {
+        "title": "Supervillain Theme (instrumental)",
+        "artist": "Madvillain",
+        "track": 19,
+        "year": 2004,
+        "duration": 52,
+        "disc_number": 1
+      },
+      {
+        "title": "All Caps",
+        "artist": "Madvillain",
+        "track": 20,
+        "year": 2004,
+        "duration": 130,
+        "disc_number": 1
+      },
+      {
+        "title": "Great Day",
+        "artist": "Madvillain",
+        "track": 21,
+        "year": 2004,
+        "duration": 136,
+        "disc_number": 1
+      },
+      {
+        "title": "Rhinestone Cowboy",
+        "artist": "Madvillain",
+        "track": 22,
+        "year": 2004,
+        "duration": 239,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Madvillain",
+    "album": "Four Tet Remixes",
+    "year": 2005,
+    "duration": 1675,
+    "tracks": [
+      {
+        "title": "Meat Grinder (Four Tet remix)",
+        "artist": "Madvillain",
+        "track": 1,
+        "year": 2017,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "Accordion (Four Tet remix)",
+        "artist": "Madvillain",
+        "track": 2,
+        "year": 2017,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Money Folder (Four Tet remix)",
+        "artist": "Madvillain",
+        "track": 3,
+        "year": 2017,
+        "duration": 166,
+        "disc_number": 1
+      },
+      {
+        "title": "Great Day (Four Tet remix)",
+        "artist": "Madvillain",
+        "track": 4,
+        "year": 2017,
+        "duration": 174,
+        "disc_number": 1
+      },
+      {
+        "title": "Rhinestone Cowboy (MF Doom & Four Tet remix)",
+        "artist": "Madvillain",
+        "track": 5,
+        "year": 2017,
+        "duration": 192,
+        "disc_number": 1
+      },
+      {
+        "title": "Meat Grinder (Four Tet remix instrumental)",
+        "artist": "Madvillain",
+        "track": 6,
+        "year": 2017,
+        "duration": 127,
+        "disc_number": 1
+      },
+      {
+        "title": "Accordion (Four Tet remix instrumental)",
+        "artist": "Madvillain",
+        "track": 7,
+        "year": 2017,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "Money Folder (Four Tet remix instrumental)",
+        "artist": "Madvillain",
+        "track": 8,
+        "year": 2017,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "Great Day (Four Tet remix instrumental)",
+        "artist": "Madvillain",
+        "track": 9,
+        "year": 2017,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "Shadows of Tomorrow (instrumental)",
+        "artist": "Madvillain",
+        "track": 10,
+        "year": 2017,
+        "duration": 188,
         "disc_number": 1
       }
     ]
@@ -76449,6 +78632,126 @@
     ]
   },
   {
+    "artist": "Makoto",
+    "album": "Motion of Change",
+    "year": 2022,
+    "duration": 3838,
+    "tracks": [
+      {
+        "title": "Motion of Change",
+        "artist": "Makoto feat. SOLAH",
+        "track": 1,
+        "year": 2022,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "I'll Be There",
+        "artist": "Makoto feat. Singing Fats",
+        "track": 2,
+        "year": 2022,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Step Into Your Power",
+        "artist": "Makoto feat. Ruth Royall",
+        "track": 3,
+        "year": 2022,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "Space to Feel",
+        "artist": "Makoto feat. Rasmus Faber & Liane Carroll",
+        "track": 4,
+        "year": 2022,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Ascender",
+        "artist": "Makoto",
+        "track": 5,
+        "year": 2022,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "Explorer",
+        "artist": "Makoto feat. Degs",
+        "track": 6,
+        "year": 2022,
+        "duration": 242,
+        "disc_number": 1
+      },
+      {
+        "title": "Maybe We’ll Make It",
+        "artist": "Makoto feat. Mark Force & Archaik",
+        "track": 7,
+        "year": 2022,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Without You",
+        "artist": "Makoto feat. Karina Ramage",
+        "track": 8,
+        "year": 2022,
+        "duration": 315,
+        "disc_number": 1
+      },
+      {
+        "title": "Instant Love",
+        "artist": "Makoto feat. Pete Simpson & Helena May",
+        "track": 9,
+        "year": 2022,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Swing Drops",
+        "artist": "Makoto feat. Rasmus Faber",
+        "track": 10,
+        "year": 2022,
+        "duration": 295,
+        "disc_number": 1
+      },
+      {
+        "title": "What You Need",
+        "artist": "Makoto feat. Vonné",
+        "track": 11,
+        "year": 2022,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "Never Fade",
+        "artist": "Makoto feat. Lauren Archer",
+        "track": 12,
+        "year": 2022,
+        "duration": 296,
+        "disc_number": 1
+      },
+      {
+        "title": "One More Chance",
+        "artist": "Makoto feat. LXT",
+        "track": 13,
+        "year": 2022,
+        "duration": 295,
+        "disc_number": 1
+      },
+      {
+        "title": "The Best Is Yet to Come",
+        "artist": "Makoto feat. Cleveland Watkiss",
+        "track": 14,
+        "year": 2022,
+        "duration": 285,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Manual",
     "album": "Drowned in Light",
     "year": 2010,
@@ -76856,7 +79159,7 @@
         "year": 2020,
         "duration": 254,
         "disc_number": 2,
-        "play_count": 11,
+        "play_count": 12,
         "starred": true
       },
       {
@@ -77044,7 +79347,7 @@
         "year": 2013,
         "duration": 293,
         "disc_number": 1,
-        "play_count": 15,
+        "play_count": 16,
         "starred": true
       },
       {
@@ -78650,6 +80953,94 @@
     "starred": true
   },
   {
+    "artist": "Max Cooper",
+    "album": "Feeling Is Structure",
+    "year": 2026,
+    "duration": 3277,
+    "tracks": [
+      {
+        "title": "Pattern Index",
+        "artist": "Max Cooper",
+        "track": 1,
+        "year": 2026,
+        "duration": 381,
+        "disc_number": 1
+      },
+      {
+        "title": "Becoming",
+        "artist": "Max Cooper",
+        "track": 2,
+        "year": 2026,
+        "duration": 346,
+        "disc_number": 1
+      },
+      {
+        "title": "The Shape of Memory",
+        "artist": "Max Cooper",
+        "track": 3,
+        "year": 2026,
+        "duration": 278,
+        "disc_number": 1
+      },
+      {
+        "title": "Splintered Air Between Us",
+        "artist": "Max Cooper",
+        "track": 4,
+        "year": 2026,
+        "duration": 379,
+        "disc_number": 1
+      },
+      {
+        "title": "Obsessive Compulsive Order",
+        "artist": "Max Cooper",
+        "track": 5,
+        "year": 2026,
+        "duration": 276,
+        "disc_number": 1
+      },
+      {
+        "title": "Bass Mosaic",
+        "artist": "Max Cooper",
+        "track": 6,
+        "year": 2026,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "This Is a Bridge",
+        "artist": "Max Cooper with Sorcery",
+        "track": 7,
+        "year": 2026,
+        "duration": 395,
+        "disc_number": 1
+      },
+      {
+        "title": "Four Tones Reflected",
+        "artist": "Max Cooper",
+        "track": 8,
+        "year": 2026,
+        "duration": 428,
+        "disc_number": 1
+      },
+      {
+        "title": "Ebb and Flow",
+        "artist": "Max Cooper",
+        "track": 9,
+        "year": 2026,
+        "duration": 240,
+        "disc_number": 1
+      },
+      {
+        "title": "Chrysalis",
+        "artist": "Max Cooper",
+        "track": 10,
+        "year": 2026,
+        "duration": 293,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Max Richter",
     "album": "The Blue Notebooks",
     "year": 2004,
@@ -79729,6 +82120,62 @@
     ]
   },
   {
+    "artist": "meganeko",
+    "album": "Technokinesis",
+    "year": 2016,
+    "duration": 1730,
+    "tracks": [
+      {
+        "title": "Nova",
+        "artist": "meganeko",
+        "track": 1,
+        "year": 2016,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Delete",
+        "artist": "meganeko",
+        "track": 2,
+        "year": 2016,
+        "duration": 306,
+        "disc_number": 1
+      },
+      {
+        "title": "Computer Blues",
+        "artist": "meganeko",
+        "track": 3,
+        "year": 2016,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Empyrean",
+        "artist": "meganeko",
+        "track": 4,
+        "year": 2016,
+        "duration": 391,
+        "disc_number": 1
+      },
+      {
+        "title": "Discovery",
+        "artist": "meganeko",
+        "track": 5,
+        "year": 2016,
+        "duration": 262,
+        "disc_number": 1
+      },
+      {
+        "title": "Hack the Planet",
+        "artist": "meganeko",
+        "track": 6,
+        "year": 2016,
+        "duration": 380,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Mellow Fields & Lucy In Disguise",
     "album": "Soft Glow",
     "year": 2026,
@@ -80085,6 +82532,174 @@
         "track": 8,
         "year": 2022,
         "duration": 401,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Melody’s Echo Chamber",
+    "album": "Unfold",
+    "year": 2022,
+    "duration": 1232,
+    "tracks": [
+      {
+        "title": "Pêcheuse de Lune",
+        "artist": "Melody’s Echo Chamber",
+        "track": 1,
+        "year": 2022,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "Ocean Road",
+        "artist": "Melody’s Echo Chamber",
+        "track": 2,
+        "year": 2022,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "Norfolk Hotel",
+        "artist": "Melody’s Echo Chamber",
+        "track": 3,
+        "year": 2022,
+        "duration": 274,
+        "disc_number": 1
+      },
+      {
+        "title": "Unfold",
+        "artist": "Melody’s Echo Chamber",
+        "track": 4,
+        "year": 2022,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "From Pink They Fell Into Blue",
+        "artist": "Melody’s Echo Chamber",
+        "track": 5,
+        "year": 2022,
+        "duration": 227,
+        "disc_number": 1
+      },
+      {
+        "title": "Pieces of Sound",
+        "artist": "Melody’s Echo Chamber",
+        "track": 6,
+        "year": 2022,
+        "duration": 41,
+        "disc_number": 1
+      },
+      {
+        "title": "The Cure",
+        "artist": "Melody’s Echo Chamber",
+        "track": 7,
+        "year": 2022,
+        "duration": 223,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Melody’s Echo Chamber",
+    "album": "Unclouded",
+    "year": 2025,
+    "duration": 1805,
+    "tracks": [
+      {
+        "title": "The House That Doesn’t Exist",
+        "artist": "Melody’s Echo Chamber",
+        "track": 1,
+        "year": 2025,
+        "duration": 143,
+        "disc_number": 1
+      },
+      {
+        "title": "In the Stars",
+        "artist": "Melody’s Echo Chamber",
+        "track": 2,
+        "year": 2025,
+        "duration": 159,
+        "disc_number": 1
+      },
+      {
+        "title": "Flowers Turn Into Gold",
+        "artist": "Melody’s Echo Chamber",
+        "track": 3,
+        "year": 2025,
+        "duration": 90,
+        "disc_number": 1
+      },
+      {
+        "title": "Eyes Closed",
+        "artist": "Melody’s Echo Chamber",
+        "track": 4,
+        "year": 2025,
+        "duration": 177,
+        "disc_number": 1
+      },
+      {
+        "title": "Childhood Dream",
+        "artist": "Melody’s Echo Chamber",
+        "track": 5,
+        "year": 2025,
+        "duration": 197,
+        "disc_number": 1
+      },
+      {
+        "title": "Memory’s Underground",
+        "artist": "Melody’s Echo Chamber",
+        "track": 6,
+        "year": 2025,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "Broken Roses",
+        "artist": "Melody’s Echo Chamber",
+        "track": 7,
+        "year": 2025,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Burning Man",
+        "artist": "Melody’s Echo Chamber",
+        "track": 8,
+        "year": 2025,
+        "duration": 147,
+        "disc_number": 1
+      },
+      {
+        "title": "Into Shadows",
+        "artist": "Melody’s Echo Chamber",
+        "track": 9,
+        "year": 2025,
+        "duration": 167,
+        "disc_number": 1
+      },
+      {
+        "title": "How to Leave Misery Behind",
+        "artist": "Melody’s Echo Chamber",
+        "track": 10,
+        "year": 2025,
+        "duration": 128,
+        "disc_number": 1
+      },
+      {
+        "title": "Unclouded",
+        "artist": "Melody’s Echo Chamber",
+        "track": 11,
+        "year": 2025,
+        "duration": 120,
+        "disc_number": 1
+      },
+      {
+        "title": "Daisy",
+        "artist": "Melody’s Echo Chamber feat. El Michels Affair",
+        "track": 12,
+        "year": 2025,
+        "duration": 164,
         "disc_number": 1
       }
     ]
@@ -81410,6 +84025,134 @@
     ]
   },
   {
+    "artist": "Miami Nights 1984",
+    "album": "Sentimental",
+    "year": 2022,
+    "duration": 3523,
+    "tracks": [
+      {
+        "title": "Intro",
+        "artist": "Miami Nights 1984",
+        "track": 1,
+        "year": 2022,
+        "duration": 95,
+        "disc_number": 1
+      },
+      {
+        "title": "Heat",
+        "artist": "Miami Nights 1984",
+        "track": 2,
+        "year": 2022,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "Sentimental",
+        "artist": "Miami Nights 1984",
+        "track": 3,
+        "year": 2022,
+        "duration": 267,
+        "disc_number": 1
+      },
+      {
+        "title": "Pavement Surfing",
+        "artist": "Miami Nights 1984",
+        "track": 4,
+        "year": 2022,
+        "duration": 223,
+        "disc_number": 1
+      },
+      {
+        "title": "Voyage",
+        "artist": "Miami Nights 1984",
+        "track": 5,
+        "year": 2022,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Ascend",
+        "artist": "Miami Nights 1984",
+        "track": 6,
+        "year": 2022,
+        "duration": 316,
+        "disc_number": 1
+      },
+      {
+        "title": "Keep Running",
+        "artist": "Miami Nights 1984",
+        "track": 7,
+        "year": 2022,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Only When It’s Dark",
+        "artist": "Miami Nights 1984 feat. GUNSHIP",
+        "track": 8,
+        "year": 2022,
+        "duration": 307,
+        "disc_number": 1
+      },
+      {
+        "title": "Sunseeker",
+        "artist": "Miami Nights 1984",
+        "track": 9,
+        "year": 2022,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "Accelerated",
+        "artist": "Miami Nights 1984",
+        "track": 10,
+        "year": 2022,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Reflections",
+        "artist": "Miami Nights 1984",
+        "track": 11,
+        "year": 2022,
+        "duration": 161,
+        "disc_number": 1
+      },
+      {
+        "title": "Tuff Turf",
+        "artist": "Miami Nights 1984",
+        "track": 12,
+        "year": 2022,
+        "duration": 207,
+        "disc_number": 1
+      },
+      {
+        "title": "Late Night Call",
+        "artist": "Miami Nights 1984",
+        "track": 13,
+        "year": 2022,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "Coastal Bliss",
+        "artist": "Miami Nights 1984",
+        "track": 14,
+        "year": 2022,
+        "duration": 215,
+        "disc_number": 1
+      },
+      {
+        "title": "Decelerated",
+        "artist": "Miami Nights 1984",
+        "track": 15,
+        "year": 2022,
+        "duration": 292,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Mic Christopher",
     "album": "Skylarkin",
     "year": 2002,
@@ -82449,6 +85192,94 @@
         "track": 31,
         "year": 2016,
         "duration": 107,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "MICROMECHA",
+    "album": "Barber Breaks #2",
+    "year": 2024,
+    "duration": 3535,
+    "tracks": [
+      {
+        "title": "Space Ronin",
+        "artist": "MICROMECHA",
+        "track": 1,
+        "year": 2024,
+        "duration": 330,
+        "disc_number": 1
+      },
+      {
+        "title": "Bushido",
+        "artist": "MICROMECHA",
+        "track": 2,
+        "year": 2024,
+        "duration": 364,
+        "disc_number": 1
+      },
+      {
+        "title": "At the Dojo",
+        "artist": "MICROMECHA",
+        "track": 3,
+        "year": 2024,
+        "duration": 347,
+        "disc_number": 1
+      },
+      {
+        "title": "Mecha Wash",
+        "artist": "MICROMECHA",
+        "track": 4,
+        "year": 2024,
+        "duration": 370,
+        "disc_number": 1
+      },
+      {
+        "title": "Energy Recovery",
+        "artist": "MICROMECHA",
+        "track": 5,
+        "year": 2024,
+        "duration": 362,
+        "disc_number": 1
+      },
+      {
+        "title": "Back in Orbit",
+        "artist": "MICROMECHA",
+        "track": 6,
+        "year": 2024,
+        "duration": 371,
+        "disc_number": 1
+      },
+      {
+        "title": "Astral Commuter",
+        "artist": "MICROMECHA",
+        "track": 7,
+        "year": 2024,
+        "duration": 368,
+        "disc_number": 1
+      },
+      {
+        "title": "Ring System",
+        "artist": "MICROMECHA",
+        "track": 8,
+        "year": 2024,
+        "duration": 311,
+        "disc_number": 1
+      },
+      {
+        "title": "Homewards",
+        "artist": "MICROMECHA",
+        "track": 9,
+        "year": 2024,
+        "duration": 347,
+        "disc_number": 1
+      },
+      {
+        "title": "Until Tomorrow",
+        "artist": "MICROMECHA",
+        "track": 10,
+        "year": 2024,
+        "duration": 361,
         "disc_number": 1
       }
     ]
@@ -83616,6 +86447,102 @@
     ]
   },
   {
+    "artist": "Mitski",
+    "album": "Nothing’s About to Happen to Me",
+    "year": 2026,
+    "duration": 2067,
+    "tracks": [
+      {
+        "title": "In a Lake",
+        "artist": "Mitski",
+        "track": 1,
+        "year": 2026,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "Where’s My Phone?",
+        "artist": "Mitski",
+        "track": 2,
+        "year": 2026,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Cats",
+        "artist": "Mitski",
+        "track": 3,
+        "year": 2026,
+        "duration": 168,
+        "disc_number": 1
+      },
+      {
+        "title": "If I Leave",
+        "artist": "Mitski",
+        "track": 4,
+        "year": 2026,
+        "duration": 180,
+        "disc_number": 1
+      },
+      {
+        "title": "Dead Women",
+        "artist": "Mitski",
+        "track": 5,
+        "year": 2026,
+        "duration": 189,
+        "disc_number": 1
+      },
+      {
+        "title": "Instead of Here",
+        "artist": "Mitski",
+        "track": 6,
+        "year": 2026,
+        "duration": 187,
+        "disc_number": 1
+      },
+      {
+        "title": "I’ll Change for You",
+        "artist": "Mitski",
+        "track": 7,
+        "year": 2026,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Rules",
+        "artist": "Mitski",
+        "track": 8,
+        "year": 2026,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "That White Cat",
+        "artist": "Mitski",
+        "track": 9,
+        "year": 2026,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Charon’s Obol",
+        "artist": "Mitski",
+        "track": 10,
+        "year": 2026,
+        "duration": 246,
+        "disc_number": 1
+      },
+      {
+        "title": "Lightning",
+        "artist": "Mitski",
+        "track": 11,
+        "year": 2026,
+        "duration": 177,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Mitsuharu Ura & Furani",
     "album": "Gran Turismo 5 Original Soundtrack",
     "year": 2010,
@@ -84311,6 +87238,20 @@
         "year": 2018,
         "duration": 275,
         "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "moe shop",
+    "album": "[Unknown Album]",
+    "year": 2025,
+    "duration": 234,
+    "tracks": [
+      {
+        "title": "HARDCODED",
+        "artist": "moe shop",
+        "year": 2025,
+        "duration": 234
       }
     ]
   },
@@ -85566,6 +88507,102 @@
         "track": 14,
         "year": 1999,
         "duration": 263,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "MTSCA",
+    "album": "Balatro",
+    "year": 2026,
+    "duration": 1026,
+    "tracks": [
+      {
+        "title": "Main Theme",
+        "artist": "MTSCA",
+        "track": 1,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Shop Theme",
+        "artist": "MTSCA",
+        "track": 2,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Arcana Pack Theme",
+        "artist": "MTSCA",
+        "track": 3,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Boss Theme",
+        "artist": "MTSCA",
+        "track": 4,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1
+      },
+      {
+        "title": "Celestial Theme",
+        "artist": "MTSCA",
+        "track": 5,
+        "year": 2026,
+        "duration": 205,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "MTSCA",
+    "album": "Balatro (slow version)",
+    "year": 2026,
+    "duration": 1183,
+    "tracks": [
+      {
+        "title": "Main Theme (slow version)",
+        "artist": "MTSCA",
+        "track": 1,
+        "year": 2026,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Shop (slow version)",
+        "artist": "MTSCA",
+        "track": 2,
+        "year": 2026,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Arcana Pack (slow version)",
+        "artist": "MTSCA",
+        "track": 3,
+        "year": 2026,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Boss (slow version)",
+        "artist": "MTSCA",
+        "track": 4,
+        "year": 2026,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Celestial (slow version)",
+        "artist": "MTSCA",
+        "track": 5,
+        "year": 2026,
+        "duration": 236,
         "disc_number": 1
       }
     ]
@@ -88147,6 +91184,132 @@
     ]
   },
   {
+    "artist": "Night Tapes",
+    "album": "portals//polarities",
+    "year": 2025,
+    "duration": 2956,
+    "tracks": [
+      {
+        "title": "enter",
+        "artist": "Night Tapes",
+        "track": 1,
+        "year": 2025,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "television",
+        "artist": "Night Tapes",
+        "track": 2,
+        "year": 2025,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "swordsman",
+        "artist": "Night Tapes",
+        "track": 3,
+        "year": 2025,
+        "duration": 208,
+        "disc_number": 1
+      },
+      {
+        "title": "lemon tree midnight",
+        "artist": "Night Tapes",
+        "track": 4,
+        "year": 2025,
+        "duration": 163,
+        "disc_number": 1
+      },
+      {
+        "title": "babygirl (like n01 else)",
+        "artist": "Night Tapes",
+        "track": 5,
+        "year": 2025,
+        "duration": 224,
+        "disc_number": 1
+      },
+      {
+        "title": "pacifico",
+        "artist": "Night Tapes",
+        "track": 6,
+        "year": 2025,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "tokyo sway",
+        "artist": "Night Tapes",
+        "track": 7,
+        "year": 2025,
+        "duration": 298,
+        "disc_number": 1
+      },
+      {
+        "title": "masterplan",
+        "artist": "Night Tapes",
+        "track": 8,
+        "year": 2025,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "helix",
+        "artist": "Night Tapes",
+        "track": 9,
+        "year": 2025,
+        "duration": 255,
+        "disc_number": 1
+      },
+      {
+        "title": "patience (waiting for the setting sun)",
+        "artist": "Night Tapes",
+        "track": 10,
+        "year": 2025,
+        "duration": 298,
+        "disc_number": 1
+      },
+      {
+        "title": "leave it all behind, Mike",
+        "artist": "Night Tapes",
+        "track": 11,
+        "year": 2025,
+        "duration": 256,
+        "disc_number": 1
+      },
+      {
+        "title": "storm",
+        "artist": "Night Tapes",
+        "track": 12,
+        "year": 2025,
+        "duration": 248,
+        "disc_number": 1
+      },
+      {
+        "title": "wayfarer",
+        "artist": "Night Tapes",
+        "track": 13,
+        "year": 2025,
+        "duration": 148,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Night Tapes",
+    "album": "[Unknown Album]",
+    "year": 2026,
+    "duration": 276,
+    "tracks": [
+      {
+        "title": "drifting (kryptogram remix)",
+        "artist": "Night Tapes",
+        "year": 2026,
+        "duration": 276
+      }
+    ]
+  },
+  {
     "artist": "Nightmare",
     "album": "the WORLD",
     "year": 2006,
@@ -88584,6 +91747,110 @@
         "track": 23,
         "year": 2015,
         "duration": 433,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Ninajirachi",
+    "album": "I Love My Computer",
+    "year": 2025,
+    "duration": 2389,
+    "tracks": [
+      {
+        "title": "London Song",
+        "artist": "Ninajirachi",
+        "track": 1,
+        "year": 2025,
+        "duration": 195,
+        "disc_number": 1
+      },
+      {
+        "title": "iPod Touch",
+        "artist": "Ninajirachi",
+        "track": 2,
+        "year": 2025,
+        "duration": 196,
+        "disc_number": 1
+      },
+      {
+        "title": "Fuck My Computer",
+        "artist": "Ninajirachi",
+        "track": 3,
+        "year": 2025,
+        "duration": 190,
+        "disc_number": 1
+      },
+      {
+        "title": "CSIRAC",
+        "artist": "Ninajirachi",
+        "track": 4,
+        "year": 2025,
+        "duration": 201,
+        "disc_number": 1
+      },
+      {
+        "title": "Delete",
+        "artist": "Ninajirachi",
+        "track": 5,
+        "year": 2025,
+        "duration": 231,
+        "disc_number": 1
+      },
+      {
+        "title": "ฅ^•ﻌ•^ฅ",
+        "artist": "Ninajirachi",
+        "track": 6,
+        "year": 2025,
+        "duration": 66,
+        "disc_number": 1
+      },
+      {
+        "title": "All I Am",
+        "artist": "Ninajirachi",
+        "track": 7,
+        "year": 2025,
+        "duration": 182,
+        "disc_number": 1
+      },
+      {
+        "title": "Infohazard",
+        "artist": "Ninajirachi",
+        "track": 8,
+        "year": 2025,
+        "duration": 269,
+        "disc_number": 1
+      },
+      {
+        "title": "Battery Death",
+        "artist": "Ninajirachi",
+        "track": 9,
+        "year": 2025,
+        "duration": 198,
+        "disc_number": 1
+      },
+      {
+        "title": "Sing Good",
+        "artist": "Ninajirachi",
+        "track": 10,
+        "year": 2025,
+        "duration": 160,
+        "disc_number": 1
+      },
+      {
+        "title": "It's You",
+        "artist": "Ninajirachi & daine",
+        "track": 11,
+        "year": 2025,
+        "duration": 169,
+        "disc_number": 1
+      },
+      {
+        "title": "All At Once",
+        "artist": "Ninajirachi",
+        "track": 12,
+        "year": 2025,
+        "duration": 326,
         "disc_number": 1
       }
     ]
@@ -89965,7 +93232,9 @@
         "track": 1,
         "year": 2025,
         "duration": 127,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Forked Reality",
@@ -89973,7 +93242,8 @@
         "track": 2,
         "year": 2025,
         "duration": 110,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "As Alive as You Need Me to Be",
@@ -89981,7 +93251,9 @@
         "track": 3,
         "year": 2025,
         "duration": 237,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 3,
+        "starred": true
       },
       {
         "title": "Echoes",
@@ -89989,7 +93261,9 @@
         "track": 4,
         "year": 2025,
         "duration": 226,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "This Changes Everything",
@@ -89997,7 +93271,9 @@
         "track": 5,
         "year": 2025,
         "duration": 179,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "In the Image Of",
@@ -90005,7 +93281,8 @@
         "track": 6,
         "year": 2025,
         "duration": 93,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "I Know You Can Feel It",
@@ -90013,7 +93290,9 @@
         "track": 7,
         "year": 2025,
         "duration": 321,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Permanence",
@@ -90021,7 +93300,8 @@
         "track": 8,
         "year": 2025,
         "duration": 89,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Infiltrator",
@@ -90029,7 +93309,8 @@
         "track": 9,
         "year": 2025,
         "duration": 167,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "100% Expendable",
@@ -90037,7 +93318,8 @@
         "track": 10,
         "year": 2025,
         "duration": 234,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Still Remains",
@@ -90045,7 +93327,8 @@
         "track": 11,
         "year": 2025,
         "duration": 114,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Who Wants to Live Forever?",
@@ -90053,7 +93336,9 @@
         "track": 12,
         "year": 2025,
         "duration": 350,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Building Better Worlds",
@@ -90061,7 +93346,8 @@
         "track": 13,
         "year": 2025,
         "duration": 131,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Target Identified",
@@ -90069,7 +93355,8 @@
         "track": 14,
         "year": 2025,
         "duration": 204,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Daemonize",
@@ -90077,7 +93364,9 @@
         "track": 15,
         "year": 2025,
         "duration": 309,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Empathetic Response",
@@ -90085,7 +93374,8 @@
         "track": 16,
         "year": 2025,
         "duration": 129,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "What Have You Done?",
@@ -90093,7 +93383,8 @@
         "track": 17,
         "year": 2025,
         "duration": 134,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "A Question of Trust",
@@ -90101,7 +93392,8 @@
         "track": 18,
         "year": 2025,
         "duration": 80,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Ghost in the Machine",
@@ -90109,7 +93401,8 @@
         "track": 19,
         "year": 2025,
         "duration": 89,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "No Going Back",
@@ -90117,7 +93410,8 @@
         "track": 20,
         "year": 2025,
         "duration": 115,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Nemesis",
@@ -90125,7 +93419,8 @@
         "track": 21,
         "year": 2025,
         "duration": 105,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "New Directive",
@@ -90133,7 +93428,8 @@
         "track": 22,
         "year": 2025,
         "duration": 165,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Out in the World",
@@ -90141,7 +93437,8 @@
         "track": 23,
         "year": 2025,
         "duration": 65,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1
       },
       {
         "title": "Shadow Over Me",
@@ -90149,7 +93446,9 @@
         "track": 24,
         "year": 2025,
         "duration": 235,
-        "disc_number": 2
+        "disc_number": 2,
+        "play_count": 1,
+        "starred": true
       }
     ]
   },
@@ -90165,7 +93464,9 @@
         "track": 1,
         "year": 2026,
         "duration": 97,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "I Know You Can Feel It (Mark Pritchard remix)",
@@ -90173,7 +93474,8 @@
         "track": 2,
         "year": 2026,
         "duration": 332,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Godmode",
@@ -90181,7 +93483,9 @@
         "track": 3,
         "year": 2026,
         "duration": 182,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 3,
+        "starred": true
       },
       {
         "title": "A Question of Trust (Boys Noize remix)",
@@ -90189,7 +93493,9 @@
         "track": 4,
         "year": 2026,
         "duration": 215,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Operand",
@@ -90197,7 +93503,9 @@
         "track": 5,
         "year": 2026,
         "duration": 210,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Zero State",
@@ -90205,7 +93513,8 @@
         "track": 6,
         "year": 2026,
         "duration": 180,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Empathetic Response (Lanark Artefax remix)",
@@ -90213,7 +93522,9 @@
         "track": 7,
         "year": 2026,
         "duration": 237,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "100% Expendable (Chilly Gonzales remix)",
@@ -90221,7 +93532,9 @@
         "track": 8,
         "year": 2026,
         "duration": 153,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Who Wants to Live Forever? (Danny L Harle remix)",
@@ -90229,7 +93542,8 @@
         "track": 9,
         "year": 2026,
         "duration": 186,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Infiltrator (Jack Dangers remix)",
@@ -90237,7 +93551,8 @@
         "track": 10,
         "year": 2026,
         "duration": 421,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "A Framework",
@@ -90245,7 +93560,8 @@
         "track": 11,
         "year": 2026,
         "duration": 218,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Ghost in the Machine (Boys Noize remix)",
@@ -92383,7 +95699,7 @@
         "year": 2014,
         "duration": 419,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       },
       {
@@ -92596,6 +95912,7 @@
         "year": 2013,
         "duration": 239,
         "disc_number": 1,
+        "play_count": 1,
         "starred": true
       },
       {
@@ -93644,6 +96961,60 @@
         "disc_number": 1,
         "play_count": 1,
         "starred": true
+      }
+    ]
+  },
+  {
+    "artist": "Paledusk",
+    "album": "HAPPY TALK",
+    "year": 2020,
+    "duration": 731,
+    "tracks": [
+      {
+        "title": "AO",
+        "artist": "Paledusk",
+        "track": 1,
+        "year": 2020,
+        "duration": 129,
+        "disc_number": 1
+      },
+      {
+        "title": "HAPPY TALK",
+        "artist": "Paledusk",
+        "track": 2,
+        "year": 2020,
+        "duration": 158,
+        "disc_number": 1
+      },
+      {
+        "title": "Q2",
+        "artist": "Paledusk",
+        "track": 3,
+        "year": 2020,
+        "duration": 158,
+        "disc_number": 1
+      },
+      {
+        "title": "LIGHTS",
+        "artist": "Paledusk",
+        "track": 4,
+        "year": 2020,
+        "duration": 284,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Paledusk",
+    "album": "[Unknown Album]",
+    "year": 2022,
+    "duration": 192,
+    "tracks": [
+      {
+        "title": "SLAY!! (feat. Hideyoshi)",
+        "artist": "Paledusk",
+        "year": 2022,
+        "duration": 192
       }
     ]
   },
@@ -102699,6 +106070,94 @@
     ]
   },
   {
+    "artist": "RoBKTA",
+    "album": "Ridge Racer Infinity",
+    "year": 2022,
+    "duration": 2890,
+    "tracks": [
+      {
+        "title": "On Your Way (from \"R4: Ridge Racer Type 4\")",
+        "artist": "RoBKTA & Andrew Elmore",
+        "track": 1,
+        "year": 2022,
+        "duration": 280,
+        "disc_number": 1
+      },
+      {
+        "title": "Drivin' U 2 Dancin' (from \"Ridge Racer Revolution\")",
+        "artist": "RoBKTA",
+        "track": 2,
+        "year": 2022,
+        "duration": 320,
+        "disc_number": 1
+      },
+      {
+        "title": "Disco Ball (from \"Ridge Racer - Sony PSP\")",
+        "artist": "RoBKTA",
+        "track": 3,
+        "year": 2022,
+        "duration": 329,
+        "disc_number": 1
+      },
+      {
+        "title": "Lucid Rhythms (from \"R4: Ridge Racer Type 4\")",
+        "artist": "RoBKTA",
+        "track": 4,
+        "year": 2022,
+        "duration": 325,
+        "disc_number": 1
+      },
+      {
+        "title": "Blue Topaz (from \"Rave Racer\")",
+        "artist": "RoBKTA",
+        "track": 5,
+        "year": 2022,
+        "duration": 337,
+        "disc_number": 1
+      },
+      {
+        "title": "Burnin' Rubber (from \"R4: Ridge Racer Type 4\")",
+        "artist": "RoBKTA",
+        "track": 6,
+        "year": 2022,
+        "duration": 261,
+        "disc_number": 1
+      },
+      {
+        "title": "Your Vibe (from \"R4: Ridge Racer Type 4\")",
+        "artist": "RoBKTA & RoboRob",
+        "track": 7,
+        "year": 2022,
+        "duration": 230,
+        "disc_number": 1
+      },
+      {
+        "title": "R4cin' All Night (Movin' In Circles) (from \"Ridge Racer - Sony PSP\")",
+        "artist": "RoBKTA & Teodor Dumitrache",
+        "track": 8,
+        "year": 2022,
+        "duration": 236,
+        "disc_number": 1
+      },
+      {
+        "title": "Night Stream (from \"Ridge Racer - Sony PSP\")",
+        "artist": "RoBKTA & ViRiX Dreamcore",
+        "track": 9,
+        "year": 2022,
+        "duration": 331,
+        "disc_number": 1
+      },
+      {
+        "title": "Deep Drive (from \"Rage Racer\")",
+        "artist": "RoBKTA",
+        "track": 10,
+        "year": 2022,
+        "duration": 237,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Rolling Stones",
     "album": "Steel Wheels",
     "year": 1989,
@@ -103551,7 +107010,7 @@
         "year": 2010,
         "duration": 309,
         "disc_number": 1,
-        "play_count": 2
+        "play_count": 3
       },
       {
         "title": "The Drug",
@@ -104544,7 +108003,7 @@
         "track": 1,
         "year": 2004,
         "duration": 646,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       }
     ]
@@ -105021,6 +108480,102 @@
         "duration": 312,
         "disc_number": 5,
         "play_count": 1
+      }
+    ]
+  },
+  {
+    "artist": "SAULT",
+    "album": "11",
+    "year": 2022,
+    "duration": 2644,
+    "tracks": [
+      {
+        "title": "Glory",
+        "artist": "SAULT",
+        "track": 1,
+        "year": 2022,
+        "duration": 337,
+        "disc_number": 1
+      },
+      {
+        "title": "Fear No One",
+        "artist": "SAULT",
+        "track": 2,
+        "year": 2022,
+        "duration": 170,
+        "disc_number": 1
+      },
+      {
+        "title": "Morning Sun",
+        "artist": "SAULT",
+        "track": 3,
+        "year": 2022,
+        "duration": 239,
+        "disc_number": 1
+      },
+      {
+        "title": "Together",
+        "artist": "SAULT",
+        "track": 4,
+        "year": 2022,
+        "duration": 219,
+        "disc_number": 1
+      },
+      {
+        "title": "Higher",
+        "artist": "SAULT",
+        "track": 5,
+        "year": 2022,
+        "duration": 221,
+        "disc_number": 1
+      },
+      {
+        "title": "Jack’s Gift",
+        "artist": "SAULT",
+        "track": 6,
+        "year": 2022,
+        "duration": 245,
+        "disc_number": 1
+      },
+      {
+        "title": "Fight for Love",
+        "artist": "SAULT",
+        "track": 7,
+        "year": 2022,
+        "duration": 297,
+        "disc_number": 1
+      },
+      {
+        "title": "Envious",
+        "artist": "SAULT",
+        "track": 8,
+        "year": 2022,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "River",
+        "artist": "SAULT",
+        "track": 9,
+        "year": 2022,
+        "duration": 341,
+        "disc_number": 1
+      },
+      {
+        "title": "In the Air",
+        "artist": "SAULT",
+        "track": 10,
+        "year": 2022,
+        "duration": 232,
+        "disc_number": 1
+      },
+      {
+        "title": "The Circle",
+        "artist": "SAULT",
+        "track": 11,
+        "year": 2022,
+        "duration": 185,
+        "disc_number": 1
       }
     ]
   },
@@ -111596,7 +115151,7 @@
         "track": 1,
         "year": 2024,
         "duration": 507,
-        "play_count": 9
+        "play_count": 10
       }
     ]
   },
@@ -112221,7 +115776,7 @@
         "year": 2023,
         "duration": 411,
         "disc_number": 1,
-        "play_count": 1,
+        "play_count": 2,
         "starred": true
       },
       {
@@ -114957,6 +118512,20 @@
         "year": 2025,
         "duration": 153,
         "play_count": 4
+      }
+    ]
+  },
+  {
+    "artist": "Starjunk95",
+    "album": "[Unknown Album]",
+    "year": 2026,
+    "duration": 245,
+    "tracks": [
+      {
+        "title": "Concept of Grime",
+        "artist": "Starjunk95",
+        "year": 2026,
+        "duration": 245
       }
     ]
   },
@@ -118918,6 +122487,30 @@
     ]
   },
   {
+    "artist": "Swardy",
+    "album": "Down",
+    "year": 2019,
+    "duration": 358,
+    "tracks": [
+      {
+        "title": "Trippest Flu",
+        "artist": "Swardy",
+        "track": 1,
+        "year": 2019,
+        "duration": 93,
+        "disc_number": 1
+      },
+      {
+        "title": "Down",
+        "artist": "Swardy",
+        "track": 2,
+        "year": 2019,
+        "duration": 265,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Syndicate",
     "album": "Syndicate",
     "year": 2011,
@@ -121433,6 +125026,7 @@
         "year": 2012,
         "duration": 193,
         "disc_number": 1,
+        "play_count": 1,
         "starred": true
       },
       {
@@ -122031,6 +125625,102 @@
         "track": 17,
         "year": 2024,
         "duration": 194,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "tdstr",
+    "album": "Combat Surf",
+    "year": 2026,
+    "duration": 1272,
+    "tracks": [
+      {
+        "title": "On a Monday",
+        "artist": "tdstr",
+        "track": 1,
+        "year": 2026,
+        "duration": 119,
+        "disc_number": 1
+      },
+      {
+        "title": "Visions of the Future",
+        "artist": "tdstr",
+        "track": 2,
+        "year": 2026,
+        "duration": 153,
+        "disc_number": 1
+      },
+      {
+        "title": "Got a Tail",
+        "artist": "tdstr",
+        "track": 3,
+        "year": 2026,
+        "duration": 101,
+        "disc_number": 1
+      },
+      {
+        "title": "Mission Objective",
+        "artist": "tdstr",
+        "track": 4,
+        "year": 2026,
+        "duration": 96,
+        "disc_number": 1
+      },
+      {
+        "title": "This Ain't a Game",
+        "artist": "tdstr",
+        "track": 5,
+        "year": 2026,
+        "duration": 140,
+        "disc_number": 1
+      },
+      {
+        "title": "Waterfall Lab",
+        "artist": "tdstr",
+        "track": 6,
+        "year": 2026,
+        "duration": 75,
+        "disc_number": 1
+      },
+      {
+        "title": "Furniture Boutique",
+        "artist": "tdstr",
+        "track": 7,
+        "year": 2026,
+        "duration": 107,
+        "disc_number": 1
+      },
+      {
+        "title": "Combat Surf",
+        "artist": "tdstr",
+        "track": 8,
+        "year": 2026,
+        "duration": 107,
+        "disc_number": 1
+      },
+      {
+        "title": "Looksea",
+        "artist": "tdstr",
+        "track": 9,
+        "year": 2026,
+        "duration": 75,
+        "disc_number": 1
+      },
+      {
+        "title": "Skydive",
+        "artist": "tdstr",
+        "track": 10,
+        "year": 2026,
+        "duration": 128,
+        "disc_number": 1
+      },
+      {
+        "title": "Championship",
+        "artist": "tdstr",
+        "track": 11,
+        "year": 2026,
+        "duration": 166,
         "disc_number": 1
       }
     ]
@@ -122756,7 +126446,7 @@
         "year": 2016,
         "duration": 403,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 4,
         "starred": true
       },
       {
@@ -138315,6 +142005,118 @@
   },
   {
     "artist": "Various Artists",
+    "album": "Anthems: A Celebration Of Broken Social Scene’s You Forgot It In People",
+    "year": 2025,
+    "duration": 2948,
+    "tracks": [
+      {
+        "title": "Capture the Flag",
+        "artist": "Ouri",
+        "track": 1,
+        "year": 2025,
+        "duration": 128,
+        "disc_number": 1
+      },
+      {
+        "title": "KC Accidental",
+        "artist": "Hovvdy",
+        "track": 2,
+        "year": 2025,
+        "duration": 201,
+        "disc_number": 1
+      },
+      {
+        "title": "Stars and Sons",
+        "artist": "Toro y Moi",
+        "track": 3,
+        "year": 2025,
+        "duration": 268,
+        "disc_number": 1
+      },
+      {
+        "title": "Almost Crimes",
+        "artist": "Miya Folick & Hand Habits",
+        "track": 4,
+        "year": 2025,
+        "duration": 325,
+        "disc_number": 1
+      },
+      {
+        "title": "Looks Just Like the Sun",
+        "artist": "The Weather Station",
+        "track": 5,
+        "year": 2025,
+        "duration": 277,
+        "disc_number": 1
+      },
+      {
+        "title": "Pacific Theme",
+        "artist": "Mdou Moctar & Michael Coltun",
+        "track": 6,
+        "year": 2025,
+        "duration": 241,
+        "disc_number": 1
+      },
+      {
+        "title": "Anthems for a Seventeen Year‐Old Girl",
+        "artist": "Maggie Rogers & Sylvan Esso",
+        "track": 7,
+        "year": 2025,
+        "duration": 216,
+        "disc_number": 1
+      },
+      {
+        "title": "Cause = Time",
+        "artist": "Middle Kids",
+        "track": 8,
+        "year": 2025,
+        "duration": 296,
+        "disc_number": 1
+      },
+      {
+        "title": "Late Nineties Bedroom Rock for the Missionaries",
+        "artist": "Benny Sings",
+        "track": 9,
+        "year": 2025,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
+        "title": "Shampoo Suicide",
+        "artist": "SPIRIT OF THE BEEHIVE",
+        "track": 10,
+        "year": 2025,
+        "duration": 270,
+        "disc_number": 1
+      },
+      {
+        "title": "Lover’s Spit",
+        "artist": "serpentwithfeet",
+        "track": 11,
+        "year": 2025,
+        "duration": 164,
+        "disc_number": 1
+      },
+      {
+        "title": "Ainda Sou Seu Moleque",
+        "artist": "Sessa",
+        "track": 12,
+        "year": 2025,
+        "duration": 157,
+        "disc_number": 1
+      },
+      {
+        "title": "Pitter Patter Goes My Heart",
+        "artist": "Babygirl",
+        "track": 13,
+        "year": 2025,
+        "duration": 162,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
+    "artist": "Various Artists",
     "album": "Back to the Future",
     "year": 1985,
     "duration": 1590,
@@ -140480,7 +144282,7 @@
         "year": 2002,
         "duration": 241,
         "disc_number": 1,
-        "play_count": 1
+        "play_count": 2
       },
       {
         "title": "I Wanna Rock",
@@ -148800,6 +152602,86 @@
     ]
   },
   {
+    "artist": "w00b",
+    "album": "5005",
+    "year": 2021,
+    "duration": 1586,
+    "tracks": [
+      {
+        "title": "Check-in",
+        "artist": "Woob",
+        "track": 1,
+        "year": 2021,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Go On",
+        "artist": "Woob",
+        "track": 2,
+        "year": 2021,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "79:81",
+        "artist": "Woob",
+        "track": 3,
+        "year": 2021,
+        "duration": 42,
+        "disc_number": 1
+      },
+      {
+        "title": "Reality Spectrum",
+        "artist": "Woob",
+        "track": 4,
+        "year": 2021,
+        "duration": 258,
+        "disc_number": 1
+      },
+      {
+        "title": "未來 技術",
+        "artist": "Woob",
+        "track": 5,
+        "year": 2021,
+        "duration": 116,
+        "disc_number": 1
+      },
+      {
+        "title": "▷ Project 1.4",
+        "artist": "Woob",
+        "track": 6,
+        "year": 2021,
+        "duration": 200,
+        "disc_number": 1
+      },
+      {
+        "title": "Crystal 羽毛",
+        "artist": "Woob",
+        "track": 7,
+        "year": 2021,
+        "duration": 47,
+        "disc_number": 1
+      },
+      {
+        "title": "❒◉",
+        "artist": "Woob",
+        "track": 8,
+        "year": 2021,
+        "duration": 93,
+        "disc_number": 1
+      },
+      {
+        "title": "s t a l l . t i t a n",
+        "artist": "Woob",
+        "track": 9,
+        "year": 2021,
+        "duration": 483,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Waldeck",
     "album": "The Night Garden",
     "year": 2001,
@@ -149609,6 +153491,94 @@
         "duration": 156,
         "disc_number": 1,
         "play_count": 1
+      }
+    ]
+  },
+  {
+    "artist": "Whitelands",
+    "album": "Sunlight Echoes",
+    "year": 2026,
+    "duration": 1986,
+    "tracks": [
+      {
+        "title": "Heat of the Summer",
+        "artist": "Whitelands",
+        "track": 1,
+        "year": 2026,
+        "duration": 156,
+        "disc_number": 1
+      },
+      {
+        "title": "Songbird (Forever)",
+        "artist": "Whitelands",
+        "track": 2,
+        "year": 2026,
+        "duration": 225,
+        "disc_number": 1
+      },
+      {
+        "title": "Shibuya Crossing",
+        "artist": "Whitelands",
+        "track": 3,
+        "year": 2026,
+        "duration": 115,
+        "disc_number": 1
+      },
+      {
+        "title": "Glance",
+        "artist": "Whitelands",
+        "track": 4,
+        "year": 2026,
+        "duration": 175,
+        "disc_number": 1
+      },
+      {
+        "title": "Sparklebaby",
+        "artist": "Whitelands feat. Emma Anderson",
+        "track": 5,
+        "year": 2026,
+        "duration": 214,
+        "disc_number": 1
+      },
+      {
+        "title": "Blankspace",
+        "artist": "Whitelands",
+        "track": 6,
+        "year": 2026,
+        "duration": 184,
+        "disc_number": 1
+      },
+      {
+        "title": "I Am No God, an Effigy",
+        "artist": "Whitelands",
+        "track": 7,
+        "year": 2026,
+        "duration": 272,
+        "disc_number": 1
+      },
+      {
+        "title": "Dark Horse",
+        "artist": "Whitelands",
+        "track": 8,
+        "year": 2026,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "Mirrors",
+        "artist": "Whitelands",
+        "track": 9,
+        "year": 2026,
+        "duration": 264,
+        "disc_number": 1
+      },
+      {
+        "title": "Golden Daze",
+        "artist": "Whitelands",
+        "track": 10,
+        "year": 2026,
+        "duration": 187,
+        "disc_number": 1
       }
     ]
   },
@@ -153576,6 +157546,166 @@
     ]
   },
   {
+    "artist": "Yussef Dayes",
+    "album": "Black Classical Music",
+    "year": 2023,
+    "duration": 4442,
+    "tracks": [
+      {
+        "title": "Black Classical Music",
+        "artist": "Yussef Dayes feat. Venna & Charlie Stacey",
+        "track": 1,
+        "year": 2023,
+        "duration": 319,
+        "disc_number": 1
+      },
+      {
+        "title": "Afro Cubanism",
+        "artist": "Yussef Dayes",
+        "track": 2,
+        "year": 2023,
+        "duration": 165,
+        "disc_number": 1
+      },
+      {
+        "title": "Raisins Under the Sun",
+        "artist": "Yussef Dayes feat. Shabaka Hutchings",
+        "track": 3,
+        "year": 2023,
+        "duration": 271,
+        "disc_number": 1
+      },
+      {
+        "title": "Rust",
+        "artist": "Yussef Dayes feat. Tom Misch",
+        "track": 4,
+        "year": 2023,
+        "duration": 238,
+        "disc_number": 1
+      },
+      {
+        "title": "Turquoise Galaxy",
+        "artist": "Yussef Dayes",
+        "track": 5,
+        "year": 2023,
+        "duration": 191,
+        "disc_number": 1
+      },
+      {
+        "title": "The Light",
+        "artist": "Yussef Dayes feat. Bahia Dayes",
+        "track": 6,
+        "year": 2023,
+        "duration": 340,
+        "disc_number": 1
+      },
+      {
+        "title": "Pon di Plaza",
+        "artist": "Yussef Dayes feat. Chronixx",
+        "track": 7,
+        "year": 2023,
+        "duration": 229,
+        "disc_number": 1
+      },
+      {
+        "title": "Magnolia Symphony",
+        "artist": "Yussef Dayes",
+        "track": 8,
+        "year": 2023,
+        "duration": 97,
+        "disc_number": 1
+      },
+      {
+        "title": "Early Dayes",
+        "artist": "Yussef Dayes",
+        "track": 9,
+        "year": 2023,
+        "duration": 34,
+        "disc_number": 1
+      },
+      {
+        "title": "Chasing the Drum",
+        "artist": "Yussef Dayes",
+        "track": 10,
+        "year": 2023,
+        "duration": 340,
+        "disc_number": 1
+      },
+      {
+        "title": "Birds of Paradise",
+        "artist": "Yussef Dayes",
+        "track": 11,
+        "year": 2023,
+        "duration": 249,
+        "disc_number": 1
+      },
+      {
+        "title": "Gelato",
+        "artist": "Yussef Dayes",
+        "track": 12,
+        "year": 2023,
+        "duration": 286,
+        "disc_number": 1
+      },
+      {
+        "title": "Marching Band",
+        "artist": "Yussef Dayes feat. Masego",
+        "track": 13,
+        "year": 2023,
+        "duration": 284,
+        "disc_number": 1
+      },
+      {
+        "title": "Crystal Palace Park",
+        "artist": "Yussef Dayes feat. Elijah Fox",
+        "track": 14,
+        "year": 2023,
+        "duration": 152,
+        "disc_number": 1
+      },
+      {
+        "title": "Presidential",
+        "artist": "Yussef Dayes feat. Jahaan Sweet",
+        "track": 15,
+        "year": 2023,
+        "duration": 162,
+        "disc_number": 1
+      },
+      {
+        "title": "Jukebox",
+        "artist": "Yussef Dayes",
+        "track": 16,
+        "year": 2023,
+        "duration": 159,
+        "disc_number": 1
+      },
+      {
+        "title": "Woman’s Touch",
+        "artist": "Yussef Dayes feat. Jamilah Barry",
+        "track": 17,
+        "year": 2023,
+        "duration": 211,
+        "disc_number": 1
+      },
+      {
+        "title": "Tioga Pass",
+        "artist": "Yussef Dayes feat. Rocco Palladino",
+        "track": 18,
+        "year": 2023,
+        "duration": 476,
+        "disc_number": 1
+      },
+      {
+        "title": "Cowrie Charms",
+        "artist": "Yussef Dayes feat. Leon Thomas & Barbara Hicks",
+        "track": 19,
+        "year": 2023,
+        "duration": 231,
+        "disc_number": 1
+      }
+    ]
+  },
+  {
     "artist": "Yuto Takei",
     "album": "Gran Turismo 5 Original Soundtrack",
     "year": 2010,
@@ -154546,6 +158676,26 @@
         "duration": 120,
         "disc_number": 1,
         "play_count": 1
+      }
+    ]
+  },
+  {
+    "artist": "ZØMB",
+    "album": "[Unknown Album]",
+    "year": 2026,
+    "duration": 222,
+    "tracks": [
+      {
+        "title": "COVERGIRL!",
+        "artist": "ZØMB",
+        "year": 2025,
+        "duration": 128
+      },
+      {
+        "title": "MAKE A SCENE!",
+        "artist": "ZØMB",
+        "year": 2026,
+        "duration": 93
       }
     ]
   },
@@ -156714,7 +160864,7 @@
         "year": 2022,
         "duration": 252,
         "disc_number": 1,
-        "play_count": 10,
+        "play_count": 11,
         "starred": true
       },
       {
