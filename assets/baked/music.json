@@ -33927,13 +33927,13 @@
     "artist": "Dead Astronauts",
     "album": "Constellations",
     "year": 2014,
-    "duration": 3801,
+    "duration": 4087,
     "tracks": [
       {
         "title": "Part One",
         "artist": "Dead Astronauts",
         "track": 1,
-        "year": 2014,
+        "year": 2023,
         "duration": 183,
         "disc_number": 1
       },
@@ -33941,7 +33941,7 @@
         "title": "These Bones",
         "artist": "Dead Astronauts",
         "track": 2,
-        "year": 2014,
+        "year": 2023,
         "duration": 343,
         "disc_number": 1
       },
@@ -33949,7 +33949,7 @@
         "title": "Weathered Wolves",
         "artist": "Dead Astronauts",
         "track": 3,
-        "year": 2014,
+        "year": 2023,
         "duration": 299,
         "disc_number": 1,
         "play_count": 1
@@ -33958,7 +33958,7 @@
         "title": "Parallel Universes",
         "artist": "Dead Astronauts",
         "track": 4,
-        "year": 2014,
+        "year": 2023,
         "duration": 245,
         "disc_number": 1
       },
@@ -33966,7 +33966,7 @@
         "title": "Little White Lie",
         "artist": "Dead Astronauts",
         "track": 5,
-        "year": 2014,
+        "year": 2023,
         "duration": 289,
         "disc_number": 1
       },
@@ -33974,7 +33974,7 @@
         "title": "What For",
         "artist": "Dead Astronauts",
         "track": 6,
-        "year": 2014,
+        "year": 2023,
         "duration": 293,
         "disc_number": 1
       },
@@ -33982,7 +33982,7 @@
         "title": "The Pier",
         "artist": "Dead Astronauts",
         "track": 7,
-        "year": 2014,
+        "year": 2023,
         "duration": 462,
         "disc_number": 1,
         "play_count": 1
@@ -33991,7 +33991,7 @@
         "title": "The City",
         "artist": "Dead Astronauts",
         "track": 8,
-        "year": 2014,
+        "year": 2023,
         "duration": 321,
         "disc_number": 1
       },
@@ -33999,7 +33999,7 @@
         "title": "Taking Control",
         "artist": "Dead Astronauts",
         "track": 9,
-        "year": 2014,
+        "year": 2023,
         "duration": 272,
         "disc_number": 1
       },
@@ -34007,7 +34007,7 @@
         "title": "Walking With Machines",
         "artist": "Dead Astronauts",
         "track": 10,
-        "year": 2014,
+        "year": 2023,
         "duration": 285,
         "disc_number": 1
       },
@@ -34015,7 +34015,7 @@
         "title": "Part Two",
         "artist": "Dead Astronauts",
         "track": 11,
-        "year": 2014,
+        "year": 2023,
         "duration": 202,
         "disc_number": 1
       },
@@ -34023,7 +34023,7 @@
         "title": "The Ocean Owns Your Body",
         "artist": "Dead Astronauts",
         "track": 12,
-        "year": 2014,
+        "year": 2023,
         "duration": 269,
         "disc_number": 1
       },
@@ -34031,25 +34031,17 @@
         "title": "Unhappy Woman (Dead Astronaut's remix)",
         "artist": "Dead Astronauts",
         "track": 13,
-        "year": 2014,
+        "year": 2023,
         "duration": 333,
         "disc_number": 1
-      }
-    ]
-  },
-  {
-    "artist": "Dead Astronauts",
-    "album": "Constellations",
-    "year": 2023,
-    "duration": 285,
-    "tracks": [
+      },
       {
         "title": "Favorite Lover",
         "artist": "Dead Astronauts",
         "track": 14,
         "year": 2023,
         "duration": 285,
-        "play_count": 5
+        "disc_number": 1
       }
     ]
   },
@@ -93233,7 +93225,7 @@
         "year": 2025,
         "duration": 127,
         "disc_number": 1,
-        "play_count": 1,
+        "play_count": 2,
         "starred": true
       },
       {
@@ -93243,7 +93235,7 @@
         "year": 2025,
         "duration": 110,
         "disc_number": 1,
-        "play_count": 1
+        "play_count": 2
       },
       {
         "title": "As Alive as You Need Me to Be",
@@ -93252,7 +93244,7 @@
         "year": 2025,
         "duration": 237,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 5,
         "starred": true
       },
       {
@@ -93337,7 +93329,7 @@
         "year": 2025,
         "duration": 350,
         "disc_number": 2,
-        "play_count": 1,
+        "play_count": 2,
         "starred": true
       },
       {
@@ -93447,7 +93439,7 @@
         "year": 2025,
         "duration": 235,
         "disc_number": 2,
-        "play_count": 1,
+        "play_count": 2,
         "starred": true
       }
     ]
@@ -93484,7 +93476,7 @@
         "year": 2026,
         "duration": 182,
         "disc_number": 1,
-        "play_count": 3,
+        "play_count": 8,
         "starred": true
       },
       {
@@ -93569,7 +93561,8 @@
         "track": 12,
         "year": 2026,
         "duration": 306,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "What Have You Done? (Boys Noize remix)",
@@ -93577,7 +93570,9 @@
         "track": 13,
         "year": 2026,
         "duration": 284,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "As Alive as You Need Me to Be (Pixel Grip remix)",
@@ -93585,7 +93580,9 @@
         "track": 14,
         "year": 2026,
         "duration": 287,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "The First Betrayal",
@@ -93593,7 +93590,9 @@
         "track": 15,
         "year": 2026,
         "duration": 163,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "I Know You Can Feel It (Working Men’s club remix)",
@@ -93601,7 +93600,8 @@
         "track": 16,
         "year": 2026,
         "duration": 378,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Shadow Over Me (The Dare remix)",
@@ -93609,7 +93609,8 @@
         "track": 17,
         "year": 2026,
         "duration": 187,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "Terminal",
@@ -93617,7 +93618,9 @@
         "track": 18,
         "year": 2026,
         "duration": 182,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Forked Reality (Schwefelgelb remix)",
@@ -93625,7 +93628,8 @@
         "track": 19,
         "year": 2026,
         "duration": 280,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "As Alive as You Need Me to Be (Arca remix)",
@@ -93633,7 +93637,8 @@
         "track": 20,
         "year": 2026,
         "duration": 171,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       }
     ]
   },
@@ -118525,7 +118530,9 @@
         "title": "Concept of Grime",
         "artist": "Starjunk95",
         "year": 2026,
-        "duration": 245
+        "duration": 245,
+        "play_count": 1,
+        "starred": true
       }
     ]
   },
@@ -157557,7 +157564,9 @@
         "track": 1,
         "year": 2023,
         "duration": 319,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Afro Cubanism",
@@ -157565,7 +157574,9 @@
         "track": 2,
         "year": 2023,
         "duration": 165,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Raisins Under the Sun",
@@ -157573,7 +157584,9 @@
         "track": 3,
         "year": 2023,
         "duration": 271,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Rust",
@@ -157581,7 +157594,9 @@
         "track": 4,
         "year": 2023,
         "duration": 238,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1,
+        "starred": true
       },
       {
         "title": "Turquoise Galaxy",
@@ -157589,7 +157604,8 @@
         "track": 5,
         "year": 2023,
         "duration": 191,
-        "disc_number": 1
+        "disc_number": 1,
+        "play_count": 1
       },
       {
         "title": "The Light",
