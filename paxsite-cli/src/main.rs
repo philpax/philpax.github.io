@@ -5,6 +5,7 @@ use std::{
 
 use anyhow::Context;
 use inquire::{Select, Text};
+use paxsite_atproto::{Datetime, Document as PdsDocument, Publication, Str, UriValue};
 use paxsite_content::{
     CONFIG, Document, DocumentMetadata, DocumentNode, DocumentTaxonomies, DocumentType,
     INDEX_FILENAME, StandardSite, Tag, blog_or_update_path, display_name_to_filename,
@@ -403,7 +404,7 @@ fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Result<(
 /// An authenticated standard.site session plus the resolved publication URI,
 /// established once and reused across one or more document upserts.
 struct StandardSiteSession {
-    publisher: Box<dyn paxsite_atproto::Publisher>,
+    publisher: paxsite_atproto::Publisher,
     publication_uri: String,
 }
 
@@ -418,7 +419,7 @@ impl StandardSiteSession {
         };
 
         // Idempotently ensure the publication singleton matches the config.
-        publisher.upsert_publication(&publication_record())?;
+        publisher.upsert_publication(&publication_record()?)?;
 
         Ok(Some(Self {
             publisher,
@@ -430,7 +431,7 @@ impl StandardSiteSession {
     /// AT-URI and content fingerprint back into its frontmatter.
     fn publish_document(&mut self, doc: &Document) -> anyhow::Result<()> {
         let existing = doc.metadata.standard_site.as_ref().map(|s| s.uri.clone());
-        let record = document_record(&self.publication_uri, doc);
+        let record = document_record(&self.publication_uri, doc)?;
         let uri = self
             .publisher
             .upsert_document(existing.as_deref(), &record)
@@ -449,7 +450,7 @@ impl StandardSiteSession {
 }
 
 /// Logs into the PDS for standard.site work, or `Ok(None)` if disabled (no DID).
-fn standard_site_login(root: &Path) -> anyhow::Result<Option<Box<dyn paxsite_atproto::Publisher>>> {
+fn standard_site_login(root: &Path) -> anyhow::Result<Option<paxsite_atproto::Publisher>> {
     let Some(did) = CONFIG.atproto_did else {
         return Ok(None);
     };
@@ -458,12 +459,17 @@ fn standard_site_login(root: &Path) -> anyhow::Result<Option<Box<dyn paxsite_atp
 }
 
 /// The publication record derived from the current site config.
-fn publication_record() -> paxsite_atproto::PublicationRecord {
-    paxsite_atproto::PublicationRecord {
-        url: CONFIG.base_url.to_string(),
-        name: CONFIG.name.to_string(),
-        description: Some(CONFIG.description.to_string()),
-    }
+fn publication_record() -> anyhow::Result<Publication<Str>> {
+    Ok(Publication::new()
+        .url(uri(CONFIG.base_url)?)
+        .name(CONFIG.name)
+        .description(Str::from(CONFIG.description))
+        .build())
+}
+
+/// Parses a string into a validated AT Protocol URI value.
+fn uri(s: &str) -> anyhow::Result<UriValue<Str>> {
+    UriValue::<Str>::new_owned(s).map_err(|e| anyhow::anyhow!("invalid uri {s:?}: {e}"))
 }
 
 /// Pushes the publication record (name/description/url from [`CONFIG`]) to the
@@ -480,12 +486,12 @@ fn update_publication(root: &Path) -> anyhow::Result<()> {
             println!("Current publication:");
             println!("  name:        {}", p.name);
             println!("  description: {}", p.description.as_deref().unwrap_or(""));
-            println!("  url:         {}", p.url);
+            println!("  url:         {}", p.url.as_ref());
         }
         None => println!("No existing publication record (it will be created)."),
     }
 
-    let new = publication_record();
+    let new = publication_record()?;
     let uri = publisher.upsert_publication(&new)?;
 
     let changed = before
@@ -498,7 +504,7 @@ fn update_publication(root: &Path) -> anyhow::Result<()> {
             "  description: {}",
             new.description.as_deref().unwrap_or("")
         );
-        println!("  url:         {}", new.url);
+        println!("  url:         {}", new.url.as_ref());
     } else {
         println!("\nPublication already up to date ({uri}).");
     }
@@ -506,7 +512,7 @@ fn update_publication(root: &Path) -> anyhow::Result<()> {
 }
 
 /// Builds the `site.standard.document` record for a document.
-fn document_record(publication_uri: &str, doc: &Document) -> paxsite_atproto::DocumentRecord {
+fn document_record(publication_uri: &str, doc: &Document) -> anyhow::Result<PdsDocument<Str>> {
     // Concatenate the raw markdown (intro + body) and render it to plain text via
     // the shared canonical operation.
     let mut markdown = doc.description_raw.clone();
@@ -516,25 +522,28 @@ fn document_record(publication_uri: &str, doc: &Document) -> paxsite_atproto::Do
     }
     let text = markdown_to_plaintext(&markdown);
 
-    paxsite_atproto::DocumentRecord {
-        site: publication_uri.to_string(),
-        title: doc.metadata.title.clone(),
+    let tags: Vec<Str> = doc
+        .metadata
+        .taxonomies
+        .as_ref()
+        .map(|t| t.tags.iter().map(|s| Str::from(s.as_str())).collect())
+        .unwrap_or_default();
+    let published_at = doc
+        .metadata
+        .datetime
+        .unwrap_or_else(chrono::Utc::now)
+        .fixed_offset();
+
+    Ok(PdsDocument::new()
+        .site(uri(publication_uri)?)
+        .title(doc.metadata.title.as_str())
+        .published_at(Datetime::from(published_at))
         // Canonical site-relative path, shared with the SSG (no desync).
-        path: doc.url_path(),
-        published_at: doc
-            .metadata
-            .datetime
-            .unwrap_or_else(chrono::Utc::now)
-            .to_rfc3339(),
-        description: doc.metadata.short.clone(),
-        tags: doc
-            .metadata
-            .taxonomies
-            .as_ref()
-            .map(|t| t.tags.clone())
-            .unwrap_or_default(),
-        text_content: (!text.is_empty()).then_some(text),
-    }
+        .path(Str::from(doc.url_path().as_str()))
+        .maybe_description(doc.metadata.short.as_deref().map(Str::from))
+        .maybe_tags((!tags.is_empty()).then_some(tags))
+        .maybe_text_content((!text.is_empty()).then(|| Str::from(text.as_str())))
+        .build())
 }
 
 /// Re-reads a document from disk so callers observe just-written frontmatter.
