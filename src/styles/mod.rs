@@ -1,5 +1,7 @@
-use std::hash::{Hash, Hasher};
-use std::path::Path;
+use std::{
+    hash::{Hash, Hasher},
+    path::Path,
+};
 
 use crate::views::ViewContextBase;
 

@@ -1,7 +1,6 @@
 use chrono::{Datelike, NaiveDate};
 use markdown::mdast::Node;
-use paxhtml::bumpalo::Bump;
-use paxhtml::html;
+use paxhtml::{bumpalo::Bump, html};
 
 use crate::markdown::inner_text;
 

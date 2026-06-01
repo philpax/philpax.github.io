@@ -1,5 +1,4 @@
-use paxhtml::DefaultIn;
-use paxhtml::bumpalo::Bump;
+use paxhtml::{DefaultIn, bumpalo::Bump};
 
 pub struct LinkProps<'bump> {
     pub underline: bool,

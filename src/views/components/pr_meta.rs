@@ -1,5 +1,4 @@
-use paxhtml::bumpalo::Bump;
-use paxhtml::html;
+use paxhtml::{bumpalo::Bump, html};
 
 use super::{
     Link, LinkProps, MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps,

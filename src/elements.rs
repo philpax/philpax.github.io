@@ -1,8 +1,7 @@
 #![allow(unused)]
 
-use paxhtml::builder::Builder;
-use paxhtml::bumpalo::Bump;
 pub use paxhtml::{Element, html};
+use paxhtml::{builder::Builder, bumpalo::Bump};
 
 use crate::views::components::{HeadingAnchor, HeadingAnchorProps, Link, LinkProps};
 

@@ -1,5 +1,4 @@
-use paxhtml::bumpalo::Bump;
-use paxhtml::html;
+use paxhtml::{bumpalo::Bump, html};
 
 use crate::views::posts::POST_BODY_MARGIN_CLASS;
 

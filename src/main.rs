@@ -1,9 +1,7 @@
-use std::path::Path;
-use std::sync::Arc;
+use std::{path::Path, sync::Arc};
 
 use anyhow::Context;
-use paxhtml::RoutePath;
-use paxhtml::bumpalo::Bump;
+use paxhtml::{RoutePath, bumpalo::Bump};
 
 use crate::content::DocumentId;
 

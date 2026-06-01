@@ -1,7 +1,5 @@
 use chrono::Timelike;
-use paxhtml::DefaultIn;
-use paxhtml::builder::Builder;
-use paxhtml::bumpalo::Bump;
+use paxhtml::{DefaultIn, builder::Builder, bumpalo::Bump};
 
 pub struct IsoDateProps {
     pub date: chrono::NaiveDate,

@@ -1,5 +1,4 @@
-use paxhtml::builder::Builder;
-use paxhtml::html;
+use paxhtml::{builder::Builder, html};
 
 use crate::{
     content::{DocumentId, DocumentLeafNode, DocumentNode},

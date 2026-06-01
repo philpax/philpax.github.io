@@ -1,6 +1,5 @@
 use blackbird_json_export_types::{OutputGroup, OutputTrack};
-use paxhtml::bumpalo::Bump;
-use paxhtml::html;
+use paxhtml::{bumpalo::Bump, html};
 
 use crate::{util, views::ViewContext};
 
@@ -53,8 +52,7 @@ mod colours {
 
     /// Hashes a string and produces a pleasing colour from that hash.
     pub fn string_to_colour(s: &str) -> String {
-        use std::hash::Hash;
-        use std::hash::Hasher;
+        use std::hash::{Hash, Hasher};
 
         const DISTINCT_COLOURS: u64 = 36_000;
 
