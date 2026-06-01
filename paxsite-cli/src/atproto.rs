@@ -36,7 +36,8 @@ use jacquard::{
     },
     prelude::{JacquardResolver, XrpcClient},
 };
-// Re-exported so callers can build records without depending on jacquard directly.
+// The jacquard types the rest of the CLI needs to build records, surfaced through
+// this module so record construction goes through a single import path.
 pub use jacquard::{
     api::site_standard::{document::Document, publication::Publication},
     common::{

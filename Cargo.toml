@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli", "paxsite-atproto"]
+members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
 
 [workspace.dependencies]
 anyhow = "1.0"

@@ -4,14 +4,16 @@ use std::{
 };
 
 use anyhow::Context;
+use atproto::{Datetime, Document as PdsDocument, Publication, Str, UriValue};
 use inquire::{Select, Text};
-use paxsite_atproto::{Datetime, Document as PdsDocument, Publication, Str, UriValue};
 use paxsite_content::{
     CONFIG, Document, DocumentMetadata, DocumentNode, DocumentTaxonomies, DocumentType,
     INDEX_FILENAME, StandardSite, Tag, blog_or_update_path, display_name_to_filename,
     filename_to_display_name, generate_frontmatter, markdown_to_plaintext, note_path,
     read_frontmatter, title_to_slug, write_frontmatter,
 };
+
+mod atproto;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -405,7 +407,7 @@ async fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Re
 /// An authenticated standard.site session plus the resolved publication URI,
 /// established once and reused across one or more document upserts.
 struct StandardSiteSession {
-    publisher: paxsite_atproto::Publisher,
+    publisher: atproto::Publisher,
     publication_uri: String,
 }
 
@@ -452,12 +454,12 @@ impl StandardSiteSession {
 }
 
 /// Logs into the PDS for standard.site work, or `Ok(None)` if disabled (no DID).
-async fn standard_site_login(root: &Path) -> anyhow::Result<Option<paxsite_atproto::Publisher>> {
+async fn standard_site_login(root: &Path) -> anyhow::Result<Option<atproto::Publisher>> {
     let Some(did) = CONFIG.atproto_did else {
         return Ok(None);
     };
     let store_path = root.join(".standard-site-session.json");
-    Ok(Some(paxsite_atproto::login(&store_path, did).await?))
+    Ok(Some(atproto::login(&store_path, did).await?))
 }
 
 /// The publication record derived from the current site config.

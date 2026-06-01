@@ -6,7 +6,9 @@ edition = "2024"
 [dependencies]
 anyhow = { workspace = true }
 chrono = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 paxsite-content = { path = "../paxsite-content" }
-paxsite-atproto = { path = "../paxsite-atproto" }
 inquire = "0.7"
+jacquard = { version = "=0.12.0-beta.2", features = ["loopback"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

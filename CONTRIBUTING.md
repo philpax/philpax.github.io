@@ -221,8 +221,7 @@ Component implementations live in `src/views/components/`.
 |-------|---------|
 | `paxsite` (root) | Main SSG: markdown rendering, views, build orchestration |
 | `paxsite-content` | Content layer: document types, disk I/O, frontmatter parsing, Git dates, Bluesky API/caching |
-| `paxsite-cli` | CLI tool for creating new content (blog posts, updates, notes) |
-| `paxsite-atproto` | AT Protocol publishing: OAuth (localhost public client) + standard.site record writes |
+| `paxsite-cli` | CLI tool for creating content and publishing to standard.site (the `atproto` module: OAuth localhost public client + record writes) |
 | `paxcss` | CSS parsing utilities for extracting theme variables |
 | `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`) |
 

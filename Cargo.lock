@@ -3144,25 +3144,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "paxsite-atproto"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "jacquard",
- "paxsite-content",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "paxsite-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
  "inquire",
- "paxsite-atproto",
+ "jacquard",
  "paxsite-content",
+ "serde",
+ "serde_json",
  "tokio",
 ]
 
