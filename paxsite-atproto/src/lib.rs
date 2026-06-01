@@ -54,7 +54,6 @@ type SessionAgent = Agent<Session>;
 
 /// An authenticated publishing session — an OAuth agent plus the logged-in DID.
 pub struct Publisher {
-    rt: tokio::runtime::Runtime,
     agent: SessionAgent,
     did: Did<Str>,
 }
@@ -64,33 +63,30 @@ pub struct Publisher {
 ///
 /// `handle` may be a handle, DID, or PDS URL — it is only consulted when a fresh
 /// login is required. `store_path` is the session cache file.
-pub fn login(store_path: &Path, handle: &str) -> Result<Publisher> {
-    let rt = tokio::runtime::Runtime::new().context("failed to start async runtime")?;
-
-    let (agent, did) = rt.block_on(async {
-        // `atproto` (required) plus write access limited to the two standard.site
-        // collections — the entire blast radius of the grant.
-        let oauth = OAuthClient::new(
-            FileAuthStore::new(store_path),
-            ClientData {
-                keyset: None,
-                config: AtprotoClientMetadata::new_localhost(
-                    None,
-                    Some(
-                        Scopes::<Str>::new(Str::from(format!(
-                            "atproto repo:{PUBLICATION_NSID} repo:{DOCUMENT_NSID}"
-                        )))
-                        .context("invalid scope string")?,
-                    ),
+pub async fn login(store_path: &Path, handle: &str) -> Result<Publisher> {
+    // `atproto` (required) plus write access limited to the two standard.site
+    // collections — the entire blast radius of the grant.
+    let oauth = OAuthClient::new(
+        FileAuthStore::new(store_path),
+        ClientData {
+            keyset: None,
+            config: AtprotoClientMetadata::new_localhost(
+                None,
+                Some(
+                    Scopes::<Str>::new(Str::from(format!(
+                        "atproto repo:{PUBLICATION_NSID} repo:{DOCUMENT_NSID}"
+                    )))
+                    .context("invalid scope string")?,
                 ),
-            },
-        );
-        let session = restore_or_login(&oauth, store_path, handle).await?;
-        let (did, _) = session.session_info().await;
-        anyhow::Ok((Agent::from(session), did))
-    })?;
-
-    Ok(Publisher { rt, agent, did })
+            ),
+        },
+    );
+    let session = restore_or_login(&oauth, store_path, handle).await?;
+    let (did, _) = session.session_info().await;
+    Ok(Publisher {
+        agent: Agent::from(session),
+        did,
+    })
 }
 
 /// Restores the cached session if the sidecar beside `store_path` still points at
@@ -148,41 +144,34 @@ async fn restore_or_login(oauth: &Client, store_path: &Path, handle: &str) -> Re
 impl Publisher {
     /// Fetches the current publication record, or `None` if it doesn't exist yet
     /// (or can't be read). Used to show a before/after when updating it.
-    pub fn get_publication(&self) -> Result<Option<Publication<Str>>> {
-        let repo = self.repo();
-        let collection = Nsid::<Str>::new(Str::from(PUBLICATION_NSID))?;
-        let rkey = RecordKey::<Rkey>::from_str(PUBLICATION_RKEY)?;
-
-        self.rt.block_on(async {
-            let req = GetRecord::new()
-                .collection(collection)
-                .repo(repo)
-                .rkey(rkey)
-                .build();
-            // A missing record (or any read error) is reported as "no snapshot".
-            let Ok(resp) = self.agent.send(req).await else {
-                return anyhow::Ok(None);
-            };
-            let value = resp.into_output()?.value;
-            anyhow::Ok(Some(from_data(&value)?))
+    pub async fn get_publication(&self) -> Result<Option<Publication<Str>>> {
+        let req = GetRecord::new()
+            .collection(Nsid::<Str>::new(Str::from(PUBLICATION_NSID))?)
+            .repo(self.repo())
+            .rkey(RecordKey::<Rkey>::from_str(PUBLICATION_RKEY)?)
+            .build();
+        // A missing record (or any read error) is reported as "no snapshot".
+        Ok(if let Ok(resp) = self.agent.send(req).await {
+            Some(from_data(&resp.into_output()?.value)?)
+        } else {
+            None
         })
     }
 
     /// Creates or updates the publication singleton record, returning its AT-URI.
-    pub fn upsert_publication(&self, record: &Publication<Str>) -> Result<String> {
-        let data = to_data(record)?;
+    pub async fn upsert_publication(&self, record: &Publication<Str>) -> Result<String> {
         // The publication is a singleton at a fixed rkey.
-        self.put_record(PUBLICATION_NSID, PUBLICATION_RKEY, data)
+        self.put_record(PUBLICATION_NSID, PUBLICATION_RKEY, to_data(record)?)
+            .await
     }
 
     /// Creates a document record (when `existing_uri` is `None`) or updates the
     /// one at `existing_uri`, returning its AT-URI.
-    pub fn upsert_document(
+    pub async fn upsert_document(
         &self,
         existing_uri: Option<&str>,
         record: &Document<Str>,
     ) -> Result<String> {
-        let data = to_data(record)?;
         // putRecord upserts, so one path covers both: reuse the existing record's
         // key (the final segment of its AT-URI) on update, mint a fresh TID on
         // first publish.
@@ -195,26 +184,21 @@ impl Publisher {
                 .to_string(),
             None => Tid::now_0().as_str().to_string(),
         };
-        self.put_record(DOCUMENT_NSID, &rkey, data)
+        self.put_record(DOCUMENT_NSID, &rkey, to_data(record)?)
+            .await
     }
 
     /// Create-or-update the record at `nsid/rkey` via `putRecord` (which upserts),
     /// returning its AT-URI.
-    fn put_record(&self, nsid: &str, rkey: &str, data: Data<Str>) -> Result<String> {
-        let repo = self.repo();
-        let collection = Nsid::<Str>::new(Str::from(nsid))?;
-        let rkey = RecordKey::<Rkey>::from_str(rkey).context("invalid rkey")?;
-
-        self.rt.block_on(async {
-            let req = PutRecord::new()
-                .collection(collection)
-                .repo(repo)
-                .rkey(rkey)
-                .record(data)
-                .build();
-            let out = self.agent.send(req).await?.into_output()?;
-            anyhow::Ok(out.uri.as_str().to_string())
-        })
+    async fn put_record(&self, nsid: &str, rkey: &str, data: Data<Str>) -> Result<String> {
+        let req = PutRecord::new()
+            .collection(Nsid::<Str>::new(Str::from(nsid))?)
+            .repo(self.repo())
+            .rkey(RecordKey::<Rkey>::from_str(rkey).context("invalid rkey")?)
+            .record(data)
+            .build();
+        let out = self.agent.send(req).await?.into_output()?;
+        Ok(out.uri.as_str().to_string())
     }
 
     /// The logged-in account as an XRPC `repo` identifier.

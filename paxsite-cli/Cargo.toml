@@ -9,3 +9,4 @@ chrono = { workspace = true }
 paxsite-content = { path = "../paxsite-content" }
 paxsite-atproto = { path = "../paxsite-atproto" }
 inquire = "0.7"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

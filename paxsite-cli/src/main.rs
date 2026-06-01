@@ -13,7 +13,8 @@ use paxsite_content::{
     read_frontmatter, title_to_slug, write_frontmatter,
 };
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
     let root = find_project_root()?;
 
     // Non-interactive subcommand used by the pre-push hook: verifies every
@@ -46,10 +47,10 @@ fn main() -> anyhow::Result<()> {
     match action {
         CREATE => create_content(&root)?,
         EDIT => edit_content(&root)?,
-        PUBLISH => publish_content(&root)?,
-        PUBLISH_ONE => publish_one_standard_site(&root)?,
-        BACKFILL => backfill_standard_site(&root)?,
-        UPDATE_PUBLICATION => update_publication(&root)?,
+        PUBLISH => publish_content(&root).await?,
+        PUBLISH_ONE => publish_one_standard_site(&root).await?,
+        BACKFILL => backfill_standard_site(&root).await?,
+        UPDATE_PUBLICATION => update_publication(&root).await?,
         _ => unreachable!(),
     }
 
@@ -353,7 +354,7 @@ fn rename_note(
     Ok(())
 }
 
-fn publish_content(root: &Path) -> anyhow::Result<()> {
+async fn publish_content(root: &Path) -> anyhow::Result<()> {
     let content = paxsite_content::Content::read(true, true)?;
     let drafts: Vec<&paxsite_content::Document> = content
         .blog
@@ -375,10 +376,10 @@ fn publish_content(root: &Path) -> anyhow::Result<()> {
 
     let selection = Select::new("Select a draft to publish:", display_items.clone()).prompt()?;
     let idx = display_items.iter().position(|s| *s == selection).unwrap();
-    publish_doc(root, drafts[idx])
+    publish_doc(root, drafts[idx]).await
 }
 
-fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Result<()> {
+async fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Result<()> {
     if !doc.metadata.draft {
         anyhow::bail!("{} is not a draft", doc.id.join("/"));
     }
@@ -391,9 +392,9 @@ fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Result<(
 
     // Mirror to the PDS as a standard.site document, if configured. Re-read the
     // document so the record reflects the just-written publish date.
-    if let Some(mut session) = StandardSiteSession::open(root)? {
+    if let Some(mut session) = StandardSiteSession::open(root).await? {
         let doc = reload_document(doc)?;
-        session.publish_document(&doc)?;
+        session.publish_document(&doc).await?;
     }
 
     Ok(())
@@ -411,15 +412,15 @@ struct StandardSiteSession {
 impl StandardSiteSession {
     /// Logs in and ensures the publication record matches the config. Returns
     /// `Ok(None)` when standard.site is disabled (no DID configured in [`CONFIG`]).
-    fn open(root: &Path) -> anyhow::Result<Option<Self>> {
+    async fn open(root: &Path) -> anyhow::Result<Option<Self>> {
         let (Some(publisher), Some(publication_uri)) =
-            (standard_site_login(root)?, CONFIG.publication_uri())
+            (standard_site_login(root).await?, CONFIG.publication_uri())
         else {
             return Ok(None);
         };
 
         // Idempotently ensure the publication singleton matches the config.
-        publisher.upsert_publication(&publication_record()?)?;
+        publisher.upsert_publication(&publication_record()?).await?;
 
         Ok(Some(Self {
             publisher,
@@ -429,12 +430,13 @@ impl StandardSiteSession {
 
     /// Upserts the document's standard.site record and writes the resulting
     /// AT-URI and content fingerprint back into its frontmatter.
-    fn publish_document(&mut self, doc: &Document) -> anyhow::Result<()> {
+    async fn publish_document(&mut self, doc: &Document) -> anyhow::Result<()> {
         let existing = doc.metadata.standard_site.as_ref().map(|s| s.uri.clone());
         let record = document_record(&self.publication_uri, doc)?;
         let uri = self
             .publisher
             .upsert_document(existing.as_deref(), &record)
+            .await
             .with_context(|| format!("failed to publish {}", doc.id.join("/")))?;
 
         let (mut metadata, body) = read_frontmatter(&doc.source_path)?;
@@ -450,12 +452,12 @@ impl StandardSiteSession {
 }
 
 /// Logs into the PDS for standard.site work, or `Ok(None)` if disabled (no DID).
-fn standard_site_login(root: &Path) -> anyhow::Result<Option<paxsite_atproto::Publisher>> {
+async fn standard_site_login(root: &Path) -> anyhow::Result<Option<paxsite_atproto::Publisher>> {
     let Some(did) = CONFIG.atproto_did else {
         return Ok(None);
     };
     let store_path = root.join(".standard-site-session.json");
-    Ok(Some(paxsite_atproto::login(&store_path, did)?))
+    Ok(Some(paxsite_atproto::login(&store_path, did).await?))
 }
 
 /// The publication record derived from the current site config.
@@ -475,12 +477,12 @@ fn uri(s: &str) -> anyhow::Result<UriValue<Str>> {
 /// Pushes the publication record (name/description/url from [`CONFIG`]) to the
 /// PDS, showing the before/after so config-only changes can be applied without
 /// touching a post.
-fn update_publication(root: &Path) -> anyhow::Result<()> {
-    let Some(publisher) = standard_site_login(root)? else {
+async fn update_publication(root: &Path) -> anyhow::Result<()> {
+    let Some(publisher) = standard_site_login(root).await? else {
         anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
     };
 
-    let before = publisher.get_publication()?;
+    let before = publisher.get_publication().await?;
     match &before {
         Some(p) => {
             println!("Current publication:");
@@ -492,7 +494,7 @@ fn update_publication(root: &Path) -> anyhow::Result<()> {
     }
 
     let new = publication_record()?;
-    let uri = publisher.upsert_publication(&new)?;
+    let uri = publisher.upsert_publication(&new).await?;
 
     let changed = before
         .as_ref()
@@ -559,7 +561,7 @@ fn reload_document(doc: &Document) -> anyhow::Result<Document> {
 
 /// Publishes a single chosen non-draft blog/update post to standard.site.
 /// Handy for testing the flow or re-publishing one post on demand.
-fn publish_one_standard_site(root: &Path) -> anyhow::Result<()> {
+async fn publish_one_standard_site(root: &Path) -> anyhow::Result<()> {
     let content = paxsite_content::Content::read(true, true)?;
     let docs: Vec<&Document> = publishable_docs(&content).collect();
     if docs.is_empty() {
@@ -585,14 +587,14 @@ fn publish_one_standard_site(root: &Path) -> anyhow::Result<()> {
     let selection = Select::new("Select a post to publish:", display.clone()).prompt()?;
     let idx = display.iter().position(|s| *s == selection).unwrap();
 
-    let Some(mut session) = StandardSiteSession::open(root)? else {
+    let Some(mut session) = StandardSiteSession::open(root).await? else {
         anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
     };
-    session.publish_document(docs[idx])
+    session.publish_document(docs[idx]).await
 }
 
 /// Publishes every non-draft blog/update post that lacks an up-to-date record.
-fn backfill_standard_site(root: &Path) -> anyhow::Result<()> {
+async fn backfill_standard_site(root: &Path) -> anyhow::Result<()> {
     let content = paxsite_content::Content::read(true, true)?;
     let stale: Vec<&Document> = publishable_docs(&content)
         .filter(|d| needs_publish(d))
@@ -603,14 +605,14 @@ fn backfill_standard_site(root: &Path) -> anyhow::Result<()> {
         return Ok(());
     }
 
-    let Some(mut session) = StandardSiteSession::open(root)? else {
+    let Some(mut session) = StandardSiteSession::open(root).await? else {
         anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
     };
 
     println!("Publishing {} document(s)...", stale.len());
     for doc in stale {
         println!("[{}] {}", doc.document_type.dir_name(), doc.metadata.title);
-        session.publish_document(doc)?;
+        session.publish_document(doc).await?;
     }
     Ok(())
 }
