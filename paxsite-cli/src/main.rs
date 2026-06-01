@@ -6,24 +6,49 @@ use std::{
 use anyhow::Context;
 use inquire::{Select, Text};
 use paxsite_content::{
-    DocumentMetadata, DocumentNode, DocumentTaxonomies, DocumentType, INDEX_FILENAME, Tag,
-    blog_or_update_path, display_name_to_filename, filename_to_display_name, generate_frontmatter,
-    note_path, read_frontmatter, title_to_slug, write_frontmatter,
+    CONFIG, Document, DocumentMetadata, DocumentNode, DocumentTaxonomies, DocumentType,
+    INDEX_FILENAME, StandardSite, Tag, blog_or_update_path, display_name_to_filename,
+    filename_to_display_name, generate_frontmatter, markdown_to_plaintext, note_path,
+    read_frontmatter, title_to_slug, write_frontmatter,
 };
 
 fn main() -> anyhow::Result<()> {
     let root = find_project_root()?;
 
+    // Non-interactive subcommand used by the pre-push hook: verifies every
+    // non-draft blog/update post has an up-to-date standard.site record, exiting
+    // non-zero (without prompting) if any are missing or stale.
+    if std::env::args().nth(1).as_deref() == Some("check-standard-site") {
+        return check_standard_site();
+    }
+
     const CREATE: &str = "Create new content";
     const EDIT: &str = "Edit existing content";
     const PUBLISH: &str = "Publish a draft";
+    const PUBLISH_ONE: &str = "Publish one post to standard.site";
+    const BACKFILL: &str = "Backfill standard.site records";
+    const UPDATE_PUBLICATION: &str = "Update standard.site publication";
 
-    let action = Select::new("What would you like to do?", vec![CREATE, EDIT, PUBLISH]).prompt()?;
+    let action = Select::new(
+        "What would you like to do?",
+        vec![
+            CREATE,
+            EDIT,
+            PUBLISH,
+            PUBLISH_ONE,
+            BACKFILL,
+            UPDATE_PUBLICATION,
+        ],
+    )
+    .prompt()?;
 
     match action {
         CREATE => create_content(&root)?,
         EDIT => edit_content(&root)?,
-        PUBLISH => publish_content()?,
+        PUBLISH => publish_content(&root)?,
+        PUBLISH_ONE => publish_one_standard_site(&root)?,
+        BACKFILL => backfill_standard_site(&root)?,
+        UPDATE_PUBLICATION => update_publication(&root)?,
         _ => unreachable!(),
     }
 
@@ -94,6 +119,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
         taxonomies: Some(DocumentTaxonomies {
             tags: selected_tags,
         }),
+        standard_site: None,
     };
 
     let slug = title_to_slug(&title);
@@ -326,7 +352,7 @@ fn rename_note(
     Ok(())
 }
 
-fn publish_content() -> anyhow::Result<()> {
+fn publish_content(root: &Path) -> anyhow::Result<()> {
     let content = paxsite_content::Content::read(true, true)?;
     let drafts: Vec<&paxsite_content::Document> = content
         .blog
@@ -348,10 +374,10 @@ fn publish_content() -> anyhow::Result<()> {
 
     let selection = Select::new("Select a draft to publish:", display_items.clone()).prompt()?;
     let idx = display_items.iter().position(|s| *s == selection).unwrap();
-    publish_doc(drafts[idx])
+    publish_doc(root, drafts[idx])
 }
 
-fn publish_doc(doc: &paxsite_content::Document) -> anyhow::Result<()> {
+fn publish_doc(root: &Path, doc: &paxsite_content::Document) -> anyhow::Result<()> {
     if !doc.metadata.draft {
         anyhow::bail!("{} is not a draft", doc.id.join("/"));
     }
@@ -360,9 +386,279 @@ fn publish_doc(doc: &paxsite_content::Document) -> anyhow::Result<()> {
     metadata.draft = false;
     metadata.datetime = Some(chrono::Utc::now());
     write_frontmatter(&doc.source_path, &metadata, &body)?;
-
     println!("Published {}", doc.source_path.display());
+
+    // Mirror to the PDS as a standard.site document, if configured. Re-read the
+    // document so the record reflects the just-written publish date.
+    if let Some(mut session) = StandardSiteSession::open(root)? {
+        let doc = reload_document(doc)?;
+        session.publish_document(&doc)?;
+    }
+
     Ok(())
+}
+
+// ── standard.site publishing ──────────────────────────────────────────────────
+
+/// An authenticated standard.site session plus the resolved publication URI,
+/// established once and reused across one or more document upserts.
+struct StandardSiteSession {
+    publisher: Box<dyn paxsite_atproto::Publisher>,
+    publication_uri: String,
+}
+
+impl StandardSiteSession {
+    /// Logs in and ensures the publication record matches the config. Returns
+    /// `Ok(None)` when standard.site is disabled (no DID configured in [`CONFIG`]).
+    fn open(root: &Path) -> anyhow::Result<Option<Self>> {
+        let (Some(publisher), Some(publication_uri)) =
+            (standard_site_login(root)?, CONFIG.publication_uri())
+        else {
+            return Ok(None);
+        };
+
+        // Idempotently ensure the publication singleton matches the config.
+        publisher.upsert_publication(&publication_record())?;
+
+        Ok(Some(Self {
+            publisher,
+            publication_uri,
+        }))
+    }
+
+    /// Upserts the document's standard.site record and writes the resulting
+    /// AT-URI and content fingerprint back into its frontmatter.
+    fn publish_document(&mut self, doc: &Document) -> anyhow::Result<()> {
+        let existing = doc.metadata.standard_site.as_ref().map(|s| s.uri.clone());
+        let record = document_record(&self.publication_uri, doc);
+        let uri = self
+            .publisher
+            .upsert_document(existing.as_deref(), &record)
+            .with_context(|| format!("failed to publish {}", doc.id.join("/")))?;
+
+        let (mut metadata, body) = read_frontmatter(&doc.source_path)?;
+        metadata.standard_site = Some(StandardSite {
+            uri: uri.clone(),
+            hash: doc.standard_site_fingerprint(),
+        });
+        write_frontmatter(&doc.source_path, &metadata, &body)?;
+
+        println!("  → standard.site: {uri}");
+        Ok(())
+    }
+}
+
+/// Logs into the PDS for standard.site work, or `Ok(None)` if disabled (no DID).
+fn standard_site_login(root: &Path) -> anyhow::Result<Option<Box<dyn paxsite_atproto::Publisher>>> {
+    let Some(did) = CONFIG.atproto_did else {
+        return Ok(None);
+    };
+    let store_path = root.join(".standard-site-session.json");
+    Ok(Some(paxsite_atproto::login(&store_path, did)?))
+}
+
+/// The publication record derived from the current site config.
+fn publication_record() -> paxsite_atproto::PublicationRecord {
+    paxsite_atproto::PublicationRecord {
+        url: CONFIG.base_url.to_string(),
+        name: CONFIG.name.to_string(),
+        description: Some(CONFIG.description.to_string()),
+    }
+}
+
+/// Pushes the publication record (name/description/url from [`CONFIG`]) to the
+/// PDS, showing the before/after so config-only changes can be applied without
+/// touching a post.
+fn update_publication(root: &Path) -> anyhow::Result<()> {
+    let Some(publisher) = standard_site_login(root)? else {
+        anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
+    };
+
+    let before = publisher.get_publication()?;
+    match &before {
+        Some(p) => {
+            println!("Current publication:");
+            println!("  name:        {}", p.name);
+            println!("  description: {}", p.description.as_deref().unwrap_or(""));
+            println!("  url:         {}", p.url);
+        }
+        None => println!("No existing publication record (it will be created)."),
+    }
+
+    let new = publication_record();
+    let uri = publisher.upsert_publication(&new)?;
+
+    let changed = before
+        .as_ref()
+        .is_none_or(|b| b.name != new.name || b.description != new.description || b.url != new.url);
+    if changed {
+        println!("\nUpdated publication ({uri}):");
+        println!("  name:        {}", new.name);
+        println!(
+            "  description: {}",
+            new.description.as_deref().unwrap_or("")
+        );
+        println!("  url:         {}", new.url);
+    } else {
+        println!("\nPublication already up to date ({uri}).");
+    }
+    Ok(())
+}
+
+/// Builds the `site.standard.document` record for a document.
+fn document_record(publication_uri: &str, doc: &Document) -> paxsite_atproto::DocumentRecord {
+    // Concatenate the raw markdown (intro + body) and render it to plain text via
+    // the shared canonical operation.
+    let mut markdown = doc.description_raw.clone();
+    if let Some(rest) = &doc.rest_of_content_raw {
+        markdown.push_str("\n\n");
+        markdown.push_str(rest);
+    }
+    let text = markdown_to_plaintext(&markdown);
+
+    paxsite_atproto::DocumentRecord {
+        site: publication_uri.to_string(),
+        title: doc.metadata.title.clone(),
+        // Canonical site-relative path, shared with the SSG (no desync).
+        path: doc.url_path(),
+        published_at: doc
+            .metadata
+            .datetime
+            .unwrap_or_else(chrono::Utc::now)
+            .to_rfc3339(),
+        description: doc.metadata.short.clone(),
+        tags: doc
+            .metadata
+            .taxonomies
+            .as_ref()
+            .map(|t| t.tags.clone())
+            .unwrap_or_default(),
+        text_content: (!text.is_empty()).then_some(text),
+    }
+}
+
+/// Re-reads a document from disk so callers observe just-written frontmatter.
+fn reload_document(doc: &Document) -> anyhow::Result<Document> {
+    Document::read(
+        &doc.source_path,
+        doc.id.clone(),
+        doc.display_path.clone(),
+        doc.document_type,
+        true,
+    )
+}
+
+/// Publishes a single chosen non-draft blog/update post to standard.site.
+/// Handy for testing the flow or re-publishing one post on demand.
+fn publish_one_standard_site(root: &Path) -> anyhow::Result<()> {
+    let content = paxsite_content::Content::read(true, true)?;
+    let docs: Vec<&Document> = publishable_docs(&content).collect();
+    if docs.is_empty() {
+        println!("No published blog/update posts.");
+        return Ok(());
+    }
+
+    let display: Vec<String> = docs
+        .iter()
+        .map(|d| {
+            let status = if needs_publish(d) {
+                ""
+            } else {
+                " (up to date)"
+            };
+            format!(
+                "[{}] {}{status}",
+                d.document_type.dir_name(),
+                d.metadata.title
+            )
+        })
+        .collect();
+    let selection = Select::new("Select a post to publish:", display.clone()).prompt()?;
+    let idx = display.iter().position(|s| *s == selection).unwrap();
+
+    let Some(mut session) = StandardSiteSession::open(root)? else {
+        anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
+    };
+    session.publish_document(docs[idx])
+}
+
+/// Publishes every non-draft blog/update post that lacks an up-to-date record.
+fn backfill_standard_site(root: &Path) -> anyhow::Result<()> {
+    let content = paxsite_content::Content::read(true, true)?;
+    let stale: Vec<&Document> = publishable_docs(&content)
+        .filter(|d| needs_publish(d))
+        .collect();
+
+    if stale.is_empty() {
+        println!("All non-draft blog/update posts are already up to date.");
+        return Ok(());
+    }
+
+    let Some(mut session) = StandardSiteSession::open(root)? else {
+        anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
+    };
+
+    println!("Publishing {} document(s)...", stale.len());
+    for doc in stale {
+        println!("[{}] {}", doc.document_type.dir_name(), doc.metadata.title);
+        session.publish_document(doc)?;
+    }
+    Ok(())
+}
+
+/// Pre-push gate: fails if any publishable post is missing or has a stale record.
+fn check_standard_site() -> anyhow::Result<()> {
+    // Feature not enabled → nothing to enforce.
+    if CONFIG.atproto_did.is_none() {
+        return Ok(());
+    }
+
+    let content = paxsite_content::Content::read(true, true)?;
+    let stale: Vec<&Document> = publishable_docs(&content)
+        .filter(|d| needs_publish(d))
+        .collect();
+
+    if stale.is_empty() {
+        return Ok(());
+    }
+
+    eprintln!(
+        "standard.site: {} post(s) need publishing before push:",
+        stale.len()
+    );
+    for doc in &stale {
+        let reason = if doc.metadata.standard_site.is_none() {
+            "never published"
+        } else {
+            "content changed since last publish"
+        };
+        eprintln!(
+            "  - [{}] {} ({reason})",
+            doc.document_type.dir_name(),
+            doc.id.join("/")
+        );
+    }
+    eprintln!("Run `paxsite-cli` → \"Backfill standard.site records\" (or publish) to fix.");
+    std::process::exit(1);
+}
+
+/// Iterator over non-draft blog and update documents.
+fn publishable_docs(content: &paxsite_content::Content) -> impl Iterator<Item = &Document> {
+    content
+        .blog
+        .documents
+        .iter()
+        .chain(content.updates.documents.iter())
+        .filter(|d| !d.metadata.draft)
+}
+
+/// Whether a document has no record yet, or its content has drifted from the
+/// last-published fingerprint.
+fn needs_publish(doc: &Document) -> bool {
+    match &doc.metadata.standard_site {
+        None => true,
+        Some(s) => s.hash != doc.standard_site_fingerprint(),
+    }
 }
 
 // ── Hierarchical folder selector ────────────────────────────────────────────

@@ -5,6 +5,10 @@ datetime = 2013-10-01T00:00:00Z
 
 [taxonomies]
 tags=["c", "cursed"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn6y75sgyw2a"
+hash = "1bdfea3f311966c5e3909aa4c97b5d7c42c7395c076e36729f7bf6125d232218"
 +++
 
 I've always wondered what could be done with the C preprocessor. The existence of projects such as [Boost Preprocessor](http://www.boost.org/doc/libs/release/libs/preprocessor/) and the infamous [Brainfuck interpreter](https://github.com/orangeduck/CPP_COMPLETE) are a testament to its wide-ranging capabilities.

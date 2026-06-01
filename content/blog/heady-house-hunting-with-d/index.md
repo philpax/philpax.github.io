@@ -5,6 +5,10 @@ datetime = 2015-01-13T00:00:00Z
 
 [taxonomies]
 tags=["d"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mfgo7w2r"
+hash = "20b4400c00aa868475b4c37196449274baf715fb0723c99ca658d302a2c657a3"
 +++
 
 Several months ago, my family found ourselves in the most tedious of quests: searching for a new house. Our old house was showing all the signs of advanced age: weakened structural integrity, cracks in the walls, failing appliances - and there was only so much we could do to patch around the fundamental issues. "Enough," said we, "it's time to go."

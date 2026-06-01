@@ -222,8 +222,72 @@ Component implementations live in `src/views/components/`.
 | `paxsite` (root) | Main SSG: markdown rendering, views, build orchestration |
 | `paxsite-content` | Content layer: document types, disk I/O, frontmatter parsing, Git dates, Bluesky API/caching |
 | `paxsite-cli` | CLI tool for creating new content (blog posts, updates, notes) |
+| `paxsite-atproto` | AT Protocol publishing: OAuth (localhost public client) + standard.site record writes |
 | `paxcss` | CSS parsing utilities for extracting theme variables |
 | `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`) |
+
+## standard.site Publishing
+
+The site can mirror its blog/update posts to a PDS as [standard.site](https://standard.site/)
+records, making them discoverable on the AT Protocol network while the content stays here.
+
+### How it works
+
+- **Config**: site identity (author/name/description/base URL) and the AT Protocol DID live in
+  `paxsite_content::CONFIG` — the single source of truth, from which `ViewContextBase` is derived.
+  Standard.site is **disabled** while `CONFIG.atproto_did` is `None`; set it to
+  `Some("did:plc:...")` to enable. No on-disk config file is involved.
+- **Publication**: a singleton `site.standard.publication` record at a fixed rkey (`self`), so its
+  AT-URI is fully derived from the DID — nothing is persisted.
+- **Records**: each published post gets a `site.standard.document` record on the PDS. The
+  document's AT-URI and a content fingerprint are written back into the post's frontmatter under
+  `[standard_site]`. Its `path` and the SSG's output route share one canonical derivation
+  (`Document::route_path`), and `textContent` uses the shared `markdown_to_plaintext` — so neither
+  can drift from the site.
+- **Build output**: the SSG emits `/.well-known/site.standard.publication` (the derived AT-URI)
+  and, for any post with a `[standard_site]` URI, a `<link rel="site.standard.document" href="at://…">`
+  tag in its `<head>`. Posts without a record emit no link, so unpublished content is never advertised.
+
+### Auth model
+
+Publishing uses a **localhost public OAuth client** (no private key, no hosted client metadata),
+scoped to `repo:site.standard.publication repo:site.standard.document` only — a compromised
+machine can touch nothing else on the account. The rotating session is cached locally in
+`.standard-site-session.json` (gitignored); the repo carries no secrets, so you can pull and
+publish from any machine, logging in via the browser when the cached session has expired
+(public-client sessions last ~2 weeks).
+
+### Publishing
+
+Run `cargo run -p paxsite-cli`:
+
+- **Publish a draft** — flips the draft to published *and* upserts its standard.site record.
+- **Backfill standard.site records** — publishes every non-draft blog/update post that has no
+  record yet or whose content has changed since it was last published.
+
+The first publish opens a browser for OAuth login and creates the publication record.
+
+### Pre-push hook
+
+A pre-push check runs `paxsite-cli check-standard-site`, which blocks a push if any non-draft
+blog/update post is missing or has a stale record. (No-op when standard.site is disabled, i.e.
+`CONFIG.atproto_did` is `None`.) Git won't auto-run committed hooks, so each clone enables it once.
+
+**Git 2.54+** (config-based hooks — the definition lives in `.githooks/hooks.gitconfig`):
+
+```sh
+git config --local include.path ../.githooks/hooks.gitconfig
+```
+
+**Git < 2.54** (script + `core.hooksPath`, using `.githooks/pre-push`):
+
+```sh
+git config --local core.hooksPath .githooks
+```
+
+Setting `include.path` is harmless on older Git (the `[hook]` section is ignored) and activates
+automatically on upgrade. When you move to 2.54+, unset `core.hooksPath` so the check doesn't run
+twice: `git config --local --unset core.hooksPath`.
 
 ## CI Requirements
 

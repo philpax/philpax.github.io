@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
+members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli", "paxsite-atproto"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -41,6 +41,8 @@ chrono = { version = "0.4.37", default-features = false, features = [
 ] }
 toml = "0.8.12"
 toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
+sha2 = "0.10"
+markdown = "1.0.0"
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
 paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
@@ -59,7 +61,7 @@ sha1 = { version = "0.10.6", optional = true }
 anyhow = { workspace = true }
 base64 = { workspace = true }
 chrono = { workspace = true }
-markdown = "1.0.0"
+markdown = { workspace = true }
 rss = { version = "2.0.7", features = ["atom"] }
 serde = { workspace = true }
 serde_json = { workspace = true }

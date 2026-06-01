@@ -100,20 +100,9 @@ impl Document {
     }
 
     pub fn route_path(&self) -> RoutePath {
-        match self.document_type {
-            DocumentType::Blog => Route::BlogPost {
-                post_id: self.id.clone(),
-            }
-            .route_path(),
-            DocumentType::Update => Route::UpdatePost {
-                post_id: self.id.clone(),
-            }
-            .route_path(),
-            DocumentType::Note => Route::Note {
-                note_id: self.id.clone(),
-            }
-            .route_path(),
-        }
+        // Canonical route derivation lives in paxsite-content so the SSG and the
+        // CLI's standard.site `path` can never drift apart.
+        self.base.route_path()
     }
 
     pub fn alternate_route_path(&self) -> Option<RoutePath> {

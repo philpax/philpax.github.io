@@ -123,6 +123,9 @@ pub struct SocialMeta {
     article_tag: Option<String>,
     /// Whether to instruct robots not to index this page
     noindex: bool,
+    /// AT-URI of the `site.standard.document` record for this page, if it has been
+    /// published to the PDS. Emits a `<link rel="site.standard.document">` tag.
+    standard_site_uri: Option<String>,
 }
 impl SocialMeta {
     /// The full title of the page, including the website name
@@ -173,6 +176,7 @@ pub fn layout<'a>(
     let bump = context.bump;
     let generation_date_element =
         html! { in bump; <IsoDatetime datetime={context.generation_date} /> };
+    let standard_site_uri = meta.standard_site_uri.clone();
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
@@ -190,6 +194,9 @@ pub fn layout<'a>(
                         }
                     })}
                     <link rel="alternate" href={Route::BlogRss.url_path()} r#type="application/rss+xml" title={context.website_name} />
+                    {standard_site_uri.map(|uri| html! { in bump;
+                        <link rel="site.standard.document" href={uri} />
+                    })}
                     <script>{r#"(function(){var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.classList.add(t);})()"#}</script>
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>

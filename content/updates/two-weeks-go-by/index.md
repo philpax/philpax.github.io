@@ -5,6 +5,10 @@ datetime = 2025-09-03T03:30:00Z
 
 [taxonomies]
 tags=["hardware", "paxboard", "genresinspace", "nixos"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mgz4ma26"
+hash = "e25447b9e88863f7526dee18ba4586235c6a67f2409743e737c5abcdbe16d0b8"
 +++
 
 It has been over two weeks since my last update. I've worked on a few things, but not a lot: I realised that, after my last update, that I was running myself ragged, and I'd be better served by taking my foot off the pedal and taking things a bit more leisurely, so that's what I did. That's not to say that I did nothing, though...

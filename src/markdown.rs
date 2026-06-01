@@ -876,31 +876,9 @@ pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
     anchors
 }
 
-pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {
-    if let Some(ignore_node) = ignore_node
-        && ignore_node(node)
-    {
-        return String::new();
-    }
-
-    if let Node::Text(text) = node {
-        text.value.clone()
-    } else if let Node::InlineCode(code) = node {
-        code.value.clone()
-    } else {
-        let mut output: String = node
-            .children()
-            .map(|c| c.iter().map(|n| inner_text(n, ignore_node)).collect())
-            .unwrap_or_default();
-        if matches!(
-            node,
-            Node::Paragraph(_) | Node::Heading(_) | Node::Blockquote(_)
-        ) {
-            output.push('\n');
-        }
-        output
-    }
-}
+// `inner_text` is the canonical markdown→plaintext walker; it lives in
+// paxsite-content so the CLI can derive standard.site `textContent` identically.
+pub use paxsite_content::inner_text;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HeadingHierarchy<'a> {

@@ -5,6 +5,10 @@ datetime = 2026-05-10T21:05:45Z
 
 [taxonomies]
 tags=["ai", "pyxis", "website", "genresinspace", "blackbird", "perchanceinterpreter", "paxcord", "jc2mp", "paxboard", "rucomfyui", "idacsplitter", "paxhtml", "nixos", "prismata", "wikitextsimplified", "reutilities"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mfzhxf2v"
+hash = "4b2e1afecf4d2727558d31a232ed0e33c574d299f02ebd591ff15f36d771fe8f"
 +++
 
 _With apologies to [Nine Inch Nails](https://www.youtube.com/watch?v=9gg2p7_PnTQ)._

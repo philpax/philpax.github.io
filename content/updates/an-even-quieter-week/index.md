@@ -5,6 +5,10 @@ datetime = 2025-08-12T23:40:00Z
 
 [taxonomies]
 tags=["paxboard", "dalamud"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhgcll2h"
+hash = "bdcba76f35b3cbd48452838e1bb3ad7411d7a2731114279578668fc9839efe5c"
 +++
 
 Last week was a terribly busy week at work, which left me without a lot of energy to work on my own projects. Things should calm down after this, but nevertheless, I am left without much to show for this week.

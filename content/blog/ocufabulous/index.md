@@ -5,6 +5,10 @@ datetime = 2014-10-12T00:00:00Z
 
 [taxonomies]
 tags=["xr"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mfndgm2m"
+hash = "396d20fda8ff49036ab45ef2eae85c1382ed0d2473f84ebf19253da0fde09fb9"
 +++
 
 The [Oculus Rift Development Kit 2](http://www.oculus.com/blog/announcing-the-oculus-rift-development-kit-2-dk2/) is Oculus' latest virtual reality headset available to the "public." As the name suggests, it exists to allow developers to produce and test experiences for the eventual consumer version.

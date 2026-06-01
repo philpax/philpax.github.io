@@ -12,3 +12,5 @@ toml-datetime-compat = { workspace = true }
 paxhtml = { workspace = true }
 serde_json = { workspace = true }
 ureq = { workspace = true }
+sha2 = { workspace = true }
+markdown = { workspace = true }

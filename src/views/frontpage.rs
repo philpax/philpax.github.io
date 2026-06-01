@@ -38,6 +38,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             article_modified_time: None,
             article_tag: None,
             noindex: false,
+            standard_site_uri: None,
         },
         CurrentPage::Home,
         html! { in bump;

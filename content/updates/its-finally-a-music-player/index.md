@@ -5,6 +5,10 @@ datetime = 2025-09-24T18:00:00Z
 
 [taxonomies]
 tags=["blackbird", "website", "music", "hardware", "nixos"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mgsxak24"
+hash = "2480e24441123149c4799d5450909f0139c84aab9a4bc722048ca7e0cb977449"
 +++
 
 Hello, hello! It has been just over three weeks since my last update. I'm not proud of that, but it is what it is: I've been doing some work for [Wayfarer Labs](https://wayfarerlabs.ai/), which has dominated much of my free time of recent. It's not always easy working across timezones!

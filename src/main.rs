@@ -198,16 +198,13 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(Arc::new(image_store::ImageStore::new(&content)))
     })?;
 
-    // ViewContextBase can be shared across threads (no bump reference)
+    // ViewContextBase can be shared across threads (no bump reference). Site
+    // identity is sourced from the shared config so the SSG and CLI agree.
     let view_context = views::ViewContextBase {
-        website_author: "Philpax",
-        website_name: "Philpax",
-        website_description: concat!(
-            "The blog of Philpax, ",
-            "your friendly neighbourhood polyglot programmer/engineer, ",
-            "cursed with more projects than time."
-        ),
-        website_base_url: "https://philpax.me",
+        website_author: paxsite_content::CONFIG.author,
+        website_name: paxsite_content::CONFIG.name,
+        website_description: paxsite_content::CONFIG.description,
+        website_base_url: paxsite_content::CONFIG.base_url,
         content: &content,
         image_store: &image_store,
         syntax: &syntax,
@@ -406,6 +403,20 @@ fn main() -> anyhow::Result<()> {
                 Route::DeprecatedAbout,
             )
         })?;
+        anyhow::Ok(())
+    })?;
+
+    timer.step("Wrote standard.site well-known", |_| {
+        // Emit /.well-known/site.standard.publication pointing at the publication
+        // record's (deterministic) AT-URI. No-op when standard.site is disabled.
+        if let Some(publication_uri) = paxsite_content::CONFIG.publication_uri() {
+            let well_known_dir = output_dir.join(".well-known");
+            std::fs::create_dir_all(&well_known_dir)?;
+            std::fs::write(
+                well_known_dir.join("site.standard.publication"),
+                publication_uri,
+            )?;
+        }
         anyhow::Ok(())
     })?;
 

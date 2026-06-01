@@ -1,0 +1,6 @@
+#!/bin/sh
+# Block pushes when any non-draft blog/update post is missing or has a stale
+# standard.site document record. No-op when standard-site.toml is absent.
+#
+# Enable with:  git config core.hooksPath .githooks
+exec cargo run --quiet -p paxsite-cli -- check-standard-site

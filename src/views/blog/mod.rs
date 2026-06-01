@@ -24,6 +24,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             article_modified_time: None,
             article_tag: None,
             noindex: false,
+            standard_site_uri: None,
         },
         CurrentPage::Blog,
         html! { in bump;
@@ -59,6 +60,11 @@ pub fn post<'a>(context: ViewContext<'a>, document: &Document) -> paxhtml::Docum
             article_modified_time: None,
             article_tag: document.tags().map(|t| t.join(", ")),
             noindex: document.metadata.draft,
+            standard_site_uri: document
+                .metadata
+                .standard_site
+                .as_ref()
+                .map(|s| s.uri.clone()),
         },
         CurrentPage::Blog,
         posts::post(context, document, posts::PostBody::Full),

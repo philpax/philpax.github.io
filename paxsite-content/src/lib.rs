@@ -10,6 +10,48 @@ use serde::{Deserialize, Serialize};
 pub use paxhtml::util::slugify;
 
 pub mod bluesky;
+pub mod md;
+pub mod standard_site;
+
+pub use md::{inner_text, markdown_to_plaintext, parse_markdown};
+
+// ── Site configuration ────────────────────────────────────────────────────────
+
+/// Static site-wide configuration, the single source of truth for site identity
+/// (used to derive the view context) and AT Protocol identity (used for
+/// standard.site publishing). The DID is hardcoded so publishing is stateless:
+/// the publication's AT-URI is fully derivable, needing no on-disk config.
+#[derive(Debug, Clone, Copy)]
+pub struct Config {
+    pub author: &'static str,
+    pub name: &'static str,
+    pub description: &'static str,
+    pub base_url: &'static str,
+    /// DID of the account that owns the standard.site records. `None` disables
+    /// standard.site entirely (no records, no `<link>`s, no well-known, and the
+    /// pre-push check passes); set it to `Some("did:plc:...")` to enable.
+    pub atproto_did: Option<&'static str>,
+}
+
+impl Config {
+    /// Deterministic AT-URI of the publication record (a singleton at a fixed
+    /// rkey), or `None` when standard.site is disabled.
+    pub fn publication_uri(&self) -> Option<String> {
+        self.atproto_did.map(standard_site::publication_uri)
+    }
+}
+
+pub const CONFIG: Config = Config {
+    author: "Philpax",
+    name: "Philpax",
+    description: concat!(
+        "The blog of Philpax, ",
+        "your friendly neighbourhood polyglot programmer/engineer, ",
+        "cursed with more projects than time."
+    ),
+    base_url: "https://philpax.me",
+    atproto_did: Some("did:plc:wamidydbgu3u6fk3yckaglnz"),
+};
 
 // ── Constants ───────────────────────────────────────────────────────────────
 
@@ -68,6 +110,20 @@ pub struct DocumentMetadata {
     #[serde(default)]
     pub draft: bool,
     pub taxonomies: Option<DocumentTaxonomies>,
+    /// Present once this document has been published as a `site.standard.document`
+    /// record on the PDS. Drives the `<link rel="site.standard.document">` tag and
+    /// the staleness check in the pre-push hook.
+    #[serde(default)]
+    pub standard_site: Option<StandardSite>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StandardSite {
+    /// AT-URI of the document record, e.g. `at://did:plc:.../site.standard.document/<rkey>`.
+    pub uri: String,
+    /// Fingerprint of the document content at the time the record was last written
+    /// (see [`Document::standard_site_fingerprint`]). A mismatch means the record is stale.
+    pub hash: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -130,12 +186,67 @@ impl Document {
                 last_modified: None,
                 draft: false,
                 taxonomies: None,
+                standard_site: None,
             },
             description_raw: String::new(),
             rest_of_content_raw: None,
             files: vec![],
             hero_filename_and_alt: None,
         }
+    }
+
+    /// Stable fingerprint of the content that maps into a `site.standard.document`
+    /// record. Used to detect when a published record has gone stale relative to the
+    /// source. Covers everything that would change the record: title, publish date,
+    /// the document's path (id), tags, and the raw markdown body. Deliberately
+    /// excludes `last_modified` (derived from Git) so the hash is reproducible.
+    pub fn standard_site_fingerprint(&self) -> String {
+        use sha2::{Digest, Sha256};
+
+        let mut hasher = Sha256::new();
+        hasher.update(self.metadata.title.as_bytes());
+        hasher.update([0]);
+        if let Some(dt) = self.metadata.datetime {
+            hasher.update(dt.to_rfc3339().as_bytes());
+        }
+        hasher.update([0]);
+        hasher.update(self.id.join("/").as_bytes());
+        hasher.update([0]);
+        if let Some(taxonomies) = &self.metadata.taxonomies {
+            for tag in &taxonomies.tags {
+                hasher.update(tag.as_bytes());
+                hasher.update([0]);
+            }
+        }
+        hasher.update([0]);
+        hasher.update(self.description_raw.as_bytes());
+        if let Some(rest) = &self.rest_of_content_raw {
+            hasher.update([0]);
+            hasher.update(rest.as_bytes());
+        }
+
+        hasher
+            .finalize()
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect()
+    }
+
+    /// Canonical route for this document: `<type-dir>/<id segments>`. This is the
+    /// single source of truth for the document's location, shared by the site
+    /// generator (for output paths and links) and the CLI (for the
+    /// `site.standard.document` `path`), so the two can never drift apart.
+    pub fn route_path(&self) -> paxhtml::RoutePath {
+        paxhtml::RoutePath::new(
+            std::iter::once(self.document_type.dir_name())
+                .chain(self.id.iter().map(|s| s.as_str())),
+            None,
+        )
+    }
+
+    /// Site-relative URL path for this document, e.g. `/blog/hello-again/`.
+    pub fn url_path(&self) -> String {
+        self.route_path().url_path()
     }
 
     pub fn read(
@@ -168,6 +279,7 @@ impl Document {
                 last_modified: Some(file_dates.last_commit),
                 draft: false,
                 taxonomies: None,
+                standard_site: None,
             };
 
             (metadata, file)
@@ -838,6 +950,18 @@ pub fn generate_frontmatter(metadata: &DocumentMetadata) -> String {
         output.push_str(&format!("tags=[{}]\n", tags.join(", ")));
     }
 
+    if let Some(standard_site) = &metadata.standard_site {
+        output.push_str("\n[standard_site]\n");
+        output.push_str(&format!(
+            "uri = {}\n",
+            toml::Value::from(standard_site.uri.as_str())
+        ));
+        output.push_str(&format!(
+            "hash = {}\n",
+            toml::Value::from(standard_site.hash.as_str())
+        ));
+    }
+
     output.push_str(&format!("{FRONTMATTER_DELIMITER}\n"));
     output
 }
@@ -879,7 +1003,7 @@ pub fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
     let get_mtime = || -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
         let metadata = std::fs::metadata(path)?;
         let modified = metadata.modified()?;
-        let datetime = chrono::DateTime::from(modified);
+        let datetime = chrono::DateTime::<chrono::Utc>::from(modified);
         Ok(datetime.with_timezone(&chrono::Utc))
     };
 

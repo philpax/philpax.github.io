@@ -5,6 +5,10 @@ datetime = 2025-07-23T00:00:00Z
 
 [taxonomies]
 tags=["meta", "blackbird", "genresinspace", "jc2mp", "nixos"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhzvco2c"
+hash = "f00d51a01a9944f60339072343b94f421730c389f11bee49e6b07eebfa96344f"
 +++
 
 As is usually the case, I find myself in a state of paralysis with regards to writing blog posts: whatever I write needs to be worthy of taking a prominent spot on my front page, which has prevented me from documenting the day-to-day out of a fear of banality. To counteract that, I have brought this section into existence for off-the-cuff updates that don't have to be held to the same standard.

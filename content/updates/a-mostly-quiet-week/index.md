@@ -5,6 +5,10 @@ datetime = 2025-08-06T03:30:00Z
 
 [taxonomies]
 tags=["meta", "paxboard", "nixos"]
+
+[standard_site]
+uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhmjmw2w"
+hash = "44881cc115f35fd64d4bc671de8561fd1fffc80c49039995dbc72a480913b1dc"
 +++
 
 Between work and social engagements, I had limited time to work on my own personal projects this week.

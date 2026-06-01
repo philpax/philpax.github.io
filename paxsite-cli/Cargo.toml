@@ -7,4 +7,5 @@ edition = "2024"
 anyhow = { workspace = true }
 chrono = { workspace = true }
 paxsite-content = { path = "../paxsite-content" }
+paxsite-atproto = { path = "../paxsite-atproto" }
 inquire = "0.7"

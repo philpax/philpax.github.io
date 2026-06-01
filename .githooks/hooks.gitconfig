@@ -1,0 +1,11 @@
+# Version-controlled Git hook definitions (Git 2.54+ config-based hooks).
+#
+# Enable once per clone (forward-compatible; ignored by Git < 2.54):
+#   git config --local include.path ../.githooks/hooks.gitconfig
+#
+# On Git 2.54+ this replaces `core.hooksPath`; unset that to avoid running the
+# pre-push check twice:
+#   git config --local --unset core.hooksPath
+[hook "standard-site-check"]
+	event = pre-push
+	command = cargo run --quiet -p paxsite-cli -- check-standard-site
