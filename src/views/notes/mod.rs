@@ -34,8 +34,8 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         .collect();
     let last = breadcrumbs.len() - 1;
     let elements: Vec<_> = breadcrumbs.into_iter().enumerate().flat_map(|(i, (label, note_id))| {
-        let separator = (i != 0).then(|| html! { in bump; <span class="text-[var(--color-secondary)]">{" · "}</span> });
-        let additional_classes = if i == last { "italic hover:text-[var(--color)]" } else { "text-[var(--color-secondary)]" };
+        let separator = (i != 0).then(|| html! { in bump; <span class="text-[var(--dim)]" ariaHidden="true">{"/"}</span> });
+        let additional_classes = if i == last { "text-[var(--phosphor)]" } else { "text-[var(--dim)]" };
         let link = html! { in bump;
             <Link target={Route::Note { note_id }.url_path()} additional_classes={additional_classes.to_string()}>
                 {label}
@@ -64,19 +64,24 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         html! { in bump;
             <div class="relative">
                 <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
-                <label r#for="nav-toggle" class="block w-full px-4 py-2 bg-[var(--background-color-secondary)] text-[var(--color)] text-center cursor-pointer hover:bg-[var(--background-color-secondary)] transition-colors duration-200 lowercase select-none">
-                    "All Notes"
+                <label r#for="nav-toggle" class={format!("block w-full px-3 py-2 border border-[var(--wire)] text-[var(--phosphor)] cursor-pointer hover:border-[var(--phosphor)] transition-colors duration-200 select-none text-sm {CODE_FONT_STYLE}")}>
+                    <span ariaHidden="true" class="text-[var(--dim)]">"[+] "</span>
+                    "index"
                 </label>
 
-                <div class="absolute left-0 right-0 bg-[var(--background-color)] border-l border-r border-b border-[var(--background-color-secondary)] shadow-lg p-4 z-50 hidden peer-checked:block">
+                <div class="absolute left-0 right-0 bg-[var(--panel)] border-l border-r border-b border-[var(--wire)] shadow-lg p-4 z-50 hidden peer-checked:block">
                     {notes_hierarchy(context, note)}
                 </div>
 
                 <div class="w-full mt-4">
-                    <h2 class="text-3xl font-bold">
+                    <div class={format!("kicker mb-1 {CODE_FONT_STYLE}")} ariaHidden="true">"// note"</div>
+                    <h2 class={format!("text-sm font-normal flex flex-wrap items-baseline gap-1 {CODE_FONT_STYLE}")}>
                         #{elements}
                     </h2>
-                    <div class="text-[var(--color-secondary)] text-sm mb-2">
+                    <h1 class="text-3xl font-bold text-[var(--phosphor)] [text-shadow:var(--glow)] mt-1">
+                        {note.display_path.last().unwrap().to_string()}
+                    </h1>
+                    <div class={format!("text-[var(--dim)] text-xs mb-2 mt-1 {CODE_FONT_STYLE}")}>
                         {html! { in bump; <IsoDatetime datetime={note.metadata.datetime.unwrap()} /> }}
                         {note.metadata.datetime
                             .zip(note.metadata.last_modified)
@@ -130,7 +135,7 @@ fn notes_hierarchy<'a>(
 ) -> paxhtml::Element<'a> {
     let bump = context.bump;
     html! { in bump;
-        <ul class="list-none m-0 p-0 break-words overflow-hidden">
+        <ul class={format!("list-none m-0 p-0 break-words overflow-hidden text-sm {CODE_FONT_STYLE}")}>
             {build_tree(bump, &context.content.notes.documents, active_document, 0)}
         </ul>
     }
@@ -174,7 +179,7 @@ fn build_tree<'bump>(
         .map(render_document)
         .unwrap_or_else(|| {
             html! { in bump;
-                <span class="text-[var(--color-secondary)]">{folder_node.folder_name.clone()}</span>
+                <span class="text-[var(--dim)]">{folder_node.folder_name.clone()}</span>
             }
         });
 
@@ -186,7 +191,7 @@ fn build_tree<'bump>(
         <li class="break-words list-none">
             <input r#type="checkbox" id={checkbox_id} class="peer sr-only" {checked_attr} autocomplete="off" />
             <div class="flex items-center gap-0">
-                <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--color-secondary)] hover:text-[var(--color)] transition-colors w-4">
+                <label r#for={checkbox_id} class="cursor-pointer select-none text-xs text-[var(--dim)] hover:text-[var(--phosphor)] transition-colors w-4">
                     <span class="peer-checked:hidden">{"▶"}</span>
                     <span class="hidden peer-checked:inline">{"▼"}</span>
                 </label>
@@ -194,7 +199,7 @@ fn build_tree<'bump>(
                     {index_item}
                 </div>
             </div>
-            <ul class="list-disc list-inside m-0 hidden peer-checked:block ml-4">
+            <ul class="list-none m-0 hidden peer-checked:block ml-2 pl-3 border-l border-[var(--wire)]">
                 #{folder_node.children.values().filter_map(|node| {
                     if let DocumentNode::Folder(f) = node && !f.is_leaf() {
                         if !f.has_visible_content() { return None; }

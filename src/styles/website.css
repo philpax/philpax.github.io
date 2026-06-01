@@ -1,23 +1,89 @@
-/* Theme modes */
+/* ============================================================
+   DISASSEMBLY — a reverse-engineer's terminal, elevated.
+   Mono (Iosevka) for all chrome; serif (Literata) for all prose.
+   Deep purple phosphor. Sharp corners, thin wire borders.
+   Dark ("disassembler") is the primary mode; light is "datasheet".
+   ============================================================ */
+
+/* Theme modes — every mode-specific value lives here as a custom property.
+   --color / --color-secondary / --background-color / --background-color-secondary
+   keep their historical names (used across the codebase) but are remapped onto
+   the Disassembly palette. A proper purple ramp + accents are layered on top. */
 --dark-mode {
-  --color: #ffffff;
-  --color-secondary: #cccccc;
-  --background-color: #3c2954;
-  --background-color-secondary: #6f4c9a;
-  --code-label-bg: hsl(220, 27%, 20%);
-  --code-label-color: #ffffff;
+  /* Purple ramp (50 = lightest, 900 = deepest) */
+  --purple-50: #f3edff;
+  --purple-100: #e7e0f3;
+  --purple-200: #cabbf0;
+  --purple-300: #b794f6;
+  --purple-400: #9d8bff;
+  --purple-500: #8b7cb3;
+  --purple-600: #6f4c9a;
+  --purple-700: #342650;
+  --purple-800: #1b1330;
+  --purple-900: #120c1f;
+
+  /* Core surfaces */
+  --background-color: #120c1f;        /* near-black aubergine */
+  --panel: #1b1330;                   /* elevated panel / code bg */
+  --background-color-secondary: #1b1330;
+
+  /* Text */
+  --color: #e7e0f3;                   /* prose text */
+  --color-secondary: #8b7cb3;         /* dim "comment" */
+  --dim: #8b7cb3;
+
+  /* Structure */
+  --wire: #342650;                    /* hairline borders */
+
+  /* Accents */
+  --phosphor: #b794f6;                /* phosphor accent (headings, markers) */
+  --hot: #e15ad0;                     /* hot magenta (links/highlights) */
+  --alt: #9d8bff;                     /* alternate accent */
+
+  /* Code label chip */
+  --code-label-bg: #342650;
+  --code-label-color: #e7e0f3;
+
+  /* Texture intensity (kept faint for AA prose) */
+  --scanline-opacity: 0.045;
+  --glow: 0 0 6px color-mix(in srgb, var(--phosphor) 35%, transparent);
 }
 
 --light-mode {
-  --color: #1f1a26;
-  --color-secondary: #5d5569;
-  --background-color: #e8dcff;
-  --background-color-secondary: #dcc8ff;
-  --code-label-bg: #e0dce5;
-  --code-label-color: #5c6166;
+  /* Purple ramp */
+  --purple-50: #f5f2fa;
+  --purple-100: #ece7f3;
+  --purple-200: #d8cfec;
+  --purple-300: #c9bfe0;
+  --purple-400: #9d8bff;
+  --purple-500: #6b5d88;
+  --purple-600: #6b3fb5;
+  --purple-700: #4c2f86;
+  --purple-800: #2d1d54;
+  --purple-900: #1d1530;
+
+  --background-color: #ece7f3;        /* datasheet paper */
+  --panel: #f5f2fa;
+  --background-color-secondary: #f5f2fa;
+
+  --color: #1d1530;                   /* near-black ink */
+  --color-secondary: #6b5d88;
+  --dim: #6b5d88;
+
+  --wire: #c9bfe0;
+
+  --phosphor: #6b3fb5;
+  --hot: #b5249e;
+  --alt: #6b3fb5;
+
+  --code-label-bg: #d8cfec;
+  --code-label-color: #2d1d54;
+
+  --scanline-opacity: 0.03;
+  --glow: none;
 }
 
-/* Root variables */
+/* Root variables (mode-independent) */
 :root {
   --header-height: 4em;
   --header-item-spacing: 1em;
@@ -25,11 +91,13 @@
   --header-link-item-spacing: 0.5em;
   --meta-spacing: 0.25em;
   /* Body layout */
-  --body-max-width: 860px;
+  --body-max-width: 880px;
   --body-padding: 1rem;
   --body-content-width: calc(var(--body-max-width) - var(--body-padding) * 2);
   /* Content max-widths */
-  --centered-content-width: min(calc(var(--body-content-width) * 0.925), 100%);
+  --centered-content-width: min(calc(var(--body-content-width) * 0.95), 100%);
+  /* Address gutter width */
+  --gutter-width: 3.25rem;
 }
 
 /* Fonts */
@@ -54,7 +122,261 @@
   font-style: normal;
 }
 
-/* Code blocks */
+/* ------------------------------------------------------------
+   Background flourish: faint CRT scanlines fixed over the page.
+   aria-hidden, pointer-events:none, kept under ~5% so prose AA holds.
+   ------------------------------------------------------------ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--phosphor) 100%, transparent) 0,
+    color-mix(in srgb, var(--phosphor) 100%, transparent) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: var(--scanline-opacity);
+}
+
+/* Keep real content above the scanline layer. */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------
+   Chrome typography: mono everywhere by default in the chrome,
+   prose opts back into serif via .prose-serif / .post-body.
+   ------------------------------------------------------------ */
+.mono {
+  font-family: "Iosevka", monospace;
+}
+.serif {
+  font-family: "Literata", serif;
+}
+
+/* Bracketed mono nav links: [ home ] */
+.nav-link {
+  font-family: "Iosevka", monospace;
+  text-transform: lowercase;
+  color: var(--dim);
+  border: 1px solid var(--wire);
+  padding: 0.25rem 0.6rem;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+  white-space: nowrap;
+}
+.nav-link::before {
+  content: "[ ";
+  color: var(--wire);
+}
+.nav-link::after {
+  content: " ]";
+  color: var(--wire);
+}
+.nav-link:hover {
+  color: var(--phosphor);
+  border-color: var(--phosphor);
+}
+.nav-link.active {
+  color: var(--background-color);
+  background-color: var(--phosphor);
+  border-color: var(--phosphor);
+}
+.nav-link.active::before {
+  content: "[*";
+  color: var(--background-color);
+}
+.nav-link.active::after {
+  content: "]";
+  color: var(--background-color);
+}
+
+/* Wordmark with subtle phosphor glow + optional flicker */
+.wordmark {
+  font-family: "Iosevka", monospace;
+  color: var(--phosphor);
+  text-shadow: var(--glow);
+  animation: phosphor-flicker 7s steps(40) infinite;
+}
+@keyframes phosphor-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.82; }
+  98% { opacity: 1; }
+  99% { opacity: 0.9; }
+}
+
+/* ------------------------------------------------------------
+   Segment: a labeled, wire-bordered section ("SECTION .posts").
+   ------------------------------------------------------------ */
+.segment {
+  border: 1px solid var(--wire);
+  background-color: color-mix(in srgb, var(--panel) 40%, transparent);
+}
+.segment-label {
+  font-family: "Iosevka", monospace;
+  text-transform: lowercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--phosphor);
+  border-bottom: 1px solid var(--wire);
+  padding: 0.35rem 0.75rem;
+  display: block;
+}
+.segment-label::before {
+  content: "┌─ ";
+  color: var(--dim);
+}
+.segment-label::after {
+  content: " ─────";
+  color: var(--wire);
+}
+
+/* Mono "comment" kicker above headings */
+.kicker {
+  font-family: "Iosevka", monospace;
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  color: var(--dim);
+  letter-spacing: 0.03em;
+}
+
+/* Wire hairline that separates list entries */
+.hairline {
+  border-top: 1px solid var(--wire);
+}
+
+/* ------------------------------------------------------------
+   Address gutter: a narrow left column of decorative hex
+   addresses (aria-hidden). Hidden on small screens.
+   ------------------------------------------------------------ */
+.address-gutter {
+  font-family: "Iosevka", monospace;
+  font-size: 0.7rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--dim) 55%, transparent);
+  user-select: none;
+  text-align: right;
+  white-space: pre;
+}
+
+/* ------------------------------------------------------------
+   Prose typography inside .post-body. Serif body; mono code.
+   ------------------------------------------------------------ */
+.post-body {
+  font-family: "Literata", serif;
+  line-height: 1.7;
+}
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+  font-family: "Literata", serif;
+  color: var(--phosphor);
+  text-shadow: var(--glow);
+  line-height: 1.25;
+  scroll-margin-top: 1rem;
+}
+.post-body p {
+  margin-top: 0;
+}
+.post-body a {
+  text-underline-offset: 3px;
+}
+.post-body blockquote {
+  color: var(--color);
+  border-color: var(--phosphor);
+}
+.post-body hr {
+  border: none;
+  border-top: 1px solid var(--wire);
+  margin: 1.5rem 0;
+  position: relative;
+}
+.post-body hr::after {
+  content: "* * *";
+  font-family: "Iosevka", monospace;
+  font-size: 0.7rem;
+  color: var(--dim);
+  position: absolute;
+  top: -0.7em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--background-color);
+  padding: 0 0.6rem;
+}
+.post-body table {
+  font-size: 0.95em;
+}
+.post-body th {
+  font-family: "Iosevka", monospace;
+  font-size: 0.8rem;
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+  text-align: left;
+  padding: 0.4rem 0.75rem;
+  color: var(--phosphor);
+  border-bottom: 1px solid var(--wire);
+}
+.post-body img,
+.post-body video {
+  display: block;
+}
+
+/* TOC = "symbol table": mono, monospaced indents */
+.toc {
+  font-family: "Iosevka", monospace;
+  font-size: 0.85rem;
+}
+.toc a.active {
+  color: var(--hot);
+  font-weight: bold;
+}
+
+/* ------------------------------------------------------------
+   Code blocks — readable in both palettes. Keep .code hooks
+   and the required `code span { display: inline; }` rule.
+   ------------------------------------------------------------ */
+.code {
+  background-color: var(--panel);
+  border: 1px solid var(--wire);
+}
+.code-block {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+pre.code {
+  border-radius: 0;
+}
 code span {
   display: inline;
+}
+
+/* ------------------------------------------------------------
+   Focus visibility for keyboard users (everywhere).
+   ------------------------------------------------------------ */
+a:focus-visible,
+button:focus-visible,
+label:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--hot);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------
+   Reduced motion: disable all animation.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

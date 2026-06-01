@@ -17,20 +17,20 @@
 
 @layer components {
   .link-underline {
-    @apply text-[var(--color)] transition-all duration-200 visited:text-[var(--color)];
+    @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
     @apply underline
-      decoration-[var(--color-secondary)]
+      decoration-[color-mix(in_srgb,var(--hot)_45%,transparent)]
       decoration-solid
-      decoration-[3px]
+      decoration-[2px]
       decoration-skip-ink-none
-      underline-offset-[4px]
-      hover:decoration-[color-mix(in_srgb,var(--color-secondary)_80%,transparent)]
-      hover:decoration-[7px]
-      hover:underline-offset-[0px];
+      underline-offset-[3px]
+      hover:decoration-[var(--hot)]
+      hover:decoration-[3px]
+      hover:underline-offset-[2px];
   }
 
   .link-no-underline {
-    @apply text-[var(--color)] transition-all duration-200 visited:text-[var(--color)];
-    @apply no-underline hover:no-underline hover:text-[var(--color-secondary)] visited:hover:text-[var(--color-secondary)];
+    @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
+    @apply no-underline hover:no-underline hover:text-[var(--phosphor)] visited:hover:text-[var(--phosphor)];
   }
 }

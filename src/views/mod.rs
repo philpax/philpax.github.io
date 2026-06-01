@@ -201,30 +201,41 @@ pub fn layout<'a>(
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-all duration-200")}>
-                    <header>
-                        <div class="flex flex-col md:flex-row md:items-center md:mt-2">
-                            <div id="top-bar" class="flex h-[var(--header-height)] items-center md:mr-8 justify-center md:flex-none">
-                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square inline-block h-full mr-4 rounded-full border-2 border-white" />
-                                <h1 class="text-3xl font-bold h-full flex items-center leading-[var(--header-height)]">{context.website_author}</h1>
+                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
+                    <header class="mt-2">
+                        // Status / command bar: mono wordmark + faux readout + bracketed nav.
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-2 border-b border-[var(--wire)]">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-[var(--wire)] [image-rendering:auto]" />
+                                <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
+                                    <span ariaHidden="true" class="text-[var(--dim)]">"// "</span>
+                                    {context.website_author}
+                                </span>
+                                <span ariaHidden="true" class={format!("hidden md:inline text-xs text-[var(--dim)] {CODE_FONT_STYLE}")}>
+                                    {format!("0x{:04x}", build_id(context.website_author))}
+                                </span>
                             </div>
-                            <nav class="flex items-center mt-2 md:mt-0 flex-1">
-                                <div id="header-links" class="grid grid-cols-2 gap-2 md:flex w-full md:flex-row md:gap-0">
+                            <nav ariaLabel="Primary">
+                                <ul id="header-links" class={format!("list-none m-0 p-0 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:justify-end {CODE_FONT_STYLE}")}>
                                 #{
                                     CurrentPage::ALL_PAGES.iter().map(|page| {
                                         let is_active = *page == current_page;
-                                        let bg_class = if is_active { "bg-[var(--color)]" } else { "bg-[var(--color-secondary)]" };
+                                        let class = if is_active { "nav-link active text-center" } else { "nav-link text-center" };
+                                        let aria_current = is_active.then(|| paxhtml::Attribute::new(bump, "aria-current", "page")).into_iter();
                                         html! { in bump;
-                                            <a href={page.url_path()} class={format!("text-center {} text-[var(--background-color)] lowercase hover:bg-[var(--color)] py-2 px-4 mr-0 md:mr-2 md:last:mr-0 md:mb-0 transition-colors duration-200 md:flex-1", bg_class)}>{page.name()}</a>
+                                            <li>
+                                                <a href={page.url_path()} class={class} {aria_current}>{page.name().to_lowercase()}</a>
+                                            </li>
                                         }
                                     })
                                 }
-                                </div>
+                                </ul>
                             </nav>
                         </div>
                     </header>
-                    <main class="mt-4">{inner}</main>
-                    <footer class="mt-4 mb-4 text-center text-xs text-[var(--color-secondary)] leading-relaxed">
+                    <main class="mt-6">{inner}</main>
+                    <footer class={format!("mt-8 mb-4 pt-3 border-t border-[var(--wire)] text-xs text-[var(--dim)] leading-relaxed {CODE_FONT_STYLE}")}>
+                        <div ariaHidden="true" class="text-[var(--phosphor)]">"; EOF"</div>
                         <div>
                             "rss: "
                             <Link underline target={Route::BlogRss.url_path()}>
@@ -257,6 +268,13 @@ pub fn layout<'a>(
             </html>
         },
     )
+}
+
+/// A stable, decorative faux "build id" derived from a string. Purely cosmetic
+/// (used in the aria-hidden status bar readout); not security-sensitive.
+fn build_id(s: &str) -> u16 {
+    s.bytes()
+        .fold(0u16, |acc, b| acc.wrapping_mul(31).wrapping_add(b as u16))
 }
 
 pub fn redirect<'bump>(

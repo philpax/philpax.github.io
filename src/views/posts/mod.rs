@@ -16,14 +16,14 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
         .map(|t| {
             let tags = t.iter().map(|tag| {
                 html! { in bump;
-                    <li class="flex-shrink-0 mr-[var(--meta-spacing)] last:mr-0">
-                        <Link title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
+                    <li class="flex-shrink-0 mr-2 last:mr-0">
+                        <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                             {format!("#{tag}")}
                         </Link>
                     </li>
                 }
             });
-            html! { in bump; <ul class="list-none m-0 p-0 flex flex-nowrap overflow-x-auto min-w-0">#{tags}</ul> }
+            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-wrap gap-y-1 min-w-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -63,11 +63,24 @@ pub fn post<'a>(
 
             let mut content_elements = vec![];
 
+            // Decorative address gutter ("hexdump offsets") in the left margin on very
+            // wide screens. Purely cosmetic and aria-hidden; hidden below 2xl. Only shown
+            // when there's no TOC sidebar (which otherwise occupies the left margin), so
+            // the two never collide.
+            let has_sidebar = toc_sidebar.is_some();
             content_elements.extend(toc_sidebar);
+            if !has_sidebar {
+                content_elements.push(address_gutter(bump));
+            }
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 content_elements.push(html! { in bump;
-                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="my-2 border-4 border-[var(--color)] hero-image" />
+                    <figure class="my-3">
+                        <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-[var(--wire)] hero-image block w-full" />
+                        <figcaption class={format!("text-xs text-[var(--dim)] mt-1 {CODE_FONT_STYLE}")} ariaHidden="true">
+                            {format!("; {filename}")}
+                        </figcaption>
+                    </figure>
                 });
             }
 
@@ -124,42 +137,14 @@ pub fn post<'a>(
     html! { in bump;
         <article class="post">
             <header class="pb-0 mb-0">
-                <div class="flex flex-col sm:flex-row sm:items-center p-0 gap-[var(--meta-spacing)] text-[var(--color-secondary)] -mb-1 post-meta">
-                    <div class="flex items-center gap-[var(--meta-spacing)] whitespace-nowrap flex-shrink-0">
-                        {date(bump, document)}
-                        {(post_body == PostBody::Full)
-                            .then(|| document.metadata.datetime.zip(document.metadata.last_modified))
-                            .flatten()
-                            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
-                            .map(|(_, modified)| html! { in bump;
-                                <>
-                                    " · updated "
-                                    <IsoDate date={modified.date_naive()} />
-                                </>
-                            })}
-                        " · "
-                        <em>{document.document_type.to_string().to_lowercase()}</em>
-                        " · "
-                        {document.word_count.to_string()}
-                        " words"
-                    </div>
-                    {if document.tags().is_some_and(|t| !t.is_empty()) { html! { in bump; <>
-                        <div class="sm:hidden -mt-1 min-w-0">
-                            {tags(bump, document)}
-                        </div>
-                        <div class="hidden sm:flex items-center gap-[var(--meta-spacing)] min-w-0">
-                            " · "
-                            {tags(bump, document)}
-                        </div>
-                    </> }} else { paxhtml::Element::Empty }}
-                </div>
-                <a href={url} class="flex items-center p-0 no-underline post-title">
-                    <h2 class={heading_class}>{break_on_colon(bump, &document.metadata.title)}</h2>
+                {post_meta(bump, document, post_body)}
+                <a href={url} class="block p-0 no-underline post-title group">
+                    <h2 class={format!("{heading_class} text-[var(--phosphor)] [text-shadow:var(--glow)] group-hover:text-[var(--hot)] transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
                 {document.metadata.draft.then(|| html! { in bump;
-                    <div class="my-2 p-4 bg-[var(--color)] text-[var(--background-color)] text-center flex flex-col gap-2">
-                        <div class="text-3xl">"DRAFT"</div>
-                        <div>"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+                    <div class={format!("my-3 p-4 border border-[var(--hot)] text-[var(--hot)] {CODE_FONT_STYLE}")}>
+                        <div class="text-xl font-bold">"!! DRAFT !!"</div>
+                        <div class="text-sm mt-1 text-[var(--color)]">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
                     </div>
                 })}
             </header>
@@ -171,6 +156,77 @@ pub fn post<'a>(
                 {post_body_rendered}
             </div>
         </article>
+    }
+}
+
+/// A decorative hexdump-style offset column for the left margin on very wide
+/// screens. Cosmetic only and aria-hidden; rendered as a sticky left float that
+/// mirrors the TOC sidebar's positioning.
+fn address_gutter<'a>(bump: &'a Bump) -> paxhtml::Element<'a> {
+    let addresses: String = (0..16)
+        .map(|i| format!("0x{:04x}", i * 0x10))
+        .collect::<Vec<_>>()
+        .join("\n");
+    html! { in bump;
+        <aside ariaHidden="true" class="address-gutter hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[var(--gutter-width)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-1rem)] 2xl:sticky 2xl:top-4">
+            {addresses}
+        </aside>
+    }
+}
+
+/// Render the post metadata. In `Full` mode it's a mono "header struct"
+/// (`field : value` rows); otherwise a compact mono meta line.
+fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> paxhtml::Element<'a> {
+    let type_str = document.document_type.to_string().to_lowercase();
+    let words = document.word_count.to_string();
+    let has_tags = document.tags().is_some_and(|t| !t.is_empty());
+
+    if post_body == PostBody::Full {
+        let updated = document
+            .metadata
+            .datetime
+            .zip(document.metadata.last_modified)
+            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
+            .map(|(_, modified)| modified.date_naive());
+
+        let row = |label: &'static str, value: paxhtml::Element<'a>| {
+            html! { in bump;
+                <div class="flex gap-2 items-baseline">
+                    <span class="text-[var(--dim)] w-16 flex-shrink-0">{label}</span>
+                    <span class="text-[var(--dim)]" ariaHidden="true">": "</span>
+                    <span class="min-w-0">{value}</span>
+                </div>
+            }
+        };
+
+        return html! { in bump;
+            <div class={format!("post-meta text-sm text-[var(--color)] mb-2 pl-3 border-l border-[var(--wire)] {CODE_FONT_STYLE}")}>
+                {row("date", html! { in bump;
+                    <>
+                        {date(bump, document)}
+                        {updated.map(|m| html! { in bump; <><span class="text-[var(--dim)]">" · updated "</span><IsoDate date={m} /></> })}
+                    </>
+                })}
+                {row("type", html! { in bump; <>{type_str}</> })}
+                {row("size", html! { in bump; <>{words}" words"</> })}
+                {has_tags.then(|| row("tags", tags(bump, document)))}
+            </div>
+        };
+    }
+
+    html! { in bump;
+        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-[var(--dim)] mb-1 {CODE_FONT_STYLE}")}>
+            <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                {date(bump, document)}
+                <span ariaHidden="true">"·"</span>
+                <span>{type_str}</span>
+                <span ariaHidden="true">"·"</span>
+                <span>{words}" words"</span>
+            </div>
+            {has_tags.then(|| html! { in bump;
+                <div class="min-w-0">{tags(bump, document)}</div>
+            })}
+        </div>
     }
 }
 
@@ -188,18 +244,20 @@ pub fn toc_elements<'a>(
     bump: &'a Bump,
     toc: Option<paxhtml::Element<'a>>,
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
-    let h3_classname = "text-lg font-bold";
+    let h3_classname = format!("text-sm font-bold text-[var(--phosphor)] mb-1 {CODE_FONT_STYLE}");
+    let link_classes =
+        "toc [&_a]:text-[var(--dim)] [&_a]:no-underline [&_a:hover]:text-[var(--hot)]";
 
     let sidebar = toc.clone().map(|hierarchy_list| {
         html! { in bump;
             <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                 <div class="w-max max-w-full">
-                    <h3 class={h3_classname}>
+                    <h3 class={h3_classname.clone()}>
                         <Link underline target={"#toc-sticky".to_string()}>
-                            "Table of Contents"
+                            "; contents"
                         </Link>
                     </h3>
-                    <div class="toc [&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                    <div class={link_classes}>
                         {hierarchy_list}
                     </div>
                 </div>
@@ -209,13 +267,13 @@ pub fn toc_elements<'a>(
 
     let inline = toc.map(|hierarchy_list| {
         html! { in bump;
-            <aside class="toc 2xl:hidden" id="toc-inline">
+            <aside class="toc 2xl:hidden my-4 py-2 border-y border-[var(--wire)]" id="toc-inline">
                 <h3 class={h3_classname}>
                     <Link underline target={"#toc-inline".to_string()}>
-                        "Table of Contents"
+                        "; contents"
                     </Link>
                 </h3>
-                <div class="[&_a]:text-[var(--color-secondary)] [&_a]:no-underline [&_a:hover]:text-[var(--color)]">
+                <div class={link_classes}>
                     {hierarchy_list}
                 </div>
             </aside>

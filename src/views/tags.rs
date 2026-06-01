@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     util,
     views::{
-        components::{Link, LinkProps},
+        components::{Link, LinkProps, SegmentLabel, SegmentLabelProps},
         posts,
     },
 };
@@ -30,25 +30,30 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Tags,
         html! { in bump;
-            <ul class="list-none m-0 list-inside">
-            #{
-                tag_keys.iter().map(|tag| {
-                    let item_count = context.content.tags[*tag].len();
-                    html! { in bump;
-                        <li class="list-disc">
-                            <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
-                                {format!("#{tag}")}
-                            </Link>
-                            {format!(
-                                " ({} {})",
-                                item_count,
-                                util::pluralize("item", item_count)
-                            )}
-                        </li>
-                    }
-                })
-            }
-            </ul>
+            <section class="segment">
+                <SegmentLabel label={"tags".to_string()} />
+                <ul class={format!("list-none m-0 p-4 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
+                #{
+                    tag_keys.iter().map(|tag| {
+                        let item_count = context.content.tags[*tag].len();
+                        html! { in bump;
+                            <li class="flex gap-2 items-baseline">
+                                <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
+                                    {format!("#{tag}")}
+                                </Link>
+                                <span class="text-[var(--dim)]">
+                                    {format!(
+                                        "({} {})",
+                                        item_count,
+                                        util::pluralize("item", item_count)
+                                    )}
+                                </span>
+                            </li>
+                        }
+                    })
+                }
+                </ul>
+            </section>
         },
     )
 }
@@ -92,25 +97,27 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <>
-                <header class="text-center mb-4">
-                    <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()}>
-                        <h1 class="text-3xl font-bold">
+            <section class="segment">
+                <SegmentLabel label={format!("tag: {tag_id}")} />
+                <header class="p-4 pb-0">
+                    <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
+                    <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
+                        <h1 class="text-3xl font-bold text-[var(--phosphor)] [text-shadow:var(--glow)]">
                             {"#"}{tag_id}
-                            <small class="text-[var(--color-secondary)]">
-                                {format!(" ({} {})", tagged_documents.len(), util::pluralize("item", tagged_documents.len()))}
+                            <small class={format!("text-[var(--dim)] text-base font-normal ml-2 {CODE_FONT_STYLE}")}>
+                                {format!("({} {})", tagged_documents.len(), util::pluralize("item", tagged_documents.len()))}
                             </small>
                         </h1>
                     </a>
                 </header>
-                <div class="*:mb-8">
+                <div class="p-4 [&>*]:py-6 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline">
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
                 </div>
-            </>
+            </section>
         },
     )
 }

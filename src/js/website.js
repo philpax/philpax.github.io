@@ -106,8 +106,9 @@ function createThemeSwitcher() {
   updateSwitcherIcon();
 
   a.href = "#";
+  a.title = "Cycle theme";
   a.className =
-    "bg-[var(--color-secondary)] text-[var(--background-color)] hover:bg-[var(--color)] py-2 px-4 transition-colors duration-200 flex items-center justify-center md:mb-0";
+    "nav-link flex items-center justify-center text-center";
 
   a.addEventListener("click", function (e) {
     e.preventDefault();
@@ -115,7 +116,11 @@ function createThemeSwitcher() {
   });
 
   a.appendChild(container);
-  headerLinks.append(a);
+
+  // The nav is a <ul>; wrap the switcher in an <li> to keep markup valid.
+  let li = document.createElement("li");
+  li.appendChild(a);
+  headerLinks.append(li);
 
   // Listen for system theme changes
   let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");

@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     markdown::MarkdownConverter,
     views::{
-        components::{Link, LinkProps},
+        components::{Link, LinkProps, SegmentLabel, SegmentLabelProps},
         posts,
     },
 };
@@ -42,23 +42,20 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Home,
         html! { in bump;
-            <div class="block md:grid md:grid-cols-2 md:auto-rows-fr md:gap-0 md:items-stretch" id="home-page-columns">
-                <article class="border-b border-dotted border-[var(--color)] md:border-r md:border-b-0 md:pr-4 md:pb-0 md:mb-0 break-words hyphens-auto h-full">
-                    <div class="post-body p-0 *:mb-4">
+            <div class="flex flex-col gap-6" id="home-page-columns">
+                // about — serif prose in an .about segment
+                <section class="segment">
+                    <SegmentLabel label={"about".to_string()} />
+                    <article class="post-body p-4 *:mb-4 break-words hyphens-auto">
                         {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
-                    </div>
-                </article>
-                <div class="h-full md:pl-4 *:mb-6 mt-4 md:mt-0">
-                    <div>
-                        // TODO: remove this `if` once we have >=5 posts always
-                        {(content.blog.documents.iter().filter(|d| !d.metadata.draft).count() < 5).then(|| html! { in bump;
-                            <h3 class="text-3xl font-bold mb-2 italic">
-                                <Link target={Route::Blog.url_path()}>
-                                    "posts"
-                                </Link>
-                            </h3>
-                        })}
-                        <div class="*:mb-6">
+                    </article>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    // posts — serif title links + mono daterows
+                    <section class="segment">
+                        <SegmentLabel label={"posts".to_string()} />
+                        <div class="p-4 flex flex-col gap-5">
                         #{
                             content
                                 .blog
@@ -68,38 +65,47 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .take(5)
                                 .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                         }
+                        <div class={format!("pt-1 text-sm {CODE_FONT_STYLE}")}>
+                            <Link underline target={Route::Blog.url_path()}>"› all posts"</Link>
                         </div>
-                    </div>
+                        </div>
+                    </section>
 
-                    <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4">
-                        <h3 class="text-3xl font-bold mb-2 italic">
-                            <Link target={Route::Updates.url_path()}>
-                                "updates"
-                            </Link>
-                        </h3>
-                        <ul class="list-none m-0 p-0 space-y-1">
-                        #{
-                            content
-                                .updates
-                                .documents
-                                .iter()
-                                .filter(|d| !d.metadata.draft)
-                                .take(5)
-                                .map(|doc| update_doc_item(bump, doc))
-                        }
-                        </ul>
-                    </div>
+                    // updates — dense mono changelog
+                    <section class="segment">
+                        <SegmentLabel label={"updates".to_string()} />
+                        <div class="p-4">
+                            <ul class={format!("list-none m-0 p-0 space-y-2 text-sm {CODE_FONT_STYLE}")}>
+                            #{
+                                content
+                                    .updates
+                                    .documents
+                                    .iter()
+                                    .filter(|d| !d.metadata.draft)
+                                    .take(8)
+                                    .map(|doc| update_doc_item(bump, doc))
+                            }
+                            </ul>
+                            <div class={format!("pt-3 text-sm {CODE_FONT_STYLE}")}>
+                                <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
-                    <div class="mt-4 border-t border-dotted border-[var(--color)] pt-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
+                // links — 88x31 button wall
+                <section class="segment">
+                    <SegmentLabel label={"links".to_string()} />
+                    <div class="p-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{
                         list_88x31.iter().map(|(img, url)| html! { in bump;
-                            <a href={url}>
+                            <a href={url} class="border border-[var(--wire)]">
                                 <img src={format!("/88x31/{img}")} alt={img} />
                             </a>
                         })
                     }
                     </div>
-                </div>
+                </section>
             </div>
         },
     )
@@ -112,9 +118,9 @@ fn update_doc_item<'bump>(bump: &'bump Bump, doc: &Document) -> paxhtml::Element
         .map(|dt| dt.date_naive().to_string())
         .unwrap_or_default();
     html! { in bump;
-        <li>
-            <span class="text-[var(--color-secondary)]">{date_str}": "</span>
-            <Link target={doc.route_path().url_path()}>
+        <li class="flex gap-2 items-baseline">
+            <span class="text-[var(--dim)] flex-shrink-0">{date_str}</span>
+            <Link underline target={doc.route_path().url_path()}>
                 {doc.metadata.title.clone()}
             </Link>
         </li>

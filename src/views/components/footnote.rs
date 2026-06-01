@@ -34,9 +34,9 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
 
     // Styling for the inline footnote reference (sup)
     let sup_class = "\
-        footnote-number px-2 ml-1 bg-[var(--color)] text-[var(--background-color)] text-xs \
-        hover:bg-[var(--color-secondary)] relative \
-        before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-[var(--background-color-secondary)]\
+        footnote-number px-2 ml-1 bg-[var(--phosphor)] text-[var(--background-color)] text-xs \
+        hover:bg-[var(--hot)] relative \
+        before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-[var(--background-color)]\
     ";
 
     // When sidenotes are disabled, render inline-only footnote
@@ -58,8 +58,8 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
 
     // Styling for the sidenote's number (span, not sup - full height, no vertical offset)
     let sidenote_number_class = "\
-        footnote-number px-2 mr-2 bg-[var(--color)] text-[var(--background-color)] text-sm \
-        before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-[var(--background-color-secondary)]\
+        footnote-number px-2 mr-2 bg-[var(--phosphor)] text-[var(--background-color)] text-sm \
+        before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-[var(--background-color)]\
     ";
 
     // Sidenote: hidden on small screens, floats right into right margin on 2xl+
@@ -69,7 +69,8 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
         sidenote hidden \
         2xl:block 2xl:float-right 2xl:clear-right \
         2xl:w-80 2xl:ml-4 2xl:-mr-[21rem] \
-        text-sm border-t-2 border-[var(--color-secondary)] pt-0 pb-1 mb-4\
+        font-['Iosevka',monospace] text-xs text-[var(--dim)] [&_a]:text-[var(--hot)] \
+        border-t border-[var(--wire)] pt-1 pb-1 mb-4\
     ";
 
     // Clone children for use in both inline and sidenote display

@@ -1,5 +1,8 @@
 use super::*;
-use crate::views::posts;
+use crate::views::{
+    components::{SegmentLabel, SegmentLabelProps},
+    posts,
+};
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
@@ -28,11 +31,12 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Updates,
         html! { in bump;
-            <>
-                <div class="*:mb-8">
+            <section class="segment">
+                <SegmentLabel label={"updates".to_string()} />
+                <div class="p-4 [&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline">
                     #{all_posts}
                 </div>
-            </>
+            </section>
         },
     )
 }
