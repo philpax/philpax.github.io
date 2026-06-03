@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     util,
     views::{
-        components::{Link, LinkProps, SegmentLabel, SegmentLabelProps},
+        components::{Link, LinkProps, Section, SectionProps},
         posts,
     },
 };
@@ -30,9 +30,8 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Tags,
         html! { in bump;
-            <section class="segment">
-                <SegmentLabel label={"tags".to_string()} />
-                <ul class={format!("list-none m-0 p-4 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
+            <Section label={"tags".to_string()}>
+                <ul class={format!("list-none m-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
                 #{
                     tag_keys.iter().map(|tag| {
                         let item_count = context.content.tags[*tag].len();
@@ -53,7 +52,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     })
                 }
                 </ul>
-            </section>
+            </Section>
         },
     )
 }
@@ -97,9 +96,8 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <section class="segment">
-                <SegmentLabel label={format!("tag: {tag_id}")} />
-                <header class="p-4 pb-0">
+            <Section label={format!("tag: {tag_id}")}>
+                <header class="mb-6">
                     <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
                         <h1 class="text-3xl font-bold text-phosphor [text-shadow:var(--glow)]">
@@ -110,14 +108,14 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                         </h1>
                     </a>
                 </header>
-                <div class="p-4 [&>*]:py-6 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline">
+                <div class="[&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline">
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
                 </div>
-            </section>
+            </Section>
         },
     )
 }

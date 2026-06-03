@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     markdown::MarkdownConverter,
     views::{
-        components::{Link, LinkProps, SegmentLabel, SegmentLabelProps},
+        components::{Link, LinkProps, Section, SectionProps, SectionTag},
         posts,
     },
 };
@@ -46,19 +46,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         CurrentPage::Home,
         html! { in bump;
             <div class={format!("flex flex-col {SECTION_GAP}")} id="home-page-columns">
-                // about — serif prose in an .about segment
-                <section class="segment">
-                    <SegmentLabel label={"about".to_string()} />
-                    <article class="post-body p-4 *:mb-4 break-words hyphens-auto">
-                        {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
-                    </article>
-                </section>
+                // about — serif prose
+                <Section tag={SectionTag::Article} label={"about".to_string()} body_class={"post-body *:mb-4 break-words hyphens-auto".to_string()}>
+                    {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
+                </Section>
 
                 <div class={format!("grid grid-cols-1 md:grid-cols-2 {SECTION_GAP}")}>
                     // posts — serif title links + mono daterows
-                    <section class="segment">
-                        <SegmentLabel label={"posts".to_string()} />
-                        <div class="p-4 flex flex-col gap-5">
+                    <Section label={"posts".to_string()} body_class={"flex flex-col gap-5".to_string()}>
                         #{
                             content
                                 .blog
@@ -71,43 +66,36 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         <div class={format!("pt-1 text-sm {CODE_FONT_STYLE}")}>
                             <Link underline target={Route::Blog.url_path()}>"› all posts"</Link>
                         </div>
-                        </div>
-                    </section>
+                    </Section>
 
                     // updates — dense mono changelog
-                    <section class="segment">
-                        <SegmentLabel label={"updates".to_string()} />
-                        <div class="p-4">
-                            <ul class={format!("list-none m-0 p-0 space-y-2 text-sm {CODE_FONT_STYLE}")}>
-                            #{
-                                content
-                                    .updates
-                                    .documents
-                                    .iter()
-                                    .filter(|d| !d.metadata.draft)
-                                    .map(|doc| update_doc_item(bump, doc))
-                            }
-                            </ul>
-                            <div class={format!("pt-3 text-sm {CODE_FONT_STYLE}")}>
-                                <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
-                            </div>
+                    <Section label={"updates".to_string()}>
+                        <ul class={format!("list-none m-0 p-0 space-y-2 text-sm {CODE_FONT_STYLE}")}>
+                        #{
+                            content
+                                .updates
+                                .documents
+                                .iter()
+                                .filter(|d| !d.metadata.draft)
+                                .map(|doc| update_doc_item(bump, doc))
+                        }
+                        </ul>
+                        <div class={format!("pt-3 text-sm {CODE_FONT_STYLE}")}>
+                            <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
                         </div>
-                    </section>
+                    </Section>
                 </div>
 
                 // links — 88x31 button wall
-                <section class="segment">
-                    <SegmentLabel label={"links".to_string()} />
-                    <div class="p-4 flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
-                    #{
-                        list_88x31.iter().map(|(img, url)| html! { in bump;
-                            <a href={url} class="block border border-wire">
-                                <img src={format!("/88x31/{img}")} alt={img} class="block" />
-                            </a>
-                        })
-                    }
-                    </div>
-                </section>
+                <Section label={"links".to_string()} body_class={"flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start".to_string()}>
+                #{
+                    list_88x31.iter().map(|(img, url)| html! { in bump;
+                        <a href={url} class="block border border-wire">
+                            <img src={format!("/88x31/{img}")} alt={img} class="block" />
+                        </a>
+                    })
+                }
+                </Section>
             </div>
         },
     )

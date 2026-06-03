@@ -18,7 +18,9 @@ pub mod tags;
 pub mod updates;
 
 pub mod components;
-use components::{IsoDatetime, IsoDatetimeProps, Link, LinkProps};
+use components::{
+    IsoDatetime, IsoDatetimeProps, Link, LinkProps, Section, SectionProps, SectionTag,
+};
 
 /// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
@@ -231,8 +233,11 @@ pub fn layout<'a>(
                         </div>
                     </header>
                     <main>{inner}</main>
-                    <footer class={format!("mt-8 mb-4 pt-3 border-t border-wire text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}>
-                        <div ariaHidden="true" class="text-phosphor">"; EOF"</div>
+                    <Section
+                        tag={SectionTag::Footer}
+                        label={"eof".to_string()}
+                        class={format!("mt-3 mb-4 text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}
+                    >
                         <div>
                             "rss: "
                             <Link underline target={Route::BlogRss.url_path()}>
@@ -260,7 +265,7 @@ pub fn layout<'a>(
                                 "credits"
                             </Link>"."
                         </div>
-                    </footer>
+                    </Section>
                 </body>
             </html>
         },
