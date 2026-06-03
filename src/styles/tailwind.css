@@ -73,13 +73,24 @@
     }
 
     /* Labeled, wire-bordered section */
+    /* A dark "screen" with an even darker "title bar" header, so a segment
+       reads as a little terminal window. */
     .segment {
         @apply border border-wire;
-        background-color: color-mix(in srgb, var(--panel) 40%, transparent);
+        background-color: color-mix(
+            in srgb,
+            var(--background-color) 35%,
+            transparent
+        );
     }
     .segment-label {
         @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em];
         @apply text-phosphor border-b border-wire px-3 py-1.5;
+        background-color: color-mix(
+            in srgb,
+            var(--background-color) 85%,
+            transparent
+        );
     }
 
     /* Mono "comment" kicker above headings */
