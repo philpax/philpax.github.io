@@ -29,24 +29,24 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
     let body = render_rich_text(bump, &post.text, &post.facets);
 
     paxhtml::html! { in bump;
-        <div class="bg-[var(--background-color-secondary)] rounded-lg p-4 my-4 max-w-xl not-first:mx-auto">
+        <div class="bg-surface rounded-lg p-4 my-4 max-w-xl not-first:mx-auto">
             <Link external target={paxsite_content::bluesky::profile_url(&post.author_handle)} additional_classes={"flex items-center gap-3 mb-3".to_string()}>
                 {avatar}
                 <div>
-                    <div class="font-semibold text-[var(--color)]">{&post.author_display_name}</div>
-                    <div class="text-sm text-[var(--color-secondary)]">{format!("@{}", post.author_handle)}</div>
+                    <div class="font-semibold text-fg">{&post.author_display_name}</div>
+                    <div class="text-sm text-dim">{format!("@{}", post.author_handle)}</div>
                 </div>
             </Link>
-            <div class="mb-3 text-[var(--color)]">
+            <div class="mb-3 text-fg">
                 {body}
             </div>
-            <div class="flex flex-wrap gap-x-4 text-sm text-[var(--color-secondary)] mb-2">
+            <div class="flex flex-wrap gap-x-4 text-sm text-dim mb-2">
                 <Link external underline target={post.url.clone()}>
                     {posted_at}
                 </Link>
                 {fetched_at}
             </div>
-            <div class="flex gap-4 text-sm text-[var(--color-secondary)]">
+            <div class="flex gap-4 text-sm text-dim">
                 <span>{format!("{} replies", post.reply_count)}</span>
                 <span>{format!("{} reposts", post.repost_count)}</span>
                 <span>{format!("{} likes", post.like_count)}</span>

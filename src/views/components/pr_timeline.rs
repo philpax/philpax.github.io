@@ -101,7 +101,7 @@ pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::El
             <summary class="cursor-pointer font-bold">
                 {format!("Timeline of all {} PRs", merged + closed)}
             </summary>
-            <div class="my-1 text-sm text-[var(--color-secondary)]">
+            <div class="my-1 text-sm text-dim">
                 "Tally: "
                 <span class="text-emerald-700 dark:text-emerald-400">{format!("+{total_add}")}</span>
                 " "
@@ -254,7 +254,7 @@ fn pr_row<'bump>(
     );
 
     let row_class = format!(
-        "flex flex-wrap sm:flex-nowrap items-center gap-x-2 py-0.5 text-xs no-underline hover:bg-[var(--color-secondary)]/10 scroll-mt-16 [&:target]:bg-[color-mix(in_srgb,var(--color-secondary)_25%,transparent)]{}",
+        "flex flex-wrap sm:flex-nowrap items-center gap-x-2 py-0.5 text-xs no-underline hover:bg-dim/10 scroll-mt-16 [&:target]:bg-dim/25{}",
         if e.closed {
             " saturate-50 opacity-70 italic"
         } else {
@@ -264,15 +264,15 @@ fn pr_row<'bump>(
 
     html! { in bump;
         <a id={timeline_id} href={href} title={title_attr} class={row_class}>
-            <span class="w-10 text-right text-[var(--color-secondary)] flex-shrink-0 tabular-nums whitespace-nowrap">
+            <span class="w-10 text-right text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
                 {start_label}
             </span>
-            <span class="relative h-2.5 flex-1 sm:flex-none sm:w-80 min-w-[4rem] bg-[color-mix(in_srgb,var(--color-secondary)_15%,transparent)] rounded-sm">
-                <span class="absolute h-full rounded-sm bg-[color-mix(in_srgb,var(--color-secondary)_80%,transparent)]"
+            <span class="relative h-2.5 flex-1 sm:flex-none sm:w-80 min-w-[4rem] bg-dim/15 rounded-sm">
+                <span class="absolute h-full rounded-sm bg-dim/80"
                       style={format!("left: {left_pct:.2}%; width: {width_pct:.2}%;")}>
                 </span>
             </span>
-            <span class="w-10 text-left text-[var(--color-secondary)] flex-shrink-0 tabular-nums whitespace-nowrap">
+            <span class="w-10 text-left text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
                 {end_label}
             </span>
             <span class="text-emerald-700 dark:text-emerald-400 w-8 text-right flex-shrink-0 tabular-nums">
@@ -282,7 +282,7 @@ fn pr_row<'bump>(
                 {format!("−{}", e.sub)}
             </span>
             <span class="basis-full sm:basis-auto sm:flex-1 min-w-0 truncate">
-                <span class="text-[var(--color-secondary)]">{format!("{}: ", e.project)}</span>
+                <span class="text-dim">{format!("{}: ", e.project)}</span>
                 {e.title.clone()}
             </span>
         </a>

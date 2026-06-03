@@ -76,8 +76,8 @@ pub fn post<'a>(
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 content_elements.push(html! { in bump;
                     <figure class="my-3">
-                        <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-[var(--wire)] hero-image block w-full" />
-                        <figcaption class={format!("text-xs text-[var(--dim)] mt-1 {CODE_FONT_STYLE}")} ariaHidden="true">
+                        <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-wire hero-image block w-full" />
+                        <figcaption class={format!("text-xs text-dim mt-1 {CODE_FONT_STYLE}")} ariaHidden="true">
                             {format!("; {filename}")}
                         </figcaption>
                     </figure>
@@ -139,12 +139,12 @@ pub fn post<'a>(
             <header class="pb-0 mb-0">
                 {post_meta(bump, document, post_body)}
                 <a href={url} class="block p-0 no-underline post-title group">
-                    <h2 class={format!("{heading_class} text-[var(--phosphor)] [text-shadow:var(--glow)] group-hover:text-[var(--hot)] transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
+                    <h2 class={format!("{heading_class} text-phosphor [text-shadow:var(--glow)] group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
                 {document.metadata.draft.then(|| html! { in bump;
-                    <div class={format!("my-3 p-4 border border-[var(--hot)] text-[var(--hot)] {CODE_FONT_STYLE}")}>
+                    <div class={format!("my-3 p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
                         <div class="text-xl font-bold">"!! DRAFT !!"</div>
-                        <div class="text-sm mt-1 text-[var(--color)]">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+                        <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
                     </div>
                 })}
             </header>
@@ -192,19 +192,19 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
         let row = |label: &'static str, value: paxhtml::Element<'a>| {
             html! { in bump;
                 <div class="flex gap-2 items-baseline">
-                    <span class="text-[var(--dim)] w-16 flex-shrink-0">{label}</span>
-                    <span class="text-[var(--dim)]" ariaHidden="true">": "</span>
+                    <span class="text-dim w-16 flex-shrink-0">{label}</span>
+                    <span class="text-dim" ariaHidden="true">": "</span>
                     <span class="min-w-0">{value}</span>
                 </div>
             }
         };
 
         return html! { in bump;
-            <div class={format!("post-meta text-sm text-[var(--color)] mb-2 pl-3 border-l border-[var(--wire)] {CODE_FONT_STYLE}")}>
+            <div class={format!("post-meta text-sm text-fg mb-2 pl-3 border-l border-wire {CODE_FONT_STYLE}")}>
                 {row("date", html! { in bump;
                     <>
                         {date(bump, document)}
-                        {updated.map(|m| html! { in bump; <><span class="text-[var(--dim)]">" · updated "</span><IsoDate date={m} /></> })}
+                        {updated.map(|m| html! { in bump; <><span class="text-dim">" · updated "</span><IsoDate date={m} /></> })}
                     </>
                 })}
                 {row("type", html! { in bump; <>{type_str}</> })}
@@ -215,7 +215,7 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
     }
 
     html! { in bump;
-        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-[var(--dim)] mb-1 {CODE_FONT_STYLE}")}>
+        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-dim mb-1 {CODE_FONT_STYLE}")}>
             <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 {date(bump, document)}
                 <span ariaHidden="true">"·"</span>
@@ -244,9 +244,8 @@ pub fn toc_elements<'a>(
     bump: &'a Bump,
     toc: Option<paxhtml::Element<'a>>,
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
-    let h3_classname = format!("text-sm font-bold text-[var(--phosphor)] mb-1 {CODE_FONT_STYLE}");
-    let link_classes =
-        "toc [&_a]:text-[var(--dim)] [&_a]:no-underline [&_a:hover]:text-[var(--hot)]";
+    let h3_classname = format!("text-sm font-bold text-phosphor mb-1 {CODE_FONT_STYLE}");
+    let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot";
 
     let sidebar = toc.clone().map(|hierarchy_list| {
         html! { in bump;
@@ -267,7 +266,7 @@ pub fn toc_elements<'a>(
 
     let inline = toc.map(|hierarchy_list| {
         html! { in bump;
-            <aside class="toc 2xl:hidden my-4 py-2 border-y border-[var(--wire)]" id="toc-inline">
+            <aside class="toc 2xl:hidden my-4 py-2 border-y border-wire" id="toc-inline">
                 <h3 class={h3_classname}>
                     <Link underline target={"#toc-inline".to_string()}>
                         "; contents"

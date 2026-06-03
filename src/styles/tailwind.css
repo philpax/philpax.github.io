@@ -1,5 +1,22 @@
 @import "tailwindcss" source("../");
 
+/* Palette → Tailwind colour utilities. `inline` so each utility emits the
+   underlying var() directly, keeping it mode-aware (the vars are swapped per
+   theme in website.css). Enables text-phosphor / bg-panel / border-wire / etc.
+   Note: the page bg is named `canvas` (not `base`) to avoid colliding with the
+   built-in `text-base` font-size utility. */
+@theme inline {
+  --color-fg: var(--color);
+  --color-dim: var(--dim);
+  --color-canvas: var(--background-color);
+  --color-surface: var(--background-color-secondary);
+  --color-panel: var(--panel);
+  --color-wire: var(--wire);
+  --color-phosphor: var(--phosphor);
+  --color-hot: var(--hot);
+  --color-alt: var(--alt);
+}
+
 @custom-variant dark {
   &:where(.dark, .dark *) {
     @slot;
@@ -23,53 +40,53 @@
 
 @layer components {
   .link-underline {
-    @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
+    @apply text-hot transition-all duration-200 visited:text-hot;
     @apply underline
       decoration-[color-mix(in_srgb,var(--hot)_45%,transparent)]
       decoration-solid
       decoration-[2px]
       decoration-skip-ink-none
       underline-offset-[3px]
-      hover:decoration-[var(--hot)]
+      hover:decoration-hot
       hover:decoration-[3px]
       hover:underline-offset-[2px];
   }
 
   .link-no-underline {
-    @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
-    @apply no-underline hover:no-underline hover:text-[var(--phosphor)] visited:hover:text-[var(--phosphor)];
+    @apply text-hot transition-all duration-200 visited:text-hot;
+    @apply no-underline hover:no-underline hover:text-phosphor visited:hover:text-phosphor;
   }
 
   /* Bracketed mono nav pills */
   .nav-link {
     @apply inline-flex items-center justify-center whitespace-nowrap leading-none lowercase;
-    @apply font-['Iosevka',monospace] px-2.5 py-1 border border-[var(--wire)] text-[var(--dim)];
-    @apply transition-colors duration-150 hover:text-[var(--phosphor)] hover:border-[var(--phosphor)];
+    @apply font-['Iosevka',monospace] px-2.5 py-1 border border-wire text-dim;
+    @apply transition-colors duration-150 hover:text-phosphor hover:border-phosphor;
   }
   .nav-link.active {
-    @apply bg-[var(--phosphor)] border-[var(--phosphor)] text-[var(--background-color)];
+    @apply bg-phosphor border-phosphor text-canvas;
   }
 
   /* Wordmark: mono, phosphor, subtle glow + flicker (keyframes in website.css) */
   .wordmark {
-    @apply font-['Iosevka',monospace] text-[var(--phosphor)];
+    @apply font-['Iosevka',monospace] text-phosphor;
     text-shadow: var(--glow);
     animation: phosphor-flicker 7s steps(40) infinite;
   }
 
   /* Labeled, wire-bordered section */
   .segment {
-    @apply border border-[var(--wire)];
+    @apply border border-wire;
     background-color: color-mix(in srgb, var(--panel) 40%, transparent);
   }
   .segment-label {
     @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em];
-    @apply text-[var(--phosphor)] border-b border-[var(--wire)] px-3 py-1.5;
+    @apply text-phosphor border-b border-wire px-3 py-1.5;
   }
 
   /* Mono "comment" kicker above headings */
   .kicker {
-    @apply font-['Iosevka',monospace] text-xs lowercase tracking-[0.03em] text-[var(--dim)];
+    @apply font-['Iosevka',monospace] text-xs lowercase tracking-[0.03em] text-dim;
   }
 
   /* Decorative left-margin hex address column (aria-hidden, 2xl only) */
@@ -83,7 +100,7 @@
     @apply font-['Iosevka',monospace] text-[0.85rem];
   }
   .toc a.active {
-    @apply text-[var(--hot)] font-bold;
+    @apply text-hot font-bold;
   }
 
   /* ----------------------------------------------------------
@@ -94,7 +111,7 @@
     @apply font-['Literata',serif] leading-[1.7] break-words;
   }
   .post-body :is(h1, h2, h3, h4, h5, h6) {
-    @apply font-['Literata',serif] text-[var(--phosphor)] leading-tight scroll-mt-4;
+    @apply font-['Literata',serif] text-phosphor leading-tight scroll-mt-4;
     text-shadow: var(--glow);
   }
   .post-body p {
@@ -104,13 +121,13 @@
     @apply underline-offset-[3px];
   }
   .post-body blockquote {
-    @apply text-[var(--color)] border-[var(--phosphor)];
+    @apply text-fg border-phosphor;
   }
   .post-body hr {
-    @apply relative border-0 border-t border-[var(--wire)] my-6;
+    @apply relative border-0 border-t border-wire my-6;
   }
   .post-body hr::after {
-    @apply absolute left-1/2 -translate-x-1/2 px-2.5 font-['Iosevka',monospace] text-[0.7rem] text-[var(--dim)];
+    @apply absolute left-1/2 -translate-x-1/2 px-2.5 font-['Iosevka',monospace] text-[0.7rem] text-dim;
     content: "* * *";
     top: -0.7em;
     background-color: var(--background-color);
@@ -121,7 +138,7 @@
   }
   .post-body th {
     @apply font-['Iosevka',monospace] text-[0.8rem] lowercase tracking-[0.03em] text-left;
-    @apply px-3 py-1.5 text-[var(--phosphor)] border-b border-[var(--wire)];
+    @apply px-3 py-1.5 text-phosphor border-b border-wire;
   }
   .post-body :is(img, video) {
     @apply block;

@@ -98,7 +98,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     <div class="p-4 flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{
                         list_88x31.iter().map(|(img, url)| html! { in bump;
-                            <a href={url} class="block border border-[var(--wire)]">
+                            <a href={url} class="block border border-wire">
                                 <img src={format!("/88x31/{img}")} alt={img} class="block" />
                             </a>
                         })
@@ -118,7 +118,7 @@ fn update_doc_item<'bump>(bump: &'bump Bump, doc: &Document) -> paxhtml::Element
         .unwrap_or_default();
     html! { in bump;
         <li class="flex gap-2 items-baseline">
-            <span class="text-[var(--dim)] flex-shrink-0">{date_str}</span>
+            <span class="text-dim flex-shrink-0">{date_str}</span>
             <Link underline target={doc.route_path().url_path()}>
                 {doc.metadata.title.clone()}
             </Link>

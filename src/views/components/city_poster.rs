@@ -16,7 +16,7 @@ pub fn city_poster<'bump>(
             <a href={image_url} class="shrink-0 self-center md:self-start">
                 <img
                     src={small_preview_url}
-                    class="w-48 border-2 border-(--color) block"
+                    class="w-48 border-2 border-fg block"
                     alt="City poster"
                 />
             </a>

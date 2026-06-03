@@ -294,9 +294,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     b.q([])(children)
                 } else {
-                    b.blockquote([
-                        b.attr(("class", "border-l-4 border-(--color-secondary) pl-3 italic"))
-                    ])(children)
+                    b.blockquote([b.attr(("class", "border-l-4 border-dim pl-3 italic"))])(children)
                 }
             }
             Node::Break(_) => b.br([]),
@@ -334,7 +332,7 @@ impl<'a> MarkdownConverter<'a> {
                         b.attr(("loop", "true")),
                         b.attr((
                             "class",
-                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block",
+                            "border-2 border-fg max-w-(--centered-content-width) mx-auto block",
                         )),
                     ])(paxhtml::Element::Empty)
                 } else {
@@ -351,7 +349,7 @@ impl<'a> MarkdownConverter<'a> {
                         b.attr(("alt", i.alt.clone())),
                         b.attr((
                             "class",
-                            "border-2 border-(--color) max-w-(--centered-content-width) mx-auto block",
+                            "border-2 border-fg max-w-(--centered-content-width) mx-auto block",
                         )),
                     ]))
                 }
@@ -508,7 +506,10 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b.table([b.attr(("class", "w-full border-collapse border border-[var(--color-secondary)] rounded-lg overflow-hidden"))])(children)
+                    b.table([b.attr((
+                        "class",
+                        "w-full border-collapse border border-dim rounded-lg overflow-hidden",
+                    ))])(children)
                 }
             }
             Node::TableRow(t) => {
@@ -516,7 +517,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b.tr([b.attr(("class", "border-b border-[var(--color-secondary)]"))])(children)
+                    b.tr([b.attr(("class", "border-b border-dim"))])(children)
                 }
             }
             Node::TableCell(t) => {
@@ -524,7 +525,10 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b.td([b.attr(("class", "px-4 py-3 text-sm text-[var(--text-color)] border-r border-[var(--color-secondary)] last:border-r-0"))])(children)
+                    b.td([b.attr((
+                        "class",
+                        "px-4 py-3 text-sm text-fg border-r border-dim last:border-r-0",
+                    ))])(children)
                 }
             }
 
@@ -616,7 +620,7 @@ impl<'a> MarkdownConverter<'a> {
         }
 
         let span = paxhtml::html! { in bump;
-            <span id={pr_id} class="scroll-mt-16 [&:target]:bg-[color-mix(in_srgb,var(--color-secondary)_25%,transparent)] [&:target]:rounded">
+            <span id={pr_id} class="scroll-mt-16 [&:target]:bg-dim/25 [&:target]:rounded">
                 #{children}
             </span>
         };

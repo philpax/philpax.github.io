@@ -12,22 +12,10 @@
    ============================================================ */
 
 /* Theme modes — every mode-specific value lives here as a custom property.
-   --color / --color-secondary / --background-color / --background-color-secondary
-   keep their historical names (used across the codebase) but are remapped onto
-   the Disassembly palette. A proper purple ramp + accents are layered on top. */
+   --color / --background-color keep their historical names; the rest are the
+   Disassembly palette (--dim, --wire, --panel, --phosphor, --hot, --alt, …),
+   surfaced as Tailwind colour utilities via @theme in tailwind.css. */
 --dark-mode {
-    /* Purple ramp (50 = lightest, 900 = deepest) */
-    --purple-50: #f3edff;
-    --purple-100: #e7e0f3;
-    --purple-200: #cabbf0;
-    --purple-300: #b794f6;
-    --purple-400: #9d8bff;
-    --purple-500: #8b7cb3;
-    --purple-600: #6f4c9a;
-    --purple-700: #342650;
-    --purple-800: #1b1330;
-    --purple-900: #120c1f;
-
     /* Core surfaces */
     --background-color: #120c1f; /* near-black aubergine */
     --panel: #1b1330; /* elevated panel / code bg */
@@ -35,8 +23,7 @@
 
     /* Text */
     --color: #e7e0f3; /* prose text */
-    --color-secondary: #8b7cb3; /* dim "comment" */
-    --dim: #8b7cb3;
+    --dim: #8b7cb3; /* dim "comment" */
 
     /* Structure */
     --wire: #342650; /* hairline borders */
@@ -55,24 +42,11 @@
 }
 
 --light-mode {
-    /* Purple ramp */
-    --purple-50: #f5f2fa;
-    --purple-100: #ece7f3;
-    --purple-200: #d8cfec;
-    --purple-300: #c9bfe0;
-    --purple-400: #9d8bff;
-    --purple-500: #6b5d88;
-    --purple-600: #6b3fb5;
-    --purple-700: #4c2f86;
-    --purple-800: #2d1d54;
-    --purple-900: #1d1530;
-
     --background-color: #ece7f3; /* datasheet paper */
     --panel: #f5f2fa;
     --background-color-secondary: #f5f2fa;
 
     --color: #1d1530; /* near-black ink */
-    --color-secondary: #6b5d88;
     --dim: #6b5d88;
 
     --wire: #c9bfe0;
@@ -89,11 +63,6 @@
 
 /* Root variables (mode-independent) */
 :root {
-    --header-height: 4em;
-    --header-item-spacing: 1em;
-    --header-link-height: 2em;
-    --header-link-item-spacing: 0.5em;
-    --meta-spacing: 0.25em;
     /* Body layout */
     --body-max-width: 880px;
     --body-padding: 1rem;
@@ -149,11 +118,8 @@
    Layering (back → front): html bg · html::before drift (-1) · content.
    ============================================================ */
 
-/* Base colour lives on <html> so the drift wash can sit behind the
-   (transparent) <body> content. */
-html {
-    background-color: var(--background-color);
-}
+/* The base colour is applied to <html> via the `bg-canvas` utility in the
+   layout, so the drift wash can sit behind the (transparent) <body> content. */
 
 /* Slow-drifting ink wash: soft phosphor/magenta/indigo pools, blurred,
    behind everything. Doubles as a wandering CRT phosphor glow.

@@ -41,7 +41,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
                                     {format!("#{tag}")}
                                 </Link>
-                                <span class="text-[var(--dim)]">
+                                <span class="text-dim">
                                     {format!(
                                         "({} {})",
                                         item_count,
@@ -102,9 +102,9 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                 <header class="p-4 pb-0">
                     <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
-                        <h1 class="text-3xl font-bold text-[var(--phosphor)] [text-shadow:var(--glow)]">
+                        <h1 class="text-3xl font-bold text-phosphor [text-shadow:var(--glow)]">
                             {"#"}{tag_id}
-                            <small class={format!("text-[var(--dim)] text-base font-normal ml-2 {CODE_FONT_STYLE}")}>
+                            <small class={format!("text-dim text-base font-normal ml-2 {CODE_FONT_STYLE}")}>
                                 {format!("({} {})", tagged_documents.len(), util::pluralize("item", tagged_documents.len()))}
                             </small>
                         </h1>

@@ -180,7 +180,7 @@ pub fn layout<'a>(
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
-            <html lang="en-AU">
+            <html lang="en-AU" class="bg-canvas">
                 <head>
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
@@ -201,14 +201,14 @@ pub fn layout<'a>(
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
+                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
                     <header class="my-2">
                         // Status / command bar: mono wordmark + faux readout + bracketed nav.
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-2">
                             <div class="flex items-center gap-3 min-w-0">
-                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-[var(--wire)] [image-rendering:auto]" />
+                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-wire [image-rendering:auto]" />
                                 <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
-                                    <span ariaHidden="true" class="text-[var(--dim)]">"// "</span>
+                                    <span ariaHidden="true" class="text-dim">"// "</span>
                                     {context.website_author}
                                 </span>
                             </div>
@@ -231,8 +231,8 @@ pub fn layout<'a>(
                         </div>
                     </header>
                     <main>{inner}</main>
-                    <footer class={format!("mt-8 mb-4 pt-3 border-t border-[var(--wire)] text-xs text-[var(--dim)] leading-relaxed {CODE_FONT_STYLE}")}>
-                        <div ariaHidden="true" class="text-[var(--phosphor)]">"; EOF"</div>
+                    <footer class={format!("mt-8 mb-4 pt-3 border-t border-wire text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}>
+                        <div ariaHidden="true" class="text-phosphor">"; EOF"</div>
                         <div>
                             "rss: "
                             <Link underline target={Route::BlogRss.url_path()}>

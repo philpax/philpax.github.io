@@ -203,7 +203,7 @@ function initCodeCopyButtons() {
   document.querySelectorAll(".code-block").forEach(function (block) {
     var btn = document.createElement("button");
     btn.className =
-      "absolute top-1 right-1 p-1 rounded text-(--color-secondary) hover:text-(--color) cursor-pointer transition-colors duration-200";
+      "absolute top-1 right-1 p-1 rounded text-dim hover:text-fg cursor-pointer transition-colors duration-200";
     btn.title = "Copy code";
     btn.innerHTML = COPY_ICON;
 

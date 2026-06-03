@@ -34,9 +34,9 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
 
     // Styling for the inline footnote reference (sup)
     let sup_class = "\
-        footnote-number px-2 ml-1 bg-[var(--phosphor)] text-[var(--background-color)] text-xs \
-        hover:bg-[var(--hot)] relative \
-        before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-[var(--background-color)]\
+        footnote-number px-2 ml-1 bg-phosphor text-canvas text-xs \
+        hover:bg-hot relative \
+        before:content-['fn'] before:italic before:text-[0.6em] before:mr-[0.3em] before:text-canvas\
     ";
 
     // When sidenotes are disabled, render inline-only footnote
@@ -49,7 +49,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
                         {&props.identifier}
                     </sup>
                 </label>
-                <span class="footnote-inline hidden peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1 [&_a]:text-[var(--background-color)] [&_a]:decoration-[var(--background-color-secondary)] [&_a:hover]:text-[var(--background-color-secondary)]">
+                <span class="footnote-inline hidden peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-surface [&_a:hover]:text-surface">
                     {children}
                 </span>
             </span>
@@ -58,8 +58,8 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
 
     // Styling for the sidenote's number (span, not sup - full height, no vertical offset)
     let sidenote_number_class = "\
-        footnote-number px-2 mr-2 bg-[var(--phosphor)] text-[var(--background-color)] text-sm \
-        before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-[var(--background-color)]\
+        footnote-number px-2 mr-2 bg-phosphor text-canvas text-sm \
+        before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-canvas\
     ";
 
     // Sidenote: hidden on small screens, floats right into right margin on 2xl+
@@ -69,8 +69,8 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
         sidenote hidden \
         2xl:block 2xl:float-right 2xl:clear-right \
         2xl:w-80 2xl:ml-4 2xl:-mr-[21rem] \
-        font-['Iosevka',monospace] text-xs text-[var(--dim)] [&_a]:text-[var(--hot)] \
-        border-t border-[var(--wire)] pt-1 pb-1 mb-4\
+        font-['Iosevka',monospace] text-xs text-dim [&_a]:text-hot \
+        border-t border-wire pt-1 pb-1 mb-4\
     ";
 
     // Clone children for use in both inline and sidenote display
@@ -96,7 +96,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
             </a>
 
             // Inline popup content (small screens only) - toggled by checkbox
-            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-[var(--color)] text-[var(--background-color)] p-2 my-1 [&_a]:text-[var(--background-color)] [&_a]:decoration-[var(--background-color-secondary)] [&_a:hover]:text-[var(--background-color-secondary)]">
+            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-surface [&_a:hover]:text-surface">
                 {children_clone}
             </span>
 
