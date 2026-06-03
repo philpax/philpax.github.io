@@ -78,7 +78,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                     <h2 class={format!("text-sm font-normal flex flex-wrap items-baseline gap-1 {CODE_FONT_STYLE}")}>
                         #{elements}
                     </h2>
-                    <h1 class="text-3xl font-bold text-phosphor [text-shadow:var(--glow)] mt-1">
+                    <h1 class="text-3xl font-bold text-phosphor mt-1">
                         {note.display_path.last().unwrap().to_string()}
                     </h1>
                     <div class={format!("text-dim text-xs mb-2 mt-1 {CODE_FONT_STYLE}")}>

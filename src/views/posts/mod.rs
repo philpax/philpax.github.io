@@ -139,7 +139,7 @@ pub fn post<'a>(
             <header class="pb-0 mb-0">
                 {post_meta(bump, document, post_body)}
                 <a href={url} class="block p-0 no-underline post-title group">
-                    <h2 class={format!("{heading_class} text-phosphor [text-shadow:var(--glow)] group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
+                    <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
                 </a>
                 {document.metadata.draft.then(|| html! { in bump;
                     <div class={format!("my-3 p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>

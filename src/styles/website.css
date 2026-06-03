@@ -35,9 +35,6 @@
     /* Code label chip */
     --code-label-bg: #342650;
     --code-label-color: #e7e0f3;
-
-    /* Phosphor glow for headings/wordmark (kept faint for AA prose) */
-    --glow: 0 0 6px color-mix(in srgb, var(--phosphor) 35%, transparent);
 }
 
 --light-mode {
@@ -55,8 +52,6 @@
 
     --code-label-bg: #d8cfec;
     --code-label-color: #2d1d54;
-
-    --glow: none;
 }
 
 /* Root variables (mode-independent) */

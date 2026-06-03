@@ -100,7 +100,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                 <header class="mb-6">
                     <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
-                        <h1 class="text-3xl font-bold text-phosphor [text-shadow:var(--glow)]">
+                        <h1 class="text-3xl font-bold text-phosphor">
                             {"#"}{tag_id}
                             <small class={format!("text-dim text-base font-normal ml-2 {CODE_FONT_STYLE}")}>
                                 {format!("({} {})", tagged_documents.len(), util::pluralize("item", tagged_documents.len()))}
