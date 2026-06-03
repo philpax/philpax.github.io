@@ -201,18 +201,15 @@ pub fn layout<'a>(
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] bg-[var(--background-color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
-                    <header class="mt-2">
+                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-[var(--color)] {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
+                    <header class="my-2">
                         // Status / command bar: mono wordmark + faux readout + bracketed nav.
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-2 border-b border-[var(--wire)]">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-2">
                             <div class="flex items-center gap-3 min-w-0">
                                 <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-[var(--wire)] [image-rendering:auto]" />
                                 <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
                                     <span ariaHidden="true" class="text-[var(--dim)]">"// "</span>
                                     {context.website_author}
-                                </span>
-                                <span ariaHidden="true" class={format!("hidden md:inline text-xs text-[var(--dim)] {CODE_FONT_STYLE}")}>
-                                    {format!("0x{:04x}", build_id(context.website_author))}
                                 </span>
                             </div>
                             <nav ariaLabel="Primary">
@@ -233,7 +230,7 @@ pub fn layout<'a>(
                             </nav>
                         </div>
                     </header>
-                    <main class="mt-6">{inner}</main>
+                    <main>{inner}</main>
                     <footer class={format!("mt-8 mb-4 pt-3 border-t border-[var(--wire)] text-xs text-[var(--dim)] leading-relaxed {CODE_FONT_STYLE}")}>
                         <div ariaHidden="true" class="text-[var(--phosphor)]">"; EOF"</div>
                         <div>
@@ -268,13 +265,6 @@ pub fn layout<'a>(
             </html>
         },
     )
-}
-
-/// A stable, decorative faux "build id" derived from a string. Purely cosmetic
-/// (used in the aria-hidden status bar readout); not security-sensitive.
-fn build_id(s: &str) -> u16 {
-    s.bytes()
-        .fold(0u16, |acc, b| acc.wrapping_mul(31).wrapping_add(b as u16))
 }
 
 pub fn redirect<'bump>(

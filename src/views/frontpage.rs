@@ -82,7 +82,6 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                     .documents
                                     .iter()
                                     .filter(|d| !d.metadata.draft)
-                                    .take(8)
                                     .map(|doc| update_doc_item(bump, doc))
                             }
                             </ul>
@@ -96,11 +95,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 // links — 88x31 button wall
                 <section class="segment">
                     <SegmentLabel label={"links".to_string()} />
-                    <div class="p-4 flex flex-wrap gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
+                    <div class="p-4 flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start" id="list-88x31">
                     #{
                         list_88x31.iter().map(|(img, url)| html! { in bump;
-                            <a href={url} class="border border-[var(--wire)]">
-                                <img src={format!("/88x31/{img}")} alt={img} />
+                            <a href={url} class="block border border-[var(--wire)]">
+                                <img src={format!("/88x31/{img}")} alt={img} class="block" />
                             </a>
                         })
                     }
