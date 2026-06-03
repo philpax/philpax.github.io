@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     util,
     views::{
-        components::{Link, LinkProps, Section, SectionProps},
+        components::{Link, LinkProps, Segment, SegmentProps},
         posts,
     },
 };
@@ -30,7 +30,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Tags,
         html! { in bump;
-            <Section label={"tags".to_string()}>
+            <Segment label={"tags".to_string()}>
                 <ul class={format!("list-none m-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
                 #{
                     tag_keys.iter().map(|tag| {
@@ -52,7 +52,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     })
                 }
                 </ul>
-            </Section>
+            </Segment>
         },
     )
 }
@@ -96,7 +96,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <Section label={format!("tag: {tag_id}")}>
+            <Segment label={format!("tag: {tag_id}")}>
                 <header class="mb-6">
                     <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
@@ -115,7 +115,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                     })
                 }
                 </div>
-            </Section>
+            </Segment>
         },
     )
 }

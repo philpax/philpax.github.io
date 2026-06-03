@@ -5,8 +5,8 @@ pub use link::*;
 mod heading_anchor;
 pub use heading_anchor::*;
 
-mod section;
-pub use section::*;
+mod segment;
+pub use segment::*;
 
 mod footnote;
 #[allow(unused_imports)]

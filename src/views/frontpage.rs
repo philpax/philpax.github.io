@@ -5,13 +5,13 @@ use super::*;
 use crate::{
     markdown::MarkdownConverter,
     views::{
-        components::{Link, LinkProps, Section, SectionProps, SectionTag},
+        components::{Link, LinkProps, Segment, SegmentProps, SegmentTag},
         posts,
     },
 };
 
 /// Vertical/horizontal gap between the segments on the home page.
-const SECTION_GAP: &str = "gap-3";
+const SEGMENT_GAP: &str = "gap-3";
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
@@ -45,15 +45,15 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Home,
         html! { in bump;
-            <div class={format!("flex flex-col {SECTION_GAP}")} id="home-page-columns">
+            <div class={format!("flex flex-col {SEGMENT_GAP}")} id="home-page-columns">
                 // about — serif prose
-                <Section tag={SectionTag::Article} label={"about".to_string()} body_class={"post-body flex flex-col gap-2 break-words hyphens-auto".to_string()}>
+                <Segment tag={SegmentTag::Article} label={"about".to_string()} body_class={"post-body flex flex-col gap-2 break-words hyphens-auto".to_string()}>
                     {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
-                </Section>
+                </Segment>
 
-                <div class={format!("grid grid-cols-1 md:grid-cols-2 {SECTION_GAP}")}>
+                <div class={format!("grid grid-cols-1 md:grid-cols-2 {SEGMENT_GAP}")}>
                     // posts — serif title links + mono daterows
-                    <Section label={"posts".to_string()} body_class={"flex flex-col gap-5".to_string()}>
+                    <Segment label={"posts".to_string()} body_class={"flex flex-col gap-5".to_string()}>
                         #{
                             content
                                 .blog
@@ -66,10 +66,10 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         <div class={format!("text-sm {CODE_FONT_STYLE}")}>
                             <Link underline target={Route::Blog.url_path()}>"› all posts"</Link>
                         </div>
-                    </Section>
+                    </Segment>
 
                     // updates — dense mono changelog
-                    <Section label={"updates".to_string()} body_class={"flex flex-col gap-3".to_string()}>
+                    <Segment label={"updates".to_string()} body_class={"flex flex-col gap-3".to_string()}>
                         <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
                         #{
                             content
@@ -83,11 +83,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         <div class={format!("text-sm {CODE_FONT_STYLE}")}>
                             <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
                         </div>
-                    </Section>
+                    </Segment>
                 </div>
 
                 // links — 88x31 button wall
-                <Section label={"links".to_string()} body_class={"flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start".to_string()}>
+                <Segment label={"links".to_string()} body_class={"flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start".to_string()}>
                 #{
                     list_88x31.iter().map(|(img, url)| html! { in bump;
                         <a href={url} class="block border border-wire">
@@ -95,7 +95,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         </a>
                     })
                 }
-                </Section>
+                </Segment>
             </div>
         },
     )

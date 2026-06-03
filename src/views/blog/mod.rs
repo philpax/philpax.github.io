@@ -1,6 +1,6 @@
 use super::*;
 use crate::views::{
-    components::{Section, SectionProps},
+    components::{Segment, SegmentProps},
     posts,
 };
 
@@ -31,9 +31,9 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Blog,
         html! { in bump;
-            <Section label={"blog".to_string()} body_class={"[&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline".to_string()}>
+            <Segment label={"blog".to_string()} body_class={"[&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline".to_string()}>
                 #{all_posts}
-            </Section>
+            </Segment>
         },
     )
 }

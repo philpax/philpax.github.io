@@ -19,7 +19,7 @@ pub mod updates;
 
 pub mod components;
 use components::{
-    IsoDatetime, IsoDatetimeProps, Link, LinkProps, Section, SectionProps, SectionTag,
+    IsoDatetime, IsoDatetimeProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
 };
 
 /// Base context without bump allocator - can be shared across threads
@@ -232,8 +232,8 @@ pub fn layout<'a>(
                         </div>
                     </header>
                     <main>{inner}</main>
-                    <Section
-                        tag={SectionTag::Footer}
+                    <Segment
+                        tag={SegmentTag::Footer}
                         label={"eof".to_string()}
                         class={format!("my-3 text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}
                     >
@@ -264,7 +264,7 @@ pub fn layout<'a>(
                                 "credits"
                             </Link>"."
                         </div>
-                    </Section>
+                    </Segment>
                 </body>
             </html>
         },
