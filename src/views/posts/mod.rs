@@ -260,6 +260,7 @@ pub fn toc_elements<'a>(
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
     let h3_classname = format!("text-sm font-bold text-phosphor mb-1 {CODE_FONT_STYLE}");
     let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot";
+    let toc_header = "Table of Contents";
 
     let sidebar = toc.clone().map(|hierarchy_list| {
         html! { in bump;
@@ -267,7 +268,7 @@ pub fn toc_elements<'a>(
                 <div class="w-max max-w-full">
                     <h3 class={h3_classname.clone()}>
                         <Link underline target={"#toc-sticky".to_string()}>
-                            "; contents"
+                            {toc_header}
                         </Link>
                     </h3>
                     <div class={link_classes}>
@@ -283,7 +284,7 @@ pub fn toc_elements<'a>(
             <aside class="toc 2xl:hidden my-4 py-2 border-y border-wire" id="toc-inline">
                 <h3 class={h3_classname}>
                     <Link underline target={"#toc-inline".to_string()}>
-                        "; contents"
+                        {toc_header}
                     </Link>
                 </h3>
                 <div class={link_classes}>
