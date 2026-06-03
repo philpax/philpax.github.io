@@ -210,7 +210,6 @@ pub fn layout<'a>(
                             <div class="flex items-center gap-3 min-w-0">
                                 <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-wire [image-rendering:auto]" />
                                 <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
-                                    <span ariaHidden="true" class="text-dim">"// "</span>
                                     {context.website_author}
                                 </span>
                             </div>
