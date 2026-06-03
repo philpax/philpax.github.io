@@ -206,7 +206,7 @@ pub fn layout<'a>(
                 <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
                     <header class="my-2">
                         // Status / command bar: mono wordmark + faux readout + bracketed nav.
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-2">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                             <div class="flex items-center gap-3 min-w-0">
                                 <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-wire [image-rendering:auto]" />
                                 <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
