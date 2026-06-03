@@ -180,7 +180,7 @@ pub fn layout<'a>(
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
-            <html lang="en-AU" class="w-[100vw]">
+            <html lang="en-AU">
                 <head>
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />

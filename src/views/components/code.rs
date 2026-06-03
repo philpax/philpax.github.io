@@ -20,8 +20,8 @@ pub fn code<'bump>(
         .with_context(|| format!("failed to highlight code block ({error_context})"))?;
 
     Ok(paxhtml::html! { in bump;
-        <div class="code-block relative max-w-(--centered-content-width) mx-auto">
-            <pre class="code text-sm p-2 overflow-x-auto">
+        <div class="code-block relative my-2 max-w-(--centered-content-width) mx-auto">
+            <pre class="code text-sm p-2 overflow-x-auto rounded-none border border-(--wire) bg-(--panel)">
                 <code class={CODE_FONT_STYLE}>
                     <pre class={format!("\
                         bg-(--code-label-bg) text-(--code-label-color) -mt-2 mb-1 -ml-2 py-0.5 px-1 \

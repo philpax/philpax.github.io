@@ -15,6 +15,12 @@
   text-decoration-skip-ink: none;
 }
 
+/* Wire hairline separating list entries. A real utility so it composes with
+   arbitrary variants like `[&>*:not(:first-child)]:hairline`. */
+@utility hairline {
+  border-top: 1px solid var(--wire);
+}
+
 @layer components {
   .link-underline {
     @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
@@ -32,5 +38,92 @@
   .link-no-underline {
     @apply text-[var(--hot)] transition-all duration-200 visited:text-[var(--hot)];
     @apply no-underline hover:no-underline hover:text-[var(--phosphor)] visited:hover:text-[var(--phosphor)];
+  }
+
+  /* Bracketed mono nav pills */
+  .nav-link {
+    @apply inline-flex items-center justify-center whitespace-nowrap leading-none lowercase;
+    @apply font-['Iosevka',monospace] px-2.5 py-1 border border-[var(--wire)] text-[var(--dim)];
+    @apply transition-colors duration-150 hover:text-[var(--phosphor)] hover:border-[var(--phosphor)];
+  }
+  .nav-link.active {
+    @apply bg-[var(--phosphor)] border-[var(--phosphor)] text-[var(--background-color)];
+  }
+
+  /* Wordmark: mono, phosphor, subtle glow + flicker (keyframes in website.css) */
+  .wordmark {
+    @apply font-['Iosevka',monospace] text-[var(--phosphor)];
+    text-shadow: var(--glow);
+    animation: phosphor-flicker 7s steps(40) infinite;
+  }
+
+  /* Labeled, wire-bordered section */
+  .segment {
+    @apply border border-[var(--wire)];
+    background-color: color-mix(in srgb, var(--panel) 40%, transparent);
+  }
+  .segment-label {
+    @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em];
+    @apply text-[var(--phosphor)] border-b border-[var(--wire)] px-3 py-1.5;
+  }
+
+  /* Mono "comment" kicker above headings */
+  .kicker {
+    @apply font-['Iosevka',monospace] text-xs lowercase tracking-[0.03em] text-[var(--dim)];
+  }
+
+  /* Decorative left-margin hex address column (aria-hidden, 2xl only) */
+  .address-gutter {
+    @apply font-['Iosevka',monospace] text-[0.7rem] leading-[1.7] text-right whitespace-pre select-none;
+    color: color-mix(in srgb, var(--dim) 55%, transparent);
+  }
+
+  /* TOC = "symbol table" */
+  .toc {
+    @apply font-['Iosevka',monospace] text-[0.85rem];
+  }
+  .toc a.active {
+    @apply text-[var(--hot)] font-bold;
+  }
+
+  /* ----------------------------------------------------------
+     Prose typography inside .post-body. Serif body; mono code.
+     (Descendant selectors target generated markdown HTML.)
+     ---------------------------------------------------------- */
+  .post-body {
+    @apply font-['Literata',serif] leading-[1.7] break-words;
+  }
+  .post-body :is(h1, h2, h3, h4, h5, h6) {
+    @apply font-['Literata',serif] text-[var(--phosphor)] leading-tight scroll-mt-4;
+    text-shadow: var(--glow);
+  }
+  .post-body p {
+    @apply mt-0;
+  }
+  .post-body a {
+    @apply underline-offset-[3px];
+  }
+  .post-body blockquote {
+    @apply text-[var(--color)] border-[var(--phosphor)];
+  }
+  .post-body hr {
+    @apply relative border-0 border-t border-[var(--wire)] my-6;
+  }
+  .post-body hr::after {
+    @apply absolute left-1/2 -translate-x-1/2 px-2.5 font-['Iosevka',monospace] text-[0.7rem] text-[var(--dim)];
+    content: "* * *";
+    top: -0.7em;
+    background-color: var(--background-color);
+  }
+  /* Tables scroll horizontally rather than overflow on narrow screens */
+  .post-body table {
+    @apply block max-w-full overflow-x-auto text-[0.95em];
+  }
+  .post-body th {
+    @apply font-['Iosevka',monospace] text-[0.8rem] lowercase tracking-[0.03em] text-left;
+    @apply px-3 py-1.5 text-[var(--phosphor)] border-b border-[var(--wire)];
+  }
+  .post-body :is(img, video) {
+    @apply block;
   }
 }

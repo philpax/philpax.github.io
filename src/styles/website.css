@@ -3,6 +3,12 @@
    Mono (Iosevka) for all chrome; serif (Literata) for all prose.
    Deep purple phosphor. Sharp corners, thin wire borders.
    Dark ("disassembler") is the primary mode; light is "datasheet".
+
+   Component classes (.nav-link, .segment, .post-body, .toc, …) now
+   live in tailwind.css under @layer components / @utility. This file
+   holds only what Tailwind can't own: the theme-var blocks (consumed
+   by paxcss), @font-face, @keyframes, the background flourish, and the
+   global focus / reduced-motion rules.
    ============================================================ */
 
 /* Theme modes — every mode-specific value lives here as a custom property.
@@ -44,8 +50,7 @@
     --code-label-bg: #342650;
     --code-label-color: #e7e0f3;
 
-    /* Texture intensity (kept faint for AA prose) */
-    --scanline-opacity: 0.045;
+    /* Phosphor glow for headings/wordmark (kept faint for AA prose) */
     --glow: 0 0 6px color-mix(in srgb, var(--phosphor) 35%, transparent);
 }
 
@@ -79,7 +84,6 @@
     --code-label-bg: #d8cfec;
     --code-label-color: #2d1d54;
 
-    --scanline-opacity: 0.03;
     --glow: none;
 }
 
@@ -122,64 +126,7 @@
     font-style: normal;
 }
 
-/* ------------------------------------------------------------
-   Chrome typography: mono everywhere by default in the chrome,
-   prose opts back into serif via .prose-serif / .post-body.
-   ------------------------------------------------------------ */
-.mono {
-    font-family: "Iosevka", monospace;
-}
-.serif {
-    font-family: "Literata", serif;
-}
-
-/* Bracketed mono nav links: [ home ] */
-.nav-link {
-    font-family: "Iosevka", monospace;
-    text-transform: lowercase;
-    color: var(--dim);
-    border: 1px solid var(--wire);
-    padding: 0.25rem 0.6rem;
-    transition:
-        color 0.15s,
-        border-color 0.15s,
-        background-color 0.15s;
-    white-space: nowrap;
-    /* center content so text pills + the (JS) icon switcher share a baseline */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
-.nav-link::before {
-    color: var(--wire);
-}
-.nav-link::after {
-    color: var(--wire);
-}
-.nav-link:hover {
-    color: var(--phosphor);
-    border-color: var(--phosphor);
-}
-.nav-link.active {
-    color: var(--background-color);
-    background-color: var(--phosphor);
-    border-color: var(--phosphor);
-}
-.nav-link.active::before {
-    color: var(--background-color);
-}
-.nav-link.active::after {
-    color: var(--background-color);
-}
-
-/* Wordmark with a subtle phosphor glow + optional flicker. */
-.wordmark {
-    font-family: "Iosevka", monospace;
-    color: var(--phosphor);
-    text-shadow: var(--glow);
-    animation: phosphor-flicker 7s steps(40) infinite;
-}
+/* Phosphor flicker for the wordmark (the .wordmark class is in tailwind.css). */
 @keyframes phosphor-flicker {
     0%,
     96%,
@@ -197,154 +144,13 @@
     }
 }
 
-/* ------------------------------------------------------------
-   Segment: a labeled, wire-bordered section ("SECTION .posts").
-   ------------------------------------------------------------ */
-.segment {
-    border: 1px solid var(--wire);
-    background-color: color-mix(in srgb, var(--panel) 40%, transparent);
-}
-.segment-label {
-    font-family: "Iosevka", monospace;
-    text-transform: lowercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    color: var(--phosphor);
-    border-bottom: 1px solid var(--wire);
-    padding: 0.35rem 0.75rem;
-    display: block;
-}
-
-/* Mono "comment" kicker above headings */
-.kicker {
-    font-family: "Iosevka", monospace;
-    font-size: 0.75rem;
-    text-transform: lowercase;
-    color: var(--dim);
-    letter-spacing: 0.03em;
-}
-
-/* Wire hairline that separates list entries */
-.hairline {
-    border-top: 1px solid var(--wire);
-}
-
-/* ------------------------------------------------------------
-   Address gutter: a narrow left column of decorative hex
-   addresses (aria-hidden). Hidden on small screens.
-   ------------------------------------------------------------ */
-.address-gutter {
-    font-family: "Iosevka", monospace;
-    font-size: 0.7rem;
-    line-height: 1.7;
-    color: color-mix(in srgb, var(--dim) 55%, transparent);
-    user-select: none;
-    text-align: right;
-    white-space: pre;
-}
-
-/* ------------------------------------------------------------
-   Prose typography inside .post-body. Serif body; mono code.
-   ------------------------------------------------------------ */
-.post-body {
-    font-family: "Literata", serif;
-    line-height: 1.7;
-}
-.post-body h1,
-.post-body h2,
-.post-body h3,
-.post-body h4,
-.post-body h5,
-.post-body h6 {
-    font-family: "Literata", serif;
-    color: var(--phosphor);
-    text-shadow: var(--glow);
-    line-height: 1.25;
-    scroll-margin-top: 1rem;
-}
-.post-body p {
-    margin-top: 0;
-}
-.post-body a {
-    text-underline-offset: 3px;
-}
-.post-body blockquote {
-    color: var(--color);
-    border-color: var(--phosphor);
-}
-.post-body hr {
-    border: none;
-    border-top: 1px solid var(--wire);
-    margin: 1.5rem 0;
-    position: relative;
-}
-.post-body hr::after {
-    content: "* * *";
-    font-family: "Iosevka", monospace;
-    font-size: 0.7rem;
-    color: var(--dim);
-    position: absolute;
-    top: -0.7em;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--background-color);
-    padding: 0 0.6rem;
-}
-.post-body table {
-    font-size: 0.95em;
-}
-.post-body th {
-    font-family: "Iosevka", monospace;
-    font-size: 0.8rem;
-    text-transform: lowercase;
-    letter-spacing: 0.03em;
-    text-align: left;
-    padding: 0.4rem 0.75rem;
-    color: var(--phosphor);
-    border-bottom: 1px solid var(--wire);
-}
-.post-body img,
-.post-body video {
-    display: block;
-}
-
-/* TOC = "symbol table": mono, monospaced indents */
-.toc {
-    font-family: "Iosevka", monospace;
-    font-size: 0.85rem;
-}
-.toc a.active {
-    color: var(--hot);
-    font-weight: bold;
-}
-
-/* ------------------------------------------------------------
-   Code blocks — readable in both palettes. Keep .code hooks
-   and the required `code span { display: inline; }` rule.
-   ------------------------------------------------------------ */
-.code {
-    background-color: var(--panel);
-    border: 1px solid var(--wire);
-}
-.code-block {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-pre.code {
-    border-radius: 0;
-}
-code span {
-    display: inline;
-}
-
 /* ============================================================
-   RISOGRAPH ENERGY — a drifting ink wash behind the terminal.
-   Layering (back → front): html bg · html::before drift (-1) ·
-   body::before scanlines (0) · content (1).
+   Background flourish: a slow drifting ink wash behind the page.
+   Layering (back → front): html bg · html::before drift (-1) · content.
    ============================================================ */
 
 /* Base colour lives on <html> so the drift wash can sit behind the
-   (now transparent) <body> content. */
+   (transparent) <body> content. */
 html {
     background-color: var(--background-color);
 }
@@ -388,6 +194,11 @@ html::before {
     100% {
         transform: translate3d(-2%, 1.5%, 0) scale(1.05) rotate(-1.5deg);
     }
+}
+
+/* Syntax highlighter emits per-token <span>s; keep them inline. */
+code span {
+    display: inline;
 }
 
 /* ------------------------------------------------------------
