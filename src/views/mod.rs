@@ -236,7 +236,7 @@ pub fn layout<'a>(
                     <Section
                         tag={SectionTag::Footer}
                         label={"eof".to_string()}
-                        class={format!("mt-3 mb-4 text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}
+                        class={format!("my-3 text-xs text-dim leading-relaxed {CODE_FONT_STYLE}")}
                     >
                         <div>
                             "rss: "

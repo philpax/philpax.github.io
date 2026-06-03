@@ -65,10 +65,7 @@ pub fn Section<'bump>(bump: &'bump Bump, props: SectionProps<'bump>) -> paxhtml:
         Some(c) => format!("segment {c}"),
         None => "segment".to_string(),
     };
-    let body_class = match props.body_class {
-        Some(c) => format!("p-4 {c}"),
-        None => "p-4".to_string(),
-    };
+    let body_class = format!("p-3 {}", props.body_class.as_deref().unwrap_or_default());
     let inner = paxhtml::html! { in bump;
         <>
             <SegmentLabel label={props.label} />

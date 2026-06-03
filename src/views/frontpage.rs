@@ -47,7 +47,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         html! { in bump;
             <div class={format!("flex flex-col {SECTION_GAP}")} id="home-page-columns">
                 // about — serif prose
-                <Section tag={SectionTag::Article} label={"about".to_string()} body_class={"post-body *:mb-4 break-words hyphens-auto".to_string()}>
+                <Section tag={SectionTag::Article} label={"about".to_string()} body_class={"post-body flex flex-col gap-2 break-words hyphens-auto".to_string()}>
                     {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
                 </Section>
 

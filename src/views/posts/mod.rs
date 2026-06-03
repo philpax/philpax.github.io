@@ -215,7 +215,7 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
     }
 
     html! { in bump;
-        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-dim mb-1 {CODE_FONT_STYLE}")}>
+        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-dim {CODE_FONT_STYLE}")}>
             <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 {date(bump, document)}
                 <span ariaHidden="true">"·"</span>
