@@ -49,7 +49,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
                         {&props.identifier}
                     </sup>
                 </label>
-                <span class="footnote-inline hidden peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-surface [&_a:hover]:text-surface">
+                <span class="footnote-inline hidden peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
                     {children}
                 </span>
             </span>
@@ -96,7 +96,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
             </a>
 
             // Inline popup content (small screens only) - toggled by checkbox
-            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-surface [&_a:hover]:text-surface">
+            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
                 {children_clone}
             </span>
 

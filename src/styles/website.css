@@ -19,7 +19,6 @@
     /* Core surfaces */
     --background-color: #120c1f; /* near-black aubergine */
     --panel: #1b1330; /* elevated panel / code bg */
-    --background-color-secondary: #1b1330;
 
     /* Text */
     --color: #e7e0f3; /* prose text */
@@ -44,7 +43,6 @@
 --light-mode {
     --background-color: #ece7f3; /* datasheet paper */
     --panel: #f5f2fa;
-    --background-color-secondary: #f5f2fa;
 
     --color: #1d1530; /* near-black ink */
     --dim: #6b5d88;

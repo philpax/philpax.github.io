@@ -29,7 +29,7 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
     let body = render_rich_text(bump, &post.text, &post.facets);
 
     paxhtml::html! { in bump;
-        <div class="bg-surface rounded-lg p-4 my-4 max-w-xl not-first:mx-auto">
+        <div class="bg-panel rounded-lg p-4 my-4 max-w-xl not-first:mx-auto">
             <Link external target={paxsite_content::bluesky::profile_url(&post.author_handle)} additional_classes={"flex items-center gap-3 mb-3".to_string()}>
                 {avatar}
                 <div>

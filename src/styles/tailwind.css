@@ -9,7 +9,6 @@
   --color-fg: var(--color);
   --color-dim: var(--dim);
   --color-canvas: var(--background-color);
-  --color-surface: var(--background-color-secondary);
   --color-panel: var(--panel);
   --color-wire: var(--wire);
   --color-phosphor: var(--phosphor);
