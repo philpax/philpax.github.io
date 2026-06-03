@@ -63,14 +63,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .take(5)
                                 .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                         }
-                        <div class={format!("pt-1 text-sm {CODE_FONT_STYLE}")}>
+                        <div class={format!("text-sm {CODE_FONT_STYLE}")}>
                             <Link underline target={Route::Blog.url_path()}>"› all posts"</Link>
                         </div>
                     </Section>
 
                     // updates — dense mono changelog
-                    <Section label={"updates".to_string()}>
-                        <ul class={format!("list-none m-0 p-0 space-y-2 text-sm {CODE_FONT_STYLE}")}>
+                    <Section label={"updates".to_string()} body_class={"flex flex-col gap-3".to_string()}>
+                        <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
                         #{
                             content
                                 .updates
@@ -80,7 +80,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .map(|doc| update_doc_item(bump, doc))
                         }
                         </ul>
-                        <div class={format!("pt-3 text-sm {CODE_FONT_STYLE}")}>
+                        <div class={format!("text-sm {CODE_FONT_STYLE}")}>
                             <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
                         </div>
                     </Section>
