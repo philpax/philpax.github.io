@@ -115,9 +115,6 @@
     .toc {
         @apply font-['Iosevka',monospace] text-[0.85rem];
     }
-    .toc a.active {
-        @apply text-hot font-bold;
-    }
 
     /* ----------------------------------------------------------
      Prose typography inside .post-body. Serif body; mono code.

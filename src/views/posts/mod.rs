@@ -259,7 +259,7 @@ pub fn toc_elements<'a>(
     toc: Option<paxhtml::Element<'a>>,
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
     let h3_classname = format!("text-sm font-bold text-phosphor mb-1 {CODE_FONT_STYLE}");
-    let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot";
+    let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot [&_a.active]:bg-phosphor [&_a.active]:text-canvas [&_a.active]:font-bold [&_a.active]:rounded-sm [&_a.active]:px-1 [&_a.active]:-mx-1";
     let toc_header = "Table of Contents";
 
     let sidebar = toc.clone().map(|hierarchy_list| {
