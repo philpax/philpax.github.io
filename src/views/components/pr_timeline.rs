@@ -267,7 +267,7 @@ fn pr_row<'bump>(
             <span class="w-10 text-right text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
                 {start_label}
             </span>
-            <span class="relative h-2.5 flex-1 sm:flex-none sm:w-80 min-w-[4rem] bg-dim/15 rounded-sm">
+            <span class="relative h-2.5 flex-1 sm:flex-none sm:w-72 min-w-[4rem] bg-dim/15 rounded-sm">
                 <span class="absolute h-full rounded-sm bg-dim/80"
                       style={format!("left: {left_pct:.2}%; width: {width_pct:.2}%;")}>
                 </span>
@@ -275,10 +275,10 @@ fn pr_row<'bump>(
             <span class="w-10 text-left text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
                 {end_label}
             </span>
-            <span class="text-emerald-700 dark:text-emerald-400 w-8 text-right flex-shrink-0 tabular-nums">
+            <span class="text-emerald-700 dark:text-emerald-400 w-10 text-right flex-shrink-0 tabular-nums whitespace-nowrap">
                 {format!("+{}", e.add)}
             </span>
-            <span class="text-rose-700 dark:text-rose-400 w-8 text-left flex-shrink-0 tabular-nums">
+            <span class="text-rose-700 dark:text-rose-400 w-10 text-left flex-shrink-0 tabular-nums whitespace-nowrap">
                 {format!("−{}", e.sub)}
             </span>
             <span class="basis-full sm:basis-auto sm:flex-1 min-w-0 truncate">
