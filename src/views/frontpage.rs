@@ -10,6 +10,9 @@ use crate::{
     },
 };
 
+/// Vertical/horizontal gap between the segments on the home page.
+const SECTION_GAP: &str = "gap-3";
+
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
@@ -42,7 +45,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Home,
         html! { in bump;
-            <div class="flex flex-col gap-6" id="home-page-columns">
+            <div class={format!("flex flex-col {SECTION_GAP}")} id="home-page-columns">
                 // about — serif prose in an .about segment
                 <section class="segment">
                     <SegmentLabel label={"about".to_string()} />
@@ -51,7 +54,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     </article>
                 </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class={format!("grid grid-cols-1 md:grid-cols-2 {SECTION_GAP}")}>
                     // posts — serif title links + mono daterows
                     <section class="segment">
                         <SegmentLabel label={"posts".to_string()} />
