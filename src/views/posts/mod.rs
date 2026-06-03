@@ -4,7 +4,10 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{IsoDate, IsoDateProps, Link, LinkProps, collect_pr_entries},
+    views::components::{
+        IsoDate, IsoDateProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
+        collect_pr_entries,
+    },
 };
 
 pub const POST_BODY_MARGIN_CLASS: &str =
@@ -23,7 +26,7 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
                     </li>
                 }
             });
-            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-wrap gap-y-1 min-w-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
+            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-nowrap overflow-x-auto min-w-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -52,8 +55,59 @@ pub fn post<'a>(
     let bump = context.bump;
     let route_path = document.route_path();
     let url = route_path.url_path();
+    let heading_class = post_body_to_heading_class(post_body);
 
-    let post_body_rendered = match post_body {
+    // Metadata + clickable title that heads every post.
+    let title_and_meta = html! { in bump;
+        <>
+            <a href={url.clone()} class="block no-underline post-title group">
+                <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
+            </a>
+            {post_meta(bump, document, post_body)}
+        </>
+    };
+
+    // Short: a compact list item (used inside the home "posts" segment); not a
+    // segment of its own, so it can sit inside one.
+    if post_body == PostBody::Short {
+        let body = MarkdownConverter::new(context, &url)
+            .with_source_path(document.source_path.clone())
+            .with_document_base_url(url.clone())
+            .convert(
+                document
+                    .metadata
+                    .short_markdown()
+                    .as_ref()
+                    .unwrap_or(&document.description),
+                None,
+            );
+        return html! { in bump;
+            <article class="post">
+                <header class="pb-0 mb-0">{title_and_meta}</header>
+                <div class="post-body [&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block">
+                    {body}
+                </div>
+            </article>
+        };
+    }
+
+    // Description / Full → a self-contained segment: meta + title in the header
+    // band, content in the body.
+    let (body, hide_sidenotes) = match post_body {
+        PostBody::Description => (
+            html! { in bump;
+                <>
+                    {MarkdownConverter::new(context, &url)
+                        .with_source_path(document.source_path.clone())
+                        .with_document_base_url(url.clone())
+                        .convert(&document.description, None)}
+                    <p>
+                        <Link underline target={url.clone()}>"Read more"</Link>
+                    </p>
+                </>
+            },
+            true,
+        ),
         PostBody::Full => {
             let toc = document
                 .rest_of_content
@@ -63,10 +117,19 @@ pub fn post<'a>(
 
             let mut content_elements = vec![];
 
-            // Decorative address gutter ("hexdump offsets") in the left margin on very
-            // wide screens. Purely cosmetic and aria-hidden; hidden below 2xl. Only shown
-            // when there's no TOC sidebar (which otherwise occupies the left margin), so
-            // the two never collide.
+            if document.metadata.draft {
+                content_elements.push(html! { in bump;
+                    <div class={format!("p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
+                        <div class="text-xl font-bold">"!! DRAFT !!"</div>
+                        <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+                    </div>
+                });
+            }
+
+            // Decorative address gutter ("hexdump offsets") in the left margin on
+            // very wide screens. Cosmetic + aria-hidden; only shown when there's no
+            // TOC sidebar (which otherwise occupies the left margin), so the two
+            // never collide.
             let has_sidebar = toc_sidebar.is_some();
             content_elements.extend(toc_sidebar);
             if !has_sidebar {
@@ -104,58 +167,27 @@ pub fn post<'a>(
                 content_elements.push(converter.convert(content, None));
             }
 
-            paxhtml::builder::Builder::new(bump).fragment(content_elements)
+            (
+                paxhtml::builder::Builder::new(bump).fragment(content_elements),
+                false,
+            )
         }
-        PostBody::Description => html! { in bump;
-            <>
-                {MarkdownConverter::new(context, &url)
-                    .with_source_path(document.source_path.clone())
-                    .with_document_base_url(url.clone())
-                    .convert(&document.description, None)}
-                <p>
-                    <Link underline target={url.clone()}>
-                        "Read more"
-                    </Link>
-                </p>
-            </>
-        },
-        PostBody::Short => MarkdownConverter::new(context, &url)
-            .with_source_path(document.source_path.clone())
-            .with_document_base_url(url.clone())
-            .convert(
-                document
-                    .metadata
-                    .short_markdown()
-                    .as_ref()
-                    .unwrap_or(&document.description),
-                None,
-            ),
+        PostBody::Short => unreachable!("Short is handled above"),
     };
 
-    let heading_class = post_body_to_heading_class(post_body);
+    let sidenote_hiding = "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block";
+    let body_class = if hide_sidenotes {
+        format!("post-body {POST_BODY_MARGIN_CLASS} {sidenote_hiding}")
+    } else {
+        format!("post-body {POST_BODY_MARGIN_CLASS}")
+    };
+
+    let header = html! { in bump; <div class="flex flex-col">{title_and_meta}</div> };
 
     html! { in bump;
-        <article class="post">
-            <header class="pb-0 mb-0">
-                {post_meta(bump, document, post_body)}
-                <a href={url} class="block p-0 no-underline post-title group">
-                    <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
-                </a>
-                {document.metadata.draft.then(|| html! { in bump;
-                    <div class={format!("my-3 p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
-                        <div class="text-xl font-bold">"!! DRAFT !!"</div>
-                        <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
-                    </div>
-                })}
-            </header>
-            <div class={format!(
-                "post-body {} {}",
-                if post_body != PostBody::Short { POST_BODY_MARGIN_CLASS } else { "" },
-                if post_body != PostBody::Full { "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block" } else { "" }
-            )}>
-                {post_body_rendered}
-            </div>
-        </article>
+        <Segment tag={SegmentTag::Article} header={header} body_class={body_class}>
+            {body}
+        </Segment>
     }
 }
 
@@ -174,58 +206,40 @@ fn address_gutter<'a>(bump: &'a Bump) -> paxhtml::Element<'a> {
     }
 }
 
-/// Render the post metadata. In `Full` mode it's a mono "header struct"
-/// (`field : value` rows); otherwise a compact mono meta line.
+/// Render the post metadata as a single inline mono line:
+/// `date · updated X · type · N words · #tags`, with the date(s) and the word
+/// count highlighted (`text-fg`) against the dim line.
 fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> paxhtml::Element<'a> {
     let type_str = document.document_type.to_string().to_lowercase();
     let words = document.word_count.to_string();
     let has_tags = document.tags().is_some_and(|t| !t.is_empty());
 
-    if post_body == PostBody::Full {
-        let updated = document
-            .metadata
-            .datetime
-            .zip(document.metadata.last_modified)
-            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
-            .map(|(_, modified)| modified.date_naive());
-
-        let row = |label: &'static str, value: paxhtml::Element<'a>| {
-            html! { in bump;
-                <div class="flex gap-2 items-baseline">
-                    <span class="text-dim w-16 flex-shrink-0">{label}</span>
-                    <span class="text-dim" ariaHidden="true">": "</span>
-                    <span class="min-w-0">{value}</span>
-                </div>
-            }
-        };
-
-        return html! { in bump;
-            <div class={format!("post-meta text-sm text-fg mb-2 pl-3 border-l border-wire {CODE_FONT_STYLE}")}>
-                {row("date", html! { in bump;
-                    <>
-                        {date(bump, document)}
-                        {updated.map(|m| html! { in bump; <><span class="text-dim">" · updated "</span><IsoDate date={m} /></> })}
-                    </>
-                })}
-                {row("type", html! { in bump; <>{type_str}</> })}
-                {row("size", html! { in bump; <>{words}" words"</> })}
-                {has_tags.then(|| row("tags", tags(bump, document)))}
-            </div>
-        };
-    }
+    // Only the full post view shows the "updated" date; summaries omit it.
+    let updated = (post_body == PostBody::Full)
+        .then(|| {
+            document
+                .metadata
+                .datetime
+                .zip(document.metadata.last_modified)
+                .filter(|(published, modified)| published.date_naive() != modified.date_naive())
+                .map(|(_, modified)| modified.date_naive())
+        })
+        .flatten();
 
     html! { in bump;
-        <div class={format!("post-meta flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-2 gap-y-1 text-sm text-dim {CODE_FONT_STYLE}")}>
+        <div class={format!("post-meta flex flex-col sm:flex-row sm:items-center gap-x-2 text-sm text-dim {CODE_FONT_STYLE}")}>
             <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-                {date(bump, document)}
+                <span class="text-fg">{date(bump, document)}</span>
+                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><IsoDate date={m} /></span></> })}
                 <span ariaHidden="true">"·"</span>
                 <span>{type_str}</span>
                 <span ariaHidden="true">"·"</span>
-                <span>{words}" words"</span>
+                <span><span class="text-fg">{words}</span>" words"</span>
             </div>
-            {has_tags.then(|| html! { in bump;
-                <div class="min-w-0">{tags(bump, document)}</div>
-            })}
+            {has_tags.then(|| html! { in bump; <>
+                <span ariaHidden="true" class="hidden sm:inline flex-shrink-0">"·"</span>
+                <div class="flex-1 min-w-0">{tags(bump, document)}</div>
+            </>})}
         </div>
     }
 }

@@ -40,6 +40,9 @@ pub struct SegmentProps<'bump> {
     pub class: Option<String>,
     /// Extra classes appended to the padded body (e.g. `flex`, hairline rules).
     pub body_class: Option<String>,
+    /// Rich content for the title-bar header band. Overrides `label` when set
+    /// (e.g. a post's metadata + title).
+    pub header: Option<paxhtml::Element<'bump>>,
     pub children: Option<paxhtml::Element<'bump>>,
 }
 impl DefaultIn<'_> for SegmentProps<'_> {
@@ -49,6 +52,7 @@ impl DefaultIn<'_> for SegmentProps<'_> {
             tag: SegmentTag::Section,
             class: None,
             body_class: None,
+            header: None,
             children: None,
         }
     }
@@ -66,9 +70,13 @@ pub fn Segment<'bump>(bump: &'bump Bump, props: SegmentProps<'bump>) -> paxhtml:
         None => "segment".to_string(),
     };
     let body_class = format!("p-3 {}", props.body_class.as_deref().unwrap_or_default());
+    let header = match props.header {
+        Some(h) => h,
+        None => paxhtml::html! { in bump; <SegmentLabel label={props.label} /> },
+    };
     let inner = paxhtml::html! { in bump;
         <>
-            <SegmentLabel label={props.label} />
+            <div class="segment-header">{header}</div>
             <div class={body_class}>
                 {props.children.unwrap_or(paxhtml::Element::Empty)}
             </div>

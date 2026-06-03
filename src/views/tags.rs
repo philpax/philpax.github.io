@@ -96,8 +96,8 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <Segment label={format!("tag: {tag_id}")}>
-                <header class="mb-6">
+            <div class="flex flex-col gap-3">
+                <header class="flex flex-col gap-1">
                     <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
                     <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
                         <h1 class="text-3xl font-bold text-phosphor">
@@ -108,14 +108,12 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                         </h1>
                     </a>
                 </header>
-                <div class="[&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline">
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
-                </div>
-            </Segment>
+            </div>
         },
     )
 }

@@ -1,8 +1,5 @@
 use super::*;
-use crate::views::{
-    components::{Segment, SegmentProps},
-    posts,
-};
+use crate::views::posts;
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
@@ -31,9 +28,9 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Blog,
         html! { in bump;
-            <Segment label={"blog".to_string()} body_class={"[&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*:not(:first-child)]:hairline".to_string()}>
+            <div class="flex flex-col gap-3">
                 #{all_posts}
-            </Segment>
+            </div>
         },
     )
 }

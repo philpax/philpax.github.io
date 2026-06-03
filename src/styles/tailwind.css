@@ -83,14 +83,21 @@
             transparent
         );
     }
-    .segment-label {
-        @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em];
-        @apply text-phosphor border-b border-wire px-3 py-1.5;
+    /* The title-bar band chrome — shared by the simple label and rich headers
+       (e.g. a post's meta + title). */
+    .segment-header {
+        @apply block border-b border-wire px-3 py-1.5;
         background-color: color-mix(
             in srgb,
             var(--background-color) 85%,
             transparent
         );
+    }
+    /* The simple lowercase mono label text that sits in a .segment-header.
+       `block` so the band height tracks this text's (tight) line-height rather
+       than the inherited body line-height. */
+    .segment-label {
+        @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em] text-phosphor;
     }
 
     /* Mono "comment" kicker above headings */
