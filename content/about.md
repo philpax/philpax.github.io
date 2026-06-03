@@ -3,28 +3,16 @@ title = "About"
 path = "about"
 +++
 
-G'day! I'm Philpax[^1], a creative polyglot programmer/engineer, and I'm passionate about computers, how we interact with them, and how we can use them to empower people. Welcome to my humble website!
+G'day! I'm Philpax[^1], a creative polyglot programmer/engineer, and I'm passionate about computers, how we interact with them, and how we can use them to empower people. My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden. Welcome to my humble website!
 
 [^1]: IPA `/ˈfɪl.pæks/`. he/him.
-
-My real name is Mithun[^2], but let's keep that between friends, family and employers. I hark from the distant southern lands of Australia, and currently live in Sweden.[^3]
-
-I currently work at [Overworld](https://over.world/), but have previously worked at [Ambient](https://ambient.run/), [Avalanche Studios](https://avalanchestudios.com/), [Lexer](https://www.lexer.io/), and more.
-
-In the open-source world, I [designed the GGUF file format for llama.cpp](https://github.com/ggml-org/ggml/pull/302), co-developed [Just Cause 2: Multiplayer](https://jc-mp.com/), and design and run the plugin bureaucracy for [Dalamud](https://dalamud.dev/).[^ffxiv]
-
 [^2]: IPA `/mɪθʌn/`. also, unbelievably, he/him.
-[^3]: Yes, the temperature differential makes me sick every time I switch hemispheres.
 
-I've worked with every layer of the stack - from the little electrons racing around my workbench, to software riding high enough for Snoop Dogg to call for advice - and I can be found exploring any number of things, including but certainly not limited to:
+I currently work at [Overworld](https://over.world/), but have previously worked at [Ambient](https://ambient.run/), [Avalanche Studios](https://avalanchestudios.com/), [Lexer](https://www.lexer.io/), and more. In the open-source world, I have [designed the GGUF file format for llama.cpp](https://github.com/ggml-org/ggml/pull/302), co-developed [Just Cause 2: Multiplayer](https://jc-mp.com/), and design and run the plugin bureaucracy for [Dalamud](https://dalamud.dev/).[^ffxiv]
 
-- game reverse engineering and modification
-- open-source development and community management
-- landscape and street photography
-- dalliances with the written word, including editing yours
-- low-level and embedded programming
-- virtual and augmented reality
-- artificial intelligence productionisation
+I've worked with every layer of the stack - from the little electrons racing around my workbench, to software riding high enough for Snoop Dogg to call for advice - and I can be found exploring any number of things.
+
+These days, my curiosity wanders through product engineering, game reverse engineering, low-level and embedded work, VR/AR, and AI productionisation - with detours into open-source community-wrangling, photography, and writing (including editing yours).
 
 [^ffxiv]: I played through A Realm Reborn as a White Mage and quit shortly after. This means I have spent years of my life on an ecosystem for a game that I have barely played. Someone's gotta oil the bureaucratic gears!
 
