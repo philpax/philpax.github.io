@@ -5,7 +5,9 @@ use super::*;
 use crate::{
     markdown::MarkdownConverter,
     views::{
-        components::{Link, LinkProps, Segment, SegmentProps, SegmentTag},
+        components::{
+            Link, LinkProps, Segment, SegmentLabel, SegmentLabelProps, SegmentProps, SegmentTag,
+        },
         posts,
     },
 };
@@ -26,6 +28,15 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ("goatcorp.png", "https://goatcorp.github.io"),
         ("88x31.png", "https://eightyeightthirty.one"),
     ];
+
+    fn header_with_all<'a>(bump: &'a Bump, name: &str, target: Route) -> paxhtml::Element<'a> {
+        html! { in bump;
+            <span class="flex flex-row gap-2 segment-label">
+                <SegmentLabel label={name} />
+                <Link underline target={target.url_path()}>"› all"</Link>
+            </span>
+        }
+    }
 
     layout(
         context,
@@ -53,7 +64,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
 
                 <div class={format!("grid grid-cols-1 md:grid-cols-2 {SEGMENT_GAP}")}>
                     // posts — serif title links + mono daterows
-                    <Segment label={"posts".to_string()} body_class={"flex flex-col gap-5".to_string()}>
+                    <Segment header={header_with_all(bump, "posts", Route::Blog)} body_class={"flex flex-col gap-5".to_string()}>
                         #{
                             content
                                 .blog
@@ -63,13 +74,10 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .take(5)
                                 .map(|doc| posts::post(context, doc, posts::PostBody::Short))
                         }
-                        <div class={format!("text-sm {CODE_FONT_STYLE}")}>
-                            <Link underline target={Route::Blog.url_path()}>"› all posts"</Link>
-                        </div>
                     </Segment>
 
                     // updates — dense changelog
-                    <Segment label={"updates".to_string()} body_class={"flex flex-col gap-5".to_string()}>
+                    <Segment header={header_with_all(bump, "updates", Route::Updates)} body_class={"flex flex-col gap-5".to_string()}>
                         <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm")}>
                         #{
                             content
@@ -77,13 +85,10 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                                 .documents
                                 .iter()
                                 .filter(|d| !d.metadata.draft)
-                                .take(9)
+                                .take(10)
                                 .map(|doc| update_doc_item(bump, doc))
                         }
                         </ul>
-                        <div class={format!("text-sm {CODE_FONT_STYLE}")}>
-                            <Link underline target={Route::Updates.url_path()}>"› all updates"</Link>
-                        </div>
                     </Segment>
                 </div>
 
