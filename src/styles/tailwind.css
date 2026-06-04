@@ -121,9 +121,6 @@
     .post-body :is(h1, h2, h3, h4, h5, h6) {
         @apply font-['Literata',serif] text-phosphor leading-tight scroll-mt-4;
     }
-    .post-body p {
-        @apply mt-0;
-    }
     .post-body a {
         @apply underline-offset-[3px];
     }
@@ -149,5 +146,28 @@
     }
     .post-body :is(img, video) {
         @apply block;
+    }
+    /* Space the top-level post-body blocks (hero, prose, inline TOC), ignoring
+       the gutter floats which sit out of flow. */
+    .post-body
+        > *:not(.toc-sidebar):not(.address-gutter)
+        ~ *:not(.toc-sidebar):not(.address-gutter) {
+        margin-top: 1.5rem;
+    }
+
+    /* Sectioned prose: spacing comes from the cascade in block flow (floated
+       sidenotes can't live inside flex items). Blocks are 1rem apart; sections
+       get a wider break before them. */
+    .post-prose > * + *,
+    .post-prose section > * + * {
+        margin-top: 1rem;
+    }
+    .post-prose > * + section {
+        margin-top: 1.5rem;
+    }
+    /* A heading brushes against the text (or sub-heading) it introduces — but
+       not against a standalone image, which markdown wraps in a <p>. */
+    .post-prose section > :is(h1, h2, h3, h4, h5, h6) + *:not(p:has(img)) {
+        margin-top: 0.25rem;
     }
 }

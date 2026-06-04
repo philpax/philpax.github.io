@@ -554,6 +554,74 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
+    /// Convert a markdown root into HTML grouped into nested `<section>`s by
+    /// heading depth (a rough HTML5 outline). Spacing is handled by the cascade
+    /// on `.post-prose` (block flow, not flex — floated sidenotes need it).
+    pub fn convert_sectioned(&mut self, node: &Node) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+        let b = Builder::new(bump);
+
+        let Node::Root(root) = node else {
+            return self.convert(node, None);
+        };
+
+        // Footnote bookkeeping happens once at the root (mirrors `convert`).
+        self.gather_footnote_definitions(node);
+        self.validate_footnote_references(node);
+
+        let items = self.build_sections(&root.children, node);
+        b.div([b.attr(("class", "post-prose"))])(b.fragment(items))
+    }
+
+    /// Group a flat list of block nodes into nested `<section>`s by heading
+    /// depth. Runs of non-heading nodes are converted together via
+    /// `convert_many`, so multi-node patterns (PR mentions, paired components)
+    /// keep working. Content before the first heading stays at the top level.
+    fn build_sections(&mut self, nodes: &[Node], parent: &Node) -> Vec<paxhtml::Element<'a>> {
+        let bump = self.context.bump;
+        let b = Builder::new(bump);
+
+        let mut roots: Vec<paxhtml::Element<'a>> = vec![];
+        // (heading depth, accumulated section children) for each open section
+        let mut stack: Vec<(u8, Vec<paxhtml::Element<'a>>)> = vec![];
+
+        let mut i = 0;
+        while i < nodes.len() {
+            if let Node::Heading(h) = &nodes[i] {
+                // Close sibling/deeper sections before opening this one.
+                while stack.last().is_some_and(|(d, _)| *d >= h.depth) {
+                    let (_, items) = stack.pop().unwrap();
+                    let section = b.section([])(b.fragment(items));
+                    match stack.last_mut() {
+                        Some((_, parent_items)) => parent_items.push(section),
+                        None => roots.push(section),
+                    }
+                }
+                let heading_el = self.convert(&nodes[i], Some(parent));
+                stack.push((h.depth, vec![heading_el]));
+                i += 1;
+            } else {
+                let start = i;
+                while i < nodes.len() && !matches!(nodes[i], Node::Heading(_)) {
+                    i += 1;
+                }
+                let run = self.convert_many(&nodes[start..i], Some(parent));
+                match stack.last_mut() {
+                    Some((_, items)) => items.push(run),
+                    None => roots.push(run),
+                }
+            }
+        }
+        while let Some((_, items)) = stack.pop() {
+            let section = b.section([])(b.fragment(items));
+            match stack.last_mut() {
+                Some((_, parent_items)) => parent_items.push(section),
+                None => roots.push(section),
+            }
+        }
+        roots
+    }
+
     fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element<'a> {
         let bump = self.context.bump;
         let b = paxhtml::builder::Builder::new(bump);

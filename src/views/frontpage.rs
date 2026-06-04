@@ -58,8 +58,8 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         html! { in bump;
             <div class={format!("flex flex-col {SEGMENT_GAP}")} id="home-page-columns">
                 // about — serif prose
-                <Segment tag={SegmentTag::Article} label={"about".to_string()} body_class={"post-body flex flex-col gap-2 break-words hyphens-auto".to_string()}>
-                    {MarkdownConverter::new(context, Route::Index.url_path()).convert(&content.about.description, None)}
+                <Segment tag={SegmentTag::Article} label={"about".to_string()} body_class={"post-body".to_string()}>
+                    {MarkdownConverter::new(context, Route::Index.url_path()).convert_sectioned(&content.about.description)}
                 </Segment>
 
                 <div class={format!("grid grid-cols-1 md:grid-cols-2 {SEGMENT_GAP}")}>

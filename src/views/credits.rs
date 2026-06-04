@@ -27,8 +27,8 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 <a href={Route::Credits.url_path()} class={posts::post_body_to_heading_class(posts::PostBody::Full)}>
                     <h2>"Credits"</h2>
                 </a>
-                <div class={format!("post-body {}", posts::POST_BODY_MARGIN_CLASS)}>
-                    {MarkdownConverter::new(context, Route::Credits.url_path()).with_sidenotes().convert(&content.credits.description, None)}
+                <div class="post-body">
+                    {MarkdownConverter::new(context, Route::Credits.url_path()).with_sidenotes().convert_sectioned(&content.credits.description)}
                 </div>
             </article>
         },

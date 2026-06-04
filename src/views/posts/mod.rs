@@ -10,9 +10,6 @@ use crate::{
     },
 };
 
-pub const POST_BODY_MARGIN_CLASS: &str =
-    "*:mb-4 [&>h1]:mb-0 [&>h2]:mb-0 [&>h3]:mb-0 [&>h4]:mb-0 [&>h5]:mb-0 [&>h6]:mb-0";
-
 pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
     document
         .tags()
@@ -67,121 +64,102 @@ pub fn post<'a>(
         </>
     };
 
+    // Sidenotes float on wide layouts but inline (toggle) on small ones; the
+    // summary modes always inline them.
+    let sidenote_hiding = "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block";
+
     // Short: a compact list item (used inside the home "posts" segment); not a
     // segment of its own, so it can sit inside one.
     if post_body == PostBody::Short {
         let body = MarkdownConverter::new(context, &url)
             .with_source_path(document.source_path.clone())
             .with_document_base_url(url.clone())
-            .convert(
+            .convert_sectioned(
                 document
                     .metadata
                     .short_markdown()
                     .as_ref()
                     .unwrap_or(&document.description),
-                None,
             );
         return html! { in bump;
             <article class="post">
                 <header class="pb-0 mb-0">{title_and_meta}</header>
-                <div class="post-body [&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block">
+                <div class={format!("post-body {sidenote_hiding}")}>
                     {body}
                 </div>
             </article>
         };
     }
 
-    // Description / Full → a self-contained segment: meta + title in the header
-    // band, content in the body.
-    let (body, hide_sidenotes) = match post_body {
-        PostBody::Description => (
-            html! { in bump;
-                <>
-                    {MarkdownConverter::new(context, &url)
-                        .with_source_path(document.source_path.clone())
-                        .with_document_base_url(url.clone())
-                        .convert(&document.description, None)}
-                    <p>
-                        <Link underline target={url.clone()}>"Read more"</Link>
-                    </p>
-                </>
-            },
-            true,
-        ),
-        PostBody::Full => {
-            let toc = document
-                .rest_of_content
-                .as_ref()
-                .and_then(|node| document_to_html_list(context, node, &url));
-            let (toc_sidebar, toc_inline) = toc_elements(bump, toc);
-
-            let mut content_elements = vec![];
-
-            if document.metadata.draft {
-                content_elements.push(html! { in bump;
-                    <div class={format!("p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
-                        <div class="text-xl font-bold">"!! DRAFT !!"</div>
-                        <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
-                    </div>
-                });
-            }
-
-            // Decorative address gutter ("hexdump offsets") in the left margin on
-            // very wide screens. Cosmetic + aria-hidden; only shown when there's no
-            // TOC sidebar (which otherwise occupies the left margin), so the two
-            // never collide.
-            let has_sidebar = toc_sidebar.is_some();
-            content_elements.extend(toc_sidebar);
-            if !has_sidebar {
-                content_elements.push(address_gutter(bump));
-            }
-
-            if let Some((filename, alt)) = &document.hero_filename_and_alt {
-                content_elements.push(html! { in bump;
-                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-wire hero-image block w-full" />
-                });
-            }
-
-            let pr_entries = document
-                .rest_of_content
-                .as_ref()
-                .map(|content| collect_pr_entries(bump, content))
-                .unwrap_or_default();
-
-            let mut converter = MarkdownConverter::new(context, &url)
-                .with_sidenotes()
-                .with_source_path(document.source_path.clone())
-                .with_document_base_url(url.clone())
-                .with_pr_entries(pr_entries);
-            content_elements.push(converter.convert(&document.description, None));
-
-            // Inline TOC for small screens (between description and rest of content)
-            content_elements.extend(toc_inline);
-
-            if let Some(content) = document.rest_of_content.as_ref() {
-                content_elements.push(converter.convert(content, None));
-            }
-
-            (
-                paxhtml::builder::Builder::new(bump).fragment(content_elements),
-                false,
-            )
-        }
-        PostBody::Short => unreachable!("Short is handled above"),
-    };
-
-    let sidenote_hiding = "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block";
-    let body_class = if hide_sidenotes {
-        format!("post-body {POST_BODY_MARGIN_CLASS} {sidenote_hiding}")
-    } else {
-        format!("post-body {POST_BODY_MARGIN_CLASS}")
-    };
-
     let header = html! { in bump; <div class="flex flex-col">{title_and_meta}</div> };
 
+    // Description: intro prose + a "read more" link, in its own segment.
+    if post_body == PostBody::Description {
+        let body = MarkdownConverter::new(context, &url)
+            .with_source_path(document.source_path.clone())
+            .with_document_base_url(url.clone())
+            .convert_sectioned(&document.description);
+        return html! { in bump;
+            <Segment tag={SegmentTag::Article} header={header} body_class={format!("post-body {sidenote_hiding}")}>
+                {body}
+                <p>
+                    <Link underline target={url.clone()}>"Read more"</Link>
+                </p>
+            </Segment>
+        };
+    }
+
+    // Full post view: the post-body stays a block so the floated TOC sidebar /
+    // address gutter and per-paragraph sidenotes work; spacing comes from the
+    // `.post-body` / `.post-prose` cascade.
+    let toc = document
+        .rest_of_content
+        .as_ref()
+        .and_then(|node| document_to_html_list(context, node, &url));
+    let (toc_sidebar, toc_inline) = toc_elements(bump, toc);
+
+    let mut body_elements = vec![];
+    // Decorative address gutter ("hexdump offsets") in the left margin on very
+    // wide screens; only shown when there's no TOC sidebar (which otherwise
+    // occupies the left margin), so the two never collide.
+    let has_sidebar = toc_sidebar.is_some();
+    body_elements.extend(toc_sidebar);
+    if !has_sidebar {
+        body_elements.push(address_gutter(bump));
+    }
+    if document.metadata.draft {
+        body_elements.push(html! { in bump;
+            <div class={format!("p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
+                <div class="text-xl font-bold">"!! DRAFT !!"</div>
+                <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
+            </div>
+        });
+    }
+    if let Some((filename, alt)) = &document.hero_filename_and_alt {
+        body_elements.push(html! { in bump;
+            <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-wire hero-image block w-full" />
+        });
+    }
+
+    let pr_entries = document
+        .rest_of_content
+        .as_ref()
+        .map(|content| collect_pr_entries(bump, content))
+        .unwrap_or_default();
+    let mut converter = MarkdownConverter::new(context, &url)
+        .with_sidenotes()
+        .with_source_path(document.source_path.clone())
+        .with_document_base_url(url.clone())
+        .with_pr_entries(pr_entries);
+    body_elements.push(converter.convert_sectioned(&document.description));
+    body_elements.extend(toc_inline);
+    if let Some(content) = document.rest_of_content.as_ref() {
+        body_elements.push(converter.convert_sectioned(content));
+    }
+
     html! { in bump;
-        <Segment tag={SegmentTag::Article} header={header} body_class={body_class}>
-            {body}
+        <Segment tag={SegmentTag::Article} header={header} body_class={"post-body".to_string()}>
+            #{body_elements.into_iter()}
         </Segment>
     }
 }
@@ -253,7 +231,7 @@ pub fn toc_elements<'a>(
     bump: &'a Bump,
     toc: Option<paxhtml::Element<'a>>,
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
-    let h3_classname = format!("font-bold text-phosphor mb-1");
+    let h3_classname = "font-bold text-phosphor mb-1";
     let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot [&_a.active]:bg-phosphor [&_a.active]:text-canvas [&_a.active]:font-bold [&_a.active]:rounded-sm [&_a.active]:px-1 [&_a.active]:-mx-1";
     let toc_header = "Table of Contents";
 
@@ -261,7 +239,7 @@ pub fn toc_elements<'a>(
         html! { in bump;
             <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                 <div class="w-max max-w-full">
-                    <h3 class={h3_classname.clone()}>
+                    <h3 class={h3_classname}>
                         <Link underline target={"#toc-sticky".to_string()}>
                             {toc_header}
                         </Link>
@@ -276,7 +254,7 @@ pub fn toc_elements<'a>(
 
     let inline = toc.map(|hierarchy_list| {
         html! { in bump;
-            <aside class="toc 2xl:hidden my-4 py-2 border-y border-wire" id="toc-inline">
+            <aside class="toc 2xl:hidden py-2 border-y border-wire" id="toc-inline">
                 <h3 class={h3_classname}>
                     <Link underline target={"#toc-inline".to_string()}>
                         {toc_header}

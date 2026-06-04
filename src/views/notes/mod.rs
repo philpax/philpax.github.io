@@ -93,7 +93,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                                 </>
                             })}
                     </div>
-                    <div class={posts::POST_BODY_MARGIN_CLASS}>
+                    <div class="post-body">
                         {{
                             let error_context = format!("note: {}", note.id.join("/"));
 
@@ -104,23 +104,21 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                                 .or_else(|| posts::document_to_html_list(context, &note.description, &error_context));
                             let (toc_sidebar, toc_inline) = posts::toc_elements(bump, toc);
 
-                            let mut content_elements = vec![];
-
-                            content_elements.extend(toc_sidebar);
-
                             let mut converter = MarkdownConverter::new(context, &error_context)
                                 .with_sidenotes()
                                 .with_note_id(note.id.clone())
                                 .with_source_path(note.source_path.clone());
-                            content_elements.push(converter.convert(&note.description, None));
 
-                            content_elements.extend(toc_inline);
-
+                            // Block flow: the floated TOC sidebar and sidenotes need it.
+                            let mut body_elements = vec![];
+                            body_elements.extend(toc_sidebar);
+                            body_elements.push(converter.convert_sectioned(&note.description));
+                            body_elements.extend(toc_inline);
                             if let Some(content) = note.rest_of_content.as_ref() {
-                                content_elements.push(converter.convert(content, None));
+                                body_elements.push(converter.convert_sectioned(content));
                             }
 
-                            paxhtml::builder::Builder::new(bump).fragment(content_elements)
+                            paxhtml::builder::Builder::new(bump).fragment(body_elements)
                         }}
                     </div>
                 </div>
