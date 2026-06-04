@@ -49,7 +49,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
                         {&props.identifier}
                     </sup>
                 </label>
-                <span class="footnote-inline hidden peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
+                <span class="footnote-inline hidden peer-checked:block bg-fg text-canvas text-sm p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
                     {children}
                 </span>
             </span>
@@ -58,7 +58,7 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
 
     // Styling for the sidenote's number (span, not sup - full height, no vertical offset)
     let sidenote_number_class = "\
-        footnote-number px-2 mr-2 bg-phosphor text-canvas text-sm \
+        footnote-number px-2 bg-phosphor text-canvas text-sm \
         before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-canvas\
     ";
 
@@ -67,10 +67,9 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
     // at 1rem past content edge: -mr = -(width + gap) = -(20rem + 1rem) = -21rem
     let sidenote_class = "\
         sidenote hidden \
-        2xl:block 2xl:float-right 2xl:clear-right \
+        2xl:flex 2xl:items-baseline 2xl:gap-2 2xl:float-right 2xl:clear-right \
         2xl:w-80 2xl:ml-4 2xl:-mr-[21rem] \
-        font-['Iosevka',monospace] text-xs text-dim [&_a]:text-hot \
-        border-t border-wire pt-1 pb-1 mb-4\
+        text-sm border-t-2 border-dim pt-0 pb-1 mb-4\
     ";
 
     // Clone children for use in both inline and sidenote display
@@ -96,18 +95,18 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
             </a>
 
             // Inline popup content (small screens only) - toggled by checkbox
-            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-fg text-canvas p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
+            <span class="footnote-inline hidden max-2xl:peer-checked:block bg-fg text-canvas text-sm p-2 my-1 [&_a]:text-canvas [&_a]:decoration-panel [&_a:hover]:text-panel">
                 {children_clone}
             </span>
 
             // Sidenote content (wide screens) - floats into right margin
             <small id={sidenote_id} class={sidenote_class}>
-                <a href={format!("#{ref_id}")} class="no-underline">
+                <a href={format!("#{ref_id}")} class="no-underline flex-shrink-0">
                     <span class={sidenote_number_class}>
                         {&props.identifier}
                     </span>
                 </a>
-                {children}
+                <span class="flex-1 min-w-0">{children}</span>
             </small>
         </span>
     }
