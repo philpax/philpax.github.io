@@ -231,8 +231,8 @@ pub fn toc_elements<'a>(
     bump: &'a Bump,
     toc: Option<paxhtml::Element<'a>>,
 ) -> (Option<paxhtml::Element<'a>>, Option<paxhtml::Element<'a>>) {
-    let h3_classname = "font-bold text-phosphor mb-1";
-    let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a:hover]:text-hot [&_a.active]:bg-phosphor [&_a.active]:text-canvas [&_a.active]:font-bold [&_a.active]:rounded-sm [&_a.active]:px-1 [&_a.active]:-mx-1";
+    let h3_classname = "font-bold text-phosphor mb-1 px-1";
+    let link_classes = "toc [&_a]:text-dim [&_a]:no-underline [&_a]:px-1 [&_a:hover]:text-hot [&_a.active]:bg-phosphor [&_a.active]:text-canvas [&_a.active]:rounded-sm";
     let toc_header = "Table of Contents";
 
     let sidebar = toc.clone().map(|hierarchy_list| {
