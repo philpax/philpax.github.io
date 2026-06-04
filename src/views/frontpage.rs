@@ -68,15 +68,16 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         </div>
                     </Segment>
 
-                    // updates — dense mono changelog
-                    <Segment label={"updates".to_string()} body_class={"flex flex-col gap-3".to_string()}>
-                        <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
+                    // updates — dense changelog
+                    <Segment label={"updates".to_string()} body_class={"flex flex-col gap-5".to_string()}>
+                        <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm")}>
                         #{
                             content
                                 .updates
                                 .documents
                                 .iter()
                                 .filter(|d| !d.metadata.draft)
+                                .take(9)
                                 .map(|doc| update_doc_item(bump, doc))
                         }
                         </ul>
@@ -108,8 +109,8 @@ fn update_doc_item<'bump>(bump: &'bump Bump, doc: &Document) -> paxhtml::Element
         .map(|dt| dt.date_naive().to_string())
         .unwrap_or_default();
     html! { in bump;
-        <li class="flex gap-2 items-baseline">
-            <span class="text-dim flex-shrink-0">{date_str}</span>
+        <li>
+            <div class={format!("text-fg flex-shrink-0 {CODE_FONT_STYLE}")}>{date_str}</div>
             <Link underline target={doc.route_path().url_path()}>
                 {doc.metadata.title.clone()}
             </Link>
