@@ -111,11 +111,6 @@
         color: color-mix(in srgb, var(--dim) 55%, transparent);
     }
 
-    /* TOC = "symbol table" */
-    .toc {
-        @apply font-['Iosevka',monospace] text-[0.85rem];
-    }
-
     /* ----------------------------------------------------------
      Prose typography inside .post-body. Serif body; mono code.
      (Descendant selectors target generated markdown HTML.)
