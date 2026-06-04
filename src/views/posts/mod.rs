@@ -138,12 +138,7 @@ pub fn post<'a>(
 
             if let Some((filename, alt)) = &document.hero_filename_and_alt {
                 content_elements.push(html! { in bump;
-                    <figure class="my-3">
-                        <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-wire hero-image block w-full" />
-                        <figcaption class={format!("text-xs text-dim mt-1 {CODE_FONT_STYLE}")} ariaHidden="true">
-                            {format!("; {filename}")}
-                        </figcaption>
-                    </figure>
+                    <img src={route_path.with_filename(filename).url_path()} alt={format!("Hero image: {alt}")} class="border border-wire hero-image block w-full" />
                 });
             }
 
