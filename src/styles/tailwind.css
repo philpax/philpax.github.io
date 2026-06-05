@@ -79,9 +79,12 @@
         @apply border border-wire;
         background-color: color-mix(
             in srgb,
-            var(--background-color) 35%,
+            var(--background-color) var(--panel-tint),
             transparent
         );
+        /* Frost the drifting blobs behind the panel into soft glass. */
+        backdrop-filter: blur(var(--panel-blur));
+        -webkit-backdrop-filter: blur(var(--panel-blur));
     }
     /* The title-bar band chrome — shared by the simple label and rich headers
        (e.g. a post's meta + title). */
@@ -89,7 +92,7 @@
         @apply block border-b border-wire px-3 py-1.5;
         background-color: color-mix(
             in srgb,
-            var(--background-color) 85%,
+            var(--background-color) var(--panel-header-tint),
             transparent
         );
     }

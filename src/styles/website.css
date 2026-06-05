@@ -32,6 +32,10 @@
     --hot: #e15ad0; /* hot magenta (links/highlights) */
     --alt: #9d8bff; /* alternate accent */
 
+    /* Background blobs: lighten the dark canvas so they read as glow. */
+    --blob-blend: screen;
+    --blob-opacity: 0.2;
+
     /* Code label chip */
     --code-label-bg: #342650;
     --code-label-color: #e7e0f3;
@@ -50,6 +54,10 @@
     --hot: #b5249e;
     --alt: #6b3fb5;
 
+    /* Background blobs: multiply to tint the light paper instead of glowing. */
+    --blob-blend: multiply;
+    --blob-opacity: 0.2;
+
     --code-label-bg: #d8cfec;
     --code-label-color: #2d1d54;
 }
@@ -64,6 +72,21 @@
     --centered-content-width: min(calc(var(--body-content-width) * 0.95), 100%);
     /* Address gutter width */
     --gutter-width: 3.25rem;
+
+    /* Bisexual flag — drives the background blobs (mode-independent; the
+       per-mode blend mode + opacity adapt them to dark/light). */
+    --bi-pink: #d60270;
+    --bi-purple: #9b4f96;
+    --bi-blue: #0038a8;
+
+    /* Background blob field — geometry (blend mode + opacity are per-mode). */
+    --blob-size: 46vmax;
+    --blob-blur: 100px;
+
+    /* Section panels — glass tint + frost (mode-independent). */
+    --panel-tint: 35%; /* how opaque the panel body is over the blobs */
+    --panel-header-tint: 85%; /* the darker title-bar band */
+    --panel-blur: 12px; /* backdrop frost behind panels */
 }
 
 /* Fonts */
@@ -107,51 +130,120 @@
 }
 
 /* ============================================================
-   Background flourish: a slow drifting ink wash behind the page.
-   Layering (back → front): html bg · html::before drift (-1) · content.
+   Background: slow lava-lamp blobs drifting behind the page.
+   Layering (back → front): html bg · .bg-field blobs (-1) · content.
+   The base colour is on <html> via `bg-canvas`, so the blobs sit behind
+   the (transparent) <body>. Blob colours are theme accents (so they
+   re-tint per mode), and the blend mode / opacity swap per mode via the
+   --blob-* tokens in the theme blocks. Motion is transform-only so it
+   stays on the compositor; it's removed under prefers-reduced-motion.
+   .bg-field is aria-hidden in the layout (purely decorative).
    ============================================================ */
-
-/* The base colour is applied to <html> via the `bg-canvas` utility in the
-   layout, so the drift wash can sit behind the (transparent) <body> content. */
-
-/* Slow-drifting ink wash: soft phosphor/magenta/indigo pools, blurred,
-   behind everything. Doubles as a wandering CRT phosphor glow.
-   aria-hidden (decorative); motion removed under prefers-reduced-motion. */
-html::before {
-    content: "";
+.bg-field {
     position: fixed;
-    inset: -20%;
+    inset: 0;
     z-index: -1;
+    overflow: hidden;
     pointer-events: none;
-    background-image:
-        radial-gradient(
-            38% 38% at 25% 28%,
-            color-mix(in srgb, var(--phosphor) 26%, transparent),
-            transparent 70%
-        ),
-        radial-gradient(
-            34% 34% at 76% 66%,
-            color-mix(in srgb, var(--hot) 22%, transparent),
-            transparent 70%
-        ),
-        radial-gradient(
-            44% 44% at 60% 18%,
-            color-mix(in srgb, var(--alt) 18%, transparent),
-            transparent 70%
-        );
-    filter: blur(44px);
-    opacity: 0.55;
-    animation: pigment-drift 42s ease-in-out infinite alternate;
 }
-@keyframes pigment-drift {
+.bg-field .blob {
+    position: absolute;
+    width: var(--blob-size);
+    height: var(--blob-size);
+    border-radius: 50%;
+    filter: blur(var(--blob-blur));
+    opacity: var(--blob-opacity);
+    mix-blend-mode: var(--blob-blend);
+    will-change: transform;
+}
+/* Each blob has its own anchor, colour, and timing so they drift apart and
+   merge again like a lava lamp rather than sliding as one rigid sheet.
+   Non-uniform scale + rotation fakes the organic squish without animating
+   layout/paint properties. */
+.bg-field .blob-1 {
+    top: -12%;
+    left: -10%;
+    background: var(--bi-pink);
+    animation: lava-1 39s ease-in-out infinite alternate;
+}
+.bg-field .blob-2 {
+    top: 16%;
+    left: 52%;
+    background: var(--bi-blue);
+    animation: lava-2 47s ease-in-out infinite alternate;
+}
+.bg-field .blob-3 {
+    top: 50%;
+    left: -6%;
+    background: var(--bi-purple);
+    animation: lava-3 56s ease-in-out infinite alternate;
+}
+.bg-field .blob-4 {
+    top: -8%;
+    left: 58%;
+    background: var(--bi-pink);
+    animation: lava-4 43s ease-in-out infinite alternate;
+}
+.bg-field .blob-5 {
+    top: 54%;
+    left: 46%;
+    background: var(--bi-blue);
+    animation: lava-5 61s ease-in-out infinite alternate;
+}
+
+@keyframes lava-1 {
     0% {
-        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+        transform: translate(0, 0) scale(1, 1) rotate(0deg);
     }
     50% {
-        transform: translate3d(2%, -2.5%, 0) scale(1.08) rotate(1.5deg);
+        transform: translate(10%, 16%) scale(1.18, 0.9) rotate(9deg);
     }
     100% {
-        transform: translate3d(-2%, 1.5%, 0) scale(1.05) rotate(-1.5deg);
+        transform: translate(-4%, 24%) scale(0.92, 1.12) rotate(-7deg);
+    }
+}
+@keyframes lava-2 {
+    0% {
+        transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+    50% {
+        transform: translate(-14%, 12%) scale(0.88, 1.16) rotate(-10deg);
+    }
+    100% {
+        transform: translate(-8%, -18%) scale(1.14, 0.9) rotate(6deg);
+    }
+}
+@keyframes lava-3 {
+    0% {
+        transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+    50% {
+        transform: translate(16%, -14%) scale(1.12, 0.94) rotate(8deg);
+    }
+    100% {
+        transform: translate(26%, -4%) scale(0.9, 1.14) rotate(-9deg);
+    }
+}
+@keyframes lava-4 {
+    0% {
+        transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+    50% {
+        transform: translate(-12%, 18%) scale(1.16, 0.92) rotate(-7deg);
+    }
+    100% {
+        transform: translate(-20%, 8%) scale(0.94, 1.1) rotate(10deg);
+    }
+}
+@keyframes lava-5 {
+    0% {
+        transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+    50% {
+        transform: translate(12%, -16%) scale(0.9, 1.15) rotate(7deg);
+    }
+    100% {
+        transform: translate(-10%, -22%) scale(1.12, 0.92) rotate(-8deg);
     }
 }
 

@@ -204,6 +204,14 @@ pub fn layout<'a>(
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
                 <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
+                    // Decorative drifting lava-lamp blobs behind everything (see .bg-field in website.css).
+                    <div class="bg-field" ariaHidden="true">
+                        <span class="blob blob-1"></span>
+                        <span class="blob blob-2"></span>
+                        <span class="blob blob-3"></span>
+                        <span class="blob blob-4"></span>
+                        <span class="blob blob-5"></span>
+                    </div>
                     <header class="my-2">
                         // Status / command bar: mono wordmark + faux readout + bracketed nav.
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
