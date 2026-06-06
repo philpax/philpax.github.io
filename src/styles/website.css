@@ -34,7 +34,7 @@
 
     /* Background blobs: lighten the dark canvas so they read as glow. */
     --blob-blend: screen;
-    --blob-opacity: 0.2;
+    --blob-opacity: 0.15;
 
     /* Code label chip */
     --code-label-bg: #342650;
@@ -56,7 +56,7 @@
 
     /* Background blobs: multiply to tint the light paper instead of glowing. */
     --blob-blend: multiply;
-    --blob-opacity: 0.2;
+    --blob-opacity: 0.15;
 
     --code-label-bg: #d8cfec;
     --code-label-color: #2d1d54;
