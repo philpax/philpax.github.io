@@ -177,6 +177,13 @@
         max-width: var(--measure);
         margin-inline: auto;
     }
+    /* The city-poster (image + text two-column block) narrows with the prose so
+       it aligns to the reading column rather than going full-bleed. The whole
+       component is capped — its text column flexes within. */
+    .measured .post-prose .city-poster {
+        max-width: var(--measure);
+        margin-inline: auto;
+    }
     /* Justify body copy with hyphenation for an even right edge (the lang on
        <html> drives the hyphenation dictionary). Measured views only. */
     .measured .post-prose :is(p, li):not(:has(img, video)) {

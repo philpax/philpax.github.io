@@ -10,7 +10,7 @@ pub fn city_poster<'bump>(
 ) -> paxhtml::Element<'bump> {
     let body_class = "flex-1 min-w-0 post-body";
     html! { in bump;
-        <div class="flex flex-col md:flex-row gap-4 items-start my-4">
+        <div class="city-poster flex flex-col md:flex-row gap-4 items-start my-4">
             <a href={image_url} class="shrink-0 self-center md:self-start">
                 <img
                     src={small_preview_url}
