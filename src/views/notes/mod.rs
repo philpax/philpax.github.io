@@ -4,7 +4,9 @@ use crate::{
     content::{DocumentFolderNode, DocumentLeafNode, DocumentNode},
     markdown::MarkdownConverter,
     util,
-    views::components::{IsoDatetime, IsoDatetimeProps, Link, LinkProps},
+    views::components::{
+        IsoDatetime, IsoDatetimeProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
+    },
 };
 
 use super::*;
@@ -24,6 +26,10 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
     let og_image_url = format!("{}{}", context.website_base_url, note.og_image_path());
 
+    // Title band, mirroring a post. The breadcrumb trail to the note's parent
+    // sits on its own (smaller, desaturated) line above the title; the note's own
+    // name is the title proper, so it's dropped from the trail.
+    let heading_class = posts::post_body_to_heading_class(posts::PostBody::Full);
     let breadcrumbs: Vec<(&str, Vec<String>)> = std::iter::once(("Notes", vec![]))
         .chain(
             display_path
@@ -32,17 +38,43 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                 .map(|(name, i)| (name.as_str(), note.id[..=i].to_vec())),
         )
         .collect();
-    let last = breadcrumbs.len() - 1;
-    let elements: Vec<_> = breadcrumbs.into_iter().enumerate().flat_map(|(i, (label, note_id))| {
-        let separator = (i != 0).then(|| html! { in bump; <span class="text-dim" ariaHidden="true">{"/"}</span> });
-        let additional_classes = if i == last { "text-phosphor" } else { "text-dim" };
-        let link = html! { in bump;
-            <Link target={Route::Note { note_id }.url_path()} additional_classes={additional_classes.to_string()}>
-                {label}
-            </Link>
-        };
-        separator.into_iter().chain(std::iter::once(link))
-    }).collect();
+    let breadcrumb_elements: Vec<_> = breadcrumbs
+        .into_iter()
+        .take(note.id.len()) // drop the last crumb (the note itself, shown as the title)
+        .enumerate()
+        .flat_map(|(i, (label, note_id))| {
+            let separator = (i != 0).then(|| html! { in bump; <span class="text-dim" ariaHidden="true">{"/"}</span> });
+            let link = html! { in bump;
+                <Link target={Route::Note { note_id }.url_path()} additional_classes={"text-dim".to_string()}>
+                    {label}
+                </Link>
+            };
+            separator.into_iter().chain(std::iter::once(link))
+        })
+        .collect();
+
+    let updated = note
+        .metadata
+        .datetime
+        .zip(note.metadata.last_modified)
+        .filter(|(published, modified)| published.date_naive() != modified.date_naive())
+        .map(|(_, modified)| modified);
+    let header = html! { in bump;
+        <div class="flex flex-col">
+            {(!breadcrumb_elements.is_empty()).then(|| html! { in bump;
+                <div class={format!("flex flex-wrap items-center gap-x-1 text-base text-dim {CODE_FONT_STYLE} -mb-2")}>
+                    #{breadcrumb_elements.into_iter()}
+                </div>
+            })}
+            <h2 class={format!("{heading_class} text-phosphor")}>
+                {display_path.last().unwrap().to_string()}
+            </h2>
+            <div class={format!("post-meta flex items-center gap-2 text-sm text-dim {CODE_FONT_STYLE}")}>
+                <span class="text-fg"><IsoDatetime datetime={note.metadata.datetime.unwrap()} /></span>
+                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><IsoDatetime datetime={m} /></span></> })}
+            </div>
+        </div>
+    };
 
     layout(
         context,
@@ -62,67 +94,48 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         },
         CurrentPage::Notes,
         html! { in bump;
-            <div class="relative">
-                <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
-                <label r#for="nav-toggle" class={format!("block w-full px-3 py-2 border border-wire text-phosphor cursor-pointer hover:border-phosphor transition-colors duration-200 select-none text-sm {CODE_FONT_STYLE}")}>
-                    <span ariaHidden="true" class="text-dim">"[+] "</span>
-                    "index"
-                </label>
+            <>
+                <div class="relative">
+                    <input r#type="checkbox" id="nav-toggle" class="peer sr-only" autocomplete="off" />
+                    <label r#for="nav-toggle" class={format!("panel-header-surface block w-full px-3 py-2 border border-wire text-phosphor cursor-pointer hover:border-phosphor transition-colors duration-200 select-none text-sm {CODE_FONT_STYLE}")}>
+                        <span ariaHidden="true" class="text-dim">"[+] "</span>
+                        "index"
+                    </label>
 
-                <div class="absolute left-0 right-0 bg-panel border-l border-r border-b border-wire shadow-lg p-4 z-50 hidden peer-checked:block">
-                    {notes_hierarchy(context, note)}
-                </div>
-
-                <div class="w-full mt-4">
-                    <div class={format!("kicker mb-1 {CODE_FONT_STYLE}")} ariaHidden="true">"// note"</div>
-                    <h2 class={format!("text-sm font-normal flex flex-wrap items-baseline gap-1 {CODE_FONT_STYLE}")}>
-                        #{elements}
-                    </h2>
-                    <h1 class="text-3xl font-bold text-phosphor mt-1">
-                        {note.display_path.last().unwrap().to_string()}
-                    </h1>
-                    <div class={format!("text-dim text-xs mb-2 mt-1 {CODE_FONT_STYLE}")}>
-                        {html! { in bump; <IsoDatetime datetime={note.metadata.datetime.unwrap()} /> }}
-                        {note.metadata.datetime
-                            .zip(note.metadata.last_modified)
-                            .filter(|(published, modified)| published.date_naive() != modified.date_naive())
-                            .map(|(_, modified)| html! { in bump;
-                                <>
-                                    " · updated "
-                                    <IsoDatetime datetime={modified} />
-                                </>
-                            })}
-                    </div>
-                    <div class="post-body measured">
-                        {{
-                            let error_context = format!("note: {}", note.id.join("/"));
-
-                            // Build TOC from whichever node has the headings
-                            let toc = note.rest_of_content
-                                .as_ref()
-                                .and_then(|node| posts::document_to_html_list(context, node, &error_context))
-                                .or_else(|| posts::document_to_html_list(context, &note.description, &error_context));
-                            let (toc_sidebar, toc_inline) = posts::toc_elements(bump, toc);
-
-                            let mut converter = MarkdownConverter::new(context, &error_context)
-                                .with_sidenotes()
-                                .with_note_id(note.id.clone())
-                                .with_source_path(note.source_path.clone());
-
-                            // Block flow: the floated TOC sidebar and sidenotes need it.
-                            let mut body_elements = vec![];
-                            body_elements.extend(toc_sidebar);
-                            body_elements.push(converter.convert_sectioned(&note.description));
-                            body_elements.extend(toc_inline);
-                            if let Some(content) = note.rest_of_content.as_ref() {
-                                body_elements.push(converter.convert_sectioned(content));
-                            }
-
-                            paxhtml::builder::Builder::new(bump).fragment(body_elements)
-                        }}
+                    <div class="absolute left-0 right-0 panel-surface border-l border-r border-b border-wire shadow-lg p-4 z-50 hidden peer-checked:block">
+                        {notes_hierarchy(context, note)}
                     </div>
                 </div>
-            </div>
+
+                <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()} class={"mt-2".to_string()}>
+                    {{
+                        let error_context = format!("note: {}", note.id.join("/"));
+
+                        // Build TOC from whichever node has the headings
+                        let toc = note.rest_of_content
+                            .as_ref()
+                            .and_then(|node| posts::document_to_html_list(context, node, &error_context))
+                            .or_else(|| posts::document_to_html_list(context, &note.description, &error_context));
+                        let (toc_sidebar, toc_inline) = posts::toc_elements(bump, toc);
+
+                        let mut converter = MarkdownConverter::new(context, &error_context)
+                            .with_sidenotes()
+                            .with_note_id(note.id.clone())
+                            .with_source_path(note.source_path.clone());
+
+                        // Block flow: the floated TOC sidebar and sidenotes need it.
+                        let mut body_elements = vec![];
+                        body_elements.extend(toc_sidebar);
+                        body_elements.push(converter.convert_sectioned(&note.description));
+                        body_elements.extend(toc_inline);
+                        if let Some(content) = note.rest_of_content.as_ref() {
+                            body_elements.push(converter.convert_sectioned(content));
+                        }
+
+                        paxhtml::builder::Builder::new(bump).fragment(body_elements)
+                    }}
+                </Segment>
+            </>
         },
     )
 }

@@ -37,6 +37,30 @@
     border-top: 1px solid var(--wire);
 }
 
+/* Frosted terminal-panel surface: translucent over the drifting blobs, blurred.
+   Shared by .segment and the notes index dropdown so they read alike. */
+@utility panel-surface {
+    background-color: color-mix(
+        in srgb,
+        var(--background-color) var(--panel-tint),
+        transparent
+    );
+    backdrop-filter: blur(var(--panel-blur));
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+}
+
+/* Darker "title bar" variant of panel-surface (the .segment-header tint), for
+   standalone header-like chrome over the blobs (e.g. the notes index toggle). */
+@utility panel-header-surface {
+    background-color: color-mix(
+        in srgb,
+        var(--background-color) var(--panel-header-tint),
+        transparent
+    );
+    backdrop-filter: blur(var(--panel-blur));
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+}
+
 @layer components {
     .link-underline {
         @apply text-hot transition-all duration-200 visited:text-hot;
@@ -76,15 +100,7 @@
     /* A dark "screen" with an even darker "title bar" header, so a segment
        reads as a little terminal window. */
     .segment {
-        @apply border border-wire;
-        background-color: color-mix(
-            in srgb,
-            var(--background-color) var(--panel-tint),
-            transparent
-        );
-        /* Frost the drifting blobs behind the panel into soft glass. */
-        backdrop-filter: blur(var(--panel-blur));
-        -webkit-backdrop-filter: blur(var(--panel-blur));
+        @apply border border-wire panel-surface;
     }
     /* The title-bar band chrome — shared by the simple label and rich headers
        (e.g. a post's meta + title). */
