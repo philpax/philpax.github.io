@@ -103,7 +103,7 @@
     --blob-blur: 100px;
 
     /* Section panels — glass tint + frost (mode-independent). */
-    --panel-tint: 35%; /* how opaque the panel body is over the blobs */
+    --panel-tint: 55%; /* how opaque the panel body is over the blobs */
     --panel-header-tint: 85%; /* the darker title-bar band */
     --panel-blur: 12px; /* backdrop frost behind panels */
 }
