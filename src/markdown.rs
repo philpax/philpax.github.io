@@ -1,12 +1,12 @@
 use std::{
     collections::{HashMap, HashSet},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use paxhtml::builder::Builder;
 
 use crate::{
-    content::DocumentId,
+    content::{Content, Document, DocumentId},
     elements as e,
     views::{
         ViewContext,
@@ -137,8 +137,10 @@ impl<'a> MarkdownConverter<'a> {
         format!("{base}{stripped}")
     }
 
-    /// If the URL points to a `.md` file and we have a source path, resolve it
-    /// to the corresponding output route URL. Panics on broken `.md` links.
+    /// If the URL points to a `.md` file and we have a source path, resolve it to
+    /// the corresponding output route URL. Links are validated up-front in the
+    /// content phase (see [`validate_document_links`]); if resolution somehow
+    /// fails here we fall back to the raw URL rather than aborting a render.
     fn resolve_link_url(&self, url: &str) -> String {
         let is_md_link = url.ends_with(".md") || url.contains(".md#");
         let is_absolute_url = url.contains("://");
@@ -151,52 +153,7 @@ impl<'a> MarkdownConverter<'a> {
         self.context
             .content
             .resolve_markdown_link(source_path, url)
-            .unwrap_or_else(|| {
-                panic!(
-                    "Broken .md link in {}: could not resolve '{}'",
-                    self.error_context, url
-                )
-            })
-    }
-
-    /// Panic if a link's fragment doesn't correspond to a known anchor on the
-    /// target page. Validates same-page (`#frag`) links against the current
-    /// document's anchors and cross-page (`*.md#frag` or `/site/path/#frag`)
-    /// links against the target document's anchors. Skips external URLs and
-    /// any target whose route isn't tracked in the anchor registry.
-    fn validate_anchor_link(&self, raw_url: &str) {
-        let resolved: Option<String> = if let Some(frag) = raw_url.strip_prefix('#') {
-            Some(frag).filter(|f| !f.is_empty()).and_then(|f| {
-                self.document_base_url
-                    .as_deref()
-                    .map(|b| format!("{b}#{f}"))
-            })
-        } else if raw_url.ends_with(".md") || raw_url.contains(".md#") {
-            self.source_path
-                .as_deref()
-                .and_then(|p| self.context.content.resolve_markdown_link(p, raw_url))
-        } else if raw_url.starts_with('/') && !raw_url.contains("://") {
-            Some(raw_url.to_string())
-        } else {
-            None
-        };
-
-        let Some((route_url, fragment)) = resolved
-            .as_deref()
-            .and_then(|r| r.split_once('#'))
-            .filter(|(_, f)| !f.is_empty())
-        else {
-            return;
-        };
-
-        if let Some(anchors) = self.context.content.anchors.get(route_url)
-            && !anchors.contains(fragment)
-        {
-            panic!(
-                "Broken anchor link in {}: '{raw_url}' - '{route_url}#{fragment}' not found",
-                self.error_context
-            );
-        }
+            .unwrap_or_else(|| url.to_string())
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
@@ -362,7 +319,6 @@ impl<'a> MarkdownConverter<'a> {
                         inner_text(node, None).trim()
                     );
                 }
-                self.validate_anchor_link(&l.url);
                 let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
                 let children = self.convert_many(&l.children, Some(node));
                 if self.strip_links {
@@ -948,6 +904,88 @@ pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
     let mut anchors = HashSet::new();
     walk(node, &mut anchors);
     anchors
+}
+
+/// Resolve a link's checkable `(route_url, fragment)` anchor target, or `None` if
+/// there's nothing to validate (external, no fragment, or an untracked route).
+/// Same resolution rules used when rendering hrefs, kept here so the content-phase
+/// validator and the converter can't drift apart.
+fn resolve_anchor_target(
+    content: &Content,
+    source_path: Option<&Path>,
+    document_base_url: Option<&str>,
+    raw_url: &str,
+) -> Option<(String, String)> {
+    let resolved: Option<String> = if let Some(frag) = raw_url.strip_prefix('#') {
+        Some(frag)
+            .filter(|f| !f.is_empty())
+            .and_then(|f| document_base_url.map(|b| format!("{b}#{f}")))
+    } else if raw_url.ends_with(".md") || raw_url.contains(".md#") {
+        source_path.and_then(|p| content.resolve_markdown_link(p, raw_url))
+    } else if raw_url.starts_with('/') && !raw_url.contains("://") {
+        Some(raw_url.to_string())
+    } else {
+        None
+    };
+    resolved
+        .as_deref()
+        .and_then(|r| r.split_once('#'))
+        .filter(|(_, f)| !f.is_empty())
+        .map(|(r, f)| (r.to_string(), f.to_string()))
+}
+
+fn walk_links(node: &Node, f: &mut impl FnMut(&str)) {
+    if let Node::Link(l) = node {
+        f(&l.url);
+    }
+    if let Some(children) = node.children() {
+        for child in children {
+            walk_links(child, f);
+        }
+    }
+}
+
+/// Validate every link in a document: `.md` links must resolve to a real output
+/// route, and `#fragment`s must point at a known anchor on the target page.
+/// Returns one message per broken link. This is the single source of link
+/// validation — run as a content-phase pre-pass, so the converter can assume
+/// links are valid by the time it renders them.
+pub fn validate_document_links(content: &Content, doc: &Document) -> Vec<String> {
+    let mut errors = Vec::new();
+    let source_path = doc.source_path.as_path();
+    // The doc's own route URL keys both same-page anchors and the registry.
+    let document_base_url = content.route_url_for(source_path).map(str::to_string);
+    let here = document_base_url
+        .clone()
+        .unwrap_or_else(|| source_path.display().to_string());
+
+    let mut check = |raw_url: &str| {
+        // `.md` links must resolve to a real route.
+        let is_md = raw_url.ends_with(".md") || raw_url.contains(".md#");
+        if is_md
+            && !raw_url.contains("://")
+            && content.resolve_markdown_link(source_path, raw_url).is_none()
+        {
+            errors.push(format!("{here}: broken .md link '{raw_url}'"));
+            return;
+        }
+        // Fragments must hit a known anchor on the target page.
+        if let Some((route_url, fragment)) =
+            resolve_anchor_target(content, Some(source_path), document_base_url.as_deref(), raw_url)
+            && let Some(anchors) = content.anchors.get(&route_url)
+            && !anchors.contains(&fragment)
+        {
+            errors.push(format!(
+                "{here}: broken anchor '{raw_url}' → '{route_url}#{fragment}'"
+            ));
+        }
+    };
+
+    walk_links(&doc.description, &mut check);
+    if let Some(rest) = &doc.rest_of_content {
+        walk_links(rest, &mut check);
+    }
+    errors
 }
 
 // `inner_text` is the canonical markdown→plaintext walker; it lives in

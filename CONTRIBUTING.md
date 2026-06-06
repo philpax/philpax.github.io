@@ -36,6 +36,13 @@ sudo apt-get install lld  # Debian/Ubuntu
 - `--use-global-tailwind` / `-u`: Uses system `tailwindcss` instead of downloading one. Useful if the auto-downloaded binary doesn't work.
 - `--verbose` / `-v`: Shows detailed timing for each build step.
 - `--public` / `-p`: Binds the dev server to `0.0.0.0` instead of `127.0.0.1`, allowing access from other devices on the network.
+- `--check`: Runs the content-phase validation only (every markdown link resolves and every `#anchor` points at a real heading) and exits — no site is built, nothing is written, no dev server starts. Prints one line per broken link and exits non-zero if any are found; otherwise prints `check: all links valid`. Fast, and handy after editing content (e.g. renaming a heading changes its anchor slug and can break links elsewhere):
+
+  ```sh
+  cargo run -F serve -F draft -- --check
+  ```
+
+  The same validation runs at the start of a normal build, so a broken link fails the build too — `--check` just skips straight to it.
 
 ### Tailwind CSS
 

@@ -138,9 +138,13 @@ pub struct Content {
     pub music_library: blackbird_json_export_types::Output,
     pub bluesky_posts: HashMap<String, paxsite_content::bluesky::BlueskyPostData>,
     /// Map from a document's route URL (e.g. `/blog/foo/`) to the set of
-    /// heading-slug anchors valid on that page. Used by `MarkdownConverter`
-    /// to validate `[a](#x)` and `[c](../c.md#d)` links at build time.
+    /// heading-slug anchors valid on that page. Used to validate `[a](#x)` and
+    /// `[c](../c.md#d)` links during the content-phase pre-pass.
     pub anchors: HashMap<String, HashSet<String>>,
+    /// Broken markdown links/anchors found by the content-phase pre-pass (see
+    /// [`crate::markdown::validate_document_links`]). Empty when content is sound;
+    /// the build/`--check` reports these and bails before rendering.
+    pub link_errors: Vec<String>,
 }
 impl Content {
     #[cfg(test)]
@@ -156,6 +160,7 @@ impl Content {
             music_library: blackbird_json_export_types::Output::new(),
             bluesky_posts: HashMap::new(),
             anchors: HashMap::new(),
+            link_errors: Vec::new(),
         }
     }
 
@@ -244,6 +249,7 @@ impl Content {
             music_library,
             bluesky_posts: HashMap::new(),
             anchors: HashMap::new(),
+            link_errors: Vec::new(),
         };
 
         let now = std::time::Instant::now();
@@ -254,7 +260,26 @@ impl Content {
         content.anchors = content.build_anchor_registry();
         report("Built anchor registry", now.elapsed());
 
+        // Pre-pass: validate every markdown link/anchor now that the registry is
+        // built, so the build (or `--check`) can bail before any rendering.
+        let now = std::time::Instant::now();
+        let link_errors: Vec<String> = content
+            .all_documents()
+            .flat_map(|doc| super::markdown::validate_document_links(&content, doc))
+            .collect();
+        content.link_errors = link_errors;
+        report("Validated links", now.elapsed());
+
         Ok(content)
+    }
+
+    /// The canonical output route URL for a source path, matching the keys used
+    /// by the anchor registry and `resolve_markdown_link`.
+    pub fn route_url_for(&self, source_path: &Path) -> Option<&str> {
+        self.base
+            .source_path_to_route
+            .get(source_path)
+            .map(String::as_str)
     }
 
     /// Returns an iterator over all documents in the content.

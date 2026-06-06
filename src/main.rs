@@ -105,6 +105,9 @@ fn main() -> anyhow::Result<()> {
     let use_global_tailwind =
         std::env::args().any(|arg| arg == "--use-global-tailwind" || arg == "-u");
     let verbose = std::env::args().any(|arg| arg == "--verbose" || arg == "-v");
+    // `--check` validates every page's markdown links/anchors and exits, without
+    // building anything (no output clearing, copies, writes, OG images, or serve).
+    let check = std::env::args().any(|arg| arg == "--check");
 
     let mut timer = timer::Timer::new(verbose);
 
@@ -112,37 +115,39 @@ fn main() -> anyhow::Result<()> {
     #[cfg(feature = "serve")]
     let port = 8192;
 
-    if !fast {
-        timer.step("Cleared output directory", |_| {
-            if output_dir.is_dir() {
-                // Remove everything in the public directory; this is done manually
-                // to ensure that you can continue serving from the directory while
-                // the build is running.
-                for entry in std::fs::read_dir(output_dir)? {
-                    let path = entry?.path();
-                    if path.is_dir() {
-                        std::fs::remove_dir_all(&path)?;
-                    } else {
-                        std::fs::remove_file(&path)?;
+    if !check {
+        if !fast {
+            timer.step("Cleared output directory", |_| {
+                if output_dir.is_dir() {
+                    // Remove everything in the public directory; this is done
+                    // manually so you can keep serving from the directory while
+                    // the build is running.
+                    for entry in std::fs::read_dir(output_dir)? {
+                        let path = entry?.path();
+                        if path.is_dir() {
+                            std::fs::remove_dir_all(&path)?;
+                        } else {
+                            std::fs::remove_file(&path)?;
+                        }
                     }
                 }
-            }
-            anyhow::Ok(())
+                anyhow::Ok(())
+            })?;
+        } else {
+            timer.step(
+                "Fast mode enabled, skipping output directory clearing",
+                |_| anyhow::Ok(()),
+            )?;
+        }
+
+        timer.step("Copied baked static content", |_| {
+            util::copy_dir(Path::new("assets/baked/static"), output_dir, fast)
         })?;
-    } else {
-        timer.step(
-            "Fast mode enabled, skipping output directory clearing",
-            |_| anyhow::Ok(()),
-        )?;
+
+        timer.step("Copied static content", |_| {
+            util::copy_dir(Path::new("static"), output_dir, fast)
+        })?;
     }
-
-    timer.step("Copied baked static content", |_| {
-        util::copy_dir(Path::new("assets/baked/static"), output_dir, fast)
-    })?;
-
-    timer.step("Copied static content", |_| {
-        util::copy_dir(Path::new("static"), output_dir, fast)
-    })?;
 
     // Run syntax loading, tailwind generation, and content reading in parallel
     let (syntax, tailwind_css, content) = timer.step(
@@ -210,6 +215,20 @@ fn main() -> anyhow::Result<()> {
         fast,
     };
 
+    // Broken markdown links/anchors are validated up-front in the content phase.
+    // Surface any and bail before rendering — for both normal builds and --check.
+    if !content.link_errors.is_empty() {
+        eprintln!("{} broken link(s):", content.link_errors.len());
+        for e in &content.link_errors {
+            eprintln!("  - {e}");
+        }
+        std::process::exit(1);
+    }
+    if check {
+        eprintln!("check: all links valid");
+        return Ok(());
+    }
+
     fn write_redirect(
         output_dir: &Path,
         to_url: &str,
@@ -223,29 +242,6 @@ fn main() -> anyhow::Result<()> {
 
     timer.step("Wrote content", |_| {
         use rayon::prelude::*;
-
-        fn collect_notes<'a>(
-            folder: &'a content::DocumentFolderNode,
-            docs: &mut Vec<&'a content::Document>,
-            redirects: &mut Vec<&'a content::RedirectNode>,
-        ) {
-            match &folder.index {
-                Some(content::DocumentLeafNode::Document(doc)) => docs.push(doc.as_ref()),
-                Some(content::DocumentLeafNode::Redirect(r)) => redirects.push(r),
-                None => {}
-            }
-            for child in folder.children.values() {
-                match child {
-                    content::DocumentNode::Folder(f) => collect_notes(f, docs, redirects),
-                    content::DocumentNode::Leaf(content::DocumentLeafNode::Document(doc)) => {
-                        docs.push(doc.as_ref())
-                    }
-                    content::DocumentNode::Leaf(content::DocumentLeafNode::Redirect(r)) => {
-                        redirects.push(r)
-                    }
-                }
-            }
-        }
 
         fn write_post(
             output_dir: &Path,
@@ -508,4 +504,28 @@ fn main() -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+/// Flatten the notes tree into the documents (and redirects) it contains.
+fn collect_notes<'a>(
+    folder: &'a content::DocumentFolderNode,
+    docs: &mut Vec<&'a content::Document>,
+    redirects: &mut Vec<&'a content::RedirectNode>,
+) {
+    match &folder.index {
+        Some(content::DocumentLeafNode::Document(doc)) => docs.push(doc.as_ref()),
+        Some(content::DocumentLeafNode::Redirect(r)) => redirects.push(r),
+        None => {}
+    }
+    for child in folder.children.values() {
+        match child {
+            content::DocumentNode::Folder(f) => collect_notes(f, docs, redirects),
+            content::DocumentNode::Leaf(content::DocumentLeafNode::Document(doc)) => {
+                docs.push(doc.as_ref())
+            }
+            content::DocumentNode::Leaf(content::DocumentLeafNode::Redirect(r)) => {
+                redirects.push(r)
+            }
+        }
+    }
 }
