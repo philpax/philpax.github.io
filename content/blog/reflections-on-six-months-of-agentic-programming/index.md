@@ -141,6 +141,10 @@ As per karashiiro, I would suggest putting this documentation in a `CONTRIBUTING
 - I'm happy with what I've built here, but I was definitely stretching myself towards the end of the credits to find literally anything that I could point the Claude Code Cannon at
 - I ended up using it as an opportunity to update old code, instead: it doesn't necessarily have to be feature work you do, even though that's fun and exciting, but long-overdue maintenance
 - you still need to have good product sense, I'm afraid, although the agents do have some degree of taste, especially if you bring your own to the table
+- additionally, you need to be asking yourself: are you going to use this? is anyone going to use this? are you willing to maintain it going forward?
+- see [The solution might be cancelling my AI subscription](https://thoughts.hmmz.org/2026-05-31.html): I don't agree with all of this[^hmmzdisagreement], but there's a fair bit of truth to be held there. You need to lock in and build the _right_ things, not _all_ the things.
+
+[^hmmzdisagreement]: I find the idea that everything that one creates must be marketed to an external audience to be rather gauche: paraphrasing a friend, that is a life without joy and whimsy. Not everything has to be for someone else, or to some profitable end: you can and should create things for your own gratification. Within reason, of course.
 
 ## Token Anxiety
 I hesitate to say this out loud, given how the linked post was received, but [token anxiety](https://bsky.app/profile/timkellogg.me/post/3mevhhd4lbs2b) is real. When you have the ability to affect major changes across software with just a few keystrokes, your own volition becomes the bottleneck, and you will find yourself chafing at the bit to issue more and more work to make the most of your resources.
@@ -178,7 +182,7 @@ It's out of my system now, and I don't think it'll come back, at least not to th
 - of course, the ethics of the industry could have its own post written about it, or several
 - there is nuance here - it's not an ethical black hole - but I'm also not going to pretend that it's entirely rosy, either; it's far from it
 - there's no shortage of issues: the mass-reallocation of resources, the training of people's replacements using their own work, the shoehorned-in haphazard deployments, the mass-production of violating imagery, the destruction of recorded truth, etc
-- even the "good" companies, like Anthropic, are prone to making missteps: [their willingness to work with a US government subject to democratic backsliding](https://www.cnbc.com/2026/05/01/pentagon-anthropic-blacklist-mythos-michael.html), their [using of the xAI Colossus datacenter](www.anthropic.com/news/higher-limits-spacex), and more
+- even the "good" companies, like Anthropic, are prone to making missteps: [their willingness to work with a US government subject to democratic backsliding](https://www.cnbc.com/2026/05/01/pentagon-anthropic-blacklist-mythos-michael.html) (including [providing early Mythos access to the NSA for _offensive_ cyberoperations](https://techcrunch.com/2026/06/05/nsa-said-to-be-readying-anthropics-mythos-for-use-in-cyber-operations/)), their [using of the xAI Colossus datacenter](www.anthropic.com/news/higher-limits-spacex), and more
 - many, but not all, of these problems are a consequence of capitalism: but that doesn't help us when we all live in capitalist societies
 - I am insulated from the worst of the consequences: my employment is not tremendously precarious, I have savings, and I have a family I can fall back on: but this is not true for everyone, and a lot of people
 - I am also somewhere between an IP abolitionist and an IP minimalist: I don't think you should be able to own ideas or representations of them, at least not in the way that you currently can
