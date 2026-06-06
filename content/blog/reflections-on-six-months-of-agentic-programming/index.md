@@ -195,7 +195,7 @@ I have written a single-digit percentage of code by hand since November. [This i
 - the agents really have improved. I've been using them for the last few years in progressive increments, from asking ChatGPT to produce a function for me in 2023, to using Copilot to autocomplete code, to using Cursor to generate code in-place in 2024, to using Cursor to do more agentic work with the Claudes, to using Claude Code directly in 2025, to now
 - the step change at each stage has been noticeable, but Sonnet/Opus 4.5 are more like a hill change
 - far more autonomous, far more capable of Doing What You Want at scale, especially on greenfield
-- within this period, CC wrote [a complete interpreter from scratch with a vague spec](../../updates/the-big-claude-down/index.md#philpaxperchance-interpreter), [refactored and rebuilt much of an existing (albeit small) compiler to extend its functionality and improve its robustness](../../updates/the-big-claude-down/index.md#ferrobrewpyxis), [significantly improved my music player](../../updates/the-big-claude-down/index.md#philpaxblackbird), etc
+- within this period, CC wrote [a complete interpreter from scratch with a vague spec](../../updates/the-big-claude-down/index.md#perchance-interpreter), [refactored and rebuilt much of an existing (albeit small) compiler to extend its functionality and improve its robustness](../../updates/the-big-claude-down/index.md#pyxis), [significantly improved my music player](../../updates/the-big-claude-down/index.md#blackbird), etc
 - these are not trivial tasks! most junior / intermediate programmers would struggle with managing the complexity here
 
 - I also specifically used the word "coding", not "programming", in this heading
