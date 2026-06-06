@@ -29,11 +29,17 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ("88x31.png", "https://eightyeightthirty.one"),
     ];
 
-    fn header_with_all<'a>(bump: &'a Bump, name: &str, target: Route) -> paxhtml::Element<'a> {
+    fn header_with_all<'a>(
+        bump: &'a Bump,
+        name: &str,
+        all: Route,
+        rss: Route,
+    ) -> paxhtml::Element<'a> {
         html! { in bump;
             <span class="flex flex-row gap-2 segment-label">
                 <SegmentLabel label={name} />
-                <Link underline target={target.url_path()}>"› all"</Link>
+                <Link underline target={all.url_path()}>"› all"</Link>
+                <Link underline target={rss.url_path()}>"› rss"</Link>
             </span>
         }
     }
@@ -64,7 +70,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
 
                 <div class={format!("grid grid-cols-1 md:grid-cols-2 {SEGMENT_GAP}")}>
                     // posts — serif title links + mono daterows
-                    <Segment header={header_with_all(bump, "posts", Route::Blog)} body_class={"flex flex-col gap-5".to_string()}>
+                    <Segment header={header_with_all(bump, "posts", Route::Blog, Route::BlogRss)} body_class={"flex flex-col gap-5".to_string()}>
                         #{
                             content
                                 .blog
@@ -77,7 +83,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     </Segment>
 
                     // updates — dense changelog
-                    <Segment header={header_with_all(bump, "updates", Route::Updates)} body_class={"flex flex-col gap-5".to_string()}>
+                    <Segment header={header_with_all(bump, "updates", Route::Updates, Route::UpdatesRss)} body_class={"flex flex-col gap-5".to_string()}>
                         <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm")}>
                         #{
                             content
