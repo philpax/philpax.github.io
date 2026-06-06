@@ -1,7 +1,6 @@
 const ICON_URLS = {
   light: "/phosphor/sun.svg",
   dark: "/phosphor/moon.svg",
-  system: "/phosphor/monitor.svg",
   arrow: "/phosphor/arrow-right.svg",
 };
 
@@ -22,10 +21,12 @@ async function fetchSvg(url) {
 function createIconContainer() {
   const container = document.createElement("div");
   container.className = "flex items-center gap-1";
-  container.innerHTML = '<div class="w-4 h-4"></div><div class="w-4 h-4"></div><div class="w-4 h-4"></div>';
+  container.innerHTML =
+    '<div class="w-4 h-4"></div><div class="w-4 h-4"></div><div class="w-4 h-4"></div>';
   return container;
 }
 
+// Show "current → next" so the direction of the toggle is explicit.
 async function updateIconContainer(container, currentTheme, nextTheme) {
   const [currentSvg, arrowSvg, nextSvg] = await Promise.all([
     fetchSvg(ICON_URLS[currentTheme]),
@@ -34,19 +35,17 @@ async function updateIconContainer(container, currentTheme, nextTheme) {
   ]);
 
   const slots = container.querySelectorAll("div");
-  slots[0].innerHTML = currentSvg;
-  slots[0].querySelector("svg").setAttribute("width", "16");
-  slots[0].querySelector("svg").setAttribute("height", "16");
-  slots[0].title = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1) + " Mode";
-
-  slots[1].innerHTML = arrowSvg;
-  slots[1].querySelector("svg").setAttribute("width", "16");
-  slots[1].querySelector("svg").setAttribute("height", "16");
-
-  slots[2].innerHTML = nextSvg;
-  slots[2].querySelector("svg").setAttribute("width", "16");
-  slots[2].querySelector("svg").setAttribute("height", "16");
-  slots[2].title = nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1) + " Mode";
+  function put(slot, svg) {
+    slot.innerHTML = svg;
+    const icon = slot.querySelector("svg");
+    if (icon) {
+      icon.setAttribute("width", "16");
+      icon.setAttribute("height", "16");
+    }
+  }
+  put(slots[0], currentSvg);
+  put(slots[1], arrowSvg);
+  put(slots[2], nextSvg);
 }
 
 function createThemeSwitcher() {
@@ -59,60 +58,42 @@ function createThemeSwitcher() {
   let a = document.createElement("a");
   let container = createIconContainer();
 
-  // Determine current state and update icon
-  function getCurrentTheme() {
-    return localStorage.getItem("theme"); // 'light', 'dark', or null (system)
+  let darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  // The effective theme: an explicit choice if the user has made one, otherwise
+  // whatever the browser prefers (which the CSS applies by default).
+  function getEffectiveTheme() {
+    const stored = localStorage.getItem("theme");
+    if (stored === "light" || stored === "dark") return stored;
+    return darkQuery.matches ? "dark" : "light";
   }
 
-  function getNextTheme(current) {
-    if (current === "light") return "dark";
-    if (current === "dark") return "system";
-    return "light";
+  function otherTheme(theme) {
+    return theme === "dark" ? "light" : "dark";
   }
 
   function updateSwitcherIcon() {
-    const current = getCurrentTheme() || "system";
-    const next = getNextTheme(current);
+    const current = getEffectiveTheme();
+    const next = otherTheme(current);
     updateIconContainer(container, current, next);
+    a.title = "Switch to " + next + " mode";
   }
 
   function setTheme(theme) {
     document.documentElement.classList.remove("dark", "light");
-    if (theme === "dark" || theme === "light") {
-      document.documentElement.classList.add(theme);
-      localStorage.setItem("theme", theme);
-    } else {
-      localStorage.removeItem("theme");
-    }
+    document.documentElement.classList.add(theme);
+    localStorage.setItem("theme", theme);
     updateSwitcherIcon();
   }
 
-  function cycleTheme() {
-    const current = getCurrentTheme();
-
-    if (current === "light") {
-      // Light → Dark
-      setTheme("dark");
-    } else if (current === "dark") {
-      // Dark → System
-      setTheme("system");
-    } else {
-      // System → Light
-      setTheme("light");
-    }
-  }
-
-  // Initialize icon based on current state
   updateSwitcherIcon();
 
   a.href = "#";
-  a.title = "Cycle theme";
-  a.className =
-    "nav-link flex items-center justify-center text-center";
+  a.className = "nav-link flex items-center justify-center text-center";
 
   a.addEventListener("click", function (e) {
     e.preventDefault();
-    cycleTheme();
+    setTheme(otherTheme(getEffectiveTheme()));
   });
 
   a.appendChild(container);
@@ -122,12 +103,10 @@ function createThemeSwitcher() {
   li.appendChild(a);
   headerLinks.append(li);
 
-  // Listen for system theme changes
-  let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  colorSchemeQuery.addEventListener("change", function (e) {
-    if (!getCurrentTheme()) {
-      // In system mode, no need to update DOM class since CSS handles it
-    }
+  // While the user hasn't chosen explicitly, follow the system: the CSS swaps
+  // the colours, we just keep the icon in sync.
+  darkQuery.addEventListener("change", function () {
+    if (!localStorage.getItem("theme")) updateSwitcherIcon();
   });
 }
 
