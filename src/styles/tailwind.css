@@ -155,9 +155,10 @@
         top: -0.7em;
         background-color: var(--background-color);
     }
-    /* Tables scroll horizontally rather than overflow on narrow screens */
+    /* Table stays a real table (w-full from the converter); horizontal scrolling
+       for narrow screens is handled by the wrapper div around it. */
     .post-body table {
-        @apply block max-w-full overflow-x-auto text-[0.95em];
+        @apply text-[0.95em];
     }
     .post-body th {
         @apply font-['Iosevka',monospace] text-[0.8rem] lowercase tracking-[0.03em] text-left;
@@ -167,11 +168,12 @@
         @apply block;
     }
     /* Reading measure: only in the detail/reading views (.measured — full posts,
-       notes, credits) do text blocks wrap at --measure and centre in the column.
-       Headings, images/videos, code, tables, and custom components keep the full
-       content width; the freed gutter balances the column and hosts sidenotes.
-       Listings and the home page aren't measured (full width). */
-    .measured .post-prose :is(p, ul, ol, blockquote):not(:has(img, video)) {
+       notes, credits) do text blocks, headings, and the inline TOC wrap at
+       --measure and centre in the column. Images/videos, code, tables, and custom
+       components keep the full content width; the freed gutter balances the column
+       and hosts sidenotes. Listings and the home page aren't measured. */
+    .measured .post-prose :is(p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote):not(:has(img, video)),
+    .measured > .toc {
         max-width: var(--measure);
         margin-inline: auto;
     }
@@ -211,6 +213,13 @@
        not against a standalone image, which markdown wraps in a <p>. */
     .post-prose section > :is(h1, h2, h3, h4, h5, h6) + *:not(p:has(img)) {
         margin-top: 0.25rem;
+    }
+    /* A table at the very top of a content block (e.g. directly under the inline
+       TOC) has a hard top edge with no text leading above its first row, so it
+       reads tighter than the leaded prose on the other side of the divider. Nudge
+       it down to match (~the half-leading of the body line-height). */
+    .post-prose > .overflow-x-auto:first-child {
+        margin-top: 0.375rem;
     }
 
     /* Footnote shown as a margin sidenote on 2xl+ (an inline toggle on smaller

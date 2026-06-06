@@ -500,16 +500,18 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
 
-            // Table
+            // Table — wrapped in a horizontally-scrollable container so wide
+            // tables scroll on narrow screens while the table itself stays a real
+            // (display:table) table that fills the width.
             Node::Table(t) => {
                 let children = self.convert_many(&t.children, Some(node));
                 if self.without_blocking_elements {
                     children
                 } else {
-                    b.table([b.attr((
+                    b.div([b.attr(("class", "overflow-x-auto"))])(b.table([b.attr((
                         "class",
                         "w-full border-collapse border border-dim rounded-lg overflow-hidden",
-                    ))])(children)
+                    ))])(children))
                 }
             }
             Node::TableRow(t) => {
