@@ -150,6 +150,22 @@
     .post-body :is(img, video) {
         @apply block;
     }
+    /* Reading measure: only in the detail/reading views (.measured — full posts,
+       notes, credits) do text blocks wrap at --measure and centre in the column.
+       Headings, images/videos, code, tables, and custom components keep the full
+       content width; the freed gutter balances the column and hosts sidenotes.
+       Listings and the home page aren't measured (full width). */
+    .measured .post-prose :is(p, ul, ol, blockquote):not(:has(img, video)) {
+        max-width: var(--measure);
+        margin-inline: auto;
+    }
+    /* Justify body copy with hyphenation for an even right edge (the lang on
+       <html> drives the hyphenation dictionary). Measured views only. */
+    .measured .post-prose :is(p, li):not(:has(img, video)) {
+        text-align: justify;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+    }
     /* Space the top-level post-body blocks (hero, prose, inline TOC), ignoring
        the gutter floats which sit out of flow. The hero is excluded as a
        *predecessor* so its gap below is handled separately (next rule). */
@@ -161,9 +177,7 @@
     /* The lead prose sits one body-padding (segment body p-3 = 0.75rem) below the
        hero, so the image is evenly framed — its other three sides get that same
        padding from the segment body. */
-    .post-body
-        > .hero-image
-        + *:not(.toc-sidebar):not(.address-gutter) {
+    .post-body > .hero-image + *:not(.toc-sidebar):not(.address-gutter) {
         margin-top: 0.75rem;
     }
 
@@ -181,5 +195,26 @@
        not against a standalone image, which markdown wraps in a <p>. */
     .post-prose section > :is(h1, h2, h3, h4, h5, h6) + *:not(p:has(img)) {
         margin-top: 0.25rem;
+    }
+
+    /* Footnote shown as a margin sidenote on 2xl+ (an inline toggle on smaller
+       screens). It floats right to ride just past the segment border: the column
+       is centred at --measure, so the float (anchored to the paragraph's right
+       edge) is offset by --sidenote-gutter + 1rem to clear the gutter, and the
+       matching -mr (gutter + width + gap = gutter + 21rem) keeps the float's
+       margin box zero-width so it never displaces text. */
+    .sidenote {
+        @apply hidden text-sm border-t-2 border-dim pt-0 pb-1 mb-4;
+        @apply 2xl:flex 2xl:items-baseline 2xl:gap-2 2xl:float-right 2xl:clear-right 2xl:w-80;
+        @apply 2xl:ml-[calc(var(--sidenote-gutter)_+_0.75rem_-_var(--sidenote-marker-width))];
+        @apply 2xl:-mr-[calc(var(--sidenote-gutter)_+_20.75rem_-_var(--sidenote-marker-width))];
+    }
+    /* The fn-N marker sits in the gutter at its natural width, so the flex row's
+       shared top border hugs its left edge and runs unbroken to the body (no
+       overhang past the chip). The number is held in a fixed-width slot (the inner
+       span in the component) so the chip stays a constant width — keeping the body
+       at a fixed x whether the number is one or two digits. */
+    .sidenote-marker {
+        @apply flex-shrink-0 no-underline;
     }
 }

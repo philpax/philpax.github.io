@@ -158,7 +158,7 @@ pub fn post<'a>(
     }
 
     html! { in bump;
-        <Segment tag={SegmentTag::Article} header={header} body_class={"post-body".to_string()}>
+        <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()}>
             #{body_elements.into_iter()}
         </Segment>
     }

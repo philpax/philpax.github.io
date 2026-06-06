@@ -93,7 +93,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                                 </>
                             })}
                     </div>
-                    <div class="post-body">
+                    <div class="post-body measured">
                         {{
                             let error_context = format!("note: {}", note.id.join("/"));
 

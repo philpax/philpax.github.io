@@ -79,6 +79,25 @@
     --bi-purple: #9b4f96;
     --bi-blue: #0038a8;
 
+    /* Reading measure (line length) for body copy. Text blocks wrap here while
+       media/code/tables keep the full content width. Kept in rem, NOT ch: the
+       sidenote-gutter calc below reuses this value but resolves on a smaller-font
+       element, and ch would compute differently there. */
+    --measure: 43rem;
+    /* Half the space freed on each side when the centred measure sits in the
+       full-width post body. --body-content-width already nets out the body
+       padding; subtract the segment body's p-3 (×2 = 1.5rem) to reach the prose
+       width (the 1px segment border is rounded out). Sidenotes add this to their
+       offsets so, from the centred paragraph's right edge, they reach the segment
+       border regardless of --measure. Only meaningful at 2xl, where notes show
+       and the body is maxed. */
+    --sidenote-gutter: calc(
+        (var(--body-content-width) - 1.5rem - var(--measure)) / 2
+    );
+    /* Approx width of the number chip in a sidenote, used to position the chip in
+       the gutter with the body just past the segment border. */
+    --sidenote-marker-width: 2rem;
+
     /* Background blob field — geometry (blend mode + opacity are per-mode). */
     --blob-size: 46vmax;
     --blob-blur: 100px;

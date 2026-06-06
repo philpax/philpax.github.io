@@ -56,20 +56,11 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
         };
     }
 
-    // Styling for the sidenote's number (span, not sup - full height, no vertical offset)
+    // Styling for the sidenote's number (span, not sup - full height, no vertical
+    // offset). No "fn" prefix here (unlike the inline popup) — the marginal
+    // placement already reads as a note, so just the number.
     let sidenote_number_class = "\
-        footnote-number px-2 bg-phosphor text-canvas text-sm \
-        before:content-['fn'] before:italic before:text-[0.8em] before:mr-[0.3em] before:text-canvas\
-    ";
-
-    // Sidenote: hidden on small screens, floats right into right margin on 2xl+
-    // Fixed width (w-80 = 20rem) with negative margin calculated to anchor left edge
-    // at 1rem past content edge: -mr = -(width + gap) = -(20rem + 1rem) = -21rem
-    let sidenote_class = "\
-        sidenote hidden \
-        2xl:flex 2xl:items-baseline 2xl:gap-2 2xl:float-right 2xl:clear-right \
-        2xl:w-80 2xl:ml-4 2xl:-mr-[21rem] \
-        text-sm border-t-2 border-dim pt-0 pb-1 mb-4\
+        footnote-number px-2 bg-phosphor text-canvas text-sm\
     ";
 
     // Clone children for use in both inline and sidenote display
@@ -99,11 +90,16 @@ pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtm
                 {children_clone}
             </span>
 
-            // Sidenote content (wide screens) - floats into right margin
-            <small id={sidenote_id} class={sidenote_class}>
-                <a href={format!("#{ref_id}")} class="no-underline flex-shrink-0">
+            // Sidenote content (wide screens) - floats into the right margin as a
+            // flex row sharing one top border, so the divider spans both the marker
+            // and the body. The marker is a fixed-width slot with the fn-N chip
+            // right-aligned to the gutter edge, so the body starts at a fixed x.
+            <small id={sidenote_id} class="sidenote">
+                <a href={format!("#{ref_id}")} class="sidenote-marker">
                     <span class={sidenote_number_class}>
-                        {&props.identifier}
+                        <span class="inline-block min-w-[2ch] text-center tabular-nums">
+                            {&props.identifier}
+                        </span>
                     </span>
                 </a>
                 <span class="flex-1 min-w-0">{children}</span>
