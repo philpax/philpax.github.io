@@ -964,15 +964,20 @@ pub fn validate_document_links(content: &Content, doc: &Document) -> Vec<String>
         let is_md = raw_url.ends_with(".md") || raw_url.contains(".md#");
         if is_md
             && !raw_url.contains("://")
-            && content.resolve_markdown_link(source_path, raw_url).is_none()
+            && content
+                .resolve_markdown_link(source_path, raw_url)
+                .is_none()
         {
             errors.push(format!("{here}: broken .md link '{raw_url}'"));
             return;
         }
         // Fragments must hit a known anchor on the target page.
-        if let Some((route_url, fragment)) =
-            resolve_anchor_target(content, Some(source_path), document_base_url.as_deref(), raw_url)
-            && let Some(anchors) = content.anchors.get(&route_url)
+        if let Some((route_url, fragment)) = resolve_anchor_target(
+            content,
+            Some(source_path),
+            document_base_url.as_deref(),
+            raw_url,
+        ) && let Some(anchors) = content.anchors.get(&route_url)
             && !anchors.contains(&fragment)
         {
             errors.push(format!(
