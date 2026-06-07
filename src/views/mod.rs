@@ -203,7 +203,10 @@ pub fn layout<'a>(
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-[var(--body-padding)] py-2 transition-colors duration-200")}>
+                // Full-bleed on mobile: segments/nav/footer run edge-to-edge; the
+                // body padding (and inset) returns at sm+. The wordmark row re-pads
+                // itself below so the icon doesn't kiss the screen edge.
+                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-0 sm:px-[var(--body-padding)] pt-2 transition-colors duration-200")}>
                     // Decorative drifting lava-lamp blobs behind everything (see .bg-field in website.css).
                     <div class="bg-field" ariaHidden="true">
                         <span class="blob blob-1"></span>
@@ -215,7 +218,7 @@ pub fn layout<'a>(
                     <header class="my-2">
                         // Status / command bar: mono wordmark + faux readout + bracketed nav.
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <div class="flex items-center gap-3 min-w-0">
+                            <div class="flex items-center justify-center sm:justify-start gap-3 min-w-0 px-[var(--body-padding)] sm:px-0">
                                 <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-wire [image-rendering:auto]" />
                                 <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
                                     {context.website_author}
@@ -226,7 +229,8 @@ pub fn layout<'a>(
                                 #{
                                     CurrentPage::ALL_PAGES.iter().map(|page| {
                                         let is_active = *page == current_page;
-                                        let class = if is_active { "nav-link active text-center" } else { "nav-link text-center" };
+                                        // w-full so each pill fills its grid cell on mobile (full-width nav band); content-width at sm+.
+                                        let class = if is_active { "nav-link active text-center w-full sm:w-auto" } else { "nav-link text-center w-full sm:w-auto" };
                                         let aria_current = is_active.then(|| paxhtml::Attribute::new(bump, "aria-current", "page")).into_iter();
                                         html! { in bump;
                                             <li>
@@ -243,7 +247,7 @@ pub fn layout<'a>(
                     <Segment
                         tag={SegmentTag::Footer}
                         label={"eof".to_string()}
-                        class={"my-3".to_string()}
+                        class={"mt-3".to_string()}
                     >
                         // Serif colophon (feeds live with the post/update lists on the home page).
                         <div class="text-sm text-dim leading-relaxed">

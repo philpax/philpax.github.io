@@ -85,6 +85,11 @@
         @apply inline-flex items-center justify-center whitespace-nowrap leading-none lowercase;
         @apply font-['Iosevka',monospace] px-2.5 py-1 border border-wire text-dim;
         @apply transition-colors duration-150 hover:text-phosphor hover:border-phosphor;
+        /* Roomier tap target on mobile (~44px); back to the compact pill at sm+. */
+        @apply min-h-11 sm:min-h-0;
+        /* Faint wire borders vanish against the blobs at button size, so on mobile
+           the pills get a panel fill + brighter edge; back to bare wire at sm+. */
+        @apply bg-panel border-dim sm:bg-transparent sm:border-wire;
     }
     .nav-link.active {
         @apply bg-phosphor border-phosphor text-canvas;

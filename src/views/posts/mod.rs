@@ -23,7 +23,7 @@ pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
                     </li>
                 }
             });
-            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-nowrap overflow-x-auto min-w-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
+            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-nowrap flex-shrink-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
         })
         .unwrap_or_default()
 }
@@ -200,7 +200,9 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
         .flatten();
 
     html! { in bump;
-        <div class={format!("post-meta flex flex-col sm:flex-row sm:items-center gap-x-2 text-sm text-dim {CODE_FONT_STYLE}")}>
+        // A single mono line that scrolls horizontally rather than wrapping/stacking,
+        // so a long tag list (or narrow viewport) never truncates the row.
+        <div class={format!("post-meta flex flex-row items-center gap-x-2 text-sm text-dim overflow-x-auto {CODE_FONT_STYLE}")}>
             <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <span class="text-fg">{date(bump, document)}</span>
                 {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><IsoDate date={m} /></span></> })}
@@ -210,8 +212,8 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
                 <span><span class="text-fg">{words}</span>" words"</span>
             </div>
             {has_tags.then(|| html! { in bump; <>
-                <span ariaHidden="true" class="hidden sm:inline flex-shrink-0">"·"</span>
-                <div class="flex-1 min-w-0">{tags(bump, document)}</div>
+                <span ariaHidden="true" class="flex-shrink-0">"·"</span>
+                <div class="flex-shrink-0">{tags(bump, document)}</div>
             </>})}
         </div>
     }
