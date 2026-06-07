@@ -73,6 +73,22 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     tagged_documents.sort_by_key(|d| d.metadata.datetime);
     tagged_documents.reverse();
 
+    // Title band, mirroring a post: the tag as the heading, item count as meta.
+    let count = tagged_documents.len();
+    let heading_class = posts::post_body_to_heading_class(posts::PostBody::Full);
+    let header = html! { in bump;
+        <div class="flex flex-col">
+            <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="block no-underline post-title group">
+                <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>
+                    {format!("#{tag_id}")}
+                </h2>
+            </a>
+            <div class={format!("post-meta text-sm text-dim {CODE_FONT_STYLE}")}>
+                {format!("{} {}", count, util::pluralize("item", count))}
+            </div>
+        </div>
+    };
+
     layout(
         context,
         SocialMeta {
@@ -96,24 +112,13 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <div class="flex flex-col gap-3">
-                <header class="flex flex-col gap-1">
-                    <div class={format!("kicker {CODE_FONT_STYLE}")} ariaHidden="true">"// filtered by tag"</div>
-                    <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="no-underline">
-                        <h1 class="text-3xl font-bold text-phosphor">
-                            {"#"}{tag_id}
-                            <small class={format!("text-dim text-base font-normal ml-2 {CODE_FONT_STYLE}")}>
-                                {format!("({} {})", tagged_documents.len(), util::pluralize("item", tagged_documents.len()))}
-                            </small>
-                        </h1>
-                    </a>
-                </header>
+            <Segment header={header} body_class={"flex flex-col gap-3".to_string()}>
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
-            </div>
+            </Segment>
         },
     )
 }
