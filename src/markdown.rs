@@ -176,10 +176,10 @@ impl<'a> MarkdownConverter<'a> {
                 } else {
                     let resolved_depth = (h.depth + 2).min(6);
                     let class = match resolved_depth {
-                        3 => "text-lg font-bold",
-                        4 => "text-base font-bold",
-                        5 => "text-sm font-bold",
-                        6 => "text-xs font-bold",
+                        3 => "text-xl font-bold",
+                        4 => "text-lg font-bold",
+                        5 => "text-base font-bold",
+                        6 => "text-sm font-bold",
                         value => panic!("Heading depth {value} is not supported"),
                     };
                     let contains_links = contains_link(&h.children);
