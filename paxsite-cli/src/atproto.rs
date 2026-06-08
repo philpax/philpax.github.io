@@ -49,8 +49,8 @@ use paxsite_content::standard_site::{DOCUMENT_NSID, PUBLICATION_NSID, PUBLICATIO
 
 // The OAuth client/session/agent types, specialised to our on-disk auth store,
 // named explicitly so [`Publisher`] needn't be generic.
-type Client = OAuthClient<JacquardResolver, FileAuthStore>;
-type Session = OAuthSession<JacquardResolver, FileAuthStore>;
+type Client = OAuthClient<JacquardResolver<reqwest::Client>, FileAuthStore>;
+type Session = OAuthSession<JacquardResolver<reqwest::Client>, FileAuthStore>;
 type SessionAgent = Agent<Session>;
 
 /// An authenticated publishing session — an OAuth agent plus the logged-in DID.
@@ -81,6 +81,7 @@ pub async fn login(store_path: &Path, handle: &str) -> Result<Publisher> {
                 ),
             ),
         },
+        reqwest::Client::new(),
     );
     let session = restore_or_login(&oauth, store_path, handle).await?;
     let (did, _) = session.session_info().await;

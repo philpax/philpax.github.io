@@ -10,5 +10,11 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 paxsite-content = { path = "../paxsite-content" }
 inquire = "0.7"
-jacquard = { version = "=0.12.0-beta.2", features = ["loopback"] }
+# Pinned to git: main removed the transitive rouille dependency (which dragged in the abandoned
+# multipart/buf_redux crates and their future-incompat warnings). Drop back to a crates.io version
+# once a release past 0.12.0-beta.2 ships with that change.
+jacquard = { git = "https://tangled.org/nonbinary.computer/jacquard", rev = "bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47", features = ["loopback"] }
+# jacquard's OAuth client is now generic over an `HttpClient`; we pass a `reqwest::Client`
+# (the same backend jacquard uses, so reqwest's features unify across the build).
+reqwest = { workspace = true }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

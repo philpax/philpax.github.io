@@ -34,7 +34,14 @@ usvg = "0.44"
 fontdb = "0.22"
 rayon = "1.10"
 base64 = "0.22.1"
-ureq = { version = "3", features = ["json"] }
+# Shared HTTP client. `blocking` is for paxsite-content's sync build-time Bluesky fetches;
+# `rustls-tls` matches the TLS backend jacquard pulls in, so reqwest's features unify to a
+# single rustls stack across the workspace rather than dragging in native-tls too.
+reqwest = { version = "0.12", default-features = false, features = [
+    "blocking",
+    "json",
+    "rustls-tls",
+] }
 chrono = { version = "0.4.37", default-features = false, features = [
     "std",
     "now",

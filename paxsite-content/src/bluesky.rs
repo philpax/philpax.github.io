@@ -178,11 +178,10 @@ fn resolve_handle(handle: &str) -> anyhow::Result<String> {
     }
 
     let url = format!("{BSKY_PUBLIC_API}/com.atproto.identity.resolveHandle?handle={handle}");
-    let response: Response = ureq::get(&url)
-        .call()
+    let response: Response = reqwest::blocking::get(&url)
         .with_context(|| format!("failed to resolve handle {handle}"))?
-        .body_mut()
-        .read_json()?;
+        .error_for_status()?
+        .json()?;
     Ok(response.did)
 }
 
@@ -194,11 +193,10 @@ fn get_post(display_url: &str, at_uri: &str) -> anyhow::Result<PostView> {
     }
 
     let url = format!("{BSKY_PUBLIC_API}/app.bsky.feed.getPosts?uris={at_uri}");
-    let response: Response = ureq::get(&url)
-        .call()
+    let response: Response = reqwest::blocking::get(&url)
         .with_context(|| format!("failed to fetch post {display_url}"))?
-        .body_mut()
-        .read_json()?;
+        .error_for_status()?
+        .json()?;
 
     response
         .posts
@@ -211,7 +209,7 @@ fn get_post(display_url: &str, at_uri: &str) -> anyhow::Result<PostView> {
 fn fetch_avatar(avatar_url: &str, content_dir: &Path, did: &str) -> anyhow::Result<String> {
     const MAX_AVATAR_SIZE: u64 = 5 * 1024 * 1024; // 5 MB
 
-    let response = ureq::get(avatar_url).call()?;
+    let response = reqwest::blocking::get(avatar_url)?.error_for_status()?;
     let content_type = response
         .headers()
         .get("content-type")
@@ -223,11 +221,18 @@ fn fetch_avatar(avatar_url: &str, content_dir: &Path, did: &str) -> anyhow::Resu
         "image/webp" => "webp",
         _ => "jpg",
     };
-    let bytes = response
-        .into_body()
-        .with_config()
-        .limit(MAX_AVATAR_SIZE)
-        .read_to_vec()?;
+    // Bail early on an oversized Content-Length, then guard again after reading in
+    // case the header was missing or understated the actual body size.
+    if response
+        .content_length()
+        .is_some_and(|len| len > MAX_AVATAR_SIZE)
+    {
+        anyhow::bail!("avatar at {avatar_url} exceeds {MAX_AVATAR_SIZE} bytes");
+    }
+    let bytes = response.bytes()?;
+    if bytes.len() as u64 > MAX_AVATAR_SIZE {
+        anyhow::bail!("avatar at {avatar_url} exceeds {MAX_AVATAR_SIZE} bytes");
+    }
 
     let sanitised_did = did.replace(':', "-");
     let filename = format!("{BLUESKY_CACHE_PREFIX}{sanitised_did}.{ext}");
