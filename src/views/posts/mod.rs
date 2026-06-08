@@ -109,8 +109,8 @@ pub fn post<'a>(
         };
     }
 
-    // Full post view: the post-body stays a block so the floated TOC sidebar /
-    // address gutter and per-paragraph sidenotes work; spacing comes from the
+    // Full post view: the post-body stays a block so the floated TOC sidebar and
+    // per-paragraph sidenotes work; spacing comes from the
     // `.post-body` / `.post-prose` cascade.
     let toc = document
         .rest_of_content
@@ -119,9 +119,6 @@ pub fn post<'a>(
     let (toc_sidebar, toc_inline) = toc_elements(bump, toc);
 
     let mut body_elements = vec![];
-    // Decorative address gutter ("hexdump offsets") in the left margin on very
-    // wide screens; only shown when there's no TOC sidebar (which otherwise
-    // occupies the left margin), so the two never collide.
     body_elements.extend(toc_sidebar);
     if document.metadata.draft {
         body_elements.push(html! { in bump;

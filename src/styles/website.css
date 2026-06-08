@@ -70,8 +70,6 @@
     --body-content-width: calc(var(--body-max-width) - var(--body-padding) * 2);
     /* Content max-widths */
     --centered-content-width: min(calc(var(--body-content-width) * 0.95), 100%);
-    /* Address gutter width */
-    --gutter-width: 3.25rem;
 
     /* Bisexual flag — drives the background blobs (mode-independent; the
        per-mode blend mode + opacity adapt them to dark/light). */
