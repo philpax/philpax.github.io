@@ -8,7 +8,7 @@ tags=["ai", "pyxis", "website", "genresinspace", "blackbird", "perchanceinterpre
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mfzhxf2v"
-hash = "4b2e1afecf4d2727558d31a232ed0e33c574d299f02ebd591ff15f36d771fe8f"
+hash = "7fdadf9e0965baa8168abd3f20df2c513318a96c8c551dbd4a080f4fe70a4522"
 +++
 
 _With apologies to [Nine Inch Nails](https://www.youtube.com/watch?v=9gg2p7_PnTQ)._
