@@ -120,8 +120,8 @@ pub fn post<'a>(
     body_elements.extend(toc_sidebar);
     if document.metadata.draft {
         body_elements.push(html! { in bump;
-            <div class={format!("p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
-                <div class="text-xl font-bold">"!! DRAFT !!"</div>
+            <div class={format!("p-4 border border-hot text-hot text-center {CODE_FONT_STYLE}")}>
+                <div class="text-xl font-bold">"DRAFT"</div>
                 <div class="text-sm mt-1 text-fg">"I hope you're here because you're meant to be. It'd be a bit awkward otherwise."</div>
             </div>
         });
