@@ -77,7 +77,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     // nav pill) joined to the item count as an outline side-pill, so the pair reads
     // as a segmented "active filter" control — mono chrome, not a serif post card.
     let count = tagged_documents.len();
-    let title_band = html! { in bump;
+    let active_filter_badge = html! { in bump;
         <div class="flex items-stretch">
             <h1 class={format!("inline-flex items-center px-3 py-1 bg-phosphor text-canvas {CODE_FONT_STYLE}")}>
                 {format!("#{tag_id}")}
@@ -112,7 +112,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         CurrentPage::Tags,
         html! { in bump;
             <div class="flex flex-col gap-3">
-                {title_band}
+                {active_filter_badge}
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)

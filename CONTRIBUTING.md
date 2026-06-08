@@ -204,6 +204,7 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 - `<NotesIndex />` — Hierarchical notes navigator (only in notes)
 - `<PrMeta date="2025-11-06" add=128 sub=1 />` — Inline pill row with date and diff stats (always noyear)
 - `<PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />` — Date range variant with optional `closed` badge
+- `<PrTimeline />` — Renders a Gantt-style timeline of every PR mentioned in the post (entries collected from the document's PR headings/`<PrMeta>`s)
 - `<MonthDayDate date="2025-11-06" noyear />` — Formatted date
 - `<MonthDayDateRange start="2025-11-06" end="2025-12-14" noyear />` — Date range
 - `<BlueskyPost post="https://bsky.app/profile/handle/post/rkey" />` — Archived Bluesky post embed (data fetched and cached as JSON next to the markdown file on first build)
