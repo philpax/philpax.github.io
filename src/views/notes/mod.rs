@@ -86,11 +86,8 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             type_: Some("website".to_string()),
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),
-            article_published_time: None,
             article_modified_time: note.metadata.datetime,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Notes,
         html! { in bump;

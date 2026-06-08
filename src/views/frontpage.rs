@@ -47,18 +47,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     layout(
         context,
         SocialMeta {
-            title: None,
             description: Some(context.website_description.to_string()),
             image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Index.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Home,
         html! { in bump;

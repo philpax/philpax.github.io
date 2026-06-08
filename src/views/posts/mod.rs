@@ -57,9 +57,7 @@ pub fn post<'a>(
     // Metadata + clickable title that heads every post.
     let title_and_meta = html! { in bump;
         <>
-            <a href={url.clone()} class="block no-underline post-title group">
-                <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>{break_on_colon(bump, &document.metadata.title)}</h2>
-            </a>
+            {post_title_link(bump, url.clone(), heading_class, break_on_colon(bump, &document.metadata.title))}
             {post_meta(bump, document, post_body)}
         </>
     };
@@ -202,6 +200,23 @@ pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     match post_body {
         PostBody::Full | PostBody::Description => "text-2xl font-bold",
         PostBody::Short => "text-xl font-bold",
+    }
+}
+
+/// The clickable post title shared by post cards and post-like pages (e.g.
+/// credits): a non-underlined link wrapping an `<h2>` that warms to `hot` on
+/// hover. `title` is the already-rendered heading content (text, or a
+/// colon-broken title).
+pub fn post_title_link<'a>(
+    bump: &'a Bump,
+    url: String,
+    heading_class: &str,
+    title: paxhtml::Element<'a>,
+) -> paxhtml::Element<'a> {
+    html! { in bump;
+        <a href={url} class="block no-underline post-title group">
+            <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>{title}</h2>
+        </a>
     }
 }
 

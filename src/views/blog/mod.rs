@@ -13,18 +13,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     layout(
         context,
         SocialMeta {
-            title: None,
             description: Some(context.website_description.to_string()),
             image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Blog.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Blog,
         html! { in bump;
@@ -55,7 +48,6 @@ pub fn post<'a>(context: ViewContext<'a>, document: &Document) -> paxhtml::Docum
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),
             article_published_time: document.metadata.datetime,
-            article_modified_time: None,
             article_tag: document.tags().map(|t| t.join(", ")),
             noindex: document.metadata.draft,
             standard_site_uri: document
@@ -63,6 +55,7 @@ pub fn post<'a>(context: ViewContext<'a>, document: &Document) -> paxhtml::Docum
                 .standard_site
                 .as_ref()
                 .map(|s| s.uri.clone()),
+            ..Default::default()
         },
         CurrentPage::Blog,
         posts::post(context, document, posts::PostBody::Full),

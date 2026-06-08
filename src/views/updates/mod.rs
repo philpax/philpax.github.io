@@ -18,13 +18,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Updates.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Updates,
         html! { in bump;
@@ -58,7 +52,6 @@ pub fn post<'a>(
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),
             article_published_time: document.metadata.datetime,
-            article_modified_time: None,
             article_tag: document.tags().map(|t| t.join(", ")),
             noindex: document.metadata.draft,
             standard_site_uri: document
@@ -66,6 +59,7 @@ pub fn post<'a>(
                 .standard_site
                 .as_ref()
                 .map(|s| s.uri.clone()),
+            ..Default::default()
         },
         CurrentPage::Updates,
         posts::post(context, document, posts::PostBody::Full),

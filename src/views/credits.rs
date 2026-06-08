@@ -16,29 +16,18 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let heading_class = posts::post_body_to_heading_class(posts::PostBody::Full);
     let header = html! { in bump;
         <div class="flex flex-col">
-            <a href={Route::Credits.url_path()} class="block no-underline post-title group">
-                <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>
-                    "Credits"
-                </h2>
-            </a>
+            {posts::post_title_link(bump, Route::Credits.url_path(), heading_class, html! { in bump; "Credits" })}
         </div>
     };
 
     layout(
         context,
         SocialMeta {
-            title: None,
             description: Some(context.website_description.to_string()),
             image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Credits.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Home,
         html! { in bump;

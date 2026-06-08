@@ -20,13 +20,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Tags.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
-            article_tag: None,
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Tags,
         html! { in bump;
@@ -101,13 +95,8 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                 .abs_url(context.website_base_url),
             ),
             type_: Some("website".to_string()),
-            twitter_card: None,
-            twitter_image: None,
-            article_published_time: None,
-            article_modified_time: None,
             article_tag: Some(tag_id.to_string()),
-            noindex: false,
-            standard_site_uri: None,
+            ..Default::default()
         },
         CurrentPage::Tags,
         html! { in bump;
