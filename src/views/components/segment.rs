@@ -38,7 +38,7 @@ pub struct SegmentProps<'bump> {
     pub tag: SegmentTag,
     /// Extra classes appended to the outer element (alongside `segment`).
     pub class: Option<String>,
-    /// Extra classes appended to the padded body (e.g. `flex`, hairline rules).
+    /// Extra classes appended to the padded body (e.g. a `flex` layout).
     pub body_class: Option<String>,
     /// Rich content for the title-bar header band. Overrides `label` when set
     /// (e.g. a post's metadata + title).
@@ -61,8 +61,8 @@ impl DefaultIn<'_> for SegmentProps<'_> {
 /// A standard content segment: a wire-bordered `.segment` with a `SegmentLabel`
 /// header and a padded (`p-3`) body. Used for the home-page and index-page
 /// segments so they all share one structure. Pass `body_class` for per-segment
-/// body tweaks (e.g. a flex layout or hairline-separated list), and `tag` to
-/// change the wrapping element (e.g. `Footer`).
+/// body tweaks (e.g. a flex layout), and `tag` to change the wrapping element
+/// (e.g. `Footer`).
 #[allow(non_snake_case)]
 pub fn Segment<'bump>(bump: &'bump Bump, props: SegmentProps<'bump>) -> paxhtml::Element<'bump> {
     let class = match props.class {

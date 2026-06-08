@@ -31,12 +31,6 @@
     text-decoration-skip-ink: none;
 }
 
-/* Wire hairline separating list entries. A real utility so it composes with
-   arbitrary variants like `[&>*:not(:first-child)]:hairline`. */
-@utility hairline {
-    border-top: 1px solid var(--wire);
-}
-
 /* Frosted terminal-panel surface: translucent over the drifting blobs, blurred.
    Shared by .segment and the notes index dropdown so they read alike. */
 @utility panel-surface {
@@ -122,11 +116,6 @@
        than the inherited body line-height. */
     .segment-label {
         @apply block font-['Iosevka',monospace] lowercase text-xs tracking-[0.04em] text-phosphor;
-    }
-
-    /* Mono "comment" kicker above headings */
-    .kicker {
-        @apply font-['Iosevka',monospace] text-xs lowercase tracking-[0.03em] text-dim;
     }
 
     /* ----------------------------------------------------------
