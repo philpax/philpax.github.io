@@ -122,11 +122,7 @@ pub fn post<'a>(
     // Decorative address gutter ("hexdump offsets") in the left margin on very
     // wide screens; only shown when there's no TOC sidebar (which otherwise
     // occupies the left margin), so the two never collide.
-    let has_sidebar = toc_sidebar.is_some();
     body_elements.extend(toc_sidebar);
-    if !has_sidebar {
-        body_elements.push(address_gutter(bump));
-    }
     if document.metadata.draft {
         body_elements.push(html! { in bump;
             <div class={format!("p-4 border border-hot text-hot {CODE_FONT_STYLE}")}>
@@ -161,21 +157,6 @@ pub fn post<'a>(
         <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()}>
             #{body_elements.into_iter()}
         </Segment>
-    }
-}
-
-/// A decorative hexdump-style offset column for the left margin on very wide
-/// screens. Cosmetic only and aria-hidden; rendered as a sticky left float that
-/// mirrors the TOC sidebar's positioning.
-fn address_gutter<'a>(bump: &'a Bump) -> paxhtml::Element<'a> {
-    let addresses: String = (0..16)
-        .map(|i| format!("0x{:04x}", i * 0x10))
-        .collect::<Vec<_>>()
-        .join("\n");
-    html! { in bump;
-        <aside ariaHidden="true" class="address-gutter hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[var(--gutter-width)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-1rem)] 2xl:sticky 2xl:top-4">
-            {addresses}
-        </aside>
     }
 }
 
