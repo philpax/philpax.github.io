@@ -73,19 +73,18 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     tagged_documents.sort_by_key(|d| d.metadata.datetime);
     tagged_documents.reverse();
 
-    // Title band, mirroring a post: the tag as the heading, item count as meta.
+    // Active-filter badge: the tag as a filled phosphor chip (echoing the active
+    // nav pill) joined to the item count as an outline side-pill, so the pair reads
+    // as a segmented "active filter" control — mono chrome, not a serif post card.
     let count = tagged_documents.len();
-    let heading_class = posts::post_body_to_heading_class(posts::PostBody::Full);
-    let header = html! { in bump;
-        <div class="flex flex-col">
-            <a href={Route::Tag { tag_id: tag_id.to_string() }.url_path()} class="block no-underline post-title group">
-                <h2 class={format!("{heading_class} text-phosphor group-hover:text-hot transition-colors")}>
-                    {format!("#{tag_id}")}
-                </h2>
-            </a>
-            <div class={format!("post-meta text-sm text-dim {CODE_FONT_STYLE}")}>
+    let title_band = html! { in bump;
+        <div class="flex items-stretch">
+            <h1 class={format!("inline-flex items-center px-3 py-1 bg-phosphor text-canvas {CODE_FONT_STYLE}")}>
+                {format!("#{tag_id}")}
+            </h1>
+            <span class={format!("inline-flex items-center px-3 py-1 border-3 border-l-0 border-wire text-dim text-sm {CODE_FONT_STYLE}")}>
                 {format!("{} {}", count, util::pluralize("item", count))}
-            </div>
+            </span>
         </div>
     };
 
@@ -112,13 +111,14 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         },
         CurrentPage::Tags,
         html! { in bump;
-            <Segment header={header} body_class={"flex flex-col gap-3".to_string()}>
+            <div class="flex flex-col gap-3">
+                {title_band}
                 #{
                     tagged_documents.iter().map(|doc| {
                         posts::post(context, doc, posts::PostBody::Description)
                     })
                 }
-            </Segment>
+            </div>
         },
     )
 }
