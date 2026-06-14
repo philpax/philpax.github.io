@@ -419,7 +419,7 @@ version = "3.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "519bd3116aeeb42d5372c29d982d16d0170d3d4a5ed85fc7dd91642ffff3c67c"
 dependencies = [
- "darling 0.20.11",
+ "darling 0.23.0",
  "ident_case",
  "prettyplease",
  "proc-macro2",
@@ -2045,8 +2045,9 @@ checksum = "7ee5b5339afb4c41626dde77b7a611bd4f2c202b897852b4bcf5d03eddc61010"
 
 [[package]]
 name = "jacquard"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2e30d6ba826a563cb2e86f6c4e2268ef5a216b50ea0ca98a9cd3b6b4cbc7c8cc"
 dependencies = [
  "bytes",
  "getrandom 0.2.17",
@@ -2074,8 +2075,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-api"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9d7b4d41f44a3add61878f6022c48ef949f5d1759a88ec778017334d2847e95"
 dependencies = [
  "jacquard-common",
  "jacquard-derive",
@@ -2087,8 +2089,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-common"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "82e9239b4bf08cf6b3e9d9d420be8b17bd09ee34228b52b884089cbcf67d23bf"
 dependencies = [
  "base64",
  "bon",
@@ -2135,8 +2138,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-derive"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7bea6f33da422d272cb09a2571fb65f88aed13612774f2eb635716ce71d1e742"
 dependencies = [
  "heck",
  "jacquard-lexicon",
@@ -2147,8 +2151,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-identity"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "757c2d9d9ecca3b66e000e912f2fcf9e9e63c5dc50d20983264e3a6db56f4a8e"
 dependencies = [
  "bon",
  "bytes",
@@ -2170,8 +2175,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-lexicon"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3bf8be274eb0af89ece99b56cbbc837748f62d44af8ab8280acafdfcafe84db7"
 dependencies = [
  "cid",
  "dashmap",
@@ -2197,8 +2203,9 @@ dependencies = [
 
 [[package]]
 name = "jacquard-oauth"
-version = "0.12.0-beta.2"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "108570f206eea7fd3272e7bfe355b589d66c163e4e4a06ee612bf84877ef2049"
 dependencies = [
  "base64",
  "bytes",
@@ -2547,7 +2554,8 @@ checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 [[package]]
 name = "mini-moka-wasm"
 version = "0.10.99"
-source = "git+https://tangled.org/nonbinary.computer/jacquard?rev=bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47#bc223e9204c7f9d43cebfeea3da7b2f68dfb7c47"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0102b9a2ad50fa47ca89eead2316c8222285ecfbd3f69ce99564fbe4253866e8"
 dependencies = [
  "crossbeam-channel",
  "crossbeam-utils",
