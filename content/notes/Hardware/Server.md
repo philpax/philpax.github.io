@@ -39,7 +39,3 @@ Over time, I swapped out the original hard drives for a 4x 24TB ZFS pool and ins
 Administering this machine through NixOS was challenging at first, but has gotten easier over time, especially after ceding most of the actual configuration maintenance to Claude Code. A declarative configuration is tedious to set up at first, but it is genuinely pretty nice to be able to control the vast majority of my system's state from one versioned folder that I can reconfigure as required.
 
 On the whole, I'd say this server is going pretty well for me. It did have a pretty nasty noise problem, but tweaking the fan curves has mostly fixed that, and now I get to enjoy a gentle hum in the background. If I was still sleeping in the same room as it, I'd have no need for a white noise generator.
-
-Sadly, I have not found a way to kill the RGB LEDs embedded into the RAM,[^openrgb] and given the current pricing of RAM, a more permanent fix would require me to sacrifice a kidney.
-
-[^openrgb]: I am using OpenRGB to kill _some_ of the RGB in the machine, but the RAM remains inaccessible to it. My solution has been to push the server against my couch so that as little light leaks out as possible. As a side benefit, it also helps dampen the resonance from the HDDs.
