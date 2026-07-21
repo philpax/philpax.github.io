@@ -28,7 +28,7 @@ And then I ended up going with none of this at all.
 
 An Epyc system would have cost around $2,500 USD. I was able to get a Threadripper 3960X system for around $1,500 USD off Blocket (Swedish Craigslist, let's say), and a 3090 for around $570 USD. This met my requirements and let me reallocate the extra cost towards GPUs.
 
-I later installed a second 3090 - also around $600 USD - which has enabled me to run larger LLMs and to run multiple AI workloads simultaneously through [large-model-proxy](https://github.com/perk11/large-model-proxy).
+I later installed a second 3090 - also around $600 USD - which has enabled me to run larger LLMs and to run multiple AI workloads simultaneously through [ananke](https://github.com/philpax/ananke).
 
 The two-GPU setup has proven to be quite effective, but it lands on a specific point in the capability-speed-efficiency triangle: it's fast, but I'm limited to models that can be sharded across 48GB of VRAM (or that can take advantage of CPU offload, but that is brutally slow), and when in use, it is both drawing and emitting 600W of power.
 
