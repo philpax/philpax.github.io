@@ -18,24 +18,18 @@ This is my personal server for services, AI, and more.
 | _Power Supply_     | [Be Quiet! Dark Power Pro 13 1300W](https://www.bequiet.com/en/powersupply/4394)                                                                                                                                                                                                     |
 | _Operating System_ | [NixOS 26.05](https://nixos.org/download/) ([configuration](https://github.com/philpax/nixos-configuration))                                                                                                                                                                         |
 
-# Motivation
+# Notes
 
 My goal was to replace my existing home server while keeping a few constraints in mind: future upgradability, the ability to run CPU compute workloads, installing as many GPUs as possible, and - given I'm fitting this into an apartment - a tower form factor to keep noise down. I wanted my server to be able to serve all of my needs, including being able to play with LLMs of useful size.
 
-I was initially targeting second-generation Epyc, which is readily available on eBay and AliExpress; this would let me upgrade to third-generation Epyc down the line, and motherboards with a great many PCIe 4.0 x16 slots are readily available. I aimed for a single-CPU system to avoid any potential headaches with RAM or PCIe slot distribution across NUMA nodes.
+I was initially targeting second-generation Epyc, which is readily available on eBay and AliExpress; this would let me upgrade to third-generation Epyc down the line, and motherboards with a great many PCIe 4.0 x16 slots are readily available. My thinking was that I'd get a single-CPU system to avoid any potential headaches with RAM or PCIe slot distribution across NUMA nodes. This would have cost me ~2,500 USD (at the time, anyway).
 
-And then I ended up going with none of this at all.
+Luckily, I was able to get a Threadripper 3960X system for around 1,500 USD off Blocket (Swedish Craigslist, let's say), and a 3090 for around 600 USD. I later installed a second 3090 - also around 600 USD - which has enabled me to run larger LLMs and to run multiple AI workloads simultaneously through [ananke](https://github.com/philpax/ananke).
 
-An Epyc system would have cost around $2,500 USD. I was able to get a Threadripper 3960X system for around $1,500 USD off Blocket (Swedish Craigslist, let's say), and a 3090 for around $570 USD. This met my requirements and let me reallocate the extra cost towards GPUs.
-
-I later installed a second 3090 - also around $600 USD - which has enabled me to run larger LLMs and to run multiple AI workloads simultaneously through [ananke](https://github.com/philpax/ananke).
-
-The two-GPU setup has proven to be quite effective, but it lands on a specific point in the capability-speed-efficiency triangle: it's fast, but I'm limited to models that can be sharded across 48GB of VRAM (or that can take advantage of CPU offload, but that is brutally slow), and when in use, it is both drawing and emitting 600W of power.
+The two-GPU setup has proven to be quite effective, but it lands on a specific point in the capability-speed-efficiency triangle: it's fast, but I'm limited to models that can be sharded across 48GB of VRAM (or that can take advantage of CPU offload, but that is brutally slow), and when in use, it is both drawing and emitting >400W.
 
 Still, I'm pretty happy with it, and I may augment it with something that sits at another point on the triangle: perhaps a Mac Mini, DGX Spark, or a Strix Halo machine, all of which are slower, but offer more VRAM and run cooler. I'm sure there's interesting hybrid configurations to find!
 
-Over time, I swapped out the original hard drives for a 4x 24TB ZFS pool and installed a 4TB SSD. This has solved my storage needs for the immediate - and probably not so immediate - future, but it's still not quite as low-touch as I would like; in an ideal world, I'd be able to set up the HDDs in a pool with the SSD acting as a transparent cache, so data that I access frequently is always fast. I think `bcachefs` might be able to offer something like this, but the status of that project scares me.
+Over time, I swapped out the original hard drives for a 4x 24TB ZFS pool and installed a 4TB SSD. This has solved my storage needs for the immediate - and probably not so immediate - future, but it's still not quite as low-touch as I would like; in an ideal world, I'd be able to set up the HDDs in a pool with the SSD acting as a transparent cache, so data that I access frequently is always fast. I think `bcachefs` might be able to offer something like this, but I fear for the future of that project.
 
-Administering this machine through NixOS was challenging at first, but has gotten easier over time, especially after ceding most of the actual configuration maintenance to Claude Code. A declarative configuration is tedious to set up at first, but it is genuinely pretty nice to be able to control the vast majority of my system's state from one versioned folder that I can reconfigure as required.
-
-On the whole, I'd say this server is going pretty well for me. It did have a pretty nasty noise problem, but tweaking the fan curves has mostly fixed that, and now I get to enjoy a gentle hum in the background. If I was still sleeping in the same room as it, I'd have no need for a white noise generator.
+Administering this machine through NixOS was challenging at first, but has gotten easier over time, especially after ceding most of the actual maintenance to agents (heck, I bet it could administer itself with its own local agents now!). A declarative configuration is tedious to set up at first, but it is genuinely pretty nice to be able to control the vast majority of my system's state from one versioned folder that I can reconfigure as required.
