@@ -13,7 +13,11 @@ This may lead to inconsistencies in the output, so this should be used with caut
 
 ## Flags
 
-- `--fast`: Skips directory cleaning and OG image generation.
+- `--fast`: Skips directory cleaning and OG image generation, and reuses the last subset of each font rather than cutting new ones.
+
+## Fonts
+
+The faces are cut at build time from the variable originals in `assets/source/fonts/`: each is subset to the characters the built pages set in it and instanced to the weights and optical sizes the stylesheet uses, then served as WOFF2. The results are cached in `.cache/fonts/`, so a build that doesn't change the text reuses them. Building HarfBuzz for this needs a C++ compiler. See CONTRIBUTING.md for details.
 
 ## Music library
 
