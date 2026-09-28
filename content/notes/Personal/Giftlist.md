@@ -20,7 +20,6 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
   - [Anime Architecture: Imagined Worlds and Endless Megacities](https://www.goodreads.com/book/show/51283907-anime-architecture)
   - [Arcade Game Typography: The Art of Pixel Type](https://www.goodreads.com/book/show/43785837-arcade-game-typography)
   - [Back to the Future: The Ultimate Visual History](https://www.goodreads.com/book/show/24892872-back-to-the-future)
-  - [City of Darkness: Revisited](https://www.goodreads.com/book/show/21461161-city-of-darkness)
   - [Design School: Type: A Practical Guide for Students and Designers](https://www.goodreads.com/book/show/32498661-design-school)
   - [Futuria: Art of the Sci-Fi Age](https://www.goodreads.com/book/show/63069437-futuria)
   - [Hyperborea: Stories from the Arctic](https://www.goodreads.com/book/show/123028449-hyperborea)
@@ -45,7 +44,6 @@ The number one thing I want is _time_, but that, unfortunately, cannot be bought
 
 One of:
 
-- [Bigscreen Beyond 2e VRChat Edition](https://store.bigscreenvr.com/products/bigscreen-beyond-2)
 - [Shiftall MeganeX 8K Superlight](https://en.shiftall.net/products/meganex8k)
 - [Pimax Dream Air](https://pimax.com/pages/dream-air)
 
@@ -61,13 +59,11 @@ One of:
 ## General
 
 - a record player of some quality; need to do more research on this
-- a decent gaming laptop with all-AMD so it has a higher chance of working with Linux
 - Switch 2
 - a Bambu Lab X1 Carbon 3D printer, or equivalent in quality, polish, and just-work-ism
 
 ## PC
 
-- open-back headphones. My ATH-M50s have served me well, but I'm ready to move on.
 - good speakers, preferably with a subwoofer
 
 ## Server
