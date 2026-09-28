@@ -170,7 +170,12 @@
 
 /* Tables. */
 
+/* A table wider than the column scrolls within itself rather than widening the
+   page. As a block it sizes to its content, as a table would. */
 .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   font-family: var(--f-ui);
   font-size: var(--em-down);
   font-variant-numeric: tabular-nums;
