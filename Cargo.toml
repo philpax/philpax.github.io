@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
+members = [".", "bake_assets", "music-export", "paxcss", "paxsite-content", "paxsite-cli", "paxsite-music"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -55,7 +55,10 @@ paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
 # paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
 blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git" }
-# blackbird-json-export-types = { path = "../blackbird/blackbird-json-export-types" }
+blackbird-shared = { git = "https://github.com/philpax/blackbird.git" }
+blackbird-state = { git = "https://github.com/philpax/blackbird.git" }
+# blackbird-shared = { path = "../blackbird/blackbird-shared" }
+# blackbird-state = { path = "../blackbird/blackbird-state" }
 
 [dependencies]
 paxhtml = { workspace = true }
