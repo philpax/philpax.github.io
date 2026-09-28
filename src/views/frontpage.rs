@@ -37,7 +37,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         .take(5)
         .collect();
     let notes = recent_notes(content, 5);
-    let listening = most_played(content, 5);
+    let listening = most_listened(content, 5);
 
     layout(
         context,
@@ -83,7 +83,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 }, dated_list(context, &notes))}
 
                 {(!listening.albums.is_empty()).then(|| section(bump, Section {
-                    title: copy::home::LISTENING,
+                    title: listening.title,
                     href: listening.href.clone(),
                     feed: None,
                     section: None,
@@ -130,6 +130,7 @@ fn recent_notes(content: &Content, count: usize) -> Vec<&Document> {
 }
 
 struct Listening {
+    title: &'static str,
     /// The page the whole library is on.
     href: Option<String>,
     albums: Vec<ListenedAlbum>,
@@ -141,21 +142,31 @@ struct ListenedAlbum {
     plays: u64,
 }
 
-/// What the listening block shows: the albums played most over the whole
-/// library, by the sum of their tracks' play counts, and the note that holds
-/// the library. All of the block's data access is here.
-fn most_played(content: &Content, count: usize) -> Listening {
-    let mut albums: Vec<ListenedAlbum> = content
-        .music_library
-        .iter()
-        .map(|group| ListenedAlbum {
-            artist: group.artist.clone(),
-            album: group.album.clone(),
-            plays: group.tracks.iter().filter_map(|t| t.play_count).sum(),
+/// What the listening block shows: the albums listened to most in the month
+/// before the library was exported, or over the whole library if the export
+/// has no recent plays, and the note that holds the library. All of the
+/// block's data access is here.
+fn most_listened(content: &Content, count: usize) -> Listening {
+    let library = &content.music_library;
+    let recent = library.has_recent_plays();
+    let albums = library
+        .most_listened(count)
+        .into_iter()
+        .map(|album| ListenedAlbum {
+            artist: album.artist.clone(),
+            album: album.album.clone(),
+            plays: if recent {
+                album.recent_plays
+            } else {
+                album.play_count()
+            },
         })
         .collect();
-    albums.sort_by_key(|a| std::cmp::Reverse(a.plays));
-    albums.truncate(count);
+    let title = if recent {
+        copy::home::LISTENING_RECENT
+    } else {
+        copy::home::LISTENING_LIFETIME
+    };
 
     let href = content
         .notes
@@ -171,7 +182,11 @@ fn most_played(content: &Content, count: usize) -> Listening {
         })
         .map(|d| d.route_path().url_path());
 
-    Listening { href, albums }
+    Listening {
+        title,
+        href,
+        albums,
+    }
 }
 
 struct Section<'s> {

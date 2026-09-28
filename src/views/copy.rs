@@ -25,7 +25,10 @@ pub mod home {
     /// A section's feed, beside the link to the rest of it.
     pub const FEED: &str = "RSS";
     pub const ELSEWHERE: &str = "Elsewhere";
-    pub const LISTENING: &str = "Most played";
+    /// The listening block's heading: plays over the last month when the
+    /// export has them, lifetime plays when it does not.
+    pub const LISTENING_RECENT: &str = "Most listened this month";
+    pub const LISTENING_LIFETIME: &str = "Most played";
 
     pub fn plays(n: u64) -> String {
         format!("{n} plays")

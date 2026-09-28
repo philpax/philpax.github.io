@@ -14,3 +14,7 @@ This may lead to inconsistencies in the output, so this should be used with caut
 ## Flags
 
 - `--fast`: Skips directory cleaning and OG image generation.
+
+## Music library
+
+`assets/baked/music.json` is exported from Navidrome (0.64 or later) with `cargo run -p music-export`, using the server and credentials in Blackbird's config (`~/.config/blackbird/config.toml`). See CONTRIBUTING.md for details.
