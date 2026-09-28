@@ -99,13 +99,17 @@
   color: var(--ink-faint);
   cursor: pointer;
 }
+/* Drawn rather than typed, like the rail toggle's arrow: the UI face has no
+   triangle glyphs, and a fallback face would draw them in its own style. */
 .rail-chevron::before {
-  content: '\25B8';
-  content: '\25B8' / '';
+  content: '';
+  width: 0.45em;
+  border-block: 0.28em solid transparent;
+  border-left: 0.45em solid currentColor;
+  transition: transform var(--motion) ease;
 }
 .rail-branch:checked + .rail-row-wrap > .rail-chevron::before {
-  content: '\25BE';
-  content: '\25BE' / '';
+  transform: rotate(90deg);
 }
 .rail-chevron:hover {
   color: var(--ink);
@@ -169,6 +173,7 @@ label.rail-row {
 .rail-age {
   font-size: var(--text-xs);
   text-align: right;
+  white-space: nowrap;
   color: var(--ink-faint);
   cursor: help;
 }

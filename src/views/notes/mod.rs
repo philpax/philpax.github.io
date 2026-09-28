@@ -235,8 +235,7 @@ fn row_inner<'a>(bump: &'a Bump, branch: &Branch) -> Element<'a> {
     let age = match branch.at {
         Some(at) => html! { in bump;
             <time datetime={at.to_rfc3339()} title={display_timestamp(at)} class="rail-age">
-                // A hyphen that does not break: the column is narrow.
-                {at.format("%Y\u{2011}%m").to_string()}
+                {at.format("%Y-%m").to_string()}
             </time>
         },
         None => html! { in bump; <span></span> },
