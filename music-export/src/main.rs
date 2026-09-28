@@ -37,6 +37,12 @@ async fn main() -> anyhow::Result<()> {
     })
     .await
     .map_err(|e| anyhow::anyhow!("Failed to fetch library: {e:?}"))?;
+    if !fetched.orphaned_track_ids.is_empty() {
+        eprintln!(
+            "Skipping {} tracks without a known album",
+            fetched.orphaned_track_ids.len()
+        );
+    }
 
     let since = exported_at - TimeDelta::days(RECENT_PLAYS_DAYS);
     let scrobbles = navidrome::scrobbles_since(&server, since).await?;

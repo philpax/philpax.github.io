@@ -389,7 +389,7 @@ checksum = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
 [[package]]
 name = "blackbird-shared"
 version = "0.1.0"
-source = "git+https://github.com/philpax/blackbird.git#44e1c99cdda1b6a400f45829036e3007abe0c306"
+source = "git+https://github.com/philpax/blackbird.git#2317b8b6636fae3ef4e01bf934bbfbc548ccacff"
 dependencies = [
  "etcetera",
  "serde",
@@ -400,10 +400,12 @@ dependencies = [
 [[package]]
 name = "blackbird-state"
 version = "0.1.0"
-source = "git+https://github.com/philpax/blackbird.git#44e1c99cdda1b6a400f45829036e3007abe0c306"
+source = "git+https://github.com/philpax/blackbird.git#2317b8b6636fae3ef4e01bf934bbfbc548ccacff"
 dependencies = [
  "blackbird-subsonic",
+ "futures",
  "icu_collator",
+ "rustc-hash",
  "serde",
  "smol_str",
 ]
@@ -411,7 +413,7 @@ dependencies = [
 [[package]]
 name = "blackbird-subsonic"
 version = "0.1.0"
-source = "git+https://github.com/philpax/blackbird.git#44e1c99cdda1b6a400f45829036e3007abe0c306"
+source = "git+https://github.com/philpax/blackbird.git#2317b8b6636fae3ef4e01bf934bbfbc548ccacff"
 dependencies = [
  "data-encoding",
  "md5",
@@ -1364,6 +1366,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "futures"
+version = "0.3.32"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b147ee9d1f6d097cef9ce628cd2ee62288d963e16fb287bd9286455b241382d"
+dependencies = [
+ "futures-channel",
+ "futures-core",
+ "futures-executor",
+ "futures-io",
+ "futures-sink",
+ "futures-task",
+ "futures-util",
+]
+
+[[package]]
 name = "futures-buffered"
 version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1391,6 +1408,17 @@ name = "futures-core"
 version = "0.3.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e3450815272ef58cec6d564423f6e755e25379b217b0bc688e295ba24df6b1d"
+
+[[package]]
+name = "futures-executor"
+version = "0.3.32"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baf29c38818342a3b26b5b923639e7b1f4a61fc5e76102d4b1981c6dc7a7579d"
+dependencies = [
+ "futures-core",
+ "futures-task",
+ "futures-util",
+]
 
 [[package]]
 name = "futures-io"
@@ -1440,6 +1468,7 @@ version = "0.3.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "389ca41296e6190b48053de0321d02a77f32f8a5d2461dd38762c0593805c6d6"
 dependencies = [
+ "futures-channel",
  "futures-core",
  "futures-io",
  "futures-macro",
@@ -4973,7 +5002,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.61.2",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
