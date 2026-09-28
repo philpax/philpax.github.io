@@ -29,7 +29,8 @@
   --link-rest: var(--ink);
 }
 
-/* Stands in for the heading on a narrow page. */
+/* Stands in for the heading on a narrow page: the label of the checkbox
+   before it, which opens the tree without a script. */
 .rail-toggle {
   display: flex;
   align-items: center;
@@ -40,6 +41,7 @@
   text-align: left;
   color: var(--ink);
   background: var(--tint);
+  cursor: pointer;
 }
 .rail-toggle:hover {
   color: var(--accent);
@@ -50,7 +52,7 @@
   border-left: 0.4rem solid var(--accent);
   transition: transform var(--motion) ease;
 }
-.rail-toggle[aria-expanded='true']::before {
+.rail-toggle-box:checked + .rail-toggle::before {
   transform: rotate(90deg);
 }
 
@@ -81,20 +83,43 @@
 .notes-level .notes-level {
   margin-left: var(--s-2-5);
 }
-/* The chevron opens the branch; the row opens the page. */
+/* The chevron opens the branch; the row opens the page. The chevron is the
+   label of the checkbox before the row, which holds whether the branch is
+   open, so the tree works without a script. */
 .rail-row-wrap {
   display: flex;
 }
-.rail-row-wrap > button {
+.rail-chevron {
+  display: flex;
   flex-shrink: 0;
+  align-items: center;
   padding-inline: var(--s-1);
   border-radius: var(--radius-md);
   font-size: var(--text-xs);
   color: var(--ink-faint);
+  cursor: pointer;
 }
-.rail-row-wrap > button:hover {
+.rail-chevron::before {
+  content: '\25B8';
+  content: '\25B8' / '';
+}
+.rail-branch:checked + .rail-row-wrap > .rail-chevron::before {
+  content: '\25BE';
+  content: '\25BE' / '';
+}
+.rail-chevron:hover {
   color: var(--ink);
   background: var(--sunken);
+}
+/* The checkbox is out of sight, so its focus shows on the control drawn for
+   it. */
+.rail-branch:focus-visible + .rail-row-wrap > .rail-chevron,
+.rail-toggle-box:focus-visible + .rail-toggle {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.rail-branch:not(:checked) ~ .notes-level {
+  display: none;
 }
 .rail-row {
   display: grid;
@@ -107,7 +132,7 @@
   border-radius: var(--radius-md);
   text-align: left;
 }
-.rail-row-wrap > button + .rail-row {
+.rail-chevron + .rail-row {
   padding-left: var(--s-0-5);
 }
 /* The branch holding the current row stays lit. */
@@ -122,9 +147,11 @@
 .rail-row:hover {
   background: var(--sunken);
 }
-/* A folder with no page is a button, and reads the same colour. */
-button.rail-row {
+/* A folder with no page is the label of its checkbox, and reads the same
+   colour. */
+label.rail-row {
   color: var(--link-rest);
+  cursor: pointer;
 }
 .notes-level .notes-level .rail-row {
   font-size: var(--text-xs);
@@ -151,7 +178,7 @@ button.rail-row {
 @container site (width < 64rem) {
   .rail-heading,
   .notes-rail-toc,
-  .rail-toggle[aria-expanded='false'] + .rail-tree {
+  .rail-toggle-box:not(:checked) ~ .rail-tree {
     display: none;
   }
 }
@@ -169,6 +196,7 @@ button.rail-row {
     border-right: var(--rule) solid var(--line);
     overflow-y: auto;
   }
+  .rail-toggle-box,
   .rail-toggle {
     display: none;
   }

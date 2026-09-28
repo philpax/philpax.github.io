@@ -89,6 +89,11 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = document.route_path().url_path();
     let is_note = document.document_type == DocumentType::Note;
+    // The notes' own page is titled after the section.
+    let title = match is_note && document.id.is_empty() {
+        true => copy::notes::TITLE,
+        false => &document.metadata.title,
+    };
     let short = document
         .metadata
         .short
@@ -103,7 +108,7 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
         <header class="document-header">
             {(is_note && !document.id.is_empty()).then(|| breadcrumb(context, document))}
             <hgroup>
-                <h1>{inline_markdown(context, &document.metadata.title, &url)}</h1>
+                <h1>{inline_markdown(context, title, &url)}</h1>
                 {short}
             </hgroup>
             {meta(bump, document)}

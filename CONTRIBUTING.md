@@ -108,10 +108,11 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
 | `paxsite-content/src/bluesky.rs` | Bluesky API client, post caching, URL helpers |
 | `src/content.rs` | Wraps `paxsite-content` documents with parsed markdown ASTs, Bluesky post loading |
 | `src/markdown.rs` | Markdown AST to HTML conversion, custom component dispatch |
-| `src/views/posts/mod.rs` | Shared post rendering (header, body, tags) |
+| `src/views/document.rs` | The one document renderer for posts, updates and notes (heading, meta row, contents, body) |
+| `src/views/listings.rs` | Page heads, index rows, summaries and dated rows, shared by the indexes, tag pages and front page |
 | `src/views/blog/mod.rs` | Blog index and individual post pages |
 | `src/views/updates/mod.rs` | Updates index and individual update pages |
-| `src/views/notes/mod.rs` | Notes hierarchy and individual note pages |
+| `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script) |
 | `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
 | `src/og_image.rs` | OpenGraph image generation (1200x630 PNG) |
 | `src/main.rs` | Build orchestration, output generation |
@@ -122,10 +123,7 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
   - `bump` in code examples refers to a `bumpalo::Bump` arena allocator that `paxhtml` uses for efficient memory management
   - Views receive a `ViewContext` which contains a reference to the bump allocator
 - `layout()` wraps pages with common structure and social meta tags
-- `posts::post()` renders both blog and update posts with different body modes:
-  - `PostBody::Full` - complete content with table of contents
-  - `PostBody::Description` - intro paragraph + "Read more" link (used on index pages)
-  - `PostBody::Short` - just the short description text
+- `document::page()` renders a post or an update in the wide document frame; `document::article()` is the document itself, which the notes put beside their rail
 - `Option<paxhtml::Element>` resolves to `Element::Empty` when `None`, so use monadic operators instead of if-else:
   ```rust
   // Prefer this:

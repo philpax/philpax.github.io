@@ -63,6 +63,14 @@ pub mod credits {
     pub const LEDE: &str = "who’s to blame for this, then?";
 }
 
+pub mod notes {
+    pub const TITLE: &str = "Notes";
+    /// The filter over the notes rail.
+    pub const FILTER_PLACEHOLDER: &str = "title or section";
+    /// The filter's accessible name, where the placeholder is not enough.
+    pub const FILTER_DESCRIPTION: &str = "Filter notes by title or section";
+}
+
 /// Furniture around a document.
 pub mod doc {
     pub const CONTENTS: &str = "Contents";
@@ -82,6 +90,7 @@ pub mod empty {
 pub mod labels {
     /// The first link on every page, for keyboard and screen reader users.
     pub const SKIP: &str = "Skip to content";
+    pub const INDEX: &str = "Index";
     pub const TAGGED: &str = "Tagged";
     pub const SUBJECTS: &str = "Subjects";
     pub const INTRODUCTION: &str = "Introduction";

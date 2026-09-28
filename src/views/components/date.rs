@@ -55,7 +55,6 @@ pub fn month_day(date: NaiveDate) -> String {
     format!("{} {:02}", en_au_short_month(date.month()), date.day())
 }
 
-#[allow(dead_code)] // The notes rail uses it.
 /// A timestamp to the minute, for a tooltip: `28 Sept 2026, 09:39 pm` (UTC).
 pub fn display_timestamp(datetime: chrono::DateTime<chrono::Utc>) -> String {
     let (pm, hour) = datetime.hour12();
