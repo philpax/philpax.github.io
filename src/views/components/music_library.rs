@@ -1,5 +1,5 @@
-use blackbird_json_export_types::{OutputGroup, OutputTrack};
 use paxhtml::{bumpalo::Bump, html};
+use paxsite_music::{Album, Track};
 
 use crate::{util, views::ViewContext};
 
@@ -239,7 +239,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
         track_duration = colours::track_duration(),
     );
 
-    let music_library = &context.content.music_library;
+    let music_library = &context.content.music_library.albums;
     let album_count = music_library.len();
     let track_count = music_library.iter().map(|g| g.tracks.len()).sum::<usize>();
     let liked_album_count = music_library.iter().filter(|g| g.starred).count();
@@ -393,7 +393,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     }
 }
 
-fn group<'a>(bump: &'a Bump, group: &OutputGroup) -> paxhtml::Element<'a> {
+fn group<'a>(bump: &'a Bump, group: &Album) -> paxhtml::Element<'a> {
     html! { in bump;
         <section>
             <heading>
@@ -416,7 +416,7 @@ fn group<'a>(bump: &'a Bump, group: &OutputGroup) -> paxhtml::Element<'a> {
     }
 }
 
-fn track<'a>(bump: &'a Bump, group: &OutputGroup, track: &OutputTrack) -> paxhtml::Element<'a> {
+fn track<'a>(bump: &'a Bump, group: &Album, track: &Track) -> paxhtml::Element<'a> {
     let track_number = match (track.disc_number, track.track) {
         (Some(disc_number), Some(track_number)) => format!("{disc_number}.{track_number}"),
         (Some(disc_number), None) => format!("{disc_number}.?"),

@@ -387,14 +387,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
 
 [[package]]
-name = "blackbird-json-export-types"
-version = "0.1.0"
-source = "git+https://github.com/philpax/blackbird.git#44e1c99cdda1b6a400f45829036e3007abe0c306"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "blackbird-shared"
 version = "0.1.0"
 source = "git+https://github.com/philpax/blackbird.git#44e1c99cdda1b6a400f45829036e3007abe0c306"
@@ -3008,7 +3000,6 @@ dependencies = [
  "anyhow",
  "arborium",
  "base64",
- "blackbird-json-export-types",
  "chrono",
  "fontdb",
  "image",
@@ -3017,6 +3008,7 @@ dependencies = [
  "paxhtml",
  "paxhtml_tailwind",
  "paxsite-content",
+ "paxsite-music",
  "rayon",
  "resvg",
  "rss",

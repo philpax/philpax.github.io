@@ -135,7 +135,7 @@ pub struct Content {
     pub tags: HashMap<Tag, Vec<DocumentId>>,
     pub about: Document,
     pub credits: Document,
-    pub music_library: blackbird_json_export_types::Output,
+    pub music_library: paxsite_music::MusicLibrary,
     pub bluesky_posts: HashMap<String, paxsite_content::bluesky::BlueskyPostData>,
     /// Map from a document's route URL (e.g. `/blog/foo/`) to the set of
     /// heading-slug anchors valid on that page. Used to validate `[a](#x)` and
@@ -157,7 +157,7 @@ impl Content {
             tags: HashMap::new(),
             about: Document::empty(),
             credits: Document::empty(),
-            music_library: blackbird_json_export_types::Output::new(),
+            music_library: paxsite_music::MusicLibrary::empty(),
             bluesky_posts: HashMap::new(),
             anchors: HashMap::new(),
             link_errors: Vec::new(),
@@ -211,7 +211,7 @@ impl Content {
         let music_library = if fast {
             Default::default()
         } else {
-            serde_json::from_str::<blackbird_json_export_types::Output>(&std::fs::read_to_string(
+            serde_json::from_str::<paxsite_music::MusicLibrary>(&std::fs::read_to_string(
                 MUSIC_LIBRARY_PATH,
             )?)?
         };

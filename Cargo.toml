@@ -54,7 +54,6 @@ paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
 paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
 # paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
-blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git" }
 blackbird-shared = { git = "https://github.com/philpax/blackbird.git" }
 blackbird-state = { git = "https://github.com/philpax/blackbird.git" }
 # blackbird-shared = { path = "../blackbird/blackbird-shared" }
@@ -63,7 +62,7 @@ blackbird-state = { git = "https://github.com/philpax/blackbird.git" }
 [dependencies]
 paxhtml = { workspace = true }
 paxhtml_tailwind = { workspace = true }
-blackbird-json-export-types = { workspace = true }
+paxsite-music = { path = "paxsite-music" }
 
 # serve
 sha1 = { version = "0.10.6", optional = true }
