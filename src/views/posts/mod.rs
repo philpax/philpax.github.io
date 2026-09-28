@@ -4,10 +4,7 @@ use super::*;
 use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
-    views::components::{
-        IsoDate, IsoDateProps, Link, LinkProps, Segment, SegmentProps, SegmentTag, TagList,
-        TagListProps, collect_pr_entries,
-    },
+    views::components::{TagList, TagListProps, collect_pr_entries},
 };
 
 pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
@@ -21,14 +18,12 @@ pub fn date<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
         .datetime
         .unwrap_or_else(|| panic!("No datetime for {document}"))
         .date_naive();
-    paxhtml::html! { in bump; <IsoDate date={date} /> }
+    paxhtml::html! { in bump; <time>{date.to_string()}</time> }
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum PostBody {
     Full,
-    Description,
-    Short,
 }
 
 pub fn post<'a>(
@@ -44,55 +39,10 @@ pub fn post<'a>(
     // Metadata + clickable title that heads every post.
     let title_and_meta = html! { in bump;
         <>
-            {post_title_link(bump, url.clone(), heading_class, break_on_colon(bump, &document.metadata.title))}
+            {post_title_link(bump, url.clone(), heading_class, html! { in bump; {document.metadata.title.clone()} })}
             {post_meta(bump, document, post_body)}
         </>
     };
-
-    // Sidenotes float on wide layouts but inline (toggle) on small ones; the
-    // summary modes always inline them.
-    let sidenote_hiding = "[&_.sidenote]:!hidden [&_.footnote>label]:!inline-block [&_.footnote>a]:!hidden [&_.peer:checked~.footnote-inline]:!block";
-
-    // Short: a compact list item (used inside the home "posts" segment); not a
-    // segment of its own, so it can sit inside one.
-    if post_body == PostBody::Short {
-        let body = MarkdownConverter::new(context, &url)
-            .with_source_path(document.source_path.clone())
-            .with_document_base_url(url.clone())
-            .convert_sectioned(
-                document
-                    .metadata
-                    .short_markdown()
-                    .as_ref()
-                    .unwrap_or(&document.description),
-            );
-        return html! { in bump;
-            <article class="post">
-                <header class="pb-0 mb-0">{title_and_meta}</header>
-                <div class={format!("post-body {sidenote_hiding}")}>
-                    {body}
-                </div>
-            </article>
-        };
-    }
-
-    let header = html! { in bump; <div class="flex flex-col">{title_and_meta}</div> };
-
-    // Description: intro prose + a "read more" link, in its own segment.
-    if post_body == PostBody::Description {
-        let body = MarkdownConverter::new(context, &url)
-            .with_source_path(document.source_path.clone())
-            .with_document_base_url(url.clone())
-            .convert_sectioned(&document.description);
-        return html! { in bump;
-            <Segment tag={SegmentTag::Article} header={header} body_class={format!("post-body {sidenote_hiding}")}>
-                {body}
-                <p>
-                    <Link underline target={url.clone()}>"Read more"</Link>
-                </p>
-            </Segment>
-        };
-    }
 
     // Full post view: the post-body stays a block so the floated TOC sidebar and
     // per-paragraph sidenotes work; spacing comes from the
@@ -125,20 +75,14 @@ pub fn post<'a>(
         .map(|content| collect_pr_entries(bump, content))
         .unwrap_or_default();
     let mut converter = MarkdownConverter::new(context, &url)
-        .with_sidenotes()
         .with_source_path(document.source_path.clone())
         .with_document_base_url(url.clone())
         .with_pr_entries(pr_entries);
-    body_elements.push(converter.convert_sectioned(&document.description));
     body_elements.extend(toc_inline);
-    if let Some(content) = document.rest_of_content.as_ref() {
-        body_elements.push(converter.convert_sectioned(content));
-    }
+    body_elements.push(converter.convert_blocks(&crate::markdown::document_root(document)));
 
     html! { in bump;
-        <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()}>
-            #{body_elements.into_iter()}
-        </Segment>
+        <article>{title_and_meta}#{body_elements.into_iter()}</article>
     }
 }
 
@@ -168,7 +112,7 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
         <div class={format!("post-meta flex flex-row items-center gap-x-2 text-sm text-dim overflow-x-auto {CODE_FONT_STYLE}")}>
             <div class="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <span class="text-fg">{date(bump, document)}</span>
-                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><IsoDate date={m} /></span></> })}
+                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><time>{m.to_string()}</time></span></> })}
                 <span ariaHidden="true">"·"</span>
                 <span>{type_str}</span>
                 <span ariaHidden="true">"·"</span>
@@ -185,8 +129,7 @@ fn post_meta<'a>(bump: &'a Bump, document: &Document, post_body: PostBody) -> pa
 /// Gets the class for the heading of a post body.
 pub fn post_body_to_heading_class(post_body: PostBody) -> &'static str {
     match post_body {
-        PostBody::Full | PostBody::Description => "text-2xl font-bold",
-        PostBody::Short => "text-xl font-bold",
+        PostBody::Full => "text-2xl font-bold",
     }
 }
 
@@ -222,9 +165,9 @@ pub fn toc_elements<'a>(
             <aside class="toc-sidebar hidden 2xl:block 2xl:float-left 2xl:clear-left 2xl:w-[calc((100vw-var(--body-content-width))/2-4rem)] 2xl:-ml-[calc((100vw-var(--body-content-width))/2-3rem)] 2xl:pr-2 2xl:sticky 2xl:top-4 2xl:flex 2xl:flex-col 2xl:items-end" id="toc-sticky">
                 <div class="w-max max-w-full">
                     <h3 class={h3_classname}>
-                        <Link underline target={"#toc-sticky".to_string()}>
+                        <a href={"#toc-sticky".to_string()}>
                             {toc_header}
-                        </Link>
+                        </a>
                     </h3>
                     <div class={link_classes}>
                         {hierarchy_list}
@@ -238,9 +181,9 @@ pub fn toc_elements<'a>(
         html! { in bump;
             <aside class="toc 2xl:hidden py-2 border-y border-wire" id="toc-inline">
                 <h3 class={h3_classname}>
-                    <Link underline target={"#toc-inline".to_string()}>
+                    <a href={"#toc-inline".to_string()}>
                         {toc_header}
-                    </Link>
+                    </a>
                 </h3>
                 <div class={link_classes}>
                     {hierarchy_list}
@@ -289,9 +232,9 @@ pub fn document_to_html_list<'a>(
 
                     html! { in bump;
                         <li>
-                            <Link underline target={"#"}>
+                            <a href={"#"}>
                                 {introduction_text}
-                            </Link>
+                            </a>
                         </li>
                     }
                 } else {
@@ -312,9 +255,9 @@ pub fn document_to_html_list<'a>(
     ) -> paxhtml::Element<'a> {
         html! { in bump;
             <li>
-                <Link underline target={format!("#{}", util::slugify(heading_text))}>
+                <a href={format!("#{}", util::slugify(heading_text))}>
                     {heading.clone()}
-                </Link>
+                </a>
                 {build_list_recursively(bump, children, false)}
             </li>
         }

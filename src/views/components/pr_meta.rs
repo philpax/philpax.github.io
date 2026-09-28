@@ -1,8 +1,6 @@
 use paxhtml::{bumpalo::Bump, html};
 
-use super::{
-    Link, LinkProps, MonthDayDate, MonthDayDateProps, MonthDayDateRange, MonthDayDateRangeProps,
-};
+use super::{day_month, parse_date};
 
 pub struct PrMetaProps {
     pub date: Option<String>,
@@ -14,61 +12,43 @@ pub struct PrMetaProps {
     pub tl_id: Option<String>,
 }
 
+/// The facts that follow a pull request link in the prose: when, and how
+/// much. Where the request has a row in the timeline, they link to it.
 pub fn pr_meta<'bump>(bump: &'bump Bump, props: PrMetaProps) -> paxhtml::Element<'bump> {
-    let date_element = if let (Some(start), Some(end)) = (&props.start, &props.end) {
-        MonthDayDateRange(
-            bump,
-            MonthDayDateRangeProps {
-                start: start.clone(),
-                end: end.clone(),
-                noyear: true,
-                short: true,
-            },
-        )
-    } else if let Some(date) = &props.date {
-        MonthDayDate(
-            bump,
-            MonthDayDateProps {
-                date: date.clone(),
-                noyear: true,
-                short: true,
-            },
-        )
-    } else {
-        panic!("PrMeta requires either 'date' or 'start'+'end' attributes");
+    let date = |date: &str| {
+        html! { in bump; <time datetime={date}>{day_month(parse_date(date))}</time> }
     };
-
-    let closed_element = props.closed.then(|| {
-        html! { in bump;
-            <span>", closed"</span>
-        }
-    });
+    let when = match (&props.start, &props.end, &props.date) {
+        (Some(start), Some(end), _) => html! { in bump;
+            <>
+                {date(start)}
+                <span ariaHidden="true">"\u{2013}"</span>
+                {date(end)}
+            </>
+        },
+        (_, _, Some(on)) => date(on),
+        _ => panic!("PrMeta requires either 'date' or 'start'+'end' attributes"),
+    };
 
     let inner = html! { in bump;
         <>
-            {date_element}
+            {when}
             ", "
-            <span class="text-emerald-700 dark:text-emerald-400">{format!("+{}", props.add)}</span>
+            <span class="prmeta-add">{format!("+{}", props.add)}</span>
             " "
-            <span class="text-rose-700 dark:text-rose-400">{format!("-{}", props.sub)}</span>
-            {closed_element}
+            <span class="prmeta-sub">{format!("\u{2212}{}", props.sub)}</span>
+            {props.closed.then(|| html! { in bump; ", closed" })}
         </>
     };
 
     let body = match props.tl_id {
         Some(id) => html! { in bump;
-            <Link underline title={"Jump to timeline entry".to_string()} target={format!("#{id}")}>
-                {inner}
-            </Link>
+            <a href={format!("#{id}")} title="Jump to timeline entry">{inner}</a>
         },
         None => inner,
     };
 
     html! { in bump;
-        <span class="text-stone-500 dark:text-stone-400">
-            "("
-            {body}
-            ")"
-        </span>
+        <span class="prmeta">"("{body}")"</span>
     }
 }

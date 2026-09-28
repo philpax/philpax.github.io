@@ -43,11 +43,6 @@ impl SyntaxHighlighter {
         }
     }
 
-    /// Get the display name for a language
-    pub fn language_name<'a>(&self, language: Option<&'a str>) -> &'a str {
-        Self::normalize_language(language)
-    }
-
     /// Check if a language token is valid/recognized
     pub fn is_valid_language(&self, language: &str) -> bool {
         let normalized = Self::highlight_language(Self::normalize_language(Some(language)));

@@ -1,26 +1,20 @@
 use paxhtml::{bumpalo::Bump, html};
 
-/// Renders a two-column city poster layout: image on the left, text on the right.
-/// On mobile, stacks vertically.
+/// A picture beside its caption: two columns where there is room for them,
+/// stacked where there is not. The picture is a preview, linking to the
+/// original; the caption is the Markdown between the tags, as prose.
 pub fn city_poster<'bump>(
     bump: &'bump Bump,
     image_url: &str,
     small_preview_url: &str,
     body: paxhtml::Element<'bump>,
 ) -> paxhtml::Element<'bump> {
-    let body_class = "flex-1 min-w-0 post-body";
     html! { in bump;
-        <div class="city-poster flex flex-col md:flex-row gap-4 items-start my-4">
-            <a href={image_url} class="shrink-0 self-center md:self-start">
-                <img
-                    src={small_preview_url}
-                    class="w-48 border-2 border-fg block"
-                    alt="City poster"
-                />
+        <figure class="city-poster">
+            <a href={image_url}>
+                <img src={small_preview_url} alt="" />
             </a>
-            <div class={body_class}>
-                {body}
-            </div>
-        </div>
+            <figcaption>{body}</figcaption>
+        </figure>
     }
 }

@@ -69,7 +69,7 @@ fn import_name(line: &str) -> Option<&str> {
     Some(quoted.strip_prefix("./").unwrap_or(quoted))
 }
 
-/// The highlighter's token colours, scoped to code in prose. The light theme is
+/// The highlighter's token colours, scoped to code in the site. The light theme is
 /// the default and the dark one follows the site's theme mechanism: the system
 /// preference unless `<html>` pins `light`, or a `dark` class pins it.
 ///
@@ -77,7 +77,7 @@ fn import_name(line: &str) -> Option<&str> {
 /// a foreground and an `--accent` of its own, which would repaint the site's
 /// code block and its accent.
 fn syntax_css(context: ViewContextBase<'_>) -> String {
-    const SCOPE: &str = ".prose code";
+    const SCOPE: &str = ".site code";
     let light = tokens_only(&context.syntax.light_theme_css(SCOPE));
     let dark_system = tokens_only(
         &context

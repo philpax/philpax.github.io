@@ -28,9 +28,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     Some(html! { in bump; {copy::credits::LEDE} }),
                 )}
                 <article class="plain-page-body">
-                    <div class="prose">
-                        {MarkdownConverter::new(context, &url).with_sidenotes().convert_sectioned(&content.credits.description)}
-                    </div>
+                    {MarkdownConverter::new(context, &url).convert_blocks(&crate::markdown::document_root(&content.credits))}
                 </article>
             </div>
         },

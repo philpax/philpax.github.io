@@ -202,7 +202,7 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 
 **Void (self-closing) components:**
 - `<MusicLibrary />` — Interactive music library display
-- `<NotesIndex />` — Hierarchical notes navigator (only in notes)
+- `<NotesIndex />` — Renders nothing: the notes rail is the index (kept in section notes for their structure)
 - `<PrMeta date="2025-11-06" add=128 sub=1 />` — Inline pill row with date and diff stats (always noyear)
 - `<PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />` — Date range variant with optional `closed` badge
 - `<PrTimeline />` — Renders a Gantt-style timeline of every PR mentioned in the post (entries collected from the document's PR headings/`<PrMeta>`s)
@@ -213,7 +213,7 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 **Paired (block) components:**
 - `<CityPoster image="path">...content...</CityPoster>` — Two-column layout with image and text
 
-Component implementations live in `src/views/components/`.
+Component implementations live in `src/views/components/`. `MarkdownConverter::convert_blocks` renders a document as the redesign's blocks: each run of authored content is a `.prose` div, and the block components (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit beside those rather than inside them. Footnotes are rendered in place, beside their markers (`.fn`, `.fn-mark`, `.fn-note`).
 
 ### Bluesky Post Embeds
 

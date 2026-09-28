@@ -1,150 +1,41 @@
-use chrono::Timelike;
-use paxhtml::{DefaultIn, builder::Builder, bumpalo::Bump};
+use chrono::{Datelike, NaiveDate, Timelike};
+use paxhtml::{builder::Builder, bumpalo::Bump};
 
-pub struct IsoDateProps {
-    pub date: chrono::NaiveDate,
-}
-impl DefaultIn<'_> for IsoDateProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            date: Default::default(),
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn IsoDate<'bump>(bump: &'bump Bump, props: IsoDateProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    let date = props.date.to_string();
-    b.time([
-        b.attr(("datetime", date.as_str())),
-        b.attr(("title", date.as_str())),
-    ])(b.text(&date))
-}
-
-pub struct IsoDatetimeProps {
-    pub datetime: chrono::DateTime<chrono::Utc>,
-}
-impl DefaultIn<'_> for IsoDatetimeProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            datetime: Default::default(),
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn IsoDatetime<'bump>(bump: &'bump Bump, props: IsoDatetimeProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    b.time([
-        b.attr(("datetime", props.datetime.to_rfc3339())),
-        b.attr(("title", props.datetime.to_rfc2822())),
-    ])(b.text(&props.datetime.with_nanosecond(0).unwrap().to_rfc3339()))
-}
-
-pub struct MonthDayDateProps {
-    pub date: String,
-    pub noyear: bool,
-    pub short: bool,
-}
-impl DefaultIn<'_> for MonthDayDateProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            date: String::new(),
-            noyear: false,
-            short: false,
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn MonthDayDate<'bump>(bump: &'bump Bump, props: MonthDayDateProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    let (year, month, day) = parse_date(&props.date);
-    let year = (!props.noyear).then_some(year);
-    let display = format_date(month, day, year, props.short);
-    b.time([
-        b.attr(("datetime", props.date.as_str())),
-        b.attr(("title", props.date.as_str())),
-    ])(b.text(&display))
-}
-
-pub struct MonthDayDateRangeProps {
-    pub start: String,
-    pub end: String,
-    pub noyear: bool,
-    pub short: bool,
-}
-impl DefaultIn<'_> for MonthDayDateRangeProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            start: String::new(),
-            end: String::new(),
-            noyear: false,
-            short: false,
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn MonthDayDateRange<'bump>(
+/// `<MonthDayDate date="2025-11-06" />` in the Markdown: `6 Nov 2025`, or
+/// `6 Nov` with `noyear`.
+pub fn month_day_date<'bump>(
     bump: &'bump Bump,
-    props: MonthDayDateRangeProps,
+    date: &str,
+    noyear: bool,
 ) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
-    let (sy, sm, sd) = parse_date(&props.start);
-    let (ey, em, ed) = parse_date(&props.end);
-
-    let cross_year = sy != ey;
-    let show_year = !props.noyear;
-
-    if sm == em && !cross_year {
-        // Same month, same year: "Nov 8–12" or "Nov 8–12, 2025"
-        let start_display = format_date(sm, sd, None, props.short);
-        let end_display = if show_year {
-            format!("{}, {}", ed, ey)
-        } else {
-            ed.to_string()
-        };
-        b.fragment([
-            b.time([
-                b.attr(("datetime", props.start.as_str())),
-                b.attr(("title", props.start.as_str())),
-            ])(b.text(&start_display)),
-            b.text("\u{2013}"),
-            b.time([
-                b.attr(("datetime", props.end.as_str())),
-                b.attr(("title", props.end.as_str())),
-            ])(b.text(&end_display)),
-        ])
+    let parsed = parse_date(date);
+    b.time([b.attr(("datetime", date))])(b.text(&if noyear {
+        day_month(parsed)
     } else {
-        // Different months or cross-year
-        let start_year = if cross_year && show_year {
-            Some(sy)
-        } else {
-            None
-        };
-        let end_year = if show_year { Some(ey) } else { None };
-        let start_display = format_date(sm, sd, start_year, props.short);
-        let end_display = format_date(em, ed, end_year, props.short);
-        b.fragment([
-            b.time([
-                b.attr(("datetime", props.start.as_str())),
-                b.attr(("title", props.start.as_str())),
-            ])(b.text(&start_display)),
-            b.text(" \u{2013} "),
-            b.time([
-                b.attr(("datetime", props.end.as_str())),
-                b.attr(("title", props.end.as_str())),
-            ])(b.text(&end_display)),
-        ])
-    }
+        display_date(parsed, false)
+    }))
+}
+
+/// `<MonthDayDateRange start="…" end="…" />` in the Markdown: two dates and a
+/// dash between them.
+pub fn month_day_date_range<'bump>(
+    bump: &'bump Bump,
+    start: &str,
+    end: &str,
+    noyear: bool,
+) -> paxhtml::Element<'bump> {
+    let b = Builder::new(bump);
+    b.fragment([
+        month_day_date(bump, start, noyear),
+        b.span([b.attr(("aria-hidden", "true"))])(b.text(" \u{2013} ")),
+        month_day_date(bump, end, noyear),
+    ])
 }
 
 /// A date as the redesign prints it, in `en-AU`'s short month names:
 /// `02 Feb 2025` with `padded` days, `2 Sept 2025` without.
-pub fn display_date(date: chrono::NaiveDate, padded: bool) -> String {
-    use chrono::Datelike;
+pub fn display_date(date: NaiveDate, padded: bool) -> String {
     let month = en_au_short_month(date.month());
     if padded {
         format!("{:02} {month} {}", date.day(), date.year())
@@ -153,55 +44,33 @@ pub fn display_date(date: chrono::NaiveDate, padded: bool) -> String {
     }
 }
 
-fn parse_date(s: &str) -> (u32, u32, u32) {
-    let parts: Vec<u32> = s
-        .split('-')
-        .map(|p| p.parse().expect("invalid date component"))
-        .collect();
-    (parts[0], parts[1], parts[2])
+/// A day and month with no year: `6 Nov`.
+pub fn day_month(date: NaiveDate) -> String {
+    format!("{} {}", date.day(), en_au_short_month(date.month()))
 }
 
-fn month_name(month: u32, short: bool) -> &'static str {
-    if short {
-        match month {
-            1 => "Jan",
-            2 => "Feb",
-            3 => "Mar",
-            4 => "Apr",
-            5 => "May",
-            6 => "Jun",
-            7 => "Jul",
-            8 => "Aug",
-            9 => "Sep",
-            10 => "Oct",
-            11 => "Nov",
-            12 => "Dec",
-            _ => panic!("invalid month: {month}"),
-        }
-    } else {
-        match month {
-            1 => "January",
-            2 => "February",
-            3 => "March",
-            4 => "April",
-            5 => "May",
-            6 => "June",
-            7 => "July",
-            8 => "August",
-            9 => "September",
-            10 => "October",
-            11 => "November",
-            12 => "December",
-            _ => panic!("invalid month: {month}"),
-        }
-    }
+/// A month and a padded day, month first: `Nov 06`. Narrow enough to sit
+/// either side of a bar.
+pub fn month_day(date: NaiveDate) -> String {
+    format!("{} {:02}", en_au_short_month(date.month()), date.day())
 }
 
-fn format_date(month: u32, day: u32, year: Option<u32>, short: bool) -> String {
-    match year {
-        Some(y) => format!("{} {}, {}", month_name(month, short), day, y),
-        None => format!("{} {}", month_name(month, short), day),
-    }
+#[allow(dead_code)] // The notes rail uses it.
+/// A timestamp to the minute, for a tooltip: `28 Sept 2026, 09:39 pm` (UTC).
+pub fn display_timestamp(datetime: chrono::DateTime<chrono::Utc>) -> String {
+    let (pm, hour) = datetime.hour12();
+    format!(
+        "{}, {hour:02}:{:02} {}",
+        display_date(datetime.date_naive(), false),
+        datetime.minute(),
+        if pm { "pm" } else { "am" }
+    )
+}
+
+/// Parse a `YYYY-MM-DD` date written in the Markdown.
+pub fn parse_date(date: &str) -> NaiveDate {
+    NaiveDate::parse_from_str(date, "%Y-%m-%d")
+        .unwrap_or_else(|e| panic!("invalid date '{date}': {e}"))
 }
 
 /// `Intl.DateTimeFormat('en-AU', { month: 'short' })`, which spells out the
@@ -221,5 +90,23 @@ fn en_au_short_month(month: u32) -> &'static str {
         11 => "Nov",
         12 => "Dec",
         _ => panic!("invalid month: {month}"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn formats() {
+        let date = NaiveDate::from_ymd_opt(2025, 9, 6).unwrap();
+        assert_eq!(display_date(date, true), "06 Sept 2025");
+        assert_eq!(display_date(date, false), "6 Sept 2025");
+        assert_eq!(day_month(date), "6 Sept");
+        assert_eq!(month_day(date), "Sept 06");
+        let at = chrono::DateTime::parse_from_rfc3339("2026-09-28T21:39:00Z")
+            .unwrap()
+            .to_utc();
+        assert_eq!(display_timestamp(at), "28 Sept 2026, 09:39 pm");
     }
 }

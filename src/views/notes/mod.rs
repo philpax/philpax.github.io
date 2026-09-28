@@ -4,9 +4,6 @@ use crate::{
     content::{DocumentFolderNode, DocumentLeafNode, DocumentNode},
     markdown::MarkdownConverter,
     util,
-    views::components::{
-        IsoDatetime, IsoDatetimeProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
-    },
 };
 
 use super::*;
@@ -43,11 +40,12 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         .take(note.id.len()) // drop the last crumb (the note itself, shown as the title)
         .enumerate()
         .flat_map(|(i, (label, note_id))| {
-            let separator = (i != 0).then(|| html! { in bump; <span class="text-dim" ariaHidden="true">{"/"}</span> });
+            let separator = (i != 0)
+                .then(|| html! { in bump; <span class="text-dim" ariaHidden="true">{"/"}</span> });
             let link = html! { in bump;
-                <Link target={Route::Note { note_id }.url_path()} additional_classes={"text-dim".to_string()}>
+                <a href={Route::Note { note_id }.url_path()}>
                     {label}
-                </Link>
+                </a>
             };
             separator.into_iter().chain(std::iter::once(link))
         })
@@ -70,8 +68,8 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                 {display_path.last().unwrap().to_string()}
             </h2>
             <div class={format!("post-meta flex items-center gap-2 text-sm text-dim {CODE_FONT_STYLE}")}>
-                <span class="text-fg"><IsoDatetime datetime={note.metadata.datetime.unwrap()} /></span>
-                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg"><IsoDatetime datetime={m} /></span></> })}
+                <span class="text-fg">{note.metadata.datetime.unwrap().to_rfc3339()}</span>
+                {updated.map(|m| html! { in bump; <><span>" · updated "</span><span class="text-fg">{m.to_rfc3339()}</span></> })}
             </div>
         </div>
     };
@@ -104,7 +102,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                     </div>
                 </div>
 
-                <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()} class={"mt-2".to_string()}>
+                <article>{header}
                     {{
                         let error_context = format!("note: {}", note.id.join("/"));
 
@@ -116,22 +114,16 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
                         let (toc_sidebar, toc_inline) = posts::toc_elements(bump, toc);
 
                         let mut converter = MarkdownConverter::new(context, &error_context)
-                            .with_sidenotes()
-                            .with_note_id(note.id.clone())
                             .with_source_path(note.source_path.clone());
 
-                        // Block flow: the floated TOC sidebar and sidenotes need it.
                         let mut body_elements = vec![];
                         body_elements.extend(toc_sidebar);
-                        body_elements.push(converter.convert_sectioned(&note.description));
                         body_elements.extend(toc_inline);
-                        if let Some(content) = note.rest_of_content.as_ref() {
-                            body_elements.push(converter.convert_sectioned(content));
-                        }
+                        body_elements.push(converter.convert_blocks(&crate::markdown::document_root(note)));
 
                         paxhtml::builder::Builder::new(bump).fragment(body_elements)
                     }}
-                </Segment>
+                </article>
             </>
         },
     )
@@ -162,15 +154,15 @@ fn build_tree<'bump>(
     );
 
     let render_document = |document: &Document| {
-        let additional_classes = if active_document.id == document.id {
+        let _additional_classes = if active_document.id == document.id {
             Some("font-bold italic".to_string())
         } else {
             None
         };
         html! { in bump;
-            <Link target={document.route_path().url_path()} additional_classes={additional_classes}>
+            <a href={document.route_path().url_path()}>
                 {document.metadata.title.clone()}
-            </Link>
+            </a>
         }
     };
 
