@@ -16,6 +16,8 @@ use paxsite_music::{Album, MusicLibrary, RECENT_PLAYS_DAYS, Track};
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_OUTPUT_PATH: &str = "assets/baked/music.json";
+/// Navidrome's name for the album of files that carry no album tag.
+const UNKNOWN_ALBUM: &str = "[Unknown Album]";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -68,28 +70,29 @@ async fn main() -> anyhow::Result<()> {
                 .filter_map(|id| plays_by_track.get(id.0.as_str()))
                 .sum();
             matched_scrobbles += recent_plays;
+            let tracks: Vec<Track> = group
+                .tracks
+                .iter()
+                .map(|id| {
+                    let track = &fetched.track_map[id];
+                    Track {
+                        title: track.title.to_string(),
+                        artist: track.artist.as_ref().map(|a| a.to_string()),
+                        track: track.track,
+                        year: track.year,
+                        duration: track.duration,
+                        disc_number: track.disc_number,
+                        play_count: track.play_count,
+                        starred: track.starred,
+                    }
+                })
+                .collect();
             Album {
                 artist: group.artist.to_string(),
-                album: group.album.to_string(),
+                album: album_name(&group.album, &tracks),
                 year: group.year,
                 duration: group.duration,
-                tracks: group
-                    .tracks
-                    .iter()
-                    .map(|id| {
-                        let track = &fetched.track_map[id];
-                        Track {
-                            title: track.title.to_string(),
-                            artist: track.artist.as_ref().map(|a| a.to_string()),
-                            track: track.track,
-                            year: track.year,
-                            duration: track.duration,
-                            disc_number: track.disc_number,
-                            play_count: track.play_count,
-                            starred: track.starred,
-                        }
-                    })
-                    .collect(),
+                tracks,
                 starred: group.starred,
                 recent_plays,
             }
@@ -130,6 +133,15 @@ struct Config {
 impl ConfigFile for Config {}
 
 /// Navidrome's native API (not Subsonic), used for scrobble history.
+/// An untagged album of one track is almost always a single, so it takes its
+/// track's name. Untagged albums of several tracks keep Navidrome's name.
+fn album_name(album: &str, tracks: &[Track]) -> String {
+    match tracks {
+        [only] if album == UNKNOWN_ALBUM => only.title.clone(),
+        _ => album.to_string(),
+    }
+}
+
 mod navidrome {
     use anyhow::Context as _;
     use chrono::{DateTime, Utc};
@@ -210,5 +222,39 @@ mod navidrome {
             .await
             .context("Failed to parse Navidrome login response")?;
         Ok(response.token)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn track(title: &str) -> Track {
+        Track {
+            title: title.to_string(),
+            artist: None,
+            track: None,
+            year: None,
+            duration: None,
+            disc_number: None,
+            play_count: None,
+            starred: false,
+        }
+    }
+
+    #[test]
+    fn an_untagged_single_takes_its_tracks_name() {
+        assert_eq!(album_name(UNKNOWN_ALBUM, &[track("DIVE")]), "DIVE");
+    }
+
+    #[test]
+    fn an_untagged_album_of_several_tracks_keeps_its_name() {
+        let tracks = [track("MAKE A SCENE!"), track("MOVE IT!")];
+        assert_eq!(album_name(UNKNOWN_ALBUM, &tracks), UNKNOWN_ALBUM);
+    }
+
+    #[test]
+    fn a_tagged_album_of_one_track_keeps_its_name() {
+        assert_eq!(album_name("EVO EVO", &[track("EVO EVO")]), "EVO EVO");
     }
 }

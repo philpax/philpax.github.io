@@ -1,9 +1,9 @@
 {
-  "exported_at": "2026-09-28T19:55:08Z",
+  "exported_at": "2026-09-28T19:59:55Z",
   "albums": [
     {
       "artist": "0b4k3",
-      "album": "[Unknown Album]",
+      "album": "DIVE",
       "year": 2019,
       "duration": 394,
       "tracks": [
@@ -19,7 +19,7 @@
     },
     {
       "artist": "0b4k3",
-      "album": "[Unknown Album]",
+      "album": "voices feat. kinu",
       "year": 2021,
       "duration": 358,
       "tracks": [
@@ -72,7 +72,7 @@
     },
     {
       "artist": "0b4k3",
-      "album": "[Unknown Album]",
+      "album": "voices feat. kinu (torchlight edit)",
       "year": 2025,
       "duration": 383,
       "tracks": [
@@ -6764,7 +6764,7 @@
     },
     {
       "artist": "Angine de Poitrine",
-      "album": "[Unknown Album]",
+      "album": "SHERPA",
       "year": 2024,
       "duration": 343,
       "tracks": [
@@ -24861,7 +24861,7 @@
     },
     {
       "artist": "Camellia",
-      "album": "[Unknown Album]",
+      "album": "Play‐With‐Fire / Hiasobi (Teto Cover)",
       "year": 2025,
       "duration": 246,
       "tracks": [
@@ -36165,7 +36165,7 @@
     },
     {
       "artist": "deathbrain",
-      "album": "[Unknown Album]",
+      "album": "how to sleep",
       "year": 2022,
       "duration": 202,
       "tracks": [
@@ -47284,7 +47284,7 @@
     },
     {
       "artist": "femtanyl",
-      "album": "[Unknown Album]",
+      "album": "BODY THE PISTOL",
       "year": 2025,
       "duration": 158,
       "tracks": [
@@ -47319,7 +47319,7 @@
     },
     {
       "artist": "femtanyl",
-      "album": "[Unknown Album]",
+      "album": "MAGFEST",
       "year": 2026,
       "duration": 194,
       "tracks": [
@@ -52758,7 +52758,7 @@
     },
     {
       "artist": "goreshit",
-      "album": "[Unknown Album]",
+      "album": "fine night (telemist's telemix)",
       "year": 2020,
       "duration": 389,
       "tracks": [
@@ -56532,7 +56532,7 @@
     },
     {
       "artist": "Haywyre",
-      "album": "[Unknown Album]",
+      "album": "Gone for Good",
       "year": 2026,
       "duration": 224,
       "tracks": [
@@ -74958,7 +74958,7 @@
     },
     {
       "artist": "London Elektricity",
-      "album": "[Unknown Album]",
+      "album": "Echoes in the Dance",
       "year": 2025,
       "duration": 255,
       "tracks": [
@@ -75961,7 +75961,7 @@
     },
     {
       "artist": "Lothario",
-      "album": "[Unknown Album]",
+      "album": "The Animal",
       "year": 2025,
       "duration": 134,
       "tracks": [
@@ -76538,7 +76538,7 @@
     },
     {
       "artist": "Luke Pickman",
-      "album": "[Unknown Album]",
+      "album": "Balatro Theme",
       "duration": 291,
       "tracks": [
         {
@@ -85236,7 +85236,7 @@
     },
     {
       "artist": "METAROOM",
-      "album": "[Unknown Album]",
+      "album": "dog bus (telemist's \"canine limousine\" mix)",
       "year": 2021,
       "duration": 536,
       "tracks": [
@@ -85439,7 +85439,7 @@
     },
     {
       "artist": "METAROOM",
-      "album": "[Unknown Album]",
+      "album": "Chroma Key The Sky Open",
       "year": 2026,
       "duration": 284,
       "tracks": [
@@ -90016,7 +90016,7 @@
     },
     {
       "artist": "moe shop",
-      "album": "[Unknown Album]",
+      "album": "HARDCODED",
       "year": 2025,
       "duration": 234,
       "tracks": [
@@ -93945,7 +93945,7 @@
     },
     {
       "artist": "Night Tapes",
-      "album": "[Unknown Album]",
+      "album": "Humans",
       "year": 2022,
       "duration": 251,
       "tracks": [
@@ -94310,7 +94310,7 @@
     },
     {
       "artist": "Night Tapes",
-      "album": "[Unknown Album]",
+      "album": "drifting (kryptogram remix)",
       "year": 2026,
       "duration": 276,
       "tracks": [
@@ -94894,7 +94894,7 @@
     },
     {
       "artist": "Ninajirachi",
-      "album": "[Unknown Album]",
+      "album": "WannaCry",
       "year": 2026,
       "duration": 219,
       "tracks": [
@@ -100778,7 +100778,7 @@
     },
     {
       "artist": "Paledusk",
-      "album": "[Unknown Album]",
+      "album": "SLAY!! (feat. Hideyoshi)",
       "year": 2022,
       "duration": 192,
       "tracks": [
@@ -112358,7 +112358,7 @@
     },
     {
       "artist": "Sasha",
-      "album": "[Unknown Album]",
+      "album": "Xpander (live at the Barbican)",
       "year": 2017,
       "duration": 656,
       "tracks": [
@@ -119750,7 +119750,7 @@
     },
     {
       "artist": "Softxoxo's",
-      "album": "[Unknown Album]",
+      "album": "Class Trial Solar Edition (Soft Remix)",
       "year": 2021,
       "duration": 245,
       "tracks": [
@@ -121931,7 +121931,7 @@
     },
     {
       "artist": "Starjunk 95",
-      "album": "[Unknown Album]",
+      "album": "State Your Name",
       "year": 2025,
       "duration": 162,
       "tracks": [
@@ -121962,7 +121962,7 @@
     },
     {
       "artist": "Starjunk95",
-      "album": "[Unknown Album]",
+      "album": "Concept of Grime",
       "year": 2026,
       "duration": 245,
       "tracks": [
@@ -128708,7 +128708,7 @@
     },
     {
       "artist": "telemist",
-      "album": "[Unknown Album]",
+      "album": "waves",
       "year": 2020,
       "duration": 284,
       "tracks": [
@@ -128743,7 +128743,7 @@
     },
     {
       "artist": "telemist",
-      "album": "[Unknown Album]",
+      "album": "CATHODE RAY TUNE",
       "year": 2025,
       "duration": 221,
       "tracks": [
@@ -128808,7 +128808,7 @@
     },
     {
       "artist": "telemist & Glidelas",
-      "album": "[Unknown Album]",
+      "album": "THE SEQUENCE",
       "year": 2026,
       "duration": 336,
       "tracks": [
@@ -166944,7 +166944,7 @@
     },
     {
       "artist": "青葉市子",
-      "album": "[Unknown Album]",
+      "album": "さよならペンギン",
       "year": 2026,
       "duration": 111,
       "tracks": [
