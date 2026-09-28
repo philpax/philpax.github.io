@@ -1,0 +1,174 @@
+/* ========================================================================
+   MUSIC LIBRARY — a mirror of the Blackbird player, in its own palette and
+   spacing; the literals are its constants. Always dark, so it pins the dark
+   scheme and the site's tokens resolve dark inside it.
+   ======================================================================== */
+
+.music-library {
+  margin: var(--s-6) 0;
+  color-scheme: dark;
+}
+.music-header,
+.music-surface {
+  max-width: 100%;
+  font-family: var(--f-ui);
+  color: var(--ink);
+  background: var(--canvas);
+}
+.music-surface {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0.75rem;
+}
+.music-banner {
+  padding: 0.5rem;
+  font-size: var(--text-lg);
+  text-align: center;
+  color: #fff;
+  background: #064e3b;
+}
+.music-filter {
+  padding: 0.5rem;
+  text-align: center;
+  color: #fff;
+  background: #022c22;
+}
+.music-filter input {
+  margin-right: var(--s-1);
+}
+.music-library section {
+  break-inside: avoid;
+}
+
+/* Album. */
+
+.music-library .album-heading {
+  display: flex;
+  flex-direction: column;
+}
+.music-library .album-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.music-library .artist {
+  font-size: var(--text-lg);
+  line-height: var(--lead-tight);
+}
+/* One line; the link's title holds the rest. */
+.music-library .album {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--text-base);
+  line-height: var(--lead-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #459ecb;
+}
+.music-library .album .album-link {
+  --link-rest: currentColor;
+  --link-hover: currentColor;
+}
+.music-library .album .album-link:hover {
+  text-decoration: underline;
+}
+.music-library .album-year {
+  color: #aaaaaa;
+}
+.music-library .album-length {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  text-align: right;
+  color: #e1e1e1;
+}
+.music-library .album-length,
+.music-library .track .length {
+  flex-shrink: 0;
+  width: 6rem;
+  white-space: nowrap;
+}
+.music-library .duration {
+  display: inline-block;
+  /* Room for m:ss; h:mm:ss takes what it needs. */
+  min-width: 3.5rem;
+  text-align: right;
+}
+.music-library .heart {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-left: var(--s-1);
+  font-size: 1em;
+  text-align: center;
+  color: red;
+}
+
+/* Track. */
+
+.music-library .track {
+  --link-rest: #ffffff;
+  --link-hover: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.music-library .track .number {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 48px;
+  text-align: right;
+  color: #b3d0f3;
+}
+.music-library .track .middle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  margin: 0 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* The ellipsis goes on the name: on a flex container it does nothing. */
+.music-library .track .name-group {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.music-library .track .name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #ffffff;
+}
+.music-library .track .name:hover {
+  color: #aad1ff;
+}
+.music-library .track .play-count {
+  flex-shrink: 0;
+  margin-left: 0.5em;
+  color: #b3d0f3;
+}
+/* The artist gives way before the title. */
+.music-library .track .artist {
+  flex-grow: 0;
+  flex-shrink: 4;
+  min-width: 0;
+  margin-left: 0.5em;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music-library .track .length {
+  text-align: right;
+  color: #4b9ada;
+}
+.music-library .track .duration {
+  flex-shrink: 0;
+  color: #bcbcbc;
+}

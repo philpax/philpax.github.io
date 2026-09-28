@@ -1,0 +1,209 @@
+/* ========================================================================
+   PROSE — authored HTML. Components are siblings of .prose, never inside it.
+   ======================================================================== */
+
+.prose {
+  max-width: var(--measure);
+  font-variant-numeric: normal;
+  line-height: var(--lead);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  hanging-punctuation: first last;
+  color: var(--ink);
+}
+.prose > * + * {
+  margin-top: var(--r-8);
+}
+.prose a,
+.prose code {
+  overflow-wrap: anywhere;
+}
+.prose strong {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Links. */
+
+/* The hover rule is a background rather than a decoration, so it runs under
+   the section mark too, once per line of a wrapped link. */
+.prose a:hover {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: left calc(100% - 0.02em);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+/* A link that leaves the site gets an arrow where others get a mark. */
+.prose a[href^='http']:not(:has(img))::before {
+  content: '\2197';
+  margin-right: 0.2em;
+  font-family: var(--f-ui);
+  font-size: 0.75em;
+  vertical-align: 0.12em;
+  color: var(--ink-faint);
+}
+
+/* Headings. */
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  position: relative;
+  margin-top: var(--r-10);
+  line-height: var(--lead-tight);
+  text-wrap: balance;
+  color: var(--accent);
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+  margin-top: var(--r-6);
+}
+.prose h2 {
+  padding-top: var(--r-7);
+  font-size: var(--em-up-2);
+  font-weight: var(--font-weight-semibold);
+}
+.prose h2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 2.25em;
+  height: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+}
+.prose h3 {
+  font-size: var(--em-up);
+  font-weight: var(--font-weight-bold);
+}
+.prose h4,
+.prose th {
+  font-family: var(--f-ui);
+  font-size: var(--em-down);
+  font-weight: var(--font-weight-bold);
+}
+/* A heading holding a link of its own gets a separate # anchor, hung in the
+   margin until hovered or focused. */
+.prose .heading-anchor {
+  --link-rest: var(--ink-faint);
+  position: absolute;
+  right: 100%;
+  padding-right: var(--r-2);
+  opacity: 0;
+  transition: opacity var(--motion) ease;
+}
+.prose h2:hover > .heading-anchor,
+.prose h3:hover > .heading-anchor,
+.prose h4:hover > .heading-anchor,
+.prose .heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+/* Lists. */
+
+.prose ul,
+.prose ol {
+  padding-left: var(--r-9);
+}
+.prose li + li,
+.prose li > ul,
+.prose li > ol {
+  margin-top: var(--r-4);
+}
+.prose ul > li {
+  position: relative;
+}
+.prose ul > li::before {
+  content: '';
+  position: absolute;
+  top: var(--r-7);
+  left: calc(var(--r-8) * -1);
+  width: 0.32em;
+  height: 0.32em;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent) 62%, var(--line-strong));
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose ol > li::marker {
+  font-family: var(--f-ui);
+  font-size: var(--em-down);
+  color: var(--ink-faint);
+}
+
+/* Quotations, rules, images. */
+
+.prose blockquote {
+  position: relative;
+  padding-left: var(--r-6);
+  font-style: italic;
+  line-height: var(--lead-normal);
+  color: var(--ink-muted);
+}
+.prose blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: color-mix(in oklab, var(--accent) 40%, transparent);
+}
+.prose blockquote p + p {
+  margin-top: var(--r-6);
+}
+.prose hr {
+  width: 4.5em;
+  margin: var(--r-11) auto;
+  border-top: var(--rule-strong) solid color-mix(in oklab, var(--accent) 40%, var(--line-strong));
+}
+.prose img {
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+/* Tables. */
+
+.prose table {
+  font-family: var(--f-ui);
+  font-size: var(--em-down);
+  font-variant-numeric: tabular-nums;
+}
+.prose th,
+.prose td {
+  padding: var(--r-6) var(--r-7);
+}
+.prose th {
+  border-bottom: var(--rule) solid var(--line-strong);
+  color: var(--ink-muted);
+}
+.prose td {
+  border-bottom: var(--rule) solid var(--line);
+}
+.prose tbody tr:hover {
+  background: var(--raised);
+}
+
+/* Pull request mentions. */
+
+.prose .pr-mention:target {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+}
+.prose .prmeta {
+  font-family: var(--f-ui);
+  font-size: var(--em-down);
+  white-space: nowrap;
+  color: var(--ink-muted);
+}
+.prose .prmeta-add {
+  color: var(--good);
+}
+.prose .prmeta-sub {
+  color: var(--bad);
+}

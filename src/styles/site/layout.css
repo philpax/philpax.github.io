@@ -1,0 +1,255 @@
+/* ========================================================================
+   LAYOUT — the root, the page widths, the header, nav and footer.
+   ======================================================================== */
+
+/* The root is the container every width query asks: the site responds to its
+   own width rather than the window's. */
+.site {
+  --hue: var(--c-post);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  container: site / inline-size;
+  min-height: 100%;
+  font-family: var(--f-ui);
+  /* Anchors the type ladder. */
+  font-size: var(--text-base);
+  line-height: var(--lead-normal);
+  /* Prose turns this off. */
+  font-variant-numeric: tabular-nums;
+  font-optical-sizing: auto;
+  tab-size: 4;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  color: var(--ink);
+  background: var(--canvas);
+}
+
+.site > main {
+  flex: 1;
+  padding-block: var(--s-8);
+}
+
+/* The frame fits the notes rail, its gap, a measure and the sidenote gutter
+   (18 + 2.75 + 38.75 + 15rem); narrower and a note's sidenotes never fit. */
+.frame,
+.frame-narrow {
+  margin-inline: auto;
+  padding-inline: var(--s-5);
+}
+.frame {
+  max-width: 79rem;
+}
+.frame-narrow {
+  max-width: 62rem;
+}
+@container site (width >= 48rem) {
+  .frame,
+  .frame-narrow {
+    padding-inline: var(--s-8);
+  }
+}
+
+.site[data-section] h1 {
+  color: var(--accent);
+}
+
+/* Where a fragment lands. */
+.site :where(h1, h2, h3, h4, h5, h6, .fn-note, .pr-mention, .timeline-row)[id] {
+  scroll-margin-top: var(--s-4);
+}
+
+/* Skip to content: the first link on the page, out of sight until it has
+   focus. */
+.skip-link {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: 20;
+  padding: var(--s-2) var(--s-3);
+  font-size: var(--text-sm);
+  background: var(--canvas);
+}
+.skip-link:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Header. */
+
+.site > header {
+  position: relative;
+  z-index: 10;
+  border-bottom: var(--rule-strong) solid var(--separator);
+  background: var(--canvas);
+}
+/* Sticky only once it is one row; on a phone it scrolls away. */
+@container site (width >= 48rem) {
+  .site > header {
+    position: sticky;
+    top: 0;
+  }
+  .site :where(h1, h2, h3, h4, h5, h6, .fn-note, .pr-mention, .timeline-row)[id] {
+    scroll-margin-top: calc(var(--header-height) + var(--s-4));
+  }
+}
+/* The wordmark and the nav share a row until the nav needs one of its own. */
+.site > header > .frame {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-6);
+  padding-block: var(--s-4);
+}
+
+/* Decorative; the shader reads its colour from `color`. */
+.header-shader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent);
+  opacity: 0.5;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-shader {
+    display: none;
+  }
+}
+
+/* The wordmark: a box in the accent. On hover the box moves, not the label. */
+.site-brand {
+  --hue: var(--accent);
+  --link-rest: white;
+  --link-hover: white;
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-3) var(--s-2) 0;
+  font-family: var(--f-wordmark);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-display);
+  background: var(--accent-solid);
+  transition: background-color var(--motion) ease;
+}
+.site-brand:hover {
+  background: color-mix(in oklab, var(--accent-solid) 88%, white);
+}
+/* The icon runs to the box's edges. */
+.site-brand > img {
+  align-self: stretch;
+  width: auto;
+  height: calc(var(--text-lg) * var(--lead-normal) + var(--s-4));
+  aspect-ratio: 1;
+  margin: calc(-1 * var(--s-2)) 0;
+  object-fit: cover;
+}
+
+/* The primary nav: a box per section, in its solid hue so white text holds in
+   both themes. The current section is a shade, not a weight, so the row never
+   reflows. */
+.site > header nav {
+  --c-post: var(--c-post-solid);
+  --c-update: var(--c-update-solid);
+  --c-note: var(--c-note-solid);
+  --c-tag: var(--c-tag-solid);
+  min-width: 0;
+}
+/* Too narrow for its row, it scrolls rather than wraps or clips. */
+.site > header nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.site > header nav ul::-webkit-scrollbar {
+  display: none;
+}
+.site > header nav a {
+  --link-rest: white;
+  --link-hover: white;
+  display: block;
+  padding: var(--s-2) var(--s-3);
+  background: color-mix(in oklab, var(--hue) 80%, var(--canvas));
+  transition: background-color var(--motion) ease;
+}
+.site > header nav a[aria-current='page'],
+.site > header nav a:hover {
+  background: var(--hue);
+}
+.site > header nav a[aria-current='page'] {
+  font-weight: inherit;
+}
+/* The focus ring is drawn inside the box, where the scroll area cannot clip it,
+   in the white the labels already use. */
+.site > header nav a:focus-visible {
+  outline-color: white;
+  outline-offset: -4px;
+}
+/* Very narrow, the labels alone. */
+@container site (width < 32rem) {
+  .site > header nav a::before {
+    display: none;
+  }
+}
+
+/* The theme switch: the current theme's mark, an arrow, and the next one's, so
+   the direction is plain. A control rather than a section, so it sits on the
+   section's tint, like the rail toggle. */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-2) var(--s-3);
+  color: var(--accent);
+  background: var(--tint);
+  transition: background-color var(--motion) ease;
+}
+.theme-toggle:hover {
+  background: var(--accent-soft);
+}
+.theme-toggle:focus-visible {
+  outline-color: currentColor;
+  outline-offset: -4px;
+}
+.theme-toggle > span {
+  width: 1em;
+  height: 1lh;
+  background: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+.theme-toggle > [data-icon='light'] {
+  --icon: var(--icon-light);
+}
+.theme-toggle > [data-icon='dark'] {
+  --icon: var(--icon-dark);
+}
+.theme-toggle > [data-icon='arrow'] {
+  --icon: var(--icon-arrow);
+  opacity: 0.6;
+}
+
+/* Footer. */
+
+.site > footer {
+  --hue: var(--accent);
+  border-top: var(--rule) solid var(--line);
+}
+.site > footer > .frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--s-3);
+  text-align: center;
+}

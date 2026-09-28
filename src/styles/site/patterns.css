@@ -1,0 +1,114 @@
+/* ========================================================================
+   PATTERNS — treatments shared across components, as selector lists. A
+   component joins a list; its own rule says only what is particular to it.
+   ======================================================================== */
+
+/* A column at the gap in --stack. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border-width: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Faint. */
+.index-row > header p,
+.site > footer,
+.summary-meta > time,
+.dated-row > time,
+.dated-path,
+.tag-index-count {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+/* Muted. */
+.social-card header span {
+  color: var(--ink-muted);
+}
+.toc a,
+.rail-row {
+  --link-rest: var(--ink-muted);
+}
+
+/* A step below the body size. */
+.home-page section > header > p,
+.missing-links,
+.toc ol,
+.rail-row {
+  font-size: var(--text-sm);
+}
+/* A meta row's tags match the row, not the step above. */
+.summary-meta > .tag-list,
+.document-meta > .tag-list {
+  font-size: var(--text-xs);
+}
+
+/* The reading face; the chrome's is the default. */
+.prose,
+.page-head p,
+.summary > p,
+.social-card blockquote {
+  font-family: var(--f-body);
+}
+
+/* Labels. The face is stated because headings default to the display face. */
+.index-row > header h2,
+.aside-heading,
+.breadcrumb,
+.document-meta,
+.document-toc > summary,
+.summary h3 > em,
+.timeline figcaption {
+  font-family: var(--f-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: lowercase;
+  color: var(--ink-faint);
+}
+
+/* The section mark, drawn in the colour of the text it leads. */
+.prose a.link-post::before,
+.prose a.link-update::before,
+.prose a.link-note::before,
+.prose a.link-tag::before,
+.site > header nav a::before,
+.home-page [data-section] > header > h2::before {
+  content: '';
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.3em;
+  vertical-align: -0.06em;
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* A link in a heading takes the heading's colour. */
+.document-header h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a {
+  --link-rest: currentColor;
+  --link-hover: color-mix(in oklab, currentColor 78%, white);
+}
+.document-header h1 a:hover,
+.prose h2 a:hover,
+.prose h3 a:hover,
+.prose h4 a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+  background-image: none;
+}

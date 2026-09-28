@@ -1,0 +1,175 @@
+/* ========================================================================
+   NOTES — the notes layout and the rail: a disclosure above the note on a
+   narrow page, a sticky column beside it on a wide one.
+   ======================================================================== */
+
+.notes-layout {
+  display: grid;
+  align-items: start;
+  column-gap: var(--s-10);
+}
+.notes-intro {
+  max-width: var(--measure-short);
+  color: var(--ink-muted);
+}
+
+/* Rail. */
+
+.notes-rail {
+  --stack: var(--s-2);
+  min-width: 0;
+  margin-bottom: var(--s-6);
+}
+.rail-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.rail-heading > a {
+  --link-rest: var(--ink);
+}
+
+/* Stands in for the heading on a narrow page. */
+.rail-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--text-sm);
+  text-align: left;
+  color: var(--ink);
+  background: var(--tint);
+}
+.rail-toggle:hover {
+  color: var(--accent);
+}
+.rail-toggle::before {
+  content: '';
+  border-block: 0.3rem solid transparent;
+  border-left: 0.4rem solid var(--accent);
+  transition: transform var(--motion) ease;
+}
+.rail-toggle[aria-expanded='true']::before {
+  transform: rotate(90deg);
+}
+
+.rail-tree {
+  --stack: var(--s-3);
+}
+.rail-search {
+  width: 100%;
+  padding-bottom: var(--s-1);
+  border-bottom: var(--rule) solid var(--separator);
+  font-size: var(--text-sm);
+}
+.rail-search:focus {
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+.rail-search::placeholder {
+  color: var(--ink-faint);
+}
+.notes-rail-toc {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: var(--rule) solid var(--line);
+}
+
+/* Tree. */
+
+.notes-level .notes-level {
+  margin-left: var(--s-2-5);
+}
+/* The chevron opens the branch; the row opens the page. */
+.rail-row-wrap {
+  display: flex;
+}
+.rail-row-wrap > button {
+  flex-shrink: 0;
+  padding-inline: var(--s-1);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+.rail-row-wrap > button:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+.rail-row {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) 3rem;
+  align-items: baseline;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-1) var(--s-1) var(--s-1) var(--s-2);
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+.rail-row-wrap > button + .rail-row {
+  padding-left: var(--s-0-5);
+}
+/* The branch holding the current row stays lit. */
+.notes-level li:has([aria-current]) > .rail-row-wrap > .rail-row {
+  --link-rest: var(--ink);
+}
+.rail-row[aria-current] {
+  --link-rest: var(--ink);
+  background: var(--accent-soft);
+}
+/* After the current row, so hover wins over it. */
+.rail-row:hover {
+  background: var(--sunken);
+}
+/* A folder with no page is a button, and reads the same colour. */
+button.rail-row {
+  color: var(--link-rest);
+}
+.notes-level .notes-level .rail-row {
+  font-size: var(--text-xs);
+}
+.rail-row-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rail-tree > .notes-level > li > .rail-row-wrap .rail-row-label {
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-display);
+}
+.rail-age {
+  font-size: var(--text-xs);
+  text-align: right;
+  color: var(--ink-faint);
+  cursor: help;
+}
+
+/* Narrow and wide. */
+
+@container site (width < 64rem) {
+  .rail-heading,
+  .notes-rail-toc,
+  .rail-toggle[aria-expanded='false'] + .rail-tree {
+    display: none;
+  }
+}
+/* The rail's grid area runs the row's height, so it sticks down a long note. */
+@container site (width >= 64rem) {
+  .notes-layout {
+    grid-template-columns: 18rem minmax(0, 1fr);
+  }
+  .notes-rail {
+    position: sticky;
+    top: calc(var(--header-height) + var(--s-4));
+    max-height: calc(100svh - var(--header-height) - 2rem);
+    margin-bottom: 0;
+    padding-right: var(--s-4);
+    border-right: var(--rule) solid var(--line);
+    overflow-y: auto;
+  }
+  .rail-toggle {
+    display: none;
+  }
+}

@@ -1,164 +1,134 @@
-use std::{
-    hash::{Hash, Hasher},
-    path::Path,
-};
-
 use crate::views::ViewContextBase;
 
 pub struct GenerateOutput {
     pub css: String,
 }
 
-pub fn generate(
-    context: ViewContextBase<'_>,
-    tailwind_output: &str,
-) -> anyhow::Result<GenerateOutput> {
-    let (property_sets, remaining) =
-        paxcss::extract_prefixed_property_sets(include_str!("website.css"));
-    let dark_mode = property_sets.get(paxcss::DARK_MODE).unwrap();
-    let light_mode = property_sets.get(paxcss::LIGHT_MODE).unwrap();
-    let syntax_dark_root = context.syntax.dark_theme_css(".code");
-    let syntax_dark_explicit = context.syntax.dark_theme_css(":root.dark .code");
-    let syntax_light_root = context.syntax.light_theme_css(".code");
-    let syntax_light_explicit = context.syntax.light_theme_css(":root.light .code");
-    let css = format!(
-        r#"
-/* --- THEMES --- */
-:root {{
-{dark_mode}
-}}
-:root.dark {{
-{dark_mode}
-}}
-
-@media (prefers-color-scheme: light) {{
-:root {{
-{light_mode}
-}}
-}}
-:root.light {{
-{light_mode}
-}}
-
-/* --- WEBSITE --- */
-{remaining}
-
-/* --- TAILWIND --- */
-{tailwind_output}
-
-/* --- SYNTAX HIGHLIGHTING (DARK) --- */
-{syntax_dark_root}
-{syntax_dark_explicit}
-
-/* --- SYNTAX HIGHLIGHTING (LIGHT) --- */
-@media (prefers-color-scheme: light) {{
-{syntax_light_root}
-}}
-{syntax_light_explicit}
-"#,
-    )
-    .trim()
-    .to_string();
-
+/// Bundle the site's stylesheet into one file: the faces, the document around
+/// the site, the sheet in `site/` with its `@import`s inlined in order, and the
+/// highlighter's token colours for both themes.
+pub fn generate(context: ViewContextBase<'_>) -> anyhow::Result<GenerateOutput> {
+    let site = inline_imports(SITE_ENTRY, SITE_FILES)?;
+    let syntax = syntax_css(context);
+    let css = [FONTS, DOCUMENT, &site, &syntax].join("\n");
     Ok(GenerateOutput { css })
-}
-
-pub fn generate_tailwind(
-    fast: bool,
-    use_global_tailwind: bool,
-    report: &mut impl FnMut(&'static str, std::time::Duration),
-) -> anyhow::Result<String> {
-    let now = std::time::Instant::now();
-    let hash = compute_tailwind_input_hash()?;
-    report("Computed input hash", now.elapsed());
-
-    // Check cache first
-    let now = std::time::Instant::now();
-    if let Some(cached) = get_cached_tailwind(hash) {
-        report("Loaded from cache", now.elapsed());
-        return Ok(cached);
-    }
-    report("Cache miss", now.elapsed());
-
-    // Generate fresh
-    let now = std::time::Instant::now();
-    let tailwind = if use_global_tailwind {
-        paxhtml_tailwind::Tailwind::global()
-    } else {
-        paxhtml_tailwind::Tailwind::download(paxhtml_tailwind::RECOMMENDED_VERSION, fast)?
-    };
-    report(
-        if use_global_tailwind {
-            "Used global tailwind"
-        } else {
-            "Downloaded tailwind"
-        },
-        now.elapsed(),
-    );
-
-    let now = std::time::Instant::now();
-    let tailwind_output = tailwind.generate_from_file(Path::new(TAILWIND_INPUT))?;
-    report("Generated CSS", now.elapsed());
-
-    // Cache the result
-    let now = std::time::Instant::now();
-    save_tailwind_cache(hash, &tailwind_output)?;
-    report("Saved to cache", now.elapsed());
-
-    Ok(tailwind_output)
 }
 
 // --- Private implementation details ---
 
-const TAILWIND_CACHE_HASH: &str = "target/tailwind-cache.hash";
-const TAILWIND_CACHE_CSS: &str = "target/tailwind-cache.css";
-const TAILWIND_INPUT: &str = "src/styles/tailwind.css";
+const FONTS: &str = include_str!("fonts.css");
+const DOCUMENT: &str = include_str!("document.css");
+const SITE_ENTRY: &str = include_str!("site/site.css");
 
-fn compute_tailwind_input_hash() -> anyhow::Result<u64> {
-    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+/// Every file `site/site.css` may import, by the name it imports it by.
+const SITE_FILES: &[(&str, &str)] = &[
+    ("tokens.css", include_str!("site/tokens.css")),
+    ("sections.css", include_str!("site/sections.css")),
+    ("elements.css", include_str!("site/elements.css")),
+    ("patterns.css", include_str!("site/patterns.css")),
+    ("layout.css", include_str!("site/layout.css")),
+    ("listings.css", include_str!("site/listings.css")),
+    ("home.css", include_str!("site/home.css")),
+    ("documents.css", include_str!("site/documents.css")),
+    ("notes.css", include_str!("site/notes.css")),
+    ("prose.css", include_str!("site/prose.css")),
+    ("code.css", include_str!("site/code.css")),
+    ("footnotes.css", include_str!("site/footnotes.css")),
+    ("components.css", include_str!("site/components.css")),
+    ("music.css", include_str!("site/music.css")),
+];
 
-    // Hash the tailwind input CSS
-    std::fs::read(TAILWIND_INPUT)?.hash(&mut hasher);
-
-    // Hash all .rs files in src/ (they may contain Tailwind classes)
-    fn collect_rs_files(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
-        if let Ok(entries) = std::fs::read_dir(dir) {
-            for entry in entries.flatten() {
-                let path = entry.path();
-                if path.is_dir() {
-                    collect_rs_files(&path, files);
-                } else if path.extension().is_some_and(|e| e == "rs") {
-                    files.push(path);
-                }
-            }
-        }
+/// Replace each `@import './name.css';` line with that file's contents, so the
+/// entry's order is the bundle's order.
+fn inline_imports(entry: &str, files: &[(&str, &str)]) -> anyhow::Result<String> {
+    let mut out =
+        String::with_capacity(entry.len() + files.iter().map(|(_, f)| f.len()).sum::<usize>());
+    for line in entry.lines() {
+        let Some(name) = import_name(line) else {
+            out.push_str(line);
+            out.push('\n');
+            continue;
+        };
+        let (_, contents) = files
+            .iter()
+            .find(|(file, _)| *file == name)
+            .ok_or_else(|| anyhow::anyhow!("site.css imports {name}, which is not bundled"))?;
+        out.push_str(contents);
+        out.push('\n');
     }
-
-    let mut paths = Vec::new();
-    collect_rs_files(Path::new("src"), &mut paths);
-    paths.sort(); // Ensure consistent ordering
-
-    for path in paths {
-        path.to_string_lossy().hash(&mut hasher);
-        std::fs::read(&path)?.hash(&mut hasher);
-    }
-
-    Ok(hasher.finish())
+    Ok(out)
 }
 
-fn get_cached_tailwind(hash: u64) -> Option<String> {
-    let cached_hash: u64 = std::fs::read_to_string(TAILWIND_CACHE_HASH)
-        .ok()?
-        .parse()
-        .ok()?;
-    if cached_hash != hash {
-        return None;
-    }
-    std::fs::read_to_string(TAILWIND_CACHE_CSS).ok()
+fn import_name(line: &str) -> Option<&str> {
+    let rest = line.trim().strip_prefix("@import")?.trim();
+    let rest = rest.strip_suffix(';')?.trim();
+    let quoted = rest
+        .strip_prefix('\'')
+        .and_then(|r| r.strip_suffix('\''))
+        .or_else(|| rest.strip_prefix('"').and_then(|r| r.strip_suffix('"')))?;
+    Some(quoted.strip_prefix("./").unwrap_or(quoted))
 }
 
-fn save_tailwind_cache(hash: u64, css: &str) -> anyhow::Result<()> {
-    std::fs::write(TAILWIND_CACHE_HASH, hash.to_string())?;
-    std::fs::write(TAILWIND_CACHE_CSS, css)?;
-    Ok(())
+/// The highlighter's token colours, scoped to code in prose. The light theme is
+/// the default and the dark one follows the site's theme mechanism: the system
+/// preference unless `<html>` pins `light`, or a `dark` class pins it.
+///
+/// Only the token rules are kept: the generated block also sets a background,
+/// a foreground and an `--accent` of its own, which would repaint the site's
+/// code block and its accent.
+fn syntax_css(context: ViewContextBase<'_>) -> String {
+    const SCOPE: &str = ".prose code";
+    let light = tokens_only(&context.syntax.light_theme_css(SCOPE));
+    let dark_system = tokens_only(
+        &context
+            .syntax
+            .dark_theme_css(&format!(":root:not(.light) {SCOPE}")),
+    );
+    let dark_pinned = tokens_only(
+        &context
+            .syntax
+            .dark_theme_css(&format!(":root.dark {SCOPE}")),
+    );
+    format!(
+        "/* Syntax highlighting. */\n{light}\n@media (prefers-color-scheme: dark) {{\n{dark_system}}}\n{dark_pinned}"
+    )
+}
+
+/// Drop the declarations on the generated block's own selector, keeping the
+/// nested `a-*` token rules and the braces around them.
+fn tokens_only(css: &str) -> String {
+    css.lines()
+        .filter(|line| {
+            let line = line.trim_start();
+            !line.starts_with("--")
+                && !line.starts_with("background:")
+                && !line.starts_with("color:")
+        })
+        .map(|line| format!("{line}\n"))
+        .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn every_import_is_bundled() {
+        let css = inline_imports(SITE_ENTRY, SITE_FILES).unwrap();
+        assert!(!css.contains("@import"));
+        assert!(css.contains("--canvas-dark"));
+    }
+
+    #[test]
+    fn import_names() {
+        assert_eq!(import_name("@import './tokens.css';"), Some("tokens.css"));
+        assert_eq!(import_name("  @import \"a.css\" ;"), Some("a.css"));
+        assert_eq!(import_name("@layer site-element;"), None);
+    }
+
+    #[test]
+    fn tokens_only_keeps_token_rules() {
+        let css = ".x {\n  background: #fff;\n  --bg: #fff;\n  color: #000;\n  --accent: #f00;\n  a-k { color: #123; }\n}\n";
+        assert_eq!(tokens_only(css), ".x {\n  a-k { color: #123; }\n}\n");
+    }
 }

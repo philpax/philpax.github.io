@@ -1,0 +1,155 @@
+/* ========================================================================
+   LISTINGS — the indexes, tag pages, credits and not-found, and the summary
+   and dated row the front page shares with them.
+   ======================================================================== */
+
+.page-head {
+  margin-bottom: var(--s-8);
+}
+.page-head p {
+  max-width: var(--measure-short);
+  margin-top: var(--s-3);
+  color: var(--ink-muted);
+}
+
+/* A label in the margin, the entries in the column. */
+.index-groups {
+  border-top: var(--rule) solid var(--line);
+}
+.index-row {
+  display: grid;
+  gap: var(--s-2) var(--s-8);
+  padding-block: var(--s-5);
+  border-bottom: var(--rule) solid var(--line);
+}
+.index-groups > .index-row:last-child {
+  border-bottom-width: 0;
+}
+.index-row > header h2 {
+  line-height: var(--lead-normal);
+  color: var(--ink);
+}
+.index-row > header p {
+  margin-top: var(--s-1);
+}
+.index-row > div {
+  min-width: 0;
+}
+@container site (width >= 48rem) {
+  .index-row {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    padding-block: var(--s-6);
+  }
+  .index-row > header {
+    text-align: right;
+  }
+}
+
+/* Credits: one column, so no rows to take the rule from. */
+.plain-page-body {
+  padding-top: var(--s-5);
+  border-top: var(--rule) solid var(--line);
+}
+@container site (width >= 48rem) {
+  .plain-page-body {
+    padding-top: var(--s-6);
+  }
+}
+
+/* Summary: a post or an update. */
+
+.summary h3 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--lead-tight);
+  letter-spacing: var(--tracking-heading);
+}
+/* The draft label. */
+.summary h3 > em {
+  margin-left: var(--s-2);
+  vertical-align: middle;
+}
+/* The tags scroll rather than wrap, so the date stays put. */
+.summary-meta {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-1-5);
+  margin-block: -0.25em var(--s-1);
+  text-transform: lowercase;
+}
+.summary-meta > * {
+  flex-shrink: 0;
+}
+.summary-meta > [aria-hidden] {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+.summary-meta > .tag-list {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.summary > p {
+  max-width: var(--measure-short);
+  color: var(--ink-muted);
+}
+
+/* Dated row: an update or a note on one line. */
+
+/* The entry's basis is 0, so a long title wraps in its column rather than
+   dropping below the date. */
+.dated-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--s-3);
+}
+.dated-row > time {
+  flex-shrink: 0;
+  width: 5rem;
+}
+.dated-entry {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+}
+.dated-path > [aria-hidden] {
+  margin-inline: 2px;
+  color: var(--ink-faint);
+  opacity: 0.6;
+}
+
+/* Tags index. */
+
+.tag-index-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto var(--s-6);
+  align-items: baseline;
+  gap: var(--s-3);
+}
+.tag-index-row a {
+  min-width: 0;
+  font-size: var(--text-sm);
+}
+.tag-index-bar {
+  height: var(--s-1-5);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+}
+.tag-index-count {
+  text-align: right;
+}
+
+/* Empty and missing. */
+
+.empty-message {
+  padding-block: var(--s-8);
+  border-top: var(--rule) solid var(--line);
+  color: var(--ink-muted);
+}
+.missing-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-5);
+}

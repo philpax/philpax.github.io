@@ -102,8 +102,6 @@ impl From<Route> for RoutePath {
 
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
-    let use_global_tailwind =
-        std::env::args().any(|arg| arg == "--use-global-tailwind" || arg == "-u");
     let verbose = std::env::args().any(|arg| arg == "--verbose" || arg == "-v");
     // `--check` validates every page's markdown links/anchors and exits, without
     // building anything (no output clearing, copies, writes, OG images, or serve).
@@ -149,54 +147,28 @@ fn main() -> anyhow::Result<()> {
         })?;
     }
 
-    // Run syntax loading, tailwind generation, and content reading in parallel
-    let (syntax, tailwind_css, content) = timer.step(
-        "Loaded syntax, generated Tailwind CSS, and read content",
-        |substeps| {
-            use std::sync::Mutex;
+    // Load syntax and read content in parallel
+    let (syntax, content) = timer.step("Loaded syntax and read content", |substeps| {
+        use std::sync::Mutex;
 
-            // Collect timing reports from parallel tasks
-            let tailwind_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
-                Mutex::new(Vec::new());
-            let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
-                Mutex::new(Vec::new());
+        // Collect timing reports from the content task
+        let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
+            Mutex::new(Vec::new());
 
-            let ((syntax, tailwind_css), content) = rayon::join(
-                || {
-                    rayon::join(syntax::SyntaxHighlighter::default, || {
-                        styles::generate_tailwind(
-                            fast,
-                            use_global_tailwind,
-                            &mut |label, elapsed| {
-                                tailwind_reports.lock().unwrap().push((label, elapsed));
-                            },
-                        )
-                    })
-                },
-                || {
-                    content::Content::read(fast, &mut |label, elapsed| {
-                        content_reports.lock().unwrap().push((label, elapsed));
-                    })
-                },
-            );
+        let (syntax, content) = rayon::join(syntax::SyntaxHighlighter::default, || {
+            content::Content::read(fast, &mut |label, elapsed| {
+                content_reports.lock().unwrap().push((label, elapsed));
+            })
+        });
 
-            // Report tailwind timings
-            substeps.step_nested("Generated Tailwind CSS", |nested| {
-                for (label, elapsed) in tailwind_reports.into_inner().unwrap() {
-                    nested.report(label, elapsed);
-                }
-            });
+        substeps.step_nested("Read content", |nested| {
+            for (label, elapsed) in content_reports.into_inner().unwrap() {
+                nested.report(label, elapsed);
+            }
+        });
 
-            // Report content timings
-            substeps.step_nested("Read content", |nested| {
-                for (label, elapsed) in content_reports.into_inner().unwrap() {
-                    nested.report(label, elapsed);
-                }
-            });
-
-            anyhow::Ok((syntax, tailwind_css?, Arc::new(content?)))
-        },
-    )?;
+        anyhow::Ok((syntax, Arc::new(content?)))
+    })?;
     let image_store = timer.step("Built image store", |_| {
         anyhow::Ok(Arc::new(image_store::ImageStore::new(&content)))
     })?;
@@ -452,9 +424,7 @@ fn main() -> anyhow::Result<()> {
     })?;
 
     timer.step("Wrote bundled styles", |substeps| {
-        let output = substeps.step("Generated styles", || {
-            styles::generate(view_context, &tailwind_css)
-        })?;
+        let output = substeps.step("Generated styles", || styles::generate(view_context))?;
         substeps.step("Wrote CSS", || {
             RoutePath::from(Route::Styles).write(output_dir, output.css)
         })?;

@@ -2839,10 +2839,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "paxcss"
-version = "0.1.0"
-
-[[package]]
 name = "paxhtml"
 version = "0.1.0"
 source = "git+https://github.com/philpax/paxhtml.git#1df6640053a32651f6bf39d14e89645933fa7a3a"
@@ -2879,11 +2875,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "paxhtml_tailwind"
-version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#1df6640053a32651f6bf39d14e89645933fa7a3a"
-
-[[package]]
 name = "paxsite"
 version = "0.1.0"
 dependencies = [
@@ -2895,9 +2886,7 @@ dependencies = [
  "fontdb",
  "image",
  "markdown",
- "paxcss",
  "paxhtml",
- "paxhtml_tailwind",
  "paxsite-content",
  "rayon",
  "resvg",

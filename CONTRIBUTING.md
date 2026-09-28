@@ -33,7 +33,6 @@ sudo apt-get install lld  # Debian/Ubuntu
 ### Build Flags
 
 - `--fast` / `-f`: Skips output directory clearing, OG image generation, and uses file mtime instead of Git dates for notes. Use during rapid iteration, but note some features may behave differently.
-- `--use-global-tailwind` / `-u`: Uses system `tailwindcss` instead of downloading one. Useful if the auto-downloaded binary doesn't work.
 - `--verbose` / `-v`: Shows detailed timing for each build step.
 - `--public` / `-p`: Binds the dev server to `0.0.0.0` instead of `127.0.0.1`, allowing access from other devices on the network.
 - `--check`: Runs the content-phase validation only (every markdown link resolves and every `#anchor` points at a real heading) and exits — no site is built, nothing is written, no dev server starts. Prints one line per broken link and exits non-zero if any are found; otherwise prints `check: all links valid`. Fast, and handy after editing content (e.g. renaming a heading changes its anchor slug and can break links elsewhere):
@@ -44,9 +43,9 @@ sudo apt-get install lld  # Debian/Ubuntu
 
   The same validation runs at the start of a normal build, so a broken link fails the build too — `--check` just skips straight to it.
 
-### Tailwind CSS
+### Styles
 
-A Tailwind binary is auto-downloaded to `./tailwind` on first run. This file is gitignored. If it doesn't work (common on macOS ARM64), install globally (`brew install tailwindcss`) and use `--use-global-tailwind`.
+The stylesheet is plain CSS in `src/styles/`. `site/` is the site's sheet (`site.css` imports the rest, in order); `src/styles/mod.rs` inlines those imports at build time and bundles them with `fonts.css`, `document.css` and the syntax highlighter's generated theme into `/styles.css`. A new file in `site/` must also be listed in `SITE_FILES` there.
 
 ## Project Structure
 
@@ -230,7 +229,6 @@ Component implementations live in `src/views/components/`.
 | `paxsite` (root) | Main SSG: markdown rendering, views, build orchestration |
 | `paxsite-content` | Content layer: document types, disk I/O, frontmatter parsing, Git dates, Bluesky API/caching |
 | `paxsite-cli` | CLI tool for creating content and publishing to standard.site (the `atproto` module: OAuth localhost public client + record writes) |
-| `paxcss` | CSS parsing utilities for extracting theme variables |
 | `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`) |
 
 ## standard.site Publishing

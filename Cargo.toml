@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
+members = [".", "bake_assets", "paxsite-content", "paxsite-cli"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -51,15 +51,12 @@ toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
 sha2 = "0.10"
 markdown = "1.0.0"
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
-paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
-# paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
 blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git" }
 # blackbird-json-export-types = { path = "../blackbird/blackbird-json-export-types" }
 
 [dependencies]
 paxhtml = { workspace = true }
-paxhtml_tailwind = { workspace = true }
 blackbird-json-export-types = { workspace = true }
 
 # serve
@@ -74,7 +71,6 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 arborium = { workspace = true }
 toml = { workspace = true }
-paxcss = { path = "paxcss" }
 paxsite-content = { path = "paxsite-content" }
 toml-datetime-compat = { workspace = true }
 image = { workspace = true }

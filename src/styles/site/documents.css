@@ -1,0 +1,134 @@
+/* ========================================================================
+   DOCUMENTS — a post, an update or a note: heading, body and contents.
+   ======================================================================== */
+
+/* The aside reads first when stacked, and stays after the article in the DOM. */
+.document-layout {
+  display: grid;
+  gap: var(--s-10);
+}
+.document-layout > aside {
+  display: none;
+  order: -1;
+}
+.document-content,
+.document-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.document-content {
+  min-width: 0;
+}
+@container site (width >= 64rem) {
+  /* The column is stated rather than sized to its content, because it is the
+     container the sidenotes measure. */
+  .document-layout {
+    grid-template-columns: minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
+    justify-content: center;
+  }
+  .document-layout:has(> aside) {
+    grid-template-columns: 14rem minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
+  }
+  .document-layout > aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--s-4));
+    display: block;
+    align-self: start;
+  }
+  .document-body {
+    display: block;
+  }
+}
+
+/* Heading. */
+
+/* Unlike a listing's title, one size at every width. */
+.document-header h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--lead-tight);
+  letter-spacing: var(--tracking-display);
+}
+/* The standfirst. */
+.document-header hgroup p {
+  font-family: var(--f-body);
+  font-size: var(--text-lg);
+  font-style: italic;
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-muted);
+}
+.document-header hgroup :where(code, kbd, samp) {
+  font-size: var(--em-down);
+}
+.document-header > img {
+  width: 100%;
+  margin-top: var(--s-6);
+  border-radius: var(--radius-md);
+}
+
+/* The tags drop to their own line when less than 12rem is left. */
+.document-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-1-5);
+}
+.document-meta > * {
+  flex-shrink: 0;
+}
+.document-meta > :first-child {
+  color: var(--accent);
+}
+.document-meta > [aria-hidden] {
+  color: var(--ink-faint);
+}
+.document-meta > .tag-list {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+/* The breadcrumb's parts are names, so they keep their capitals. */
+.breadcrumb ol {
+  text-transform: none;
+}
+.breadcrumb li {
+  display: inline;
+}
+.breadcrumb li + li::before {
+  content: ' / ';
+}
+
+/* Contents. */
+
+/* Between the heading and the body on a narrow page, closed; in the aside on
+   a wide one. */
+.document-toc {
+  padding-block: var(--s-2);
+  border-top: var(--rule) solid var(--line);
+  border-bottom: var(--rule) solid var(--separator);
+}
+.document-toc > summary {
+  cursor: pointer;
+}
+.document-toc nav {
+  margin-top: var(--s-3);
+}
+@container site (width >= 64rem) {
+  .document-toc {
+    display: none;
+  }
+}
+
+.aside-heading {
+  margin-bottom: var(--s-2);
+  line-height: var(--lead-normal);
+}
+
+.toc ol ol {
+  margin-top: var(--s-1);
+  padding-left: var(--s-3);
+}
+.toc a[aria-current='location'] {
+  --link-rest: var(--accent);
+}

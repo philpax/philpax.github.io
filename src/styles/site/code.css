@@ -1,0 +1,57 @@
+/* ========================================================================
+   CODE — inline code and code blocks. The token colours are the highlighter's
+   own theme, which it generates.
+   ======================================================================== */
+
+.prose code {
+  padding: var(--r-1) var(--r-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--em-down);
+  /* The dark theme keeps plain ink. */
+  color: light-dark(color-mix(in oklab, var(--ink) 82%, var(--accent)), var(--ink));
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+}
+.prose pre {
+  position: relative;
+  padding: var(--s-6) var(--s-2) var(--s-2);
+  border: var(--rule) solid var(--line);
+  border-left: var(--rule-strong) solid color-mix(in oklab, var(--accent) 45%, transparent);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  font-size: var(--em-down);
+  line-height: var(--lead-snug);
+  background: var(--raised);
+}
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+.code-language {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: max-content;
+  margin: 0;
+  padding: var(--r-1) var(--s-2);
+  font-family: var(--f-ui);
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.code-copy {
+  position: absolute;
+  top: var(--r-2);
+  right: var(--r-2);
+  padding: var(--r-1);
+  color: var(--ink-muted);
+}
+.code-copy:hover {
+  color: var(--ink);
+}
+.code-copy svg {
+  width: var(--text-base);
+  height: var(--text-base);
+  fill: currentColor;
+}
