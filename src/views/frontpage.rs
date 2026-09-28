@@ -77,7 +77,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
 
                     // updates — dense changelog
                     <Segment header={header_with_all(bump, "updates", Route::Updates, Route::UpdatesRss)} body_class={"flex flex-col gap-5".to_string()}>
-                        <ul class={format!("list-none m-0 p-0 flex flex-col gap-2 text-sm")}>
+                        <ul class="list-none m-0 p-0 flex flex-col gap-2 text-sm">
                         #{
                             content
                                 .updates
