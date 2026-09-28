@@ -115,14 +115,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
 /// to its own page where it has one.
 pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<'a> {
     let bump = context.bump;
-    let note_ids: HashSet<&DocumentId> = context
-        .content
-        .notes
-        .documents
-        .all_documents()
-        .into_iter()
-        .map(|d| &d.id)
-        .collect();
+    let note_ids = note_ids(context);
     html! { in bump;
         <ul class="stack" style={gap("2-5")}>
             #{documents.iter().map(|doc| {
@@ -139,6 +132,12 @@ pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Elem
             })}
         </ul>
     }
+}
+
+/// A note's parent folders, by name, with the route of each one's own page
+/// where it has one.
+pub fn note_folders(context: ViewContext<'_>, doc: &Document) -> Vec<(String, Option<String>)> {
+    folders(doc, &note_ids(context))
 }
 
 /// A `.stack`'s gap, off the spacing ladder.
@@ -175,6 +174,18 @@ fn time<'a>(bump: &'a Bump, doc: &Document) -> Element<'a> {
     html! { in bump;
         <time datetime={when.to_rfc3339()}>{display_date(when.date_naive(), true)}</time>
     }
+}
+
+/// Every note's id.
+fn note_ids<'a>(context: ViewContext<'a>) -> HashSet<&'a DocumentId> {
+    context
+        .content
+        .notes
+        .documents
+        .all_documents()
+        .into_iter()
+        .map(|d| &d.id)
+        .collect()
 }
 
 /// A note's parent folders, by name, with the route of each one's own page.

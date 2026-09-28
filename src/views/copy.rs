@@ -65,7 +65,12 @@ pub mod credits {
 
 /// Furniture around a document.
 pub mod doc {
+    pub const CONTENTS: &str = "Contents";
     pub const DRAFT: &str = "draft";
+
+    pub fn words(n: usize) -> String {
+        format!("{} words", super::util::number_to_comma_separated_string(n))
+    }
 }
 
 pub mod empty {

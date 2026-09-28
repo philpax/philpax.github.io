@@ -30,6 +30,9 @@ pub fn pluralize(s: &str, count: usize) -> String {
 
 // massively inefficient but who cares
 pub fn number_to_comma_separated_string(number: usize) -> String {
+    if number == 0 {
+        return "0".to_string();
+    }
     let mut temp = vec![];
     let mut number = number;
     while number > 0 {
@@ -41,8 +44,10 @@ pub fn number_to_comma_separated_string(number: usize) -> String {
     for (i, n) in temp.iter().enumerate() {
         if i > 0 {
             output.push(',');
+            output.push_str(&format!("{n:03}"));
+        } else {
+            output.push_str(&n.to_string());
         }
-        output.push_str(&n.to_string());
     }
     output
 }

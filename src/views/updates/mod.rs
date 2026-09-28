@@ -1,7 +1,7 @@
 use super::*;
 use crate::views::{
+    document,
     listings::{page_head, year_groups},
-    posts,
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -69,6 +69,6 @@ pub fn post<'a>(
             ..Default::default()
         },
         CurrentPage::Updates,
-        posts::post(context, document, posts::PostBody::Full),
+        document::page(context, document),
     )
 }
