@@ -3,6 +3,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use anyhow::Context;
+
 use crate::{Route, RoutePath};
 
 pub use paxsite_content::{
@@ -15,6 +17,7 @@ pub type DocumentCollection = paxsite_content::DocumentCollection<Document>;
 pub type NotesCollection = paxsite_content::NotesCollection<Document>;
 
 const MUSIC_LIBRARY_PATH: &str = "assets/baked/music.json";
+const TAG_DESCRIPTIONS_PATH: &str = "content/tags.toml";
 
 // ── DocumentMetadataExt ─────────────────────────────────────────────────────
 
@@ -133,6 +136,9 @@ pub struct Content {
     pub updates: DocumentCollection,
     pub notes: NotesCollection,
     pub tags: HashMap<Tag, Vec<DocumentId>>,
+    /// Each tag's description, one line of inline Markdown from
+    /// `content/tags.toml`. Every tag in `tags` has one.
+    pub tag_descriptions: HashMap<Tag, String>,
     pub about: Document,
     pub credits: Document,
     pub music_library: blackbird_json_export_types::Output,
@@ -155,6 +161,7 @@ impl Content {
             updates: DocumentCollection::empty(),
             notes: NotesCollection::empty(),
             tags: HashMap::new(),
+            tag_descriptions: HashMap::new(),
             about: Document::empty(),
             credits: Document::empty(),
             music_library: blackbird_json_export_types::Output::new(),
@@ -227,6 +234,10 @@ impl Content {
         // Keep the base Content's indices (source path mappings) for link resolution.
         // Documents have been consumed by map_documents, so we replace them with empties.
         let tags = raw.tags;
+
+        let now = std::time::Instant::now();
+        let tag_descriptions = read_tag_descriptions(&tags)?;
+        report("Read tag descriptions", now.elapsed());
         let base = paxsite_content::Content {
             blog: paxsite_content::DocumentCollection::empty(),
             updates: paxsite_content::DocumentCollection::empty(),
@@ -244,6 +255,7 @@ impl Content {
             updates,
             notes,
             tags,
+            tag_descriptions,
             about,
             credits,
             music_library,
@@ -374,6 +386,53 @@ impl Content {
         }
         paxsite_content::bluesky::ensure_posts_cached(&posts)
     }
+}
+
+/// Read every tag's description. A tag in use without one is an error, so a
+/// tag's page always has something to open with; a description nothing uses
+/// is only a warning.
+fn read_tag_descriptions(
+    tags: &HashMap<Tag, Vec<DocumentId>>,
+) -> anyhow::Result<HashMap<Tag, String>> {
+    let descriptions: HashMap<Tag, String> = toml::from_str(
+        &std::fs::read_to_string(TAG_DESCRIPTIONS_PATH)
+            .with_context(|| format!("failed to read {TAG_DESCRIPTIONS_PATH}"))?,
+    )
+    .with_context(|| format!("failed to parse {TAG_DESCRIPTIONS_PATH}"))?;
+
+    let mut undescribed: Vec<&Tag> = tags
+        .keys()
+        .filter(|tag| !descriptions.contains_key(*tag))
+        .collect();
+    if !undescribed.is_empty() {
+        undescribed.sort();
+        anyhow::bail!(
+            "{TAG_DESCRIPTIONS_PATH}: no description for {}",
+            undescribed
+                .iter()
+                .map(|tag| format!("\"{tag}\""))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+    }
+
+    let mut unused: Vec<&Tag> = descriptions
+        .keys()
+        .filter(|tag| !tags.contains_key(*tag))
+        .collect();
+    if !unused.is_empty() {
+        unused.sort();
+        eprintln!(
+            "warning: {TAG_DESCRIPTIONS_PATH}: described but unused: {}",
+            unused
+                .iter()
+                .map(|tag| tag.as_str())
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+    }
+
+    Ok(descriptions)
 }
 
 fn extract_bluesky_urls(

@@ -5,27 +5,14 @@ use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter},
     util,
     views::components::{
-        IsoDate, IsoDateProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
-        collect_pr_entries,
+        IsoDate, IsoDateProps, Link, LinkProps, Segment, SegmentProps, SegmentTag, TagList,
+        TagListProps, collect_pr_entries,
     },
 };
 
 pub fn tags<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {
-    document
-        .tags()
-        .map(|t| {
-            let tags = t.iter().map(|tag| {
-                html! { in bump;
-                    <li class="flex-shrink-0 mr-2 last:mr-0">
-                        <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
-                            {format!("#{tag}")}
-                        </Link>
-                    </li>
-                }
-            });
-            html! { in bump; <ul class={format!("list-none m-0 p-0 flex flex-nowrap flex-shrink-0 {CODE_FONT_STYLE}")}>#{tags}</ul> }
-        })
-        .unwrap_or_default()
+    let tags = document.tags().cloned().unwrap_or_default();
+    html! { in bump; <TagList tags={tags} /> }
 }
 
 pub fn date<'a>(bump: &'a Bump, document: &Document) -> paxhtml::Element<'a> {

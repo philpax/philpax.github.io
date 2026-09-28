@@ -1,0 +1,38 @@
+# Every tag, and the line its page opens with.
+#
+# A description is inline Markdown, so it can link. A post or update that uses a
+# tag missing from this file fails the build; an entry that nothing uses is only
+# a warning.
+
+ai = "AI of all kinds, and living alongside it"
+ananke = "a daemon that decides which AI models get my GPUs"
+balatro = "a reimplementation of Balatro in Rust"
+blackbird = "my music player"
+c = "C, and things it was never meant to do"
+cardinal = "a modular synth, floating in VR"
+cursed = "things that should not work, but do"
+d = "the D programming language"
+dalamud = "[Dalamud](https://github.com/goatcorp/Dalamud)"
+ethics = "whether we should, not just whether we can"
+genresinspace = "every music genre on Wikipedia, as one big graph"
+hardware = "the physical stuff: servers, workstations, headsets"
+idacsplitter = "splitting IDA's decompiler output into files you can actually search"
+jc2mp = "[Just Cause 2: Multiplayer Mod](https://store.steampowered.com/app/259080/Just_Cause_2_Multiplayer_Mod/)"
+jc3vrs = "Just Cause 3, but in VR (eventually)"
+meta = "posts about the posting"
+music = "listening to it, and building things for it"
+nixos = "every machine I run, configured from one repo"
+paxboard = "my personal homepage of services and models"
+paxcord = "my Discord bot, built around Lua"
+paxhtml = "the HTML templating library this site is built with"
+perchanceinterpreter = "an interpreter for Perchance's random generators"
+personal = "life, rather than projects"
+photos = "fixing up a lifetime of photos"
+prismata = "an old voxel-sculpting prototype from Ambient, now public"
+pyxis = "a schema language for describing game memory"
+reutilities = "a Rust crate for modding games, badly named"
+rucomfyui = "driving ComfyUI from Rust, and now Lua"
+veldera = "poking at Google Earth's 3D data"
+website = "this site, and the generator behind it"
+wikitextsimplified = "turning Wikipedia markup into a tree you can use"
+xr = "virtual and augmented reality"

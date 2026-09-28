@@ -1,7 +1,7 @@
 use super::*;
 use crate::views::{
     components::{A, AProps, TagLabel, TagLabelProps, TagLink, TagLinkProps},
-    listings::{gap, index_row, page_head, summary_list},
+    listings::{gap, index_row, inline_markdown, page_head, summary_list},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -57,6 +57,11 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     let bump = context.bump;
     let content = &context.content;
 
+    let url = Route::Tag {
+        tag_id: tag_id.to_string(),
+    }
+    .url_path();
+
     // Collect all documents with this tag
     let mut tagged_documents = Vec::new();
     for doc_id in &content.tags[tag_id] {
@@ -88,7 +93,11 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         CurrentPage::Tags,
         html! { in bump;
             <div class="frame-narrow">
-                {page_head(bump, html! { in bump; <TagLabel tag={tag_id.to_string()} /> }, None)}
+                {page_head(
+                    bump,
+                    html! { in bump; <TagLabel tag={tag_id.to_string()} /> },
+                    Some(inline_markdown(context, &content.tag_descriptions[tag_id], &url)),
+                )}
                 <div class="index-groups">
                     {index_row(
                         bump,

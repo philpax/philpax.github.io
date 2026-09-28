@@ -73,6 +73,8 @@ tags=["personal", "meta"]
 +++
 ```
 
+Every tag used by a blog post or update must be described in `content/tags.toml` (one line of inline Markdown, which opens the tag's page); a tag without a description fails the build, and a description nothing uses is a warning.
+
 **Notes** have NO frontmatter - metadata is auto-generated:
 - `title` = filename (without `.md` extension)
 - `datetime` = last Git commit date (or file mtime in fast mode)
