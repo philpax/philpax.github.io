@@ -38,3 +38,6 @@ pub use pr_meta::*;
 
 mod pr_timeline;
 pub use pr_timeline::*;
+
+mod tag;
+pub use tag::*;

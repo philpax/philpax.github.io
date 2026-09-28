@@ -1,15 +1,18 @@
 use super::*;
-use crate::views::posts;
+use crate::views::{
+    listings::{page_head, year_groups},
+    posts,
+};
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
-    let all_posts = context
+    let documents: Vec<&Document> = context
         .content
         .blog
         .documents
         .iter()
         .filter(|d| !d.metadata.draft)
-        .map(|doc| posts::post(context, doc, posts::PostBody::Description));
+        .collect();
     layout(
         context,
         SocialMeta {
@@ -21,8 +24,12 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         },
         CurrentPage::Blog,
         html! { in bump;
-            <div class="flex flex-col gap-3">
-                #{all_posts}
+            <div class="frame-narrow">
+                {page_head(bump, html! { in bump; {copy::blog::TITLE} }, Some(html! { in bump; {copy::blog::LEDE} }))}
+                {documents.is_empty().then(|| html! { in bump;
+                    <p class="empty-message">{copy::empty::INDEX}</p>
+                })}
+                {year_groups(context, &documents)}
             </div>
         },
     )

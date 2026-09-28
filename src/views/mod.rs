@@ -12,6 +12,7 @@ use std::collections::HashMap;
 pub mod blog;
 pub mod credits;
 pub mod frontpage;
+pub mod listings;
 pub mod notes;
 pub mod posts;
 pub mod tags;
