@@ -7,6 +7,7 @@ use crate::content::DocumentId;
 
 mod content;
 mod elements;
+mod fonts;
 mod image_store;
 mod js;
 mod markdown;
@@ -423,16 +424,25 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote bundled styles", |substeps| {
+    let script = js::generate()?;
+
+    // After every page is written: the fonts are cut to the pages' text.
+    timer.step("Wrote bundled styles and fonts", |substeps| {
         let output = substeps.step("Generated styles", || styles::generate(view_context))?;
+        let fonts = substeps.step("Subset fonts", || {
+            fonts::generate(output_dir, &output.css, &script, fast)
+        })?;
+        for face in fonts.faces.iter().filter(|f| verbose || !f.cached) {
+            println!("   font {face}");
+        }
         substeps.step("Wrote CSS", || {
-            RoutePath::from(Route::Styles).write(output_dir, output.css)
+            RoutePath::from(Route::Styles).write(output_dir, [fonts.css, output.css].join("\n"))
         })?;
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled JavaScript", |_| {
-        RoutePath::from(Route::Scripts).write(output_dir, js::generate()?)?;
+        RoutePath::from(Route::Scripts).write(output_dir, script)?;
         anyhow::Ok(())
     })?;
 

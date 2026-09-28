@@ -80,6 +80,13 @@ resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }
 rayon = { workspace = true }
+sha2 = { workspace = true }
+# Fonts: HarfBuzz's subsetter and instancer (built from source; the crate's
+# `sys` module exposes the axis calls its safe API lacks), a WOFF2 encoder,
+# and an HTML parser to read the built pages' text.
+mkwebfont_hb-subset = "0.5"
+scraper = "0.27"
+ttf2woff2 = { version = "0.13", default-features = false }
 
 [features]
 serve = ["dep:sha1"]
@@ -108,3 +115,15 @@ arborium-ruby.opt-level = 3
 arborium-theme.opt-level = 3
 arborium-toml.opt-level = 3
 arborium-tree-sitter.opt-level = 3
+# Font subsetting (see src/fonts/).
+mkwebfont_hb-subset.opt-level = 3
+ttf2woff2.opt-level = 3
+brotli.opt-level = 3
+sha2.opt-level = 3
+html5ever.opt-level = 3
+markup5ever.opt-level = 3
+tendril.opt-level = 3
+string_cache.opt-level = 3
+scraper.opt-level = 3
+selectors.opt-level = 3
+ego-tree.opt-level = 3

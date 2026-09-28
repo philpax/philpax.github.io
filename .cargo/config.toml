@@ -1,2 +1,9 @@
 [target.x86_64-unknown-linux-gnu]
 rustflags = ["-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
+
+[env]
+# HarfBuzz (built from source for font subsetting) needs nothing from the C++
+# runtime when it's built as its own build system builds it: without exceptions,
+# and on pthreads rather than std::mutex. That keeps the binary off libstdc++,
+# which NixOS doesn't put on the library path.
+CXXFLAGS = "-fno-exceptions -DHAVE_PTHREAD"

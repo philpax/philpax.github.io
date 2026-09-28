@@ -4,19 +4,19 @@ pub struct GenerateOutput {
     pub css: String,
 }
 
-/// Bundle the site's stylesheet into one file: the faces, the document around
-/// the site, the sheet in `site/` with its `@import`s inlined in order, and the
-/// highlighter's token colours for both themes.
+/// Bundle the site's stylesheet into one file: the document around the site,
+/// the sheet in `site/` with its `@import`s inlined in order, and the
+/// highlighter's token colours for both themes. The faces' rules are generated
+/// with the fonts (see `crate::fonts`) and go in front.
 pub fn generate(context: ViewContextBase<'_>) -> anyhow::Result<GenerateOutput> {
     let site = inline_imports(SITE_ENTRY, SITE_FILES)?;
     let syntax = syntax_css(context);
-    let css = [FONTS, DOCUMENT, &site, &syntax].join("\n");
+    let css = [DOCUMENT, &site, &syntax].join("\n");
     Ok(GenerateOutput { css })
 }
 
 // --- Private implementation details ---
 
-const FONTS: &str = include_str!("fonts.css");
 const DOCUMENT: &str = include_str!("document.css");
 const SITE_ENTRY: &str = include_str!("site/site.css");
 
