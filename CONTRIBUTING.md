@@ -30,9 +30,11 @@ On Linux, the project uses `lld` for faster linking (configured in `.cargo/confi
 sudo apt-get install lld  # Debian/Ubuntu
 ```
 
+Font subsetting builds HarfBuzz from source, so a C++ compiler is needed too. `.cargo/config.toml` builds it without exceptions and on pthreads, which keeps the binary off libstdc++ (NixOS doesn't put it on the library path).
+
 ### Build Flags
 
-- `--fast` / `-f`: Skips output directory clearing, OG image generation, and uses file mtime instead of Git dates for notes. Use during rapid iteration, but note some features may behave differently.
+- `--fast` / `-f`: Skips output directory clearing, OG image generation, and uses file mtime instead of Git dates for notes. It also reuses each font's last subset instead of cutting new ones, so characters new since the last full build may fall back to a system font. Use during rapid iteration, but note some features may behave differently.
 - `--verbose` / `-v`: Shows detailed timing for each build step.
 - `--public` / `-p`: Binds the dev server to `0.0.0.0` instead of `127.0.0.1`, allowing access from other devices on the network.
 - `--check`: Runs the content-phase validation only (every markdown link resolves and every `#anchor` points at a real heading) and exits — no site is built, nothing is written, no dev server starts. Prints one line per broken link and exits non-zero if any are found; otherwise prints `check: all links valid`. Fast, and handy after editing content (e.g. renaming a heading changes its anchor slug and can break links elsewhere):
@@ -45,7 +47,17 @@ sudo apt-get install lld  # Debian/Ubuntu
 
 ### Styles
 
-The stylesheet is plain CSS in `src/styles/`. `site/` is the site's sheet (`site.css` imports the rest, in order); `src/styles/mod.rs` inlines those imports at build time and bundles them with `fonts.css`, `document.css` and the syntax highlighter's generated theme into `/styles.css`. A new file in `site/` must also be listed in `SITE_FILES` there.
+The stylesheet is plain CSS in `src/styles/`. `site/` is the site's sheet (`site.css` imports the rest, in order); `src/styles/mod.rs` inlines those imports at build time and bundles them with `document.css` and the syntax highlighter's generated theme into `/styles.css`, behind the fonts' generated `@font-face` rules. A new file in `site/` must also be listed in `SITE_FILES` there.
+
+### Fonts
+
+The site's faces are cut at build time by `src/fonts/`, from the originals in `assets/source/fonts/` (each beside its licence): Source Serif 4 roman and italic, Fraunces, Figtree and Alegreya as variable TTFs from google/fonts, and Iosevka's static Regular from its 33.3.6 release.
+
+Once every page is written, the build reads the built HTML (pages that load `/styles.css`) and gives each face the characters of the elements it's used for: the wordmark (Alegreya) the site's name in `.site-brand`, the display face (Fraunces) `h1`–`h3`, the reading face (Source Serif) `.prose` and the other reading selectors in `patterns.css`, the mono face (Iosevka) `code`, `pre`, `kbd` and `samp`, and the UI face (Figtree) everything. This is by element, not by evaluating the CSS, so it errs towards spare glyphs. All faces but the wordmark also get printable ASCII, the sheet's `content:` strings, the characters in the script (anything it might insert), and the ellipsis and quotation marks the browser draws; every character also brings its other case.
+
+Each variable font is then instanced with HarfBuzz to what the sheet uses: the weight axis narrowed to the weights it asks of that face, optical size narrowed to that face's sizes on the type scale, and Fraunces' `SOFT` and `WONK` pinned to their defaults. These are set per face in `FACES` in `src/fonts/mod.rs`, which also generates the `@font-face` rules (weight ranges matching the instances, `font-display: swap`). If the sheet starts using a new weight, size range or face, update `FACES`; its tests check the families against `tokens.css` and the `--font-weight-*` tokens against the ranges.
+
+Results are cached in `.cache/fonts/` (gitignored), keyed by the source file, the instancing and the character set, and served as `/fonts/<face>.<key>.woff2`. A build whose text hasn't changed reuses them; a change costs a few seconds. Pass `-v` to print each face's source and served sizes (a new cut always prints them).
 
 ## Project Structure
 
@@ -114,6 +126,7 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
 | `src/views/notes/mod.rs` | Notes hierarchy and individual note pages |
 | `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
 | `src/og_image.rs` | OpenGraph image generation (1200x630 PNG) |
+| `src/fonts/` | Font subsetting: characters from the built pages, HarfBuzz instancing, WOFF2, cache, `@font-face` rules |
 | `src/main.rs` | Build orchestration, output generation |
 
 ### View Rendering
@@ -190,8 +203,9 @@ Within each module, organize code as follows:
 | Directory | Purpose |
 |-----------|---------|
 | `public/` | Build output (gitignored, cleared on each non-fast build) |
-| `static/` | Static files copied as-is to output (fonts, CNAME, etc.) |
-| `assets/source/` | Source assets for processing (e.g., icon.png) |
+| `static/` | Static files copied as-is to output (CNAME, the OG images' Literata, etc.) |
+| `assets/source/` | Source assets for processing (e.g., icon.png); `fonts/` holds the faces' originals and licences |
+| `.cache/fonts/` | Subset fonts kept between builds (gitignored) |
 | `assets/baked/` | Pre-processed assets (generated by `bake_assets`) |
 | `content/` | Markdown content (blog/, updates/, notes/) |
 | `static/88x31/` | 88x31 button images for the frontpage (must be saved locally, no hotlinking) |
