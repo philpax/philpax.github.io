@@ -29,7 +29,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             type_: Some("website".to_string()),
             ..Default::default()
         },
-        CurrentPage::Home,
+        CurrentPage::Credits,
         html! { in bump;
             <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()}>
                 {MarkdownConverter::new(context, Route::Credits.url_path()).with_sidenotes().convert_sectioned(&content.credits.description)}

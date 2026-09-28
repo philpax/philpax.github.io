@@ -1,70 +1,17 @@
-const ICON_URLS = {
-  light: "/phosphor/sun.svg",
-  dark: "/phosphor/moon.svg",
-  arrow: "/phosphor/arrow-right.svg",
-};
-
-// Cache for fetched SVGs
-const iconCache = {};
-
-async function fetchSvg(url) {
-  if (iconCache[url]) {
-    return iconCache[url];
-  }
-
-  const response = await fetch(url);
-  const svgText = await response.text();
-  iconCache[url] = svgText;
-  return svgText;
-}
-
-function createIconContainer() {
-  const container = document.createElement("div");
-  container.className = "flex items-center gap-1";
-  container.innerHTML =
-    '<div class="w-4 h-4"></div><div class="w-4 h-4"></div><div class="w-4 h-4"></div>';
-  return container;
-}
-
-// Show "current → next" so the direction of the toggle is explicit.
-async function updateIconContainer(container, currentTheme, nextTheme) {
-  const [currentSvg, arrowSvg, nextSvg] = await Promise.all([
-    fetchSvg(ICON_URLS[currentTheme]),
-    fetchSvg(ICON_URLS.arrow),
-    fetchSvg(ICON_URLS[nextTheme]),
-  ]);
-
-  const slots = container.querySelectorAll("div");
-  function put(slot, svg) {
-    slot.innerHTML = svg;
-    const icon = slot.querySelector("svg");
-    if (icon) {
-      icon.setAttribute("width", "16");
-      icon.setAttribute("height", "16");
-    }
-  }
-  put(slots[0], currentSvg);
-  put(slots[1], arrowSvg);
-  put(slots[2], nextSvg);
-}
-
+// The theme switch: the nav's last item, showing the theme in force, an arrow,
+// and the theme it switches to. It only works with script, so script makes it.
+// A chosen theme is pinned as a class on <html> (which the head script restores
+// on the next page) and remembered; until then the system's scheme applies.
 function createThemeSwitcher() {
-  let headerLinks = document.getElementById("header-links");
-  if (!headerLinks) {
-    console.log("Header links not found");
-    return;
-  }
+  const list = document.querySelector(".site > header nav ul");
+  if (!list) return;
 
-  let a = document.createElement("a");
-  let container = createIconContainer();
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-  let darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-  // The effective theme: an explicit choice if the user has made one, otherwise
-  // whatever the browser prefers (which the CSS applies by default).
-  function getEffectiveTheme() {
-    const stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") return stored;
+  function effectiveTheme() {
+    const root = document.documentElement.classList;
+    if (root.contains("dark")) return "dark";
+    if (root.contains("light")) return "light";
     return darkQuery.matches ? "dark" : "light";
   }
 
@@ -72,42 +19,41 @@ function createThemeSwitcher() {
     return theme === "dark" ? "light" : "dark";
   }
 
-  function updateSwitcherIcon() {
-    const current = getEffectiveTheme();
+  function mark(icon) {
+    const span = document.createElement("span");
+    span.dataset.icon = icon;
+    span.setAttribute("aria-hidden", "true");
+    return span;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "theme-toggle";
+
+  function render() {
+    const current = effectiveTheme();
     const next = otherTheme(current);
-    updateIconContainer(container, current, next);
-    a.title = "Switch to " + next + " mode";
+    const label = "Switch to the " + next + " theme";
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    button.replaceChildren(mark(current), mark("arrow"), mark(next));
   }
 
-  function setTheme(theme) {
+  button.addEventListener("click", function () {
+    const next = otherTheme(effectiveTheme());
     document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(theme);
-    localStorage.setItem("theme", theme);
-    updateSwitcherIcon();
-  }
-
-  updateSwitcherIcon();
-
-  a.href = "#";
-  a.className = "nav-link flex items-center justify-center text-center";
-
-  a.addEventListener("click", function (e) {
-    e.preventDefault();
-    setTheme(otherTheme(getEffectiveTheme()));
+    document.documentElement.classList.add(next);
+    localStorage.setItem("theme", next);
+    render();
   });
 
-  a.appendChild(container);
+  // While the reader hasn't chosen, follow the system.
+  darkQuery.addEventListener("change", render);
 
-  // The nav is a <ul>; wrap the switcher in an <li> to keep markup valid.
-  let li = document.createElement("li");
-  li.appendChild(a);
-  headerLinks.append(li);
-
-  // While the user hasn't chosen explicitly, follow the system: the CSS swaps
-  // the colours, we just keep the icon in sync.
-  darkQuery.addEventListener("change", function () {
-    if (!localStorage.getItem("theme")) updateSwitcherIcon();
-  });
+  render();
+  const li = document.createElement("li");
+  li.appendChild(button);
+  list.appendChild(li);
 }
 
 function initScrollSpy() {

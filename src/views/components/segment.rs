@@ -23,12 +23,11 @@ pub fn SegmentLabel<'bump>(bump: &'bump Bump, props: SegmentLabelProps) -> paxht
 
 /// Which HTML element a [`Segment`] wraps itself in. The styling and inner
 /// structure are identical; only the tag (and thus the landmark semantics)
-/// differ — e.g. `Footer` for the page colophon, `Article` for prose.
+/// differ — e.g. `Article` for prose.
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum SegmentTag {
     Section,
     Article,
-    Footer,
 }
 
 pub struct SegmentProps<'bump> {
@@ -62,7 +61,7 @@ impl DefaultIn<'_> for SegmentProps<'_> {
 /// header and a padded (`p-3`) body. Used for the home-page and index-page
 /// segments so they all share one structure. Pass `body_class` for per-segment
 /// body tweaks (e.g. a flex layout), and `tag` to change the wrapping element
-/// (e.g. `Footer`).
+/// (e.g. `Article`).
 #[allow(non_snake_case)]
 pub fn Segment<'bump>(bump: &'bump Bump, props: SegmentProps<'bump>) -> paxhtml::Element<'bump> {
     let class = match props.class {
@@ -85,6 +84,5 @@ pub fn Segment<'bump>(bump: &'bump Bump, props: SegmentProps<'bump>) -> paxhtml:
     match props.tag {
         SegmentTag::Section => paxhtml::html! { in bump; <section class={class}>{inner}</section> },
         SegmentTag::Article => paxhtml::html! { in bump; <article class={class}>{inner}</article> },
-        SegmentTag::Footer => paxhtml::html! { in bump; <footer class={class}>{inner}</footer> },
     }
 }

@@ -18,9 +18,8 @@ pub mod tags;
 pub mod updates;
 
 pub mod components;
-use components::{
-    IsoDatetime, IsoDatetimeProps, Link, LinkProps, Segment, SegmentProps, SegmentTag,
-};
+pub mod copy;
+use components::{A, AProps, display_date};
 
 /// Base context without bump allocator - can be shared across threads
 #[derive(Copy, Clone)]
@@ -66,10 +65,11 @@ pub enum CurrentPage {
     Updates,
     Notes,
     Tags,
+    Credits,
 }
 impl CurrentPage {
-    pub const ALL_PAGES: &'static [CurrentPage] = &[
-        CurrentPage::Home,
+    /// The sections the primary nav links to, in order.
+    pub const NAV_PAGES: &'static [CurrentPage] = &[
         CurrentPage::Blog,
         CurrentPage::Updates,
         CurrentPage::Notes,
@@ -83,16 +83,31 @@ impl CurrentPage {
             CurrentPage::Updates => Route::Updates.url_path(),
             CurrentPage::Notes => Route::Note { note_id: vec![] }.url_path(),
             CurrentPage::Tags => Route::Tags.url_path(),
+            CurrentPage::Credits => Route::Credits.url_path(),
         }
     }
 
     pub fn name(&self) -> &'static str {
         match self {
-            CurrentPage::Home => "Home",
-            CurrentPage::Blog => "Blog",
-            CurrentPage::Updates => "Updates",
-            CurrentPage::Notes => "Notes",
-            CurrentPage::Tags => "Tags",
+            CurrentPage::Home => copy::nav::HOME,
+            CurrentPage::Blog => copy::nav::BLOG,
+            CurrentPage::Updates => copy::nav::UPDATES,
+            CurrentPage::Notes => copy::nav::NOTES,
+            CurrentPage::Tags => copy::nav::TAGS,
+            CurrentPage::Credits => copy::nav::CREDITS,
+        }
+    }
+
+    /// The section the page belongs to, which picks its accent
+    /// (`data-section` on the root). The front page has none.
+    pub fn section(&self) -> Option<&'static str> {
+        match self {
+            CurrentPage::Home => None,
+            CurrentPage::Blog => Some("blog"),
+            CurrentPage::Updates => Some("updates"),
+            CurrentPage::Notes => Some("notes"),
+            CurrentPage::Tags => Some("tags"),
+            CurrentPage::Credits => Some("credits"),
         }
     }
 }
@@ -176,13 +191,14 @@ pub fn layout<'a>(
     inner: Element<'a>,
 ) -> paxhtml::Document<'a> {
     let bump = context.bump;
-    let generation_date_element =
-        html! { in bump; <IsoDatetime datetime={context.generation_date} /> };
     let standard_site_uri = meta.standard_site_uri.clone();
+    let section = current_page
+        .section()
+        .map(|section| paxhtml::Attribute::new(bump, "data-section", section));
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
-            <html lang="en-AU" class="bg-canvas">
+            <html lang="en-AU">
                 <head>
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
@@ -199,79 +215,17 @@ pub fn layout<'a>(
                     {standard_site_uri.map(|uri| html! { in bump;
                         <link rel="site.standard.document" href={uri} />
                     })}
+                    // Pins a theme the reader chose, as a class on <html>, before
+                    // the sheet loads; without one, the system's scheme applies.
                     <script>{r#"(function(){var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.classList.add(t);})()"#}</script>
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
                 </head>
-                // Full-bleed on mobile: segments/nav/footer run edge-to-edge; the
-                // body padding (and inset) returns at sm+. The wordmark row re-pads
-                // itself below so the icon doesn't kiss the screen edge.
-                <body class={format!("max-w-[var(--body-max-width)] mx-auto text-fg {FONT_STYLE} px-0 sm:px-[var(--body-padding)] pt-2 transition-colors duration-200")}>
-                    // Decorative drifting lava-lamp blobs behind everything (see .bg-field in website.css).
-                    <div class="bg-field" ariaHidden="true">
-                        <span class="blob blob-1"></span>
-                        <span class="blob blob-2"></span>
-                        <span class="blob blob-3"></span>
-                        <span class="blob blob-4"></span>
-                        <span class="blob blob-5"></span>
-                    </div>
-                    <header class="my-2">
-                        // Status / command bar: mono wordmark + faux readout + bracketed nav.
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <div class="flex items-center justify-center sm:justify-start gap-3 min-w-0 px-[var(--body-padding)] sm:px-0">
-                                <img src={Route::Icon.url_path()} alt={format!("{} icon", context.website_author)} class="aspect-square h-8 w-8 border border-wire [image-rendering:auto]" />
-                                <span class={format!("wordmark text-xl font-bold {CODE_FONT_STYLE}")}>
-                                    {context.website_author}
-                                </span>
-                            </div>
-                            <nav ariaLabel="Primary">
-                                <ul id="header-links" class={format!("list-none m-0 p-0 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:justify-end {CODE_FONT_STYLE}")}>
-                                #{
-                                    CurrentPage::ALL_PAGES.iter().map(|page| {
-                                        let is_active = *page == current_page;
-                                        // w-full so each pill fills its grid cell on mobile (full-width nav band); content-width at sm+.
-                                        let class = if is_active { "nav-link active text-center w-full sm:w-auto" } else { "nav-link text-center w-full sm:w-auto" };
-                                        let aria_current = is_active.then(|| paxhtml::Attribute::new(bump, "aria-current", "page")).into_iter();
-                                        html! { in bump;
-                                            <li>
-                                                <a href={page.url_path()} class={class} {aria_current}>{page.name().to_lowercase()}</a>
-                                            </li>
-                                        }
-                                    })
-                                }
-                                </ul>
-                            </nav>
-                        </div>
-                    </header>
-                    <main>{inner}</main>
-                    <Segment
-                        tag={SegmentTag::Footer}
-                        label={"eof".to_string()}
-                        class={"mt-3".to_string()}
-                    >
-                        // Serif colophon (feeds live with the post/update lists on the home page).
-                        <div class="text-sm text-dim leading-relaxed">
-                            <p>
-                                "generated by "
-                                <Link underline target={"https://github.com/philpax/philpax.github.io"}>
-                                    "paxsite"
-                                </Link>
-                                " ("
-                                <Link underline target={Route::Credits.url_path()}>
-                                    "credits"
-                                </Link>
-                                ") on "
-                                {generation_date_element}
-                            </p>
-                            <p>
-                                "public domain under "
-                                <Link underline title={"Creative Commons 0".to_string()} target={"https://creativecommons.org/public-domain/cc0/"}>
-                                    "CC0"
-                                </Link>
-                                ": do whatever you like!"
-                            </p>
-                        </div>
-                    </Segment>
+                <body class="site" {section}>
+                    <a class="skip-link" href="#content">{copy::labels::SKIP}</a>
+                    {header(context, current_page)}
+                    <main id="content">{inner}</main>
+                    {footer(context)}
                 </body>
             </html>
         },
@@ -306,4 +260,57 @@ pub fn redirect<'bump>(
             </html>
         },
     )
+}
+
+/// The same band on every page: the wordmark, the primary nav, and the shader
+/// behind them. The theme switch is added to the nav by script, since it only
+/// works with one.
+fn header<'a>(context: ViewContext<'a>, current_page: CurrentPage) -> Element<'a> {
+    let bump = context.bump;
+    html! { in bump;
+        <header>
+            <canvas class="header-shader" ariaHidden="true"></canvas>
+            <div class="frame">
+                // The brand is stable chrome, never a heading; each page owns its own.
+                <a href={Route::Index.url_path()} class="site-brand">
+                    <img src={Route::Icon.url_path()} alt="" width="32" height="32" />
+                    {context.website_name.to_lowercase()}
+                </a>
+                <nav ariaLabel="Primary">
+                    <ul>
+                        #{CurrentPage::NAV_PAGES.iter().map(|page| html! { in bump;
+                            <li>
+                                <A href={page.url_path()} current={*page == current_page}>{page.name()}</A>
+                            </li>
+                        })}
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    }
+}
+
+/// The colophon: what generated the page, when, and under what terms.
+fn footer<'a>(context: ViewContext<'a>) -> Element<'a> {
+    let bump = context.bump;
+    let generated = context.generation_date;
+    html! { in bump;
+        <footer>
+            <div class="frame">
+                <p>
+                    "generated by "
+                    <A href={"https://github.com/philpax/philpax.github.io".to_string()}>"paxsite"</A>
+                    " ("
+                    <A href={Route::Credits.url_path()}>{copy::nav::CREDITS.to_lowercase()}</A>
+                    ") on "
+                    <time datetime={generated.to_rfc3339()}>{display_date(generated.date_naive(), false)}</time>
+                </p>
+                <p>
+                    "public domain under "
+                    <A href={"https://creativecommons.org/public-domain/cc0/".to_string()} title={"Creative Commons 0".to_string()}>"CC0"</A>
+                    ": do whatever you like!"
+                </p>
+            </div>
+        </footer>
+    }
 }

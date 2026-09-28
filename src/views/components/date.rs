@@ -141,6 +141,18 @@ pub fn MonthDayDateRange<'bump>(
     }
 }
 
+/// A date as the redesign prints it, in `en-AU`'s short month names:
+/// `02 Feb 2025` with `padded` days, `2 Sept 2025` without.
+pub fn display_date(date: chrono::NaiveDate, padded: bool) -> String {
+    use chrono::Datelike;
+    let month = en_au_short_month(date.month());
+    if padded {
+        format!("{:02} {month} {}", date.day(), date.year())
+    } else {
+        format!("{} {month} {}", date.day(), date.year())
+    }
+}
+
 fn parse_date(s: &str) -> (u32, u32, u32) {
     let parts: Vec<u32> = s
         .split('-')
@@ -189,5 +201,25 @@ fn format_date(month: u32, day: u32, year: Option<u32>, short: bool) -> String {
     match year {
         Some(y) => format!("{} {}, {}", month_name(month, short), day, y),
         None => format!("{} {}", month_name(month, short), day),
+    }
+}
+
+/// `Intl.DateTimeFormat('en-AU', { month: 'short' })`, which spells out the
+/// short months and writes September as "Sept".
+fn en_au_short_month(month: u32) -> &'static str {
+    match month {
+        1 => "Jan",
+        2 => "Feb",
+        3 => "Mar",
+        4 => "Apr",
+        5 => "May",
+        6 => "June",
+        7 => "July",
+        8 => "Aug",
+        9 => "Sept",
+        10 => "Oct",
+        11 => "Nov",
+        12 => "Dec",
+        _ => panic!("invalid month: {month}"),
     }
 }
