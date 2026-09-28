@@ -416,11 +416,13 @@ fn read_tag_descriptions(
         );
     }
 
+    // Drafts are only read in draft builds, so only those see every tag in use;
+    // elsewhere a tag used only by drafts would look unused.
     let mut unused: Vec<&Tag> = descriptions
         .keys()
         .filter(|tag| !tags.contains_key(*tag))
         .collect();
-    if !unused.is_empty() {
+    if cfg!(feature = "draft") && !unused.is_empty() {
         unused.sort();
         eprintln!(
             "warning: {TAG_DESCRIPTIONS_PATH}: described but unused: {}",
