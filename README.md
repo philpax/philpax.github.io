@@ -17,3 +17,7 @@ If the downloaded Tailwind installation doesn't work (this can happen with macOS
 
 - `--fast`: Skips directory cleaning and Tailwind version checking.
 - `--use-global-tailwind`: Uses a global `tailwindcss` instead of downloading one.
+
+## Music library
+
+`assets/baked/music.json` is exported from Navidrome (0.64 or later) with `cargo run -p music-export`, using the server and credentials in Blackbird's config (`~/.config/blackbird/config.toml`). See CONTRIBUTING.md for details.
