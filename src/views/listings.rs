@@ -172,7 +172,7 @@ fn time<'a>(bump: &'a Bump, doc: &Document) -> Element<'a> {
         _ => datetime(doc),
     };
     html! { in bump;
-        <time datetime={when.to_rfc3339()}>{display_date(when.date_naive(), true)}</time>
+        <time datetime={when.to_rfc3339()}>{display_date(when.date_naive())}</time>
     }
 }
 

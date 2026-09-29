@@ -232,13 +232,9 @@ fn pr_row<'bump>(
     let timeline_id = e.timeline_id().expect("PR entry should have timeline id");
 
     let dates = if e.start == e.end {
-        display_date(e.start, true)
+        display_date(e.start)
     } else {
-        format!(
-            "{} \u{2192} {}",
-            display_date(e.start, true),
-            display_date(e.end, true)
-        )
+        format!("{} \u{2192} {}", display_date(e.start), display_date(e.end))
     };
     let title_attr = format!(
         "{}: {} ({dates}, +{}, \u{2212}{}{})",

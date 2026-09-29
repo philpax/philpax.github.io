@@ -1,6 +1,6 @@
 use paxhtml::{bumpalo::Bump, html};
 
-use super::{day_month, parse_date};
+use super::{display_date, parse_date};
 
 pub struct PrMetaProps {
     pub date: Option<String>,
@@ -16,13 +16,13 @@ pub struct PrMetaProps {
 /// much. Where the request has a row in the timeline, they link to it.
 pub fn pr_meta<'bump>(bump: &'bump Bump, props: PrMetaProps) -> paxhtml::Element<'bump> {
     let date = |date: &str| {
-        html! { in bump; <time datetime={date}>{day_month(parse_date(date))}</time> }
+        html! { in bump; <time datetime={date}>{display_date(parse_date(date))}</time> }
     };
     let when = match (&props.start, &props.end, &props.date) {
         (Some(start), Some(end), _) => html! { in bump;
             <>
                 {date(start)}
-                <span ariaHidden="true">"\u{2013}"</span>
+                <span ariaHidden="true">" \u{2013} "</span>
                 {date(end)}
             </>
         },

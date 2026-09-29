@@ -1,8 +1,8 @@
-use chrono::{Datelike, NaiveDate, Timelike};
+use chrono::NaiveDate;
 use paxhtml::{builder::Builder, bumpalo::Bump};
 
-/// `<MonthDayDate date="2025-11-06" />` in the Markdown: `6 Nov 2025`, or
-/// `6 Nov` with `noyear`.
+/// `<MonthDayDate date="2025-11-06" />` in the Markdown: `2025-11-06`, or
+/// `11-06` with `noyear`.
 pub fn month_day_date<'bump>(
     bump: &'bump Bump,
     date: &str,
@@ -11,9 +11,9 @@ pub fn month_day_date<'bump>(
     let b = Builder::new(bump);
     let parsed = parse_date(date);
     b.time([b.attr(("datetime", date))])(b.text(&if noyear {
-        day_month(parsed)
+        month_day(parsed)
     } else {
-        display_date(parsed, false)
+        display_date(parsed)
     }))
 }
 
@@ -33,63 +33,26 @@ pub fn month_day_date_range<'bump>(
     ])
 }
 
-/// A date as the redesign prints it, in `en-AU`'s short month names:
-/// `02 Feb 2025` with `padded` days, `2 Sept 2025` without.
-pub fn display_date(date: NaiveDate, padded: bool) -> String {
-    let month = en_au_short_month(date.month());
-    if padded {
-        format!("{:02} {month} {}", date.day(), date.year())
-    } else {
-        format!("{} {month} {}", date.day(), date.year())
-    }
+/// A date as the site prints it, in ISO 8601: `2025-09-06`.
+pub fn display_date(date: NaiveDate) -> String {
+    date.format("%Y-%m-%d").to_string()
 }
 
-/// A day and month with no year: `6 Nov`.
-pub fn day_month(date: NaiveDate) -> String {
-    format!("{} {}", date.day(), en_au_short_month(date.month()))
-}
-
-/// A month and a padded day, month first: `Nov 06`. Narrow enough to sit
-/// either side of a bar.
+/// A month and day with no year: `09-06`. Narrow enough to sit either side
+/// of a bar.
 pub fn month_day(date: NaiveDate) -> String {
-    format!("{} {:02}", en_au_short_month(date.month()), date.day())
+    date.format("%m-%d").to_string()
 }
 
-/// A timestamp to the minute, for a tooltip: `28 Sept 2026, 09:39 pm` (UTC).
+/// A timestamp to the minute, for a tooltip: `2026-09-28 21:39 UTC`.
 pub fn display_timestamp(datetime: chrono::DateTime<chrono::Utc>) -> String {
-    let (pm, hour) = datetime.hour12();
-    format!(
-        "{}, {hour:02}:{:02} {}",
-        display_date(datetime.date_naive(), false),
-        datetime.minute(),
-        if pm { "pm" } else { "am" }
-    )
+    datetime.format("%Y-%m-%d %H:%M UTC").to_string()
 }
 
 /// Parse a `YYYY-MM-DD` date written in the Markdown.
 pub fn parse_date(date: &str) -> NaiveDate {
     NaiveDate::parse_from_str(date, "%Y-%m-%d")
         .unwrap_or_else(|e| panic!("invalid date '{date}': {e}"))
-}
-
-/// `Intl.DateTimeFormat('en-AU', { month: 'short' })`, which spells out the
-/// short months and writes September as "Sept".
-fn en_au_short_month(month: u32) -> &'static str {
-    match month {
-        1 => "Jan",
-        2 => "Feb",
-        3 => "Mar",
-        4 => "Apr",
-        5 => "May",
-        6 => "June",
-        7 => "July",
-        8 => "Aug",
-        9 => "Sept",
-        10 => "Oct",
-        11 => "Nov",
-        12 => "Dec",
-        _ => panic!("invalid month: {month}"),
-    }
 }
 
 #[cfg(test)]
@@ -99,13 +62,11 @@ mod tests {
     #[test]
     fn formats() {
         let date = NaiveDate::from_ymd_opt(2025, 9, 6).unwrap();
-        assert_eq!(display_date(date, true), "06 Sept 2025");
-        assert_eq!(display_date(date, false), "6 Sept 2025");
-        assert_eq!(day_month(date), "6 Sept");
-        assert_eq!(month_day(date), "Sept 06");
+        assert_eq!(display_date(date), "2025-09-06");
+        assert_eq!(month_day(date), "09-06");
         let at = chrono::DateTime::parse_from_rfc3339("2026-09-28T21:39:00Z")
             .unwrap()
             .to_utc();
-        assert_eq!(display_timestamp(at), "28 Sept 2026, 09:39 pm");
+        assert_eq!(display_timestamp(at), "2026-09-28 21:39 UTC");
     }
 }

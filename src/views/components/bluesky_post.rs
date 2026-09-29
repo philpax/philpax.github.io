@@ -18,7 +18,7 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
         .map(|dt| {
             paxhtml::html! { in bump;
                 <a href={post.url.clone()}>
-                    <time datetime={post.created_at.clone()}>{display_date(dt.date_naive(), true)}</time>
+                    <time datetime={post.created_at.clone()}>{display_date(dt.date_naive())}</time>
                 </a>
             }
         });

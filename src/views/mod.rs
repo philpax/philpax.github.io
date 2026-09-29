@@ -301,7 +301,7 @@ fn footer<'a>(context: ViewContext<'a>) -> Element<'a> {
                     " ("
                     <A href={Route::Credits.url_path()}>{copy::nav::CREDITS.to_lowercase()}</A>
                     ") on "
-                    <time datetime={generated.to_rfc3339()}>{display_date(generated.date_naive(), false)}</time>
+                    <time datetime={generated.to_rfc3339()}>{display_date(generated.date_naive())}</time>
                 </p>
                 <p>
                     "public domain under "

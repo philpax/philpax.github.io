@@ -204,7 +204,7 @@ fn meta<'a>(bump: &'a Bump, document: &Document) -> Element<'a> {
     let segments = [
         kind.map(|kind| html! { in bump; <span>{kind}</span> }),
         Some(html! { in bump;
-            <time datetime={when.to_rfc3339()}>{display_date(when.date_naive(), true)}</time>
+            <time datetime={when.to_rfc3339()}>{display_date(when.date_naive())}</time>
         }),
         Some(html! { in bump; <span>{copy::doc::words(document.word_count)}</span> }),
         document
