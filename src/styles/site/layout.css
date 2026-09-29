@@ -97,15 +97,22 @@
     scroll-margin-top: calc(var(--header-height) + var(--s-4));
   }
 }
-/* The wordmark and the nav share a row until the nav needs one of its own. */
+/* The wordmark and the nav share a row. On a phone they stack, centred, and
+   are spaced all round as the nav's boxes are. */
 .site > header > .frame {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-2) var(--s-6);
+  gap: var(--s-6);
   padding-block: var(--s-4);
+}
+@container site (width < 48rem) {
+  .site > header > .frame {
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-2);
+  }
 }
 
 /* Decorative; the shader reads its colour from `color`. */
@@ -162,6 +169,7 @@
   --c-note: var(--c-note-solid);
   --c-tag: var(--c-tag-solid);
   min-width: 0;
+  max-width: 100%;
 }
 /* Too narrow for its row, it scrolls rather than wraps or clips. */
 .site > header nav ul {
@@ -239,7 +247,6 @@
   --icon: var(--icon-arrow);
   opacity: 0.6;
 }
-
 /* Footer. */
 
 .site > footer {
