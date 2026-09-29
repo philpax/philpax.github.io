@@ -1,7 +1,4 @@
 {
   "rust-analyzer.checkOnSave": false,
-  "rust-analyzer.cargo.features": ["serve"],
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
+  "rust-analyzer.cargo.features": ["serve"]
 }
