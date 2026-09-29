@@ -89,10 +89,10 @@
   text-align: right;
   color: #e1e1e1;
 }
+/* As wide as their contents, so they end together at the row's edge. */
 .music-library .album-length,
 .music-library .track .length {
   flex-shrink: 0;
-  width: 6rem;
   white-space: nowrap;
 }
 .music-library .duration {
