@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-09-28T19:59:55Z",
+  "exported_at": "2026-09-29T08:13:22Z",
   "albums": [
     {
       "artist": "0b4k3",
@@ -20297,7 +20297,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 113
+      "recent_plays": 113,
+      "cover": "al-4AsrqKCLuYnz7tpzCTUMbe_066fa41d5ab6b260.jpg"
     },
     {
       "artist": "Bob Dylan",
@@ -34820,7 +34821,8 @@
           "starred": true
         }
       ],
-      "recent_plays": 52
+      "recent_plays": 52,
+      "cover": "al-1ZsnNkbwdo2zievpFBLXhj_c81635dea11d74c7.jpg"
     },
     {
       "artist": "David Darling",
@@ -47261,7 +47263,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 47
+      "recent_plays": 47,
+      "cover": "al-4OHJVfXL6lKtO9bji3DeH1_3474ee375f4663a3.png"
     },
     {
       "artist": "femtanyl feat. zombAe",
@@ -47439,7 +47442,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 90
+      "recent_plays": 90,
+      "cover": "al-0zYokgsDoNlNwlwjEfZxiv_bb72f0b406858f86.jpg"
     },
     {
       "artist": "Fenomenon",
@@ -90117,7 +90121,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 172
+      "recent_plays": 172,
+      "cover": "al-6RHcQFeLwJceDlydPdu9DG_574176bfffe67844.png"
     },
     {
       "artist": "Mogwai",

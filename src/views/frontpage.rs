@@ -37,7 +37,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         .take(5)
         .collect();
     let notes = recent_notes(content, 5);
-    let listening = most_listened(content, 5);
+    let listening = most_listened(content, paxsite_music::MOST_LISTENED);
 
     layout(
         context,
@@ -138,6 +138,8 @@ struct ListenedAlbum {
     artist: String,
     album: String,
     plays: u64,
+    /// The cover art's URL, if the export saved one.
+    cover: Option<String>,
 }
 
 /// What the listening block shows: the albums listened to most in the month
@@ -158,6 +160,10 @@ fn most_listened(content: &Content, count: usize) -> Listening {
             } else {
                 album.play_count()
             },
+            cover: album
+                .cover
+                .as_ref()
+                .map(|file| format!("/{}/{file}", paxsite_music::COVERS_DIR)),
         })
         .collect();
     let title = if recent {
@@ -225,8 +231,8 @@ fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element
     }
 }
 
-/// Stand-ins for cover art: the album's initials on one of the arc's solid
-/// hues, so the row reads as a list of albums rather than of text.
+/// Stand-ins for missing cover art: the album's initials on one of the arc's
+/// solid hues, so the row reads as a list of albums rather than of text.
 const COVER_HUES: [&str; 5] = ["post", "update", "note", "tag", "credits"];
 
 fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
@@ -234,9 +240,16 @@ fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
         <ol class="listening-list">
             #{albums.iter().enumerate().map(|(i, album)| html! { in bump;
                 <li>
-                    <span class="listening-cover" ariaHidden="true" style={format!("--cover: var(--c-{}-solid)", COVER_HUES[i % COVER_HUES.len()])}>
-                        {initials(&album.album)}
-                    </span>
+                    {match &album.cover {
+                        Some(src) => html! { in bump;
+                            <img class="listening-cover" src={src.clone()} alt="" loading="lazy" />
+                        },
+                        None => html! { in bump;
+                            <span class="listening-cover" ariaHidden="true" style={format!("--cover: var(--c-{}-solid)", COVER_HUES[i % COVER_HUES.len()])}>
+                                {initials(&album.album)}
+                            </span>
+                        },
+                    }}
                     <span class="listening-album">
                         <span>{album.album.clone()}</span>
                         <span class="listening-artist">{album.artist.clone()}</span>

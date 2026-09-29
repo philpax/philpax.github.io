@@ -255,7 +255,7 @@ Component implementations live in `src/views/components/`. `MarkdownConverter::c
 cargo run -p music-export
 ```
 
-(pass a path to write somewhere else). It reads the server URL and credentials from Blackbird's config (`~/.config/blackbird/config.toml`, the `[server]` section), fetches the library over the Subsonic API, and counts each album's scrobbles in the 30 days before the export through Navidrome's native API, which needs Navidrome 0.64 or later. The format is defined in `paxsite-music`.
+(pass a path to write somewhere else). It reads the server URL and credentials from Blackbird's config (`~/.config/blackbird/config.toml`, the `[server]` section), fetches the library over the Subsonic API, and counts each album's scrobbles in the 30 days before the export through Navidrome's native API, which needs Navidrome 0.64 or later. It also saves the covers of the albums the front page shows to `assets/baked/static/music-covers/` (also committed), and removes covers that have dropped off. The format is defined in `paxsite-music`.
 
 ## standard.site Publishing
 

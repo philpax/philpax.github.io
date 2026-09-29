@@ -61,7 +61,7 @@
   grid-template-columns: subgrid;
   align-items: center;
 }
-/* A stand-in for cover art, on a hue the markup supplies. */
+/* Cover art, or a stand-in for it: initials on a hue the markup supplies. */
 .listening-cover {
   display: grid;
   place-items: center;
@@ -71,6 +71,9 @@
   font-weight: var(--font-weight-bold);
   color: white;
   background: var(--cover);
+}
+img.listening-cover {
+  object-fit: cover;
 }
 .listening-album {
   display: flex;

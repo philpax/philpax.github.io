@@ -8,6 +8,13 @@ use serde::{Deserialize, Serialize};
 /// The number of days before the export that count towards [`Album::recent_plays`].
 pub const RECENT_PLAYS_DAYS: i64 = 30;
 
+/// Where cover art is kept: a directory under `assets/baked/static`, and so
+/// the same path from the site's root. [`Album::cover`] names a file in it.
+pub const COVERS_DIR: &str = "music-covers";
+
+/// How many albums the front page shows, and so how many have covers.
+pub const MOST_LISTENED: usize = 5;
+
 /// The whole exported library.
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct MusicLibrary {
@@ -34,6 +41,10 @@ pub struct Album {
     /// before [`MusicLibrary::exported_at`].
     #[serde(skip_serializing_if = "is_zero", default)]
     pub recent_plays: u64,
+    /// The file in [`COVERS_DIR`] holding the album's cover art. Only the
+    /// albums the front page shows have one.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub cover: Option<String>,
 }
 
 /// A single track of an [`Album`].
@@ -138,6 +149,7 @@ mod tests {
                 .collect(),
             starred: false,
             recent_plays,
+            cover: None,
         }
     }
 

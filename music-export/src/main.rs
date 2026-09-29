@@ -6,18 +6,25 @@
 //! The server and credentials come from Blackbird's config
 //! (`~/.config/blackbird/config.toml`, `[server]`). The library is fetched over
 //! the Subsonic API; recent plays come from Navidrome's native scrobble API,
-//! which needs Navidrome 0.64 or later.
-use std::{collections::HashMap, path::PathBuf};
+//! which needs Navidrome 0.64 or later. The covers of the albums the front
+//! page shows are saved beside it, in `assets/baked/static/music-covers`.
+use std::{
+    collections::{HashMap, HashSet},
+    path::{Path, PathBuf},
+};
 
 use anyhow::Context as _;
 use blackbird_shared::config::ConfigFile;
+use blackbird_state::{CoverArtId, bs};
 use chrono::{SubsecRound as _, TimeDelta, Utc};
-use paxsite_music::{Album, MusicLibrary, RECENT_PLAYS_DAYS, Track};
+use paxsite_music::{Album, COVERS_DIR, MOST_LISTENED, MusicLibrary, RECENT_PLAYS_DAYS, Track};
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_OUTPUT_PATH: &str = "assets/baked/music.json";
 /// Navidrome's name for the album of files that carry no album tag.
 const UNKNOWN_ALBUM: &str = "[Unknown Album]";
+/// The front page shows covers at 2.5rem; this is enough for a 3x screen.
+const COVER_SIZE: usize = 128;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -60,6 +67,11 @@ async fn main() -> anyhow::Result<()> {
     }
 
     let mut matched_scrobbles = 0;
+    let cover_art_ids: Vec<Option<CoverArtId>> = fetched
+        .groups
+        .iter()
+        .map(|group| group.cover_art_id.clone())
+        .collect();
     let albums = fetched
         .groups
         .iter()
@@ -95,6 +107,7 @@ async fn main() -> anyhow::Result<()> {
                 tracks,
                 starred: group.starred,
                 recent_plays,
+                cover: None,
             }
         })
         .collect();
@@ -103,11 +116,17 @@ async fn main() -> anyhow::Result<()> {
         scrobbles.len() as u64 - matched_scrobbles
     );
 
-    let library = MusicLibrary {
+    let mut library = MusicLibrary {
         exported_at,
         albums,
     };
-    for album in library.most_listened(5) {
+    let covers_dir = output_path
+        .parent()
+        .unwrap_or(Path::new("."))
+        .join("static")
+        .join(COVERS_DIR);
+    save_covers(&client, &mut library, &cover_art_ids, &covers_dir).await?;
+    for album in library.most_listened(MOST_LISTENED) {
         println!(
             "{:>5} recent plays: {} - {}",
             album.recent_plays, album.album, album.artist
@@ -132,7 +151,6 @@ struct Config {
 }
 impl ConfigFile for Config {}
 
-/// Navidrome's native API (not Subsonic), used for scrobble history.
 /// An untagged album of one track is almost always a single, so it takes its
 /// track's name. Untagged albums of several tracks keep Navidrome's name.
 fn album_name(album: &str, tracks: &[Track]) -> String {
@@ -142,6 +160,95 @@ fn album_name(album: &str, tracks: &[Track]) -> String {
     }
 }
 
+/// Saves the covers of the albums the front page shows into `dir`, at
+/// [`COVER_SIZE`], and removes the covers of albums it no longer shows. An
+/// album whose cover can't be fetched goes without.
+async fn save_covers(
+    client: &bs::Client,
+    library: &mut MusicLibrary,
+    cover_art_ids: &[Option<CoverArtId>],
+    dir: &Path,
+) -> anyhow::Result<()> {
+    std::fs::create_dir_all(dir).with_context(|| format!("Failed to create {}", dir.display()))?;
+    let shown: Vec<usize> = library
+        .most_listened(MOST_LISTENED)
+        .into_iter()
+        .filter_map(|album| library.albums.iter().position(|a| std::ptr::eq(a, album)))
+        .collect();
+
+    let mut kept = HashSet::new();
+    for index in shown {
+        let Some(id) = &cover_art_ids[index] else {
+            continue;
+        };
+        let name = &library.albums[index].album;
+        let bytes = match client.get_cover_art(id.0.as_str(), Some(COVER_SIZE)).await {
+            Ok(bytes) => bytes,
+            Err(e) => {
+                eprintln!("Failed to fetch the cover of {name}: {e:?}");
+                continue;
+            }
+        };
+        let Some(extension) = image_extension(&bytes) else {
+            eprintln!("The cover of {name} is in a format the site can't show");
+            continue;
+        };
+        let file = format!("{}.{extension}", file_stem(&id.0));
+        std::fs::write(dir.join(&file), &bytes)
+            .with_context(|| format!("Failed to write the cover of {name}"))?;
+        kept.insert(file.clone());
+        library.albums[index].cover = Some(file);
+    }
+
+    for entry in std::fs::read_dir(dir)? {
+        let entry = entry?;
+        if !kept.contains(entry.file_name().to_string_lossy().as_ref()) {
+            std::fs::remove_file(entry.path())?;
+        }
+    }
+    println!("Saved {} covers to {}", kept.len(), dir.display());
+    Ok(())
+}
+
+/// The extension for an image, by its first bytes.
+fn image_extension(bytes: &[u8]) -> Option<&'static str> {
+    match bytes {
+        [0xFF, 0xD8, 0xFF, ..] => Some("jpg"),
+        [0x89, b'P', b'N', b'G', ..] => Some("png"),
+        [
+            b'R',
+            b'I',
+            b'F',
+            b'F',
+            _,
+            _,
+            _,
+            _,
+            b'W',
+            b'E',
+            b'B',
+            b'P',
+            ..,
+        ] => Some("webp"),
+        [b'G', b'I', b'F', b'8', ..] => Some("gif"),
+        _ => None,
+    }
+}
+
+/// A cover art ID made safe for a file name.
+fn file_stem(id: &str) -> String {
+    id.chars()
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '-' || c == '_' {
+                c
+            } else {
+                '_'
+            }
+        })
+        .collect()
+}
+
+/// Navidrome's native API (not Subsonic), used for scrobble history.
 mod navidrome {
     use anyhow::Context as _;
     use chrono::{DateTime, Utc};
@@ -256,5 +363,13 @@ mod tests {
     #[test]
     fn a_tagged_album_of_one_track_keeps_its_name() {
         assert_eq!(album_name("EVO EVO", &[track("EVO EVO")]), "EVO EVO");
+    }
+
+    #[test]
+    fn covers_are_named_by_their_format_and_a_safe_id() {
+        assert_eq!(image_extension(&[0xFF, 0xD8, 0xFF, 0xE0]), Some("jpg"));
+        assert_eq!(image_extension(b"RIFF\0\0\0\0WEBPVP8 "), Some("webp"));
+        assert_eq!(image_extension(b"<html>"), None);
+        assert_eq!(file_stem("al-1a2b_3c/4d.5e"), "al-1a2b_3c_4d_5e");
     }
 }
