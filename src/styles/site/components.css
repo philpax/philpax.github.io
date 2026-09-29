@@ -48,7 +48,9 @@ h1 .tag-prefix {
 
 /* Pull request timeline. */
 
+/* Beside the prose rather than in it, but as wide. */
 .timeline {
+  max-width: var(--measure);
   padding-block: var(--s-1);
 }
 .timeline figcaption {
@@ -62,8 +64,10 @@ h1 .tag-prefix {
    fits once the page is wider than a phone. */
 .timeline-row {
   --link-rest: var(--ink-muted);
+  /* Fits MM-DD. */
+  --date-width: 2.3rem;
   display: grid;
-  grid-template-columns: 3.2rem minmax(2rem, 1fr) 3.4rem 3.4rem;
+  grid-template-columns: var(--date-width) minmax(2rem, 1fr) 2.9rem 3.4rem;
   align-items: center;
   gap: 0 var(--s-2);
   padding-block: 2px;
@@ -75,7 +79,7 @@ h1 .tag-prefix {
 }
 @container site (width > 34rem) {
   .timeline-row {
-    grid-template-columns: 3.2rem minmax(0, 1fr) 3.2rem 3.4rem 3.4rem;
+    grid-template-columns: var(--date-width) minmax(0, 1fr) var(--date-width) 2.9rem 3.4rem;
   }
   .timeline-row > time:last-of-type {
     display: block;
@@ -110,7 +114,7 @@ h1 .tag-prefix {
 }
 .timeline-title {
   grid-column: 1 / -1;
-  padding-left: calc(3.2rem + var(--s-2));
+  padding-left: calc(var(--date-width) + var(--s-2));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
