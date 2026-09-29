@@ -247,6 +247,17 @@
   --icon: var(--icon-arrow);
   opacity: 0.6;
 }
+/* On a phone, the destination alone: the theme it switches to, as its label
+   says. */
+@container site (width < 48rem) {
+  .theme-toggle > span:not(:last-child) {
+    display: none;
+  }
+  .theme-toggle > span {
+    width: 1.25em;
+  }
+}
+
 /* Footer. */
 
 .site > footer {
