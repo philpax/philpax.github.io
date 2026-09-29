@@ -218,14 +218,15 @@ impl<'a> MarkdownConverter<'a> {
                     b.li([])(self.convert_many(&li.children, Some(node)))
                 }
             }
-            // A block of code: its language, if it names one, then the code.
+            // A block of code: its language, `text` if it names none, then
+            // the code.
             Node::Code(c) => {
                 let language = c.lang.as_deref().map(str::trim).filter(|l| !l.is_empty());
                 let highlighted = self.highlight(language, &c.value, "code block");
                 b.pre([])(b.fragment([
-                    language.map_or(paxhtml::Element::Empty, |language| {
-                        b.span([b.attr(("class", "code-language"))])(b.text(language))
-                    }),
+                    b.span([b.attr(("class", "code-language"))])(
+                        b.text(self.context.syntax.language_name(language)),
+                    ),
                     b.code([])(highlighted),
                 ]))
             }

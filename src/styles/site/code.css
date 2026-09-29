@@ -1,6 +1,7 @@
 /* ========================================================================
-   CODE — inline code and code blocks. The token colours are the highlighter's
-   own theme, which it generates.
+   CODE — inline code and code blocks. The token colours, and a block's
+   background and text (--code-background, --code-color), are the
+   highlighter's own theme, which it generates.
    ======================================================================== */
 
 .prose code {
@@ -11,34 +12,37 @@
   color: light-dark(color-mix(in oklab, var(--ink) 82%, var(--accent)), var(--ink));
   background: color-mix(in oklab, var(--ink) 7%, transparent);
 }
+/* A block is the highlighter's own surface, labelled with its language in a
+   chip that sits in the corner and stays there as the code scrolls. */
 .prose pre {
   position: relative;
-  padding: var(--s-6) var(--s-2) var(--s-2);
-  border: var(--rule) solid var(--line);
-  border-left: var(--rule-strong) solid color-mix(in oklab, var(--accent) 45%, transparent);
-  border-radius: var(--radius-md);
+  padding: var(--s-2);
+  border: var(--rule) solid var(--line-strong);
   overflow-x: auto;
   font-size: var(--em-down);
   line-height: var(--lead-snug);
-  background: var(--raised);
+  color: var(--code-color);
+  background: var(--code-background);
 }
+/* The block has already set the size, which inline code would shrink again. */
 .prose pre code {
   padding: 0;
+  font-size: 1em;
   background: none;
 }
+/* Sticky offsets are measured inside the block's padding, so it steps back
+   out of it, as its margin does. */
 .code-language {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: sticky;
+  left: calc(-1 * var(--s-2));
   display: block;
   width: max-content;
-  margin: 0;
+  margin: calc(-1 * var(--s-2)) 0 var(--s-1) calc(-1 * var(--s-2));
   padding: var(--r-1) var(--s-2);
   font-family: var(--f-ui);
   font-size: var(--text-xs);
-  font-style: italic;
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--ink);
+  background: var(--line-strong);
 }
 .code-copy {
   position: absolute;

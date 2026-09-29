@@ -69,22 +69,23 @@ fn import_name(line: &str) -> Option<&str> {
     Some(quoted.strip_prefix("./").unwrap_or(quoted))
 }
 
-/// The highlighter's token colours, scoped to code in the site. The light theme is
-/// the default and the dark one follows the site's theme mechanism: the system
-/// preference unless `<html>` pins `light`, or a `dark` class pins it.
+/// The highlighter's colours for the site. The light theme is the default and
+/// the dark one follows the site's theme mechanism: the system preference
+/// unless `<html>` pins `light`, or a `dark` class pins it.
 ///
-/// Only the token rules are kept: the generated block also sets a background,
-/// a foreground and an `--accent` of its own, which would repaint the site's
-/// code block and its accent.
+/// The token rules are kept as they are. The theme's own background and
+/// foreground become `--code-background` and `--code-color`, for the sheet to
+/// place; its other custom properties, an `--accent` among them, would repaint
+/// the site, so they are dropped.
 fn syntax_css(context: ViewContextBase<'_>) -> String {
-    const SCOPE: &str = ".site code";
-    let light = tokens_only(&context.syntax.light_theme_css(SCOPE));
-    let dark_system = tokens_only(
+    const SCOPE: &str = ".site";
+    let light = theme_rules(&context.syntax.light_theme_css(SCOPE));
+    let dark_system = theme_rules(
         &context
             .syntax
             .dark_theme_css(&format!(":root:not(.light) {SCOPE}")),
     );
-    let dark_pinned = tokens_only(
+    let dark_pinned = theme_rules(
         &context
             .syntax
             .dark_theme_css(&format!(":root.dark {SCOPE}")),
@@ -94,17 +95,22 @@ fn syntax_css(context: ViewContextBase<'_>) -> String {
     )
 }
 
-/// Drop the declarations on the generated block's own selector, keeping the
-/// nested `a-*` token rules and the braces around them.
-fn tokens_only(css: &str) -> String {
+/// Rename the generated block's background and foreground to the sheet's
+/// custom properties, and drop its other custom properties.
+fn theme_rules(css: &str) -> String {
     css.lines()
-        .filter(|line| {
+        .filter(|line| !line.trim_start().starts_with("--"))
+        .map(|line| {
+            let indent = &line[..line.len() - line.trim_start().len()];
             let line = line.trim_start();
-            !line.starts_with("--")
-                && !line.starts_with("background:")
-                && !line.starts_with("color:")
+            if let Some(value) = line.strip_prefix("background:") {
+                format!("{indent}--code-background:{value}\n")
+            } else if let Some(value) = line.strip_prefix("color:") {
+                format!("{indent}--code-color:{value}\n")
+            } else {
+                format!("{indent}{line}\n")
+            }
         })
-        .map(|line| format!("{line}\n"))
         .collect()
 }
 
@@ -127,8 +133,11 @@ mod tests {
     }
 
     #[test]
-    fn tokens_only_keeps_token_rules() {
+    fn theme_rules_keep_tokens_and_rename_the_block_colours() {
         let css = ".x {\n  background: #fff;\n  --bg: #fff;\n  color: #000;\n  --accent: #f00;\n  a-k { color: #123; }\n}\n";
-        assert_eq!(tokens_only(css), ".x {\n  a-k { color: #123; }\n}\n");
+        assert_eq!(
+            theme_rules(css),
+            ".x {\n  --code-background: #fff;\n  --code-color: #000;\n  a-k { color: #123; }\n}\n"
+        );
     }
 }
