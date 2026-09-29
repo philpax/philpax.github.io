@@ -322,13 +322,19 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     return self.convert_many(&t.children, Some(node));
                 }
-                // The first row is the header.
+                // The first row is the header, and sets how many cells every
+                // row has: as in GFM, a shorter row is padded with empty ones.
                 let mut rows = t.children.iter();
+                let columns = t
+                    .children
+                    .first()
+                    .and_then(Node::children)
+                    .map_or(0, Vec::len);
                 let head = rows
                     .next()
-                    .map(|row| b.thead([])(b.tr([])(self.convert_cells(row, "th"))));
+                    .map(|row| b.thead([])(b.tr([])(self.convert_cells(row, "th", columns))));
                 let body: Vec<_> = rows
-                    .map(|row| b.tr([])(self.convert_cells(row, "td")))
+                    .map(|row| b.tr([])(self.convert_cells(row, "td", columns)))
                     .collect();
                 b.table([])(b.fragment([head.unwrap_or_default(), b.tbody([])(b.fragment(body))]))
             }
@@ -336,7 +342,8 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     self.convert_many(&t.children, Some(node))
                 } else {
-                    b.tr([])(self.convert_cells(node, "td"))
+                    let columns = t.children.len();
+                    b.tr([])(self.convert_cells(node, "td", columns))
                 }
             }
             Node::TableCell(t) => {
@@ -449,9 +456,10 @@ impl<'a> MarkdownConverter<'a> {
     }
 
     /// A table row's cells, as `th` or `td`.
-    fn convert_cells(&mut self, row: &Node, cell: &str) -> paxhtml::Element<'a> {
+    /// A row's cells as `cell` elements, padded with empty ones to `columns`.
+    fn convert_cells(&mut self, row: &Node, cell: &str, columns: usize) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
-        let cells: Vec<_> = row
+        let mut cells: Vec<_> = row
             .children()
             .map(Vec::as_slice)
             .unwrap_or_default()
@@ -462,6 +470,9 @@ impl<'a> MarkdownConverter<'a> {
                 b.tag(cell, [], false)(children)
             })
             .collect();
+        while cells.len() < columns {
+            cells.push(b.tag(cell, [], false)(paxhtml::Element::Empty));
+        }
         b.fragment(cells)
     }
 
@@ -1164,6 +1175,25 @@ mod tests {
             generation_date: chrono::Utc::now(),
             fast: false,
         }
+    }
+
+    #[test]
+    fn a_short_table_row_is_padded_to_the_header() {
+        let ast = parse_markdown("| a | b | c |\n| - | - | - |\n| 1 |\n");
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+        let html: String = html.split_whitespace().collect();
+        assert!(
+            html.contains("<tr><td>1</td><td></td><td></td></tr>"),
+            "{html}"
+        );
     }
 
     #[test]
