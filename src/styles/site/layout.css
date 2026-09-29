@@ -55,7 +55,7 @@
 }
 
 /* Where a fragment lands. */
-.site :where(h1, h2, h3, h4, h5, h6, .fn-note, .pr-mention, .timeline-row)[id] {
+.site :where(h1, h2, h3, h4, h5, h6, section, .fn-note, .pr-mention, .timeline-row)[id] {
   scroll-margin-top: var(--s-4);
 }
 
@@ -93,7 +93,7 @@
     position: sticky;
     top: 0;
   }
-  .site :where(h1, h2, h3, h4, h5, h6, .fn-note, .pr-mention, .timeline-row)[id] {
+  .site :where(h1, h2, h3, h4, h5, h6, section, .fn-note, .pr-mention, .timeline-row)[id] {
     scroll-margin-top: calc(var(--header-height) + var(--s-4));
   }
 }

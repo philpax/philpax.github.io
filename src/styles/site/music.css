@@ -40,6 +40,11 @@
 .music-library section {
   break-inside: avoid;
 }
+/* An album the front page linked to. */
+.music-library section:target {
+  outline: 2px solid #459ecb;
+  outline-offset: 0.375rem;
+}
 
 /* Album. */
 

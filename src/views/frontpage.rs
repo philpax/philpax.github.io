@@ -140,6 +140,9 @@ struct ListenedAlbum {
     plays: u64,
     /// The cover art's URL, if the export saved one.
     cover: Option<String>,
+    /// Where the album, and its artist, are in the library.
+    album_href: Option<String>,
+    artist_href: Option<String>,
 }
 
 /// What the listening block shows: the albums listened to most in the month
@@ -149,29 +152,6 @@ struct ListenedAlbum {
 fn most_listened(content: &Content, count: usize) -> Listening {
     let library = &content.music_library;
     let recent = library.has_recent_plays();
-    let albums = library
-        .most_listened(count)
-        .into_iter()
-        .map(|album| ListenedAlbum {
-            artist: album.artist.clone(),
-            album: album.album.clone(),
-            plays: if recent {
-                album.recent_plays
-            } else {
-                album.play_count()
-            },
-            cover: album
-                .cover
-                .as_ref()
-                .map(|file| format!("/{}/{file}", paxsite_music::COVERS_DIR)),
-        })
-        .collect();
-    let title = if recent {
-        copy::home::LISTENING_RECENT
-    } else {
-        copy::home::LISTENING_LIFETIME
-    };
-
     let href = content
         .notes
         .documents
@@ -185,6 +165,40 @@ fn most_listened(content: &Content, count: usize) -> Listening {
                         .is_some_and(|r| r.contains("<MusicLibrary")))
         })
         .map(|d| d.route_path().url_path());
+    let anchors = library.anchors();
+    let in_library = |anchor: Option<&str>| {
+        href.as_ref()
+            .zip(anchor)
+            .map(|(href, anchor)| format!("{href}#{anchor}"))
+    };
+
+    let albums = library
+        .most_listened(count)
+        .into_iter()
+        .map(|album| {
+            let index = library.albums.iter().position(|a| std::ptr::eq(a, album));
+            ListenedAlbum {
+                artist: album.artist.clone(),
+                album: album.album.clone(),
+                plays: if recent {
+                    album.recent_plays
+                } else {
+                    album.play_count()
+                },
+                cover: album
+                    .cover
+                    .as_ref()
+                    .map(|file| format!("/{}/{file}", paxsite_music::COVERS_DIR)),
+                album_href: in_library(index.map(|i| anchors.album(i))),
+                artist_href: in_library(anchors.artist(&album.artist)),
+            }
+        })
+        .collect();
+    let title = if recent {
+        copy::home::LISTENING_RECENT
+    } else {
+        copy::home::LISTENING_LIFETIME
+    };
 
     Listening {
         title,
@@ -238,26 +252,43 @@ const COVER_HUES: [&str; 5] = ["post", "update", "note", "tag", "credits"];
 fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
     html! { in bump;
         <ol class="listening-list">
-            #{albums.iter().enumerate().map(|(i, album)| html! { in bump;
-                <li>
-                    {match &album.cover {
-                        Some(src) => html! { in bump;
-                            <img class="listening-cover" src={src.clone()} alt="" loading="lazy" />
-                        },
-                        None => html! { in bump;
-                            <span class="listening-cover" ariaHidden="true" style={format!("--cover: var(--c-{}-solid)", COVER_HUES[i % COVER_HUES.len()])}>
-                                {initials(&album.album)}
-                            </span>
-                        },
-                    }}
-                    <span class="listening-album">
-                        <span>{album.album.clone()}</span>
-                        <span class="listening-artist">{album.artist.clone()}</span>
-                    </span>
-                    <span class="listening-plays">{copy::home::plays(album.plays)}</span>
-                </li>
+            #{albums.iter().enumerate().map(|(i, album)| {
+                let cover = match &album.cover {
+                    Some(src) => html! { in bump;
+                        <img class="listening-cover" src={src.clone()} alt="" loading="lazy" />
+                    },
+                    None => html! { in bump;
+                        <span class="listening-cover" ariaHidden="true" style={format!("--cover: var(--c-{}-solid)", COVER_HUES[i % COVER_HUES.len()])}>
+                            {initials(&album.album)}
+                        </span>
+                    },
+                };
+                html! { in bump;
+                    <li>
+                        // The cover repeats the title's link, so it is left
+                        // out of the tab order and the accessibility tree.
+                        {match &album.album_href {
+                            Some(href) => html! { in bump;
+                                <a href={href.clone()} class="listening-cover-link" tabindex="-1" ariaHidden="true">{cover}</a>
+                            },
+                            None => cover,
+                        }}
+                        <span class="listening-album">
+                            <span>{link_or_text(bump, album.album_href.as_deref(), &album.album)}</span>
+                            <span class="listening-artist">{link_or_text(bump, album.artist_href.as_deref(), &album.artist)}</span>
+                        </span>
+                        <span class="listening-plays">{copy::home::plays(album.plays)}</span>
+                    </li>
+                }
             })}
         </ol>
+    }
+}
+
+fn link_or_text<'a>(bump: &'a Bump, href: Option<&str>, text: &str) -> Element<'a> {
+    match href {
+        Some(href) => html! { in bump; <A href={href.to_string()}>{text.to_string()}</A> },
+        None => html! { in bump; {text.to_string()} },
     }
 }
 

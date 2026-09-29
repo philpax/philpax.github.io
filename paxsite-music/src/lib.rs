@@ -2,6 +2,8 @@
 //!
 //! The exporter writes a [`MusicLibrary`] to `assets/baked/music.json`; the SSG
 //! reads it back for the `<MusicLibrary />` component and the front page.
+use std::collections::{HashMap, HashSet};
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -98,6 +100,37 @@ impl MusicLibrary {
         albums.truncate(n);
         albums
     }
+
+    /// The fragment IDs the library's page gives its albums and artists.
+    pub fn anchors(&self) -> Anchors {
+        let mut used = HashSet::new();
+        let mut unique = |base: String| {
+            let mut anchor = base.clone();
+            let mut n = 2;
+            while !used.insert(anchor.clone()) {
+                anchor = format!("{base}-{n}");
+                n += 1;
+            }
+            anchor
+        };
+        let mut artists = HashMap::new();
+        let albums = self
+            .albums
+            .iter()
+            .map(|album| {
+                if !artists.contains_key(&album.artist) {
+                    let anchor = unique(format!("artist-{}", slug(&album.artist)));
+                    artists.insert(album.artist.clone(), anchor);
+                }
+                unique(format!(
+                    "album-{}--{}",
+                    slug(&album.artist),
+                    slug(&album.album)
+                ))
+            })
+            .collect();
+        Anchors { albums, artists }
+    }
 }
 impl Default for MusicLibrary {
     fn default() -> Self {
@@ -109,6 +142,43 @@ impl Album {
     /// Lifetime plays: the sum of the tracks' play counts.
     pub fn play_count(&self) -> u64 {
         self.tracks.iter().filter_map(|t| t.play_count).sum()
+    }
+}
+
+/// Fragment IDs for the library's page, from [`MusicLibrary::anchors`]: one
+/// per album, and one per artist, which goes on the artist's first album.
+pub struct Anchors {
+    albums: Vec<String>,
+    artists: HashMap<String, String>,
+}
+impl Anchors {
+    /// The ID of the album at `index` in [`MusicLibrary::albums`].
+    pub fn album(&self, index: usize) -> &str {
+        &self.albums[index]
+    }
+
+    /// The ID of an artist in the library.
+    pub fn artist(&self, artist: &str) -> Option<&str> {
+        self.artists.get(artist).map(String::as_str)
+    }
+}
+
+/// A name as a fragment: lowercase, its letters and digits (in any script)
+/// kept, and every run of anything else a single hyphen.
+fn slug(name: &str) -> String {
+    let mut slug = String::new();
+    for c in name.chars().flat_map(char::to_lowercase) {
+        if c.is_alphanumeric() {
+            slug.push(c);
+        } else if !slug.is_empty() && !slug.ends_with('-') {
+            slug.push('-');
+        }
+    }
+    let trimmed = slug.trim_end_matches('-');
+    if trimmed.is_empty() {
+        "untitled".to_string()
+    } else {
+        trimmed.to_string()
     }
 }
 
@@ -185,6 +255,27 @@ mod tests {
         };
         assert!(!library.has_recent_plays());
         assert_eq!(names(&library.most_listened(5)), ["c", "a"]);
+    }
+
+    #[test]
+    fn anchors_are_readable_and_unique() {
+        let mut albums = vec![
+            album("EVO EVO", 0, &[]),
+            album("Evo, Evo!", 0, &[]),
+            album("白夢の繭", 0, &[]),
+        ];
+        albums[2].artist = "!!!".into();
+        let library = MusicLibrary {
+            exported_at: Utc::now(),
+            albums,
+        };
+        let anchors = library.anchors();
+        assert_eq!(anchors.album(0), "album-artist--evo-evo");
+        assert_eq!(anchors.album(1), "album-artist--evo-evo-2");
+        assert_eq!(anchors.album(2), "album-untitled--白夢の繭");
+        assert_eq!(anchors.artist("Artist"), Some("artist-artist"));
+        assert_eq!(anchors.artist("!!!"), Some("artist-untitled"));
+        assert_eq!(anchors.artist("Nobody"), None);
     }
 
     #[test]

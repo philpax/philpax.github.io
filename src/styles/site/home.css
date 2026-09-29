@@ -75,6 +75,9 @@
 img.listening-cover {
   object-fit: cover;
 }
+.listening-cover-link {
+  display: block;
+}
 .listening-album {
   display: flex;
   flex-direction: column;

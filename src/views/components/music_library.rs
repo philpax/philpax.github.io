@@ -7,7 +7,8 @@ use crate::{util, views::ViewContext};
 /// album a section with a coloured artist heading, its title, year, length and
 /// heart; each track a row with its number, title, plays, artist where it
 /// differs, length and heart. A banner counts the library, and a checkbox
-/// filters it down to what is liked.
+/// filters it down to what is liked. Albums and artists have fragment IDs
+/// (see `MusicLibrary::anchors`), which the front page links to.
 ///
 /// Every album and track links to a YouTube search for it. Those links are
 /// written by the site's script rather than here: there are tens of thousands
@@ -33,6 +34,8 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
         .count();
     let count = util::number_to_comma_separated_string;
     let liked = |n: usize| (n > 0).then(|| format!(" ({} liked)", count(n)));
+    let anchors = context.content.music_library.anchors();
+    let mut seen_artists = std::collections::HashSet::new();
 
     html! { in bump;
         <section class="music-library" ariaLabel="Music library">
@@ -53,20 +56,34 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
                 </div>
             </div>
             <div class="music-surface">
-                #{albums.iter().map(|g| album(bump, g))}
+                #{albums.iter().enumerate().map(|(i, g)| {
+                    let artist_anchor = seen_artists
+                        .insert(g.artist.as_str())
+                        .then(|| anchors.artist(&g.artist))
+                        .flatten();
+                    album(bump, g, anchors.album(i), artist_anchor)
+                })}
             </div>
         </section>
     }
 }
 
-fn album<'a>(bump: &'a Bump, album: &Album) -> paxhtml::Element<'a> {
+/// An album, with its fragment ID; the first album of each artist also holds
+/// the artist's.
+fn album<'a>(
+    bump: &'a Bump,
+    album: &Album,
+    anchor: &str,
+    artist_anchor: Option<&str>,
+) -> paxhtml::Element<'a> {
     let starred = album
         .starred
         .then(|| paxhtml::Attribute::boolean(bump, "data-starred"));
+    let artist_id = artist_anchor.map(|id| paxhtml::Attribute::new(bump, "id", id));
     html! { in bump;
-        <section ariaLabel={album.album.as_str()} {starred}>
+        <section id={anchor} ariaLabel={album.album.as_str()} {starred}>
             <div class="album-heading">
-                <h2 class="artist" style={format!("color: {}", string_to_colour(&album.artist))}>{&album.artist}</h2>
+                <h2 class="artist" style={format!("color: {}", string_to_colour(&album.artist))} {artist_id}>{&album.artist}</h2>
                 <div class="album-row">
                     <h3 class="album">
                         <a class="album-link" title={album.album.as_str()}>{&album.album}</a>
