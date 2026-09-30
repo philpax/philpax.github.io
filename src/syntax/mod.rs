@@ -26,7 +26,7 @@ impl SyntaxHighlighter {
     }
 
     pub fn light_theme_css(&self, selector: &str) -> String {
-        builtin::ayu_light().to_css(selector)
+        builtin::github_light().to_css(selector)
     }
 
     fn normalize_language(language: Option<&str>) -> &str {
