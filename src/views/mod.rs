@@ -147,6 +147,18 @@ pub struct SocialMeta {
     standard_site_uri: Option<String>,
 }
 impl SocialMeta {
+    /// Share the page as the generated preview at `path` (see `crate::og_image`),
+    /// as a large card.
+    pub fn with_preview(self, base_url: &str, path: &str) -> Self {
+        let url = format!("{base_url}{path}");
+        Self {
+            image: Some(url.clone()),
+            twitter_card: Some("summary_large_image".to_string()),
+            twitter_image: Some(url),
+            ..self
+        }
+    }
+
     /// The full title of the page, including the website name
     pub fn full_title(&self, context: &ViewContext) -> String {
         let mut title = context.website_name.to_string();

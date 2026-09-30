@@ -21,11 +21,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         SocialMeta {
             title: Some("Tags".to_string()),
             description: Some(format!("All tags on {}", context.website_name)),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Tags.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("tags"),
+        ),
         CurrentPage::Tags,
         html! { in bump;
             <div class="frame-narrow">
@@ -79,7 +82,6 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         SocialMeta {
             title: Some(format!("#{tag_id}")),
             description: Some(format!("All content tagged with {tag_id}")),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -89,7 +91,11 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
             type_: Some("website".to_string()),
             article_tag: Some(tag_id.to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::tag_image_path(tag_id),
+        ),
         CurrentPage::Tags,
         html! { in bump;
             <div class="frame-narrow">

@@ -20,8 +20,8 @@ pub struct Section {
     pub accent: Rgb,
     /// The solid colour behind the wordmark and the section's box.
     pub solid: Rgb,
-    /// The section's mark, as an SVG document drawn in white.
-    pub icon_svg: String,
+    /// The section's mark, as an SVG document drawn in white, if it has one.
+    pub icon_svg: Option<String>,
 }
 
 impl Palette {
@@ -35,12 +35,17 @@ impl Palette {
 }
 
 impl Section {
-    /// The section called `name` in the tokens: `post`, `update` or `note`.
+    /// The section called `name` in the tokens: `post`, `update`, `note`,
+    /// `tag` or `credits`.
     pub fn from_tokens(css: &str, name: &str) -> anyhow::Result<Self> {
+        let icon_name = format!("--icon-{name}");
         Ok(Self {
             accent: colour(css, &format!("--c-{name}"))?,
             solid: colour(css, &format!("--c-{name}-solid"))?,
-            icon_svg: icon(css, &format!("--icon-{name}"))?,
+            icon_svg: value(css, &icon_name)
+                .is_ok()
+                .then(|| icon(css, &icon_name))
+                .transpose()?,
         })
     }
 }

@@ -14,11 +14,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         context,
         SocialMeta {
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Credits.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("credits"),
+        ),
         CurrentPage::Credits,
         html! { in bump;
             <div class="frame-narrow">
