@@ -1,7 +1,10 @@
 // The theme switch: the nav's last item, showing the theme in force, an arrow,
 // and the theme it switches to. It only works with script, so script makes it.
-// A chosen theme is pinned as a class on <html> (which the head script restores
-// on the next page) and remembered; until then the system's scheme applies.
+// Switching away from the system's scheme pins the theme as a class on <html>
+// (which the head script restores on the next page) and remembers it;
+// switching back to the system's forgets it, so the page follows the system
+// again. Only a press decides this: a change to the system's scheme leaves a
+// pinned theme alone. See https://verou.me/blog/2026/dark-mode-toggles/.
 function createThemeSwitcher() {
   const list = document.querySelector(".site > header nav ul");
   if (!list) return;
@@ -41,9 +44,15 @@ function createThemeSwitcher() {
 
   button.addEventListener("click", function () {
     const next = otherTheme(effectiveTheme());
-    document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(next);
-    localStorage.setItem("theme", next);
+    const system = darkQuery.matches ? "dark" : "light";
+    const root = document.documentElement.classList;
+    root.remove("dark", "light");
+    if (next === system) {
+      localStorage.removeItem("theme");
+    } else {
+      root.add(next);
+      localStorage.setItem("theme", next);
+    }
     render();
   });
 
