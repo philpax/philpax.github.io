@@ -10,8 +10,10 @@ use rayon::prelude::*;
 
 /// Images larger than this in either dimension get a resized preview.
 const PREVIEW_MAX_DIMENSION: u32 = 1536;
-/// Small preview width for compact layouts (e.g. CityPoster component).
-const SMALL_PREVIEW_MAX_WIDTH: u32 = 384;
+/// The small preview's width, for images set at a fraction of the column (the
+/// CityPoster component's two across): twice the widest they are shown, about
+/// 27rem, so they stay sharp on a 2x screen. Its height follows.
+const SMALL_PREVIEW_WIDTH: u32 = 864;
 
 const IMAGE_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "gif", "webp"];
 
@@ -53,7 +55,7 @@ impl ImageStore {
     }
 
     /// Returns the small preview filename for an image if it needs one, otherwise the original filename.
-    /// Small previews are 384px wide, intended for compact layouts like CityPoster.
+    /// Small previews are [`SMALL_PREVIEW_WIDTH`] wide, for compact layouts like CityPoster.
     pub fn resolve_small_preview_url(&self, url: &str) -> String {
         self.resolve_preview_url_with_suffix(url, "_small")
     }
@@ -104,17 +106,20 @@ impl ImageStore {
                         let preview_output =
                             post_output_dir.join(preview_filename.file_name().unwrap());
                         if !fast || !preview_output.exists() {
-                            self.write_preview(path, &preview_output, PREVIEW_MAX_DIMENSION)
-                                .with_context(|| {
-                                    format!("failed to generate preview for {path:?}")
-                                })?;
+                            self.write_preview(
+                                path,
+                                &preview_output,
+                                PREVIEW_MAX_DIMENSION,
+                                PREVIEW_MAX_DIMENSION,
+                            )
+                            .with_context(|| format!("failed to generate preview for {path:?}"))?;
                         }
 
                         let small_filename = suffixed_path(filename, "_small");
                         let small_output =
                             post_output_dir.join(small_filename.file_name().unwrap());
                         if !fast || !small_output.exists() {
-                            self.write_preview(path, &small_output, SMALL_PREVIEW_MAX_WIDTH)
+                            self.write_preview(path, &small_output, SMALL_PREVIEW_WIDTH, u32::MAX)
                                 .with_context(|| {
                                     format!("failed to generate small preview for {path:?}")
                                 })?;
@@ -150,22 +155,20 @@ impl ImageStore {
         }
     }
 
-    /// Generate the preview file for a source image to the given output path.
+    /// Generate the preview file for a source image to the given output path,
+    /// scaled to fit within `max_width` by `max_height`.
     fn write_preview(
         &self,
         source: &Path,
         preview_output_path: &Path,
-        max_dimension: u32,
+        max_width: u32,
+        max_height: u32,
     ) -> anyhow::Result<bool> {
         if !self.needs_preview(source) {
             return Ok(false);
         }
         let img = image::ImageReader::open(source)?.decode()?;
-        let resized = img.resize(
-            max_dimension,
-            max_dimension,
-            image::imageops::FilterType::Lanczos3,
-        );
+        let resized = img.resize(max_width, max_height, image::imageops::FilterType::Lanczos3);
         resized.save(preview_output_path)?;
         Ok(true)
     }
