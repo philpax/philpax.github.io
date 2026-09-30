@@ -170,6 +170,17 @@
   inherits: false;
   initial-value: 0px;
 }
+/* The fade at a scrolling row's ends; see .tag-list. */
+@property --fade-start {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --fade-end {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
 @property --link-rest {
   syntax: '*';
   inherits: false;

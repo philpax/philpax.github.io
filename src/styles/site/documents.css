@@ -67,12 +67,14 @@
   border-radius: var(--radius-md);
 }
 
-/* The tags drop to their own line when less than 12rem is left. */
+/* The tags drop to their own line when less than 12rem is left, and keep to
+   the prose's measure rather than running into the margin. */
 .document-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--s-1) var(--s-1-5);
+  max-width: var(--measure);
 }
 .document-meta > * {
   flex-shrink: 0;

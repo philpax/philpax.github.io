@@ -34,6 +34,37 @@ h1 .tag-prefix {
 .tag-list::-webkit-scrollbar {
   display: none;
 }
+/* A row that scrolls fades out at whichever end has more to see. The fade
+   follows the scroll, and a row that fits has no scroll to follow, so it
+   does not fade. */
+@supports (animation-timeline: scroll()) {
+  .tag-list {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black var(--fade-start),
+      black calc(100% - var(--fade-end)),
+      transparent
+    );
+    animation: scroll-fade linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+@keyframes scroll-fade {
+  from {
+    --fade-start: 0em;
+    --fade-end: 2em;
+  }
+  15%,
+  85% {
+    --fade-start: 2em;
+    --fade-end: 2em;
+  }
+  to {
+    --fade-start: 2em;
+    --fade-end: 0em;
+  }
+}
 .tag-list li {
   flex-shrink: 0;
 }
