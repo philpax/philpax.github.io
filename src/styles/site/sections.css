@@ -50,7 +50,11 @@
   --tint: color-mix(in oklab, var(--accent-soft) 72%, var(--canvas));
 }
 
-/* Where a link goes: each internal link carries one of these. */
+/* Where a link goes: each internal link carries one of these. One to elsewhere
+   on the page stays in its section. */
+.link-here {
+  --hue: var(--accent);
+}
 .link-post {
   --hue: var(--c-post);
   --icon: var(--icon-post);

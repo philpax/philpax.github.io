@@ -292,7 +292,8 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             // A link says where it goes: an internal one carries the class of
-            // the section it points into.
+            // the section it points into, and one to elsewhere on the page,
+            // `link-here`.
             Node::Link(l) => {
                 if l.url.is_empty() {
                     eprintln!(
@@ -306,8 +307,13 @@ impl<'a> MarkdownConverter<'a> {
                 if self.strip_links {
                     return children;
                 }
+                let class = if url.starts_with('#') {
+                    Some("link-here")
+                } else {
+                    destination_class(&url)
+                };
                 let attrs = [
-                    destination_class(&url).map(|class| b.attr(("class", class))),
+                    class.map(|class| b.attr(("class", class))),
                     l.title
                         .as_ref()
                         .map(|title| b.attr(("title", title.as_str()))),
@@ -1175,6 +1181,28 @@ mod tests {
             generation_date: chrono::Utc::now(),
             fast: false,
         }
+    }
+
+    #[test]
+    fn a_link_within_the_page_says_so() {
+        let ast = parse_markdown("See [below](#below) and [the blog](/blog/).\n");
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+        assert!(
+            html.contains(r##"<a href="#below" class="link-here">below</a>"##),
+            "{html}"
+        );
+        assert!(
+            html.contains(r#"<a href="/blog/" class="link-post">the blog</a>"#),
+            "{html}"
+        );
     }
 
     #[test]

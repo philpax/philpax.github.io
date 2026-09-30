@@ -34,14 +34,19 @@
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-/* A link that leaves the site gets an arrow where others get a mark. */
-.prose a[href^='http']:not(:has(img))::before {
+/* A link that leaves the site gets an arrow where others get a mark, and one
+   to elsewhere on the page the # its headings' anchors use. */
+.prose a[href^='http']:not(:has(img))::before,
+.prose a.link-here::before {
   content: '\2197';
   margin-right: 0.2em;
   font-family: var(--f-ui);
   font-size: 0.75em;
   vertical-align: 0.12em;
   color: var(--ink-faint);
+}
+.prose a.link-here::before {
+  content: '#';
 }
 
 /* Headings. */
