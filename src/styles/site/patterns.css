@@ -44,7 +44,6 @@
 
 /* A step below the body size. */
 .home-page section > header > p,
-.missing-links,
 .toc ol,
 .rail-row {
   font-size: var(--text-sm);

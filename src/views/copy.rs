@@ -63,6 +63,15 @@ pub mod credits {
     pub const LEDE: &str = "who’s to blame for this, then?";
 }
 
+pub mod not_found {
+    pub const TITLE: &str = "The right man in the wrong place…";
+    /// Under the title, finishing its sentence.
+    pub const LEDE: &str =
+        "can make all the difference in the world. But not this world. Alas, there’s nothing here.";
+    /// The way out.
+    pub const HOME_LINK: &str = "Back to the front page";
+}
+
 pub mod notes {
     pub const TITLE: &str = "Notes";
     /// The filter over the notes rail.

@@ -44,6 +44,8 @@ pub enum Route {
     BlogRss,
     UpdatesRss,
     Credits,
+    /// Served by GitHub Pages for any path that has no page.
+    NotFound,
     Styles,
     Scripts,
     Icon,
@@ -82,6 +84,7 @@ impl Route {
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
             Route::UpdatesRss => RoutePath::new([], "updates.rss".to_string()),
             Route::Credits => RoutePath::new(["credits"], None),
+            Route::NotFound => RoutePath::new([], "404.html".to_string()),
             Route::Styles => RoutePath::new([], "styles.css".to_string()),
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
@@ -353,6 +356,13 @@ fn main() -> anyhow::Result<()> {
 
         views::credits::index(view_context.with_bump(&bump))
             .write_to_route(output_dir, Route::Credits)
+    })?;
+
+    timer.step("Wrote not found page", |_| {
+        let bump = Bump::new();
+
+        views::not_found::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::NotFound)
     })?;
 
     timer.step("Wrote frontpage", |substeps| {

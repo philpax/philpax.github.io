@@ -14,6 +14,7 @@ pub mod credits;
 pub mod document;
 pub mod frontpage;
 pub mod listings;
+pub mod not_found;
 pub mod notes;
 pub mod tags;
 pub mod updates;
@@ -67,6 +68,7 @@ pub enum CurrentPage {
     Notes,
     Tags,
     Credits,
+    NotFound,
 }
 impl CurrentPage {
     /// The sections the primary nav links to, in order.
@@ -85,6 +87,7 @@ impl CurrentPage {
             CurrentPage::Notes => Route::Note { note_id: vec![] }.url_path(),
             CurrentPage::Tags => Route::Tags.url_path(),
             CurrentPage::Credits => Route::Credits.url_path(),
+            CurrentPage::NotFound => Route::NotFound.url_path(),
         }
     }
 
@@ -96,6 +99,7 @@ impl CurrentPage {
             CurrentPage::Notes => copy::nav::NOTES,
             CurrentPage::Tags => copy::nav::TAGS,
             CurrentPage::Credits => copy::nav::CREDITS,
+            CurrentPage::NotFound => copy::not_found::TITLE,
         }
     }
 
@@ -103,7 +107,7 @@ impl CurrentPage {
     /// (`data-section` on the root). The front page has none.
     pub fn section(&self) -> Option<&'static str> {
         match self {
-            CurrentPage::Home => None,
+            CurrentPage::Home | CurrentPage::NotFound => None,
             CurrentPage::Blog => Some("blog"),
             CurrentPage::Updates => Some("updates"),
             CurrentPage::Notes => Some("notes"),
