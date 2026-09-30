@@ -10,12 +10,36 @@
   font-size: var(--text-xs);
   line-height: var(--lead-none);
 }
-/* Raised without <sup>, which would open up the line. */
+/* A chip on the section's tint, raised without <sup>, which would open up the
+   line. The "fn" says what it opens; its label already says so to a screen
+   reader. */
 .prose .fn-mark {
-  --hue: var(--accent);
+  --link-rest: var(--accent);
+  --link-hover: var(--accent);
   position: relative;
   top: calc(var(--r-5) * -1);
-  padding: 0 var(--r-2);
+  margin-left: var(--r-3);
+  padding: var(--r-2) var(--r-6);
+  background: var(--accent-soft);
+  transition: background-color var(--motion) ease;
+}
+.prose .fn-mark::before {
+  content: 'fn' / '';
+  margin-right: var(--r-5);
+  font-size: 0.75em;
+  font-style: italic;
+}
+.prose .fn-mark:hover {
+  background: color-mix(in oklab, var(--accent-soft) 70%, var(--accent));
+}
+/* A target big enough to tap, without moving the line around it. */
+.prose .fn-mark::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  translate: -50% -50%;
 }
 .prose .fn-num {
   margin-right: var(--r-4);
@@ -40,9 +64,11 @@
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   background: var(--raised);
 }
+/* Open, the chip fills in, like the pressed state of a button. */
 .prose .fn-mark[aria-expanded='true'] {
-  --link-rest: var(--ink);
-  font-weight: var(--font-weight-bold);
+  --link-rest: white;
+  --link-hover: white;
+  background: var(--accent-solid);
 }
 
 /* Sidenotes, measured on the column holding the prose rather than the page:
@@ -75,7 +101,8 @@
   }
   .prose .fn-mark[aria-expanded='true'] {
     --link-rest: var(--accent);
-    font-weight: inherit;
+    --link-hover: var(--accent);
+    background: var(--accent-soft);
   }
   /* Hovering either end of a note lights the other. */
   .prose .fn:has(> .fn-mark:hover) > .fn-note,
@@ -87,7 +114,6 @@
       border-color var(--motion) ease;
   }
   .prose .fn:has(> .fn-note:hover) > .fn-mark {
-    --link-rest: var(--ink);
-    text-decoration: underline;
+    background: color-mix(in oklab, var(--accent-soft) 70%, var(--accent));
   }
 }
