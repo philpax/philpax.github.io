@@ -186,6 +186,7 @@
 }
 .prose th {
   border-bottom: var(--rule) solid var(--line-strong);
+  text-align: start;
   color: var(--ink-muted);
 }
 .prose td {
