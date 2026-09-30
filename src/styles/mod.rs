@@ -90,9 +90,44 @@ fn syntax_css(context: ViewContextBase<'_>) -> String {
             .syntax
             .dark_theme_css(&format!(":root.dark {SCOPE}")),
     );
+    // The light rules apply in both themes, so a token only the light theme
+    // colours would keep its dark ink on the dark background.
+    let dark_system = reset_missing_tokens(&dark_system, &light);
+    let dark_pinned = reset_missing_tokens(&dark_pinned, &light);
     format!(
         "/* Syntax highlighting. */\n{light}\n@media (prefers-color-scheme: dark) {{\n{dark_system}}}\n{dark_pinned}"
     )
+}
+
+/// Add rules for `tokens` to the end of `theme`'s block.
+fn add_tokens(theme: &str, tokens: &[(&str, &str)]) -> String {
+    let rules: String = tokens
+        .iter()
+        .map(|(name, colour)| format!("  {name} {{ color: {colour}; }}\n"))
+        .collect();
+    let end = theme.rfind('}').expect("a theme's rules end its block");
+    format!("{}{rules}{}", &theme[..end], &theme[end..])
+}
+
+/// The token elements a theme's rules colour: `a-k` for `  a-k { color: … }`.
+fn token_names(css: &str) -> std::collections::BTreeSet<&str> {
+    css.lines()
+        .filter_map(|line| line.trim_start().split_once(" {"))
+        .map(|(name, _)| name)
+        .filter(|name| name.starts_with("a-"))
+        .collect()
+}
+
+/// Add to `theme`'s block a rule returning each token that `other` colours and
+/// `theme` does not to the block's own text colour.
+fn reset_missing_tokens(theme: &str, other: &str) -> String {
+    let own = token_names(theme);
+    let resets = token_names(other)
+        .into_iter()
+        .filter(|name| !own.contains(name))
+        .map(|name| (name, "inherit"))
+        .collect::<Vec<_>>();
+    add_tokens(theme, &resets)
 }
 
 /// Rename the generated block's background and foreground to the sheet's
@@ -130,6 +165,16 @@ mod tests {
         assert_eq!(import_name("@import './tokens.css';"), Some("tokens.css"));
         assert_eq!(import_name("  @import \"a.css\" ;"), Some("a.css"));
         assert_eq!(import_name("@layer site-element;"), None);
+    }
+
+    #[test]
+    fn tokens_only_one_theme_colours_are_reset_in_the_other() {
+        let dark = ".d {\n  a-k { color: #fff; }\n}\n";
+        let light = ".l {\n  a-k { color: #000; }\n  a-p { color: #111; }\n}\n";
+        assert_eq!(
+            reset_missing_tokens(dark, light),
+            ".d {\n  a-k { color: #fff; }\n  a-p { color: inherit; }\n}\n"
+        );
     }
 
     #[test]

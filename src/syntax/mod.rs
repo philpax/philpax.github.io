@@ -22,7 +22,7 @@ impl Default for SyntaxHighlighter {
 }
 impl SyntaxHighlighter {
     pub fn dark_theme_css(&self, selector: &str) -> String {
-        builtin::ayu_dark().to_css(selector)
+        builtin::github_dark().to_css(selector)
     }
 
     pub fn light_theme_css(&self, selector: &str) -> String {
