@@ -80,6 +80,9 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a>>) -> Element<'a> {
     let bump = context.bump;
     let tree = branches(&context.content.notes.documents, &[]);
+    // A page that stands for the index (`<NotesIndex />`, which renders
+    // nothing) has the tree open, so that a narrow page still lists its notes.
+    let open = indexes_notes(current).then(|| paxhtml::Attribute::boolean(bump, "checked"));
     html! { in bump;
         <nav ariaLabel={copy::notes::TITLE} class="notes-rail stack">
             <div class="rail-heading">
@@ -87,7 +90,7 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
             </div>
 
             // Only shown on a narrow page, where the tree folds behind it.
-            <input r#type="checkbox" id="rail-toggle" class="rail-toggle-box sr-only" autocomplete="off" />
+            <input r#type="checkbox" id="rail-toggle" class="rail-toggle-box sr-only" autocomplete="off" {open} />
             <label r#for="rail-toggle" class="rail-toggle">{copy::labels::INDEX}</label>
 
             <div id="notes-tree" class="rail-tree stack">
@@ -108,6 +111,17 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
             })}
         </nav>
     }
+}
+
+/// Whether a note places `<NotesIndex />`, standing for a list of the notes.
+fn indexes_notes(document: &Document) -> bool {
+    [
+        Some(document.description_raw.as_str()),
+        document.rest_of_content_raw.as_deref(),
+    ]
+    .into_iter()
+    .flatten()
+    .any(|raw| raw.contains("<NotesIndex"))
 }
 
 /// A row of the rail: a note, or a folder of them, which may have a page of
