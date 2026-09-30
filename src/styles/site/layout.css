@@ -205,8 +205,14 @@
   outline-color: white;
   outline-offset: -4px;
 }
-/* Very narrow, the labels alone. */
+/* Very narrow, the labels alone, in tighter boxes. */
 @container site (width < 32rem) {
+  .site > header nav ul {
+    gap: var(--s-1-5);
+  }
+  .site > header nav a {
+    padding-inline: var(--s-2);
+  }
   .site > header nav a::before {
     display: none;
   }
@@ -255,6 +261,11 @@
   }
   .theme-toggle > span {
     width: 1.25em;
+  }
+}
+@container site (width < 32rem) {
+  .theme-toggle {
+    padding-inline: var(--s-2);
   }
 }
 
