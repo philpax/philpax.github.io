@@ -14,15 +14,17 @@
 }
 /* A block is the highlighter's own surface, labelled with its language in a
    chip that sits in the corner and stays there as the code scrolls. */
-.prose pre {
-  /* The edge: the section's accent, faded into the line. The corners' controls
-     (the label, and the copy button's hover) sit on a chip of it, but on a
-     light page it is too mid a tone for ink, so they take the section's tint
-     and accent instead. */
+/* A block's edge: the section's accent, faded into the line. The corners'
+   controls (the label, and the copy button's hover) sit on a chip of it, but on
+   a light page it is too mid a tone for ink, so they take the section's tint
+   and accent instead. Set on the prose, as the copy button sits beside the
+   block rather than in it. */
+.prose {
   --code-edge: color-mix(in oklab, var(--accent) 35%, var(--line));
   --code-chip: light-dark(var(--accent-soft), var(--code-edge));
   --code-chip-ink: light-dark(var(--accent), var(--ink));
-  position: relative;
+}
+.prose pre {
   padding: var(--s-2);
   border: var(--rule) solid var(--code-edge);
   overflow-x: auto;
@@ -52,6 +54,10 @@
   font-size: var(--text-xs);
   color: var(--code-chip-ink);
   background: var(--code-chip);
+}
+/* The script's wrapper, which holds the copy button still as the code scrolls. */
+.code-block {
+  position: relative;
 }
 .code-copy {
   position: absolute;

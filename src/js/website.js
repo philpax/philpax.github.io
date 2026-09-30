@@ -150,7 +150,9 @@ function initScrollSpy() {
   window.addEventListener("resize", schedule);
 }
 
-// A copy button on every code block.
+// A copy button on every code block. The block scrolls sideways, and anything
+// placed inside it would scroll away with the code, so the block is wrapped
+// and the button sits on the wrapper.
 function initCodeCopyButtons() {
   // Sized in the markup as well as the sheet, so that without a sheet an icon
   // is the size of the text beside it.
@@ -191,7 +193,10 @@ function initCodeCopyButtons() {
         }
       );
     });
-    block.append(button);
+    const wrapper = document.createElement("div");
+    wrapper.className = "code-block";
+    block.replaceWith(wrapper);
+    wrapper.append(block, button);
   });
 }
 
