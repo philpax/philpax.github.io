@@ -1,7 +1,7 @@
 use super::*;
 use crate::views::{
     components::{A, AProps, TagLabel, TagLabelProps, TagLink, TagLinkProps},
-    listings::{gap, index_row, inline_markdown, page_head, summary_list},
+    listings::{index_row, inline_markdown, page_head, summary_list},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -36,11 +36,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                         html! { in bump; {copy::labels::SUBJECTS} },
                         Some(html! { in bump; {copy::tags::count(tags.len())} }),
                         html! { in bump;
-                            <ul class="stack" style={gap("1-5")}>
+                            <ul class="tag-index">
                                 #{tags.iter().map(|(tag, count)| html! { in bump;
-                                    <li class="tag-index-row">
+                                    <li>
                                         <TagLink tag={tag.to_string()} />
-                                        <span ariaHidden="true" class="tag-index-bar" style={format!("width: {}rem", *count as f64 / max as f64 * 5.0)}></span>
+                                        <span ariaHidden="true" class="tag-index-bar" style={format!("width: {:.1}%", *count as f64 / max as f64 * 100.0)}></span>
                                         <span class="tag-index-count">{count.to_string()}</span>
                                     </li>
                                 })}

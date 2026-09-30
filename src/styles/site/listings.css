@@ -122,20 +122,28 @@
 
 /* Tags index. */
 
-.tag-index-row {
+/* Every row on one grid, so the bars share a baseline and a scale: a bar is
+   its tag's share of the busiest. */
+.tag-index {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto var(--s-6);
-  align-items: baseline;
-  gap: var(--s-3);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-1-5) var(--s-3);
 }
-.tag-index-row a {
+.tag-index > li {
+  display: grid;
+  grid-column: span 3;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+.tag-index a {
   min-width: 0;
   font-size: var(--text-sm);
 }
 .tag-index-bar {
   height: var(--s-1-5);
   border-radius: var(--radius-md);
-  background: var(--accent-soft);
+  background: color-mix(in oklab, var(--accent) 55%, transparent);
 }
 .tag-index-count {
   text-align: right;
