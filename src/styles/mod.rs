@@ -15,6 +15,16 @@ pub fn generate(context: ViewContextBase<'_>) -> anyhow::Result<GenerateOutput> 
     Ok(GenerateOutput { css })
 }
 
+/// The sheet's tokens, for what renders the site's colours outside a page
+/// (the preview images).
+pub fn tokens_css() -> &'static str {
+    SITE_FILES
+        .iter()
+        .find(|(name, _)| *name == "tokens.css")
+        .map(|(_, css)| *css)
+        .expect("tokens.css is bundled")
+}
+
 // --- Private implementation details ---
 
 const DOCUMENT: &str = include_str!("document.css");

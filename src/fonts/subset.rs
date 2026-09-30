@@ -155,6 +155,37 @@ fn instance_and_subset(
     Ok(subset.underlying_blob().to_vec())
 }
 
+/// Pin every axis of `source` and keep everything else. See
+/// [`super::static_instance`].
+pub fn static_instance(source: &[u8], axes: &[(&[u8; 4], Option<f32>)]) -> anyhow::Result<Vec<u8>> {
+    let font = FontFace::new(Blob::from_bytes(source)?)?;
+    let input = SubsetInput::new()?;
+    // SAFETY: the input is live for the call.
+    unsafe { sys::hb_subset_input_keep_everything(input.as_raw()) };
+    for &(tag, value) in axes {
+        // SAFETY: both pointers are live for the call; HarfBuzz copies what
+        // it needs into the input.
+        let ok = unsafe {
+            match value {
+                Some(value) => sys::hb_subset_input_pin_axis_location(
+                    input.as_raw(),
+                    font.as_raw(),
+                    Tag::new(tag).into(),
+                    value,
+                ),
+                None => sys::hb_subset_input_pin_axis_to_default(
+                    input.as_raw(),
+                    font.as_raw(),
+                    Tag::new(tag).into(),
+                ),
+            }
+        };
+        anyhow::ensure!(ok != 0, "the font has no {:?} axis", Tag::new(tag));
+    }
+    let instance = input.subset_font(&font)?;
+    Ok(instance.underlying_blob().to_vec())
+}
+
 /// The cache entries for the face called `name`.
 fn entries_of(cache_dir: &Path, name: &str) -> anyhow::Result<Vec<PathBuf>> {
     let mut entries = Vec::new();

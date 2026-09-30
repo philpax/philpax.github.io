@@ -92,6 +92,16 @@ pub fn generate(
     })
 }
 
+/// A face from `SOURCE_DIR` fixed at one point on each of its axes, with every
+/// glyph kept, as TTF: for a renderer that cannot vary a font's axes itself,
+/// such as the one behind the preview images. `axes` must name every axis the
+/// font has, each with a value or `None` for the font's default.
+pub fn static_instance(source: &str, axes: &[(&[u8; 4], Option<f32>)]) -> anyhow::Result<Vec<u8>> {
+    let path = Path::new(SOURCE_DIR).join(source);
+    let bytes = std::fs::read(&path).with_context(|| format!("failed to read {path:?}"))?;
+    subset::static_instance(&bytes, axes).with_context(|| format!("failed to instance {path:?}"))
+}
+
 // --- Private implementation details ---
 
 /// The variable (and, for Iosevka, static) originals, with their licences.

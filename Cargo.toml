@@ -32,6 +32,7 @@ image = { version = "0.25.1", features = [
 resvg = "0.44"
 usvg = "0.44"
 fontdb = "0.22"
+ttf-parser = "0.24"
 rayon = "1.10"
 base64 = "0.22.1"
 # Shared HTTP client. `blocking` is for paxsite-content's sync build-time Bluesky fetches;
@@ -79,6 +80,7 @@ image = { workspace = true }
 resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }
+ttf-parser = { workspace = true }
 rayon = { workspace = true }
 sha2 = { workspace = true }
 # Fonts: HarfBuzz's subsetter and instancer (built from source; the crate's
