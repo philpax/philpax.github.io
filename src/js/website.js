@@ -218,6 +218,7 @@ function initRailFilter(rail) {
   input.closest("label").hidden = false;
 
   const boxes = Array.from(rail.querySelectorAll(".rail-branch"));
+  const empty = rail.querySelector(".rail-empty");
   let saved = null;
 
   function filter(level, needle, keepAll) {
@@ -246,6 +247,7 @@ function initRailFilter(rail) {
     const needle = input.value.trim().toLowerCase();
     if (!needle) {
       showAll(tree);
+      if (empty) empty.hidden = true;
       if (saved) {
         boxes.forEach((box, i) => (box.checked = saved[i]));
         saved = null;
@@ -253,7 +255,8 @@ function initRailFilter(rail) {
       return;
     }
     if (!saved) saved = boxes.map((box) => box.checked);
-    filter(tree, needle, false);
+    const any = filter(tree, needle, false);
+    if (empty) empty.hidden = any;
   });
 }
 

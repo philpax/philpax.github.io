@@ -100,6 +100,8 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
                     <input r#type="search" placeholder={copy::notes::FILTER_PLACEHOLDER} class="rail-search" />
                 </label>
                 {level(bump, &tree, &current.id)}
+                // Shown by the filter when it matches nothing.
+                <p class="rail-empty" role="status" hidden>{copy::notes::FILTER_EMPTY}</p>
             </div>
 
             {toc.map(|toc| html! { in bump;

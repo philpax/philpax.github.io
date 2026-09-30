@@ -116,11 +116,11 @@
   background: var(--sunken);
 }
 /* The checkbox is out of sight, so its focus shows on the control drawn for
-   it. */
+   it: inside, where the rail's scroll area cannot clip it. */
 .rail-branch:focus-visible + .rail-row-wrap > .rail-chevron,
 .rail-toggle-box:focus-visible + .rail-toggle {
   outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline-offset: -2px;
 }
 .rail-branch:not(:checked) ~ .notes-level {
   display: none;
@@ -170,11 +170,16 @@ label.rail-row {
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-display);
 }
+.rail-empty {
+  padding-left: var(--s-2);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
 .rail-age {
   font-size: var(--text-xs);
   text-align: right;
   white-space: nowrap;
-  color: var(--ink-faint);
+  color: var(--ink-muted);
   cursor: help;
 }
 

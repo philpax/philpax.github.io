@@ -69,6 +69,8 @@ pub mod notes {
     pub const FILTER_PLACEHOLDER: &str = "title or section";
     /// The filter's accessible name, where the placeholder is not enough.
     pub const FILTER_DESCRIPTION: &str = "Filter notes by title or section";
+    /// In place of the tree when the filter matches nothing.
+    pub const FILTER_EMPTY: &str = "nothing by that name";
 }
 
 /// Furniture around a document.
