@@ -136,8 +136,7 @@ pub struct Content {
     pub updates: DocumentCollection,
     pub notes: NotesCollection,
     pub tags: HashMap<Tag, Vec<DocumentId>>,
-    /// Each tag's description, one line of inline Markdown from
-    /// `content/tags.toml`. Every tag in `tags` has one.
+    /// Tag descriptions (inline Markdown) from `content/tags.toml`.
     pub tag_descriptions: HashMap<Tag, String>,
     pub about: Document,
     pub credits: Document,
@@ -388,9 +387,8 @@ impl Content {
     }
 }
 
-/// Read every tag's description. A tag in use without one is an error, so a
-/// tag's page always has something to open with; a description nothing uses
-/// is only a warning.
+/// Reads tag descriptions. A used tag without one is an error; an unused
+/// description is a warning.
 fn read_tag_descriptions(
     tags: &HashMap<Tag, Vec<DocumentId>>,
 ) -> anyhow::Result<HashMap<Tag, String>> {
@@ -416,8 +414,7 @@ fn read_tag_descriptions(
         );
     }
 
-    // Drafts are only read in draft builds, so only those see every tag in use;
-    // elsewhere a tag used only by drafts would look unused.
+    // Only draft builds see every used tag; otherwise draft-only tags look unused.
     let mut unused: Vec<&Tag> = descriptions
         .keys()
         .filter(|tag| !tags.contains_key(*tag))

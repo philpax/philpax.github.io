@@ -21,8 +21,7 @@
   min-width: 0;
 }
 @container site (width >= 64rem) {
-  /* The column is stated rather than sized to its content, because it is the
-     container the sidenotes measure. */
+  /* Explicit column: it is the container the sidenotes measure. */
   .document-layout {
     grid-template-columns: minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
     justify-content: center;

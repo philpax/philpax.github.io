@@ -44,7 +44,7 @@ pub enum Route {
     BlogRss,
     UpdatesRss,
     Credits,
-    /// Served by GitHub Pages for any path that has no page.
+    /// GitHub Pages serves this for unknown paths.
     NotFound,
     Styles,
     Scripts,
@@ -151,11 +151,9 @@ fn main() -> anyhow::Result<()> {
         })?;
     }
 
-    // Load syntax and read content in parallel
     let (syntax, content) = timer.step("Loaded syntax and read content", |substeps| {
         use std::sync::Mutex;
 
-        // Collect timing reports from the content task
         let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
             Mutex::new(Vec::new());
 
@@ -436,7 +434,7 @@ fn main() -> anyhow::Result<()> {
 
     let script = js::generate()?;
 
-    // After every page is written: the fonts are cut to the pages' text.
+    // Fonts are subset from the built pages, so this must come after them.
     timer.step("Wrote bundled styles and fonts", |substeps| {
         let output = substeps.step("Generated styles", || styles::generate(view_context))?;
         let fonts = substeps.step("Subset fonts", || {

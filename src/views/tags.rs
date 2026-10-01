@@ -7,7 +7,7 @@ use crate::views::{
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
-    // Most used first, then alphabetically.
+    // Most used first, then alphabetical.
     let mut tags: Vec<(&String, usize)> = content
         .tags
         .iter()

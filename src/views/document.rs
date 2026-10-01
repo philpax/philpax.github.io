@@ -1,6 +1,5 @@
-//! A post, an update or a note: one renderer for all three. A note differs
-//! from a post in its breadcrumb and in having no kind in its meta row, and
-//! sits beside the notes rail rather than in a frame of its own.
+//! One renderer for posts, updates and notes. A note differs in its breadcrumb, has no
+//! kind in its meta row, and sits beside the notes rail instead of its own frame.
 
 use paxhtml::bumpalo::Bump;
 
@@ -14,8 +13,7 @@ use crate::{
     },
 };
 
-/// A post or an update on its own: the article, and beside it the contents,
-/// in the frame wide enough for a margin on either side of the column.
+/// A post or update page: the article beside its contents, in the wide frame.
 pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
     let body = Body::new(context, document);
@@ -35,8 +33,7 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     }
 }
 
-/// A document's heading and body, with its contents in a disclosure between
-/// the two that only a narrow page shows.
+/// A document's heading and body, with a contents disclosure between them (narrow pages only).
 pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>) -> Element<'a> {
     let bump = context.bump;
     let toc = body.toc.map(|toc| {
@@ -58,8 +55,7 @@ pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>
     }
 }
 
-/// A document's body, rendered, and its contents, where it has enough
-/// headings to go between.
+/// A document's rendered body and, if it has enough headings, its contents.
 pub struct Body<'a> {
     pub blocks: Element<'a>,
     pub toc: Option<Element<'a>>,
@@ -82,14 +78,13 @@ impl<'a> Body<'a> {
     }
 }
 
-/// The document heading, the same for a post, an update and a note: a
-/// breadcrumb for a note, the title with the summary beneath it, the meta row,
+/// The document heading: a note's breadcrumb, the title and summary, the meta row,
 /// and a post's hero image.
 pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = document.route_path().url_path();
     let is_note = document.document_type == DocumentType::Note;
-    // The notes' own page is titled after the section.
+    // The notes section's own page is titled after the section.
     let title = match is_note && document.id.is_empty() {
         true => copy::notes::TITLE,
         false => &document.metadata.title,
@@ -119,9 +114,8 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
 
 // --- Private implementation details ---
 
-/// The contents: every heading in the document, as the outline it describes.
-/// A post earns them once there is more than one heading to go between; a
-/// note, which has no aside, with one.
+/// The contents: an outline of every heading. Posts need more than one heading;
+/// notes, which have no aside, need one.
 fn toc<'a>(
     context: ViewContext<'a>,
     document: &Document,
@@ -160,8 +154,7 @@ fn toc_list<'a>(bump: &'a Bump, headings: &[HeadingHierarchy<'a>]) -> Element<'a
     }
 }
 
-/// A note's way back up: the notes, then each folder above it, linking to
-/// the folder's own page where it has one.
+/// A note's breadcrumb: the notes, then each parent folder, linking to its page if it has one.
 fn breadcrumb<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
     html! { in bump;
@@ -181,17 +174,15 @@ fn breadcrumb<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> 
     }
 }
 
-/// A row of facts separated by slashes, with the tags closing it. The slashes
-/// are in the markup so that the row reads as a row without a sheet; the tags
-/// have none before them, as they drop to a line of their own when short of
-/// room.
+/// Facts separated by slashes, then the tags. The slashes are in the markup so it reads
+/// as a row unstyled; the tags have none, as they wrap onto their own line.
 fn meta<'a>(bump: &'a Bump, document: &Document) -> Element<'a> {
     let kind = match document.document_type {
         DocumentType::Blog => Some("Post"),
         DocumentType::Update => Some("Update"),
         DocumentType::Note => None,
     };
-    // A note is dated by when it was last touched.
+    // Notes are dated by last touch.
     let when = match document.document_type {
         DocumentType::Note => document
             .metadata

@@ -1,10 +1,7 @@
-// The theme switch: the nav's last item, showing the theme in force, an arrow,
-// and the theme it switches to. It only works with script, so script makes it.
-// Switching away from the system's scheme pins the theme as a class on <html>
-// (which the head script restores on the next page) and remembers it;
-// switching back to the system's forgets it, so the page follows the system
-// again. Only a press decides this: a change to the system's scheme leaves a
-// pinned theme alone. See https://verou.me/blog/2026/dark-mode-toggles/.
+// Theme switch, added to the nav by script. Choosing a theme other than the
+// system's pins it as a class on <html> (restored by the head script) and
+// stores it; choosing the system's clears it. System changes don't override a pin.
+// See https://verou.me/blog/2026/dark-mode-toggles/.
 function createThemeSwitcher() {
   const list = document.querySelector(".site > header nav ul");
   if (!list) return;
@@ -65,20 +62,16 @@ function createThemeSwitcher() {
   list.appendChild(li);
 }
 
-// Footnotes. The marker is a link to its note, which sits beside it: without
-// a script, following it opens the note by :target. This upgrades it to a
-// disclosure that opens the note in place, without moving the page. Where the
-// notes float in the margin there is nothing to open, so the marker does
-// nothing, and is taken out of the tab order and out of the accessibility
-// tree rather than announce a state it doesn't control.
+// Footnotes. Without script the marker opens its note via :target; this
+// upgrades it to an in-place disclosure. When notes sit in the margin there is
+// nothing to open, so the marker is removed from the tab order and a11y tree.
 function initFootnotes() {
   document.addEventListener("click", function (event) {
     const mark = event.target.closest(".prose .fn-mark");
     if (!mark) return;
     event.preventDefault();
     if (mark.closest("[data-sidenotes-active]")) return;
-    // The note is the marker's next sibling, so the sheet opens it from
-    // aria-expanded alone.
+    // The note is the marker's next sibling, so CSS opens it from aria-expanded.
     const open = mark.getAttribute("aria-expanded") === "true";
     mark.setAttribute("aria-expanded", open ? "false" : "true");
   });
@@ -105,16 +98,14 @@ function initFootnotes() {
       });
     }
     sync();
-    // Whether a note fits in the margin depends on the width of the column
-    // holding the prose, not the prose's own, which stops growing at its
-    // measure well before the notes move out.
+    // Margin fit depends on the prose's column width, not the prose itself,
+    // which stops growing at its measure well before the notes move out.
     new ResizeObserver(sync).observe(host.parentElement || host);
   });
 }
 
-// The contents mark the heading being read: the last one whose top has passed
-// a line a little below the top of what the reader can see (the bottom of the
-// header, where it sticks). The contents are plain links without a script.
+// Contents highlight: the last heading whose top has passed a line just below
+// the sticky header.
 function initScrollSpy() {
   const links = Array.from(document.querySelectorAll(".toc a[href^='#']"));
   if (!links.length) return;
@@ -150,12 +141,10 @@ function initScrollSpy() {
   window.addEventListener("resize", schedule);
 }
 
-// A copy button on every code block. The block scrolls sideways, and anything
-// placed inside it would scroll away with the code, so the block is wrapped
-// and the button sits on the wrapper.
+// Copy button on every code block. The block scrolls sideways, so it is
+// wrapped and the button sits on the wrapper.
 function initCodeCopyButtons() {
-  // Sized in the markup as well as the sheet, so that without a sheet an icon
-  // is the size of the text beside it.
+  // Sized in markup too, so the icon is sane without the stylesheet.
   function icon(path) {
     return (
       '<svg aria-hidden="true" width="1em" height="1em" viewBox="0 0 256 256"><path d="' +
@@ -207,9 +196,8 @@ function initNotesRail() {
   initRailFilter(rail);
   initNoteAges(rail);
 
-  // Arriving by deep link, the current row may be sixty rows down the rail,
-  // which scrolls on its own where it sits beside the note. Bring the row into
-  // the rail's view without moving the page.
+  // On a deep link the current row may be far down the rail; scroll the rail
+  // (not the page) to it.
   const row = rail.querySelector(".rail-row[aria-current]");
   if (row && rail.scrollHeight > rail.clientHeight) {
     const railBox = rail.getBoundingClientRect();
@@ -222,9 +210,8 @@ function initNotesRail() {
   }
 }
 
-// The filter keeps a row whose name matches, with everything beneath it, and
-// the folders on the way to it; it opens every folder it keeps by checking its
-// box. Clearing it puts the boxes back as they were.
+// Keeps matching rows, their descendants and their ancestor folders, opening
+// kept folders. Clearing restores the previous checkbox state.
 function initRailFilter(rail) {
   const input = rail.querySelector(".rail-search");
   const tree = rail.querySelector(".rail-tree > .notes-level");
@@ -274,8 +261,7 @@ function initRailFilter(rail) {
   });
 }
 
-// A note's age: how long since it was touched, as "5d", "6 wk", "4 mo" or
-// "2 yr". The page has the month it was touched; the tooltip, the full time.
+// A note's age as "5d", "6 wk", "4 mo" or "2 yr".
 function initNoteAges(rail) {
   const DAY = 86400000;
   const now = Date.now();
@@ -293,10 +279,9 @@ function initNoteAges(rail) {
   });
 }
 
-// The music library. Every album and track links to a YouTube search for it,
-// and those links are written here rather than in the page, which they would
-// double in size. The filter down to liked albums and tracks needs the script
-// too, so it starts hidden; ?likes=1 turns it on.
+// Music library. YouTube search links are generated here rather than in the
+// page, where they would double its size. The liked filter needs script, so it
+// starts hidden; ?likes=1 turns it on.
 function initMusicLibrary() {
   const library = document.querySelector(".music-library");
   if (!library) return;
@@ -330,7 +315,7 @@ function initMusicLibrary() {
   const params = new URLSearchParams(window.location.search);
   checkbox.checked = params.get("likes") === "1";
 
-  // An album that is liked shows in full; any other, only its liked tracks.
+  // Liked albums show in full; others show only their liked tracks.
   function apply() {
     const likes = checkbox.checked;
     for (const album of albums) {

@@ -12,8 +12,7 @@ pub struct PrMetaProps {
     pub tl_id: Option<String>,
 }
 
-/// The facts that follow a pull request link in the prose: when, and how
-/// much. Where the request has a row in the timeline, they link to it.
+/// Dates and diff stats following a pull request link; links to the PR's timeline row if it has one.
 pub fn pr_meta<'bump>(bump: &'bump Bump, props: PrMetaProps) -> paxhtml::Element<'bump> {
     let date = |date: &str| {
         html! { in bump; <time datetime={date}>{display_date(parse_date(date))}</time> }

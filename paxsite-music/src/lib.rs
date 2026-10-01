@@ -1,27 +1,23 @@
-//! The music library as exported by `music-export` and read by the site.
-//!
-//! The exporter writes a [`MusicLibrary`] to `assets/baked/music.json`; the SSG
-//! reads it back for the `<MusicLibrary />` component and the front page.
+//! The music library written by `music-export` to `assets/baked/music.json` and
+//! read by the `<MusicLibrary />` component and the front page.
 use std::collections::{HashMap, HashSet};
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-/// The number of days before the export that count towards [`Album::recent_plays`].
+/// Days before the export counted by [`Album::recent_plays`].
 pub const RECENT_PLAYS_DAYS: i64 = 30;
 
-/// Where cover art is kept: a directory under `assets/baked/static`, and so
-/// the same path from the site's root. [`Album::cover`] names a file in it.
+/// Cover art directory, under `assets/baked/static` and so the same path from
+/// the site root. [`Album::cover`] names a file in it.
 pub const COVERS_DIR: &str = "music-covers";
 
-/// How many albums the front page shows, and so how many have covers.
+/// Albums shown on the front page; only these get covers.
 pub const MOST_LISTENED: usize = 5;
 
-/// The whole exported library.
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct MusicLibrary {
-    /// When the export was made. [`Album::recent_plays`] counts the
-    /// [`RECENT_PLAYS_DAYS`] days before this.
+    /// When the export was made.
     pub exported_at: DateTime<Utc>,
     /// Every album, in library order (sort artist, year, album name).
     pub albums: Vec<Album>,
@@ -39,17 +35,15 @@ pub struct Album {
     pub tracks: Vec<Track>,
     #[serde(skip_serializing_if = "is_false", default)]
     pub starred: bool,
-    /// Scrobbles of this album's tracks in the [`RECENT_PLAYS_DAYS`] days
-    /// before [`MusicLibrary::exported_at`].
+    /// Scrobbles in the [`RECENT_PLAYS_DAYS`] days before
+    /// [`MusicLibrary::exported_at`].
     #[serde(skip_serializing_if = "is_zero", default)]
     pub recent_plays: u64,
-    /// The file in [`COVERS_DIR`] holding the album's cover art. Only the
-    /// albums the front page shows have one.
+    /// File in [`COVERS_DIR`]. Only front page albums have one.
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub cover: Option<String>,
 }
 
-/// A single track of an [`Album`].
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Track {
     pub title: String,
@@ -64,7 +58,7 @@ pub struct Track {
     pub duration: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub disc_number: Option<u32>,
-    /// Lifetime play count, as reported by the server.
+    /// Lifetime plays, from the server.
     #[serde(skip_serializing_if = "is_optional_zero", default)]
     pub play_count: Option<u64>,
     #[serde(skip_serializing_if = "is_false", default)]
@@ -72,7 +66,6 @@ pub struct Track {
 }
 
 impl MusicLibrary {
-    /// An empty library, for builds that skip reading the export.
     pub fn empty() -> Self {
         Self {
             exported_at: DateTime::<Utc>::UNIX_EPOCH,
@@ -80,28 +73,26 @@ impl MusicLibrary {
         }
     }
 
-    /// Whether any album was played in the [`RECENT_PLAYS_DAYS`] before the export.
+    /// Whether any album was played within [`RECENT_PLAYS_DAYS`] of the export.
     pub fn has_recent_plays(&self) -> bool {
         self.albums.iter().any(|a| a.recent_plays > 0)
     }
 
-    /// The `n` most listened albums: by [`Album::recent_plays`] (ties broken by
-    /// lifetime plays), considering only albums played recently. If nothing was
-    /// played recently, falls back to lifetime plays across the whole library;
-    /// [`Self::has_recent_plays`] says which applies.
+    /// The `n` most listened albums by [`Album::recent_plays`], ties broken by
+    /// lifetime plays. Falls back to lifetime plays if nothing was played
+    /// recently; [`Self::has_recent_plays`] says which applies.
     pub fn most_listened(&self, n: usize) -> Vec<&Album> {
         let mut albums: Vec<&Album> = if self.has_recent_plays() {
             self.albums.iter().filter(|a| a.recent_plays > 0).collect()
         } else {
             self.albums.iter().filter(|a| a.play_count() > 0).collect()
         };
-        // Stable sort, so equal albums keep library order.
+        // Stable: ties keep library order.
         albums.sort_by_key(|a| std::cmp::Reverse((a.recent_plays, a.play_count())));
         albums.truncate(n);
         albums
     }
 
-    /// The fragment IDs the library's page gives its albums and artists.
     pub fn anchors(&self) -> Anchors {
         let mut used = HashSet::new();
         let mut unique = |base: String| {
@@ -145,8 +136,8 @@ impl Album {
     }
 }
 
-/// Fragment IDs for the library's page, from [`MusicLibrary::anchors`]: one
-/// per album, and one per artist, which goes on the artist's first album.
+/// Fragment IDs from [`MusicLibrary::anchors`]: one per album, and one per
+/// artist, placed on the artist's first album.
 pub struct Anchors {
     albums: Vec<String>,
     artists: HashMap<String, String>,
@@ -163,8 +154,8 @@ impl Anchors {
     }
 }
 
-/// A name as a fragment: lowercase, its letters and digits (in any script)
-/// kept, and every run of anything else a single hyphen.
+/// Lowercased name keeping letters and digits (any script), with other runs
+/// collapsed to a single hyphen.
 fn slug(name: &str) -> String {
     let mut slug = String::new();
     for c in name.chars().flat_map(char::to_lowercase) {

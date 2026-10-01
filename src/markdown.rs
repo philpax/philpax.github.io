@@ -90,16 +90,14 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// Render a document body as the site's blocks: each run of authored
-    /// content is a `.prose` block, and each block-level component
-    /// (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`)
-    /// sits beside them rather than inside one, so that nothing styled for
-    /// prose ever reaches a component. `<NotesIndex />` renders nothing: the
-    /// notes rail is the index.
+    /// Render a document body as blocks: each run of authored content is a `.prose`
+    /// block, and block components (`<PrTimeline />`, `<BlueskyPost />`,
+    /// `<MusicLibrary />`, `<CityPoster>`) sit beside them, not inside, so prose
+    /// styles never reach them. `<NotesIndex />` renders nothing.
     pub fn convert_blocks(&mut self, root: &Node) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
 
-        // Footnote bookkeeping happens once, over the whole document.
+        // Footnotes are collected once, over the whole document.
         self.gather_footnote_definitions(root);
         self.validate_footnote_references(root);
 
@@ -144,8 +142,7 @@ impl<'a> MarkdownConverter<'a> {
         match node {
             Node::Root(r) => self.convert_many(&r.children, Some(node)),
 
-            // A heading links to itself. One that holds a link of its own can't
-            // be wrapped in another, so it gets a separate `#` anchor instead.
+            // Headings link to themselves; one containing a link gets a separate `#` anchor.
             Node::Heading(h) => {
                 let children = self.convert_many(&h.children, Some(node));
                 if self.without_blocking_elements {
@@ -194,9 +191,7 @@ impl<'a> MarkdownConverter<'a> {
                 }
             }
             Node::ListItem(li) => {
-                // A list item holding a single paragraph is written as a tight
-                // one: the paragraph's contents go straight into the item, with
-                // any nested list after them.
+                // A single-paragraph item is rendered tight: contents go straight into the item.
                 let has_one_paragraph = li
                     .children
                     .iter()
@@ -218,8 +213,7 @@ impl<'a> MarkdownConverter<'a> {
                     b.li([])(self.convert_many(&li.children, Some(node)))
                 }
             }
-            // A block of code: its language, `text` if it names none, then
-            // the code.
+            // Language defaults to `text`.
             Node::Code(c) => {
                 let language = c.lang.as_deref().map(str::trim).filter(|l| !l.is_empty());
                 let highlighted = self.highlight(language, &c.value, "code block");
@@ -250,8 +244,7 @@ impl<'a> MarkdownConverter<'a> {
                         self.error_context, i.alt
                     );
                 }
-                // Markdown image syntax is used for video clips too; an <img>
-                // pointed at one would just be a broken image.
+                // Image syntax is also used for video clips, which an <img> can't show.
                 let lowercase = i.url.to_lowercase();
                 let is_video = [".mp4", ".webm", ".mov", ".avi", ".mkv", ".ogv"]
                     .iter()
@@ -267,8 +260,7 @@ impl<'a> MarkdownConverter<'a> {
                         b.attr(("preload", "metadata")),
                     ])(paxhtml::Element::Empty)
                 } else {
-                    // A local image is shown as its preview, linking to the
-                    // original.
+                    // Local images show their preview, linking to the original.
                     let is_local = !i.url.starts_with("http://")
                         && !i.url.starts_with("https://")
                         && !i.url.starts_with("//");
@@ -291,9 +283,7 @@ impl<'a> MarkdownConverter<'a> {
                     )
                 }
             }
-            // A link says where it goes: an internal one carries the class of
-            // the section it points into, and one to elsewhere on the page,
-            // `link-here`.
+            // Internal links get their target section's class; same-page links get `link-here`.
             Node::Link(l) => {
                 if l.url.is_empty() {
                     eprintln!(
@@ -328,8 +318,7 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     return self.convert_many(&t.children, Some(node));
                 }
-                // The first row is the header, and sets how many cells every
-                // row has: as in GFM, a shorter row is padded with empty ones.
+                // The header row sets the column count; shorter rows are padded (as in GFM).
                 let mut rows = t.children.iter();
                 let columns = t
                     .children
@@ -389,10 +378,10 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    /// Rewrite a URL so it resolves correctly when rendered outside the document's own
-    /// page. Relative paths are rooted at `document_base_url`; if `website_base_url` is
-    /// also set, site-absolute paths (`/foo`) are made fully absolute too. External,
-    /// fragment, protocol-relative, `mailto:`, and `tel:` URLs are left alone.
+    /// Rewrites a URL to resolve outside the document's own page: relative paths are
+    /// rooted at `document_base_url`, and with `website_base_url` set, site-absolute
+    /// paths are made fully absolute. External, fragment, protocol-relative, `mailto:`
+    /// and `tel:` URLs are left alone.
     fn resolve_relative_url(&self, url: &str) -> String {
         if url.is_empty()
             || url.starts_with('#')
@@ -416,10 +405,8 @@ impl<'a> MarkdownConverter<'a> {
         format!("{base}{stripped}")
     }
 
-    /// If the URL points to a `.md` file and we have a source path, resolve it to
-    /// the corresponding output route URL. Links are validated up-front in the
-    /// content phase (see [`validate_document_links`]); if resolution somehow
-    /// fails here we fall back to the raw URL rather than aborting a render.
+    /// Resolves a `.md` URL to its output route. Links are validated up front (see
+    /// [`validate_document_links`]), so on failure this falls back to the raw URL.
     fn resolve_link_url(&self, url: &str) -> String {
         let is_md_link = url.ends_with(".md") || url.contains(".md#");
         let is_absolute_url = url.contains("://");
@@ -435,8 +422,7 @@ impl<'a> MarkdownConverter<'a> {
             .unwrap_or_else(|| url.to_string())
     }
 
-    /// A run of authored content as one `.prose` block; nothing for a run with
-    /// nothing in it.
+    /// A run of authored content as a `.prose` block; `None` if it's all blank.
     fn prose(&mut self, nodes: &[Node], root: &Node) -> Option<paxhtml::Element<'a>> {
         let b = Builder::new(self.context.bump);
         let is_blank = |node: &Node| match node {
@@ -451,7 +437,7 @@ impl<'a> MarkdownConverter<'a> {
             .then(|| b.div([b.attr(("class", "prose"))])(self.convert_many(nodes, Some(root))))
     }
 
-    /// Highlight code, or print it as it is if the highlighter fails.
+    /// Highlights code; panics if the highlighter fails.
     fn highlight(&self, language: Option<&str>, code: &str, what: &str) -> paxhtml::Element<'a> {
         self.context
             .syntax
@@ -461,7 +447,6 @@ impl<'a> MarkdownConverter<'a> {
             })
     }
 
-    /// A table row's cells, as `th` or `td`.
     /// A row's cells as `cell` elements, padded with empty ones to `columns`.
     fn convert_cells(&mut self, row: &Node, cell: &str, columns: usize) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
@@ -482,8 +467,7 @@ impl<'a> MarkdownConverter<'a> {
         b.fragment(cells)
     }
 
-    /// Raw HTML in the Markdown: a comment is dropped, a component is
-    /// rendered, and anything else is passed through.
+    /// Raw HTML: comments are dropped, components rendered, anything else passed through.
     fn convert_html(&mut self, value: &str) -> paxhtml::Element<'a> {
         let bump = self.context.bump;
 
@@ -553,9 +537,8 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    /// A footnote reference becomes the note itself, beside its marker: a link
-    /// to the note, which opens by `:target` without a script and in place with
-    /// one, and which floats into the margin where the column has room.
+    /// Renders the note itself beside its marker. It opens via `:target` without script,
+    /// and floats into the margin where there's room.
     fn convert_footnote_reference(&mut self, identifier: &str) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
         let definition = self.footnote_definition(identifier).clone();
@@ -631,9 +614,8 @@ impl<'a> MarkdownConverter<'a> {
         b.fragment(elements)
     }
 
-    /// Detect a `[title](github-pr-url) <PrMeta ... />` pair and wrap it in a
-    /// `.pr-mention` with a stable id, so the timeline's row can link to the
-    /// mention and the mention's dates can link to the row.
+    /// Wraps a `[title](github-pr-url) <PrMeta ... />` pair in a `.pr-mention` with a
+    /// stable id, so the timeline row and the mention can link to each other.
     fn try_convert_pr_mention(
         &mut self,
         nodes: &[Node],
@@ -686,8 +668,8 @@ impl<'a> MarkdownConverter<'a> {
     ///
     /// Custom elements are identified by an opening `Node::Html` whose value starts
     /// with `<` followed by an uppercase letter. The function scans forward for a
-    /// matching closing tag, converts the body nodes between them as one `.prose`
-    /// block, and returns a complete paxhtml Element with that block as its child.
+    /// matching closing tag, converts the body between them as one `.prose` block,
+    /// and returns the element with that block as its child.
     fn try_convert_paired_element(
         &mut self,
         nodes: &[Node],
@@ -741,7 +723,6 @@ impl<'a> MarkdownConverter<'a> {
             }
         };
 
-        // The body between the tags is authored content, so it is prose.
         let b = Builder::new(bump);
         let body = self.convert_many(&nodes[i + 1..end_idx], parent_node);
         let body = b.div([b.attr(("class", "prose"))])(body);
@@ -874,14 +855,14 @@ fn block_component(bump: &paxhtml::bumpalo::Bump, node: &Node) -> Option<BlockCo
     }
 }
 
-/// A heading's anchor: its text, slugified. The same slug the link checker
-/// validates against (see [`collect_heading_anchors`]).
+/// A heading's anchor: its slugified text. Also what the link checker validates
+/// against (see [`collect_heading_anchors`]).
 pub fn heading_id(heading: &Node) -> String {
     crate::util::slugify(inner_text(heading, None).trim())
 }
 
-/// A document's body as one Markdown tree: its description and the rest of
-/// its content, which are split at `<!-- more -->` when read, joined again.
+/// A document's body as one tree: the description and the rest, rejoined after the
+/// `<!-- more -->` split.
 pub fn document_root(document: &Document) -> Node {
     let children = document
         .description
@@ -963,9 +944,7 @@ fn contains_link(nodes: &[Node]) -> bool {
     })
 }
 
-/// Walk a markdown AST and collect the slug for every heading. The slug is
-/// [`heading_id`], which the converter gives each heading, so this is the
-/// canonical anchor set for in-document heading links.
+/// Collects the [`heading_id`] of every heading: the anchor set for in-document links.
 pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
     fn walk(node: &Node, anchors: &mut HashSet<String>) {
         if matches!(node, Node::Heading(_)) {
@@ -1293,15 +1272,14 @@ Here is some text with a footnote[^note1] and another[^note2].
             .write_to_string()
             .unwrap();
 
-        // Each note sits beside its marker, named after its footnote and
-        // numbered in order of reference.
+        // Notes sit beside their markers, numbered in order of reference.
         assert!(html.contains(
             r##"<span class="fn"><a class="fn-mark" href="#fn-note1" role="doc-noteref" aria-label="Note 1">1</a><span class="fn-note" id="fn-note1" role="doc-footnote"><span class="fn-num" aria-hidden="true">1</span>This is the first footnote.</span></span>"##
         ));
         assert!(
             html.contains(r##"href="#fn-note2" role="doc-noteref" aria-label="Note 2">2</a>"##)
         );
-        // No apparatus at the foot.
+        // No notes at the foot.
         assert_eq!(html.matches("This is the first footnote.").count(), 1);
     }
 
@@ -1332,8 +1310,7 @@ fn main() {}
             .write_to_string()
             .unwrap();
 
-        // The timeline (empty here) splits the prose in two, and the notes
-        // index renders nothing at all.
+        // The (empty) timeline splits the prose in two; the notes index renders nothing.
         assert_eq!(html.matches(r#"<div class="prose">"#).count(), 2);
         assert!(html.contains(
             r##"<h2 id="a-heading-with-a-link"><a class="heading-anchor" href="#a-heading-with-a-link"># </a>A heading with <a href="/notes/foo" class="link-note">a link</a></h2>"##

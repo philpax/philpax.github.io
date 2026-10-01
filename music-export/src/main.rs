@@ -1,13 +1,12 @@
-//! Exports the music library from a Navidrome server to the JSON the site reads
-//! (`assets/baked/music.json`; see `paxsite-music` for the format).
+//! Exports the music library from a Navidrome server to `assets/baked/music.json`
+//! (format in `paxsite-music`).
 //!
 //! Usage: `cargo run -p music-export [-- <output path>]`
 //!
-//! The server and credentials come from Blackbird's config
-//! (`~/.config/blackbird/config.toml`, `[server]`). The library is fetched over
-//! the Subsonic API; recent plays come from Navidrome's native scrobble API,
-//! which needs Navidrome 0.64 or later. The covers of the albums the front
-//! page shows are saved beside it, in `assets/baked/static/music-covers`.
+//! Server and credentials come from Blackbird's config (`[server]`). The library
+//! is fetched over Subsonic; recent plays come from Navidrome's native scrobble
+//! API, which needs Navidrome 0.64+. Front page covers are saved to
+//! `assets/baked/static/music-covers`.
 use std::{
     collections::{HashMap, HashSet},
     path::{Path, PathBuf},
@@ -21,9 +20,9 @@ use paxsite_music::{Album, COVERS_DIR, MOST_LISTENED, MusicLibrary, RECENT_PLAYS
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_OUTPUT_PATH: &str = "assets/baked/music.json";
-/// Navidrome's name for the album of files that carry no album tag.
+/// Navidrome's album name for files with no album tag.
 const UNKNOWN_ALBUM: &str = "[Unknown Album]";
-/// The front page shows covers at 2.5rem; this is enough for a 3x screen.
+/// Front page covers display at 2.5rem; this covers a 3x screen.
 const COVER_SIZE: usize = 128;
 
 #[tokio::main]
@@ -142,8 +141,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-/// Partial view of Blackbird's shared config: only the server settings.
-/// Unknown sections written by the clients are ignored on load.
+/// Blackbird's shared config, server settings only. Other sections are ignored.
 #[derive(Default, Serialize, Deserialize)]
 #[serde(default)]
 struct Config {
@@ -151,8 +149,8 @@ struct Config {
 }
 impl ConfigFile for Config {}
 
-/// An untagged album of one track is almost always a single, so it takes its
-/// track's name. Untagged albums of several tracks keep Navidrome's name.
+/// An untagged single-track album is almost always a single, so it takes the
+/// track's name.
 fn album_name(album: &str, tracks: &[Track]) -> String {
     match tracks {
         [only] if album == UNKNOWN_ALBUM => only.title.clone(),
@@ -160,9 +158,8 @@ fn album_name(album: &str, tracks: &[Track]) -> String {
     }
 }
 
-/// Saves the covers of the albums the front page shows into `dir`, at
-/// [`COVER_SIZE`], and removes the covers of albums it no longer shows. An
-/// album whose cover can't be fetched goes without.
+/// Saves front page album covers into `dir` at [`COVER_SIZE`] and removes stale
+/// ones. Albums whose cover can't be fetched go without.
 async fn save_covers(
     client: &bs::Client,
     library: &mut MusicLibrary,
@@ -210,7 +207,7 @@ async fn save_covers(
     Ok(())
 }
 
-/// The extension for an image, by its first bytes.
+/// Image extension, sniffed from the first bytes.
 fn image_extension(bytes: &[u8]) -> Option<&'static str> {
     match bytes {
         [0xFF, 0xD8, 0xFF, ..] => Some("jpg"),
@@ -235,7 +232,7 @@ fn image_extension(bytes: &[u8]) -> Option<&'static str> {
     }
 }
 
-/// A cover art ID made safe for a file name.
+/// A cover art ID as a safe file name.
 fn file_stem(id: &str) -> String {
     id.chars()
         .map(|c| {
@@ -248,17 +245,16 @@ fn file_stem(id: &str) -> String {
         .collect()
 }
 
-/// Navidrome's native API (not Subsonic), used for scrobble history.
+/// Navidrome's native API (not Subsonic), for scrobble history.
 mod navidrome {
     use anyhow::Context as _;
     use chrono::{DateTime, Utc};
     use serde::Deserialize;
 
-    /// One play of a track.
     #[derive(Deserialize)]
     #[serde(rename_all = "camelCase")]
     pub struct Scrobble {
-        /// The Subsonic song ID, as carried by `blackbird_state::TrackId`.
+        /// Subsonic song ID (`blackbird_state::TrackId`).
         pub media_file_id: String,
         /// Unix seconds.
         pub submission_time: i64,

@@ -24,8 +24,8 @@
 
 /* Links. */
 
-/* The hover rule is a background rather than a decoration, so it runs under
-   the section mark too, once per line of a wrapped link. */
+/* Hover rule is a background, not a decoration, so it runs under the section
+   mark and once per wrapped line. */
 .prose a:hover {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -34,8 +34,8 @@
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-/* A link that leaves the site gets an arrow where others get a mark, and one
-   to elsewhere on the page the # its headings' anchors use. */
+/* External links get an arrow instead of a mark; same-page links get the #
+   used by heading anchors. */
 .prose a[href^='http']:not(:has(img))::before,
 .prose a.link-here::before {
   content: '\2197';
@@ -175,8 +175,8 @@
 
 /* Tables. */
 
-/* A table wider than the column scrolls within itself rather than widening the
-   page. As a block it sizes to its content, as a table would. */
+/* A table wider than the column scrolls within itself. As a block it sizes to
+   its content, as a table would. */
 .prose table {
   display: block;
   max-width: 100%;

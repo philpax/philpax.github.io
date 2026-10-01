@@ -1,8 +1,7 @@
 use chrono::NaiveDate;
 use paxhtml::{builder::Builder, bumpalo::Bump};
 
-/// `<MonthDayDate date="2025-11-06" />` in the Markdown: `2025-11-06`, or
-/// `11-06` with `noyear`.
+/// `<MonthDayDate date="2025-11-06" />`: `2025-11-06`, or `11-06` with `noyear`.
 pub fn month_day_date<'bump>(
     bump: &'bump Bump,
     date: &str,
@@ -17,8 +16,7 @@ pub fn month_day_date<'bump>(
     }))
 }
 
-/// `<MonthDayDateRange start="…" end="…" />` in the Markdown: two dates and a
-/// dash between them.
+/// `<MonthDayDateRange start="…" end="…" />`: two dates joined by a dash.
 pub fn month_day_date_range<'bump>(
     bump: &'bump Bump,
     start: &str,
@@ -33,23 +31,22 @@ pub fn month_day_date_range<'bump>(
     ])
 }
 
-/// A date as the site prints it, in ISO 8601: `2025-09-06`.
+/// An ISO 8601 date: `2025-09-06`.
 pub fn display_date(date: NaiveDate) -> String {
     date.format("%Y-%m-%d").to_string()
 }
 
-/// A month and day with no year: `09-06`. Narrow enough to sit either side
-/// of a bar.
+/// A month and day with no year: `09-06`.
 pub fn month_day(date: NaiveDate) -> String {
     date.format("%m-%d").to_string()
 }
 
-/// A timestamp to the minute, for a tooltip: `2026-09-28 21:39 UTC`.
+/// A timestamp to the minute, for tooltips: `2026-09-28 21:39 UTC`.
 pub fn display_timestamp(datetime: chrono::DateTime<chrono::Utc>) -> String {
     datetime.format("%Y-%m-%d %H:%M UTC").to_string()
 }
 
-/// Parse a `YYYY-MM-DD` date written in the Markdown.
+/// Parses a `YYYY-MM-DD` date.
 pub fn parse_date(date: &str) -> NaiveDate {
     NaiveDate::parse_from_str(date, "%Y-%m-%d")
         .unwrap_or_else(|e| panic!("invalid date '{date}': {e}"))

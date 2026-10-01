@@ -11,7 +11,7 @@ use crate::{
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
-    // The Elsewhere buttons, in order, as `(image in static/88x31, site)`.
+    // Elsewhere buttons: `(image in static/88x31, site)`.
     let list_88x31 = [
         ("philpax.png", "https://philpax.me"),
         ("ackwell.png", "https://ackwell.au"),
@@ -115,14 +115,14 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
 
 // --- Private implementation details ---
 
-/// The notes touched most recently, newest first.
+/// Most recently touched notes, newest first.
 fn recent_notes(content: &Content, count: usize) -> Vec<&Document> {
     let mut notes: Vec<&Document> = content
         .notes
         .documents
         .all_documents()
         .into_iter()
-        // The notes section's own page is the index, not a note.
+        // The section's own page is the index, not a note.
         .filter(|d| !d.id.is_empty())
         .collect();
     notes.sort_by_key(|d| std::cmp::Reverse(d.metadata.last_modified.or(d.metadata.datetime)));
@@ -132,7 +132,7 @@ fn recent_notes(content: &Content, count: usize) -> Vec<&Document> {
 
 struct Listening {
     title: &'static str,
-    /// The page the whole library is on.
+    /// The page of the whole library.
     href: Option<String>,
     albums: Vec<ListenedAlbum>,
 }
@@ -141,17 +141,15 @@ struct ListenedAlbum {
     artist: String,
     album: String,
     plays: u64,
-    /// The cover art's URL, if the export saved one.
+    /// Cover art URL, if the export saved one.
     cover: Option<String>,
-    /// Where the album, and its artist, are in the library.
+    /// The album's and artist's locations in the library.
     album_href: Option<String>,
     artist_href: Option<String>,
 }
 
-/// What the listening block shows: the albums listened to most in the month
-/// before the library was exported, or over the whole library if the export
-/// has no recent plays, and the note that holds the library. All of the
-/// block's data access is here.
+/// The listening block's data: top albums from the month before the export (or lifetime
+/// if it has no recent plays), and the note holding the library.
 fn most_listened(content: &Content, count: usize) -> Listening {
     let library = &content.music_library;
     let recent = library.has_recent_plays();
@@ -212,16 +210,15 @@ fn most_listened(content: &Content, count: usize) -> Listening {
 
 struct Section<'s> {
     title: &'s str,
-    /// The rest of the section, if it has more than the page shows.
+    /// The rest of the section, if there's more than shown.
     href: Option<String>,
-    /// The section's RSS feed, if it has one.
+    /// The section's RSS feed, if any.
     feed: Option<String>,
     section: Option<&'static str>,
     tone: Option<&'static str>,
 }
 
-/// A block of the front page: a heading in the section's colour, with links
-/// to its feed and to the rest of it.
+/// A front page block: a heading in the section's colour, with feed and "rest of" links.
 fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element<'a> {
     let attrs = [
         props
@@ -248,8 +245,7 @@ fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element
     }
 }
 
-/// Stand-ins for missing cover art: the album's initials on one of the arc's
-/// solid hues, so the row reads as a list of albums rather than of text.
+/// Stand-in for missing cover art: the album's initials on a solid hue.
 const COVER_HUES: [&str; 5] = ["post", "update", "note", "tag", "credits"];
 
 fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
@@ -268,8 +264,7 @@ fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
                 };
                 html! { in bump;
                     <li>
-                        // The cover repeats the title's link, so it is left
-                        // out of the tab order and the accessibility tree.
+                        // Duplicates the title's link, so hidden from tab order and accessibility tree.
                         {match &album.album_href {
                             Some(href) => html! { in bump;
                                 <a href={href.clone()} class="listening-cover-link" tabindex="-1" ariaHidden="true">{cover}</a>
@@ -295,8 +290,7 @@ fn link_or_text<'a>(bump: &'a Bump, href: Option<&str>, text: &str) -> Element<'
     }
 }
 
-/// Two letters for a title: the first letters of its first two words, or the
-/// first two letters of a one-word title.
+/// The first letters of a title's first two words, or its first two letters if one word.
 fn initials(title: &str) -> String {
     let words: Vec<&str> = title
         .split(|c: char| !c.is_alphanumeric())
@@ -314,7 +308,7 @@ fn initials(title: &str) -> String {
     mark.to_uppercase()
 }
 
-/// A site's host name, which is its button's alternative text.
+/// A site's host name, used as its button's alt text.
 fn host(url: &str) -> &str {
     let rest = url.split_once("://").map_or(url, |(_, rest)| rest);
     rest.split('/').next().unwrap_or(rest)

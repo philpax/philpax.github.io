@@ -5,8 +5,7 @@ use crate::{
     views::components::{A, AProps},
 };
 
-/// A tag's hue, from its first letter: `a` is 0° and `z` is 360°, so tags
-/// spread around the wheel alphabetically. Emitted as `--tag-hue`.
+/// A tag's hue from its first letter (`a` is 0°, `z` 360°). Emitted as `--tag-hue`.
 pub fn tag_hue(tag: &str) -> f64 {
     tag.trim()
         .to_lowercase()
@@ -25,7 +24,7 @@ impl DefaultIn<'_> for TagLinkProps {
     }
 }
 
-/// A tag as a link to its page, in its own hue.
+/// A tag as a link to its page.
 #[allow(non_snake_case)]
 pub fn TagLink<'bump>(bump: &'bump Bump, props: TagLinkProps) -> paxhtml::Element<'bump> {
     let href = Route::Tag {
@@ -49,7 +48,7 @@ impl DefaultIn<'_> for TagLabelProps {
     }
 }
 
-/// A tag as a label rather than a link: the heading of its own page.
+/// A tag as a plain label, for its own page's heading.
 #[allow(non_snake_case)]
 pub fn TagLabel<'bump>(bump: &'bump Bump, props: TagLabelProps) -> paxhtml::Element<'bump> {
     paxhtml::html! { in bump;
@@ -69,7 +68,7 @@ impl DefaultIn<'_> for TagListProps {
     }
 }
 
-/// A document's tags as a row of links; nothing at all if it has none.
+/// A document's tags as a row of links; nothing if it has none.
 #[allow(non_snake_case)]
 pub fn TagList<'bump>(bump: &'bump Bump, props: TagListProps) -> paxhtml::Element<'bump> {
     if props.tags.is_empty() {
@@ -99,7 +98,6 @@ mod tests {
         assert_eq!(tag_hue("zzz"), 360.0);
         assert_eq!(tag_hue("3d"), 43.199999999999996);
         assert_eq!(tag_hue("---"), 0.0);
-        // Printed as the redesign prints them.
         assert_eq!(tag_hue("personal").to_string(), "216");
         assert_eq!(tag_hue("meta").to_string(), "172.79999999999998");
     }

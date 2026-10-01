@@ -1,8 +1,7 @@
 use paxhtml::{bumpalo::Bump, html};
 
-/// A picture beside its caption: two columns where there is room for them,
-/// stacked where there is not. The picture is a preview, linking to the
-/// original; the caption is the Markdown between the tags, as prose.
+/// A picture beside its caption (stacked when narrow). The picture is a preview linking
+/// to the original; the caption is the Markdown between the tags.
 pub fn city_poster<'bump>(
     bump: &'bump Bump,
     image_url: &str,

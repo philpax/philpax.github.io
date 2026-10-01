@@ -1,6 +1,5 @@
-//! What each face has to set: the characters in the built pages, found by the
-//! elements the sheet sets in that face, plus what the sheet and the script
-//! draw themselves.
+//! Finds the characters each face must cover: the built pages' text (by the
+//! elements the sheet sets in each face) plus what the sheet and script draw.
 
 use std::{collections::BTreeSet, path::Path};
 
@@ -10,7 +9,7 @@ use scraper::{ElementRef, Html, Node, Selector};
 
 use super::Role;
 
-/// The characters each role's face must cover.
+/// Characters each role's face must cover.
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct Characters {
     pub ui: BTreeSet<char>,
@@ -31,13 +30,13 @@ impl Characters {
     }
 }
 
-/// Collect the characters of every page under `output_dir` that uses the
-/// sheet, then add what `sheet` and `script` generate, the ASCII floor, and
-/// each character's other case.
+/// Collects characters from every page under `output_dir` that uses the sheet,
+/// plus what `sheet` and `script` generate, printable ASCII, and each
+/// character's other case.
 pub fn collect(output_dir: &Path, sheet: &str, script: &str) -> anyhow::Result<Characters> {
     let pages = html_files(output_dir)?;
     let selectors = RoleSelectors::new();
-    // Its own pool: the global one is busy with the background image work.
+    // Own pool: the global one is busy with image work.
     let pool = rayon::ThreadPoolBuilder::new().build()?;
     let mut characters = pool.install(|| {
         pages
@@ -76,9 +75,9 @@ fn html_files(dir: &Path) -> anyhow::Result<Vec<std::path::PathBuf>> {
     Ok(files)
 }
 
-/// The elements each face sets, as the sheet assigns them. The UI face is the
-/// default, so it takes everything; the others take what is inside their
-/// elements, whatever a nested rule might switch back.
+/// The elements each face sets, per the sheet. The UI face is the default and
+/// takes everything; the others take everything inside their elements, even if
+/// a nested rule switches back.
 struct RoleSelectors {
     ui: Selector,
     display: Selector,
@@ -91,7 +90,7 @@ impl RoleSelectors {
         let parse = |s: &str| Selector::parse(s).expect("role selectors are valid");
         Self {
             ui: parse("body"),
-            // elements.css: the headings the sheet sets in the display face.
+            // elements.css: display-face headings.
             display: parse("h1, h2, h3"),
             // patterns.css's reading face, and documents.css's standfirst.
             body: parse(
@@ -100,14 +99,13 @@ impl RoleSelectors {
             ),
             // elements.css.
             mono: parse("code, kbd, samp, pre"),
-            // layout.css: the wordmark is the site's name, set in the brand link.
+            // layout.css: the site name in the brand link.
             wordmark: parse(".site-brand"),
         }
     }
 }
 
-/// The characters one page asks of each face. A page that doesn't load the
-/// sheet (a redirect, a stray static page) asks nothing of them.
+/// Characters one page needs per face. Pages that don't load the sheet need none.
 fn page_characters(html: &str, selectors: &RoleSelectors) -> Characters {
     if !html.contains("/styles.css") {
         return Characters::default();
@@ -129,11 +127,10 @@ fn page_characters(html: &str, selectors: &RoleSelectors) -> Characters {
     }
 }
 
-/// Attributes whose values the page renders as text: a missing image's
-/// alternative, a field's placeholder or value, an option's label.
+/// Attributes rendered as text: `alt`, `placeholder`, `value`, option `label`.
 const RENDERED_ATTRIBUTES: &[&str] = &["alt", "placeholder", "value", "label"];
 
-/// The visible text inside `element`, and its rendered attributes.
+/// Visible text inside `element`, plus its rendered attributes.
 fn element_characters(element: ElementRef<'_>, set: &mut BTreeSet<char>) {
     for node in element.descendants() {
         match node.value() {
@@ -167,8 +164,8 @@ impl Characters {
         self.wordmark.extend(other.wordmark);
     }
 
-    /// What the sheet and the script put on the page themselves, and the
-    /// printable ASCII floor. The wordmark only ever sets the site's name.
+    /// What the sheet and script put on the page, plus printable ASCII. The
+    /// wordmark only sets the site's name.
     fn add_generated(&mut self, sheet: &str, script: &str) {
         let generated: BTreeSet<char> = css_content_strings(sheet)
             .chars()
@@ -187,8 +184,7 @@ impl Characters {
         }
     }
 
-    /// Labels are lowercased by the sheet, so every character comes with its
-    /// other case.
+    /// The sheet changes case on labels, so add each character's other case.
     fn close_over_case(&mut self) {
         for set in [
             &mut self.ui,
@@ -206,11 +202,11 @@ impl Characters {
     }
 }
 
-/// What the browser draws on the sheet's behalf: `text-overflow: ellipsis`,
-/// `<q>`'s quotation marks, and the disclosure markers.
+/// Characters the browser draws itself: `text-overflow` ellipsis, `<q>` quotes,
+/// disclosure markers.
 const BROWSER_GENERATED: &str = "…“”‘’▸▾";
 
-/// Every string in the sheet's `content:` declarations, escapes decoded.
+/// Every `content:` string in the sheet, escapes decoded.
 fn css_content_strings(sheet: &str) -> String {
     let mut out = String::new();
     let mut rest = sheet;
@@ -256,8 +252,7 @@ fn css_content_strings(sheet: &str) -> String {
     out
 }
 
-/// The script's characters, with its `\uXXXX`, `\u{X}` and `\xXX` escapes
-/// decoded: anything it could write into the page.
+/// The script's characters, with `\uXXXX`, `\u{X}` and `\xXX` escapes decoded.
 fn script_characters(script: &str) -> impl Iterator<Item = char> + '_ {
     let escaped = script.match_indices('\\').filter_map(|(i, _)| {
         let rest = &script[i + 1..];

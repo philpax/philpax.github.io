@@ -1,7 +1,6 @@
-//! The notes: a section with a rail beside every note, which is also the
-//! index. The rail's tree opens and closes without a script (a checkbox
-//! before each folder, its label the chevron), and so does the rail itself
-//! on a narrow page; the script adds the filter and the notes' ages.
+//! The notes section: a rail beside every note, doubling as the index. The tree and
+//! (on narrow pages) the rail itself open and close without script, via checkboxes;
+//! script adds the filter and note ages.
 
 use paxhtml::bumpalo::Bump;
 
@@ -37,7 +36,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
     let body = Body::new(context, note);
     let rail = rail(context, note, body.toc.clone());
     let main = if is_index {
-        // The section's own introduction, beside the rail that indexes it.
+        // The section's introduction, beside the rail.
         html! { in bump;
             <article class="document-content">
                 {document::head(context, note)}
@@ -75,13 +74,11 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
 // --- Private implementation details ---
 
-/// The rail: a link to the index, the toggle that folds the tree away on a
-/// narrow page, the filter, the tree, and the note's contents.
+/// The rail: index link, narrow-page toggle, filter, tree and the note's contents.
 fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a>>) -> Element<'a> {
     let bump = context.bump;
     let tree = branches(&context.content.notes.documents, &[]);
-    // A page that stands for the index (`<NotesIndex />`, which renders
-    // nothing) has the tree open, so that a narrow page still lists its notes.
+    // A page standing in for the index (`<NotesIndex />`) has the tree open, so narrow pages still list notes.
     let open = indexes_notes(current).then(|| paxhtml::Attribute::boolean(bump, "checked"));
     html! { in bump;
         <nav ariaLabel={copy::notes::TITLE} class="notes-rail stack">
@@ -89,18 +86,18 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
                 <A href={CurrentPage::Notes.url_path()}>{copy::labels::INDEX}</A>
             </div>
 
-            // Only shown on a narrow page, where the tree folds behind it.
+            // Narrow pages only; the tree folds behind it.
             <input r#type="checkbox" id="rail-toggle" class="rail-toggle-box sr-only" autocomplete="off" {open} />
             <label r#for="rail-toggle" class="rail-toggle">{copy::labels::INDEX}</label>
 
             <div id="notes-tree" class="rail-tree stack">
-                // The filter needs the script, which reveals it.
+                // Needs script, which reveals it.
                 <label hidden>
                     <span class="sr-only">{copy::notes::FILTER_DESCRIPTION}</span>
                     <input r#type="search" placeholder={copy::notes::FILTER_PLACEHOLDER} class="rail-search" />
                 </label>
                 {level(bump, &tree, &current.id)}
-                // Shown by the filter when it matches nothing.
+                // Shown when the filter matches nothing.
                 <p class="rail-empty" role="status" hidden>{copy::notes::FILTER_EMPTY}</p>
             </div>
 
@@ -115,7 +112,7 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
     }
 }
 
-/// Whether a note places `<NotesIndex />`, standing for a list of the notes.
+/// Whether a note contains `<NotesIndex />`.
 fn indexes_notes(document: &Document) -> bool {
     [
         Some(document.description_raw.as_str()),
@@ -126,14 +123,13 @@ fn indexes_notes(document: &Document) -> bool {
     .any(|raw| raw.contains("<NotesIndex"))
 }
 
-/// A row of the rail: a note, or a folder of them, which may have a page of
-/// its own.
+/// A rail row: a note, or a folder that may have its own page.
 struct Branch {
-    /// The note ids beneath a folder start with this; a note's is its id.
+    /// Ids of notes beneath a folder start with this; a note's is its id.
     path: DocumentId,
     label: String,
     route: Option<String>,
-    /// When this note, or the freshest note beneath this folder, was touched.
+    /// Last touch of this note, or of the freshest note under this folder.
     at: Option<chrono::DateTime<chrono::Utc>>,
     children: Vec<Branch>,
 }
@@ -197,9 +193,8 @@ fn touched(document: &Document) -> Option<chrono::DateTime<chrono::Utc>> {
         .or(document.metadata.datetime)
 }
 
-/// One level of the tree. A folder is opened by the checkbox before it, whose
-/// label is the chevron; the folders on the way to the current note start
-/// open.
+/// One level of the tree. Folders open via the checkbox before them (the label is the
+/// chevron); folders leading to the current note start open.
 fn level<'a>(bump: &'a Bump, branches: &[Branch], current: &DocumentId) -> Element<'a> {
     html! { in bump;
         <ul class="notes-level stack">
@@ -227,9 +222,7 @@ fn level<'a>(bump: &'a Bump, branches: &[Branch], current: &DocumentId) -> Eleme
                             }
                         })}
                         <div class="rail-row-wrap">
-                            // A folder with a page of its own gets two controls,
-                            // since they do two things: the chevron opens the
-                            // branch, and the row opens the page.
+                            // Two controls: the chevron opens the branch, the row opens the page.
                             {folder.then(|| html! { in bump;
                                 <label r#for={id.clone()} class="rail-chevron">
                                     <span class="sr-only">{branch.label.clone()}</span>
@@ -245,8 +238,8 @@ fn level<'a>(bump: &'a Bump, branches: &[Branch], current: &DocumentId) -> Eleme
     }
 }
 
-/// A row's name and age. The age is written as the month it was touched, which
-/// the script turns into how long ago that was; the full time is its tooltip.
+/// A row's name and age. The age is written as a month, which script turns into a
+/// relative time; the full time is the tooltip.
 fn row_inner<'a>(bump: &'a Bump, branch: &Branch) -> Element<'a> {
     let age = match branch.at {
         Some(at) => html! { in bump;

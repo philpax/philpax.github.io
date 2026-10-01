@@ -3,8 +3,7 @@ use paxsite_content::bluesky::{BlueskyPostData, Facet, FacetFeature};
 
 use super::display_date;
 
-/// An archived Bluesky post: who posted it, what they said, and when, with
-/// the date linking to the post itself.
+/// An archived Bluesky post: author, text and a date linking to the original.
 pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml::Element<'bump> {
     let avatar = post.author_avatar_filename.as_ref().map(|filename| {
         paxhtml::html! { in bump; <img src={filename.as_str()} alt="" /> }
@@ -27,7 +26,7 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
         <figure class="social-card">
             <header>
                 {avatar}
-                // Name over handle: two lines of one address, so it stacks.
+                // Name over handle.
                 <p class="stack">
                     <b>{name}</b>
                     <span>{format!("@{}", post.author_handle)}</span>
@@ -87,6 +86,6 @@ fn render_rich_text<'bump>(
         elements.push(paxhtml::html! { in bump; {&text[cursor..]} });
     }
 
-    // Line breaks stay as they were written: the card preserves white space.
+    // The card preserves white space, so line breaks stay as written.
     paxhtml::builder::Builder::new(bump).fragment(elements)
 }

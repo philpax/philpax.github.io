@@ -100,8 +100,8 @@
 
 /* Dated row: an update or a note on one line. */
 
-/* The entry's basis is 0, so a long title wraps in its column rather than
-   dropping below the date. */
+/* Basis 0, so a long title wraps in its column instead of dropping below the
+   date. */
 .dated-row {
   display: flex;
   flex-wrap: wrap;
@@ -126,8 +126,8 @@
 
 /* Tags index. */
 
-/* Every row on one grid, so the bars share a baseline and a scale: a bar is
-   its tag's share of the busiest. */
+/* One grid for all rows so bars share a baseline and scale (share of the
+   busiest tag). */
 .tag-index {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;

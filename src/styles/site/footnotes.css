@@ -11,8 +11,7 @@
   line-height: var(--lead-none);
 }
 /* A chip on the section's tint, raised without <sup>, which would open up the
-   line. The "fn" says what it opens; its label already says so to a screen
-   reader. */
+   line. */
 .prose .fn-mark {
   --link-rest: var(--accent);
   --link-hover: var(--accent);
@@ -71,9 +70,8 @@
   background: var(--accent-solid);
 }
 
-/* Sidenotes, measured on the column holding the prose rather than the page:
-   the measure plus the gutter, written out because a container query cannot
-   read a variable. */
+/* Sidenotes, measured on the prose's column: the measure plus the gutter,
+   written out because container queries can't read variables. */
 :has(> .prose) {
   container: column / inline-size;
 }

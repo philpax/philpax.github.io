@@ -68,10 +68,8 @@ pub fn collect_pr_entries(bump: &Bump, root: &Node) -> Vec<PrEntry> {
     entries
 }
 
-/// Every pull request the document mentions, on one timeline: a bar per
-/// request across the span the work covered, its dates and diff either side,
-/// and the project and title at the end. A row links to the mention in the
-/// prose, and the mention's own dates link back here.
+/// A timeline of every pull request the document mentions: a bar per PR over its span,
+/// with dates, diff, project and title. Rows and prose mentions link to each other.
 pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::Element<'bump> {
     if entries.is_empty() {
         return paxhtml::Element::Empty;
@@ -84,7 +82,7 @@ pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::El
     let timeline_end = sorted.iter().map(|e| e.end).max().unwrap();
     let total_days = ((timeline_end - timeline_start).num_days() as u32) + 1;
 
-    // The tally counts what landed: a closed request contributed no lines.
+    // Closed PRs contributed no lines.
     let merged: Vec<&PrEntry> = entries.iter().filter(|e| !e.closed).collect();
     let closed = entries.len() - merged.len();
     let total_add: u64 = merged.iter().map(|e| e.add as u64).sum();

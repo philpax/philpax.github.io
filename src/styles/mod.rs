@@ -4,10 +4,9 @@ pub struct GenerateOutput {
     pub css: String,
 }
 
-/// Bundle the site's stylesheet into one file: the document around the site,
-/// the sheet in `site/` with its `@import`s inlined in order, and the
-/// highlighter's token colours for both themes. The faces' rules are generated
-/// with the fonts (see `crate::fonts`) and go in front.
+/// Bundles the document styles, `site/` (with `@import`s inlined) and the
+/// highlighter's token colours into one sheet. The `@font-face` rules come
+/// from `crate::fonts` and are prepended by the caller.
 pub fn generate(context: ViewContextBase<'_>) -> anyhow::Result<GenerateOutput> {
     let site = inline_imports(SITE_ENTRY, SITE_FILES)?;
     let syntax = syntax_css(context);
@@ -15,8 +14,7 @@ pub fn generate(context: ViewContextBase<'_>) -> anyhow::Result<GenerateOutput> 
     Ok(GenerateOutput { css })
 }
 
-/// The sheet's tokens, for what renders the site's colours outside a page
-/// (the preview images).
+/// The sheet's design tokens, for the preview images.
 pub fn tokens_css() -> &'static str {
     SITE_FILES
         .iter()
@@ -30,7 +28,7 @@ pub fn tokens_css() -> &'static str {
 const DOCUMENT: &str = include_str!("document.css");
 const SITE_ENTRY: &str = include_str!("site/site.css");
 
-/// Every file `site/site.css` may import, by the name it imports it by.
+/// Files `site/site.css` may import, by import name.
 const SITE_FILES: &[(&str, &str)] = &[
     ("tokens.css", include_str!("site/tokens.css")),
     ("sections.css", include_str!("site/sections.css")),
@@ -48,8 +46,7 @@ const SITE_FILES: &[(&str, &str)] = &[
     ("music.css", include_str!("site/music.css")),
 ];
 
-/// Replace each `@import './name.css';` line with that file's contents, so the
-/// entry's order is the bundle's order.
+/// Replaces each `@import './name.css';` line with that file's contents.
 fn inline_imports(entry: &str, files: &[(&str, &str)]) -> anyhow::Result<String> {
     let mut out =
         String::with_capacity(entry.len() + files.iter().map(|(_, f)| f.len()).sum::<usize>());
@@ -79,13 +76,11 @@ fn import_name(line: &str) -> Option<&str> {
     Some(quoted.strip_prefix("./").unwrap_or(quoted))
 }
 
-/// The highlighter's colours for the site. The light theme is the default and
-/// the dark one follows the site's theme mechanism: the system preference
-/// unless `<html>` pins `light`, or a `dark` class pins it.
+/// The highlighter's colours. Light is the default; dark follows the system
+/// preference unless `<html>` pins `light`, or a `dark` class pins dark.
 ///
-/// The token rules are kept as they are. The theme's own background and
-/// foreground become `--code-background` and `--code-color`, for the sheet to
-/// place; its other custom properties, an `--accent` among them, would repaint
+/// The theme's background and foreground become `--code-background` and
+/// `--code-color`. Its other custom properties (e.g. `--accent`) would repaint
 /// the site, so they are dropped.
 fn syntax_css(context: ViewContextBase<'_>) -> String {
     const SCOPE: &str = ".site";
@@ -100,8 +95,8 @@ fn syntax_css(context: ViewContextBase<'_>) -> String {
             .syntax
             .dark_theme_css(&format!(":root.dark {SCOPE}")),
     );
-    // The light rules apply in both themes, so a token only the light theme
-    // colours would keep its dark ink on the dark background.
+    // Light rules apply in both themes, so tokens only the light theme colours
+    // need resetting in dark.
     let dark_system = reset_missing_tokens(&dark_system, &light);
     let dark_pinned = reset_missing_tokens(&dark_pinned, &light);
     format!(
@@ -109,7 +104,7 @@ fn syntax_css(context: ViewContextBase<'_>) -> String {
     )
 }
 
-/// Add rules for `tokens` to the end of `theme`'s block.
+/// Appends rules for `tokens` to `theme`'s block.
 fn add_tokens(theme: &str, tokens: &[(&str, &str)]) -> String {
     let rules: String = tokens
         .iter()
@@ -119,7 +114,7 @@ fn add_tokens(theme: &str, tokens: &[(&str, &str)]) -> String {
     format!("{}{rules}{}", &theme[..end], &theme[end..])
 }
 
-/// The token elements a theme's rules colour: `a-k` for `  a-k { color: … }`.
+/// Token elements a theme colours: `a-k` for `  a-k { color: … }`.
 fn token_names(css: &str) -> std::collections::BTreeSet<&str> {
     css.lines()
         .filter_map(|line| line.trim_start().split_once(" {"))
@@ -128,8 +123,8 @@ fn token_names(css: &str) -> std::collections::BTreeSet<&str> {
         .collect()
 }
 
-/// Add to `theme`'s block a rule returning each token that `other` colours and
-/// `theme` does not to the block's own text colour.
+/// Resets each token that `other` colours but `theme` doesn't to the block's
+/// text colour.
 fn reset_missing_tokens(theme: &str, other: &str) -> String {
     let own = token_names(theme);
     let resets = token_names(other)
@@ -140,8 +135,8 @@ fn reset_missing_tokens(theme: &str, other: &str) -> String {
     add_tokens(theme, &resets)
 }
 
-/// Rename the generated block's background and foreground to the sheet's
-/// custom properties, and drop its other custom properties.
+/// Renames the block's background and foreground to the sheet's custom
+/// properties and drops its others.
 fn theme_rules(css: &str) -> String {
     css.lines()
         .filter(|line| !line.trim_start().starts_with("--"))

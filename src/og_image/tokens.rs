@@ -1,6 +1,5 @@
-//! The site's colours, marks and measures, read from the sheet's tokens so
-//! the preview images follow them. The images are always in the dark theme:
-//! the second value of each `light-dark()`.
+//! The site's colours, marks and measures, read from the sheet's tokens. The
+//! images always use the dark theme (the second `light-dark()` value).
 
 use anyhow::Context as _;
 
@@ -16,11 +15,11 @@ pub struct Palette {
 
 /// A section's colours and mark.
 pub struct Section {
-    /// The accent the field and the text are drawn in.
+    /// Accent for the field and text.
     pub accent: Rgb,
-    /// The solid colour behind the wordmark and the section's box.
+    /// Solid colour behind the wordmark and section box.
     pub solid: Rgb,
-    /// The section's mark, as an SVG document drawn in white, if it has one.
+    /// The section's mark, as white SVG, if any.
     pub icon_svg: Option<String>,
 }
 
@@ -35,8 +34,7 @@ impl Palette {
 }
 
 impl Section {
-    /// The section called `name` in the tokens: `post`, `update`, `note`,
-    /// `tag` or `credits`.
+    /// The section `name`: `post`, `update`, `note`, `tag` or `credits`.
     pub fn from_tokens(css: &str, name: &str) -> anyhow::Result<Self> {
         let icon_name = format!("--icon-{name}");
         Ok(Self {
@@ -71,7 +69,7 @@ pub fn hex(rgb: Rgb) -> String {
 
 // --- Private implementation details ---
 
-/// A token's value: everything between `name:` and the `;` that ends it.
+/// A token's value: text between `name:` and the terminating `;`.
 fn value<'a>(css: &'a str, name: &str) -> anyhow::Result<&'a str> {
     let start = css
         .find(&format!("{name}:"))
@@ -84,8 +82,7 @@ fn value<'a>(css: &'a str, name: &str) -> anyhow::Result<&'a str> {
     Ok(css[start..start + end].trim())
 }
 
-/// A colour token's dark value: its last `oklch()`, with any `var()` in it
-/// looked up.
+/// A colour token's dark value: its last `oklch()`, with `var()`s resolved.
 fn colour(css: &str, name: &str) -> anyhow::Result<Rgb> {
     let value = value(css, name)?;
     let start = value
@@ -93,7 +90,7 @@ fn colour(css: &str, name: &str) -> anyhow::Result<Rgb> {
         .with_context(|| format!("{name} is not in oklch()"))?
         + "oklch(".len();
     let inner = &value[start..];
-    // The oklch's own closing parenthesis: the first one not closing a var().
+    // The oklch's closing parenthesis: the first not closing a var().
     let mut depth = 0;
     let end = inner
         .char_indices()
@@ -130,7 +127,7 @@ fn number(css: &str, part: &str) -> anyhow::Result<f64> {
     }
 }
 
-/// An icon token's SVG, drawn in white rather than the black a mask wants.
+/// An icon token's SVG, recoloured white (masks want black).
 fn icon(css: &str, name: &str) -> anyhow::Result<String> {
     let value = value(css, name)?;
     let data = value

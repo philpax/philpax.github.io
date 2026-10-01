@@ -3,16 +3,12 @@ use paxsite_music::{Album, Track};
 
 use crate::{util, views::ViewContext};
 
-/// The music library, mirrored to the player it comes from (Blackbird): each
-/// album a section with a coloured artist heading, its title, year, length and
-/// heart; each track a row with its number, title, plays, artist where it
-/// differs, length and heart. A banner counts the library, and a checkbox
-/// filters it down to what is liked. Albums and artists have fragment IDs
-/// (see `MusicLibrary::anchors`), which the front page links to.
+/// The music library, laid out like Blackbird (the player it comes from), with
+/// a likes filter. Albums and artists have fragment IDs (`MusicLibrary::anchors`)
+/// that the front page links to.
 ///
-/// Every album and track links to a YouTube search for it. Those links are
-/// written by the site's script rather than here: there are tens of thousands
-/// of them, and they would double the size of the page.
+/// The per-album and per-track YouTube search links are written by the site's
+/// script, not here: there are tens of thousands and they would double the page.
 pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     let bump = context.bump;
     if context.fast {
@@ -47,7 +43,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
                     {format!("{} albums", count(album_count))}
                     {liked(liked_album_count)}
                 </div>
-                // The filter needs the script, which reveals it.
+                // Needs script, which reveals it.
                 <div class="music-filter" hidden>
                     <label r#for="likes-filter-checkbox">
                         <input r#type="checkbox" id="likes-filter-checkbox" />
@@ -68,8 +64,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     }
 }
 
-/// An album, with its fragment ID; the first album of each artist also holds
-/// the artist's.
+/// An album with its fragment ID, plus the artist's on their first album.
 fn album<'a>(
     bump: &'a Bump,
     album: &Album,
@@ -141,7 +136,6 @@ fn track<'a>(bump: &'a Bump, album: &Album, track: &Track) -> paxhtml::Element<'
     }
 }
 
-/// A length and the heart beside it.
 fn length<'a>(
     bump: &'a Bump,
     class: &str,
@@ -156,8 +150,7 @@ fn length<'a>(
     }
 }
 
-/// Hash a string to a pleasing colour, as the player does, so that a name
-/// lands on the same hue wherever it appears.
+/// Hashes a string to a colour, matching the player.
 fn string_to_colour(input: &str) -> String {
     const DISTINCT_COLOURS: u32 = 36_000;
     let mut hash: u32 = 0x811c_9dc5;
@@ -189,7 +182,7 @@ fn rgb_from_hsv(h: f64, s: f64, v: f64) -> [f64; 3] {
     }
 }
 
-/// Linear [0, 1] to gamma [0, 255], clamped.
+/// Linear [0, 1] to gamma [0, 255], clamped (mirrors egui).
 fn gamma_u8_from_linear(l: f64) -> u8 {
     if l <= 0.0 {
         0
@@ -202,8 +195,7 @@ fn gamma_u8_from_linear(l: f64) -> u8 {
     }
 }
 
-/// Seconds as `m:ss` or `h:mm:ss`, as the player prints them: minutes are
-/// always two digits, hours never padded.
+/// Seconds as `m:ss` or `h:mm:ss`, matching the player.
 fn seconds_to_hms_string(seconds: u32) -> String {
     let hours = seconds / 3600;
     let minutes = (seconds % 3600) / 60;

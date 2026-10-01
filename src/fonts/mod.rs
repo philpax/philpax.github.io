@@ -1,6 +1,5 @@
-//! The site's faces, cut down at build time to the characters the built pages
-//! set in each and instanced to the axes the sheet uses, then served as WOFF2
-//! with `@font-face` rules to match.
+//! Build-time font subsetting: each face is cut to the characters the built
+//! pages set in it, instanced to the axes the sheet uses, and served as WOFF2.
 
 use std::path::Path;
 
@@ -36,12 +35,11 @@ impl std::fmt::Display for FaceReport {
     }
 }
 
-/// Subset every face to what the pages written under `output_dir` set in it,
-/// plus what `sheet` and `script` draw, write the files to `/fonts/`, and
-/// return the rules that load them.
+/// Subsets every face to the text of the pages under `output_dir` plus what
+/// `sheet` and `script` draw, writes the files to `/fonts/`, and returns the
+/// `@font-face` rules.
 ///
-/// A fast build renders less (the music library, for one), so rather than cut
-/// the faces to its pages it reuses each face's last cut, if there is one.
+/// A fast build renders fewer pages, so it reuses each face's last cut if any.
 pub fn generate(
     output_dir: &Path,
     sheet: &str,
@@ -92,10 +90,9 @@ pub fn generate(
     })
 }
 
-/// A face from `SOURCE_DIR` fixed at one point on each of its axes, with every
-/// glyph kept, as TTF: for a renderer that cannot vary a font's axes itself,
-/// such as the one behind the preview images. `axes` must name every axis the
-/// font has, each with a value or `None` for the font's default.
+/// A face from `SOURCE_DIR` pinned on every axis, all glyphs kept, as TTF; for
+/// renderers that can't vary axes (the preview images). `axes` must name every
+/// axis the font has: a value, or `None` for the default.
 pub fn static_instance(source: &str, axes: &[(&[u8; 4], Option<f32>)]) -> anyhow::Result<Vec<u8>> {
     let path = Path::new(SOURCE_DIR).join(source);
     let bytes = std::fs::read(&path).with_context(|| format!("failed to read {path:?}"))?;
@@ -104,9 +101,9 @@ pub fn static_instance(source: &str, axes: &[(&[u8; 4], Option<f32>)]) -> anyhow
 
 // --- Private implementation details ---
 
-/// The variable (and, for Iosevka, static) originals, with their licences.
+/// Original fonts and their licences.
 const SOURCE_DIR: &str = "assets/source/fonts";
-/// Cut faces, kept between builds: one entry per face, named by its key.
+/// Cache of cut faces, keyed per face.
 const CACHE_DIR: &str = ".cache/fonts";
 
 /// A face as the sheet uses it.
@@ -125,7 +122,7 @@ struct Face {
     axes: &'static [Axis],
 }
 
-/// Which of the sheet's faces a font is, by the text it sets.
+/// Which of the sheet's faces a font is.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Role {
     /// `--f-ui`, the default: everything.
@@ -150,11 +147,10 @@ enum Axis {
     Range(&'static [u8; 4], f32, f32),
 }
 
-/// The weights the sheet asks of each face (tokens.css: medium 500, semibold
-/// 560, bold 600, and 400 unset): the reading and UI faces also meet `bolder`
-/// on `b`/`strong` over 400, which is 700. Optical size follows the font size
-/// (`font-optical-sizing: auto`), so it's narrowed to the type scale's sizes
-/// for each face; outside them the browser clamps to the nearest.
+/// Weights the sheet uses per face (tokens.css: 400, 500, 560, 600); reading
+/// and UI faces also get 700 from `bolder` on `b`/`strong`. Optical size
+/// follows font size, so it's narrowed to each face's type scale sizes; the
+/// browser clamps outside them.
 const FACES: &[Face] = &[
     Face {
         name: "source-serif-4",
@@ -162,8 +158,7 @@ const FACES: &[Face] = &[
         italic: false,
         source: "sourceserif4/SourceSerif4[opsz,wght].ttf",
         role: Role::Body,
-        // Prose at 17px, its notes and small text down to 12px, the
-        // standfirst at 20px.
+        // Prose 17px, small text down to 12px, standfirst 20px.
         axes: &[
             Axis::Range(b"wght", 400.0, 700.0),
             Axis::Range(b"opsz", 12.0, 20.0),
@@ -186,8 +181,7 @@ const FACES: &[Face] = &[
         italic: false,
         source: "fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf",
         role: Role::Display,
-        // Headings from `--text-lg` (20px) to `--text-4xl` (42px); softness
-        // and wonkiness are never varied.
+        // Headings `--text-lg` (20px) to `--text-4xl` (42px).
         axes: &[
             Axis::Range(b"wght", 400.0, 600.0),
             Axis::Range(b"opsz", 20.0, 42.0),
@@ -209,7 +203,6 @@ const FACES: &[Face] = &[
         italic: false,
         source: "alegreya/Alegreya[wght].ttf",
         role: Role::Wordmark,
-        // The wordmark is bold.
         axes: &[Axis::Pin(b"wght", 600.0)],
     },
     Face {

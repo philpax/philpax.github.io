@@ -1,7 +1,6 @@
 use super::*;
 
-/// What GitHub Pages serves for a path with no page: the credits page's shape,
-/// with a way home.
+/// The 404 page GitHub Pages serves: credits-page layout with a link home.
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
 

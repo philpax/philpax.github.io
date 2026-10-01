@@ -1,7 +1,6 @@
-//! The preview image each page shares as: the header's contour field in the
-//! section's colour, the wordmark and the section as the header shows them,
-//! and the page's title with a line beneath it, all in the site's own faces
-//! and the dark theme's colours.
+//! Preview images: the header's contour field in the section's colour, the
+//! wordmark and section box, and the page's title and subtitle, in the site's
+//! faces and dark theme colours.
 
 use anyhow::{Context, Result};
 use base64::{Engine, engine::general_purpose::STANDARD};
@@ -25,19 +24,18 @@ use tokens::{Palette, Section, hex};
 // Public API
 // -----------------------------------------------------------------------------
 
-/// The preview of a page that is not a document, by the page's name: `index`,
-/// `blog`, `updates`, `tags`, `credits` or `404`.
+/// Preview of a non-document page, by name: `index`, `blog`, `updates`, `tags`,
+/// `credits` or `404`.
 pub fn page_image_path(page: &str) -> String {
     format!("/og-images/pages/{page}.png")
 }
 
-/// The preview of a tag's page.
+/// Preview of a tag's page.
 pub fn tag_image_path(tag: &str) -> String {
     format!("/og-images/tags/{tag}.png")
 }
 
-/// Spawns OG image generation in a background thread.
-/// Returns a JoinHandle that can be used to wait for completion.
+/// Spawns OG image generation on a background thread.
 pub fn spawn_generation(
     content: Arc<Content>,
     output_dir: &Path,
@@ -63,7 +61,7 @@ pub fn spawn_generation(
 // Private implementation (in order of use)
 // -----------------------------------------------------------------------------
 
-/// Which section's colours and box a preview takes.
+/// Which section's colours and box a preview uses.
 #[derive(Clone, Copy)]
 enum Look {
     Post,
@@ -82,7 +80,7 @@ impl Look {
         Look::Credits,
     ];
 
-    /// The section's name in the tokens.
+    /// Section name in the tokens.
     fn token(self) -> &'static str {
         match self {
             Look::Post => "post",
@@ -93,7 +91,7 @@ impl Look {
         }
     }
 
-    /// The label on the section's box, as the nav has it.
+    /// Label on the section's box, as in the nav.
     fn label(self) -> &'static str {
         match self {
             Look::Post => CurrentPage::Blog,
@@ -109,23 +107,21 @@ impl Look {
 /// What a preview shows.
 struct Preview {
     look: Look,
-    /// Whether the image is the wordmark alone, centred and large, in place
-    /// of the header's row and the title: the front page's.
+    /// Wordmark alone, centred and large, instead of the header row and title
+    /// (the front page).
     wordmark_only: bool,
-    /// Whether the section's box is drawn: not where the title names the
-    /// section already.
+    /// Whether the section's box is drawn; omitted where the title names it.
     boxed: bool,
-    /// Drawn before the title in the muted ink, as a tag's `#` is on the site.
+    /// Drawn before the title in muted ink (a tag's `#`).
     prefix: Option<&'static str>,
     title: String,
-    /// The line under the title: a document's date, a page's lede.
+    /// Line under the title: a document's date or a page's lede.
     subtitle: Option<String>,
-    /// Picks the part of the field the image shows: the same page always
-    /// gets the same one, and different pages different ones.
+    /// Selects the part of the field shown; stable per page.
     seed: u64,
 }
 
-/// Every preview to draw, by the path it is served at.
+/// Every preview to draw, by served path.
 fn previews(content: &Content) -> Vec<(String, Preview)> {
     let mut documents: Vec<&Document> = Vec::new();
     documents.extend(&content.blog.documents);
@@ -220,7 +216,7 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
         .collect()
 }
 
-/// A document's date, with when it was last touched if that was later.
+/// A document's date, plus its last-modified date if later.
 fn dates(datetime: Option<DateTime<Utc>>, last_modified: Option<DateTime<Utc>>) -> Option<String> {
     datetime.map(|dt| {
         let mut date = dt.format("%Y-%m-%d").to_string();
@@ -238,7 +234,7 @@ struct Generator {
     fontdb: Arc<fontdb::Database>,
     fonts: Fonts,
     palette: Palette,
-    /// Each look's colours, in `Look::ALL`'s order.
+    /// Colours per look, in `Look::ALL` order.
     sections: Vec<Section>,
     header: Header,
     icon_data_url: String,
@@ -265,7 +261,7 @@ impl Generator {
         })
     }
 
-    /// Draw `preview` to `output_path`.
+    /// Draws `preview` to `output_path`.
     fn generate(&self, preview: &Preview, output_path: &Path) -> Result<()> {
         let section = &self.sections[preview.look as usize];
         let background = field::render(
@@ -299,13 +295,13 @@ impl Generator {
 
 const IMAGE_WIDTH: u32 = 1200;
 const IMAGE_HEIGHT: u32 = 630;
-/// The margin all round.
+/// Margin on all sides.
 const PADDING: f32 = 64.0;
-/// The wordmark's height; the rest of the header's row is scaled to match.
+/// Wordmark height; the rest of the header row scales to match.
 const BOX_HEIGHT: f32 = 72.0;
 
-/// The site's faces, each fixed at the weight the image sets it in: the
-/// renderer can't vary a font's axes, so each is instanced ahead of time.
+/// The site's faces, pre-instanced at the weights used (the renderer can't
+/// vary axes).
 struct Fonts {
     display: Font,
     ui: Font,
@@ -313,7 +309,7 @@ struct Fonts {
 }
 
 struct Font {
-    /// The family the renderer knows it by.
+    /// Family name in the renderer.
     family: String,
     data: Arc<Vec<u8>>,
 }
@@ -336,8 +332,7 @@ impl Fonts {
             })
         };
         Ok(Self {
-            // A document's title: the heading face at the sheet's semibold,
-            // cut for display sizes.
+            // Document title: heading face, semibold, display optical size.
             display: load(
                 "fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf",
                 &[
@@ -348,7 +343,6 @@ impl Fonts {
                 ],
             )?,
             ui: load("figtree/Figtree[wght].ttf", &[(b"wght", Some(400.0))])?,
-            // The wordmark is bold.
             wordmark: load("alegreya/Alegreya[wght].ttf", &[(b"wght", Some(600.0))])?,
         })
     }
@@ -359,8 +353,7 @@ impl Font {
         ttf_parser::Face::parse(&self.data, 0).expect("an instanced font parses")
     }
 
-    /// The width of `text` set at `size` with `tracking` (in ems) after each
-    /// character, as CSS spaces letters.
+    /// Width of `text` at `size` with `tracking` (ems) after each character.
     fn measure(&self, text: &str, size: f32, tracking: f32) -> f32 {
         let face = self.face();
         let scale = size / face.units_per_em() as f32;
@@ -371,8 +364,8 @@ impl Font {
             .sum()
     }
 
-    /// Where the baseline falls in a line box `line_height` tall whose top is
-    /// at `top`, as CSS centres the font's ascent and descent in it.
+    /// Baseline in a `line_height`-tall line box at `top`, centring ascent and
+    /// descent as CSS does.
     fn baseline(&self, top: f32, line_height: f32, size: f32) -> f32 {
         let face = self.face();
         let scale = size / face.units_per_em() as f32;
@@ -382,17 +375,17 @@ impl Font {
     }
 }
 
-/// The header's measures, in CSS pixels, from the tokens `.site-brand` and the
-/// nav's boxes are drawn with (`layout.css`).
+/// The header's measures in CSS pixels, from the `.site-brand` and nav box
+/// tokens (`layout.css`).
 struct Header {
-    /// The wordmark: its text size, line height and letter-spacing (in ems).
+    /// Wordmark text size, line height and letter-spacing (ems).
     brand_size: f32,
     brand_line: f32,
     brand_tracking: f32,
-    /// A nav box's text size and line height.
+    /// Nav box text size and line height.
     nav_size: f32,
     nav_line: f32,
-    /// `--s-2` and `--s-3`, the boxes' padding and the wordmark's gap.
+    /// `--s-2` and `--s-3`: box padding and wordmark gap.
     s2: f32,
     s3: f32,
 }
@@ -414,16 +407,15 @@ impl Header {
         })
     }
 
-    /// The wordmark's height: its line and its padding above and below.
+    /// Wordmark height: line plus vertical padding.
     fn brand_height(&self) -> f32 {
         self.brand_line + self.s2 * 2.0
     }
 }
 
 impl Generator {
-    /// The wordmark as the header draws it, `height` tall with its top-left
-    /// corner at `x`, `y`: the icon, running to the box's edges, then the
-    /// name on `solid`.
+    /// The wordmark, `height` tall with top-left at `x`, `y`: icon to the box
+    /// edges, then the name on `solid`.
     fn wordmark(&self, x: f32, y: f32, height: f32, solid: &str) -> String {
         let header = &self.header;
         let k = height / header.brand_height();
@@ -446,7 +438,7 @@ impl Generator {
         )
     }
 
-    /// The wordmark's width at `height`.
+    /// Wordmark width at `height`.
     fn wordmark_width(&self, height: f32) -> f32 {
         let header = &self.header;
         let k = height / header.brand_height();
@@ -482,13 +474,12 @@ impl Generator {
         let muted = hex(self.palette.ink_muted);
         let solid = hex(section.solid);
         let header = &self.header;
-        // The header's row, scaled up so the wordmark is BOX_HEIGHT tall.
+        // Header row, scaled so the wordmark is BOX_HEIGHT tall.
         let k = BOX_HEIGHT / header.brand_height();
 
         let brand = self.wordmark(PADDING, PADDING, BOX_HEIGHT, &solid);
 
-        // The section's box, as the nav draws it, centred on the wordmark as
-        // the header's row centres it.
+        // Section box, centred on the wordmark as in the header.
         let section_box = (preview.boxed)
             .then_some(section.icon_svg.as_ref())
             .flatten()
@@ -516,8 +507,8 @@ impl Generator {
   <text x="{label_x}" y="{label_y}" font-family="{family}" font-size="{label_size}" fill="white">{label}</text>"#,
                     icon = STANDARD.encode(icon),
                     icon_x = box_x + pad_x,
-                    // The mark is an empty inline block, so its bottom edge sits
-                    // on the baseline, lowered by its `vertical-align: -0.06em`.
+                    // The mark is an empty inline block: its bottom sits on the
+                    // baseline, lowered by `vertical-align: -0.06em`.
                     icon_y = label_y + label_size * 0.06 - icon_size,
                     label_x = box_x + pad_x + icon_size + icon_gap,
                     family = escape_xml(&self.fonts.ui.family),
@@ -526,8 +517,7 @@ impl Generator {
             })
             .unwrap_or_default();
 
-        // The title at the largest size that fits it in three lines, and past
-        // that cut short; the date beneath it.
+        // Title at the largest size fitting three lines, truncated beyond that.
         let max_width = w - PADDING * 2.0;
         let prefix = preview.prefix.unwrap_or_default();
         let full_title = format!("{prefix}{}", preview.title);
@@ -546,7 +536,7 @@ impl Generator {
             });
         let title_line = title_size * 1.12;
 
-        // The line beneath, in up to two lines of its own.
+        // Subtitle, up to two lines.
         let (sub_size, sub_gap) = (28.0, 18.0);
         let sub_line = sub_size * 1.3;
         let sub_lines = preview
@@ -564,8 +554,7 @@ impl Generator {
             })
             .unwrap_or_default();
 
-        // The title and date are one block, centred in the space below the
-        // header's row.
+        // Title and date form one block, centred below the header row.
         let sub_height = if sub_lines.is_empty() {
             0.0
         } else {
@@ -579,7 +568,7 @@ impl Generator {
             .iter()
             .enumerate()
             .map(|(i, line)| {
-                // The prefix, on the first line, takes the muted ink.
+                // Prefix on the first line in muted ink.
                 let line = match line.strip_prefix(prefix) {
                     Some(rest) if i == 0 && !prefix.is_empty() => format!(
                         r#"<tspan fill="{muted}">{}</tspan>{}"#,
@@ -611,8 +600,7 @@ impl Generator {
             .collect::<Vec<_>>()
             .join("\n  ");
 
-        // The text sits on a bar of the background across the image, which
-        // cuts the field away behind it.
+        // Text sits on a full-width background bar that hides the field behind it.
         let bar = format!(
             r#"<rect x="0" y="{y}" width="{IMAGE_WIDTH}" height="{height}" fill="{canvas}"/>"#,
             y = block_top - BAR_MARGIN,
@@ -631,18 +619,18 @@ impl Generator {
     }
 }
 
-/// The wordmark's height when it stands alone.
+/// Wordmark height when alone.
 const WORDMARK_ALONE_HEIGHT: f32 = 176.0;
 
-/// How far the bar behind the text runs above and below it.
+/// Bar extent above and below the text.
 const BAR_MARGIN: f32 = 28.0;
 
-/// The title's sizes, largest first; it takes the first at which it fits.
+/// Title sizes, largest first; the first that fits is used.
 const TITLE_SIZES: &[f32] = &[84.0, 72.0, 60.0];
 const MAX_TITLE_LINES: usize = 3;
 const MAX_SUBTITLE_LINES: usize = 2;
 
-/// `text` broken into lines no wider than `max_width` at `size`, at spaces.
+/// `text` wrapped at spaces to lines no wider than `max_width` at `size`.
 fn wrap(font: &Font, text: &str, size: f32, max_width: f32) -> Vec<String> {
     let mut lines: Vec<String> = Vec::new();
     for word in text.split_whitespace() {
@@ -657,8 +645,7 @@ fn wrap(font: &Font, text: &str, size: f32, max_width: f32) -> Vec<String> {
     lines
 }
 
-/// The first `max_lines` of `lines`, the last ending in an ellipsis if any
-/// were dropped.
+/// The first `max_lines` of `lines`, ending in an ellipsis if any were dropped.
 fn truncate(
     font: &Font,
     mut lines: Vec<String>,
@@ -679,8 +666,7 @@ fn truncate(
     lines
 }
 
-/// FNV-1a: a stable hash, so the same document gets the same field every
-/// build.
+/// FNV-1a: stable, so a document gets the same field every build.
 fn fnv1a(s: &str) -> u64 {
     s.bytes().fold(0xcbf2_9ce4_8422_2325, |hash, byte| {
         (hash ^ byte as u64).wrapping_mul(0x0000_0100_0000_01b3)

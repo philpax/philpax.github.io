@@ -43,8 +43,7 @@ impl SyntaxHighlighter {
         }
     }
 
-    /// The name a code block is labelled with: the language's canonical
-    /// name, or `text` when it names none.
+    /// Display name for a language: canonical name, or `text`.
     pub fn language_name<'a>(&self, language: Option<&'a str>) -> &'a str {
         Self::normalize_language(language)
     }

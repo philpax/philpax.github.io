@@ -1,25 +1,14 @@
-// The header's flourish: a slow field of contour lines in the section's own
-// colour, drawn behind the wordmark and the nav.
-//
-// It is decoration and nothing else. The canvas carries no content, sits under
-// the header's own content, and is skipped entirely where WebGL is missing or
-// the reader has asked for less motion; the header is complete without it.
+// Header background: animated contour lines in the section's accent colour.
+// Purely decorative; skipped without WebGL or under prefers-reduced-motion.
 
 const SHADER_VERT = `
 attribute vec2 p;
 void main() { gl_Position = vec4(p, 0.0, 1.0); }
 `;
 
-// The contour lines are held to a constant width on screen rather than in the
-// field: the band's thickness is measured against how fast the field is
-// changing under this pixel, so a line stays a hairline where the contours
-// crowd together and does not smear where they spread out. That needs
-// derivatives, which WebGL 1 calls an extension.
-//
-// The pointer pushes the figure around: each pixel near the cursor is sampled
-// from a point drawn in toward it, so whatever is there appears to give way and
-// close again behind. The strength fades in and out with the pointer, so a
-// reader who never moves the mouse sees the figure as it was.
+// Line width is constant in screen space (via fwidth, which needs
+// OES_standard_derivatives in WebGL 1).
+// Pixels near the pointer sample from a point pulled toward it; strength eases with u_ms.
 const SHADER_FRAG = `#extension GL_OES_standard_derivatives : enable
 precision mediump float;
 uniform vec2 u_res;
@@ -55,8 +44,7 @@ float figure(vec2 p, float t) {
   float g = f * 9.0;
   float d = abs(fract(g) - 0.5);
   float w = fwidth(g);
-  // A hairline is thin enough that the field's own shading would swallow it, so
-  // the lines keep most of their strength wherever they fall.
+  // Keep lines mostly opaque so the field's shading doesn't swallow them.
   return (1.0 - smoothstep(0.0, w * 1.9, d)) * (0.55 + 0.45 * smoothstep(0.1, 0.6, f));
 }
 
@@ -80,10 +68,7 @@ function compileShader(gl, type, src) {
   return gl.getShaderParameter(shader, gl.COMPILE_STATUS) ? shader : null;
 }
 
-// The accent as three floats. The colour is a custom property in oklch, which
-// is not something to parse by hand; a 2D context is asked to fill one pixel
-// with it and the pixel is read back, so whatever the sheet says the browser
-// has already resolved.
+// Read the colour via a 1px 2D canvas so the browser resolves oklch for us.
 function rgbOf(colour) {
   const c = document.createElement("canvas");
   c.width = c.height = 1;
@@ -119,8 +104,7 @@ function initHeaderShader() {
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
   gl.useProgram(prog);
 
-  // One triangle covering the viewport: cheaper than a quad and it needs no
-  // index buffer.
+  // One triangle covering the viewport; no index buffer needed.
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -150,10 +134,8 @@ function initHeaderShader() {
   }
   new ResizeObserver(size).observe(canvas);
 
-  // The pointer, in the canvas's own coordinates with y running up as the
-  // shader has it. The header is the surface that hears about it, since the
-  // canvas itself takes no pointer events; both the position and the strength
-  // are eased toward their targets so a fast cursor does not snap the field.
+  // Pointer in canvas coordinates, y up. Listens on the header since the
+  // canvas takes no pointer events. Position and strength ease toward targets.
   const host = canvas.parentElement || canvas;
   const m = { x: 0.5, y: 0.5, s: 0, tx: 0.5, ty: 0.5, ts: 0 };
   host.addEventListener("pointermove", function (e) {
@@ -169,8 +151,7 @@ function initHeaderShader() {
   host.addEventListener("pointerleave", onLeave);
   host.addEventListener("pointercancel", onLeave);
 
-  // The colour is read from the canvas's own `color`, which the sheet points
-  // at the ambient accent, so a change of theme moves the field with it.
+  // Colour comes from the canvas's `color` (the ambient accent), so it follows theme changes.
   let colour = "";
   function readColour() {
     const next = getComputedStyle(canvas).color;

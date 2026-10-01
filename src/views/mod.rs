@@ -71,7 +71,7 @@ pub enum CurrentPage {
     NotFound,
 }
 impl CurrentPage {
-    /// The sections the primary nav links to, in order.
+    /// Sections the primary nav links to, in order.
     pub const NAV_PAGES: &'static [CurrentPage] = &[
         CurrentPage::Blog,
         CurrentPage::Updates,
@@ -103,8 +103,7 @@ impl CurrentPage {
         }
     }
 
-    /// The section the page belongs to, which picks its accent
-    /// (`data-section` on the root). The front page has none.
+    /// The page's section, which picks its accent (`data-section` on the root). None on the front page.
     pub fn section(&self) -> Option<&'static str> {
         match self {
             CurrentPage::Home | CurrentPage::NotFound => None,
@@ -147,8 +146,7 @@ pub struct SocialMeta {
     standard_site_uri: Option<String>,
 }
 impl SocialMeta {
-    /// Share the page as the generated preview at `path` (see `crate::og_image`),
-    /// as a large card.
+    /// Uses the generated preview at `path` (see `crate::og_image`) as a large card.
     pub fn with_preview(self, base_url: &str, path: &str) -> Self {
         let url = format!("{base_url}{path}");
         Self {
@@ -229,8 +227,7 @@ pub fn layout<'a>(
                     {standard_site_uri.map(|uri| html! { in bump;
                         <link rel="site.standard.document" href={uri} />
                     })}
-                    // Pins a theme the reader chose, as a class on <html>, before
-                    // the sheet loads; without one, the system's scheme applies.
+                    // Applies the reader's chosen theme as a class on <html> before the sheet loads.
                     <script>{r#"(function(){var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.classList.add(t);})()"#}</script>
                     <link rel="stylesheet" href={Route::Styles.url_path()} />
                     <script src={Route::Scripts.url_path()}></script>
@@ -276,16 +273,15 @@ pub fn redirect<'bump>(
     )
 }
 
-/// The same band on every page: the wordmark, the primary nav, and the shader
-/// behind them. The theme switch is added to the nav by script, since it only
-/// works with one.
+/// The header band on every page: wordmark, primary nav and shader. The theme
+/// switch is added by script, since it needs one.
 fn header<'a>(context: ViewContext<'a>, current_page: CurrentPage) -> Element<'a> {
     let bump = context.bump;
     html! { in bump;
         <header>
             <canvas class="header-shader" ariaHidden="true"></canvas>
             <div class="frame">
-                // The brand is stable chrome, never a heading; each page owns its own.
+                // Not a heading; each page owns its own.
                 <a href={Route::Index.url_path()} class="site-brand">
                     <img src={Route::Icon.url_path()} alt="" width="32" height="32" />
                     {context.website_name.to_lowercase()}
@@ -304,7 +300,7 @@ fn header<'a>(context: ViewContext<'a>, current_page: CurrentPage) -> Element<'a
     }
 }
 
-/// The colophon: what generated the page, when, and under what terms.
+/// The colophon: generator, build date and licence.
 fn footer<'a>(context: ViewContext<'a>) -> Element<'a> {
     let bump = context.bump;
     let generated = context.generation_date;

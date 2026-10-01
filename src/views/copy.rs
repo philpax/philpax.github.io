@@ -1,13 +1,12 @@
-//! Every word the site's chrome uses, in one place. Mirrors the redesign's
-//! `copy.ts`: anything taking a number or a name is a function, so
-//! pluralisation and interpolation stay with the wording.
+//! All the site chrome's wording. Mirrors `copy.ts`; anything taking a number or name
+//! is a function, so pluralisation stays with the wording.
 
 use crate::util;
 
-/// Under the wordmark, heading the front page.
+/// Under the wordmark on the front page.
 pub const TAGLINE: &str = "I've seen things you people wouldn't believe...";
 
-/// Section names, used by every nav, heading and label.
+/// Section names.
 pub mod nav {
     pub const HOME: &str = "Home";
     pub const BLOG: &str = "Writing";
@@ -18,15 +17,14 @@ pub mod nav {
 }
 
 pub mod home {
-    /// The heading over a few recent posts.
+    /// Heading over recent posts.
     pub const RECENT_WRITING: &str = "Recent writing";
-    /// The link to the rest of a section.
+    /// Link to the rest of a section.
     pub const ALL_SHORT: &str = "All →";
-    /// A section's feed, beside the link to the rest of it.
+    /// A section's feed link.
     pub const FEED: &str = "RSS";
     pub const ELSEWHERE: &str = "Elsewhere";
-    /// The listening block's heading: plays over the last month when the
-    /// export has them, lifetime plays when it does not.
+    /// Listening block heading: last month's plays, or lifetime plays if the export has none.
     pub const LISTENING_RECENT: &str = "Most listened this month";
     pub const LISTENING_LIFETIME: &str = "Most played";
 
@@ -59,7 +57,7 @@ pub mod tag {
 }
 
 pub mod credits {
-    /// Under the title, where every other page of the family has one.
+    /// Under the title.
     pub const LEDE: &str = "who’s to blame for this, then?";
 }
 
@@ -68,21 +66,21 @@ pub mod not_found {
     /// Under the title, finishing its sentence.
     pub const LEDE: &str =
         "can make all the difference in the world. But not this world. Alas, there’s nothing here.";
-    /// The way out.
+    /// Link home.
     pub const HOME_LINK: &str = "Back to the front page";
 }
 
 pub mod notes {
     pub const TITLE: &str = "Notes";
-    /// The filter over the notes rail.
+    /// Placeholder for the notes rail filter.
     pub const FILTER_PLACEHOLDER: &str = "title or section";
-    /// The filter's accessible name, where the placeholder is not enough.
+    /// The filter's accessible name.
     pub const FILTER_DESCRIPTION: &str = "Filter notes by title or section";
-    /// In place of the tree when the filter matches nothing.
+    /// Shown when the filter matches nothing.
     pub const FILTER_EMPTY: &str = "nothing by that name";
 }
 
-/// Furniture around a document.
+/// Labels around a document.
 pub mod doc {
     pub const CONTENTS: &str = "Contents";
     pub const DRAFT: &str = "draft";
@@ -97,9 +95,9 @@ pub mod empty {
     pub const TAG: &str = "nothing has this tag";
 }
 
-/// Small furniture labels: kickers, column heads, section names in margins.
+/// Small labels: kickers, column heads, margin section names.
 pub mod labels {
-    /// The first link on every page, for keyboard and screen reader users.
+    /// First link on every page, for keyboard and screen reader users.
     pub const SKIP: &str = "Skip to content";
     pub const INDEX: &str = "Index";
     pub const TAGGED: &str = "Tagged";

@@ -1,5 +1,5 @@
-//! The pieces the indexes, tag pages and front page share: page heads, index
-//! rows, a post or update as a summary, and a dated one-line row.
+//! Pieces shared by the indexes, tag pages and front page: page heads, index rows,
+//! summaries and dated one-line rows.
 
 use std::collections::HashSet;
 
@@ -13,7 +13,7 @@ use crate::{
     views::components::{TagList, TagListProps},
 };
 
-/// The heading every index, tag page and plain page opens with.
+/// The heading that opens every index, tag page and plain page.
 pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a>>) -> Element<'a> {
     html! { in bump;
         <header class="page-head">
@@ -23,7 +23,7 @@ pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a
     }
 }
 
-/// A row of an index: a label in the margin, the entries in the column.
+/// An index row: a margin label, entries in the column.
 pub fn index_row<'a>(
     bump: &'a Bump,
     label: Element<'a>,
@@ -41,8 +41,7 @@ pub fn index_row<'a>(
     }
 }
 
-/// Posts or updates grouped into index rows by year, newest first, as each
-/// section's index lists them.
+/// Posts or updates grouped into index rows by year, newest first.
 pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<'a> {
     let bump = context.bump;
     let mut years: Vec<i32> = vec![];
@@ -67,7 +66,7 @@ pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Ele
     }
 }
 
-/// A column of summaries, `step` apart on the spacing ladder.
+/// A column of summaries, `step` apart on the spacing scale.
 pub fn summary_list<'a, 'd>(
     context: ViewContext<'a>,
     documents: impl Iterator<Item = &'d Document>,
@@ -81,7 +80,7 @@ pub fn summary_list<'a, 'd>(
     }
 }
 
-/// A post or an update: its title, its date and tags, and its summary line.
+/// A post or update: title, date, tags and summary.
 pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = doc.route_path().url_path();
@@ -99,8 +98,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
                 </A>
                 {doc.metadata.draft.then(|| html! { in bump; <em>{copy::doc::DRAFT}</em> })}
             </h3>
-            // The date sits to the left of the tags; only the tag list scrolls,
-            // so the date stays put however far the tags are scrolled.
+            // Only the tag list scrolls, so the date stays put.
             <div class="summary-meta">
                 {time(bump, doc)}
                 <TagList tags={tags} />
@@ -110,9 +108,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     }
 }
 
-/// Dated one-liners: updates and notes, which are the same weight of thing on
-/// the front page. A note's parent folders stack under its title, each linking
-/// to its own page where it has one.
+/// Dated one-liners for updates and notes. A note's parent folders stack under its title.
 pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<'a> {
     let bump = context.bump;
     let note_ids = note_ids(context);
@@ -134,19 +130,17 @@ pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Elem
     }
 }
 
-/// A note's parent folders, by name, with the route of each one's own page
-/// where it has one.
+/// A note's parent folders by name, with each one's page route if it has one.
 pub fn note_folders(context: ViewContext<'_>, doc: &Document) -> Vec<(String, Option<String>)> {
     folders(doc, &note_ids(context))
 }
 
-/// A `.stack`'s gap, off the spacing ladder.
+/// A `.stack`'s gap, from the spacing scale.
 pub fn gap(step: &str) -> String {
     format!("--stack: var(--s-{step})")
 }
 
-/// A line of Markdown rendered inline, with no paragraph around it: a title,
-/// a summary line, a tag's description.
+/// A line of Markdown rendered inline, without a paragraph: titles, summaries, tag descriptions.
 pub fn inline_markdown<'a>(
     context: ViewContext<'a>,
     markdown: &str,
@@ -165,7 +159,7 @@ fn datetime(doc: &Document) -> chrono::DateTime<chrono::Utc> {
         .unwrap_or_else(|| panic!("No datetime for {doc}"))
 }
 
-/// When a post or update was published, or a note last touched.
+/// Publish date of a post or update, or a note's last touch.
 fn time<'a>(bump: &'a Bump, doc: &Document) -> Element<'a> {
     let when = match doc.document_type {
         DocumentType::Note => doc.metadata.last_modified.unwrap_or_else(|| datetime(doc)),
@@ -188,7 +182,7 @@ fn note_ids<'a>(context: ViewContext<'a>) -> HashSet<&'a DocumentId> {
         .collect()
 }
 
-/// A note's parent folders, by name, with the route of each one's own page.
+/// A note's parent folders by name, with each one's page route.
 fn folders(doc: &Document, note_ids: &HashSet<&DocumentId>) -> Vec<(String, Option<String>)> {
     if doc.document_type != DocumentType::Note {
         return vec![];

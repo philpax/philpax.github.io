@@ -3,8 +3,8 @@
    ======================================================================== */
 
 :root {
-  /* Each colour is light-dark(light, dark), resolved against the colour scheme
-     of the element that uses it, so a theme is only a colour scheme. */
+  /* Colours are light-dark(light, dark), resolved against the using element's
+     colour scheme. */
 
   /* Surfaces and ink. */
   --canvas-dark: oklch(17% 0.022 297);
@@ -91,8 +91,7 @@
   --rule: 1px;
   --rule-strong: 2px;
 
-  /* The reading measure, as a length: ch would resolve against whatever face
-     the element using it is set in. */
+  /* The reading measure as a length; ch would depend on the element's face. */
   --measure: 38.75rem;
   --measure-short: 33.25rem;
 
@@ -163,8 +162,8 @@
   color-scheme: light dark;
 }
 
-/* Registered so they do not inherit: a stack inside a stack keeps its own gap,
-   and a link's colours apply to that link alone. Unset, they fall back. */
+/* Registered so they don't inherit: a nested stack keeps its own gap, and a
+   link's colours apply to that link only. */
 @property --stack {
   syntax: '<length>';
   inherits: false;

@@ -1,8 +1,7 @@
 use paxhtml::{DefaultIn, bumpalo::Bump};
 
-/// The class the stylesheet reads a link's colour from, by where the link
-/// goes: the section the path starts with. `None` for anything else, including
-/// external links.
+/// The class that colours a link, by the section its path starts with. `None` for
+/// anything else, including external links.
 pub fn destination_class(href: &str) -> Option<&'static str> {
     let section = href.strip_prefix('/')?.split('/').next()?;
     match section {
@@ -19,7 +18,7 @@ pub struct AProps<'bump> {
     pub class: Option<String>,
     pub style: Option<String>,
     pub title: Option<String>,
-    /// Marks the link as the current page (`aria-current="page"`).
+    /// Sets `aria-current="page"`.
     pub current: bool,
     pub children: Option<paxhtml::Element<'bump>>,
 }
@@ -36,8 +35,7 @@ impl DefaultIn<'_> for AProps<'_> {
     }
 }
 
-/// A link in the redesign's chrome. An internal link carries its destination
-/// class; an external one opens in a new tab.
+/// An internal link carries its destination class; an external one opens in a new tab.
 #[allow(non_snake_case)]
 pub fn A<'bump>(bump: &'bump Bump, props: AProps<'bump>) -> paxhtml::Element<'bump> {
     let external = is_external(&props.href);

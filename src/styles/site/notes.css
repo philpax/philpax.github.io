@@ -29,8 +29,8 @@
   --link-rest: var(--ink);
 }
 
-/* Stands in for the heading on a narrow page: the label of the checkbox
-   before it, which opens the tree without a script. */
+/* Stands in for the heading on a narrow page; it's the label of the preceding
+   checkbox, which opens the tree without script. */
 .rail-toggle {
   display: flex;
   align-items: center;
@@ -83,9 +83,8 @@
 .notes-level .notes-level {
   margin-left: var(--s-2-5);
 }
-/* The chevron opens the branch; the row opens the page. The chevron is the
-   label of the checkbox before the row, which holds whether the branch is
-   open, so the tree works without a script. */
+/* The chevron opens the branch; the row opens the page. The chevron labels a
+   checkbox holding the open state, so the tree works without script. */
 .rail-row-wrap {
   display: flex;
 }
@@ -99,8 +98,8 @@
   color: var(--ink-faint);
   cursor: pointer;
 }
-/* Drawn rather than typed, like the rail toggle's arrow: the UI face has no
-   triangle glyphs, and a fallback face would draw them in its own style. */
+/* Drawn, not typed: the UI face has no triangle glyphs and a fallback would
+   look off. */
 .rail-chevron::before {
   content: '';
   width: 0.45em;
@@ -115,8 +114,8 @@
   color: var(--ink);
   background: var(--sunken);
 }
-/* The checkbox is out of sight, so its focus shows on the control drawn for
-   it: inside, where the rail's scroll area cannot clip it. */
+/* The checkbox is hidden, so its focus shows on the drawn control, inside
+   where the rail's scroll area can't clip it. */
 .rail-branch:focus-visible + .rail-row-wrap > .rail-chevron,
 .rail-toggle-box:focus-visible + .rail-toggle {
   outline: 2px solid var(--accent);

@@ -83,9 +83,8 @@ fontdb = { workspace = true }
 ttf-parser = { workspace = true }
 rayon = { workspace = true }
 sha2 = { workspace = true }
-# Fonts: HarfBuzz's subsetter and instancer (built from source; the crate's
-# `sys` module exposes the axis calls its safe API lacks), a WOFF2 encoder,
-# and an HTML parser to read the built pages' text.
+# Fonts: HarfBuzz subsetter/instancer (the `sys` module exposes the axis calls
+# the safe API lacks), WOFF2 encoder, HTML parser.
 mkwebfont_hb-subset = "0.5"
 scraper = "0.27"
 ttf2woff2 = { version = "0.13", default-features = false }

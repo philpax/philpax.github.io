@@ -1,7 +1,7 @@
 /* ========================================================================
-   CODE — inline code and code blocks. The token colours, and a block's
-   background and text (--code-background, --code-color), are the
-   highlighter's own theme, which it generates.
+   CODE — inline code and code blocks. Token colours and a block's
+   background/text (--code-background, --code-color) come from the generated
+   highlighter theme.
    ======================================================================== */
 
 .prose code {
@@ -12,13 +12,12 @@
   color: light-dark(color-mix(in oklab, var(--ink) 82%, var(--accent)), var(--ink));
   background: color-mix(in oklab, var(--ink) 7%, transparent);
 }
-/* A block is the highlighter's own surface, labelled with its language in a
-   chip that sits in the corner and stays there as the code scrolls. */
-/* A block's edge: the section's accent, faded into the line. The corners'
-   controls (the label, and the copy button's hover) sit on a chip of it, but on
-   a light page it is too mid a tone for ink, so they take the section's tint
-   and accent instead. Set on the prose, as the copy button sits beside the
-   block rather than in it. */
+/* A block uses the highlighter's surface, with a language chip pinned in the
+   corner as the code scrolls. */
+/* A block's edge: the section's accent faded into the line. The label and copy
+   button hover sit on a chip of it, but on light pages it is too mid-tone for
+   ink, so they use the section's tint and accent. Set on the prose because the
+   copy button sits beside the block, not in it. */
 .prose {
   --code-edge: color-mix(in oklab, var(--accent) 35%, var(--line));
   --code-chip: light-dark(var(--accent-soft), var(--code-edge));
@@ -33,16 +32,15 @@
   color: var(--code-color);
   background: var(--code-background);
 }
-/* The block has already set the size and colour, which inline code's would
-   override. */
+/* The block sets its own size and colour; inline code's would override them. */
 .prose pre code {
   padding: 0;
   font-size: 1em;
   color: inherit;
   background: none;
 }
-/* Sticky offsets are measured inside the block's padding, so it steps back
-   out of it, as its margin does. */
+/* Sticky offsets are measured inside the block's padding, so step back out of
+   it, as the margin does. */
 .code-language {
   position: sticky;
   left: calc(-1 * var(--s-2));
@@ -55,7 +53,7 @@
   color: var(--code-chip-ink);
   background: var(--code-chip);
 }
-/* The script's wrapper, which holds the copy button still as the code scrolls. */
+/* Script's wrapper; keeps the copy button fixed as the code scrolls. */
 .code-block {
   position: relative;
 }

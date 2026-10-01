@@ -1,5 +1,4 @@
-//! Cutting a face down: HarfBuzz subsets and instances it, it's packed as
-//! WOFF2, and the result is cached by everything that went into it.
+//! Subsets and instances a face with HarfBuzz, packs it as WOFF2 and caches it.
 
 use std::{
     collections::BTreeSet,
@@ -12,21 +11,20 @@ use sha2::{Digest as _, Sha256};
 
 use super::{Axis, Face};
 
-/// A face cut down to its characters and axes.
+/// A subset, instanced face.
 pub struct Subset {
     /// The WOFF2 file.
     pub woff2: Vec<u8>,
-    /// A digest of everything that went into it, as hex.
+    /// Hex digest of all inputs.
     pub key: String,
-    /// The source file's size, for the report.
+    /// Source file size, for reporting.
     pub source_len: usize,
     /// Whether it came from the cache.
     pub cached: bool,
 }
 
-/// Subset `face` to `characters`, from the cache in `cache_dir` if the same
-/// source, instancing and characters were cut before. A new result replaces
-/// the face's previous entry.
+/// Subsets `face` to `characters`, using the cache in `cache_dir` if the same
+/// inputs were cut before. A new result replaces the face's previous entry.
 pub fn subset(
     face: &Face,
     source_dir: &Path,
@@ -67,7 +65,7 @@ pub fn subset(
     })
 }
 
-/// The face's last cut, whatever it was cut to, if the cache has one.
+/// The face's last cached cut, whatever its inputs.
 pub fn last(face: &Face, source_dir: &Path, cache_dir: &Path) -> Option<Subset> {
     let entry = entries_of(cache_dir, face.name).ok()?.into_iter().next()?;
     let key = entry.file_stem()?.to_str()?.rsplit_once('.')?.1.to_string();
@@ -85,11 +83,10 @@ pub fn last(face: &Face, source_dir: &Path, cache_dir: &Path) -> Option<Subset> 
 /// Bump to invalidate every cached face when the pipeline itself changes.
 const PIPELINE_VERSION: &str = "1";
 
-/// Brotli's best: the cache makes the time a one-off.
+/// Brotli's best; the cache makes the time a one-off.
 const WOFF2_QUALITY: u8 = 11;
 
-/// Layout features kept beyond HarfBuzz's defaults (kerning, ligatures,
-/// marks, contextual alternates and the like): the sheet's `tabular-nums`.
+/// Layout features kept beyond HarfBuzz's defaults: the sheet's `tabular-nums`.
 const EXTRA_FEATURES: &[&[u8; 4]] = &[b"tnum"];
 
 fn cache_key(face: &Face, source: &[u8], characters: &BTreeSet<char>) -> String {
@@ -123,8 +120,7 @@ fn instance_and_subset(
     }
 
     for axis in face.axes {
-        // SAFETY: both pointers are live for the call; HarfBuzz copies what
-        // it needs into the input.
+        // SAFETY: both pointers are live for the call; HarfBuzz copies what it needs.
         let ok = unsafe {
             match *axis {
                 Axis::Pin(tag, value) => sys::hb_subset_input_pin_axis_location(
@@ -155,16 +151,14 @@ fn instance_and_subset(
     Ok(subset.underlying_blob().to_vec())
 }
 
-/// Pin every axis of `source` and keep everything else. See
-/// [`super::static_instance`].
+/// Pins every axis of `source`. See [`super::static_instance`].
 pub fn static_instance(source: &[u8], axes: &[(&[u8; 4], Option<f32>)]) -> anyhow::Result<Vec<u8>> {
     let font = FontFace::new(Blob::from_bytes(source)?)?;
     let input = SubsetInput::new()?;
     // SAFETY: the input is live for the call.
     unsafe { sys::hb_subset_input_keep_everything(input.as_raw()) };
     for &(tag, value) in axes {
-        // SAFETY: both pointers are live for the call; HarfBuzz copies what
-        // it needs into the input.
+        // SAFETY: both pointers are live for the call; HarfBuzz copies what it needs.
         let ok = unsafe {
             match value {
                 Some(value) => sys::hb_subset_input_pin_axis_location(
@@ -186,7 +180,7 @@ pub fn static_instance(source: &[u8], axes: &[(&[u8; 4], Option<f32>)]) -> anyho
     Ok(instance.underlying_blob().to_vec())
 }
 
-/// The cache entries for the face called `name`.
+/// Cache entries for the face `name`.
 fn entries_of(cache_dir: &Path, name: &str) -> anyhow::Result<Vec<PathBuf>> {
     let mut entries = Vec::new();
     for entry in std::fs::read_dir(cache_dir)? {

@@ -2,8 +2,8 @@
    LAYOUT — the root, the page widths, the header, nav and footer.
    ======================================================================== */
 
-/* The root is the container every width query asks: the site responds to its
-   own width rather than the window's. */
+/* The root is the container for width queries: the site responds to its own
+   width, not the window's. */
 .site {
   --hue: var(--c-post);
   position: relative;
@@ -30,8 +30,8 @@
   padding-block: var(--s-8);
 }
 
-/* The frame fits the notes rail, its gap, a measure and the sidenote gutter
-   (18 + 2.75 + 38.75 + 15rem); narrower and a note's sidenotes never fit. */
+/* Fits the notes rail, its gap, a measure and the sidenote gutter
+   (18 + 2.75 + 38.75 + 15rem); narrower, sidenotes never fit. */
 .frame,
 .frame-narrow {
   margin-inline: auto;
@@ -59,8 +59,7 @@
   scroll-margin-top: var(--s-4);
 }
 
-/* Skip to content: the first link on the page, out of sight until it has
-   focus. */
+/* Skip to content: first link, hidden until focused. */
 .skip-link {
   position: absolute;
   top: var(--s-2);
@@ -97,8 +96,7 @@
     scroll-margin-top: calc(var(--header-height) + var(--s-4));
   }
 }
-/* The wordmark and the nav share a row. On a phone they stack, centred, and
-   are spaced all round as the nav's boxes are. */
+/* The wordmark and nav share a row; on a phone they stack, centred. */
 .site > header > .frame {
   position: relative;
   display: flex;
@@ -160,9 +158,8 @@
   object-fit: cover;
 }
 
-/* The primary nav: a box per section, in its solid hue so white text holds in
-   both themes. The current section is a shade, not a weight, so the row never
-   reflows. */
+/* Primary nav: a box per section, in its solid hue so white text holds in both
+   themes. The current section is a shade, not a weight, to avoid reflow. */
 .site > header nav {
   --c-post: var(--c-post-solid);
   --c-update: var(--c-update-solid);
@@ -199,8 +196,7 @@
 .site > header nav a[aria-current='page'] {
   font-weight: inherit;
 }
-/* The focus ring is drawn inside the box, where the scroll area cannot clip it,
-   in the white the labels already use. */
+/* Focus ring drawn inside the box so the scroll area can't clip it. */
 .site > header nav a:focus-visible {
   outline-color: white;
   outline-offset: -4px;
@@ -218,9 +214,8 @@
   }
 }
 
-/* The theme switch: the current theme's mark, an arrow, and the next one's, so
-   the direction is plain. A control rather than a section, so it sits on the
-   section's tint, like the rail toggle. */
+/* Theme switch: current mark, arrow, next mark. A control, not a section, so
+   it sits on the section's tint like the rail toggle. */
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -253,8 +248,7 @@
   --icon: var(--icon-arrow);
   opacity: 0.6;
 }
-/* On a phone, the destination alone: the theme it switches to, as its label
-   says. */
+/* On a phone, only the destination theme. */
 @container site (width < 48rem) {
   .theme-toggle > span:not(:last-child) {
     display: none;

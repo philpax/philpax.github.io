@@ -1,7 +1,6 @@
-/* The document around the site. The sheet in `site/` starts at `.site`, which
-   is <body> here, so the two elements outside it are set up to hold it: the
-   root fills the viewport so the site's `min-height: 100%` has something to
-   measure, and paints the canvas past the body's edges. */
+/* The document around the site. `site/` starts at `.site` (<body> here); the
+   root fills the viewport so `min-height: 100%` has something to measure, and
+   paints the canvas past the body's edges. */
 
 html {
   height: 100%;

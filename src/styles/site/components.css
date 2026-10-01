@@ -34,9 +34,8 @@ h1 .tag-prefix {
 .tag-list::-webkit-scrollbar {
   display: none;
 }
-/* A row that scrolls fades out at whichever end has more to see. The fade
-   follows the scroll, and a row that fits has no scroll to follow, so it
-   does not fade. */
+/* A scrolling row fades at whichever end has more to see; a row that fits
+   doesn't fade. */
 @supports (animation-timeline: scroll()) {
   .tag-list {
     mask-image: linear-gradient(
@@ -91,8 +90,8 @@ h1 .tag-prefix {
 .timeline-rows {
   display: grid;
 }
-/* Two lines per request: dates, bar and diff, then the title. The end date only
-   fits once the page is wider than a phone. */
+/* Two lines per request: dates, bar and diff, then the title. The end date
+   only fits wider than a phone. */
 .timeline-row {
   --link-rest: var(--ink-muted);
   /* Fits MM-DD. */
