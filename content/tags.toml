@@ -1,15 +1,9 @@
-# Every tag, and the line its page opens with.
-#
-# A description is inline Markdown, so it can link. A post or update that uses a
-# tag missing from this file fails the build; an entry that nothing uses is only
-# a warning.
-
-ai = "AI of all kinds, and living alongside it"
-ananke = "a daemon that decides which AI models get my GPUs"
+ai = "Artificial Intelligence. the big one. small, big, local, remote"
+ananke = "my daemon for intelligently multiplexing AI models and such"
 balatro = "a reimplementation of Balatro in Rust"
 blackbird = "my music player"
 c = "C, and things it was never meant to do"
-cardinal = "a modular synth, floating in VR"
+cardinal = "[Cardinal](https://github.com/DISTRHO/Cardinal), and my adjacent hacking of it"
 cursed = "things that should not work, but do"
 d = "the D programming language"
 dalamud = "[Dalamud](https://github.com/goatcorp/Dalamud)"
@@ -18,7 +12,7 @@ genresinspace = "every music genre on Wikipedia, as one big graph"
 hardware = "the physical stuff: servers, workstations, headsets"
 idacsplitter = "splitting IDA's decompiler output into files you can actually search"
 jc2mp = "[Just Cause 2: Multiplayer Mod](https://store.steampowered.com/app/259080/Just_Cause_2_Multiplayer_Mod/)"
-jc3vrs = "Just Cause 3, but in VR (eventually)"
+jc3vrs = "Just Cause 3, but in VR"
 meta = "posts about the posting"
 music = "listening to it, and building things for it"
 nixos = "every machine I run, configured from one repo"
