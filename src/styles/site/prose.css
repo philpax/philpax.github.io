@@ -16,11 +16,13 @@
 
 @scope (.prose) to (.embed) {
   /* Authored blocks keep to the measure; sections and embeds set their own. */
-  :is(:scope, :where(:scope section)) > :where(:not(section, .embed)) {
+  :scope > :where(:not(section, .embed)),
+  :scope section > :where(:not(section, .embed)) {
     max-width: var(--measure);
   }
   /* Embeds keep their own margins. */
-  :is(:scope, :where(:scope section)) > * + :where(:not(.embed)) {
+  :scope > * + :where(:not(.embed)),
+  :scope section > * + :where(:not(.embed)) {
     margin-top: var(--r-8);
   }
   :scope a,
@@ -60,9 +62,7 @@
 
   /* Headings. A section's is its first child. */
 
-  :scope h2,
-  :scope h3,
-  :scope h4 {
+  :scope :is(h2, h3, h4) {
     position: relative;
     margin-top: var(--r-10);
     line-height: var(--lead-tight);
@@ -118,9 +118,7 @@
     opacity: 0;
     transition: opacity var(--motion) ease;
   }
-  :scope h2:hover > .heading-anchor,
-  :scope h3:hover > .heading-anchor,
-  :scope h4:hover > .heading-anchor,
+  :scope :is(h2, h3, h4):hover > .heading-anchor,
   :scope .heading-anchor:focus-visible {
     opacity: 1;
   }
@@ -179,12 +177,12 @@
   :scope blockquote p + p {
     margin-top: var(--r-6);
   }
-  /* Centred on the measure, not the section. */
+  /* Spans the measure like any block, and draws a short rule centred on it. */
   :scope hr {
-    width: 4.5em;
+    --rule-colour: color-mix(in oklab, var(--accent) 40%, var(--line-strong));
+    height: var(--rule-strong);
     margin: var(--r-11) 0;
-    margin-left: calc(min(100%, var(--measure)) / 2 - 2.25em);
-    border-top: var(--rule-strong) solid color-mix(in oklab, var(--accent) 40%, var(--line-strong));
+    background: linear-gradient(var(--rule-colour), var(--rule-colour)) center / 4.5em 100% no-repeat;
   }
   :scope img {
     border: var(--rule) solid var(--line);

@@ -69,20 +69,16 @@ h1 .tag-prefix {
 }
 
 /* Embedded components. They sit in prose, so they take the chrome's text back
-   from it. */
+   from it: .site's defaults (layout.css), which these follow. */
 
 .embed {
+  margin: var(--s-6) 0;
   font-family: var(--f-ui);
   line-height: var(--lead-normal);
   font-variant-numeric: tabular-nums;
   text-wrap: wrap;
   overflow-wrap: normal;
   hanging-punctuation: none;
-}
-.timeline,
-.social-card,
-.city-poster {
-  margin: var(--s-6) 0;
 }
 
 /* Pull request timeline. */

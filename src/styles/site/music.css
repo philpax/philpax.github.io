@@ -5,7 +5,6 @@
    ======================================================================== */
 
 .music-library {
-  margin: var(--s-6) 0;
   color-scheme: dark;
 }
 .music-header,
