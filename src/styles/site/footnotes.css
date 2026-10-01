@@ -71,8 +71,10 @@
 }
 
 /* Sidenotes, measured on the prose's column: the measure plus the gutter,
-   written out because container queries can't read variables. */
-:has(> .prose) {
+   written out because container queries can't read variables. Not on a
+   document's sections, which as containers would hold their floats and
+   margins in. */
+:has(> .prose):not(.document-body section) {
   container: column / inline-size;
 }
 @container column (width >= 53.75rem) {

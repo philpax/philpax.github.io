@@ -11,11 +11,17 @@
   display: none;
   order: -1;
 }
-.document-content,
-.document-body {
+.document-content {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
+}
+/* The body's blocks (prose, components and sections) sit a step apart. Its
+   layout is block, not flex, so a sidenote can hang past the end of its block,
+   and the margins collapse: a component's own margin, or a heading's, wins
+   where it's larger. */
+:where(.document-body, .document-body section) > * + * {
+  margin-top: var(--s-4);
 }
 .document-content {
   min-width: 0;
@@ -34,9 +40,6 @@
     top: calc(var(--header-height) + var(--s-4));
     display: block;
     align-self: start;
-  }
-  .document-body {
-    display: block;
   }
 }
 

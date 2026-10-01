@@ -60,12 +60,20 @@
   text-wrap: balance;
   color: var(--accent);
 }
-.prose h2:first-child {
+/* Except the one opening the body. */
+.document-body > section:first-child > .prose:first-child > :first-child {
   margin-top: 0;
 }
 .prose h2 + *,
 .prose h3 + *,
 .prose h4 + * {
+  margin-top: var(--r-6);
+}
+/* As does a section opening straight under its parent's heading. */
+.prose:has(> :only-child:is(h2, h3, h4)) + section {
+  margin-top: 0;
+}
+.prose:has(> :only-child:is(h2, h3, h4)) + section > .prose:first-child > :first-child {
   margin-top: var(--r-6);
 }
 .prose h2 {

@@ -47,10 +47,8 @@ pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>
     html! { in bump;
         <article class="document-content">
             {head(context, document)}
-            <div class="document-body">
-                {toc}
-                {body.blocks}
-            </div>
+            {toc}
+            <div class="document-body">{body.blocks}</div>
         </article>
     }
 }

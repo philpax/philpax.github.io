@@ -225,7 +225,7 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 **Paired (block) components:**
 - `<CityPoster image="path">...content...</CityPoster>` — Two-column layout with image and text
 
-Component implementations live in `src/views/components/`. `MarkdownConverter::convert_blocks` renders a document as the redesign's blocks: each run of authored content is a `.prose` div, and the block components (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit beside those rather than inside them. Footnotes are rendered in place, beside their markers (`.fn`, `.fn-mark`, `.fn-note`).
+Component implementations live in `src/views/components/`. `MarkdownConverter::convert_blocks` renders a document as the redesign's blocks, nested in `<section>`s that follow the outline: each heading and what follows it, up to the next heading at its level or above, is a section. Within a section, each run of authored content is a `.prose` div, and the block components (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit beside those rather than inside them. Footnotes are rendered in place, beside their markers (`.fn`, `.fn-mark`, `.fn-note`).
 
 ### Bluesky Post Embeds
 

@@ -94,10 +94,12 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// Render a document body as blocks: each run of authored content is a `.prose`
-    /// block, and block components (`<PrTimeline />`, `<BlueskyPost />`,
-    /// `<MusicLibrary />`, `<CityPoster>`) sit beside them, not inside, so prose
-    /// styles never reach them. `<NotesIndex />` renders nothing.
+    /// Render a document body as blocks, in sections: each heading and what follows
+    /// it, up to the next heading at its level or above, is a `<section>`, so the
+    /// markup nests as the outline does. Within each, every run of authored content is
+    /// a `.prose` block, and block components (`<PrTimeline />`, `<BlueskyPost />`,
+    /// `<MusicLibrary />`, `<CityPoster>`) sit beside them, not inside, so prose styles
+    /// never reach them. `<NotesIndex />` renders nothing.
     pub fn convert_blocks(&mut self, root: &Node) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
 
@@ -106,30 +108,7 @@ impl<'a> MarkdownConverter<'a> {
         self.validate_footnote_references(root);
 
         let nodes = root.children().map(Vec::as_slice).unwrap_or_default();
-        let mut blocks = vec![];
-        let mut run_start = 0;
-        let mut i = 0;
-        while i < nodes.len() {
-            let component = if let Some(name) = block_component(self.context.bump, &nodes[i]) {
-                let element = match name {
-                    BlockComponent::NotesIndex => None,
-                    _ => Some(self.convert(&nodes[i], Some(root))),
-                };
-                Some((element, i))
-            } else {
-                self.try_convert_paired_element(nodes, i, Some(root))
-                    .map(|(element, end)| (Some(self.handle_paired_element(element)), end))
-            };
-            let Some((element, end)) = component else {
-                i += 1;
-                continue;
-            };
-            blocks.extend(self.prose(&nodes[run_start..i], root));
-            blocks.extend(element);
-            i = end + 1;
-            run_start = i;
-        }
-        blocks.extend(self.prose(&nodes[run_start..], root));
+        let blocks = self.sections(nodes, root, false);
         b.fragment(blocks)
     }
 
@@ -372,6 +351,61 @@ impl<'a> MarkdownConverter<'a> {
             | Node::MdxJsxTextElement(_)
             | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
         }
+    }
+
+    /// `nodes` as blocks, with each of its sections in a `<section>`. With
+    /// `opens_section`, the first node is the enclosing section's own heading, which
+    /// stays in that section's first block.
+    fn sections(
+        &mut self,
+        nodes: &[Node],
+        root: &Node,
+        opens_section: bool,
+    ) -> Vec<paxhtml::Element<'a>> {
+        let bump = self.context.bump;
+        let headings = top_level_headings(nodes);
+        let mut rest = &headings[usize::from(opens_section).min(headings.len())..];
+
+        let intro_end = rest.first().map_or(nodes.len(), |&(index, _)| index);
+        let mut blocks = self.blocks(&nodes[..intro_end], root);
+        while let Some((&(start, depth), later)) = rest.split_first() {
+            // A section runs to the next heading at its level or above; deeper ones nest.
+            let next = later.iter().position(|&(_, d)| d <= depth);
+            let end = next.map_or(nodes.len(), |n| later[n].0);
+            let children = self.sections(&nodes[start..end], root, true);
+            blocks.push(html! { in bump; <section>#{children}</section> });
+            rest = next.map_or(&[], |n| &later[n..]);
+        }
+        blocks
+    }
+
+    /// `nodes` as `.prose` runs, split around the block components.
+    fn blocks(&mut self, nodes: &[Node], root: &Node) -> Vec<paxhtml::Element<'a>> {
+        let mut blocks = vec![];
+        let mut run_start = 0;
+        let mut i = 0;
+        while i < nodes.len() {
+            let component = if let Some(name) = block_component(self.context.bump, &nodes[i]) {
+                let element = match name {
+                    BlockComponent::NotesIndex => None,
+                    _ => Some(self.convert(&nodes[i], Some(root))),
+                };
+                Some((element, i))
+            } else {
+                self.try_convert_paired_element(nodes, i, Some(root))
+                    .map(|(element, end)| (Some(self.handle_paired_element(element)), end))
+            };
+            let Some((element, end)) = component else {
+                i += 1;
+                continue;
+            };
+            blocks.extend(self.prose(&nodes[run_start..i], root));
+            blocks.extend(element);
+            i = end + 1;
+            run_start = i;
+        }
+        blocks.extend(self.prose(&nodes[run_start..], root));
+        blocks
     }
 
     /// Rewrites a URL to resolve outside the document's own page: relative paths are
@@ -642,12 +676,9 @@ impl<'a> MarkdownConverter<'a> {
         Some((span, prmeta_idx))
     }
 
-    /// Try to detect and parse a paired custom element starting at position `i`.
-    ///
-    /// Custom elements are identified by an opening `Node::Html` whose value starts
-    /// with `<` followed by an uppercase letter. The function scans forward for a
-    /// matching closing tag, converts the body between them as one `.prose` block,
-    /// and returns the element with that block as its child.
+    /// Try to parse a paired custom element starting at position `i` (see
+    /// [`paired_element_bounds`]). The body between its tags is converted as one
+    /// `.prose` block, and the element returned with that block as its child.
     fn try_convert_paired_element(
         &mut self,
         nodes: &[Node],
@@ -656,49 +687,13 @@ impl<'a> MarkdownConverter<'a> {
     ) -> Option<(paxhtml::Element<'a>, usize)> {
         let bump = self.context.bump;
 
-        let Node::Html(open) = &nodes[i] else {
+        let (trimmed, tag_name, end_idx) = paired_element_bounds(nodes, i)?;
+        let Some(end_idx) = end_idx else {
+            eprintln!(
+                "warning: unclosed <{tag_name}> tag in {}",
+                self.error_context
+            );
             return None;
-        };
-        let trimmed = open.value.trim();
-
-        // Must start with `<` followed by an uppercase letter (custom component)
-        if !trimmed.starts_with('<')
-            || trimmed
-                .chars()
-                .nth(1)
-                .is_none_or(|c| !c.is_ascii_uppercase())
-        {
-            return None;
-        }
-
-        // Parse the opening tag to get the tag name and check if it's void (self-closing).
-        // Void elements like `<MusicLibrary />` are not paired and are handled by `convert`.
-        let (tag_name, _, void) = paxhtml::parse_opening_tag(trimmed).ok()?;
-        if void {
-            return None;
-        }
-
-        // Find the matching closing tag
-        let closing_tag = format!("</{tag_name}>");
-        let mut end_idx = None;
-        for (j, node) in nodes.iter().enumerate().skip(i + 1) {
-            if let Node::Html(close) = node
-                && close.value.trim() == closing_tag
-            {
-                end_idx = Some(j);
-                break;
-            }
-        }
-
-        let end_idx = match end_idx {
-            Some(idx) => idx,
-            None => {
-                eprintln!(
-                    "warning: unclosed <{tag_name}> tag in {}",
-                    self.error_context
-                );
-                return None;
-            }
         };
 
         let b = Builder::new(bump);
@@ -804,6 +799,57 @@ impl<'a> MarkdownConverter<'a> {
             )
         })
     }
+}
+
+/// If `nodes[i]` opens a paired custom element (`<CityPoster …>`): its opening tag,
+/// its name, and the index of its closing tag (`None` if it's never closed).
+///
+/// Custom elements are identified by an opening `Node::Html` whose value starts with
+/// `<` followed by an uppercase letter. Void ones, like `<MusicLibrary />`, aren't
+/// paired.
+fn paired_element_bounds(nodes: &[Node], i: usize) -> Option<(&str, String, Option<usize>)> {
+    let Node::Html(open) = &nodes[i] else {
+        return None;
+    };
+    let trimmed = open.value.trim();
+    if !trimmed.starts_with('<')
+        || trimmed
+            .chars()
+            .nth(1)
+            .is_none_or(|c| !c.is_ascii_uppercase())
+    {
+        return None;
+    }
+    let (tag_name, _, void) = paxhtml::parse_opening_tag(trimmed).ok()?;
+    if void {
+        return None;
+    }
+    let closing_tag = format!("</{tag_name}>");
+    let end = nodes
+        .iter()
+        .enumerate()
+        .skip(i + 1)
+        .find(|(_, node)| matches!(node, Node::Html(close) if close.value.trim() == closing_tag))
+        .map(|(j, _)| j);
+    Some((trimmed, tag_name.to_string(), end))
+}
+
+/// The indices and depths of the headings among `nodes`, skipping over the insides
+/// of paired custom elements, which a section can't split.
+fn top_level_headings(nodes: &[Node]) -> Vec<(usize, u8)> {
+    let mut headings = vec![];
+    let mut i = 0;
+    while i < nodes.len() {
+        if let Some((_, _, Some(end))) = paired_element_bounds(nodes, i) {
+            i = end + 1;
+            continue;
+        }
+        if let Node::Heading(h) = &nodes[i] {
+            headings.push((i, h.depth));
+        }
+        i += 1;
+    }
+    headings
 }
 
 /// The components that stand beside prose rather than inside it.
@@ -1295,5 +1341,62 @@ fn main() {}
         ));
         assert!(html.contains(r#"<pre><span class="code-language">rust</span><code>"#));
         assert!(!html.contains("NotesIndex"));
+    }
+
+    #[test]
+    fn sections_nest_as_the_headings_do() {
+        let input = r#"
+Intro.
+
+# A
+
+Under A.
+
+### Deeper than the next level
+
+Under it.
+
+# B
+
+## B1
+
+Under B1.
+"#;
+
+        let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+
+        // The outline, as the order the sections, prose runs and headings open in.
+        let markers = [
+            ("<section>", "["),
+            ("</section>", "]"),
+            (r#"<div class="prose">"#, "prose "),
+            ("<h2", "h2 "),
+            ("<h3", "h3 "),
+            ("<h4", "h4 "),
+        ];
+        let mut outline = String::new();
+        let mut rest = html.as_str();
+        while let Some((at, marker)) = markers
+            .iter()
+            .filter_map(|(tag, marker)| rest.find(tag).map(|at| (at, (tag, marker))))
+            .min_by_key(|(at, _)| *at)
+        {
+            outline.push_str(marker.1);
+            rest = &rest[at + marker.0.len()..];
+        }
+        // The skipped level nests without a section of its own.
+        assert_eq!(
+            outline,
+            "prose [prose h2 [prose h4 ]][prose h2 [prose h3 ]]"
+        );
     }
 }
