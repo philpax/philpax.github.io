@@ -166,6 +166,7 @@ The `html!` macro uses JSX-like syntax with some Rust-specific extensions:
   ```rust
   paxhtml::html! { in bump; <div>"hello"</div> }
   ```
+- **Hyphenated attributes**: Write them in camelCase; `ariaLabel={label}` renders as `aria-label`.
 - **Attribute values**: Expressions use `{expr}`, which calls `.to_string()` on the value. String literals and booleans work directly:
   ```rust
   <a href={url} class="my-class" disabled>...</a>

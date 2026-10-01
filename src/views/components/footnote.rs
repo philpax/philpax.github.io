@@ -23,20 +23,13 @@ impl DefaultIn<'_> for FootnoteProps<'_> {
 pub fn Footnote<'bump>(bump: &'bump Bump, props: FootnoteProps<'bump>) -> paxhtml::Element<'bump> {
     let id = format!("fn-{}", props.identifier);
     let number = props.number.to_string();
-    // `html!` doesn't take hyphenated attribute names, so the ARIA ones are spread in.
-    let label = [paxhtml::Attribute::new(
-        bump,
-        "aria-label",
-        &format!("Note {number}"),
-    )];
-    let hidden = [paxhtml::Attribute::new(bump, "aria-hidden", "true")];
     html! { in bump;
         <span class="fn">
-            <a class="fn-mark" href={format!("#{id}")} role="doc-noteref" {label}>
+            <a class="fn-mark" href={format!("#{id}")} role="doc-noteref" ariaLabel={format!("Note {number}")}>
                 {&number}
             </a>
             <span class="fn-note" id={id} role="doc-footnote">
-                <span class="fn-num" {hidden}>{&number}</span>
+                <span class="fn-num" ariaHidden="true">{&number}</span>
                 {props.children}
             </span>
         </span>
