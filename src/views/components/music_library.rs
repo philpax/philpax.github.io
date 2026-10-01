@@ -13,7 +13,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     let bump = context.bump;
     if context.fast {
         return html! { in bump;
-            <section class="music-library" ariaLabel="Music library">
+            <section class="music-library embed" ariaLabel="Music library">
                 <p>"Music library (SKIPPED)"</p>
             </section>
         };
@@ -34,7 +34,7 @@ pub fn music_library<'a>(context: ViewContext<'a>) -> paxhtml::Element<'a> {
     let mut seen_artists = std::collections::HashSet::new();
 
     html! { in bump;
-        <section class="music-library" ariaLabel="Music library">
+        <section class="music-library embed" ariaLabel="Music library">
             <div class="music-header">
                 <div class="music-banner">
                     {format!("{} tracks", count(track_count))}

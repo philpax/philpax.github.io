@@ -56,7 +56,9 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
             <div class="frame-narrow home-page stack">
                 <section ariaLabel={copy::labels::INTRODUCTION}>
                     <h1>{copy::TAGLINE}</h1>
-                    {MarkdownConverter::new(context, Route::Index.url_path()).convert_blocks(&crate::markdown::document_root(&content.about))}
+                    <div class="prose">
+                        {MarkdownConverter::new(context, Route::Index.url_path()).convert_blocks(&crate::markdown::document_root(&content.about))}
+                    </div>
                 </section>
 
                 {section(bump, Section {

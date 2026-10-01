@@ -23,7 +23,7 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
         });
 
     paxhtml::html! { in bump;
-        <figure class="social-card">
+        <figure class="social-card embed">
             <header>
                 {avatar}
                 // Name over handle.

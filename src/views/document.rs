@@ -48,7 +48,7 @@ pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>
         <article class="document-content">
             {head(context, document)}
             {toc}
-            <div class="document-body">{body.blocks}</div>
+            <div class="document-body prose">{body.blocks}</div>
         </article>
     }
 }

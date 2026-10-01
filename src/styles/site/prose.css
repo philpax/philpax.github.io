@@ -1,9 +1,11 @@
 /* ========================================================================
-   PROSE — authored HTML. Components are siblings of .prose, never inside it.
+   PROSE — authored HTML: a .prose element (a document's body, or anything
+   else rendered from Markdown) and its sections. Components embedded in it
+   are .embed, and out of these rules' scope.
    ======================================================================== */
 
+/* Inherited, so components.css puts the chrome's back on embeds. */
 .prose {
-  max-width: var(--measure);
   font-variant-numeric: normal;
   line-height: var(--lead);
   text-wrap: pretty;
@@ -11,225 +13,227 @@
   hanging-punctuation: first last;
   color: var(--ink);
 }
-.prose > * + * {
-  margin-top: var(--r-8);
-}
-.prose a,
-.prose code {
-  overflow-wrap: anywhere;
-}
-.prose strong {
-  font-weight: var(--font-weight-bold);
-}
 
-/* Links. */
+@scope (.prose) to (.embed) {
+  /* Authored blocks keep to the measure; sections and embeds set their own. */
+  :is(:scope, :where(:scope section)) > :where(:not(section, .embed)) {
+    max-width: var(--measure);
+  }
+  /* Embeds keep their own margins. */
+  :is(:scope, :where(:scope section)) > * + :where(:not(.embed)) {
+    margin-top: var(--r-8);
+  }
+  :scope a,
+  :scope code {
+    overflow-wrap: anywhere;
+  }
+  :scope strong {
+    font-weight: var(--font-weight-bold);
+  }
 
-/* Hover rule is a background, not a decoration, so it runs under the section
-   mark and once per wrapped line. */
-.prose a:hover {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-size: 100% 1px;
-  background-position: left calc(100% - 0.02em);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-/* External links get an arrow instead of a mark; same-page links get the #
-   used by heading anchors. */
-.prose a[href^='http']:not(:has(img))::before,
-.prose a.link-here::before {
-  content: '\2197';
-  margin-right: 0.2em;
-  font-family: var(--f-ui);
-  font-size: 0.75em;
-  vertical-align: 0.12em;
-  color: var(--ink-faint);
-}
-.prose a.link-here::before {
-  content: '#';
-}
+  /* Links. */
 
-/* Headings. */
+  /* Hover rule is a background, not a decoration, so it runs under the section
+     mark and once per wrapped line. */
+  :scope a:hover {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    background-position: left calc(100% - 0.02em);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  /* External links get an arrow instead of a mark; same-page links get the #
+     used by heading anchors. */
+  :scope a[href^='http']:not(:has(img))::before,
+  :scope a.link-here::before {
+    content: '\2197';
+    margin-right: 0.2em;
+    font-family: var(--f-ui);
+    font-size: 0.75em;
+    vertical-align: 0.12em;
+    color: var(--ink-faint);
+  }
+  :scope a.link-here::before {
+    content: '#';
+  }
 
-.prose h2,
-.prose h3,
-.prose h4 {
-  position: relative;
-  margin-top: var(--r-10);
-  line-height: var(--lead-tight);
-  text-wrap: balance;
-  color: var(--accent);
-}
-/* Except the one opening the body. A section's heading is its first child, or
-   its first prose run's where it holds components. */
-.document-body > section:first-child > :first-child,
-.document-body > section:first-child > .prose:first-child > :first-child {
-  margin-top: 0;
-}
-.prose h2 + *,
-.prose h3 + *,
-.prose h4 + * {
-  margin-top: var(--r-6);
-}
-/* As does a section opening straight under its parent's heading (or the run
-   holding only that heading, where the parent holds components). */
-:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4))) + section {
-  margin-top: 0;
-}
-:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4))) + section > :first-child,
-:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4)))
-  + section
-  > .prose:first-child
-  > :first-child {
-  margin-top: var(--r-6);
-}
-.prose h2 {
-  padding-top: var(--r-7);
-  font-size: var(--em-up-2);
-  font-weight: var(--font-weight-semibold);
-}
-.prose h2::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 2.25em;
-  height: 2px;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-}
-.prose h3 {
-  font-size: var(--em-up);
-  font-weight: var(--font-weight-bold);
-}
-.prose h4,
-.prose th {
-  font-family: var(--f-ui);
-  font-size: var(--em-down);
-  font-weight: var(--font-weight-bold);
-}
-/* A heading holding a link of its own gets a separate # anchor, hung in the
-   margin until hovered or focused. */
-.prose .heading-anchor {
-  --link-rest: var(--ink-faint);
-  position: absolute;
-  right: 100%;
-  padding-right: var(--r-2);
-  opacity: 0;
-  transition: opacity var(--motion) ease;
-}
-.prose h2:hover > .heading-anchor,
-.prose h3:hover > .heading-anchor,
-.prose h4:hover > .heading-anchor,
-.prose .heading-anchor:focus-visible {
-  opacity: 1;
-}
+  /* Headings. A section's is its first child. */
 
-/* Lists. */
+  :scope h2,
+  :scope h3,
+  :scope h4 {
+    position: relative;
+    margin-top: var(--r-10);
+    line-height: var(--lead-tight);
+    text-wrap: balance;
+    color: var(--accent);
+  }
+  /* Except the one opening the body. */
+  :scope > section:first-child > :first-child {
+    margin-top: 0;
+  }
+  :scope :is(h2, h3, h4) + :where(:not(.embed)) {
+    margin-top: var(--r-6);
+  }
+  /* As does a section opening straight under its parent's heading: in its own
+     heading's size, not the section's. */
+  :scope :is(h2, h3, h4) + section {
+    margin-top: 0;
+  }
+  :scope :is(h2, h3, h4) + section > :first-child {
+    margin-top: var(--r-6);
+  }
+  :scope h2 {
+    padding-top: var(--r-7);
+    font-size: var(--em-up-2);
+    font-weight: var(--font-weight-semibold);
+  }
+  :scope h2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 2.25em;
+    height: 2px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+  }
+  :scope h3 {
+    font-size: var(--em-up);
+    font-weight: var(--font-weight-bold);
+  }
+  :scope h4,
+  :scope th {
+    font-family: var(--f-ui);
+    font-size: var(--em-down);
+    font-weight: var(--font-weight-bold);
+  }
+  /* A heading holding a link of its own gets a separate # anchor, hung in the
+     margin until hovered or focused. */
+  :scope .heading-anchor {
+    --link-rest: var(--ink-faint);
+    position: absolute;
+    right: 100%;
+    padding-right: var(--r-2);
+    opacity: 0;
+    transition: opacity var(--motion) ease;
+  }
+  :scope h2:hover > .heading-anchor,
+  :scope h3:hover > .heading-anchor,
+  :scope h4:hover > .heading-anchor,
+  :scope .heading-anchor:focus-visible {
+    opacity: 1;
+  }
 
-.prose ul,
-.prose ol {
-  padding-left: var(--r-9);
-}
-.prose li + li,
-.prose li > ul,
-.prose li > ol {
-  margin-top: var(--r-4);
-}
-.prose ul > li {
-  position: relative;
-}
-.prose ul > li::before {
-  content: '';
-  position: absolute;
-  top: var(--r-7);
-  left: calc(var(--r-8) * -1);
-  width: 0.32em;
-  height: 0.32em;
-  border-radius: 50%;
-  background: color-mix(in oklab, var(--accent) 62%, var(--line-strong));
-}
-.prose ol {
-  list-style: decimal;
-}
-.prose ol > li::marker {
-  font-family: var(--f-ui);
-  font-size: var(--em-down);
-  color: var(--ink-faint);
-}
+  /* Lists. */
 
-/* Quotations, rules, images. */
+  :scope ul,
+  :scope ol {
+    padding-left: var(--r-9);
+  }
+  :scope li + li,
+  :scope li > ul,
+  :scope li > ol {
+    margin-top: var(--r-4);
+  }
+  :scope ul > li {
+    position: relative;
+  }
+  :scope ul > li::before {
+    content: '';
+    position: absolute;
+    top: var(--r-7);
+    left: calc(var(--r-8) * -1);
+    width: 0.32em;
+    height: 0.32em;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--accent) 62%, var(--line-strong));
+  }
+  :scope ol {
+    list-style: decimal;
+  }
+  :scope ol > li::marker {
+    font-family: var(--f-ui);
+    font-size: var(--em-down);
+    color: var(--ink-faint);
+  }
 
-.prose blockquote {
-  position: relative;
-  padding-left: var(--r-6);
-  font-style: italic;
-  line-height: var(--lead-normal);
-  color: var(--ink-muted);
-}
-.prose blockquote::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 2px;
-  background: color-mix(in oklab, var(--accent) 40%, transparent);
-}
-.prose blockquote p + p {
-  margin-top: var(--r-6);
-}
-.prose hr {
-  width: 4.5em;
-  margin: var(--r-11) auto;
-  border-top: var(--rule-strong) solid color-mix(in oklab, var(--accent) 40%, var(--line-strong));
-}
-.prose img {
-  border: var(--rule) solid var(--line);
-  border-radius: var(--radius-md);
-}
+  /* Quotations, rules, images. */
 
-/* Tables. */
+  :scope blockquote {
+    position: relative;
+    padding-left: var(--r-6);
+    font-style: italic;
+    line-height: var(--lead-normal);
+    color: var(--ink-muted);
+  }
+  :scope blockquote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    background: color-mix(in oklab, var(--accent) 40%, transparent);
+  }
+  :scope blockquote p + p {
+    margin-top: var(--r-6);
+  }
+  /* Centred on the measure, not the section. */
+  :scope hr {
+    width: 4.5em;
+    margin: var(--r-11) 0;
+    margin-left: calc(min(100%, var(--measure)) / 2 - 2.25em);
+    border-top: var(--rule-strong) solid color-mix(in oklab, var(--accent) 40%, var(--line-strong));
+  }
+  :scope img {
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius-md);
+  }
 
-/* A table wider than the column scrolls within itself. As a block it sizes to
-   its content, as a table would. */
-.prose table {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
-  font-family: var(--f-ui);
-  font-size: var(--em-down);
-  font-variant-numeric: tabular-nums;
-}
-.prose th,
-.prose td {
-  padding: var(--r-6) var(--r-7);
-}
-.prose th {
-  border-bottom: var(--rule) solid var(--line-strong);
-  text-align: start;
-  color: var(--ink-muted);
-}
-.prose td {
-  border-bottom: var(--rule) solid var(--line);
-}
-.prose tbody tr:hover {
-  background: var(--raised);
-}
+  /* Tables. */
 
-/* Pull request mentions. */
+  /* A table wider than the column scrolls within itself. As a block it sizes to
+     its content, as a table would. */
+  :scope table {
+    display: block;
+    max-width: min(100%, var(--measure));
+    overflow-x: auto;
+    font-family: var(--f-ui);
+    font-size: var(--em-down);
+    font-variant-numeric: tabular-nums;
+  }
+  :scope th,
+  :scope td {
+    padding: var(--r-6) var(--r-7);
+  }
+  :scope th {
+    border-bottom: var(--rule) solid var(--line-strong);
+    text-align: start;
+    color: var(--ink-muted);
+  }
+  :scope td {
+    border-bottom: var(--rule) solid var(--line);
+  }
+  :scope tbody tr:hover {
+    background: var(--raised);
+  }
 
-.prose .pr-mention:target {
-  background: color-mix(in oklab, var(--accent) 22%, transparent);
-}
-.prose .prmeta {
-  font-family: var(--f-ui);
-  font-size: var(--em-down);
-  white-space: nowrap;
-  color: var(--ink-muted);
-}
-.prose .prmeta-add {
-  color: var(--good);
-}
-.prose .prmeta-sub {
-  color: var(--bad);
+  /* Pull request mentions. */
+
+  :scope .pr-mention:target {
+    background: color-mix(in oklab, var(--accent) 22%, transparent);
+  }
+  :scope .prmeta {
+    font-family: var(--f-ui);
+    font-size: var(--em-down);
+    white-space: nowrap;
+    color: var(--ink-muted);
+  }
+  :scope .prmeta-add {
+    color: var(--good);
+  }
+  :scope .prmeta-sub {
+    color: var(--bad);
+  }
 }

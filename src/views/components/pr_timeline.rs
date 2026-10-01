@@ -93,7 +93,7 @@ pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::El
         .map(|e| pr_row(bump, e, timeline_start, total_days));
 
     html! { in bump;
-        <figure class="timeline">
+        <figure class="timeline embed">
             <figcaption>
                 {format!("timeline \u{b7} {} pull requests \u{b7} ", entries.len())}
                 <span class="timeline-add">{format!("+{total_add}")}</span>

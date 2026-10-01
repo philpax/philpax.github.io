@@ -111,28 +111,41 @@ fn page_characters(html: &str, selectors: &RoleSelectors) -> Characters {
         return Characters::default();
     }
     let document = Html::parse_document(html);
-    let under = |selector: &Selector| {
+    let under = |selector: &Selector, skip_embeds: bool| {
         let mut set = BTreeSet::new();
         for element in document.select(selector) {
-            element_characters(element, &mut set);
+            element_characters(element, skip_embeds, &mut set);
         }
         set
     };
     Characters {
-        ui: under(&selectors.ui),
-        display: under(&selectors.display),
-        body: under(&selectors.body),
-        mono: under(&selectors.mono),
-        wordmark: under(&selectors.wordmark),
+        ui: under(&selectors.ui, false),
+        display: under(&selectors.display, false),
+        // Embeds sit in prose but take the chrome's face; their own reading text
+        // (a caption, a quote) is matched by the selector itself.
+        body: under(&selectors.body, true),
+        mono: under(&selectors.mono, false),
+        wordmark: under(&selectors.wordmark, false),
     }
 }
 
 /// Attributes rendered as text: `alt`, `placeholder`, `value`, option `label`.
 const RENDERED_ATTRIBUTES: &[&str] = &["alt", "placeholder", "value", "label"];
 
-/// Visible text inside `element`, plus its rendered attributes.
-fn element_characters(element: ElementRef<'_>, set: &mut BTreeSet<char>) {
+/// Visible text inside `element`, plus its rendered attributes. With
+/// `skip_embeds`, leaves out what's inside an `.embed` within it.
+fn element_characters(element: ElementRef<'_>, skip_embeds: bool, set: &mut BTreeSet<char>) {
     for node in element.descendants() {
+        let in_embed = || {
+            std::iter::once(node)
+                .chain(node.ancestors())
+                .take_while(|ancestor| ancestor.id() != element.id())
+                .filter_map(ElementRef::wrap)
+                .any(|ancestor| ancestor.value().classes().any(|class| class == "embed"))
+        };
+        if skip_embeds && in_embed() {
+            continue;
+        }
         match node.value() {
             Node::Text(text) => {
                 let hidden = node
@@ -308,6 +321,18 @@ mod tests {
         }
         assert!(c.ui.contains(&'é'));
         assert!(!c.ui.contains(&'Ⓣ') && !c.ui.contains(&'Ⓢ'));
+    }
+
+    #[test]
+    fn embeds_in_prose_keep_to_the_chrome() {
+        let html = r#"<html><head><link rel="stylesheet" href="/styles.css"></head>
+            <body class="site"><div class="prose"><p>Prōse</p>
+            <figure class="city-poster embed"><span>Ëmbed</span>
+            <figcaption><div class="prose"><p>Captiøn</p></div></figcaption></figure>
+            </div></body></html>"#;
+        let c = page_characters(html, &RoleSelectors::new());
+        assert!(c.body.contains(&'ō') && c.body.contains(&'ø'));
+        assert!(!c.body.contains(&'Ë') && c.ui.contains(&'Ë'));
     }
 
     #[test]

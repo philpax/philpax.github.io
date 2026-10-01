@@ -94,12 +94,12 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// Render a document body as blocks, in sections: each heading and what follows
-    /// it, up to the next heading at its level or above, is a `<section>`, so the
-    /// markup nests as the outline does. Within each, every run of authored content is
-    /// a `.prose` block, and block components (`<PrTimeline />`, `<BlueskyPost />`,
-    /// `<MusicLibrary />`, `<CityPoster>`) sit beside them, not inside, so prose styles
-    /// never reach them. `<NotesIndex />` renders nothing.
+    /// Render a document body in sections: each heading and what follows it, up to
+    /// the next heading at its level or above, is a `<section>`, so the markup nests as
+    /// the outline does. The caller puts it in a `.prose` element; block components
+    /// (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit
+    /// in it where they're written, and are kept from prose styles by their `.embed`
+    /// class. `<NotesIndex />` renders nothing.
     pub fn convert_blocks(&mut self, root: &Node) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
 
@@ -108,8 +108,7 @@ impl<'a> MarkdownConverter<'a> {
         self.validate_footnote_references(root);
 
         let nodes = root.children().map(Vec::as_slice).unwrap_or_default();
-        let blocks = self.sections(nodes, root, false, false);
-        b.fragment(blocks)
+        b.fragment(self.sections(nodes, root, false))
     }
 
     pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
@@ -353,81 +352,29 @@ impl<'a> MarkdownConverter<'a> {
         }
     }
 
-    /// `nodes` as blocks, with each of its sections in a `<section>`. With
-    /// `opens_section`, the first node is the enclosing section's own heading, which
-    /// stays in that section's first block. With `prose`, the enclosing section is
-    /// itself `.prose`, so its content goes straight in.
+    /// `nodes`, with each of its sections in a `<section>`. With `opens_section`, the
+    /// first node is the enclosing section's own heading.
     fn sections(
         &mut self,
         nodes: &[Node],
         root: &Node,
         opens_section: bool,
-        prose: bool,
     ) -> Vec<paxhtml::Element<'a>> {
+        let bump = self.context.bump;
         let headings = top_level_headings(nodes);
         let mut rest = &headings[usize::from(opens_section).min(headings.len())..];
 
         let intro_end = rest.first().map_or(nodes.len(), |&(index, _)| index);
-        let intro = &nodes[..intro_end];
-        let mut blocks = if prose {
-            vec![self.convert_many(intro, Some(root))]
-        } else {
-            self.blocks(intro, root)
-        };
+        let mut children = vec![self.convert_many(&nodes[..intro_end], Some(root))];
         while let Some((&(start, depth), later)) = rest.split_first() {
             // A section runs to the next heading at its level or above; deeper ones nest.
             let next = later.iter().position(|&(_, d)| d <= depth);
             let end = next.map_or(nodes.len(), |n| later[n].0);
-            blocks.push(self.section(&nodes[start..end], root));
+            let section = self.sections(&nodes[start..end], root, true);
+            children.push(html! { in bump; <section>#{section}</section> });
             rest = next.map_or(&[], |n| &later[n..]);
         }
-        blocks
-    }
-
-    /// A section, from its heading to its end. One with no block components in it is
-    /// `.prose` itself; one with them holds `.prose` runs beside them, so that prose
-    /// styles don't reach the components.
-    fn section(&mut self, nodes: &[Node], root: &Node) -> paxhtml::Element<'a> {
-        let bump = self.context.bump;
-        let prose = !nodes.iter().enumerate().any(|(i, node)| {
-            block_component(bump, node).is_some_and(|c| c != BlockComponent::NotesIndex)
-                || paired_element_bounds(nodes, i).is_some()
-        });
-        let children = self.sections(nodes, root, true, prose);
-        if prose {
-            html! { in bump; <section class="prose">#{children}</section> }
-        } else {
-            html! { in bump; <section>#{children}</section> }
-        }
-    }
-
-    /// `nodes` as `.prose` runs, split around the block components.
-    fn blocks(&mut self, nodes: &[Node], root: &Node) -> Vec<paxhtml::Element<'a>> {
-        let mut blocks = vec![];
-        let mut run_start = 0;
-        let mut i = 0;
-        while i < nodes.len() {
-            let component = if let Some(name) = block_component(self.context.bump, &nodes[i]) {
-                let element = match name {
-                    BlockComponent::NotesIndex => None,
-                    _ => Some(self.convert(&nodes[i], Some(root))),
-                };
-                Some((element, i))
-            } else {
-                self.try_convert_paired_element(nodes, i, Some(root))
-                    .map(|(element, end)| (Some(self.handle_paired_element(element)), end))
-            };
-            let Some((element, end)) = component else {
-                i += 1;
-                continue;
-            };
-            blocks.extend(self.prose(&nodes[run_start..i], root));
-            blocks.extend(element);
-            i = end + 1;
-            run_start = i;
-        }
-        blocks.extend(self.prose(&nodes[run_start..], root));
-        blocks
+        children
     }
 
     /// Rewrites a URL to resolve outside the document's own page: relative paths are
@@ -472,21 +419,6 @@ impl<'a> MarkdownConverter<'a> {
             .content
             .resolve_markdown_link(source_path, url)
             .unwrap_or_else(|| url.to_string())
-    }
-
-    /// A run of authored content as a `.prose` block; `None` if it's all blank.
-    fn prose(&mut self, nodes: &[Node], root: &Node) -> Option<paxhtml::Element<'a>> {
-        let b = Builder::new(self.context.bump);
-        let is_blank = |node: &Node| match node {
-            Node::Html(h) => {
-                let value = h.value.trim();
-                value.starts_with("<!--") && value.ends_with("-->")
-            }
-            Node::FootnoteDefinition(_) | Node::Definition(_) => true,
-            _ => false,
-        };
-        (!nodes.iter().all(is_blank))
-            .then(|| b.div([b.attr(("class", "prose"))])(self.convert_many(nodes, Some(root))))
     }
 
     /// Highlights code; panics if the highlighter fails.
@@ -872,33 +804,6 @@ fn top_level_headings(nodes: &[Node]) -> Vec<(usize, u8)> {
         i += 1;
     }
     headings
-}
-
-/// The components that stand beside prose rather than inside it.
-#[derive(Copy, Clone, PartialEq, Eq)]
-enum BlockComponent {
-    PrTimeline,
-    BlueskyPost,
-    MusicLibrary,
-    NotesIndex,
-}
-
-/// Whether a top-level node is one of the block components.
-fn block_component(bump: &paxhtml::bumpalo::Bump, node: &Node) -> Option<BlockComponent> {
-    let Node::Html(h) = node else {
-        return None;
-    };
-    let value = h.value.trim();
-    if !value.starts_with('<') || !value.chars().nth(1).is_some_and(|c| c.is_ascii_uppercase()) {
-        return None;
-    }
-    match paxhtml::parse_html(bump, value).ok()?.tag()? {
-        "PrTimeline" => Some(BlockComponent::PrTimeline),
-        "BlueskyPost" => Some(BlockComponent::BlueskyPost),
-        "MusicLibrary" => Some(BlockComponent::MusicLibrary),
-        "NotesIndex" => Some(BlockComponent::NotesIndex),
-        _ => None,
-    }
 }
 
 /// A heading's anchor: its slugified text. Also what the link checker validates
@@ -1356,8 +1261,10 @@ fn main() {}
             .write_to_string()
             .unwrap();
 
-        // The (empty) timeline splits the prose in two; the notes index renders nothing.
-        assert_eq!(html.matches(r#"<div class="prose">"#).count(), 2);
+        // One section, with no prose runs inside: the caller's element is the prose.
+        // The notes index renders nothing.
+        assert_eq!(html.matches("<section>").count(), 1);
+        assert!(!html.contains(r#"class="prose""#));
         assert!(html.contains(
             r##"<h2 id="a-heading-with-a-link"><a class="heading-anchor" href="#a-heading-with-a-link"># </a>A heading with <a href="/notes/foo" class="link-note">a link</a></h2>"##
         ));
@@ -1383,8 +1290,6 @@ Under it.
 ## B1
 
 Under B1.
-
-<PrTimeline />
 "#;
 
         let ast = parse_markdown(input);
@@ -1398,12 +1303,10 @@ Under B1.
             .write_to_string()
             .unwrap();
 
-        // The outline, as the order the sections, prose runs and headings open in.
+        // The outline, as the order the sections and headings open in.
         let markers = [
-            (r#"<section class="prose">"#, "[prose "),
             ("<section>", "["),
             ("</section>", "]"),
-            (r#"<div class="prose">"#, "prose "),
             ("<h2", "h2 "),
             ("<h3", "h3 "),
             ("<h4", "h4 "),
@@ -1418,12 +1321,7 @@ Under B1.
             outline.push_str(marker.1);
             rest = &rest[at + marker.0.len()..];
         }
-        // The skipped level nests without a section of its own. Sections are prose
-        // themselves, unless they hold a component, which keeps beside the prose.
-        assert_eq!(
-            outline,
-            "prose [prose h2 [prose h4 ]][prose h2 [prose h3 ]]"
-        );
-        assert_eq!(html.matches(r#"<section class="prose">"#).count(), 2);
+        // The skipped level nests without a section of its own.
+        assert_eq!(outline, "[h2 [h4 ]][h2 [h3 ]]");
     }
 }

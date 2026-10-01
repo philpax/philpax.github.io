@@ -9,7 +9,7 @@ pub fn city_poster<'bump>(
     body: paxhtml::Element<'bump>,
 ) -> paxhtml::Element<'bump> {
     html! { in bump;
-        <figure class="city-poster">
+        <figure class="city-poster embed">
             <a href={image_url}>
                 <img src={small_preview_url} alt="" />
             </a>

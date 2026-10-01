@@ -4,41 +4,44 @@
    highlighter theme.
    ======================================================================== */
 
-.prose code {
-  padding: var(--r-1) var(--r-4);
-  border-radius: var(--radius-sm);
-  font-size: var(--em-down);
-  /* The dark theme keeps plain ink. */
-  color: light-dark(color-mix(in oklab, var(--ink) 82%, var(--accent)), var(--ink));
-  background: color-mix(in oklab, var(--ink) 7%, transparent);
+@scope (.prose) to (.embed) {
+  :scope code {
+    padding: var(--r-1) var(--r-4);
+    border-radius: var(--radius-sm);
+    font-size: var(--em-down);
+    /* The dark theme keeps plain ink. */
+    color: light-dark(color-mix(in oklab, var(--ink) 82%, var(--accent)), var(--ink));
+    background: color-mix(in oklab, var(--ink) 7%, transparent);
+  }
+  /* A block uses the highlighter's surface, with a language chip pinned in the
+     corner as the code scrolls. */
+  /* A block's edge: the section's accent faded into the line. The label and copy
+     button hover sit on a chip of it, but on light pages it is too mid-tone for
+     ink, so they use the section's tint and accent. Set on the prose because the
+     copy button sits beside the block, not in it. */
+  :scope {
+    --code-edge: color-mix(in oklab, var(--accent) 35%, var(--line));
+    --code-chip: light-dark(var(--accent-soft), var(--code-edge));
+    --code-chip-ink: light-dark(var(--accent), var(--ink));
+  }
+  :scope pre {
+    padding: var(--s-2);
+    border: var(--rule) solid var(--code-edge);
+    overflow-x: auto;
+    font-size: var(--em-down);
+    line-height: var(--lead-snug);
+    color: var(--code-color);
+    background: var(--code-background);
+  }
+  /* The block sets its own size and colour; inline code's would override them. */
+  :scope pre code {
+    padding: 0;
+    font-size: 1em;
+    color: inherit;
+    background: none;
+  }
 }
-/* A block uses the highlighter's surface, with a language chip pinned in the
-   corner as the code scrolls. */
-/* A block's edge: the section's accent faded into the line. The label and copy
-   button hover sit on a chip of it, but on light pages it is too mid-tone for
-   ink, so they use the section's tint and accent. Set on the prose because the
-   copy button sits beside the block, not in it. */
-.prose {
-  --code-edge: color-mix(in oklab, var(--accent) 35%, var(--line));
-  --code-chip: light-dark(var(--accent-soft), var(--code-edge));
-  --code-chip-ink: light-dark(var(--accent), var(--ink));
-}
-.prose pre {
-  padding: var(--s-2);
-  border: var(--rule) solid var(--code-edge);
-  overflow-x: auto;
-  font-size: var(--em-down);
-  line-height: var(--lead-snug);
-  color: var(--code-color);
-  background: var(--code-background);
-}
-/* The block sets its own size and colour; inline code's would override them. */
-.prose pre code {
-  padding: 0;
-  font-size: 1em;
-  color: inherit;
-  background: none;
-}
+
 /* Sticky offsets are measured inside the block's padding, so step back out of
    it, as the margin does. */
 .code-language {

@@ -68,8 +68,17 @@ h1 .tag-prefix {
   flex-shrink: 0;
 }
 
-/* Embedded components. */
+/* Embedded components. They sit in prose, so they take the chrome's text back
+   from it. */
 
+.embed {
+  font-family: var(--f-ui);
+  line-height: var(--lead-normal);
+  font-variant-numeric: tabular-nums;
+  text-wrap: wrap;
+  overflow-wrap: normal;
+  hanging-punctuation: none;
+}
 .timeline,
 .social-card,
 .city-poster {
@@ -78,7 +87,7 @@ h1 .tag-prefix {
 
 /* Pull request timeline. */
 
-/* Beside the prose rather than in it, but as wide. */
+/* As wide as the prose around it. */
 .timeline {
   max-width: var(--measure);
   padding-block: var(--s-1);

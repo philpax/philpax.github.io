@@ -76,11 +76,14 @@ function initFootnotes() {
     mark.setAttribute("aria-expanded", open ? "false" : "true");
   });
 
-  // The outermost prose only: a prose section can hold others.
-  document.querySelectorAll(".prose:not(.prose .prose)").forEach(function (host) {
-    const marks = host.querySelectorAll(".fn-mark");
+  // Each prose takes its own markers, not those of a prose nested in it (an
+  // embed's caption), whose column differs.
+  document.querySelectorAll(".prose").forEach(function (host) {
+    const marks = Array.from(host.querySelectorAll(".fn-mark")).filter(function (mark) {
+      return mark.closest(".prose") === host;
+    });
     if (!marks.length) return;
-    const note = host.querySelector(".fn-note");
+    const note = marks[0].nextElementSibling;
     function sync() {
       const asSidenote = getComputedStyle(note).float === "right";
       host.toggleAttribute("data-sidenotes-active", asSidenote);
@@ -99,9 +102,8 @@ function initFootnotes() {
       });
     }
     sync();
-    // Margin fit depends on the prose's column width, not the prose itself,
-    // which stops growing at its measure well before the notes move out.
-    new ResizeObserver(sync).observe(host.parentElement || host);
+    // Margin fit depends on the prose's width: its column, measure and gutter.
+    new ResizeObserver(sync).observe(host);
   });
 }
 

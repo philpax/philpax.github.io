@@ -94,20 +94,17 @@
   mask: var(--icon) center / contain no-repeat;
 }
 
-/* A link in a heading takes the heading's colour. */
-.document-header h1 a,
-.prose h2 a,
-.prose h3 a,
-.prose h4 a {
-  --link-rest: currentColor;
-  --link-hover: color-mix(in oklab, currentColor 78%, white);
-}
-.document-header h1 a:hover,
-.prose h2 a:hover,
-.prose h3 a:hover,
-.prose h4 a:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.12em;
-  background-image: none;
+/* A link in a heading takes the heading's colour: the document's title, and
+   the prose's headings, though not an embed's. */
+@scope (.document-header, .prose) to (.embed) {
+  :scope :is(h1, h2, h3, h4) a {
+    --link-rest: currentColor;
+    --link-hover: color-mix(in oklab, currentColor 78%, white);
+  }
+  :scope :is(h1, h2, h3, h4) a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
+    background-image: none;
+  }
 }
