@@ -108,7 +108,7 @@ impl<'a> MarkdownConverter<'a> {
         self.validate_footnote_references(root);
 
         let nodes = root.children().map(Vec::as_slice).unwrap_or_default();
-        let blocks = self.sections(nodes, root, false);
+        let blocks = self.sections(nodes, root, false, false);
         b.fragment(blocks)
     }
 
@@ -355,28 +355,50 @@ impl<'a> MarkdownConverter<'a> {
 
     /// `nodes` as blocks, with each of its sections in a `<section>`. With
     /// `opens_section`, the first node is the enclosing section's own heading, which
-    /// stays in that section's first block.
+    /// stays in that section's first block. With `prose`, the enclosing section is
+    /// itself `.prose`, so its content goes straight in.
     fn sections(
         &mut self,
         nodes: &[Node],
         root: &Node,
         opens_section: bool,
+        prose: bool,
     ) -> Vec<paxhtml::Element<'a>> {
-        let bump = self.context.bump;
         let headings = top_level_headings(nodes);
         let mut rest = &headings[usize::from(opens_section).min(headings.len())..];
 
         let intro_end = rest.first().map_or(nodes.len(), |&(index, _)| index);
-        let mut blocks = self.blocks(&nodes[..intro_end], root);
+        let intro = &nodes[..intro_end];
+        let mut blocks = if prose {
+            vec![self.convert_many(intro, Some(root))]
+        } else {
+            self.blocks(intro, root)
+        };
         while let Some((&(start, depth), later)) = rest.split_first() {
             // A section runs to the next heading at its level or above; deeper ones nest.
             let next = later.iter().position(|&(_, d)| d <= depth);
             let end = next.map_or(nodes.len(), |n| later[n].0);
-            let children = self.sections(&nodes[start..end], root, true);
-            blocks.push(html! { in bump; <section>#{children}</section> });
+            blocks.push(self.section(&nodes[start..end], root));
             rest = next.map_or(&[], |n| &later[n..]);
         }
         blocks
+    }
+
+    /// A section, from its heading to its end. One with no block components in it is
+    /// `.prose` itself; one with them holds `.prose` runs beside them, so that prose
+    /// styles don't reach the components.
+    fn section(&mut self, nodes: &[Node], root: &Node) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+        let prose = !nodes.iter().enumerate().any(|(i, node)| {
+            block_component(bump, node).is_some_and(|c| c != BlockComponent::NotesIndex)
+                || paired_element_bounds(nodes, i).is_some()
+        });
+        let children = self.sections(nodes, root, true, prose);
+        if prose {
+            html! { in bump; <section class="prose">#{children}</section> }
+        } else {
+            html! { in bump; <section>#{children}</section> }
+        }
     }
 
     /// `nodes` as `.prose` runs, split around the block components.
@@ -1361,6 +1383,8 @@ Under it.
 ## B1
 
 Under B1.
+
+<PrTimeline />
 "#;
 
         let ast = parse_markdown(input);
@@ -1376,6 +1400,7 @@ Under B1.
 
         // The outline, as the order the sections, prose runs and headings open in.
         let markers = [
+            (r#"<section class="prose">"#, "[prose "),
             ("<section>", "["),
             ("</section>", "]"),
             (r#"<div class="prose">"#, "prose "),
@@ -1393,10 +1418,12 @@ Under B1.
             outline.push_str(marker.1);
             rest = &rest[at + marker.0.len()..];
         }
-        // The skipped level nests without a section of its own.
+        // The skipped level nests without a section of its own. Sections are prose
+        // themselves, unless they hold a component, which keeps beside the prose.
         assert_eq!(
             outline,
             "prose [prose h2 [prose h4 ]][prose h2 [prose h3 ]]"
         );
+        assert_eq!(html.matches(r#"<section class="prose">"#).count(), 2);
     }
 }

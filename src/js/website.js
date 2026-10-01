@@ -76,7 +76,8 @@ function initFootnotes() {
     mark.setAttribute("aria-expanded", open ? "false" : "true");
   });
 
-  document.querySelectorAll(".prose").forEach(function (host) {
+  // The outermost prose only: a prose section can hold others.
+  document.querySelectorAll(".prose:not(.prose .prose)").forEach(function (host) {
     const marks = host.querySelectorAll(".fn-mark");
     if (!marks.length) return;
     const note = host.querySelector(".fn-note");

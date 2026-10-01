@@ -60,7 +60,9 @@
   text-wrap: balance;
   color: var(--accent);
 }
-/* Except the one opening the body. */
+/* Except the one opening the body. A section's heading is its first child, or
+   its first prose run's where it holds components. */
+.document-body > section:first-child > :first-child,
 .document-body > section:first-child > .prose:first-child > :first-child {
   margin-top: 0;
 }
@@ -69,11 +71,16 @@
 .prose h4 + * {
   margin-top: var(--r-6);
 }
-/* As does a section opening straight under its parent's heading. */
-.prose:has(> :only-child:is(h2, h3, h4)) + section {
+/* As does a section opening straight under its parent's heading (or the run
+   holding only that heading, where the parent holds components). */
+:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4))) + section {
   margin-top: 0;
 }
-.prose:has(> :only-child:is(h2, h3, h4)) + section > .prose:first-child > :first-child {
+:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4))) + section > :first-child,
+:is(.prose > :is(h2, h3, h4), .prose:has(> :only-child:is(h2, h3, h4)))
+  + section
+  > .prose:first-child
+  > :first-child {
   margin-top: var(--r-6);
 }
 .prose h2 {
