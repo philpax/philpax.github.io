@@ -150,23 +150,20 @@ fn length<'a>(
     }
 }
 
-/// Hashes a string to a colour, matching the player.
+/// Hashes a string to a colour, matching the player (`blackbird-client-shared`'s
+/// `string_to_hsv` and `hsv_to_rgb`).
 fn string_to_colour(input: &str) -> String {
-    const DISTINCT_COLOURS: u32 = 36_000;
-    let mut hash: u32 = 0x811c_9dc5;
-    for unit in input.encode_utf16() {
-        hash ^= u32::from(unit);
-        let rotated = ((hash << 1) as i32) | ((hash as i32) >> 31);
-        hash = hash.wrapping_add(rotated as u32);
-        let rotated = ((hash << 4) as i32) | ((hash as i32) >> 28);
-        hash = hash.wrapping_add(rotated as u32);
-    }
-    let hue = (hash % DISTINCT_COLOURS) as f64 / DISTINCT_COLOURS as f64;
+    use std::hash::{Hash as _, Hasher as _};
+
+    const DISTINCT_COLOURS: u64 = 36_000;
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    input.hash(&mut hasher);
+    let hue = (hasher.finish() % DISTINCT_COLOURS) as f32 / DISTINCT_COLOURS as f32;
     let [r, g, b] = rgb_from_hsv(hue, 0.75, 0.75).map(gamma_u8_from_linear);
     format!("rgb({r}, {g}, {b})")
 }
 
-fn rgb_from_hsv(h: f64, s: f64, v: f64) -> [f64; 3] {
+fn rgb_from_hsv(h: f32, s: f32, v: f32) -> [f32; 3] {
     let h = (h.fract() + 1.0).fract();
     let f = h * 6.0 - (h * 6.0).floor();
     let p = v * (1.0 - s);
@@ -183,13 +180,13 @@ fn rgb_from_hsv(h: f64, s: f64, v: f64) -> [f64; 3] {
 }
 
 /// Linear [0, 1] to gamma [0, 255], clamped (mirrors egui).
-fn gamma_u8_from_linear(l: f64) -> u8 {
+fn gamma_u8_from_linear(l: f32) -> u8 {
     if l <= 0.0 {
         0
     } else if l <= 0.0031308 {
-        (3294.6 * l).round() as u8
+        (3294.6 * l + 0.5) as u8
     } else if l <= 1.0 {
-        (269.025 * l.powf(1.0 / 2.4) - 14.025).round() as u8
+        (269.025 * l.powf(1.0 / 2.4) - 14.025 + 0.5) as u8
     } else {
         255
     }
