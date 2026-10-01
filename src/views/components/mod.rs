@@ -21,3 +21,15 @@ pub use pr_timeline::*;
 
 mod tag;
 pub use tag::*;
+
+mod code;
+pub use code::*;
+
+mod footnote;
+pub use footnote::*;
+
+mod heading_anchor;
+pub use heading_anchor::*;
+
+mod inline_code;
+pub use inline_code::*;

@@ -3,13 +3,17 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use paxhtml::builder::Builder;
+use paxhtml::{builder::Builder, html};
 
 use crate::{
     content::{Content, Document},
     views::{
         ViewContext,
-        components::{self, PrEntry, destination_class, pr_id_from_url, tl_id_from_url},
+        components::{
+            self, CodeBlock, CodeBlockProps, Footnote, FootnoteProps, HeadingAnchor,
+            HeadingAnchorProps, InlineCode, InlineCodeProps, PrEntry, destination_class,
+            pr_id_from_url, tl_id_from_url,
+        },
     },
 };
 
@@ -142,29 +146,21 @@ impl<'a> MarkdownConverter<'a> {
         match node {
             Node::Root(r) => self.convert_many(&r.children, Some(node)),
 
-            // Headings link to themselves; one containing a link gets a separate `#` anchor.
             Node::Heading(h) => {
                 let children = self.convert_many(&h.children, Some(node));
                 if self.without_blocking_elements {
                     return children;
                 }
                 let id = heading_id(node);
-                let href = format!("#{id}");
-                let children = if contains_link(&h.children) {
-                    b.fragment([
-                        b.a([b.attr(("class", "heading-anchor")), b.attr(("href", href))])(
-                            b.text("# "),
-                        ),
-                        children,
-                    ])
-                } else {
-                    b.a([b.attr(("href", href))])(children)
-                };
+                let contains_link = contains_link(&h.children);
+                // The tag depends on the depth, so it's built here.
                 b.tag(
                     &format!("h{}", (h.depth + 1).min(6)),
-                    [b.attr(("id", id))],
+                    [b.attr(("id", id.clone()))],
                     false,
-                )(children)
+                )(html! { in bump;
+                    <HeadingAnchor id={id} contains_link={contains_link}>{children}</HeadingAnchor>
+                })
             }
             Node::Text(t) => b.text(&t.value),
             Node::Paragraph(p) => {
@@ -217,12 +213,11 @@ impl<'a> MarkdownConverter<'a> {
             Node::Code(c) => {
                 let language = c.lang.as_deref().map(str::trim).filter(|l| !l.is_empty());
                 let highlighted = self.highlight(language, &c.value, "code block");
-                b.pre([])(b.fragment([
-                    b.span([b.attr(("class", "code-language"))])(
-                        b.text(self.context.syntax.language_name(language)),
-                    ),
-                    b.code([])(highlighted),
-                ]))
+                html! { in bump;
+                    <CodeBlock language={self.context.syntax.language_name(language)}>
+                        {highlighted}
+                    </CodeBlock>
+                }
             }
             Node::Blockquote(bq) => {
                 let children = self.convert_many(&bq.children, Some(node));
@@ -235,7 +230,8 @@ impl<'a> MarkdownConverter<'a> {
             Node::Break(_) => b.br([]),
             Node::InlineCode(c) => {
                 let (language, code) = self.context.syntax.parse_inline_code(&c.value);
-                b.code([])(self.highlight(language, code, "inline code"))
+                let highlighted = self.highlight(language, code, "inline code");
+                html! { in bump; <InlineCode>{highlighted}</InlineCode> }
             }
             Node::Image(i) => {
                 if i.url.is_empty() {
@@ -540,7 +536,6 @@ impl<'a> MarkdownConverter<'a> {
     /// Renders the note itself beside its marker. It opens via `:target` without script,
     /// and floats into the margin where there's room.
     fn convert_footnote_reference(&mut self, identifier: &str) -> paxhtml::Element<'a> {
-        let b = Builder::new(self.context.bump);
         let definition = self.footnote_definition(identifier).clone();
 
         // Numbered in order of first reference.
@@ -552,7 +547,6 @@ impl<'a> MarkdownConverter<'a> {
                 self.next_footnote_number += 1;
                 number
             });
-        let number = number.to_string();
 
         let mut converter = MarkdownConverter {
             context: self.context,
@@ -569,25 +563,9 @@ impl<'a> MarkdownConverter<'a> {
         };
         let note = converter.convert_many(&definition, None);
 
-        let id = format!("fn-{identifier}");
-        b.span([b.attr(("class", "fn"))])(b.fragment([
-            b.a([
-                b.attr(("class", "fn-mark")),
-                b.attr(("href", format!("#{id}"))),
-                b.attr(("role", "doc-noteref")),
-                b.attr(("aria-label", format!("Note {number}"))),
-            ])(b.text(&number)),
-            b.span([
-                b.attr(("class", "fn-note")),
-                b.attr(("id", id)),
-                b.attr(("role", "doc-footnote")),
-            ])(b.fragment([
-                b.span([b.attr(("class", "fn-num")), b.attr(("aria-hidden", "true"))])(
-                    b.text(&number),
-                ),
-                note,
-            ])),
-        ]))
+        html! { in self.context.bump;
+            <Footnote identifier={identifier} number={number}>{note}</Footnote>
+        }
     }
 
     fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element<'a> {
