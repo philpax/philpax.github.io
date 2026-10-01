@@ -6,7 +6,7 @@
 //! Server and credentials come from Blackbird's config (`[server]`). The library
 //! is fetched over Subsonic; recent plays come from Navidrome's native scrobble
 //! API, which needs Navidrome 0.64+. Front page covers are saved to
-//! `assets/baked/static/music-covers`.
+//! `assets/baked/static/music-covers` as JPEGs.
 use std::{
     collections::{HashMap, HashSet},
     path::{Path, PathBuf},
@@ -24,6 +24,8 @@ const DEFAULT_OUTPUT_PATH: &str = "assets/baked/music.json";
 const UNKNOWN_ALBUM: &str = "[Unknown Album]";
 /// Front page covers display at 2.5rem; this covers a 3x screen.
 const COVER_SIZE: usize = 128;
+/// JPEG quality for the covers.
+const COVER_QUALITY: u8 = 85;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -186,12 +188,15 @@ async fn save_covers(
                 continue;
             }
         };
-        let Some(extension) = image_extension(&bytes) else {
-            eprintln!("The cover of {name} is in a format the site can't show");
-            continue;
+        let jpeg = match encode_cover(&bytes) {
+            Ok(jpeg) => jpeg,
+            Err(e) => {
+                eprintln!("Failed to re-encode the cover of {name}: {e:?}");
+                continue;
+            }
         };
-        let file = format!("{}.{extension}", file_stem(&id.0));
-        std::fs::write(dir.join(&file), &bytes)
+        let file = format!("{}.jpg", file_stem(&id.0));
+        std::fs::write(dir.join(&file), jpeg)
             .with_context(|| format!("Failed to write the cover of {name}"))?;
         kept.insert(file.clone());
         library.albums[index].cover = Some(file);
@@ -207,29 +212,17 @@ async fn save_covers(
     Ok(())
 }
 
-/// Image extension, sniffed from the first bytes.
-fn image_extension(bytes: &[u8]) -> Option<&'static str> {
-    match bytes {
-        [0xFF, 0xD8, 0xFF, ..] => Some("jpg"),
-        [0x89, b'P', b'N', b'G', ..] => Some("png"),
-        [
-            b'R',
-            b'I',
-            b'F',
-            b'F',
-            _,
-            _,
-            _,
-            _,
-            b'W',
-            b'E',
-            b'B',
-            b'P',
-            ..,
-        ] => Some("webp"),
-        [b'G', b'I', b'F', b'8', ..] => Some("gif"),
-        _ => None,
+/// The cover as a JPEG. The server has already sized it, so a JPEG is kept as
+/// it is, since re-encoding one only loses detail.
+fn encode_cover(bytes: &[u8]) -> anyhow::Result<Vec<u8>> {
+    if image::guess_format(bytes)? == image::ImageFormat::Jpeg {
+        return Ok(bytes.to_vec());
     }
+    let cover = image::load_from_memory(bytes)?;
+    let mut jpeg = Vec::new();
+    image::codecs::jpeg::JpegEncoder::new_with_quality(&mut jpeg, COVER_QUALITY)
+        .encode_image(&cover.to_rgb8())?;
+    Ok(jpeg)
 }
 
 /// A cover art ID as a safe file name.
@@ -362,10 +355,29 @@ mod tests {
     }
 
     #[test]
-    fn covers_are_named_by_their_format_and_a_safe_id() {
-        assert_eq!(image_extension(&[0xFF, 0xD8, 0xFF, 0xE0]), Some("jpg"));
-        assert_eq!(image_extension(b"RIFF\0\0\0\0WEBPVP8 "), Some("webp"));
-        assert_eq!(image_extension(b"<html>"), None);
+    fn covers_are_converted_to_jpegs() {
+        let mut png = std::io::Cursor::new(Vec::new());
+        image::RgbaImage::new(128, 128)
+            .write_to(&mut png, image::ImageFormat::Png)
+            .unwrap();
+        let jpeg = encode_cover(png.get_ref()).unwrap();
+        assert_eq!(
+            image::guess_format(&jpeg).unwrap(),
+            image::ImageFormat::Jpeg
+        );
+    }
+
+    #[test]
+    fn jpegs_are_kept_as_they_are() {
+        let mut jpeg = std::io::Cursor::new(Vec::new());
+        image::RgbImage::new(128, 128)
+            .write_to(&mut jpeg, image::ImageFormat::Jpeg)
+            .unwrap();
+        assert_eq!(encode_cover(jpeg.get_ref()).unwrap(), *jpeg.get_ref());
+    }
+
+    #[test]
+    fn covers_are_named_by_a_safe_id() {
         assert_eq!(file_stem("al-1a2b_3c/4d.5e"), "al-1a2b_3c_4d_5e");
     }
 }

@@ -9,6 +9,7 @@ blackbird-shared = { workspace = true }
 blackbird-state = { workspace = true }
 
 anyhow = { workspace = true }
+image = { workspace = true, features = ["webp", "gif"] }
 chrono = { workspace = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
