@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-09-29T08:13:22Z",
+  "exported_at": "2026-10-01T19:42:44Z",
   "albums": [
     {
       "artist": "0b4k3",
@@ -81,10 +81,11 @@
           "artist": "0b4k3",
           "year": 2025,
           "duration": 383,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "2 Mello",
@@ -1555,8 +1556,7 @@
           "duration": 173,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 2
+      ]
     },
     {
       "artist": "Above & Beyond",
@@ -3998,7 +3998,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Air",
@@ -4618,7 +4618,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 3
     },
     {
       "artist": "Alexander Brandon",
@@ -6845,7 +6845,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 4
     },
     {
       "artist": "Angine de Poitrine",
@@ -7388,8 +7388,7 @@
           "play_count": 57,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Aperture Science Psychoacoustic Laboratories",
@@ -7938,7 +7937,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Apex",
@@ -8033,8 +8032,7 @@
           "play_count": 2,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Aphex Twin",
@@ -14162,8 +14160,7 @@
           "duration": 278,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Beach House",
@@ -16433,7 +16430,9 @@
           "track": 15,
           "year": 2025,
           "duration": 105,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1,
+          "starred": true
         },
         {
           "title": "Numb",
@@ -16483,7 +16482,7 @@
           "year": 2025,
           "duration": 72,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Bravo",
@@ -16493,7 +16492,8 @@
           "duration": 44,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "Black Sun Empire",
@@ -16567,7 +16567,7 @@
           "year": 2004,
           "duration": 402,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Boris the Blade",
@@ -16642,7 +16642,8 @@
           "track": 17,
           "year": 2004,
           "duration": 176,
-          "disc_number": 2
+          "disc_number": 2,
+          "play_count": 1
         },
         {
           "title": "Stasis",
@@ -16779,7 +16780,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Black Sun Empire",
@@ -19039,7 +19040,7 @@
           "year": 2023,
           "duration": 203,
           "disc_number": 1,
-          "play_count": 16,
+          "play_count": 17,
           "starred": true
         },
         {
@@ -19171,7 +19172,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 3
     },
     {
       "artist": "Boards of Canada",
@@ -19585,7 +19586,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 6
+      "recent_plays": 2
     },
     {
       "artist": "Boards of Canada",
@@ -19636,7 +19637,7 @@
           "year": 2002,
           "duration": 75,
           "disc_number": 1,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Sunshine Recorder",
@@ -19726,7 +19727,7 @@
           "year": 2002,
           "duration": 27,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "The Devil Is in the Details",
@@ -19811,7 +19812,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 1
+      "recent_plays": 3
     },
     {
       "artist": "Boards of Canada",
@@ -19959,8 +19960,7 @@
           "play_count": 3
         }
       ],
-      "starred": true,
-      "recent_plays": 1
+      "starred": true
     },
     {
       "artist": "Boards of Canada",
@@ -20132,7 +20132,7 @@
           "year": 2026,
           "duration": 304,
           "disc_number": 1,
-          "play_count": 18,
+          "play_count": 22,
           "starred": true
         },
         {
@@ -20212,7 +20212,7 @@
           "year": 2026,
           "duration": 320,
           "disc_number": 1,
-          "play_count": 34,
+          "play_count": 38,
           "starred": true
         },
         {
@@ -20297,7 +20297,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 113,
+      "recent_plays": 121,
       "cover": "al-4AsrqKCLuYnz7tpzCTUMbe_066fa41d5ab6b260.jpg"
     },
     {
@@ -21416,8 +21416,7 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Brasstronaut",
@@ -21656,7 +21655,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 2
     },
     {
       "artist": "Brian Eno",
@@ -22564,7 +22563,7 @@
           "year": 2014,
           "duration": 221,
           "disc_number": 1,
-          "play_count": 20,
+          "play_count": 21,
           "starred": true
         },
         {
@@ -22618,7 +22617,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 28
+      "recent_plays": 21
     },
     {
       "artist": "Broken Bells",
@@ -22766,7 +22765,7 @@
           "year": 2001,
           "duration": 314,
           "disc_number": 1,
-          "play_count": 6,
+          "play_count": 7,
           "starred": true
         },
         {
@@ -22827,7 +22826,8 @@
           "disc_number": 1
         }
       ],
-      "starred": true
+      "starred": true,
+      "recent_plays": 1
     },
     {
       "artist": "Broken Social Scene",
@@ -22958,8 +22958,7 @@
           "play_count": 2
         }
       ],
-      "starred": true,
-      "recent_plays": 1
+      "starred": true
     },
     {
       "artist": "Broken Social Scene",
@@ -23484,7 +23483,7 @@
           "year": 2009,
           "duration": 334,
           "disc_number": 1,
-          "play_count": 18,
+          "play_count": 20,
           "starred": true
         },
         {
@@ -23607,7 +23606,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 34
+      "recent_plays": 36
     },
     {
       "artist": "Buggles",
@@ -24986,7 +24985,7 @@
           "year": 2025,
           "duration": 510,
           "disc_number": 1,
-          "play_count": 43,
+          "play_count": 44,
           "starred": true
         },
         {
@@ -25022,7 +25021,8 @@
           "duration": 302,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Camo & Krooked",
@@ -25165,7 +25165,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 4
+      "recent_plays": 3
     },
     {
       "artist": "Capital Cities",
@@ -26537,7 +26537,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 6
+      "recent_plays": 2
     },
     {
       "artist": "Charles Mingus",
@@ -26838,7 +26838,7 @@
           "year": 2001,
           "duration": 466,
           "disc_number": 1,
-          "play_count": 17,
+          "play_count": 19,
           "starred": true
         },
         {
@@ -26851,7 +26851,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 6
     },
     {
       "artist": "Charles-François Gounod",
@@ -27749,7 +27749,7 @@
           "year": 2016,
           "duration": 125,
           "disc_number": 1,
-          "play_count": 39,
+          "play_count": 40,
           "starred": true
         },
         {
@@ -30316,7 +30316,7 @@
           "year": 2023,
           "duration": 24,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Xenon (2023 remaster)",
@@ -30372,7 +30372,7 @@
           "year": 2023,
           "duration": 421,
           "disc_number": 1,
-          "play_count": 7,
+          "play_count": 8,
           "starred": true
         },
         {
@@ -30415,7 +30415,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Coldplay",
@@ -30902,7 +30902,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 1
     },
     {
       "artist": "Conna Haraway",
@@ -32651,7 +32651,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Daft Punk",
@@ -33124,8 +33124,7 @@
           "play_count": 3,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Daft Punk",
@@ -33347,7 +33346,7 @@
           "year": 2013,
           "duration": 353,
           "disc_number": 1,
-          "play_count": 5,
+          "play_count": 6,
           "starred": true
         },
         {
@@ -33394,7 +33393,7 @@
           "year": 2013,
           "duration": 279,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         },
         {
@@ -33428,7 +33427,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 1
+      "recent_plays": 3
     },
     {
       "artist": "Daiki Kasho",
@@ -33564,7 +33563,7 @@
           "year": 2009,
           "duration": 453,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Sin City",
@@ -33635,7 +33634,8 @@
           "play_count": 7,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Dalot",
@@ -33975,7 +33975,8 @@
           "track": 7,
           "year": 2011,
           "duration": 141,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "The Gambling Priest",
@@ -34150,8 +34151,7 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ],
-      "recent_plays": 2
+      ]
     },
     {
       "artist": "Danny Byrd",
@@ -34309,6 +34309,7 @@
           "year": 2010,
           "duration": 344,
           "disc_number": 1,
+          "play_count": 1,
           "starred": true
         },
         {
@@ -34336,7 +34337,8 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Darwin Deez",
@@ -34807,7 +34809,7 @@
           "year": 2003,
           "duration": 300,
           "disc_number": 1,
-          "play_count": 44,
+          "play_count": 45,
           "starred": true
         },
         {
@@ -34821,7 +34823,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 52,
+      "recent_plays": 53,
       "cover": "al-1ZsnNkbwdo2zievpFBLXhj_c81635dea11d74c7.jpg"
     },
     {
@@ -35720,10 +35722,11 @@
           "year": 2011,
           "duration": 648,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "deadmau5",
@@ -35975,7 +35978,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 32
+      "recent_plays": 31
     },
     {
       "artist": "Death Cab for Cutie",
@@ -36176,11 +36179,11 @@
           "artist": "deathbrain",
           "year": 2022,
           "duration": 202,
-          "play_count": 118,
+          "play_count": 119,
           "starred": true
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 5
     },
     {
       "artist": "Deceptikon",
@@ -36760,8 +36763,7 @@
           "year": 2025,
           "duration": 176
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "DeepChord Presents Echospace",
@@ -37520,8 +37522,7 @@
           "play_count": 3,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Delphic",
@@ -37958,10 +37959,11 @@
           "track": 2,
           "year": 2001,
           "duration": 478,
-          "play_count": 14,
+          "play_count": 15,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Des Rocs",
@@ -40785,8 +40787,7 @@
           "duration": 254,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "El Ten Eleven",
@@ -45402,8 +45403,7 @@
           "disc_number": 1,
           "play_count": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Evanescence",
@@ -46619,7 +46619,7 @@
           "year": 2006,
           "duration": 219,
           "disc_number": 1,
-          "play_count": 2,
+          "play_count": 3,
           "starred": true
         },
         {
@@ -46746,7 +46746,8 @@
           "play_count": 2,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Faunts",
@@ -46833,7 +46834,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Faunts",
@@ -46878,7 +46879,7 @@
           "year": 2006,
           "duration": 353,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Of Nature",
@@ -46890,7 +46891,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Faunts",
@@ -47208,7 +47209,7 @@
           "year": 2024,
           "duration": 127,
           "disc_number": 1,
-          "play_count": 14,
+          "play_count": 18,
           "starred": true
         },
         {
@@ -47263,8 +47264,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 47,
-      "cover": "al-4OHJVfXL6lKtO9bji3DeH1_3474ee375f4663a3.png"
+      "recent_plays": 51,
+      "cover": "al-4OHJVfXL6lKtO9bji3DeH1_3474ee375f4663a3.jpg"
     },
     {
       "artist": "femtanyl feat. zombAe",
@@ -47296,10 +47297,11 @@
           "artist": "femtanyl",
           "year": 2025,
           "duration": 158,
-          "play_count": 50,
+          "play_count": 52,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "femtanyl",
@@ -47331,11 +47333,11 @@
           "artist": "femtanyl",
           "year": 2026,
           "duration": 194,
-          "play_count": 28,
+          "play_count": 32,
           "starred": true
         }
       ],
-      "recent_plays": 28
+      "recent_plays": 32
     },
     {
       "artist": "femtanyl",
@@ -47360,7 +47362,7 @@
           "year": 2026,
           "duration": 182,
           "disc_number": 1,
-          "play_count": 23
+          "play_count": 24
         },
         {
           "title": "SICK OF IT",
@@ -47369,7 +47371,7 @@
           "year": 2026,
           "duration": 190,
           "disc_number": 1,
-          "play_count": 101,
+          "play_count": 108,
           "starred": true
         },
         {
@@ -47379,7 +47381,7 @@
           "year": 2026,
           "duration": 221,
           "disc_number": 1,
-          "play_count": 37,
+          "play_count": 38,
           "starred": true
         },
         {
@@ -47427,7 +47429,7 @@
           "year": 2026,
           "duration": 228,
           "disc_number": 1,
-          "play_count": 98,
+          "play_count": 102,
           "starred": true
         },
         {
@@ -47437,12 +47439,12 @@
           "year": 2026,
           "duration": 237,
           "disc_number": 1,
-          "play_count": 87,
+          "play_count": 96,
           "starred": true
         }
       ],
       "starred": true,
-      "recent_plays": 90,
+      "recent_plays": 112,
       "cover": "al-0zYokgsDoNlNwlwjEfZxiv_bb72f0b406858f86.jpg"
     },
     {
@@ -47656,7 +47658,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Ferry Corsten",
@@ -50749,8 +50751,7 @@
           "duration": 108,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Gabriel Urbain Fauré",
@@ -52472,7 +52473,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "GORE",
@@ -52646,7 +52647,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 6
+      "recent_plays": 5
     },
     {
       "artist": "goreshit",
@@ -54633,11 +54634,11 @@
           "year": 2011,
           "duration": 336,
           "disc_number": 1,
-          "play_count": 3,
+          "play_count": 4,
           "starred": true
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 4
     },
     {
       "artist": "Guillemots",
@@ -56448,7 +56449,7 @@
           "year": 2016,
           "duration": 231,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         },
         {
@@ -56513,7 +56514,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Haywyre",
@@ -56528,11 +56529,11 @@
           "year": 2024,
           "duration": 198,
           "disc_number": 1,
-          "play_count": 16,
+          "play_count": 17,
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 3
     },
     {
       "artist": "Haywyre",
@@ -56545,11 +56546,11 @@
           "artist": "Haywyre",
           "year": 2026,
           "duration": 224,
-          "play_count": 9,
+          "play_count": 11,
           "starred": true
         }
       ],
-      "recent_plays": 9
+      "recent_plays": 11
     },
     {
       "artist": "HEALTH",
@@ -58483,8 +58484,7 @@
           "duration": 250,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Hot Chip",
@@ -58601,7 +58601,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 3
+      "recent_plays": 1
     },
     {
       "artist": "Hot Chip",
@@ -59093,8 +59093,7 @@
           "duration": 439,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "I Am Waiting for You Last Summer",
@@ -59199,7 +59198,7 @@
           "year": 2018,
           "duration": 195,
           "disc_number": 1,
-          "play_count": 8,
+          "play_count": 9,
           "starred": true
         },
         {
@@ -59235,7 +59234,8 @@
           "duration": 167,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "I Monster",
@@ -60340,7 +60340,8 @@
           "track": 1,
           "year": 2012,
           "duration": 365,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "Nothing to Say",
@@ -60442,7 +60443,8 @@
           "duration": 376,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Informant",
@@ -61358,7 +61360,7 @@
           "year": 2007,
           "duration": 155,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "A Very Dangerous Place",
@@ -61401,7 +61403,7 @@
           "year": 2007,
           "duration": 133,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "The Secret Labs",
@@ -61410,7 +61412,7 @@
           "year": 2007,
           "duration": 159,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         },
         {
@@ -61581,7 +61583,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 4
     },
     {
       "artist": "Jack Wall",
@@ -61814,8 +61816,7 @@
           "duration": 79,
           "disc_number": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Jackson and His Computer Band",
@@ -62514,7 +62515,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "James Holden",
@@ -63138,7 +63139,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 4
     },
     {
       "artist": "Janelle Monáe",
@@ -63324,7 +63325,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "Jaytech",
@@ -63589,7 +63590,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Jazztronik",
@@ -64848,8 +64849,7 @@
           "play_count": 2,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Johnny Cash",
@@ -65999,8 +65999,7 @@
           "disc_number": 1,
           "play_count": 2
         }
-      ],
-      "recent_plays": 2
+      ]
     },
     {
       "artist": "Justice",
@@ -66586,7 +66585,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 3
     },
     {
       "artist": "Kaki King",
@@ -66685,8 +66684,7 @@
           "duration": 213,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Kaki King",
@@ -67003,8 +67001,7 @@
           "duration": 269,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Kan R. Gao, feat. Laura Shigihara",
@@ -67525,8 +67522,7 @@
           "play_count": 19,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Kanute",
@@ -68421,8 +68417,7 @@
           "duration": 216,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Katie Costello",
@@ -68552,7 +68547,7 @@
           "year": 2010,
           "duration": 346,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 3,
           "starred": true
         },
         {
@@ -68600,7 +68595,8 @@
           "duration": 289,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "Kavinsky",
@@ -68738,7 +68734,7 @@
           "year": 2010,
           "duration": 208,
           "disc_number": 4,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Orange Boulevard",
@@ -68776,7 +68772,8 @@
           "disc_number": 4,
           "play_count": 4
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Kele Okereke",
@@ -69512,8 +69509,7 @@
           "disc_number": 6,
           "play_count": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Khruangbin",
@@ -69872,7 +69868,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "King Gizzard & the Lizard Wizard",
@@ -70638,7 +70634,7 @@
           "year": 2016,
           "duration": 324,
           "disc_number": 1,
-          "play_count": 7
+          "play_count": 8
         },
         {
           "title": "The Government Knows",
@@ -70647,7 +70643,7 @@
           "year": 2016,
           "duration": 223,
           "disc_number": 1,
-          "play_count": 17,
+          "play_count": 18,
           "starred": true
         },
         {
@@ -70734,7 +70730,8 @@
           "duration": 37,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "KNOWER",
@@ -70759,7 +70756,7 @@
           "year": 2023,
           "duration": 247,
           "disc_number": 1,
-          "play_count": 22,
+          "play_count": 24,
           "starred": true
         },
         {
@@ -70855,7 +70852,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 4
     },
     {
       "artist": "Koan",
@@ -71488,8 +71485,7 @@
           "duration": 23,
           "disc_number": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Kollektiv Turmstrasse",
@@ -71653,8 +71649,7 @@
           "disc_number": 1,
           "play_count": 4
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Kona Triangle",
@@ -72001,7 +71996,7 @@
           "year": 2012,
           "duration": 307,
           "disc_number": 1,
-          "play_count": 5
+          "play_count": 6
         },
         {
           "title": "Master End",
@@ -72320,7 +72315,7 @@
           "year": 2012,
           "duration": 246,
           "disc_number": 1,
-          "play_count": 2,
+          "play_count": 3,
           "starred": true
         },
         {
@@ -72395,7 +72390,8 @@
           "duration": 286,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Ladytron",
@@ -73161,7 +73157,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "Late Night Alumni",
@@ -73290,7 +73286,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Late Night Alumni",
@@ -74594,7 +74590,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "Linkin Park",
@@ -74840,7 +74836,7 @@
           "play_count": 5
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "London Elektricity",
@@ -74855,11 +74851,11 @@
           "year": 2010,
           "duration": 378,
           "disc_number": 4,
-          "play_count": 4,
+          "play_count": 5,
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "London Elektricity",
@@ -77024,7 +77020,8 @@
           "track": 15,
           "year": 2003,
           "duration": 425,
-          "disc_number": 2
+          "disc_number": 2,
+          "play_count": 2
         },
         {
           "title": "Gone (live)",
@@ -77042,7 +77039,8 @@
           "duration": 1061,
           "disc_number": 2
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "M83",
@@ -77064,7 +77062,8 @@
           "track": 2,
           "year": 2005,
           "duration": 255,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "In the Cold I’m Standing",
@@ -77173,7 +77172,8 @@
           "duration": 637,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "M83",
@@ -77949,7 +77949,7 @@
           "year": 2018,
           "duration": 246,
           "disc_number": 1,
-          "play_count": 115,
+          "play_count": 116,
           "starred": true
         },
         {
@@ -78014,7 +78014,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 4
     },
     {
       "artist": "mabanua",
@@ -79166,7 +79166,7 @@
           "year": 2022,
           "duration": 344,
           "disc_number": 1,
-          "play_count": 8,
+          "play_count": 9,
           "starred": true
         },
         {
@@ -79188,7 +79188,8 @@
           "disc_number": 1,
           "play_count": 2
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Machine Girl",
@@ -79386,7 +79387,7 @@
           "year": 2022,
           "duration": 138,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Apples & Honey",
@@ -79500,7 +79501,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Machine Girl",
@@ -79524,7 +79525,7 @@
           "year": 2025,
           "duration": 182,
           "disc_number": 1,
-          "play_count": 62,
+          "play_count": 64,
           "starred": true
         },
         {
@@ -79637,7 +79638,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 6
+      "recent_plays": 3
     },
     {
       "artist": "Machine Girl",
@@ -79662,7 +79663,7 @@
           "year": 2026,
           "duration": 210,
           "disc_number": 1,
-          "play_count": 32,
+          "play_count": 33,
           "starred": true
         },
         {
@@ -79691,7 +79692,7 @@
           "year": 2026,
           "duration": 487,
           "disc_number": 1,
-          "play_count": 33,
+          "play_count": 34,
           "starred": true
         },
         {
@@ -79773,7 +79774,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 17
+      "recent_plays": 11
     },
     {
       "artist": "Machinedrum",
@@ -80733,7 +80734,7 @@
           "year": 2010,
           "duration": 399,
           "disc_number": 1,
-          "play_count": 5,
+          "play_count": 6,
           "starred": true
         },
         {
@@ -80765,7 +80766,8 @@
           "play_count": 14,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Makoto",
@@ -80797,7 +80799,7 @@
           "year": 2011,
           "duration": 250,
           "disc_number": 1,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Girl I’m Running Back 2 U",
@@ -80840,7 +80842,8 @@
           "track": 8,
           "year": 2011,
           "duration": 365,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "Turning Points",
@@ -80857,7 +80860,7 @@
           "year": 2011,
           "duration": 282,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Bubbles",
@@ -80900,7 +80903,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 4
     },
     {
       "artist": "Makoto",
@@ -81609,7 +81612,7 @@
           "year": 2020,
           "duration": 254,
           "disc_number": 2,
-          "play_count": 18,
+          "play_count": 19,
           "starred": true
         },
         {
@@ -81621,7 +81624,7 @@
           "disc_number": 2
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 5
     },
     {
       "artist": "Marek Hemmann",
@@ -81718,7 +81721,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 3
     },
     {
       "artist": "Marek Hemmann",
@@ -81805,7 +81808,7 @@
           "year": 2013,
           "duration": 293,
           "disc_number": 1,
-          "play_count": 22,
+          "play_count": 23,
           "starred": true
         },
         {
@@ -81819,7 +81822,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Mari Boine",
@@ -82825,7 +82828,7 @@
           "year": 1998,
           "duration": 251,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Dissolved Girl",
@@ -82877,7 +82880,8 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Massive Attack",
@@ -83417,8 +83421,7 @@
           "play_count": 1
         }
       ],
-      "starred": true,
-      "recent_plays": 1
+      "starred": true
     },
     {
       "artist": "Max Cooper",
@@ -84129,9 +84132,11 @@
           "artist": "Maximum The Hormone",
           "track": 30,
           "year": 2007,
-          "duration": 74
+          "duration": 74,
+          "play_count": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Maybeshewill",
@@ -84893,7 +84898,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 9
+      "recent_plays": 7
     },
     {
       "artist": "Melody’s Echo Chamber",
@@ -85439,7 +85444,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "METAROOM",
@@ -85585,8 +85590,7 @@
           "play_count": 1
         }
       ],
-      "starred": true,
-      "recent_plays": 1
+      "starred": true
     },
     {
       "artist": "Metronomy",
@@ -86084,7 +86088,7 @@
           "year": 2010,
           "duration": 233,
           "disc_number": 1,
-          "play_count": 5,
+          "play_count": 6,
           "starred": true
         },
         {
@@ -86168,7 +86172,8 @@
           "duration": 236,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Miami Horror",
@@ -86200,7 +86205,7 @@
           "year": 2015,
           "duration": 250,
           "disc_number": 1,
-          "play_count": 6,
+          "play_count": 7,
           "starred": true
         },
         {
@@ -86306,7 +86311,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Miami Horror",
@@ -86324,8 +86329,7 @@
           "play_count": 4,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Miami Horror",
@@ -87321,7 +87325,7 @@
           "disc_number": 2
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 3
     },
     {
       "artist": "Michael Jackson",
@@ -88567,7 +88571,7 @@
           "year": 2013,
           "duration": 290,
           "disc_number": 1,
-          "play_count": 15,
+          "play_count": 16,
           "starred": true
         },
         {
@@ -89409,7 +89413,7 @@
           "year": 1999,
           "duration": 241,
           "disc_number": 1,
-          "play_count": 1,
+          "play_count": 2,
           "starred": true
         },
         {
@@ -89536,7 +89540,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Moby",
@@ -90033,7 +90037,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Moe Shop",
@@ -90107,7 +90111,7 @@
           "year": 2025,
           "duration": 193,
           "disc_number": 1,
-          "play_count": 156,
+          "play_count": 164,
           "starred": true
         },
         {
@@ -90121,8 +90125,8 @@
         }
       ],
       "starred": true,
-      "recent_plays": 172,
-      "cover": "al-6RHcQFeLwJceDlydPdu9DG_574176bfffe67844.png"
+      "recent_plays": 180,
+      "cover": "al-6RHcQFeLwJceDlydPdu9DG_574176bfffe67844.jpg"
     },
     {
       "artist": "Mogwai",
@@ -91288,9 +91292,11 @@
           "track": 15,
           "year": 1999,
           "duration": 317,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Mr. Scruff",
@@ -91416,8 +91422,7 @@
           "duration": 263,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "MTSCA",
@@ -94031,7 +94036,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 1
     },
     {
       "artist": "Night Tapes",
@@ -94895,7 +94900,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 23
+      "recent_plays": 19
     },
     {
       "artist": "Ninajirachi",
@@ -95415,7 +95420,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 7
+      "recent_plays": 5
     },
     {
       "artist": "Nine Inch Nails",
@@ -97001,7 +97006,7 @@
           "year": 2026,
           "duration": 247,
           "disc_number": 1,
-          "play_count": 45,
+          "play_count": 46,
           "starred": true
         },
         {
@@ -97065,7 +97070,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 10
+      "recent_plays": 8
     },
     {
       "artist": "Nine Inch Nails",
@@ -97967,7 +97972,7 @@
           "disc_number": 4
         }
       ],
-      "recent_plays": 7
+      "recent_plays": 4
     },
     {
       "artist": "Noisia",
@@ -97984,8 +97989,7 @@
           "disc_number": 4,
           "play_count": 4
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Noisia",
@@ -98855,7 +98859,8 @@
           "track": 6,
           "year": 2013,
           "duration": 241,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "Hands, Be Still",
@@ -98913,7 +98918,8 @@
           "duration": 258,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Oliver Hacke",
@@ -99219,7 +99225,7 @@
           "year": 2012,
           "duration": 326,
           "disc_number": 1,
-          "play_count": 7
+          "play_count": 8
         },
         {
           "title": "Amsterdam",
@@ -102260,7 +102266,7 @@
           "year": 2008,
           "duration": 315,
           "disc_number": 1,
-          "play_count": 5,
+          "play_count": 6,
           "starred": true
         },
         {
@@ -102303,7 +102309,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Pendulum",
@@ -102451,8 +102457,7 @@
           "play_count": 2,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Perfume Genius",
@@ -103552,7 +103557,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Phosphorescent",
@@ -105022,7 +105027,7 @@
           "year": 2018,
           "duration": 240,
           "disc_number": 1,
-          "play_count": 149,
+          "play_count": 154,
           "starred": true
         },
         {
@@ -105045,7 +105050,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 6
     },
     {
       "artist": "Polyphia",
@@ -105163,7 +105168,7 @@
           "year": 2022,
           "duration": 350,
           "disc_number": 1,
-          "play_count": 15,
+          "play_count": 16,
           "starred": true
         },
         {
@@ -106197,7 +106202,8 @@
           "track": 20,
           "year": 2008,
           "duration": 271,
-          "disc_number": 2
+          "disc_number": 2,
+          "play_count": 1
         },
         {
           "title": "B-Rock",
@@ -106812,8 +106818,7 @@
           "play_count": 13,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Pryda",
@@ -110981,7 +110986,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 2
     },
     {
       "artist": "Röyksopp",
@@ -111042,7 +111047,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 1
     },
     {
       "artist": "Röyksopp",
@@ -111086,7 +111091,7 @@
           "year": 2005,
           "duration": 236,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Beautiful Day Without You",
@@ -111636,8 +111641,7 @@
           "duration": 331,
           "disc_number": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Rusko",
@@ -112256,7 +112260,7 @@
           "year": 2002,
           "duration": 506,
           "disc_number": 1,
-          "play_count": 3,
+          "play_count": 4,
           "starred": true
         },
         {
@@ -112323,7 +112327,8 @@
           "play_count": 1,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Sasha",
@@ -112942,7 +112947,7 @@
           "year": 2022,
           "duration": 232,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "The Circle",
@@ -112955,7 +112960,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "SAULT",
@@ -113052,7 +113057,7 @@
           "year": 2025,
           "duration": 363,
           "disc_number": 1,
-          "play_count": 7
+          "play_count": 8
         }
       ],
       "starred": true,
@@ -113273,7 +113278,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 3
     },
     {
       "artist": "SBTRKT",
@@ -113423,7 +113428,7 @@
           "year": 2014,
           "duration": 211,
           "disc_number": 1,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Problem (Solved)",
@@ -113531,7 +113536,8 @@
           "duration": 144,
           "disc_number": 2
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Scatman John",
@@ -115177,8 +115183,7 @@
           "duration": 26,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Seigen Tokuzawa",
@@ -117050,8 +117055,7 @@
           "duration": 195,
           "disc_number": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Shoji Meguro",
@@ -117473,7 +117477,7 @@
           "year": 2008,
           "duration": 258,
           "disc_number": 2,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Mist",
@@ -117633,7 +117637,7 @@
           "disc_number": 2
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 4
     },
     {
       "artist": "Shoji Meguro",
@@ -117740,8 +117744,7 @@
           "duration": 389,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Shoji Meguro",
@@ -118234,8 +118237,7 @@
           "duration": 227,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Sigur Rós",
@@ -119767,8 +119769,7 @@
           "play_count": 73,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Sokpb Avabodha & WMRI",
@@ -120116,7 +120117,7 @@
           "year": 2005,
           "duration": 503,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Star Fruit",
@@ -120191,7 +120192,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 20
+      "recent_plays": 21
     },
     {
       "artist": "Solar Fields",
@@ -120779,8 +120780,7 @@
           "duration": 317,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Solar Fields",
@@ -123948,8 +123948,7 @@
           "play_count": 1,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Sub Focus",
@@ -125990,7 +125989,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 8
+      "recent_plays": 5
     },
     {
       "artist": "Syndicate",
@@ -126190,7 +126189,8 @@
           "track": 7,
           "year": 2013,
           "duration": 211,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "Healing (Hope You're Well)",
@@ -127398,7 +127398,7 @@
           "year": 2010,
           "duration": 287,
           "disc_number": 1,
-          "play_count": 22,
+          "play_count": 24,
           "starred": true
         },
         {
@@ -127478,7 +127478,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 6
     },
     {
       "artist": "Tame Impala",
@@ -127596,8 +127596,7 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Tame Impala",
@@ -128982,7 +128981,7 @@
           "year": 2016,
           "duration": 455,
           "disc_number": 1,
-          "play_count": 7,
+          "play_count": 8,
           "starred": true
         },
         {
@@ -130461,7 +130460,7 @@
           "year": 2000,
           "duration": 340,
           "disc_number": 1,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Country Leaver",
@@ -130683,7 +130682,7 @@
           "year": 2025,
           "duration": 183,
           "disc_number": 1,
-          "play_count": 3
+          "play_count": 4
         },
         {
           "title": "Peregrine",
@@ -130751,7 +130750,8 @@
           "play_count": 2,
           "starred": true
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "The Door and the Window",
@@ -131697,8 +131697,7 @@
           "duration": 179,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "The Flashbulb",
@@ -134001,7 +134000,7 @@
           "year": 2007,
           "duration": 180,
           "disc_number": 1,
-          "play_count": 5,
+          "play_count": 6,
           "starred": true
         },
         {
@@ -134335,7 +134334,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "The Prodigy",
@@ -134463,7 +134462,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 8
+      "recent_plays": 5
     },
     {
       "artist": "The Rogue Element",
@@ -134661,7 +134660,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "The Silverman",
@@ -134783,7 +134782,7 @@
           "year": 1997,
           "duration": 167,
           "disc_number": 1,
-          "play_count": 4
+          "play_count": 5
         },
         {
           "title": "The Guns of Love Disastrous",
@@ -134793,7 +134792,8 @@
           "duration": 251,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "The Spark That Thought",
@@ -135948,7 +135948,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "The xx",
@@ -137662,7 +137662,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 21
+      "recent_plays": 20
     },
     {
       "artist": "Tim Hecker",
@@ -138456,8 +138456,7 @@
           "play_count": 6,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Timo Maas",
@@ -138774,8 +138773,7 @@
           "play_count": 2,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "TOKiMONSTA",
@@ -138961,7 +138959,7 @@
           "year": 2014,
           "duration": 205,
           "disc_number": 1,
-          "play_count": 11,
+          "play_count": 12,
           "starred": true
         },
         {
@@ -138973,7 +138971,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Tom Middleton",
@@ -139189,8 +139187,7 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Tom Petty",
@@ -139999,7 +139996,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Trentemøller",
@@ -140215,6 +140212,7 @@
           "year": 2010,
           "duration": 365,
           "disc_number": 1,
+          "play_count": 1,
           "starred": true
         },
         {
@@ -140288,7 +140286,8 @@
           "duration": 464,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Trentemøller",
@@ -140498,8 +140497,7 @@
           "disc_number": 2,
           "play_count": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Trentemøller",
@@ -141766,7 +141764,7 @@
           "year": 2010,
           "duration": 168,
           "disc_number": 1,
-          "play_count": 2,
+          "play_count": 3,
           "starred": true
         },
         {
@@ -141794,7 +141792,8 @@
           "duration": 190,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Two Door Cinema Club",
@@ -142659,7 +142658,7 @@
           "year": 2001,
           "duration": 456,
           "disc_number": 1,
-          "play_count": 2
+          "play_count": 3
         },
         {
           "title": "Molfsee",
@@ -142670,7 +142669,8 @@
           "disc_number": 1,
           "play_count": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Ulrich Schnauss",
@@ -143528,8 +143528,7 @@
           "play_count": 7,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Underworld",
@@ -144783,7 +144782,7 @@
           "year": 2025,
           "duration": 268,
           "disc_number": 1,
-          "play_count": 7,
+          "play_count": 9,
           "starred": true
         },
         {
@@ -144886,7 +144885,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 5
+      "recent_plays": 6
     },
     {
       "artist": "Various Artists",
@@ -145321,8 +145320,7 @@
           "duration": 68,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Various Artists • Nakagawa Koutarou",
@@ -146020,8 +146018,7 @@
           "duration": 232,
           "disc_number": 3
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Various Artists",
@@ -146703,7 +146700,7 @@
           "year": 2014,
           "duration": 232,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Go Feet (radio edit)",
@@ -146785,7 +146782,8 @@
           "duration": 243,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Various Artists",
@@ -147356,10 +147354,10 @@
           "year": 2002,
           "duration": 454,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Various Artists",
@@ -147391,7 +147389,7 @@
           "year": 2008,
           "duration": 206,
           "disc_number": 1,
-          "play_count": 24,
+          "play_count": 28,
           "starred": true
         },
         {
@@ -147517,7 +147515,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 16
+      "recent_plays": 20
     },
     {
       "artist": "Various Artists",
@@ -147806,7 +147804,7 @@
           "year": 2012,
           "duration": 189,
           "disc_number": 1,
-          "play_count": 5
+          "play_count": 6
         },
         {
           "title": "Crush",
@@ -147855,7 +147853,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 4
     },
     {
       "artist": "Various Artists",
@@ -148360,8 +148358,7 @@
           "duration": 41,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Various Artists",
@@ -148603,7 +148600,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 7
+      "recent_plays": 2
     },
     {
       "artist": "Various Artists",
@@ -148846,8 +148843,7 @@
           "duration": 60,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Various Artists",
@@ -149369,7 +149365,7 @@
           "year": 1998,
           "duration": 507,
           "disc_number": 1,
-          "play_count": 16,
+          "play_count": 17,
           "starred": true
         },
         {
@@ -149456,7 +149452,7 @@
           "disc_number": 1
         }
       ],
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Various Artists",
@@ -149568,7 +149564,7 @@
           "year": 2007,
           "duration": 263,
           "disc_number": 1,
-          "play_count": 12,
+          "play_count": 14,
           "starred": true
         },
         {
@@ -149588,7 +149584,8 @@
           "duration": 236,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 2
     },
     {
       "artist": "Various Artists",
@@ -149705,8 +149702,7 @@
           "duration": 270,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Various Artists",
@@ -150385,7 +150381,7 @@
           "play_count": 2
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 2
     },
     {
       "artist": "Various Artists",
@@ -150576,8 +150572,7 @@
           "disc_number": 1
         }
       ],
-      "starred": true,
-      "recent_plays": 1
+      "starred": true
     },
     {
       "artist": "Various Artists",
@@ -151080,7 +151075,7 @@
           "disc_number": 4
         }
       ],
-      "recent_plays": 2
+      "recent_plays": 1
     },
     {
       "artist": "Various Artists",
@@ -151246,8 +151241,7 @@
           "play_count": 2,
           "starred": true
         }
-      ],
-      "recent_plays": 2
+      ]
     },
     {
       "artist": "Various Artists",
@@ -152786,7 +152780,7 @@
           "year": 2021,
           "duration": 170,
           "disc_number": 1,
-          "play_count": 8,
+          "play_count": 11,
           "starred": true
         },
         {
@@ -152903,7 +152897,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 6
+      "recent_plays": 8
     },
     {
       "artist": "Various Artists",
@@ -153385,7 +153379,7 @@
           "track": 1,
           "year": 2010,
           "duration": 92,
-          "play_count": 78
+          "play_count": 82
         },
         {
           "title": "7 weights",
@@ -153820,7 +153814,7 @@
           "track": 61,
           "year": 2010,
           "duration": 169,
-          "play_count": 8
+          "play_count": 9
         },
         {
           "title": "Haruka",
@@ -154372,7 +154366,7 @@
           "track": 137,
           "year": 2010,
           "duration": 163,
-          "play_count": 9
+          "play_count": 10
         },
         {
           "title": "Reflection call",
@@ -154522,7 +154516,7 @@
           "track": 158,
           "year": 2010,
           "duration": 334,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Shinpi no Mori",
@@ -154838,7 +154832,7 @@
           "duration": 303
         }
       ],
-      "recent_plays": 16
+      "recent_plays": 20
     },
     {
       "artist": "Various Artists",
@@ -156299,7 +156293,7 @@
           "track": 6,
           "year": 2017,
           "duration": 248,
-          "play_count": 2,
+          "play_count": 3,
           "starred": true
         },
         {
@@ -156316,7 +156310,8 @@
           "year": 2017,
           "duration": 209
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "what is your name?",
@@ -156724,7 +156719,7 @@
           "play_count": 1
         }
       ],
-      "recent_plays": 5
+      "recent_plays": 4
     },
     {
       "artist": "Whitey",
@@ -157323,8 +157318,7 @@
           "play_count": 12,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Woob",
@@ -157585,7 +157579,7 @@
           "year": 2007,
           "duration": 186,
           "disc_number": 1,
-          "play_count": 22,
+          "play_count": 23,
           "starred": true
         },
         {
@@ -157769,7 +157763,7 @@
         }
       ],
       "starred": true,
-      "recent_plays": 1
+      "recent_plays": 2
     },
     {
       "artist": "Xerxes & Phoenix",
@@ -160295,7 +160289,8 @@
           "track": 5,
           "year": 2011,
           "duration": 188,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "To See You Smile",
@@ -160345,7 +160340,8 @@
           "duration": 313,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Yura Yura Teikoku",
@@ -160863,8 +160859,7 @@
           "play_count": 23,
           "starred": true
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Zavoloka",
@@ -161175,8 +161170,7 @@
           "duration": 363,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Zero 7",
@@ -161219,7 +161213,7 @@
           "year": 2004,
           "duration": 264,
           "disc_number": 1,
-          "play_count": 1
+          "play_count": 2
         },
         {
           "title": "Passing By",
@@ -161284,7 +161278,8 @@
           "duration": 390,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "Zero 7",
@@ -161635,7 +161630,7 @@
           "starred": true
         }
       ],
-      "recent_plays": 4
+      "recent_plays": 1
     },
     {
       "artist": "ZØMB",
@@ -161685,8 +161680,7 @@
           "year": 2026,
           "duration": 91
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "ZØMB",
@@ -161713,8 +161707,7 @@
           "disc_number": 1,
           "play_count": 2
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Zoot Woman",
@@ -161822,8 +161815,7 @@
           "play_count": 1,
           "starred": true
         }
-      ],
-      "recent_plays": 2
+      ]
     },
     {
       "artist": "Zulu Winter",
@@ -162805,8 +162797,7 @@
           "duration": 306,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Camellia",
@@ -164565,8 +164556,7 @@
           "play_count": 3,
           "starred": true
         }
-      ],
-      "recent_plays": 3
+      ]
     },
     {
       "artist": "川村ゆみ",
@@ -165215,7 +165205,8 @@
           "track": 13,
           "year": 2019,
           "duration": 213,
-          "disc_number": 1
+          "disc_number": 1,
+          "play_count": 1
         },
         {
           "title": "秘密音楽",
@@ -165225,7 +165216,8 @@
           "duration": 180,
           "disc_number": 1
         }
-      ]
+      ],
+      "recent_plays": 1
     },
     {
       "artist": "稲葉曇",
@@ -165453,8 +165445,7 @@
           "duration": 271,
           "disc_number": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Seatbelts",
@@ -165863,8 +165854,7 @@
           "disc_number": 2,
           "play_count": 1
         }
-      ],
-      "recent_plays": 1
+      ]
     },
     {
       "artist": "Takeshi Abo",
@@ -168482,7 +168472,7 @@
           "disc_number": 3
         }
       ],
-      "recent_plays": 3
+      "recent_plays": 2
     },
     {
       "artist": "高田雅史",
