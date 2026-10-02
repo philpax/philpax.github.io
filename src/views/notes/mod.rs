@@ -40,9 +40,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         html! { in bump;
             <article class="document-content">
                 {document::head(context, note)}
-                <div class="document-body">
-                    <div class="notes-intro">{body.blocks}</div>
-                </div>
+                <div class="notes-intro">{body.into_prose(bump)}</div>
             </article>
         }
     } else {

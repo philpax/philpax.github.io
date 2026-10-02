@@ -34,9 +34,13 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
 }
 
 /// A document's heading and body, with a contents disclosure between them (narrow pages only).
-pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>) -> Element<'a> {
+pub fn article<'a>(
+    context: ViewContext<'a>,
+    document: &Document,
+    mut body: Body<'a>,
+) -> Element<'a> {
     let bump = context.bump;
-    let toc = body.toc.map(|toc| {
+    let toc = body.toc.take().map(|toc| {
         html! { in bump;
             <details class="document-toc">
                 <summary>{copy::doc::CONTENTS}</summary>
@@ -48,14 +52,16 @@ pub fn article<'a>(context: ViewContext<'a>, document: &Document, body: Body<'a>
         <article class="document-content">
             {head(context, document)}
             {toc}
-            <div class="document-body prose">{body.blocks}</div>
+            {body.into_prose(bump)}
         </article>
     }
 }
 
 /// A document's rendered body and, if it has enough headings, its contents.
 pub struct Body<'a> {
-    pub blocks: Element<'a>,
+    // Private: the blocks only leave through `into_prose`, so no view can render them
+    // outside the prose container.
+    blocks: Element<'a>,
     pub toc: Option<Element<'a>>,
 }
 impl<'a> Body<'a> {
@@ -73,6 +79,11 @@ impl<'a> Body<'a> {
             blocks: converter.convert_blocks(&root),
             toc: toc(context, document, &root, &url),
         }
+    }
+
+    /// The body in its prose container, which the prose rules are scoped to.
+    pub fn into_prose(self, bump: &'a Bump) -> Element<'a> {
+        html! { in bump; <div class="document-body prose">{self.blocks}</div> }
     }
 }
 
