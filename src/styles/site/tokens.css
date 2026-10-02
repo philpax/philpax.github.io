@@ -95,6 +95,10 @@
   --measure: 38.75rem;
   --measure-short: 33.25rem;
 
+  /* The column beside a wide document: the notes rail, or a post's contents. Shared, so
+     every document's text starts at the same place. */
+  --rail-width: 18rem;
+
   --motion: 120ms;
 
   /* A sidenote's width plus its gap, which the document grid reserves. */

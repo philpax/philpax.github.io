@@ -194,7 +194,7 @@ label.rail-row {
 /* The rail's grid area runs the row's height, so it sticks down a long note. */
 @container site (width >= 64rem) {
   .notes-layout {
-    grid-template-columns: 18rem minmax(0, 1fr);
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
   }
   .notes-rail {
     position: sticky;

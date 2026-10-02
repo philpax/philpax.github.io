@@ -18,13 +18,13 @@
   min-width: 0;
 }
 @container site (width >= 64rem) {
-  /* Explicit column: it is the container the sidenotes measure. */
+  /* The rail's column is kept without contents, so the text starts where a note's does.
+     Explicit column: it is the container the sidenotes measure. */
   .document-layout {
-    grid-template-columns: minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
-    justify-content: center;
+    grid-template-columns: var(--rail-width) minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
   }
-  .document-layout:has(> aside) {
-    grid-template-columns: 14rem minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
+  .document-layout > :not(aside) {
+    grid-column: 2;
   }
   .document-layout > aside {
     position: sticky;
