@@ -12,7 +12,7 @@ use crate::{
     content::{
         Content, Document, DocumentFolderNode, DocumentLeafNode, DocumentNode, DocumentType,
     },
-    views::{CurrentPage, copy},
+    views::{self, CurrentPage},
 };
 
 mod field;
@@ -168,25 +168,35 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
     };
     let pages = [
         (page_image_path("index"), index),
-        page("blog", Look::Post, copy::blog::TITLE, copy::blog::LEDE),
+        page(
+            "blog",
+            Look::Post,
+            CurrentPage::Blog.name(),
+            views::blog::LEDE,
+        ),
         page(
             "updates",
             Look::Update,
-            copy::updates::TITLE,
-            copy::updates::LEDE,
+            CurrentPage::Updates.name(),
+            views::updates::LEDE,
         ),
-        page("tags", Look::Tag, copy::tags::TITLE, copy::tags::LEDE),
+        page(
+            "tags",
+            Look::Tag,
+            CurrentPage::Tags.name(),
+            views::tags::LEDE,
+        ),
         page(
             "credits",
             Look::Credits,
             &paxsite_content::markdown_to_plaintext(&content.credits.metadata.title),
-            copy::credits::LEDE,
+            views::credits::LEDE,
         ),
         page(
             "404",
             Look::Post,
-            copy::not_found::TITLE,
-            copy::not_found::LEDE,
+            CurrentPage::NotFound.name(),
+            views::not_found::LEDE,
         ),
     ];
 

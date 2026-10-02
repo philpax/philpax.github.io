@@ -4,6 +4,9 @@ use crate::views::{
     listings::{index_row, inline_markdown, page_head, summary_list},
 };
 
+/// Under the page's title, here and in its preview.
+pub const LEDE: &str = "all tags across the 'site";
+
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
@@ -32,12 +35,12 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         CurrentPage::Tags,
         html! { in bump;
             <div class="frame-narrow">
-                {page_head(bump, html! { in bump; {copy::tags::TITLE} }, Some(html! { in bump; {copy::tags::LEDE} }))}
+                {page_head(bump, html! { in bump; {CurrentPage::Tags.name()} }, Some(html! { in bump; {LEDE} }))}
                 <div class="index-groups">
                     {index_row(
                         bump,
-                        html! { in bump; {copy::labels::SUBJECTS} },
-                        Some(html! { in bump; {copy::tags::count(tags.len())} }),
+                        html! { in bump; "Subjects" },
+                        Some(html! { in bump; {format!("{} {}", tags.len(), crate::util::pluralize("tag", tags.len()))} }),
                         html! { in bump;
                             <ul class="tag-index">
                                 #{tags.iter().map(|(tag, count)| html! { in bump;
@@ -107,10 +110,10 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                 <div class="index-groups">
                     {index_row(
                         bump,
-                        html! { in bump; {copy::labels::TAGGED} },
-                        Some(html! { in bump; <A href={Route::Tags.url_path()}>{copy::tag::ALL_TAGS}</A> }),
+                        html! { in bump; "Tagged" },
+                        Some(html! { in bump; <A href={Route::Tags.url_path()}>"All tags →"</A> }),
                         if tagged_documents.is_empty() {
-                            html! { in bump; <p class="empty-message">{copy::empty::TAG}</p> }
+                            html! { in bump; <p class="empty-message">"nothing has this tag"</p> }
                         } else {
                             summary_list(context, tagged_documents.iter().copied(), "8")
                         },

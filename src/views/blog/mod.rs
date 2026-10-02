@@ -4,6 +4,9 @@ use crate::views::{
     listings::{listed, page_head, year_groups},
 };
 
+/// Under the page's title, here and in its preview.
+pub const LEDE: &str = "slightly more thought-out pieces";
+
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let documents: Vec<&Document> = context
@@ -28,10 +31,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         CurrentPage::Blog,
         html! { in bump;
             <div class="frame-narrow">
-                {page_head(bump, html! { in bump; {copy::blog::TITLE} }, Some(html! { in bump; {copy::blog::LEDE} }))}
-                {documents.is_empty().then(|| html! { in bump;
-                    <p class="empty-message">{copy::empty::INDEX}</p>
-                })}
+                {page_head(bump, html! { in bump; {CurrentPage::Blog.name()} }, Some(html! { in bump; {LEDE} }))}
                 {year_groups(context, &documents)}
             </div>
         },

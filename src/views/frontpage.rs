@@ -49,15 +49,15 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         CurrentPage::Home,
         html! { in bump;
             <div class="frame-narrow home-page stack">
-                <section ariaLabel={copy::labels::INTRODUCTION}>
-                    <h1>{copy::TAGLINE}</h1>
+                <section ariaLabel="Introduction">
+                    <h1>"I've seen things you people wouldn't believe..."</h1>
                     <div class="prose">
                         {MarkdownConverter::new(context, Route::Index.url_path()).convert_blocks(&crate::markdown::document_root(&content.about))}
                     </div>
                 </section>
 
                 {section(bump, Section {
-                    title: copy::home::RECENT_WRITING,
+                    title: "Recent writing",
                     href: Some(Route::Blog.url_path()),
                     feed: Some(Route::BlogRss.url_path()),
                     section: Some("blog"),
@@ -65,7 +65,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 }, summary_list(context, posts, "5"))}
 
                 {section(bump, Section {
-                    title: copy::updates::TITLE,
+                    title: CurrentPage::Updates.name(),
                     href: Some(Route::Updates.url_path()),
                     feed: Some(Route::UpdatesRss.url_path()),
                     section: Some("updates"),
@@ -73,7 +73,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 }, dated_list(context, &updates))}
 
                 {section(bump, Section {
-                    title: copy::nav::NOTES,
+                    title: CurrentPage::Notes.name(),
                     href: Some(CurrentPage::Notes.url_path()),
                     feed: None,
                     section: Some("notes"),
@@ -89,7 +89,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 }, listening_list(bump, &listening.albums)))}
 
                 {section(bump, Section {
-                    title: copy::home::ELSEWHERE,
+                    title: "Elsewhere",
                     href: None,
                     feed: None,
                     section: None,
@@ -193,9 +193,9 @@ fn most_listened(content: &Content, count: usize) -> Listening {
         })
         .collect();
     let title = if recent {
-        copy::home::LISTENING_RECENT
+        "Most listened this month"
     } else {
-        copy::home::LISTENING_LIFETIME
+        "Most played"
     };
 
     Listening {
@@ -232,8 +232,8 @@ fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element
                 <h2>{props.title}</h2>
                 {props.href.map(|href| html! { in bump;
                     <p>
-                        {feed.map(|feed| html! { in bump; <a href={feed}>{copy::home::FEED}</a> })}
-                        <A href={href}>{copy::home::ALL_SHORT}</A>
+                        {feed.map(|feed| html! { in bump; <a href={feed}>"RSS"</a> })}
+                        <A href={href}>"All →"</A>
                     </p>
                 })}
             </header>
@@ -272,7 +272,7 @@ fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
                             <span>{link_or_text(bump, album.album_href.as_deref(), &album.album)}</span>
                             <span class="listening-artist">{link_or_text(bump, album.artist_href.as_deref(), &album.artist)}</span>
                         </span>
-                        <span class="listening-plays">{copy::home::plays(album.plays)}</span>
+                        <span class="listening-plays">{format!("{} plays", album.plays)}</span>
                     </li>
                 }
             })}

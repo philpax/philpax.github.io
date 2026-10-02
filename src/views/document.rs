@@ -13,6 +13,11 @@ use crate::{
     },
 };
 
+/// Heads a document's contents, in the aside, the disclosure and the notes rail.
+pub const CONTENTS: &str = "Contents";
+/// Marks a draft in its meta row and listings.
+pub const DRAFT: &str = "draft";
+
 /// A post or update page: the article beside its contents, in the wide frame.
 pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
@@ -20,7 +25,7 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let aside = body.toc.clone().map(|toc| {
         html! { in bump;
             <aside>
-                <h2 class="aside-heading">{copy::doc::CONTENTS}</h2>
+                <h2 class="aside-heading">{CONTENTS}</h2>
                 {toc}
             </aside>
         }
@@ -43,7 +48,7 @@ pub fn article<'a>(
     let toc = body.toc.take().map(|toc| {
         html! { in bump;
             <details class="document-toc">
-                <summary>{copy::doc::CONTENTS}</summary>
+                <summary>{CONTENTS}</summary>
                 {toc}
             </details>
         }
@@ -165,7 +170,7 @@ fn breadcrumb<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> 
     html! { in bump;
         <nav ariaLabel="Breadcrumb" class="breadcrumb">
             <ol>
-                <li><A href={CurrentPage::Notes.url_path()}>{copy::nav::NOTES}</A></li>
+                <li><A href={CurrentPage::Notes.url_path()}>{CurrentPage::Notes.name()}</A></li>
                 #{note_folders(context, document).into_iter().map(|(name, route)| html! { in bump;
                     <li>
                         {match route {
@@ -202,11 +207,13 @@ fn meta<'a>(bump: &'a Bump, document: &Document) -> Element<'a> {
         Some(html! { in bump;
             <time datetime={when.to_rfc3339()}>{display_date(when.date_naive())}</time>
         }),
-        Some(html! { in bump; <span>{copy::doc::words(document.word_count)}</span> }),
+        Some(
+            html! { in bump; <span>{format!("{} words", crate::util::number_to_comma_separated_string(document.word_count))}</span> },
+        ),
         document
             .metadata
             .draft
-            .then(|| html! { in bump; <em>{copy::doc::DRAFT}</em> }),
+            .then(|| html! { in bump; <em>{DRAFT}</em> }),
     ];
     let tags = document.tags().cloned().unwrap_or_default();
     html! { in bump;

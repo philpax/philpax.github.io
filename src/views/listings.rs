@@ -47,7 +47,8 @@ pub fn index_row<'a>(
     }
 }
 
-/// Posts or updates grouped into index rows by year, newest first.
+/// Posts or updates grouped into index rows by year, newest first, or a line saying there
+/// are none.
 pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<'a> {
     let bump = context.bump;
     let mut years: Vec<i32> = vec![];
@@ -58,6 +59,10 @@ pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Ele
         }
     }
     html! { in bump;
+        <>
+        {documents.is_empty().then(|| html! { in bump;
+            <p class="empty-message">"nothing here yet"</p>
+        })}
         <div class="index-groups">
             #{years.into_iter().map(|year| {
                 let group = documents.iter().filter(|d| datetime(d).year() == year);
@@ -69,6 +74,7 @@ pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Ele
                 )
             })}
         </div>
+        </>
     }
 }
 
@@ -102,7 +108,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
                 <A href={url.clone()}>
                     <span>{inline_markdown(context, &doc.metadata.title, &url)}</span>
                 </A>
-                {doc.metadata.draft.then(|| html! { in bump; <em>{copy::doc::DRAFT}</em> })}
+                {doc.metadata.draft.then(|| html! { in bump; <em>{document::DRAFT}</em> })}
             </h3>
             // Only the tag list scrolls, so the date stays put.
             <div class="summary-meta">
@@ -127,7 +133,7 @@ pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Elem
                         {time(bump, doc)}
                         <span class="dated-entry">
                             <A href={doc.route_path().url_path()}>{doc.metadata.title.clone()}</A>
-                            {doc.metadata.draft.then(|| html! { in bump; <em>{copy::doc::DRAFT}</em> })}
+                            {doc.metadata.draft.then(|| html! { in bump; <em>{document::DRAFT}</em> })}
                             {(!folders.is_empty()).then(|| dated_path(bump, folders))}
                         </span>
                     </li>

@@ -75,30 +75,30 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
     // A page standing in for the index (`<NotesIndex />`) has the tree open, so narrow pages still list notes.
     let open = indexes_notes(current).then(|| paxhtml::Attribute::boolean(bump, "checked"));
     html! { in bump;
-        <nav ariaLabel={copy::notes::TITLE} class="notes-rail stack">
+        <nav ariaLabel={CurrentPage::Notes.name()} class="notes-rail stack">
             <div class="rail-heading">
-                <A href={CurrentPage::Notes.url_path()}>{copy::labels::INDEX}</A>
+                <A href={CurrentPage::Notes.url_path()}>"Index"</A>
             </div>
 
             // Narrow pages only; the tree folds behind it.
             <input r#type="checkbox" id="rail-toggle" class="rail-toggle-box sr-only" autocomplete="off" {open} />
-            <label r#for="rail-toggle" class="rail-toggle">{copy::labels::INDEX}</label>
+            <label r#for="rail-toggle" class="rail-toggle">"Index"</label>
 
             <div id="notes-tree" class="rail-tree stack">
                 // Needs script, which reveals it.
                 <label hidden>
-                    <span class="sr-only">{copy::notes::FILTER_DESCRIPTION}</span>
-                    <input r#type="search" placeholder={copy::notes::FILTER_PLACEHOLDER} class="rail-search" />
+                    <span class="sr-only">"Filter notes by title or section"</span>
+                    <input r#type="search" placeholder="title or section" class="rail-search" />
                 </label>
                 {level(bump, &tree, &current.id)}
                 // Shown when the filter matches nothing.
-                <p class="rail-empty" role="status" hidden>{copy::notes::FILTER_EMPTY}</p>
+                <p class="rail-empty" role="status" hidden>"nothing by that name"</p>
             </div>
 
             {toc.map(|toc| html! { in bump;
                 <div class="notes-rail-toc">
                     // Not a heading: the rail precedes the page's h1.
-                    <p class="aside-heading">{copy::doc::CONTENTS}</p>
+                    <p class="aside-heading">{document::CONTENTS}</p>
                     {toc}
                 </div>
             })}
