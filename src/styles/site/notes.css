@@ -201,8 +201,6 @@ label.rail-row {
     top: calc(var(--header-height) + var(--s-4));
     max-height: calc(100svh - var(--header-height) - 2rem);
     margin-bottom: 0;
-    padding-right: var(--s-4);
-    border-right: var(--rule) solid var(--line);
     overflow-y: auto;
   }
   .rail-toggle-box,
