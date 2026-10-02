@@ -1,7 +1,7 @@
 use super::*;
 use crate::views::{
     document,
-    listings::{page_head, year_groups},
+    listings::{listed, page_head, year_groups},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -11,7 +11,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         .updates
         .documents
         .iter()
-        .filter(|d| !d.metadata.draft)
+        .filter(|d| listed(d))
         .collect();
     layout(
         context,

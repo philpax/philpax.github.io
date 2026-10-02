@@ -13,6 +13,12 @@ use crate::{
     views::components::{TagList, TagListProps},
 };
 
+/// Whether a post or update appears in the indexes and on the front page: drafts only do
+/// in draft builds, where their rows say so.
+pub fn listed(doc: &Document) -> bool {
+    cfg!(feature = "draft") || !doc.metadata.draft
+}
+
 /// The heading that opens every index, tag page and plain page.
 pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a>>) -> Element<'a> {
     html! { in bump;
@@ -121,6 +127,7 @@ pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Elem
                         {time(bump, doc)}
                         <span class="dated-entry">
                             <A href={doc.route_path().url_path()}>{doc.metadata.title.clone()}</A>
+                            {doc.metadata.draft.then(|| html! { in bump; <em>{copy::doc::DRAFT}</em> })}
                             {(!folders.is_empty()).then(|| dated_path(bump, folders))}
                         </span>
                     </li>

@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     content::DocumentType,
     markdown::MarkdownConverter,
-    views::listings::{dated_list, summary_list},
+    views::listings::{dated_list, listed, summary_list},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -23,17 +23,12 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ("88x31.png", "https://eightyeightthirty.one"),
     ];
 
-    let posts = content
-        .blog
-        .documents
-        .iter()
-        .filter(|d| !d.metadata.draft)
-        .take(3);
+    let posts = content.blog.documents.iter().filter(|d| listed(d)).take(3);
     let updates: Vec<&Document> = content
         .updates
         .documents
         .iter()
-        .filter(|d| !d.metadata.draft)
+        .filter(|d| listed(d))
         .take(5)
         .collect();
     let notes = recent_notes(content, 5);
