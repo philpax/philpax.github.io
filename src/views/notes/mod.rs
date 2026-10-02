@@ -16,11 +16,7 @@ use crate::{
 pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let is_index = note.id.is_empty();
-    let title = if is_index {
-        copy::notes::TITLE.to_string()
-    } else {
-        note.display_path.last().unwrap().to_string()
-    };
+    let title = note.metadata.title.clone();
 
     let description = if note.rest_of_content.is_none() {
         panic!(

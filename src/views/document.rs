@@ -93,11 +93,7 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = document.route_path().url_path();
     let is_note = document.document_type == DocumentType::Note;
-    // The notes section's own page is titled after the section.
-    let title = match is_note && document.id.is_empty() {
-        true => copy::notes::TITLE,
-        false => &document.metadata.title,
-    };
+    let title = &document.metadata.title;
     let short = document
         .metadata
         .short

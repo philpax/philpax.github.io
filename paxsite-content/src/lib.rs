@@ -65,6 +65,10 @@ pub const MD_EXTENSION: &str = "md";
 pub const MORE_SEPARATOR: &str = "<!-- more -->";
 
 const HOME_NAME: &str = "Home";
+/// The notes section's own page (`notes/index.md`) is titled after the section.
+const NOTES_ROOT_TITLE: &str = "Notes";
+/// The root note's preview, which has no id to name it after.
+const NOTES_ROOT_OG_IMAGE: &str = "index";
 const REDIRECT_PREFIX: &str = "#REDIRECT=";
 const ABOUT_FILENAME: &str = "about.md";
 const CREDITS_FILENAME: &str = "credits.md";
@@ -273,7 +277,10 @@ impl Document {
         } else {
             let file_dates = get_file_dates(path, fast)?;
             let metadata = DocumentMetadata {
-                title: display_path.last().cloned().unwrap(),
+                title: match id.is_empty() {
+                    true => NOTES_ROOT_TITLE.to_string(),
+                    false => display_path.last().cloned().unwrap(),
+                },
                 short: None,
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
@@ -350,7 +357,11 @@ impl Document {
 
     pub fn og_image_path(&self) -> String {
         let type_dir = self.document_type.dir_name();
-        let filename = format!("{}.png", self.id.join("-"));
+        let name = match self.id.is_empty() {
+            true => NOTES_ROOT_OG_IMAGE.to_string(),
+            false => self.id.join("-"),
+        };
+        let filename = format!("{name}.png");
         format!("/og-images/{type_dir}/{filename}")
     }
 
