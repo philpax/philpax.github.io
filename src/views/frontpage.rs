@@ -3,21 +3,15 @@ use paxhtml::bumpalo::Bump;
 use super::*;
 
 use crate::{
+    content::DocumentType,
     markdown::MarkdownConverter,
-    views::{
-        components::{
-            Link, LinkProps, Segment, SegmentLabel, SegmentLabelProps, SegmentProps, SegmentTag,
-        },
-        posts,
-    },
+    views::listings::{dated_list, listed, summary_list},
 };
-
-/// Vertical/horizontal gap between the segments on the home page.
-const SEGMENT_GAP: &str = "gap-3";
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
+    // Elsewhere buttons: `(image in static/88x31, site)`.
     let list_88x31 = [
         ("philpax.png", "https://philpax.me"),
         ("ackwell.png", "https://ackwell.au"),
@@ -29,95 +23,309 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ("88x31.png", "https://eightyeightthirty.one"),
     ];
 
-    fn header_with_all<'a>(
-        bump: &'a Bump,
-        name: &str,
-        all: Route,
-        rss: Route,
-    ) -> paxhtml::Element<'a> {
-        html! { in bump;
-            <span class="flex flex-row gap-2 segment-label">
-                <SegmentLabel label={name} />
-                <Link underline target={all.url_path()}>"› all"</Link>
-                <Link underline target={rss.url_path()}>"› rss"</Link>
-            </span>
-        }
-    }
+    let posts = content.blog.documents.iter().filter(|d| listed(d)).take(3);
+    let updates: Vec<&Document> = content
+        .updates
+        .documents
+        .iter()
+        .filter(|d| listed(d))
+        .take(5)
+        .collect();
+    let notes = recent_notes(content, 5);
+    let listening = most_listened(content, paxsite_music::MOST_LISTENED);
 
     layout(
         context,
         SocialMeta {
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Index.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("index"),
+        ),
         CurrentPage::Home,
         html! { in bump;
-            <div class={format!("flex flex-col {SEGMENT_GAP}")} id="home-page-columns">
-                // about — serif prose
-                <Segment tag={SegmentTag::Article} label={"about".to_string()} body_class={"post-body".to_string()}>
-                    {MarkdownConverter::new(context, Route::Index.url_path()).convert_sectioned(&content.about.description)}
-                </Segment>
+            <div class="frame-narrow home-page stack">
+                <section ariaLabel={copy::labels::INTRODUCTION}>
+                    <h1>{copy::TAGLINE}</h1>
+                    <div class="prose">
+                        {MarkdownConverter::new(context, Route::Index.url_path()).convert_blocks(&crate::markdown::document_root(&content.about))}
+                    </div>
+                </section>
 
-                <div class={format!("grid grid-cols-1 md:grid-cols-2 {SEGMENT_GAP}")}>
-                    // posts — serif title links + mono daterows
-                    <Segment header={header_with_all(bump, "posts", Route::Blog, Route::BlogRss)} body_class={"flex flex-col gap-5".to_string()}>
-                        #{
-                            content
-                                .blog
-                                .documents
-                                .iter()
-                                .filter(|d| !d.metadata.draft)
-                                .take(5)
-                                .map(|doc| posts::post(context, doc, posts::PostBody::Short))
-                        }
-                    </Segment>
+                {section(bump, Section {
+                    title: copy::home::RECENT_WRITING,
+                    href: Some(Route::Blog.url_path()),
+                    feed: Some(Route::BlogRss.url_path()),
+                    section: Some("blog"),
+                    tone: None,
+                }, summary_list(context, posts, "5"))}
 
-                    // updates — dense changelog
-                    <Segment header={header_with_all(bump, "updates", Route::Updates, Route::UpdatesRss)} body_class={"flex flex-col gap-5".to_string()}>
-                        <ul class="list-none m-0 p-0 flex flex-col gap-2 text-sm">
-                        #{
-                            content
-                                .updates
-                                .documents
-                                .iter()
-                                .filter(|d| !d.metadata.draft)
-                                .take(10)
-                                .map(|doc| update_doc_item(bump, doc))
-                        }
-                        </ul>
-                    </Segment>
-                </div>
+                {section(bump, Section {
+                    title: copy::updates::TITLE,
+                    href: Some(Route::Updates.url_path()),
+                    feed: Some(Route::UpdatesRss.url_path()),
+                    section: Some("updates"),
+                    tone: None,
+                }, dated_list(context, &updates))}
 
-                // links — 88x31 button wall
-                <Segment label={"links".to_string()} body_class={"flex flex-wrap items-center gap-1 [image-rendering:pixelated] justify-center md:justify-start".to_string()}>
-                #{
-                    list_88x31.iter().map(|(img, url)| html! { in bump;
-                        <a href={url} class="block border border-wire">
-                            <img src={format!("/88x31/{img}")} alt={img} class="block" />
-                        </a>
-                    })
-                }
-                </Segment>
+                {section(bump, Section {
+                    title: copy::nav::NOTES,
+                    href: Some(CurrentPage::Notes.url_path()),
+                    feed: None,
+                    section: Some("notes"),
+                    tone: None,
+                }, dated_list(context, &notes))}
+
+                {(!listening.albums.is_empty()).then(|| section(bump, Section {
+                    title: listening.title,
+                    href: listening.href.clone(),
+                    feed: None,
+                    section: None,
+                    tone: Some("listening"),
+                }, listening_list(bump, &listening.albums)))}
+
+                {section(bump, Section {
+                    title: copy::home::ELSEWHERE,
+                    href: None,
+                    feed: None,
+                    section: None,
+                    tone: Some("elsewhere"),
+                }, html! { in bump;
+                    <ul class="button-list">
+                        #{list_88x31.iter().map(|(img, url)| html! { in bump;
+                            <li>
+                                <a href={url}>
+                                    <img src={format!("/88x31/{img}")} alt={host(url)} width="88" height="31" />
+                                </a>
+                            </li>
+                        })}
+                    </ul>
+                })}
             </div>
         },
     )
 }
 
-fn update_doc_item<'bump>(bump: &'bump Bump, doc: &Document) -> paxhtml::Element<'bump> {
-    let date_str = doc
-        .metadata
-        .datetime
-        .map(|dt| dt.date_naive().to_string())
-        .unwrap_or_default();
+// --- Private implementation details ---
+
+/// Most recently touched notes, newest first.
+fn recent_notes(content: &Content, count: usize) -> Vec<&Document> {
+    let mut notes: Vec<&Document> = content
+        .notes
+        .documents
+        .all_documents()
+        .into_iter()
+        // The section's own page is the index, not a note.
+        .filter(|d| !d.id.is_empty())
+        .collect();
+    notes.sort_by_key(|d| std::cmp::Reverse(d.metadata.last_modified.or(d.metadata.datetime)));
+    notes.truncate(count);
+    notes
+}
+
+struct Listening {
+    title: &'static str,
+    /// The page of the whole library.
+    href: Option<String>,
+    albums: Vec<ListenedAlbum>,
+}
+
+struct ListenedAlbum {
+    artist: String,
+    album: String,
+    plays: u64,
+    /// Cover art URL, if the export saved one.
+    cover: Option<String>,
+    /// The album's and artist's locations in the library.
+    album_href: Option<String>,
+    artist_href: Option<String>,
+}
+
+/// The listening block's data: top albums from the month before the export (or lifetime
+/// if it has no recent plays), and the note holding the library.
+fn most_listened(content: &Content, count: usize) -> Listening {
+    let library = &content.music_library;
+    let recent = library.has_recent_plays();
+    let href = content
+        .notes
+        .documents
+        .all_documents()
+        .into_iter()
+        .find(|d| {
+            d.document_type == DocumentType::Note
+                && (d.description_raw.contains("<MusicLibrary")
+                    || d.rest_of_content_raw
+                        .as_deref()
+                        .is_some_and(|r| r.contains("<MusicLibrary")))
+        })
+        .map(|d| d.route_path().url_path());
+    let anchors = library.anchors();
+    let in_library = |anchor: Option<&str>| {
+        href.as_ref()
+            .zip(anchor)
+            .map(|(href, anchor)| format!("{href}#{anchor}"))
+    };
+
+    let albums = library
+        .most_listened(count)
+        .into_iter()
+        .map(|album| {
+            let index = library.albums.iter().position(|a| std::ptr::eq(a, album));
+            ListenedAlbum {
+                artist: album.artist.clone(),
+                album: album.album.clone(),
+                plays: if recent {
+                    album.recent_plays
+                } else {
+                    album.play_count()
+                },
+                cover: album
+                    .cover
+                    .as_ref()
+                    .map(|file| format!("/{}/{file}", paxsite_music::COVERS_DIR)),
+                album_href: in_library(index.map(|i| anchors.album(i))),
+                artist_href: in_library(anchors.artist(&album.artist)),
+            }
+        })
+        .collect();
+    let title = if recent {
+        copy::home::LISTENING_RECENT
+    } else {
+        copy::home::LISTENING_LIFETIME
+    };
+
+    Listening {
+        title,
+        href,
+        albums,
+    }
+}
+
+struct Section<'s> {
+    title: &'s str,
+    /// The rest of the section, if there's more than shown.
+    href: Option<String>,
+    /// The section's RSS feed, if any.
+    feed: Option<String>,
+    section: Option<&'static str>,
+    tone: Option<&'static str>,
+}
+
+/// A front page block: a heading in the section's colour, with feed and "rest of" links.
+fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element<'a> {
+    let attrs = [
+        props
+            .section
+            .map(|s| paxhtml::Attribute::new(bump, "data-section", s)),
+        props
+            .tone
+            .map(|t| paxhtml::Attribute::new(bump, "data-tone", t)),
+    ];
+    let feed = props.feed;
     html! { in bump;
-        <li>
-            <div class={format!("text-fg flex-shrink-0 {CODE_FONT_STYLE}")}>{date_str}</div>
-            <Link underline target={doc.route_path().url_path()}>
-                {doc.metadata.title.clone()}
-            </Link>
-        </li>
+        <section {attrs.into_iter().flatten()}>
+            <header>
+                <h2>{props.title}</h2>
+                {props.href.map(|href| html! { in bump;
+                    <p>
+                        {feed.map(|feed| html! { in bump; <a href={feed}>{copy::home::FEED}</a> })}
+                        <A href={href}>{copy::home::ALL_SHORT}</A>
+                    </p>
+                })}
+            </header>
+            {children}
+        </section>
+    }
+}
+
+/// Stand-in for missing cover art: the album's initials on a solid hue.
+const COVER_HUES: [&str; 5] = ["post", "update", "note", "tag", "credits"];
+
+fn listening_list<'a>(bump: &'a Bump, albums: &[ListenedAlbum]) -> Element<'a> {
+    html! { in bump;
+        <ol class="listening-list">
+            #{albums.iter().enumerate().map(|(i, album)| {
+                let cover = match &album.cover {
+                    Some(src) => html! { in bump;
+                        <img class="listening-cover" src={src.clone()} alt="" loading="lazy" />
+                    },
+                    None => html! { in bump;
+                        <span class="listening-cover" ariaHidden="true" style={format!("--cover: var(--c-{}-solid)", COVER_HUES[i % COVER_HUES.len()])}>
+                            {initials(&album.album)}
+                        </span>
+                    },
+                };
+                html! { in bump;
+                    <li>
+                        // Duplicates the title's link, so hidden from tab order and accessibility tree.
+                        {match &album.album_href {
+                            Some(href) => html! { in bump;
+                                <a href={href.clone()} class="listening-cover-link" tabindex="-1" ariaHidden="true">{cover}</a>
+                            },
+                            None => cover,
+                        }}
+                        <span class="listening-album">
+                            <span>{link_or_text(bump, album.album_href.as_deref(), &album.album)}</span>
+                            <span class="listening-artist">{link_or_text(bump, album.artist_href.as_deref(), &album.artist)}</span>
+                        </span>
+                        <span class="listening-plays">{copy::home::plays(album.plays)}</span>
+                    </li>
+                }
+            })}
+        </ol>
+    }
+}
+
+fn link_or_text<'a>(bump: &'a Bump, href: Option<&str>, text: &str) -> Element<'a> {
+    match href {
+        Some(href) => html! { in bump; <A href={href.to_string()}>{text.to_string()}</A> },
+        None => html! { in bump; {text.to_string()} },
+    }
+}
+
+/// The first letters of a title's first two words, or its first two letters if one word.
+fn initials(title: &str) -> String {
+    let words: Vec<&str> = title
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|w| !w.is_empty())
+        .collect();
+    let mark: String = match words.as_slice() {
+        [] => title.to_string(),
+        [word] => word.chars().take(2).collect(),
+        [first, second, ..] => first
+            .chars()
+            .take(1)
+            .chain(second.chars().take(1))
+            .collect(),
+    };
+    mark.to_uppercase()
+}
+
+/// A site's host name, used as its button's alt text.
+fn host(url: &str) -> &str {
+    let rest = url.split_once("://").map_or(url, |(_, rest)| rest);
+    rest.split('/').next().unwrap_or(rest)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn initials_of_titles() {
+        assert_eq!(initials("The Fragile"), "TF");
+        assert_eq!(initials("LOTTERY"), "LO");
+        assert_eq!(initials("Balance 020: Deetron"), "B0");
+        assert_eq!(initials("Umineko no Naku Koro Ni"), "UN");
+    }
+
+    #[test]
+    fn hosts_of_urls() {
+        assert_eq!(host("https://l4.pm"), "l4.pm");
+        assert_eq!(host("https://goatcorp.github.io/x"), "goatcorp.github.io");
     }
 }

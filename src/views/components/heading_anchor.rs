@@ -1,25 +1,38 @@
-use paxhtml::{DefaultIn, bumpalo::Bump};
+use paxhtml::{DefaultIn, bumpalo::Bump, html};
 
-use super::{Link, LinkProps};
-
-pub struct HeadingAnchorProps {
-    pub target: String,
+pub struct HeadingAnchorProps<'bump> {
+    /// The heading's id.
+    pub id: String,
+    /// Whether the heading holds a link of its own, which can't sit inside another.
+    pub contains_link: bool,
+    pub children: Option<paxhtml::Element<'bump>>,
 }
-impl DefaultIn<'_> for HeadingAnchorProps {
+impl DefaultIn<'_> for HeadingAnchorProps<'_> {
     fn default_in(_bump: &Bump) -> Self {
         Self {
-            target: String::new(),
+            id: String::new(),
+            contains_link: false,
+            children: None,
         }
     }
 }
 
-/// An anchor link used before headings and in TOC entries.
+/// A heading's contents, linking to the heading. One holding a link gets a hanging
+/// `#` anchor instead.
 #[allow(non_snake_case)]
 pub fn HeadingAnchor<'bump>(
     bump: &'bump Bump,
-    props: HeadingAnchorProps,
+    props: HeadingAnchorProps<'bump>,
 ) -> paxhtml::Element<'bump> {
-    paxhtml::html! { in bump;
-        <Link target={props.target} underline additionalClasses={"mr-1".to_string()}>"#"</Link>
+    let href = format!("#{}", props.id);
+    if props.contains_link {
+        html! { in bump;
+            <>
+                <a class="heading-anchor" href={href}>"# "</a>
+                {props.children}
+            </>
+        }
+    } else {
+        html! { in bump; <a href={href}>{props.children}</a> }
     }
 }

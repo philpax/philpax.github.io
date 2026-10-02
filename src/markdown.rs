@@ -3,15 +3,16 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use paxhtml::builder::Builder;
+use paxhtml::{builder::Builder, html};
 
 use crate::{
-    content::{Content, Document, DocumentId},
-    elements as e,
+    content::{Content, Document},
     views::{
         ViewContext,
         components::{
-            self, Footnote, FootnoteProps, Link, LinkProps, PrEntry, pr_id_from_url, tl_id_from_url,
+            self, CodeBlock, CodeBlockProps, Footnote, FootnoteProps, HeadingAnchor,
+            HeadingAnchorProps, InlineCode, InlineCodeProps, PrEntry, destination_class,
+            pr_id_from_url, tl_id_from_url,
         },
     },
 };
@@ -25,9 +26,7 @@ pub struct MarkdownConverter<'a> {
     pub strip_links: bool,
     pub footnote_counter: HashMap<String, usize>,
     pub next_footnote_number: usize,
-    pub sidenotes_enabled: bool,
     pub error_context: String,
-    pub current_note_id: Option<DocumentId>,
     pub source_path: Option<PathBuf>,
     pub document_base_url: Option<String>,
     pub website_base_url: Option<String>,
@@ -42,9 +41,7 @@ impl<'a> MarkdownConverter<'a> {
             strip_links: false,
             footnote_counter: HashMap::new(),
             next_footnote_number: 1,
-            sidenotes_enabled: false,
             error_context: error_context.into(),
-            current_note_id: None,
             source_path: None,
             document_base_url: None,
             website_base_url: None,
@@ -90,13 +87,6 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// Enable sidenotes for footnotes on wide screens (2xl+).
-    /// Only use this for full article pages (blog, updates, notes).
-    pub fn with_sidenotes(mut self) -> Self {
-        self.sidenotes_enabled = true;
-        self
-    }
-
     /// Strip links, rendering only their text content.
     /// Useful for TOC generation where nested links are invalid.
     pub fn strip_links(mut self) -> Self {
@@ -104,16 +94,293 @@ impl<'a> MarkdownConverter<'a> {
         self
     }
 
-    /// Set the current note ID for `<NotesIndex />` component support.
-    pub fn with_note_id(mut self, id: DocumentId) -> Self {
-        self.current_note_id = Some(id);
-        self
+    /// Render a document body in sections: each heading and what follows it, up to
+    /// the next heading at its level or above, is a `<section>`, so the markup nests as
+    /// the outline does. The caller puts it in a `.prose` element; block components
+    /// (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit
+    /// in it where they're written, and are kept from prose styles by their `.embed`
+    /// class. `<NotesIndex />` renders nothing.
+    pub fn convert_blocks(&mut self, root: &Node) -> paxhtml::Element<'a> {
+        let b = Builder::new(self.context.bump);
+
+        // Footnotes are collected once, over the whole document.
+        self.gather_footnote_definitions(root);
+        self.validate_footnote_references(root);
+
+        let nodes = root.children().map(Vec::as_slice).unwrap_or_default();
+        b.fragment(self.sections(nodes, root, false))
     }
 
-    /// Rewrite a URL so it resolves correctly when rendered outside the document's own
-    /// page. Relative paths are rooted at `document_base_url`; if `website_base_url` is
-    /// also set, site-absolute paths (`/foo`) are made fully absolute too. External,
-    /// fragment, protocol-relative, `mailto:`, and `tel:` URLs are left alone.
+    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+        let b = Builder::new(bump);
+
+        // Only gather footnotes at the root level (when there's no parent)
+        if parent_node.is_none() {
+            self.gather_footnote_definitions(node);
+            self.validate_footnote_references(node);
+        }
+
+        match node {
+            Node::Root(r) => self.convert_many(&r.children, Some(node)),
+
+            Node::Heading(h) => {
+                let children = self.convert_many(&h.children, Some(node));
+                if self.without_blocking_elements {
+                    return children;
+                }
+                let id = heading_id(node);
+                let contains_link = contains_link(&h.children);
+                // The tag depends on the depth, so it's built here.
+                b.tag(
+                    &format!("h{}", (h.depth + 1).min(6)),
+                    [b.attr(("id", id.clone()))],
+                    false,
+                )(html! { in bump;
+                    <HeadingAnchor id={id} contains_link={contains_link}>{children}</HeadingAnchor>
+                })
+            }
+            Node::Text(t) => b.text(&t.value),
+            Node::Paragraph(p) => {
+                let children = self.convert_many(&p.children, Some(node));
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b.p([])(children)
+                }
+            }
+            Node::Strong(s) => b.strong([])(self.convert_many(&s.children, Some(node))),
+            Node::Emphasis(em) => b.em([])(self.convert_many(&em.children, Some(node))),
+            Node::Delete(d) => b.s([])(self.convert_many(&d.children, Some(node))),
+            Node::List(l) => {
+                let children = self.convert_many(&l.children, Some(node));
+                if l.ordered {
+                    let start = l
+                        .start
+                        .filter(|start| *start != 1)
+                        .map(|start| b.attr(("start", start.to_string())));
+                    b.ol(start)(children)
+                } else {
+                    b.ul([])(children)
+                }
+            }
+            Node::ListItem(li) => {
+                // A single-paragraph item is rendered tight: contents go straight into the item.
+                let has_one_paragraph = li
+                    .children
+                    .iter()
+                    .filter(|c| matches!(c, Node::Paragraph(_)))
+                    .count()
+                    == 1;
+
+                if has_one_paragraph {
+                    let mut children = Vec::new();
+                    for child in &li.children {
+                        if let Node::Paragraph(p) = child {
+                            children.extend(p.children.iter().map(|n| self.convert(n, Some(node))));
+                        } else {
+                            children.push(self.convert(child, Some(node)));
+                        }
+                    }
+                    b.li([])(b.fragment(children))
+                } else {
+                    b.li([])(self.convert_many(&li.children, Some(node)))
+                }
+            }
+            // Language defaults to `text`.
+            Node::Code(c) => {
+                let language = c.lang.as_deref().map(str::trim).filter(|l| !l.is_empty());
+                let highlighted = self.highlight(language, &c.value, "code block");
+                html! { in bump;
+                    <CodeBlock language={self.context.syntax.language_name(language)}>
+                        {highlighted}
+                    </CodeBlock>
+                }
+            }
+            Node::Blockquote(bq) => {
+                let children = self.convert_many(&bq.children, Some(node));
+                if self.without_blocking_elements {
+                    b.q([])(children)
+                } else {
+                    b.blockquote([])(children)
+                }
+            }
+            Node::Break(_) => b.br([]),
+            Node::InlineCode(c) => {
+                let (language, code) = self.context.syntax.parse_inline_code(&c.value);
+                let highlighted = self.highlight(language, code, "inline code");
+                html! { in bump; <InlineCode>{highlighted}</InlineCode> }
+            }
+            Node::Image(i) => {
+                if i.url.is_empty() {
+                    eprintln!(
+                        "warning: empty image source in {}: ![{}]()",
+                        self.error_context, i.alt
+                    );
+                }
+                // Image syntax is also used for video clips, which an <img> can't show.
+                let lowercase = i.url.to_lowercase();
+                let is_video = [".mp4", ".webm", ".mov", ".avi", ".mkv", ".ogv"]
+                    .iter()
+                    .any(|extension| lowercase.ends_with(extension));
+
+                if is_video {
+                    b.video([
+                        b.attr(("src", self.resolve_relative_url(&i.url))),
+                        b.attr("controls"),
+                        b.attr("loop"),
+                        b.attr("muted"),
+                        b.attr("playsinline"),
+                        b.attr(("preload", "metadata")),
+                    ])(paxhtml::Element::Empty)
+                } else {
+                    // Local images show their preview, linking to the original.
+                    let is_local = !i.url.starts_with("http://")
+                        && !i.url.starts_with("https://")
+                        && !i.url.starts_with("//");
+                    let src_url = if is_local {
+                        self.context.image_store.resolve_preview_url(&i.url)
+                    } else {
+                        i.url.clone()
+                    };
+                    let title = i.title.as_ref().map(|t| b.attr(("title", t.as_str())));
+                    b.a([b.attr(("href", self.resolve_relative_url(&i.url)))])(
+                        b.img(
+                            [
+                                b.attr(("src", self.resolve_relative_url(&src_url))),
+                                b.attr(("alt", i.alt.as_str())),
+                                b.attr(("loading", "lazy")),
+                            ]
+                            .into_iter()
+                            .chain(title),
+                        ),
+                    )
+                }
+            }
+            // Internal links get their target section's class; same-page links get `link-here`.
+            Node::Link(l) => {
+                if l.url.is_empty() {
+                    eprintln!(
+                        "warning: empty link target in {}: [{}]()",
+                        self.error_context,
+                        inner_text(node, None).trim()
+                    );
+                }
+                let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
+                let children = self.convert_many(&l.children, Some(node));
+                if self.strip_links {
+                    return children;
+                }
+                let class = if url.starts_with('#') {
+                    Some("link-here")
+                } else {
+                    destination_class(&url)
+                };
+                let attrs = [
+                    class.map(|class| b.attr(("class", class))),
+                    l.title
+                        .as_ref()
+                        .map(|title| b.attr(("title", title.as_str()))),
+                ];
+                b.a(std::iter::once(b.attr(("href", url.as_str())))
+                    .chain(attrs.into_iter().flatten()))(children)
+            }
+            Node::Html(h) => self.convert_html(&h.value),
+            Node::FootnoteReference(r) => self.convert_footnote_reference(&r.identifier),
+
+            Node::Table(t) => {
+                if self.without_blocking_elements {
+                    return self.convert_many(&t.children, Some(node));
+                }
+                // The header row sets the column count; shorter rows are padded (as in GFM).
+                let mut rows = t.children.iter();
+                let columns = t
+                    .children
+                    .first()
+                    .and_then(Node::children)
+                    .map_or(0, Vec::len);
+                let head = rows
+                    .next()
+                    .map(|row| b.thead([])(b.tr([])(self.convert_cells(row, "th", columns))));
+                let body: Vec<_> = rows
+                    .map(|row| b.tr([])(self.convert_cells(row, "td", columns)))
+                    .collect();
+                b.table([])(b.fragment([head.unwrap_or_default(), b.tbody([])(b.fragment(body))]))
+            }
+            Node::TableRow(t) => {
+                if self.without_blocking_elements {
+                    self.convert_many(&t.children, Some(node))
+                } else {
+                    let columns = t.children.len();
+                    b.tr([])(self.convert_cells(node, "td", columns))
+                }
+            }
+            Node::TableCell(t) => {
+                let children = self.convert_many(&t.children, Some(node));
+                if self.without_blocking_elements {
+                    children
+                } else {
+                    b.td([])(children)
+                }
+            }
+            Node::ThematicBreak(_) => {
+                if self.without_blocking_elements {
+                    paxhtml::Element::Empty
+                } else {
+                    b.hr([])
+                }
+            }
+
+            // Handled elsewhere
+            Node::FootnoteDefinition(_) => paxhtml::Element::Empty,
+
+            // Not supported yet
+            Node::InlineMath(_)
+            | Node::ImageReference(_)
+            | Node::LinkReference(_)
+            | Node::Math(_)
+            | Node::Definition(_) => paxhtml::Element::Empty,
+
+            // Never supported
+            Node::Toml(_)
+            | Node::Yaml(_)
+            | Node::MdxJsxFlowElement(_)
+            | Node::MdxjsEsm(_)
+            | Node::MdxTextExpression(_)
+            | Node::MdxJsxTextElement(_)
+            | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
+        }
+    }
+
+    /// `nodes`, with each of its sections in a `<section>`. With `opens_section`, the
+    /// first node is the enclosing section's own heading.
+    fn sections(
+        &mut self,
+        nodes: &[Node],
+        root: &Node,
+        opens_section: bool,
+    ) -> Vec<paxhtml::Element<'a>> {
+        let bump = self.context.bump;
+        let headings = top_level_headings(nodes);
+        let mut rest = &headings[usize::from(opens_section).min(headings.len())..];
+
+        let intro_end = rest.first().map_or(nodes.len(), |&(index, _)| index);
+        let mut children = vec![self.convert_many(&nodes[..intro_end], Some(root))];
+        while let Some((&(start, depth), later)) = rest.split_first() {
+            // A section runs to the next heading at its level or above; deeper ones nest.
+            let next = later.iter().position(|&(_, d)| d <= depth);
+            let end = next.map_or(nodes.len(), |n| later[n].0);
+            let section = self.sections(&nodes[start..end], root, true);
+            children.push(html! { in bump; <section>#{section}</section> });
+            rest = next.map_or(&[], |n| &later[n..]);
+        }
+        children
+    }
+
+    /// Rewrites a URL to resolve outside the document's own page: relative paths are
+    /// rooted at `document_base_url`, and with `website_base_url` set, site-absolute
+    /// paths are made fully absolute. External, fragment, protocol-relative, `mailto:`
+    /// and `tel:` URLs are left alone.
     fn resolve_relative_url(&self, url: &str) -> String {
         if url.is_empty()
             || url.starts_with('#')
@@ -137,10 +404,8 @@ impl<'a> MarkdownConverter<'a> {
         format!("{base}{stripped}")
     }
 
-    /// If the URL points to a `.md` file and we have a source path, resolve it to
-    /// the corresponding output route URL. Links are validated up-front in the
-    /// content phase (see [`validate_document_links`]); if resolution somehow
-    /// fails here we fall back to the raw URL rather than aborting a render.
+    /// Resolves a `.md` URL to its output route. Links are validated up front (see
+    /// [`validate_document_links`]), so on failure this falls back to the raw URL.
     fn resolve_link_url(&self, url: &str) -> String {
         let is_md_link = url.ends_with(".md") || url.contains(".md#");
         let is_absolute_url = url.contains("://");
@@ -156,428 +421,139 @@ impl<'a> MarkdownConverter<'a> {
             .unwrap_or_else(|| url.to_string())
     }
 
-    pub fn convert(&mut self, node: &Node, parent_node: Option<&Node>) -> paxhtml::Element<'a> {
-        let bump = self.context.bump;
-        let b = Builder::new(bump);
-
-        // Only gather footnotes at the root level (when there's no parent)
-        if parent_node.is_none() {
-            self.gather_footnote_definitions(node);
-            self.validate_footnote_references(node);
-        }
-
-        match node {
-            Node::Root(r) => self.convert_many(&r.children, Some(node)),
-
-            Node::Heading(h) => {
-                let children = self.convert_many(&h.children, Some(node));
-                if self.without_blocking_elements {
-                    children
-                } else {
-                    let resolved_depth = (h.depth + 2).min(6);
-                    let class = match resolved_depth {
-                        3 => "text-xl font-bold",
-                        4 => "text-lg font-bold",
-                        5 => "text-base font-bold",
-                        6 => "text-sm font-bold",
-                        value => panic!("Heading depth {value} is not supported"),
-                    };
-                    let contains_links = contains_link(&h.children);
-
-                    e::h_with_id(bump, resolved_depth, class, true, contains_links, children)
-                }
-            }
-            Node::Text(t) => b.text(&t.value),
-            Node::Paragraph(p) => {
-                let children = self.convert_many(&p.children, Some(node));
-                if self.without_blocking_elements {
-                    children
-                } else {
-                    b.p([])(children)
-                }
-            }
-            Node::Strong(s) => b.strong([])(self.convert_many(&s.children, Some(node))),
-            Node::Emphasis(em) => b.em([])(self.convert_many(&em.children, Some(node))),
-            Node::Delete(d) => b.s([])(self.convert_many(&d.children, Some(node))),
-            Node::List(l) => {
-                let children = self.convert_many(&l.children, Some(node));
-                if l.ordered {
-                    e::ol(bump, children)
-                } else {
-                    e::ul(bump, children)
-                }
-            }
-            Node::ListItem(li) => {
-                // hack: if we only have one paragraph as a child, drop the paragraph and use the
-                // inner context instead. previously, this hack only applied to
-                //      li(children:[paragraph(children:[content])])
-                // to
-                //      li(children:[content])
-                // but I realised that this is a more general problem:
-                //      li(children:[paragraph(children:[content]), ul(children:[...])])
-                // should be
-                //      li(children:[content, ul(children:[...])])
-                let has_one_paragraph = li
-                    .children
-                    .iter()
-                    .filter(|c| matches!(c, Node::Paragraph(_)))
-                    .count()
-                    == 1;
-
-                if has_one_paragraph {
-                    let mut children = Vec::new();
-                    for child in &li.children {
-                        if let Node::Paragraph(p) = child {
-                            children.extend(p.children.iter().map(|n| self.convert(n, Some(node))));
-                        } else {
-                            children.push(self.convert(child, Some(node)));
-                        }
-                    }
-                    e::li(bump, b.fragment(children))
-                } else {
-                    e::li(bump, self.convert_many(&li.children, Some(node)))
-                }
-            }
-            Node::Code(c) => components::code(
-                bump,
-                self.context.syntax,
-                c.lang.as_deref(),
-                &c.value,
-                &self.error_context,
-            )
-            .expect("failed to highlight code block"),
-            Node::Blockquote(bq) => {
-                let children = self.convert_many(&bq.children, Some(node));
-                if self.without_blocking_elements {
-                    b.q([])(children)
-                } else {
-                    b.blockquote([b.attr(("class", "border-l-4 border-dim pl-3 italic"))])(children)
-                }
-            }
-            Node::Break(_) => b.br([]),
-            Node::InlineCode(c) => {
-                let (lang, code) = self.context.syntax.parse_inline_code(&c.value);
-                components::inline_code(
-                    bump,
-                    self.context.syntax,
-                    !matches!(parent_node, Some(Node::Heading(_))),
-                    lang,
-                    code,
-                    &self.error_context,
-                )
-                .expect("failed to highlight inline code")
-            }
-            Node::Image(i) => {
-                if i.url.is_empty() {
-                    eprintln!(
-                        "warning: empty image source in {}: ![{}]()",
-                        self.error_context, i.alt
-                    );
-                }
-                // Check if the URL ends with a video extension
-                let is_video = i.url.to_lowercase().ends_with(".mp4")
-                    || i.url.to_lowercase().ends_with(".webm")
-                    || i.url.to_lowercase().ends_with(".mov")
-                    || i.url.to_lowercase().ends_with(".avi")
-                    || i.url.to_lowercase().ends_with(".mkv")
-                    || i.url.to_lowercase().ends_with(".ogv");
-
-                if is_video {
-                    b.video([
-                        b.attr(("src", self.resolve_relative_url(&i.url))),
-                        b.attr(("controls", "true")),
-                        b.attr(("loop", "true")),
-                        b.attr((
-                            "class",
-                            "border-2 border-fg max-w-(--centered-content-width) mx-auto block",
-                        )),
-                    ])(paxhtml::Element::Empty)
-                } else {
-                    let is_local = !i.url.starts_with("http://")
-                        && !i.url.starts_with("https://")
-                        && !i.url.starts_with("//");
-                    let src_url = if is_local {
-                        self.context.image_store.resolve_preview_url(&i.url)
-                    } else {
-                        i.url.clone()
-                    };
-                    b.a([b.attr(("href", self.resolve_relative_url(&i.url)))])(b.img([
-                        b.attr(("src", self.resolve_relative_url(&src_url))),
-                        b.attr(("alt", i.alt.clone())),
-                        b.attr((
-                            "class",
-                            "border-2 border-fg max-w-(--centered-content-width) mx-auto block",
-                        )),
-                    ]))
-                }
-            }
-            Node::Link(l) => {
-                if l.url.is_empty() {
-                    eprintln!(
-                        "warning: empty link target in {}: [{}]()",
-                        self.error_context,
-                        inner_text(node, None).trim()
-                    );
-                }
-                let url = self.resolve_relative_url(&self.resolve_link_url(&l.url));
-                let children = self.convert_many(&l.children, Some(node));
-                if self.strip_links {
-                    children
-                } else {
-                    paxhtml::html! { in bump;
-                        <Link underline target={url}>
-                            {children}
-                        </Link>
-                    }
-                }
-            }
-            Node::Html(h) => {
-                // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
-                // in the middle of the string and actual content follows, but it's good enough for now.
-                if h.value.starts_with("<!--") && h.value.ends_with("-->") {
-                    return paxhtml::Element::Empty;
-                }
-
-                // Guard stray closing tags for custom elements (e.g. </CityPoster>)
-                // These are handled by try_convert_paired_element in convert_many
-                if h.value.trim().starts_with("</")
-                    && h.value
-                        .trim()
-                        .chars()
-                        .nth(2)
-                        .is_some_and(|c| c.is_ascii_uppercase())
-                {
-                    return paxhtml::Element::Empty;
-                }
-
-                let element = paxhtml::parse_html(bump, &h.value).expect("failed to parse HTML"); // todo: make this a fallible result
-                if element.tag() == Some("MusicLibrary") {
-                    return components::music_library(self.context);
-                }
-                if element.tag() == Some("NotesIndex")
-                    && let Some(note_id) = &self.current_note_id
-                {
-                    return components::notes_index(self.context, note_id);
-                }
-                if element.tag() == Some("MonthDayDate") {
-                    let date = element
-                        .attr("date")
-                        .and_then(|a| a.value_as_str())
-                        .expect("MonthDayDate requires 'date' attribute")
-                        .to_string();
-                    let noyear = element.attr("noyear").is_some();
-                    return components::MonthDayDate(
-                        bump,
-                        components::MonthDayDateProps {
-                            date,
-                            noyear,
-                            short: false,
-                        },
-                    );
-                }
-                if element.tag() == Some("BlueskyPost") {
-                    let url = element
-                        .attr("post")
-                        .and_then(|a| a.value_as_str())
-                        .unwrap_or_else(|| {
-                            panic!(
-                                "BlueskyPost requires 'post' attribute in {}",
-                                self.error_context
-                            )
-                        });
-                    let post_data =
-                        self.context
-                            .content
-                            .bluesky_posts
-                            .get(url)
-                            .unwrap_or_else(|| {
-                                panic!(
-                                    "BlueskyPost data not found for {url} in {}",
-                                    self.error_context
-                                )
-                            });
-                    return components::bluesky_post(bump, post_data);
-                }
-                if element.tag() == Some("PrMeta") {
-                    return render_pr_meta(bump, &element, None);
-                }
-                if element.tag() == Some("PrTimeline") {
-                    return components::pr_timeline(bump, &self.pr_entries);
-                }
-                if element.tag() == Some("MonthDayDateRange") {
-                    let start = element
-                        .attr("start")
-                        .and_then(|a| a.value_as_str())
-                        .expect("MonthDayDateRange requires 'start' attribute")
-                        .to_string();
-                    let end = element
-                        .attr("end")
-                        .and_then(|a| a.value_as_str())
-                        .expect("MonthDayDateRange requires 'end' attribute")
-                        .to_string();
-                    let noyear = element.attr("noyear").is_some();
-                    return components::MonthDayDateRange(
-                        bump,
-                        components::MonthDayDateRangeProps {
-                            start,
-                            end,
-                            noyear,
-                            short: false,
-                        },
-                    );
-                }
-
-                element
-            }
-            Node::FootnoteReference(r) => {
-                let definition = self.footnote_definition(&r.identifier).clone();
-
-                // Assign a numeric counter to this footnote reference
-                let footnote_number = self
-                    .footnote_counter
-                    .entry(r.identifier.clone())
-                    .or_insert_with(|| {
-                        let number = self.next_footnote_number;
-                        self.next_footnote_number += 1;
-                        number
-                    });
-
-                let children = vec![
-                    MarkdownConverter::new(self.context, &self.error_context)
-                        .without_blocking_elements()
-                        .convert_many(&definition, None),
-                ];
-
-                let sidenotes_enabled = self.sidenotes_enabled;
-                paxhtml::html! { in bump;
-                    <Footnote identifier={footnote_number.to_string()} sidenotes_enabled={sidenotes_enabled}>
-                        #{children}
-                    </Footnote>
-                }
-            }
-
-            // Table — wrapped in a horizontally-scrollable container so wide
-            // tables scroll on narrow screens while the table itself stays a real
-            // (display:table) table that fills the width.
-            Node::Table(t) => {
-                let children = self.convert_many(&t.children, Some(node));
-                if self.without_blocking_elements {
-                    children
-                } else {
-                    b.div([b.attr(("class", "overflow-x-auto"))])(b.table([b.attr((
-                        "class",
-                        "w-full border-collapse border border-dim rounded-lg overflow-hidden",
-                    ))])(children))
-                }
-            }
-            Node::TableRow(t) => {
-                let children = self.convert_many(&t.children, Some(node));
-                if self.without_blocking_elements {
-                    children
-                } else {
-                    b.tr([b.attr(("class", "border-b border-dim"))])(children)
-                }
-            }
-            Node::TableCell(t) => {
-                let children = self.convert_many(&t.children, Some(node));
-                if self.without_blocking_elements {
-                    children
-                } else {
-                    b.td([b.attr((
-                        "class",
-                        "px-4 py-3 text-sm text-fg border-r border-dim last:border-r-0",
-                    ))])(children)
-                }
-            }
-
-            // Handled elsewhere
-            Node::FootnoteDefinition(_) => paxhtml::Element::Empty,
-
-            // Not supported yet
-            Node::InlineMath(_)
-            | Node::ImageReference(_)
-            | Node::LinkReference(_)
-            | Node::Math(_)
-            | Node::ThematicBreak(_)
-            | Node::Definition(_) => paxhtml::Element::Empty,
-
-            // Never supported
-            Node::Toml(_)
-            | Node::Yaml(_)
-            | Node::MdxJsxFlowElement(_)
-            | Node::MdxjsEsm(_)
-            | Node::MdxTextExpression(_)
-            | Node::MdxJsxTextElement(_)
-            | Node::MdxFlowExpression(_) => paxhtml::Element::Empty,
-        }
+    /// Highlights code; panics if the highlighter fails.
+    fn highlight(&self, language: Option<&str>, code: &str, what: &str) -> paxhtml::Element<'a> {
+        self.context
+            .syntax
+            .highlight_code(self.context.bump, language, code)
+            .unwrap_or_else(|e| {
+                panic!("failed to highlight {what} ({}): {e:?}", self.error_context)
+            })
     }
 
-    /// Convert a markdown root into HTML grouped into nested `<section>`s by
-    /// heading depth (a rough HTML5 outline). Spacing is handled by the cascade
-    /// on `.post-prose` (block flow, not flex — floated sidenotes need it).
-    pub fn convert_sectioned(&mut self, node: &Node) -> paxhtml::Element<'a> {
-        let bump = self.context.bump;
-        let b = Builder::new(bump);
+    /// A row's cells as `cell` elements, padded with empty ones to `columns`.
+    fn convert_cells(&mut self, row: &Node, cell: &str, columns: usize) -> paxhtml::Element<'a> {
+        let b = Builder::new(self.context.bump);
+        let mut cells: Vec<_> = row
+            .children()
+            .map(Vec::as_slice)
+            .unwrap_or_default()
+            .iter()
+            .map(|c| {
+                let children =
+                    self.convert_many(c.children().map(Vec::as_slice).unwrap_or_default(), Some(c));
+                b.tag(cell, [], false)(children)
+            })
+            .collect();
+        while cells.len() < columns {
+            cells.push(b.tag(cell, [], false)(paxhtml::Element::Empty));
+        }
+        b.fragment(cells)
+    }
 
-        let Node::Root(root) = node else {
-            return self.convert(node, None);
+    /// Raw HTML: comments are dropped, components rendered, anything else passed through.
+    fn convert_html(&mut self, value: &str) -> paxhtml::Element<'a> {
+        let bump = self.context.bump;
+
+        // HACK: Strip comments from Markdown HTML. This won't work if the comment is closed
+        // in the middle of the string and actual content follows, but it's good enough for now.
+        if value.starts_with("<!--") && value.ends_with("-->") {
+            return paxhtml::Element::Empty;
+        }
+
+        // Guard stray closing tags for custom elements (e.g. </CityPoster>)
+        // These are handled by try_convert_paired_element in convert_many
+        if value.trim().starts_with("</")
+            && value
+                .trim()
+                .chars()
+                .nth(2)
+                .is_some_and(|c| c.is_ascii_uppercase())
+        {
+            return paxhtml::Element::Empty;
+        }
+
+        let element = paxhtml::parse_html(bump, value).expect("failed to parse HTML"); // todo: make this a fallible result
+        let attr = |name: &str| {
+            element
+                .attr(name)
+                .and_then(|a| a.value_as_str())
+                .map(str::to_string)
         };
-
-        // Footnote bookkeeping happens once at the root (mirrors `convert`).
-        self.gather_footnote_definitions(node);
-        self.validate_footnote_references(node);
-
-        let items = self.build_sections(&root.children, node);
-        b.div([b.attr(("class", "post-prose"))])(b.fragment(items))
+        match element.tag() {
+            Some("MusicLibrary") => components::music_library(self.context),
+            // The notes rail is the index.
+            Some("NotesIndex") => paxhtml::Element::Empty,
+            Some("MonthDayDate") => components::month_day_date(
+                bump,
+                &attr("date").expect("MonthDayDate requires 'date' attribute"),
+                element.attr("noyear").is_some(),
+            ),
+            Some("MonthDayDateRange") => components::month_day_date_range(
+                bump,
+                &attr("start").expect("MonthDayDateRange requires 'start' attribute"),
+                &attr("end").expect("MonthDayDateRange requires 'end' attribute"),
+                element.attr("noyear").is_some(),
+            ),
+            Some("BlueskyPost") => {
+                let url = attr("post").unwrap_or_else(|| {
+                    panic!(
+                        "BlueskyPost requires 'post' attribute in {}",
+                        self.error_context
+                    )
+                });
+                let post_data = self
+                    .context
+                    .content
+                    .bluesky_posts
+                    .get(&url)
+                    .unwrap_or_else(|| {
+                        panic!(
+                            "BlueskyPost data not found for {url} in {}",
+                            self.error_context
+                        )
+                    });
+                components::bluesky_post(bump, post_data)
+            }
+            Some("PrMeta") => render_pr_meta(bump, &element, None),
+            Some("PrTimeline") => components::pr_timeline(bump, &self.pr_entries),
+            _ => element,
+        }
     }
 
-    /// Group a flat list of block nodes into nested `<section>`s by heading
-    /// depth. Runs of non-heading nodes are converted together via
-    /// `convert_many`, so multi-node patterns (PR mentions, paired components)
-    /// keep working. Content before the first heading stays at the top level.
-    fn build_sections(&mut self, nodes: &[Node], parent: &Node) -> Vec<paxhtml::Element<'a>> {
-        let bump = self.context.bump;
-        let b = Builder::new(bump);
+    /// Renders the note itself beside its marker. It opens via `:target` without script,
+    /// and floats into the margin where there's room.
+    fn convert_footnote_reference(&mut self, identifier: &str) -> paxhtml::Element<'a> {
+        let definition = self.footnote_definition(identifier).clone();
 
-        let mut roots: Vec<paxhtml::Element<'a>> = vec![];
-        // (heading depth, accumulated section children) for each open section
-        let mut stack: Vec<(u8, Vec<paxhtml::Element<'a>>)> = vec![];
+        // Numbered in order of first reference.
+        let number = *self
+            .footnote_counter
+            .entry(identifier.to_string())
+            .or_insert_with(|| {
+                let number = self.next_footnote_number;
+                self.next_footnote_number += 1;
+                number
+            });
 
-        let mut i = 0;
-        while i < nodes.len() {
-            if let Node::Heading(h) = &nodes[i] {
-                // Close sibling/deeper sections before opening this one.
-                while stack.last().is_some_and(|(d, _)| *d >= h.depth) {
-                    let (_, items) = stack.pop().unwrap();
-                    let section = b.section([])(b.fragment(items));
-                    match stack.last_mut() {
-                        Some((_, parent_items)) => parent_items.push(section),
-                        None => roots.push(section),
-                    }
-                }
-                let heading_el = self.convert(&nodes[i], Some(parent));
-                stack.push((h.depth, vec![heading_el]));
-                i += 1;
-            } else {
-                let start = i;
-                while i < nodes.len() && !matches!(nodes[i], Node::Heading(_)) {
-                    i += 1;
-                }
-                let run = self.convert_many(&nodes[start..i], Some(parent));
-                match stack.last_mut() {
-                    Some((_, items)) => items.push(run),
-                    None => roots.push(run),
-                }
-            }
+        let mut converter = MarkdownConverter {
+            context: self.context,
+            footnotes: self.footnotes.clone(),
+            without_blocking_elements: true,
+            strip_links: self.strip_links,
+            footnote_counter: HashMap::new(),
+            next_footnote_number: 1,
+            error_context: self.error_context.clone(),
+            source_path: self.source_path.clone(),
+            document_base_url: self.document_base_url.clone(),
+            website_base_url: self.website_base_url.clone(),
+            pr_entries: vec![],
+        };
+        let note = converter.convert_many(&definition, None);
+
+        html! { in self.context.bump;
+            <Footnote identifier={identifier} number={number}>{note}</Footnote>
         }
-        while let Some((_, items)) = stack.pop() {
-            let section = b.section([])(b.fragment(items));
-            match stack.last_mut() {
-                Some((_, parent_items)) => parent_items.push(section),
-                None => roots.push(section),
-            }
-        }
-        roots
     }
 
     fn convert_many(&mut self, nodes: &[Node], parent_node: Option<&Node>) -> paxhtml::Element<'a> {
@@ -604,8 +580,8 @@ impl<'a> MarkdownConverter<'a> {
         b.fragment(elements)
     }
 
-    /// Detect a `[title](github-pr-url) <PrMeta ... />` pair and wrap it in a `<span>` with
-    /// a stable id so the timeline component can anchor-link to the inline mention.
+    /// Wraps a `[title](github-pr-url) <PrMeta ... />` pair in a `.pr-mention` with a
+    /// stable id, so the timeline row and the mention can link to each other.
     fn try_convert_pr_mention(
         &mut self,
         nodes: &[Node],
@@ -646,7 +622,7 @@ impl<'a> MarkdownConverter<'a> {
         }
 
         let span = paxhtml::html! { in bump;
-            <span id={pr_id} class="scroll-mt-16 [&:target]:bg-dim/25 [&:target]:rounded">
+            <span class="pr-mention" id={pr_id}>
                 #{children}
             </span>
         };
@@ -654,12 +630,9 @@ impl<'a> MarkdownConverter<'a> {
         Some((span, prmeta_idx))
     }
 
-    /// Try to detect and parse a paired custom element starting at position `i`.
-    ///
-    /// Custom elements are identified by an opening `Node::Html` whose value starts
-    /// with `<` followed by an uppercase letter. The function scans forward for a
-    /// matching closing tag, converts the body nodes between them, and returns a
-    /// complete paxhtml Element with children.
+    /// Try to parse a paired custom element starting at position `i` (see
+    /// [`paired_element_bounds`]). The body between its tags is converted as one
+    /// `.prose` block, and the element returned with that block as its child.
     fn try_convert_paired_element(
         &mut self,
         nodes: &[Node],
@@ -668,60 +641,21 @@ impl<'a> MarkdownConverter<'a> {
     ) -> Option<(paxhtml::Element<'a>, usize)> {
         let bump = self.context.bump;
 
-        let Node::Html(open) = &nodes[i] else {
+        let (trimmed, tag_name, end_idx) = paired_element_bounds(nodes, i)?;
+        let Some(end_idx) = end_idx else {
+            eprintln!(
+                "warning: unclosed <{tag_name}> tag in {}",
+                self.error_context
+            );
             return None;
         };
-        let trimmed = open.value.trim();
 
-        // Must start with `<` followed by an uppercase letter (custom component)
-        if !trimmed.starts_with('<')
-            || trimmed
-                .chars()
-                .nth(1)
-                .is_none_or(|c| !c.is_ascii_uppercase())
-        {
-            return None;
-        }
-
-        // Parse the opening tag to get the tag name and check if it's void (self-closing).
-        // Void elements like `<MusicLibrary />` are not paired and are handled by `convert`.
-        let (tag_name, _, void) = paxhtml::parse_opening_tag(trimmed).ok()?;
-        if void {
-            return None;
-        }
-
-        // Find the matching closing tag
-        let closing_tag = format!("</{tag_name}>");
-        let mut end_idx = None;
-        for (j, node) in nodes.iter().enumerate().skip(i + 1) {
-            if let Node::Html(close) = node
-                && close.value.trim() == closing_tag
-            {
-                end_idx = Some(j);
-                break;
-            }
-        }
-
-        let end_idx = match end_idx {
-            Some(idx) => idx,
-            None => {
-                eprintln!(
-                    "warning: unclosed <{tag_name}> tag in {}",
-                    self.error_context
-                );
-                return None;
-            }
-        };
-
-        // Convert body nodes between opening and closing tags
-        let body_nodes = &nodes[i + 1..end_idx];
-        let body_elements: Vec<_> = body_nodes
-            .iter()
-            .map(|n| self.convert(n, parent_node))
-            .collect();
+        let b = Builder::new(bump);
+        let body = self.convert_many(&nodes[i + 1..end_idx], parent_node);
+        let body = b.div([b.attr(("class", "prose"))])(body);
 
         // Build the complete element with children
-        let element = paxhtml::parse_element_with_children(bump, trimmed, body_elements)
+        let element = paxhtml::parse_element_with_children(bump, trimmed, [body])
             .expect("failed to parse paired element opening tag");
 
         Some((element, end_idx))
@@ -821,6 +755,80 @@ impl<'a> MarkdownConverter<'a> {
     }
 }
 
+/// If `nodes[i]` opens a paired custom element (`<CityPoster …>`): its opening tag,
+/// its name, and the index of its closing tag (`None` if it's never closed).
+///
+/// Custom elements are identified by an opening `Node::Html` whose value starts with
+/// `<` followed by an uppercase letter. Void ones, like `<MusicLibrary />`, aren't
+/// paired.
+fn paired_element_bounds(nodes: &[Node], i: usize) -> Option<(&str, String, Option<usize>)> {
+    let Node::Html(open) = &nodes[i] else {
+        return None;
+    };
+    let trimmed = open.value.trim();
+    if !trimmed.starts_with('<')
+        || trimmed
+            .chars()
+            .nth(1)
+            .is_none_or(|c| !c.is_ascii_uppercase())
+    {
+        return None;
+    }
+    let (tag_name, _, void) = paxhtml::parse_opening_tag(trimmed).ok()?;
+    if void {
+        return None;
+    }
+    let closing_tag = format!("</{tag_name}>");
+    let end = nodes
+        .iter()
+        .enumerate()
+        .skip(i + 1)
+        .find(|(_, node)| matches!(node, Node::Html(close) if close.value.trim() == closing_tag))
+        .map(|(j, _)| j);
+    Some((trimmed, tag_name.to_string(), end))
+}
+
+/// The indices and depths of the headings among `nodes`, skipping over the insides
+/// of paired custom elements, which a section can't split.
+fn top_level_headings(nodes: &[Node]) -> Vec<(usize, u8)> {
+    let mut headings = vec![];
+    let mut i = 0;
+    while i < nodes.len() {
+        if let Some((_, _, Some(end))) = paired_element_bounds(nodes, i) {
+            i = end + 1;
+            continue;
+        }
+        if let Node::Heading(h) = &nodes[i] {
+            headings.push((i, h.depth));
+        }
+        i += 1;
+    }
+    headings
+}
+
+/// A heading's anchor: its slugified text. Also what the link checker validates
+/// against (see [`collect_heading_anchors`]).
+pub fn heading_id(heading: &Node) -> String {
+    crate::util::slugify(inner_text(heading, None).trim())
+}
+
+/// A document's body as one tree: the description and the rest, rejoined after the
+/// `<!-- more -->` split.
+pub fn document_root(document: &Document) -> Node {
+    let children = document
+        .description
+        .children()
+        .into_iter()
+        .chain(document.rest_of_content.as_ref().and_then(Node::children))
+        .flatten()
+        .cloned()
+        .collect();
+    Node::Root(markdown::mdast::Root {
+        children,
+        position: None,
+    })
+}
+
 /// Scan a string for `[^ident]` footnote-reference patterns. Identifiers are
 /// non-empty and may not contain whitespace; everything else (including `Code`
 /// / `InlineCode` values) lives in non-`Text` nodes and is naturally skipped.
@@ -887,13 +895,11 @@ fn contains_link(nodes: &[Node]) -> bool {
     })
 }
 
-/// Walk a markdown AST and collect the slug for every heading. The slug
-/// matches what `e::h_with_id` produces (`slugify(inner_text)`), so this is
-/// the canonical anchor set for in-document heading links.
+/// Collects the [`heading_id`] of every heading: the anchor set for in-document links.
 pub fn collect_heading_anchors(node: &Node) -> HashSet<String> {
     fn walk(node: &Node, anchors: &mut HashSet<String>) {
         if matches!(node, Node::Heading(_)) {
-            anchors.insert(crate::util::slugify(inner_text(node, None).trim()));
+            anchors.insert(heading_id(node));
         }
         if let Some(children) = node.children() {
             for child in children {
@@ -1108,6 +1114,47 @@ mod tests {
     }
 
     #[test]
+    fn a_link_within_the_page_says_so() {
+        let ast = parse_markdown("See [below](#below) and [the blog](/blog/).\n");
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+        assert!(
+            html.contains(r##"<a href="#below" class="link-here">below</a>"##),
+            "{html}"
+        );
+        assert!(
+            html.contains(r#"<a href="/blog/" class="link-post">the blog</a>"#),
+            "{html}"
+        );
+    }
+
+    #[test]
+    fn a_short_table_row_is_padded_to_the_header() {
+        let ast = parse_markdown("| a | b | c |\n| - | - | - |\n| 1 |\n");
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+        let html: String = html.split_whitespace().collect();
+        assert!(
+            html.contains("<tr><td>1</td><td></td><td></td></tr>"),
+            "{html}"
+        );
+    }
+
+    #[test]
     fn test_heading_hierarchy() {
         use HeadingHierarchy as HH;
 
@@ -1176,14 +1223,105 @@ Here is some text with a footnote[^note1] and another[^note2].
             .write_to_string()
             .unwrap();
 
-        // Check that footnote references use numeric counters
-        assert!(html.contains("footnote-1"));
-        assert!(html.contains("footnote-2"));
-        assert!(!html.contains("footnote-note1"));
-        assert!(!html.contains("footnote-note2"));
+        // Notes sit beside their markers, numbered in order of reference.
+        assert!(html.contains(
+            r##"<span class="fn"><a class="fn-mark" href="#fn-note1" role="doc-noteref" aria-label="Note 1">1</a><span class="fn-note" id="fn-note1" role="doc-footnote"><span class="fn-num" aria-hidden="true">1</span>This is the first footnote.</span></span>"##
+        ));
+        assert!(
+            html.contains(r##"href="#fn-note2" role="doc-noteref" aria-label="Note 2">2</a>"##)
+        );
+        // No notes at the foot.
+        assert_eq!(html.matches("This is the first footnote.").count(), 1);
+    }
 
-        // Check that the footnote numbers are displayed correctly
-        assert!(html.contains(">1<"));
-        assert!(html.contains(">2<"));
+    #[test]
+    fn test_blocks() {
+        let input = r#"
+# A heading with [a link](/notes/foo)
+
+Some prose with `code`.
+
+<PrTimeline />
+
+```rust
+fn main() {}
+```
+
+<NotesIndex />
+"#;
+
+        let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+
+        // One section, with no prose runs inside: the caller's element is the prose.
+        // The notes index renders nothing.
+        assert_eq!(html.matches("<section>").count(), 1);
+        assert!(!html.contains(r#"class="prose""#));
+        assert!(html.contains(
+            r##"<h2 id="a-heading-with-a-link"><a class="heading-anchor" href="#a-heading-with-a-link"># </a>A heading with <a href="/notes/foo" class="link-note">a link</a></h2>"##
+        ));
+        assert!(html.contains(r#"<pre><span class="code-language">rust</span><code>"#));
+        assert!(!html.contains("NotesIndex"));
+    }
+
+    #[test]
+    fn sections_nest_as_the_headings_do() {
+        let input = r#"
+Intro.
+
+# A
+
+Under A.
+
+### Deeper than the next level
+
+Under it.
+
+# B
+
+## B1
+
+Under B1.
+"#;
+
+        let ast = parse_markdown(input);
+        let syntax = SyntaxHighlighter::default();
+        let content = Content::empty();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test").convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+
+        // The outline, as the order the sections and headings open in.
+        let markers = [
+            ("<section>", "["),
+            ("</section>", "]"),
+            ("<h2", "h2 "),
+            ("<h3", "h3 "),
+            ("<h4", "h4 "),
+        ];
+        let mut outline = String::new();
+        let mut rest = html.as_str();
+        while let Some((at, marker)) = markers
+            .iter()
+            .filter_map(|(tag, marker)| rest.find(tag).map(|at| (at, (tag, marker))))
+            .min_by_key(|(at, _)| *at)
+        {
+            outline.push_str(marker.1);
+            rest = &rest[at + marker.0.len()..];
+        }
+        // The skipped level nests without a section of its own.
+        assert_eq!(outline, "[h2 [h4 ]][h2 [h3 ]]");
     }
 }

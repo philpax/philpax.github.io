@@ -659,14 +659,9 @@ impl Content {
             fast,
         )?;
 
-        // Build tags index (excludes drafts so they don't appear in tag listings)
+        // Build tags index. Includes drafts, so tag pages list them.
         let mut tags: HashMap<Tag, Vec<DocumentId>> = HashMap::new();
-        for document in blog
-            .documents
-            .iter()
-            .chain(updates.documents.iter())
-            .filter(|d| !d.metadata.draft)
-        {
+        for document in blog.documents.iter().chain(updates.documents.iter()) {
             if let Some(taxonomies) = &document.metadata.taxonomies {
                 for tag in &taxonomies.tags {
                     tags.entry(tag.clone())

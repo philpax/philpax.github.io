@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [".", "bake_assets", "paxcss", "paxsite-content", "paxsite-cli"]
+members = [".", "bake_assets", "music-export", "paxsite-content", "paxsite-cli", "paxsite-music"]
 
 [workspace.dependencies]
 anyhow = "1.0"
@@ -32,6 +32,7 @@ image = { version = "0.25.1", features = [
 resvg = "0.44"
 usvg = "0.44"
 fontdb = "0.22"
+ttf-parser = "0.24"
 rayon = "1.10"
 base64 = "0.22.1"
 # Shared HTTP client. `blocking` is for paxsite-content's sync build-time Bluesky fetches;
@@ -51,16 +52,15 @@ toml-datetime-compat = { version = "0.3.0", features = ["chrono"] }
 sha2 = "0.10"
 markdown = "1.0.0"
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
-paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
-# paxhtml_tailwind = { path = "../paxhtml/paxhtml_tailwind" }
-blackbird-json-export-types = { git = "https://github.com/philpax/blackbird.git" }
-# blackbird-json-export-types = { path = "../blackbird/blackbird-json-export-types" }
+blackbird-shared = { git = "https://github.com/philpax/blackbird.git" }
+blackbird-state = { git = "https://github.com/philpax/blackbird.git" }
+# blackbird-shared = { path = "../blackbird/blackbird-shared" }
+# blackbird-state = { path = "../blackbird/blackbird-state" }
 
 [dependencies]
 paxhtml = { workspace = true }
-paxhtml_tailwind = { workspace = true }
-blackbird-json-export-types = { workspace = true }
+paxsite-music = { path = "paxsite-music" }
 
 # serve
 sha1 = { version = "0.10.6", optional = true }
@@ -74,14 +74,20 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 arborium = { workspace = true }
 toml = { workspace = true }
-paxcss = { path = "paxcss" }
 paxsite-content = { path = "paxsite-content" }
 toml-datetime-compat = { workspace = true }
 image = { workspace = true }
 resvg = { workspace = true }
 usvg = { workspace = true }
 fontdb = { workspace = true }
+ttf-parser = { workspace = true }
 rayon = { workspace = true }
+sha2 = { workspace = true }
+# Fonts: HarfBuzz subsetter/instancer (the `sys` module exposes the axis calls
+# the safe API lacks), WOFF2 encoder, HTML parser.
+mkwebfont_hb-subset = "0.5"
+scraper = "0.27"
+ttf2woff2 = { version = "0.13", default-features = false }
 
 [features]
 serve = ["dep:sha1"]
@@ -110,3 +116,15 @@ arborium-ruby.opt-level = 3
 arborium-theme.opt-level = 3
 arborium-toml.opt-level = 3
 arborium-tree-sitter.opt-level = 3
+# Font subsetting (see src/fonts/).
+mkwebfont_hb-subset.opt-level = 3
+ttf2woff2.opt-level = 3
+brotli.opt-level = 3
+sha2.opt-level = 3
+html5ever.opt-level = 3
+markup5ever.opt-level = 3
+tendril.opt-level = 3
+string_cache.opt-level = 3
+scraper.opt-level = 3
+selectors.opt-level = 3
+ego-tree.opt-level = 3

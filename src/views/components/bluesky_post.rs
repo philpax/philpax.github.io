@@ -1,58 +1,45 @@
 use paxhtml::bumpalo::Bump;
 use paxsite_content::bluesky::{BlueskyPostData, Facet, FacetFeature};
 
-use super::{IsoDatetime, IsoDatetimeProps, Link, LinkProps};
+use super::display_date;
 
+/// An archived Bluesky post: author, text and a date linking to the original.
 pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml::Element<'bump> {
     let avatar = post.author_avatar_filename.as_ref().map(|filename| {
-        paxhtml::html! { in bump;
-            <img
-                src={filename.as_str()}
-                alt=""
-                class="w-10 h-10 rounded-full flex-shrink-0"
-            />
-        }
+        paxhtml::html! { in bump; <img src={filename.as_str()} alt="" /> }
     });
-
-    let parse_datetime = |s: &str| {
-        chrono::DateTime::parse_from_rfc3339(s)
-            .ok()
-            .map(|dt| dt.with_timezone(&chrono::Utc))
-    };
-
-    let posted_at = parse_datetime(&post.created_at)
-        .map(|dt| paxhtml::html! { in bump; <IsoDatetime datetime={dt} /> });
-    let fetched_at = parse_datetime(&post.fetched_at).map(
-        |dt| paxhtml::html! { in bump; <span>"archived "<IsoDatetime datetime={dt} /></span> },
-    );
-
-    let body = render_rich_text(bump, &post.text, &post.facets);
+    let name = Some(post.author_display_name.as_str())
+        .filter(|name| !name.is_empty())
+        .unwrap_or(&post.author_handle);
+    let posted_at = chrono::DateTime::parse_from_rfc3339(&post.created_at)
+        .ok()
+        .map(|dt| dt.with_timezone(&chrono::Utc))
+        .map(|dt| {
+            paxhtml::html! { in bump;
+                <a href={post.url.clone()}>
+                    <time datetime={post.created_at.clone()}>{display_date(dt.date_naive())}</time>
+                </a>
+            }
+        });
 
     paxhtml::html! { in bump;
-        <div class="bg-panel border border-wire rounded-lg p-4 my-4 max-w-xl not-first:mx-auto flex flex-col gap-3">
-            <Link external target={paxsite_content::bluesky::profile_url(&post.author_handle)} additional_classes={"flex items-center gap-3".to_string()}>
+        <figure class="social-card embed">
+            <header>
                 {avatar}
-                <div>
-                    <div class="font-semibold text-fg">{&post.author_display_name}</div>
-                    <div class="text-sm text-dim -mt-1">{format!("@{}", post.author_handle)}</div>
-                </div>
-            </Link>
-            <div class="text-fg">
-                {body}
-            </div>
-            <div class="pt-3 border-t border-wire flex flex-wrap gap-x-4 gap-y-1 text-sm text-dim">
-                <Link external underline target={post.url.clone()}>
-                    {posted_at}
-                </Link>
-                {fetched_at}
-            </div>
-            <div class="pt-3 border-t border-wire flex flex-wrap gap-x-4 gap-y-1 text-sm text-dim">
+                // Name over handle.
+                <p class="stack">
+                    <b>{name}</b>
+                    <span>{format!("@{}", post.author_handle)}</span>
+                </p>
+            </header>
+            <blockquote>{render_rich_text(bump, &post.text, &post.facets)}</blockquote>
+            <figcaption>
+                {posted_at}
                 <span>{format!("{} replies", post.reply_count)}</span>
                 <span>{format!("{} reposts", post.repost_count)}</span>
                 <span>{format!("{} likes", post.like_count)}</span>
-                <span>{format!("{} quotes", post.quote_count)}</span>
-            </div>
-        </div>
+            </figcaption>
+        </figure>
     }
 }
 
@@ -78,7 +65,7 @@ fn render_rich_text<'bump>(
             continue;
         }
 
-        text_with_breaks(bump, &text[cursor..start], &mut elements);
+        elements.push(paxhtml::html! { in bump; {&text[cursor..start]} });
 
         let facet_text = &text[start..end];
         if let Some(feature) = facet.features.first() {
@@ -87,36 +74,18 @@ fn render_rich_text<'bump>(
                 FacetFeature::Mention { did } => paxsite_content::bluesky::profile_url(did),
                 FacetFeature::Tag { tag } => paxsite_content::bluesky::hashtag_url(tag),
             };
-            let mut inner = Vec::new();
-            text_with_breaks(bump, facet_text, &mut inner);
-            elements.push(paxhtml::html! { in bump;
-                <Link external underline target={href}>#{inner}</Link>
-            });
+            elements.push(paxhtml::html! { in bump; <a href={href}>{facet_text}</a> });
         } else {
-            text_with_breaks(bump, facet_text, &mut elements);
+            elements.push(paxhtml::html! { in bump; {facet_text} });
         }
 
         cursor = end;
     }
 
     if cursor < text.len() {
-        text_with_breaks(bump, &text[cursor..], &mut elements);
+        elements.push(paxhtml::html! { in bump; {&text[cursor..]} });
     }
 
-    paxhtml::html! { in bump; <span>#{elements}</span> }
-}
-
-fn text_with_breaks<'bump>(
-    bump: &'bump Bump,
-    text: &str,
-    elements: &mut Vec<paxhtml::Element<'bump>>,
-) {
-    for (i, line) in text.split('\n').enumerate() {
-        if i > 0 {
-            elements.push(paxhtml::html! { in bump; <br /> });
-        }
-        if !line.is_empty() {
-            elements.push(paxhtml::html! { in bump; {line} });
-        }
-    }
+    // The card preserves white space, so line breaks stay as written.
+    paxhtml::builder::Builder::new(bump).fragment(elements)
 }

@@ -1,0 +1,73 @@
+/* ========================================================================
+   SECTIONS — each section's colour and mark, chosen by where a page is and
+   where a link goes. Custom properties only.
+   ======================================================================== */
+
+/* Where a page is: the section on the root, or on a block within it. */
+[data-section='blog'] {
+  --accent: var(--c-post);
+  --accent-soft: var(--w-post);
+  --accent-solid: var(--c-post-solid);
+  --icon: var(--icon-post);
+}
+[data-section='updates'] {
+  --accent: var(--c-update);
+  --accent-soft: var(--w-update);
+  --accent-solid: var(--c-update-solid);
+  --icon: var(--icon-update);
+}
+[data-section='notes'] {
+  --accent: var(--c-note);
+  --accent-soft: var(--w-note);
+  --accent-solid: var(--c-note-solid);
+  --icon: var(--icon-note);
+}
+[data-section='tags'] {
+  --accent: var(--c-tag);
+  --accent-soft: var(--w-tag);
+  --accent-solid: var(--c-tag-solid);
+  --icon: var(--icon-tag);
+}
+[data-section='credits'] {
+  --accent: var(--c-credits);
+  --accent-soft: var(--w-credits);
+  --accent-solid: var(--c-credits-solid);
+}
+/* A tone is an accent for a block that is not a section. */
+[data-tone='elsewhere'] {
+  --accent: var(--c-elsewhere);
+}
+[data-tone='listening'] {
+  --accent: var(--c-listening);
+}
+
+/* Colours mixed from the accent. Declared wherever the accent changes, since a
+   custom property resolves where it is declared. */
+:root,
+[data-section],
+[data-tone] {
+  --separator: color-mix(in oklab, var(--accent) 62%, var(--line));
+  --tint: color-mix(in oklab, var(--accent-soft) 72%, var(--canvas));
+}
+
+/* Where a link goes: each internal link carries one of these. One to elsewhere
+   on the page stays in its section. */
+.link-here {
+  --hue: var(--accent);
+}
+.link-post {
+  --hue: var(--c-post);
+  --icon: var(--icon-post);
+}
+.link-update {
+  --hue: var(--c-update);
+  --icon: var(--icon-update);
+}
+.link-note {
+  --hue: var(--c-note);
+  --icon: var(--icon-note);
+}
+.link-tag {
+  --hue: var(--c-tag);
+  --icon: var(--icon-tag);
+}

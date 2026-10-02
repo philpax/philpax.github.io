@@ -8,6 +8,7 @@ pub fn generate() -> anyhow::Result<String> {
         #[cfg(feature = "serve")]
         reload()?,
         include_str!("website.js").to_string(),
+        include_str!("shader.js").to_string(),
     ]
     .join("\n"))
 }

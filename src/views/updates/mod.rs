@@ -1,29 +1,39 @@
 use super::*;
-use crate::views::posts;
+use crate::views::{
+    document,
+    listings::{listed, page_head, year_groups},
+};
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
-    let all_posts = context
+    let documents: Vec<&Document> = context
         .content
         .updates
         .documents
         .iter()
-        .filter(|d| !d.metadata.draft)
-        .map(|doc| posts::post(context, doc, posts::PostBody::Description));
+        .filter(|d| listed(d))
+        .collect();
     layout(
         context,
         SocialMeta {
             title: Some("Updates".to_string()),
             description: Some(format!("All updates from {}", context.website_name)),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Updates.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("updates"),
+        ),
         CurrentPage::Updates,
         html! { in bump;
-            <div class="flex flex-col gap-3">
-                #{all_posts}
+            <div class="frame-narrow">
+                {page_head(bump, html! { in bump; {copy::updates::TITLE} }, Some(html! { in bump; {copy::updates::LEDE} }))}
+                {documents.is_empty().then(|| html! { in bump;
+                    <p class="empty-message">{copy::empty::INDEX}</p>
+                })}
+                {year_groups(context, &documents)}
             </div>
         },
     )
@@ -62,6 +72,6 @@ pub fn post<'a>(
             ..Default::default()
         },
         CurrentPage::Updates,
-        posts::post(context, document, posts::PostBody::Full),
+        document::page(context, document),
     )
 }

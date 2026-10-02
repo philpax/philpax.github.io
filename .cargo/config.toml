@@ -1,2 +1,7 @@
 [target.x86_64-unknown-linux-gnu]
 rustflags = ["-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
+
+[env]
+# Build HarfBuzz without exceptions and on pthreads so the binary doesn't
+# link libstdc++ (not on NixOS's library path).
+CXXFLAGS = "-fno-exceptions -DHAVE_PTHREAD"

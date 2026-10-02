@@ -1,52 +1,57 @@
 use super::*;
-use crate::{
-    util,
-    views::{
-        components::{Link, LinkProps, Segment, SegmentProps},
-        posts,
-    },
+use crate::views::{
+    components::{A, AProps, TagLabel, TagLabelProps, TagLink, TagLinkProps},
+    listings::{index_row, inline_markdown, page_head, summary_list},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
-    let mut tag_keys = context.content.tags.keys().collect::<Vec<_>>();
-    tag_keys.sort();
+    let content = &context.content;
+    // Most used first, then alphabetical.
+    let mut tags: Vec<(&String, usize)> = content
+        .tags
+        .iter()
+        .map(|(tag, docs)| (tag, docs.len()))
+        .collect();
+    tags.sort_by(|(a, a_count), (b, b_count)| b_count.cmp(a_count).then_with(|| a.cmp(b)));
+    let max = tags.iter().map(|(_, count)| *count).max().unwrap_or(1);
 
     layout(
         context,
         SocialMeta {
             title: Some("Tags".to_string()),
             description: Some(format!("All tags on {}", context.website_name)),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Tags.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("tags"),
+        ),
         CurrentPage::Tags,
         html! { in bump;
-            <Segment label={"tags".to_string()}>
-                <ul class={format!("list-none m-0 flex flex-col gap-2 text-sm {CODE_FONT_STYLE}")}>
-                #{
-                    tag_keys.iter().map(|tag| {
-                        let item_count = context.content.tags[*tag].len();
+            <div class="frame-narrow">
+                {page_head(bump, html! { in bump; {copy::tags::TITLE} }, Some(html! { in bump; {copy::tags::LEDE} }))}
+                <div class="index-groups">
+                    {index_row(
+                        bump,
+                        html! { in bump; {copy::labels::SUBJECTS} },
+                        Some(html! { in bump; {copy::tags::count(tags.len())} }),
                         html! { in bump;
-                            <li class="flex gap-2 items-baseline">
-                                <Link underline title={format!("Tag: {tag}")} target={Route::Tag { tag_id: tag.to_string() }.url_path()}>
-                                    {format!("#{tag}")}
-                                </Link>
-                                <span class="text-dim">
-                                    {format!(
-                                        "({} {})",
-                                        item_count,
-                                        util::pluralize("item", item_count)
-                                    )}
-                                </span>
-                            </li>
-                        }
-                    })
-                }
-                </ul>
-            </Segment>
+                            <ul class="tag-index">
+                                #{tags.iter().map(|(tag, count)| html! { in bump;
+                                    <li>
+                                        <TagLink tag={tag.to_string()} />
+                                        <span ariaHidden="true" class="tag-index-bar" style={format!("width: {:.1}%", *count as f64 / max as f64 * 100.0)}></span>
+                                        <span class="tag-index-count">{count.to_string()}</span>
+                                    </li>
+                                })}
+                            </ul>
+                        },
+                    )}
+                </div>
+            </div>
         },
     )
 }
@@ -54,6 +59,11 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
 pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
+
+    let url = Route::Tag {
+        tag_id: tag_id.to_string(),
+    }
+    .url_path();
 
     // Collect all documents with this tag
     let mut tagged_documents = Vec::new();
@@ -67,27 +77,11 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     tagged_documents.sort_by_key(|d| d.metadata.datetime);
     tagged_documents.reverse();
 
-    // Active-filter badge: the tag as a filled phosphor chip (echoing the active
-    // nav pill) joined to the item count as an outline side-pill, so the pair reads
-    // as a segmented "active filter" control — mono chrome, not a serif post card.
-    let count = tagged_documents.len();
-    let active_filter_badge = html! { in bump;
-        <div class="flex items-stretch">
-            <h1 class={format!("inline-flex items-center px-3 py-1 bg-phosphor text-canvas {CODE_FONT_STYLE}")}>
-                {format!("#{tag_id}")}
-            </h1>
-            <span class={format!("inline-flex items-center px-3 py-1 border-3 border-l-0 border-wire text-dim text-sm {CODE_FONT_STYLE}")}>
-                {format!("{} {}", count, util::pluralize("item", count))}
-            </span>
-        </div>
-    };
-
     layout(
         context,
         SocialMeta {
             title: Some(format!("#{tag_id}")),
             description: Some(format!("All content tagged with {tag_id}")),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(
                 Route::Tag {
                     tag_id: tag_id.to_string(),
@@ -97,16 +91,31 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
             type_: Some("website".to_string()),
             article_tag: Some(tag_id.to_string()),
             ..Default::default()
-        },
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::tag_image_path(tag_id),
+        ),
         CurrentPage::Tags,
         html! { in bump;
-            <div class="flex flex-col gap-3">
-                {active_filter_badge}
-                #{
-                    tagged_documents.iter().map(|doc| {
-                        posts::post(context, doc, posts::PostBody::Description)
-                    })
-                }
+            <div class="frame-narrow">
+                {page_head(
+                    bump,
+                    html! { in bump; <TagLabel tag={tag_id.to_string()} /> },
+                    Some(inline_markdown(context, &content.tag_descriptions[tag_id], &url)),
+                )}
+                <div class="index-groups">
+                    {index_row(
+                        bump,
+                        html! { in bump; {copy::labels::TAGGED} },
+                        Some(html! { in bump; <A href={Route::Tags.url_path()}>{copy::tag::ALL_TAGS}</A> }),
+                        if tagged_documents.is_empty() {
+                            html! { in bump; <p class="empty-message">{copy::empty::TAG}</p> }
+                        } else {
+                            summary_list(context, tagged_documents.iter().copied(), "8")
+                        },
+                    )}
+                </div>
             </div>
         },
     )

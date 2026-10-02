@@ -1,193 +1,69 @@
-use chrono::Timelike;
-use paxhtml::{DefaultIn, builder::Builder, bumpalo::Bump};
+use chrono::NaiveDate;
+use paxhtml::{builder::Builder, bumpalo::Bump};
 
-pub struct IsoDateProps {
-    pub date: chrono::NaiveDate,
-}
-impl DefaultIn<'_> for IsoDateProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            date: Default::default(),
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn IsoDate<'bump>(bump: &'bump Bump, props: IsoDateProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    let date = props.date.to_string();
-    b.time([
-        b.attr(("datetime", date.as_str())),
-        b.attr(("title", date.as_str())),
-    ])(b.text(&date))
-}
-
-pub struct IsoDatetimeProps {
-    pub datetime: chrono::DateTime<chrono::Utc>,
-}
-impl DefaultIn<'_> for IsoDatetimeProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            datetime: Default::default(),
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn IsoDatetime<'bump>(bump: &'bump Bump, props: IsoDatetimeProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    b.time([
-        b.attr(("datetime", props.datetime.to_rfc3339())),
-        b.attr(("title", props.datetime.to_rfc2822())),
-    ])(b.text(&props.datetime.with_nanosecond(0).unwrap().to_rfc3339()))
-}
-
-pub struct MonthDayDateProps {
-    pub date: String,
-    pub noyear: bool,
-    pub short: bool,
-}
-impl DefaultIn<'_> for MonthDayDateProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            date: String::new(),
-            noyear: false,
-            short: false,
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn MonthDayDate<'bump>(bump: &'bump Bump, props: MonthDayDateProps) -> paxhtml::Element<'bump> {
-    let b = Builder::new(bump);
-    let (year, month, day) = parse_date(&props.date);
-    let year = (!props.noyear).then_some(year);
-    let display = format_date(month, day, year, props.short);
-    b.time([
-        b.attr(("datetime", props.date.as_str())),
-        b.attr(("title", props.date.as_str())),
-    ])(b.text(&display))
-}
-
-pub struct MonthDayDateRangeProps {
-    pub start: String,
-    pub end: String,
-    pub noyear: bool,
-    pub short: bool,
-}
-impl DefaultIn<'_> for MonthDayDateRangeProps {
-    fn default_in(_bump: &Bump) -> Self {
-        Self {
-            start: String::new(),
-            end: String::new(),
-            noyear: false,
-            short: false,
-        }
-    }
-}
-
-#[allow(non_snake_case)]
-pub fn MonthDayDateRange<'bump>(
+/// `<MonthDayDate date="2025-11-06" />`: `2025-11-06`, or `11-06` with `noyear`.
+pub fn month_day_date<'bump>(
     bump: &'bump Bump,
-    props: MonthDayDateRangeProps,
+    date: &str,
+    noyear: bool,
 ) -> paxhtml::Element<'bump> {
     let b = Builder::new(bump);
-    let (sy, sm, sd) = parse_date(&props.start);
-    let (ey, em, ed) = parse_date(&props.end);
-
-    let cross_year = sy != ey;
-    let show_year = !props.noyear;
-
-    if sm == em && !cross_year {
-        // Same month, same year: "Nov 8–12" or "Nov 8–12, 2025"
-        let start_display = format_date(sm, sd, None, props.short);
-        let end_display = if show_year {
-            format!("{}, {}", ed, ey)
-        } else {
-            ed.to_string()
-        };
-        b.fragment([
-            b.time([
-                b.attr(("datetime", props.start.as_str())),
-                b.attr(("title", props.start.as_str())),
-            ])(b.text(&start_display)),
-            b.text("\u{2013}"),
-            b.time([
-                b.attr(("datetime", props.end.as_str())),
-                b.attr(("title", props.end.as_str())),
-            ])(b.text(&end_display)),
-        ])
+    let parsed = parse_date(date);
+    b.time([b.attr(("datetime", date))])(b.text(&if noyear {
+        month_day(parsed)
     } else {
-        // Different months or cross-year
-        let start_year = if cross_year && show_year {
-            Some(sy)
-        } else {
-            None
-        };
-        let end_year = if show_year { Some(ey) } else { None };
-        let start_display = format_date(sm, sd, start_year, props.short);
-        let end_display = format_date(em, ed, end_year, props.short);
-        b.fragment([
-            b.time([
-                b.attr(("datetime", props.start.as_str())),
-                b.attr(("title", props.start.as_str())),
-            ])(b.text(&start_display)),
-            b.text(" \u{2013} "),
-            b.time([
-                b.attr(("datetime", props.end.as_str())),
-                b.attr(("title", props.end.as_str())),
-            ])(b.text(&end_display)),
-        ])
-    }
+        display_date(parsed)
+    }))
 }
 
-fn parse_date(s: &str) -> (u32, u32, u32) {
-    let parts: Vec<u32> = s
-        .split('-')
-        .map(|p| p.parse().expect("invalid date component"))
-        .collect();
-    (parts[0], parts[1], parts[2])
+/// `<MonthDayDateRange start="…" end="…" />`: two dates joined by a dash.
+pub fn month_day_date_range<'bump>(
+    bump: &'bump Bump,
+    start: &str,
+    end: &str,
+    noyear: bool,
+) -> paxhtml::Element<'bump> {
+    let b = Builder::new(bump);
+    b.fragment([
+        month_day_date(bump, start, noyear),
+        b.span([b.attr(("aria-hidden", "true"))])(b.text(" \u{2013} ")),
+        month_day_date(bump, end, noyear),
+    ])
 }
 
-fn month_name(month: u32, short: bool) -> &'static str {
-    if short {
-        match month {
-            1 => "Jan",
-            2 => "Feb",
-            3 => "Mar",
-            4 => "Apr",
-            5 => "May",
-            6 => "Jun",
-            7 => "Jul",
-            8 => "Aug",
-            9 => "Sep",
-            10 => "Oct",
-            11 => "Nov",
-            12 => "Dec",
-            _ => panic!("invalid month: {month}"),
-        }
-    } else {
-        match month {
-            1 => "January",
-            2 => "February",
-            3 => "March",
-            4 => "April",
-            5 => "May",
-            6 => "June",
-            7 => "July",
-            8 => "August",
-            9 => "September",
-            10 => "October",
-            11 => "November",
-            12 => "December",
-            _ => panic!("invalid month: {month}"),
-        }
-    }
+/// An ISO 8601 date: `2025-09-06`.
+pub fn display_date(date: NaiveDate) -> String {
+    date.format("%Y-%m-%d").to_string()
 }
 
-fn format_date(month: u32, day: u32, year: Option<u32>, short: bool) -> String {
-    match year {
-        Some(y) => format!("{} {}, {}", month_name(month, short), day, y),
-        None => format!("{} {}", month_name(month, short), day),
+/// A month and day with no year: `09-06`.
+pub fn month_day(date: NaiveDate) -> String {
+    date.format("%m-%d").to_string()
+}
+
+/// A timestamp to the minute, for tooltips: `2026-09-28 21:39 UTC`.
+pub fn display_timestamp(datetime: chrono::DateTime<chrono::Utc>) -> String {
+    datetime.format("%Y-%m-%d %H:%M UTC").to_string()
+}
+
+/// Parses a `YYYY-MM-DD` date.
+pub fn parse_date(date: &str) -> NaiveDate {
+    NaiveDate::parse_from_str(date, "%Y-%m-%d")
+        .unwrap_or_else(|e| panic!("invalid date '{date}': {e}"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn formats() {
+        let date = NaiveDate::from_ymd_opt(2025, 9, 6).unwrap();
+        assert_eq!(display_date(date), "2025-09-06");
+        assert_eq!(month_day(date), "09-06");
+        let at = chrono::DateTime::parse_from_rfc3339("2026-09-28T21:39:00Z")
+            .unwrap()
+            .to_utc();
+        assert_eq!(display_timestamp(at), "2026-09-28 21:39 UTC");
     }
 }

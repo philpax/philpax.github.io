@@ -1,0 +1,204 @@
+/* ========================================================================
+   TOKENS — every value the sheet names, in both themes.
+   ======================================================================== */
+
+:root {
+  /* Colours are light-dark(light, dark), resolved against the using element's
+     colour scheme. */
+
+  /* Surfaces and ink. */
+  --canvas-dark: oklch(17% 0.022 297);
+  --canvas: light-dark(oklch(99.1% 0.004 305), var(--canvas-dark));
+  --raised: light-dark(oklch(97.6% 0.01 303), oklch(21.2% 0.028 297));
+  --sunken: light-dark(oklch(95.2% 0.019 302), oklch(13% 0.018 297));
+
+  --ink: light-dark(oklch(20.5% 0.03 300), oklch(92.5% 0.014 302));
+  --ink-muted: light-dark(oklch(44% 0.032 299), oklch(73% 0.021 300));
+  --ink-faint: light-dark(oklch(54% 0.03 299), oklch(63% 0.024 300));
+
+  --line: light-dark(oklch(91.5% 0.014 302), oklch(26.5% 0.022 297));
+  --line-strong: light-dark(oklch(80% 0.03 300), oklch(38.5% 0.032 298));
+  --good: light-dark(#0f7a4f, #5fcf9a);
+  --bad: light-dark(#b4243b, #ff8798);
+
+  /* The arc: one hue per section. */
+  --hue-post: 297;
+  --hue-update: 196;
+  --hue-note: 250;
+  --hue-tag: 5;
+  --hue-credits: 145;
+
+  /* At the light theme's lightness in both themes, for boxes that carry white
+     text (the wordmark, the nav). */
+  --c-post-solid: oklch(42% 0.185 var(--hue-post));
+  --c-update-solid: oklch(42% 0.105 var(--hue-update));
+  --c-note-solid: oklch(42% 0.155 var(--hue-note));
+  --c-tag-solid: oklch(42% 0.16 var(--hue-tag));
+  --c-credits-solid: oklch(42% 0.12 var(--hue-credits));
+
+  --c-post: light-dark(var(--c-post-solid), oklch(74% 0.115 var(--hue-post)));
+  --c-update: light-dark(var(--c-update-solid), oklch(74% 0.095 var(--hue-update)));
+  --c-note: light-dark(var(--c-note-solid), oklch(74% 0.105 var(--hue-note)));
+  --c-tag: light-dark(var(--c-tag-solid), oklch(74% 0.105 var(--hue-tag)));
+  --c-credits: light-dark(var(--c-credits-solid), oklch(74% 0.105 var(--hue-credits)));
+  --c-elsewhere: light-dark(oklch(42% 0.12 165), oklch(74% 0.095 165));
+  --c-listening: light-dark(oklch(42% 0.14 35), oklch(74% 0.11 35));
+
+  /* Washes: the same hues at surface weight. */
+  --w-post: light-dark(oklch(94.5% 0.032 var(--hue-post)), oklch(29.5% 0.058 var(--hue-post)));
+  --w-update: light-dark(
+    oklch(94.5% 0.032 var(--hue-update)),
+    oklch(29.5% 0.058 var(--hue-update))
+  );
+  --w-note: light-dark(oklch(94.5% 0.032 var(--hue-note)), oklch(29.5% 0.058 var(--hue-note)));
+  --w-tag: light-dark(oklch(94.5% 0.032 var(--hue-tag)), oklch(29.5% 0.058 var(--hue-tag)));
+  --w-credits: light-dark(
+    oklch(94.5% 0.032 var(--hue-credits)),
+    oklch(29.5% 0.058 var(--hue-credits))
+  );
+
+  /* Section marks, used as masks so they take the colour of the text they lead. */
+  --icon-post: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.6 13.4l.8-3 7.3-7.3 2.2 2.2-7.3 7.3-3 .8z'/%3E%3Cpath d='M9.9 4.1l2.2 2.2'/%3E%3C/svg%3E");
+  --icon-update: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.2 8.4a4.6 4.6 0 0 1 4.6 4.6'/%3E%3Cpath d='M3.2 4.4a8.6 8.6 0 0 1 8.6 8.6'/%3E%3Ccircle cx='3.5' cy='12.6' r='1.1' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  --icon-note: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.2 12.8V3.9h3.7l1.4 1.9h6.5v7z'/%3E%3C/svg%3E");
+  --icon-tag: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8.6 2.2h5.2v5.2l-5.9 5.9a1.1 1.1 0 0 1-1.6 0L2.3 9.3a1.1 1.1 0 0 1 0-1.6z'/%3E%3Ccircle cx='11' cy='5' r='1' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+
+  /* The theme switch's marks. */
+  --icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z'/%3E%3C/svg%3E");
+  --icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M235.54,150.21a104.84,104.84,0,0,1-37,52.91A104,104,0,0,1,32,120,103.09,103.09,0,0,1,52.88,57.48a104.84,104.84,0,0,1,52.91-37,8,8,0,0,1,10,10,88.08,88.08,0,0,0,109.8,109.8,8,8,0,0,1,10,10Z'/%3E%3C/svg%3E");
+  --icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M221.66,133.66l-72,72A8,8,0,0,1,136,200V136H40a8,8,0,0,1,0-16h96V56a8,8,0,0,1,13.66-5.66l72,72A8,8,0,0,1,221.66,133.66Z'/%3E%3C/svg%3E");
+
+  /* The accent in force; sections.css repoints it. */
+  --accent: var(--c-post);
+  --accent-soft: var(--w-post);
+  --accent-solid: var(--c-post-solid);
+
+  /* Faces. */
+  --f-body: 'Source Serif 4 Variable', Georgia, serif;
+  --f-display: 'Fraunces Variable', Georgia, serif;
+  --f-ui: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --f-wordmark: 'Alegreya Variable', Georgia, serif;
+  --f-mono: 'Iosevka', ui-monospace, monospace;
+
+  --tracking-display: -0.021em;
+  --tracking-heading: -0.012em;
+  --tracking-table: 0.06em;
+
+  /* Scales. */
+  --radius-sm: 2px;
+  --radius-md: 5px;
+
+  --rule: 1px;
+  --rule-strong: 2px;
+
+  /* The reading measure as a length; ch would depend on the element's face. */
+  --measure: 38.75rem;
+  --measure-short: 33.25rem;
+
+  /* The column beside a wide document: the notes rail, or a post's contents. Shared, so
+     every document's text starts at the same place. */
+  --rail-width: 18rem;
+
+  --motion: 120ms;
+
+  /* A sidenote's width plus its gap, which the document grid reserves. */
+  --sidenote-width: 13rem;
+  --sidenote-gap: 2rem;
+  --sidenote-gutter: calc(var(--sidenote-width) + var(--sidenote-gap));
+
+  --lead-none: 1;
+  --lead-flat: 1.1;
+  --lead-tight: 1.2;
+  --lead-snug: 1.35;
+  --lead-normal: 1.5;
+  --lead: 1.66;
+
+  /* Spacing: steps of one unit. */
+  --spacing: 0.275rem;
+
+  --s-0-5: calc(var(--spacing) * 0.5);
+  --s-1: calc(var(--spacing) * 1);
+  --s-1-5: calc(var(--spacing) * 1.5);
+  --s-2: calc(var(--spacing) * 2);
+  --s-2-5: calc(var(--spacing) * 2.5);
+  --s-3: calc(var(--spacing) * 3);
+  --s-4: calc(var(--spacing) * 4);
+  --s-5: calc(var(--spacing) * 5);
+  --s-6: calc(var(--spacing) * 6);
+  --s-8: calc(var(--spacing) * 8);
+  --s-10: calc(var(--spacing) * 10);
+  --s-12: calc(var(--spacing) * 12);
+  /* The sticky header's height (from 48rem, where it is one row and sticks). */
+  --header-height: 5.3rem;
+
+  /* Type: ratio ~1.2, whole pixels at a 16px root, 12px the floor. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.8125rem;
+  --text-3xl: 2.1875rem;
+  --text-4xl: 2.625rem;
+
+  /* The same ladder relative to the host, for prose. */
+  --em-down: 0.85em;
+  --em-up: 1.2em;
+  --em-up-2: 1.45em;
+
+  --font-weight-medium: 500;
+  --font-weight-semibold: 560;
+  --font-weight-bold: 600;
+
+  /* Prose rhythm, in em so it scales with what it is set on. */
+  --r-1: 0.12em;
+  --r-2: 0.16em;
+  --r-3: 0.22em;
+  --r-4: 0.3em;
+  --r-5: 0.4em;
+  --r-6: 0.55em;
+  --r-7: 0.75em;
+  --r-8: 1em;
+  --r-9: 1.35em;
+  --r-10: 1.8em;
+  --r-11: 2.4em;
+
+  color-scheme: light dark;
+}
+
+/* Registered so they don't inherit: a nested stack keeps its own gap, and a
+   link's colours apply to that link only. */
+@property --stack {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+/* The fade at a scrolling row's ends; see .tag-list. */
+@property --fade-start {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --fade-end {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --link-rest {
+  syntax: '*';
+  inherits: false;
+}
+@property --link-hover {
+  syntax: '*';
+  inherits: false;
+}
+
+/* Set inline by the markup: --stack, --tag-hue and --cover. */
+
+/* A theme the reader has pinned, as a class on the root. */
+.light {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}

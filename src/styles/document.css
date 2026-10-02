@@ -1,0 +1,11 @@
+/* The document around the site. `site/` starts at `.site` (<body> here); the
+   root fills the viewport so `min-height: 100%` has something to measure, and
+   paints the canvas past the body's edges. */
+
+html {
+  height: 100%;
+  background: var(--canvas);
+}
+body.site {
+  margin: 0;
+}

@@ -2,38 +2,38 @@ use super::*;
 
 use crate::{
     markdown::MarkdownConverter,
-    views::{
-        components::{Segment, SegmentProps, SegmentTag},
-        posts,
-    },
+    views::listings::{inline_markdown, page_head},
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
-
-    // Mirror a post's title band: clickable title in the segment header.
-    let heading_class = posts::post_body_to_heading_class(posts::PostBody::Full);
-    let header = html! { in bump;
-        <div class="flex flex-col">
-            {posts::post_title_link(bump, Route::Credits.url_path(), heading_class, html! { in bump; "Credits" })}
-        </div>
-    };
+    let url = Route::Credits.url_path();
 
     layout(
         context,
         SocialMeta {
             description: Some(context.website_description.to_string()),
-            image: Some(Route::Icon.abs_url(context.website_base_url)),
             url: Some(Route::Credits.abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             ..Default::default()
-        },
-        CurrentPage::Home,
+        }
+        .with_preview(
+            context.website_base_url,
+            &crate::og_image::page_image_path("credits"),
+        ),
+        CurrentPage::Credits,
         html! { in bump;
-            <Segment tag={SegmentTag::Article} header={header} body_class={"post-body measured".to_string()}>
-                {MarkdownConverter::new(context, Route::Credits.url_path()).with_sidenotes().convert_sectioned(&content.credits.description)}
-            </Segment>
+            <div class="frame-narrow">
+                {page_head(
+                    bump,
+                    html! { in bump; <span>{inline_markdown(context, &content.credits.metadata.title, &url)}</span> },
+                    Some(html! { in bump; {copy::credits::LEDE} }),
+                )}
+                <article class="plain-page-body prose">
+                    {MarkdownConverter::new(context, &url).convert_blocks(&crate::markdown::document_root(&content.credits))}
+                </article>
+            </div>
         },
     )
 }

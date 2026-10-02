@@ -1,0 +1,160 @@
+/* ========================================================================
+   ELEMENTS — the reset and every bare element's default, in a layer.
+   ======================================================================== */
+
+@layer site-element {
+  /* Reset. */
+  .site,
+  .site *,
+  .site *::before,
+  .site *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--line);
+  }
+  .site :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul, pre, hr) {
+    margin: 0;
+  }
+  .site :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  .site :where(ol, ul, menu) {
+    padding: 0;
+    list-style: none;
+  }
+  .site :where(img, svg, video, canvas) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
+  .site :where(button, input, select, textarea) {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background: transparent;
+  }
+  .site :where(button) {
+    cursor: pointer;
+  }
+  .site :where(table) {
+    border-collapse: collapse;
+    border-color: inherit;
+    text-indent: 0;
+  }
+  .site :where(b, strong) {
+    font-weight: bolder;
+  }
+  .site :where(code, kbd, samp, pre) {
+    font-family: var(--f-mono);
+  }
+  .site :where(small) {
+    font-size: 80%;
+  }
+  /* The browser's own offsets. */
+  .site :where(sub, sup) {
+    position: relative;
+    font-size: 75%;
+    line-height: 0;
+    vertical-align: baseline;
+  }
+  .site :where(sub) {
+    bottom: -0.25em;
+  }
+  .site :where(sup) {
+    top: -0.5em;
+  }
+  .site :where(hr) {
+    height: 0;
+    color: inherit;
+  }
+  .site :where([hidden]) {
+    display: none;
+  }
+
+  /* Headings. */
+  .site h1,
+  .site h2,
+  .site h3 {
+    font-family: var(--f-display);
+    letter-spacing: var(--tracking-heading);
+    /* Stated rather than inherited, so a heading is ink inside muted text too. */
+    color: var(--ink);
+  }
+  .site h1 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lead-flat);
+    letter-spacing: var(--tracking-display);
+  }
+  .site h2 {
+    font-size: var(--text-xl);
+    line-height: var(--lead-snug);
+  }
+  .site h3 {
+    font-size: var(--text-lg);
+    line-height: var(--lead-tight);
+  }
+  /* A document's title opts out; see documents.css. */
+  @container site (width >= 48rem) {
+    .site h1 {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  /* Controls and tables. */
+  .site summary {
+    font-family: var(--f-ui);
+  }
+  .site summary::marker {
+    color: var(--c-note);
+  }
+  .site thead th {
+    font-family: var(--f-ui);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-table);
+  }
+
+  /* Links. The only rules that set a link's colour: components set --hue (where
+     it goes), --link-rest or --link-hover instead, so none has to out-rank these. */
+  .site a {
+    text-decoration: none;
+    color: var(--link-rest, var(--hue));
+    transition: color var(--motion) ease;
+  }
+  .site a:hover {
+    color: var(--link-hover, color-mix(in oklab, var(--hue) 78%, white));
+  }
+  .site nav a {
+    --link-rest: var(--ink-muted);
+  }
+  .site nav a[aria-current='page'] {
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* Focus, selection, motion. */
+  .site *:focus-visible {
+    border-radius: 1px;
+    outline: 2px solid var(--hue);
+    outline-offset: 3px;
+  }
+  .site ::selection {
+    color: var(--ink);
+    background: var(--accent-soft);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site *,
+    .site *::before,
+    .site *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}

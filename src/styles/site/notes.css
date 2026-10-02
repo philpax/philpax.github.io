@@ -1,0 +1,210 @@
+/* ========================================================================
+   NOTES — the notes layout and the rail: a disclosure above the note on a
+   narrow page, a sticky column beside it on a wide one.
+   ======================================================================== */
+
+.notes-layout {
+  display: grid;
+  align-items: start;
+  column-gap: var(--s-10);
+}
+.notes-intro {
+  max-width: var(--measure-short);
+  color: var(--ink-muted);
+}
+
+/* Rail. */
+
+.notes-rail {
+  --stack: var(--s-2);
+  min-width: 0;
+  margin-bottom: var(--s-6);
+}
+.rail-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.rail-heading > a {
+  --link-rest: var(--ink);
+}
+
+/* Stands in for the heading on a narrow page; it's the label of the preceding
+   checkbox, which opens the tree without script. */
+.rail-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--text-sm);
+  text-align: left;
+  color: var(--ink);
+  background: var(--tint);
+  cursor: pointer;
+}
+.rail-toggle:hover {
+  color: var(--accent);
+}
+.rail-toggle::before {
+  content: '';
+  border-block: 0.3rem solid transparent;
+  border-left: 0.4rem solid var(--accent);
+  transition: transform var(--motion) ease;
+}
+.rail-toggle-box:checked + .rail-toggle::before {
+  transform: rotate(90deg);
+}
+
+.rail-tree {
+  --stack: var(--s-3);
+}
+.rail-search {
+  width: 100%;
+  padding-bottom: var(--s-1);
+  border-bottom: var(--rule) solid var(--separator);
+  font-size: var(--text-sm);
+}
+.rail-search:focus {
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+.rail-search::placeholder {
+  color: var(--ink-faint);
+}
+.notes-rail-toc {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: var(--rule) solid var(--line);
+}
+
+/* Tree. */
+
+.notes-level .notes-level {
+  margin-left: var(--s-2-5);
+}
+/* The chevron opens the branch; the row opens the page. The chevron labels a
+   checkbox holding the open state, so the tree works without script. */
+.rail-row-wrap {
+  display: flex;
+}
+.rail-chevron {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding-inline: var(--s-1);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+/* Drawn, not typed: the UI face has no triangle glyphs and a fallback would
+   look off. */
+.rail-chevron::before {
+  content: '';
+  width: 0.45em;
+  border-block: 0.28em solid transparent;
+  border-left: 0.45em solid currentColor;
+  transition: transform var(--motion) ease;
+}
+.rail-branch:checked + .rail-row-wrap > .rail-chevron::before {
+  transform: rotate(90deg);
+}
+.rail-chevron:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+/* The checkbox is hidden, so its focus shows on the drawn control, inside
+   where the rail's scroll area can't clip it. */
+.rail-branch:focus-visible + .rail-row-wrap > .rail-chevron,
+.rail-toggle-box:focus-visible + .rail-toggle {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.rail-branch:not(:checked) ~ .notes-level {
+  display: none;
+}
+.rail-row {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) 3rem;
+  align-items: baseline;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-1) var(--s-1) var(--s-1) var(--s-2);
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+.rail-chevron + .rail-row {
+  padding-left: var(--s-0-5);
+}
+/* The branch holding the current row stays lit. */
+.notes-level li:has([aria-current]) > .rail-row-wrap > .rail-row {
+  --link-rest: var(--ink);
+}
+.rail-row[aria-current] {
+  --link-rest: var(--ink);
+  background: var(--accent-soft);
+}
+/* After the current row, so hover wins over it. */
+.rail-row:hover {
+  background: var(--sunken);
+}
+/* A folder with no page is the label of its checkbox, and reads the same
+   colour. */
+label.rail-row {
+  color: var(--link-rest);
+  cursor: pointer;
+}
+.notes-level .notes-level .rail-row {
+  font-size: var(--text-xs);
+}
+.rail-row-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rail-tree > .notes-level > li > .rail-row-wrap .rail-row-label {
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-display);
+}
+.rail-empty {
+  padding-left: var(--s-2);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+.rail-age {
+  font-size: var(--text-xs);
+  text-align: right;
+  white-space: nowrap;
+  color: var(--ink-muted);
+  cursor: help;
+}
+
+/* Narrow and wide. */
+
+@container site (width < 64rem) {
+  .rail-heading,
+  .notes-rail-toc,
+  .rail-toggle-box:not(:checked) ~ .rail-tree {
+    display: none;
+  }
+}
+/* The rail's grid area runs the row's height, so it sticks down a long note. */
+@container site (width >= 64rem) {
+  .notes-layout {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  }
+  .notes-rail {
+    position: sticky;
+    top: calc(var(--header-height) + var(--s-4));
+    max-height: calc(100svh - var(--header-height) - 2rem);
+    margin-bottom: 0;
+    overflow-y: auto;
+  }
+  .rail-toggle-box,
+  .rail-toggle {
+    display: none;
+  }
+}

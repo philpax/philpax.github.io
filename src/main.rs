@@ -7,6 +7,7 @@ use crate::content::DocumentId;
 
 mod content;
 mod elements;
+mod fonts;
 mod image_store;
 mod js;
 mod markdown;
@@ -43,6 +44,8 @@ pub enum Route {
     BlogRss,
     UpdatesRss,
     Credits,
+    /// GitHub Pages serves this for unknown paths.
+    NotFound,
     Styles,
     Scripts,
     Icon,
@@ -81,6 +84,7 @@ impl Route {
             Route::BlogRss => RoutePath::new([], "blog.rss".to_string()),
             Route::UpdatesRss => RoutePath::new([], "updates.rss".to_string()),
             Route::Credits => RoutePath::new(["credits"], None),
+            Route::NotFound => RoutePath::new([], "404.html".to_string()),
             Route::Styles => RoutePath::new([], "styles.css".to_string()),
             Route::Scripts => RoutePath::new([], "scripts.js".to_string()),
             Route::Icon => RoutePath::new([], "icon.png".to_string()),
@@ -102,8 +106,6 @@ impl From<Route> for RoutePath {
 
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
-    let use_global_tailwind =
-        std::env::args().any(|arg| arg == "--use-global-tailwind" || arg == "-u");
     let verbose = std::env::args().any(|arg| arg == "--verbose" || arg == "-v");
     // `--check` validates every page's markdown links/anchors and exits, without
     // building anything (no output clearing, copies, writes, OG images, or serve).
@@ -149,54 +151,26 @@ fn main() -> anyhow::Result<()> {
         })?;
     }
 
-    // Run syntax loading, tailwind generation, and content reading in parallel
-    let (syntax, tailwind_css, content) = timer.step(
-        "Loaded syntax, generated Tailwind CSS, and read content",
-        |substeps| {
-            use std::sync::Mutex;
+    let (syntax, content) = timer.step("Loaded syntax and read content", |substeps| {
+        use std::sync::Mutex;
 
-            // Collect timing reports from parallel tasks
-            let tailwind_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
-                Mutex::new(Vec::new());
-            let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
-                Mutex::new(Vec::new());
+        let content_reports: Mutex<Vec<(&'static str, std::time::Duration)>> =
+            Mutex::new(Vec::new());
 
-            let ((syntax, tailwind_css), content) = rayon::join(
-                || {
-                    rayon::join(syntax::SyntaxHighlighter::default, || {
-                        styles::generate_tailwind(
-                            fast,
-                            use_global_tailwind,
-                            &mut |label, elapsed| {
-                                tailwind_reports.lock().unwrap().push((label, elapsed));
-                            },
-                        )
-                    })
-                },
-                || {
-                    content::Content::read(fast, &mut |label, elapsed| {
-                        content_reports.lock().unwrap().push((label, elapsed));
-                    })
-                },
-            );
+        let (syntax, content) = rayon::join(syntax::SyntaxHighlighter::default, || {
+            content::Content::read(fast, &mut |label, elapsed| {
+                content_reports.lock().unwrap().push((label, elapsed));
+            })
+        });
 
-            // Report tailwind timings
-            substeps.step_nested("Generated Tailwind CSS", |nested| {
-                for (label, elapsed) in tailwind_reports.into_inner().unwrap() {
-                    nested.report(label, elapsed);
-                }
-            });
+        substeps.step_nested("Read content", |nested| {
+            for (label, elapsed) in content_reports.into_inner().unwrap() {
+                nested.report(label, elapsed);
+            }
+        });
 
-            // Report content timings
-            substeps.step_nested("Read content", |nested| {
-                for (label, elapsed) in content_reports.into_inner().unwrap() {
-                    nested.report(label, elapsed);
-                }
-            });
-
-            anyhow::Ok((syntax, tailwind_css?, Arc::new(content?)))
-        },
-    )?;
+        anyhow::Ok((syntax, Arc::new(content?)))
+    })?;
     let image_store = timer.step("Built image store", |_| {
         anyhow::Ok(Arc::new(image_store::ImageStore::new(&content)))
     })?;
@@ -382,6 +356,13 @@ fn main() -> anyhow::Result<()> {
             .write_to_route(output_dir, Route::Credits)
     })?;
 
+    timer.step("Wrote not found page", |_| {
+        let bump = Bump::new();
+
+        views::not_found::index(view_context.with_bump(&bump))
+            .write_to_route(output_dir, Route::NotFound)
+    })?;
+
     timer.step("Wrote frontpage", |substeps| {
         substeps.step("Wrote index", || {
             let bump = Bump::new();
@@ -451,18 +432,25 @@ fn main() -> anyhow::Result<()> {
         anyhow::Ok(())
     })?;
 
-    timer.step("Wrote bundled styles", |substeps| {
-        let output = substeps.step("Generated styles", || {
-            styles::generate(view_context, &tailwind_css)
+    let script = js::generate()?;
+
+    // Fonts are subset from the built pages, so this must come after them.
+    timer.step("Wrote bundled styles and fonts", |substeps| {
+        let output = substeps.step("Generated styles", || styles::generate(view_context))?;
+        let fonts = substeps.step("Subset fonts", || {
+            fonts::generate(output_dir, &output.css, &script, fast)
         })?;
+        for face in fonts.faces.iter().filter(|f| verbose || !f.cached) {
+            println!("   font {face}");
+        }
         substeps.step("Wrote CSS", || {
-            RoutePath::from(Route::Styles).write(output_dir, output.css)
+            RoutePath::from(Route::Styles).write(output_dir, [fonts.css, output.css].join("\n"))
         })?;
         anyhow::Ok(())
     })?;
 
     timer.step("Wrote bundled JavaScript", |_| {
-        RoutePath::from(Route::Scripts).write(output_dir, js::generate()?)?;
+        RoutePath::from(Route::Scripts).write(output_dir, script)?;
         anyhow::Ok(())
     })?;
 

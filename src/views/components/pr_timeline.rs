@@ -1,7 +1,8 @@
-use chrono::{Datelike, NaiveDate};
+use chrono::NaiveDate;
 use markdown::mdast::Node;
 use paxhtml::{bumpalo::Bump, html};
 
+use super::{display_date, month_day};
 use crate::markdown::inner_text;
 
 #[derive(Debug, Clone)]
@@ -67,6 +68,8 @@ pub fn collect_pr_entries(bump: &Bump, root: &Node) -> Vec<PrEntry> {
     entries
 }
 
+/// A timeline of every pull request the document mentions: a bar per PR over its span,
+/// with dates, diff, project and title. Rows and prose mentions link to each other.
 pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::Element<'bump> {
     if entries.is_empty() {
         return paxhtml::Element::Empty;
@@ -79,41 +82,30 @@ pub fn pr_timeline<'bump>(bump: &'bump Bump, entries: &[PrEntry]) -> paxhtml::El
     let timeline_end = sorted.iter().map(|e| e.end).max().unwrap();
     let total_days = ((timeline_end - timeline_start).num_days() as u32) + 1;
 
-    let total_add: u64 = entries
-        .iter()
-        .filter(|e| !e.closed)
-        .map(|e| e.add as u64)
-        .sum();
-    let total_sub: u64 = entries
-        .iter()
-        .filter(|e| !e.closed)
-        .map(|e| e.sub as u64)
-        .sum();
-    let merged = entries.iter().filter(|e| !e.closed).count();
-    let closed = entries.iter().filter(|e| e.closed).count();
+    // Closed PRs contributed no lines.
+    let merged: Vec<&PrEntry> = entries.iter().filter(|e| !e.closed).collect();
+    let closed = entries.len() - merged.len();
+    let total_add: u64 = merged.iter().map(|e| e.add as u64).sum();
+    let total_sub: u64 = merged.iter().map(|e| e.sub as u64).sum();
 
     let rows = sorted
         .iter()
         .map(|e| pr_row(bump, e, timeline_start, total_days));
 
     html! { in bump;
-        <details open>
-            <summary class="cursor-pointer font-bold">
-                {format!("Timeline of all {} PRs", merged + closed)}
-            </summary>
-            <div class="my-1 text-sm text-dim">
-                "Tally: "
-                <span class="text-emerald-700 dark:text-emerald-400">{format!("+{total_add}")}</span>
+        <figure class="timeline embed">
+            <figcaption>
+                {format!("timeline \u{b7} {} pull requests \u{b7} ", entries.len())}
+                <span class="timeline-add">{format!("+{total_add}")}</span>
                 " "
-                <span class="text-rose-700 dark:text-rose-400">{format!("-{total_sub}")}</span>
-                {format!(" across {merged} merged")}
+                <span class="timeline-sub">{format!("\u{2212}{total_sub}")}</span>
+                {format!(" across {} merged", merged.len())}
                 {(closed > 0).then(|| format!(" + {closed} closed"))}
-                "."
-            </div>
-            <div class="flex flex-col">
+            </figcaption>
+            <div class="timeline-rows">
                 #{rows}
             </div>
-        </details>
+        </figure>
     }
 }
 
@@ -231,79 +223,42 @@ fn pr_row<'bump>(
     let left_pct = (day_offset as f32 / total_days as f32) * 100.0;
     let width_pct = ((span as f32 / total_days as f32) * 100.0).max(0.8);
 
-    let start_label = format_short_date(e.start);
-    let end_label = format_short_date(e.end);
     let href = format!(
         "#{}",
         e.anchor_id().expect("PR entry should have anchor id")
     );
     let timeline_id = e.timeline_id().expect("PR entry should have timeline id");
 
-    let date_iso = if e.start == e.end {
-        format!("{}", e.start)
+    let dates = if e.start == e.end {
+        display_date(e.start)
     } else {
-        format!("{} → {}", e.start, e.end)
+        format!("{} \u{2192} {}", display_date(e.start), display_date(e.end))
     };
     let title_attr = format!(
-        "{}: {} ({date_iso}, +{}, −{}{})",
+        "{}: {} ({dates}, +{}, \u{2212}{}{})",
         e.project,
         e.title,
         e.add,
         e.sub,
         if e.closed { ", closed" } else { "" }
     );
-
-    let row_class = format!(
-        "flex flex-wrap sm:flex-nowrap items-center gap-x-2 py-0.5 text-xs no-underline hover:bg-dim/10 scroll-mt-16 [&:target]:bg-dim/25{}",
-        if e.closed {
-            " saturate-50 opacity-70 italic"
-        } else {
-            ""
-        }
-    );
+    let closed = e
+        .closed
+        .then(|| paxhtml::Attribute::new(bump, "data-closed", "true"));
 
     html! { in bump;
-        <a id={timeline_id} href={href} title={title_attr} class={row_class}>
-            <span class="w-10 text-right text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
-                {start_label}
+        <a id={timeline_id} href={href} class="timeline-row" title={title_attr} {closed}>
+            <time class="timeline-date" datetime={e.start.to_string()}>{month_day(e.start)}</time>
+            <span class="timeline-track" ariaHidden="true">
+                <span style={format!("left: {left_pct:.2}%; width: {width_pct:.2}%;")}></span>
             </span>
-            <span class="relative h-2.5 flex-1 sm:flex-none sm:w-72 min-w-[4rem] bg-dim/15 rounded-sm">
-                <span class="absolute h-full rounded-sm bg-dim/80"
-                      style={format!("left: {left_pct:.2}%; width: {width_pct:.2}%;")}>
-                </span>
-            </span>
-            <span class="w-10 text-left text-dim flex-shrink-0 tabular-nums whitespace-nowrap">
-                {end_label}
-            </span>
-            <span class="text-emerald-700 dark:text-emerald-400 w-10 text-right flex-shrink-0 tabular-nums whitespace-nowrap">
-                {format!("+{}", e.add)}
-            </span>
-            <span class="text-rose-700 dark:text-rose-400 w-10 text-left flex-shrink-0 tabular-nums whitespace-nowrap">
-                {format!("−{}", e.sub)}
-            </span>
-            <span class="basis-full sm:basis-auto sm:flex-1 min-w-0 truncate">
-                <span class="text-dim">{format!("{}: ", e.project)}</span>
+            <time class="timeline-date" datetime={e.end.to_string()}>{month_day(e.end)}</time>
+            <span class="timeline-add">{format!("+{}", e.add)}</span>
+            <span class="timeline-sub">{format!("\u{2212}{}", e.sub)}</span>
+            <span class="timeline-title">
+                <span class="timeline-project">{format!("{}: ", e.project)}</span>
                 {e.title.clone()}
             </span>
         </a>
     }
-}
-
-fn format_short_date(d: NaiveDate) -> String {
-    let m = match d.month() {
-        1 => "Jan",
-        2 => "Feb",
-        3 => "Mar",
-        4 => "Apr",
-        5 => "May",
-        6 => "Jun",
-        7 => "Jul",
-        8 => "Aug",
-        9 => "Sep",
-        10 => "Oct",
-        11 => "Nov",
-        12 => "Dec",
-        _ => "?",
-    };
-    format!("{m} {:02}", d.day())
 }

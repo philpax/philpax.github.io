@@ -22,11 +22,11 @@ impl Default for SyntaxHighlighter {
 }
 impl SyntaxHighlighter {
     pub fn dark_theme_css(&self, selector: &str) -> String {
-        builtin::ayu_dark().to_css(selector)
+        builtin::github_dark().to_css(selector)
     }
 
     pub fn light_theme_css(&self, selector: &str) -> String {
-        builtin::ayu_light().to_css(selector)
+        builtin::github_light().to_css(selector)
     }
 
     fn normalize_language(language: Option<&str>) -> &str {
@@ -43,7 +43,7 @@ impl SyntaxHighlighter {
         }
     }
 
-    /// Get the display name for a language
+    /// Display name for a language: canonical name, or `text`.
     pub fn language_name<'a>(&self, language: Option<&'a str>) -> &'a str {
         Self::normalize_language(language)
     }

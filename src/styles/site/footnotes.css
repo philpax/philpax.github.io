@@ -1,0 +1,121 @@
+/* ========================================================================
+   FOOTNOTES — the marker links to the note beside it, which opens in place or,
+   where the column has room, sits in the margin.
+   ======================================================================== */
+
+@scope (.prose) to (.embed) {
+  /* A fixed size, because the number inside a note would compound an em. */
+  :scope .fn-mark,
+  :scope .fn-num {
+    font-family: var(--f-ui);
+    font-size: var(--text-xs);
+    line-height: var(--lead-none);
+  }
+  /* A chip on the section's tint, raised without <sup>, which would open up the
+     line. */
+  :scope .fn-mark {
+    --link-rest: var(--accent);
+    --link-hover: var(--accent);
+    position: relative;
+    top: calc(var(--r-5) * -1);
+    margin-left: var(--r-3);
+    padding: var(--r-2) var(--r-6);
+    background: var(--accent-soft);
+    transition: background-color var(--motion) ease;
+  }
+  :scope .fn-mark::before {
+    content: 'fn' / '';
+    margin-right: var(--r-5);
+    font-size: 0.75em;
+    font-style: italic;
+  }
+  :scope .fn-mark:hover {
+    background: color-mix(in oklab, var(--accent-soft) 70%, var(--accent));
+  }
+  /* A target big enough to tap, without moving the line around it. */
+  :scope .fn-mark::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    translate: -50% -50%;
+  }
+  :scope .fn-num {
+    margin-right: var(--r-4);
+    vertical-align: super;
+    color: var(--accent);
+  }
+
+  :scope .fn-note {
+    display: none;
+    font-size: var(--em-down);
+    line-height: var(--lead-normal);
+    color: var(--ink-muted);
+  }
+
+  /* Inline: opened by the script's disclosure, or by :target without a script. */
+  :scope .fn-note:target,
+  :scope .fn-mark[aria-expanded='true'] ~ .fn-note {
+    display: block;
+    margin: var(--r-5) 0;
+    padding: var(--r-5) var(--r-7);
+    border-left: var(--rule-strong) solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--raised);
+  }
+  /* Open, the chip fills in, like the pressed state of a button. */
+  :scope .fn-mark[aria-expanded='true'] {
+    --link-rest: white;
+    --link-hover: white;
+    background: var(--accent-solid);
+  }
+}
+
+/* Sidenotes, measured on the prose's column: the measure plus the gutter,
+   written out because container queries can't read variables. */
+.prose {
+  container: column / inline-size;
+}
+@container column (width >= 53.75rem) {
+  @scope (.prose) to (.embed) {
+    :scope .fn-note,
+    :scope .fn-note:target,
+    :scope .fn-mark[aria-expanded='true'] ~ .fn-note {
+      display: block;
+      float: right;
+      clear: right;
+      width: var(--sidenote-width);
+      margin-right: calc(var(--sidenote-gutter) * -1);
+      margin-bottom: 1lh;
+      margin-left: var(--sidenote-gap);
+      padding: var(--r-4) 0 0;
+      border-top: var(--rule-strong) solid var(--line-strong);
+      border-left-width: 0;
+      border-radius: 0;
+      text-align: left;
+      background: none;
+    }
+    /* The note is already open, so the marker does nothing. */
+    :scope .fn-mark {
+      cursor: default;
+    }
+    :scope .fn-mark[aria-expanded='true'] {
+      --link-rest: var(--accent);
+      --link-hover: var(--accent);
+      background: var(--accent-soft);
+    }
+    /* Hovering either end of a note lights the other. */
+    :scope .fn:has(> .fn-mark:hover) > .fn-note,
+    :scope .fn-note:hover {
+      border-top-color: var(--accent);
+      color: var(--ink);
+      transition:
+        color var(--motion) ease,
+        border-color var(--motion) ease;
+    }
+    :scope .fn:has(> .fn-note:hover) > .fn-mark {
+      background: color-mix(in oklab, var(--accent-soft) 70%, var(--accent));
+    }
+  }
+}
