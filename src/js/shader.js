@@ -9,15 +9,21 @@ void main() { gl_Position = vec4(p, 0.0, 1.0); }
 // Line width is constant in screen space (via fwidth, which needs
 // OES_standard_derivatives in WebGL 1).
 // Pixels near the pointer sample from a point pulled toward it; strength eases with u_ms.
+// The field drifts by u_o, which follows the clock rather than the page, so it carries on
+// across pages. The noise tiles every DRIFT_PERIOD (its lattice wraps, and each octave
+// exactly doubles), so the drift can be wrapped to keep it precise without a seam.
 const SHADER_FRAG = `#extension GL_OES_standard_derivatives : enable
 precision mediump float;
 uniform vec2 u_res;
-uniform float u_t;
+uniform vec2 u_o;
 uniform vec3 u_col;
 uniform vec2 u_m;
 uniform float u_ms;
 
-float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float hash(vec2 p) {
+  p = mod(p, 256.0);
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
 
 float noise(vec2 p) {
   vec2 i = floor(p), f = fract(p);
@@ -33,14 +39,15 @@ float fbm(vec2 p) {
   float a = 0.5, s = 0.0;
   for (int i = 0; i < 4; i++) {
     s += a * noise(p);
-    p *= 2.03;
+    // The shift keeps the octaves' lattices apart without breaking the tiling.
+    p = p * 2.0 + vec2(17.3, 9.1);
     a *= 0.5;
   }
   return s;
 }
 
-float figure(vec2 p, float t) {
-  float f = fbm(p * 0.7 + vec2(t * 0.1, t * 0.035));
+float figure(vec2 p, vec2 o) {
+  float f = fbm(p * 0.7 + o);
   float g = f * 9.0;
   float d = abs(fract(g) - 0.5);
   float w = fwidth(g);
@@ -55,10 +62,13 @@ void main() {
   vec2 d = p - vec2(u_m.x * a, u_m.y);
   float r = length(d);
   p -= d / max(r, 0.001) * (u_ms * 0.6 * exp(-r * r * 0.6));
-  float v = figure(p, u_t);
+  float v = figure(p, u_o);
   gl_FragColor = vec4(u_col, clamp(v, 0.0, 1.0));
 }
 `;
+
+// The noise lattice's period, as in the shader's hash.
+const DRIFT_PERIOD = 256;
 
 function compileShader(gl, type, src) {
   const shader = gl.createShader(type);
@@ -116,7 +126,7 @@ function initHeaderShader() {
   gl.clearColor(0, 0, 0, 0);
 
   const uRes = gl.getUniformLocation(prog, "u_res");
-  const uTime = gl.getUniformLocation(prog, "u_t");
+  const uDrift = gl.getUniformLocation(prog, "u_o");
   const uCol = gl.getUniformLocation(prog, "u_col");
   const uM = gl.getUniformLocation(prog, "u_m");
   const uMs = gl.getUniformLocation(prog, "u_ms");
@@ -163,7 +173,6 @@ function initHeaderShader() {
   }
 
   let n = 0;
-  const start = performance.now();
   function draw() {
     requestAnimationFrame(draw);
     if (document.hidden) return;
@@ -174,7 +183,8 @@ function initHeaderShader() {
     m.s += (m.ts - m.s) * 0.08;
     gl.uniform2f(uM, m.x, m.y);
     gl.uniform1f(uMs, m.s);
-    gl.uniform1f(uTime, (performance.now() - start) / 1000);
+    const t = Date.now() / 1000;
+    gl.uniform2f(uDrift, (t * 0.1) % DRIFT_PERIOD, (t * 0.035) % DRIFT_PERIOD);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
