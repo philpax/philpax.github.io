@@ -69,19 +69,23 @@
     text-wrap: balance;
     color: var(--accent);
   }
-  /* Except the one opening the body. */
-  :scope > section:first-child > :first-child {
+  /* Section gaps use the body size, not the heading's size. */
+  :scope > * + section,
+  :scope section > * + section {
+    margin-top: var(--r-10);
+  }
+  :scope section > :is(h2, h3, h4):first-child {
     margin-top: 0;
+  }
+  /* Introductory text stays closer to the first section. */
+  :scope > :not(section, .embed) + section:first-of-type {
+    margin-top: var(--r-8);
   }
   :scope :is(h2, h3, h4) + :where(:not(.embed)) {
     margin-top: var(--r-6);
   }
-  /* As does a section opening straight under its parent's heading: in its own
-     heading's size, not the section's. */
+  /* An immediate subsection uses the same gap as text below a heading. */
   :scope :is(h2, h3, h4) + section {
-    margin-top: 0;
-  }
-  :scope :is(h2, h3, h4) + section > :first-child {
     margin-top: var(--r-6);
   }
   :scope h2 {
