@@ -44,6 +44,10 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
         ) {
             output.push('\n');
         }
+        // Blank line before headings so sections read as separate.
+        if matches!(node, Node::Heading(_)) {
+            output.insert(0, '\n');
+        }
         output
     }
 }
