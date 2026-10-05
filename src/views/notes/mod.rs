@@ -24,7 +24,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             note.id
         )
     } else {
-        note.description.to_string()
+        crate::markdown::plain_text(&note.description)
     };
 
     let og_image_url = format!("{}{}", context.website_base_url, note.og_image_path());

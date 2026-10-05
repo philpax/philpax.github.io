@@ -45,13 +45,12 @@ pub fn post<'a>(context: ViewContext<'a>, document: &Document) -> paxhtml::Docum
         context,
         SocialMeta {
             title: Some(document.metadata.title.clone()),
-            description: Some(
-                document
+            description: Some(crate::markdown::plain_text(
+                &document
                     .metadata
                     .short_markdown()
-                    .unwrap_or_else(|| document.description.clone())
-                    .to_string(),
-            ),
+                    .unwrap_or_else(|| document.description.clone()),
+            )),
             image: Some(og_image_url.clone()),
             url: Some(document.route_path().abs_url(context.website_base_url)),
             type_: Some("article".to_string()),

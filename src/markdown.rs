@@ -1003,6 +1003,13 @@ pub fn validate_document_links(content: &Content, doc: &Document) -> Vec<String>
 // paxsite-content so the CLI can derive standard.site `textContent` identically.
 pub use paxsite_content::inner_text;
 
+/// Plain-text rendering of a markdown AST (block nodes separated by newlines,
+/// headings by a blank line before), trimmed, for use in meta descriptions. Don't use `Node::to_string()`: it
+/// concatenates children with no separators, running blocks together.
+pub fn plain_text(node: &markdown::mdast::Node) -> String {
+    inner_text(node, None).trim().to_string()
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct HeadingHierarchy<'a> {
     pub heading: paxhtml::Element<'a>,
