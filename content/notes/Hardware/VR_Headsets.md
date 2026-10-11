@@ -1,4 +1,4 @@
-This is a coarse list of the VR headsets I own. Collecting them is a hobby of mine, but I can't say that I actually use anything but the Quest 3 and Index on a regular basis.
+This is a coarse list of the VR headsets I own. Collecting them is a hobby of mine, but I can't say that I actually use anything but the Frame and Beyond on a regular basis.
 
 I'd like to write a proper review of each and/or compare them (especially a comparison of the Pico 4/Lynx R-1/Quest 3/Vision Pro), but who has the time for that?
 
