@@ -12,6 +12,10 @@ A Rust binary embeds Servo via libservo and directs the compositor at an offscre
 
 The page is treated as one full-height image: scrolling falls out of the terminal's own scrollback rather than a pager. Input is forwarded rather than faked — crossterm delivers key and mouse events to Servo's `WebView` API, Servo redraws, and the new frame is displayed. Text input caret fidelity is Servo's problem (it draws the caret into the pixels); the terminal's own cursor should stay hidden.
 
+## Implementations
+
+- [Smoko](https://gitlab.com/sneptech/smoko): A Rust terminal browser powered by Servo, with mouse input, typing, scrolling, and browsing history. Its README credits this proposal as the original concept.
+
 ## Prior art
 
 - [Brow6el](https://github.com/codingismy11to7/brow6el): close to the same idea, using CEF instead of Servo, with sixel and kitty output. Its warnings about kitty over SSH (uncompressed RGBA per frame) quantify the bandwidth problem this idea shares.

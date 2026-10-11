@@ -24,12 +24,18 @@ What the idea is, what it enables, and why it is worth exploring. Usually two or
 
 The mechanism that defines the idea, with relevant constraints or open questions. Usually one or two short prose paragraphs, without bullets. Leave nonessential implementation choices open.
 
+## Implementations
+
+- [Project](URL): A brief description of an implementation of this idea.
+
 ## Prior art
 
 - [Project or reference](URL): What it does and how it relates to the idea.
 ```
 
 Place `<!-- more -->` after the Abstract and before Implementation. The site uses the attribution and Abstract before the marker as the preview and requires nonempty content after the marker to render a note.
+
+Include `## Implementations` only when a known implementation of this idea can be linked. Place it after Implementation and before Prior art. Link to the project's repository or homepage and briefly describe it. Keep actual implementations separate from related prior art, and omit the section entirely when none is known. Adding a link does not require rewriting the original proposal or changing its drafting attribution.
 
 Aim for roughly 200 to 400 words, including prior art. This is a soft target, not a minimum. A simple idea can be shorter. Do not add separate motivation, requirements, roadmap, or risk sections by default. Motivation belongs in the Abstract. If research finds no useful references, state that briefly under Prior art without claiming novelty. If research cannot be completed, state the limitation.
 
@@ -39,7 +45,7 @@ Aim for roughly 200 to 400 words, including prior art. This is a soft target, no
 
 2. **Interview for meaning and motivation.** Start from the description already supplied. Establish the central idea and what makes it useful or interesting before asking about secondary implementation choices. Ask about motivation only if it is not already clear. Ask questions that materially affect the note, not every choice an implementer will eventually face. Track settled choices and dependent questions. Ask independent questions together in small rounds; defer dependent questions until their prerequisites are answered. Use a structured question tool when available, with a self-contained briefing for each question. Recommend an answer only when there is a reason for it. Find facts through inspection or research rather than asking the user to supply them. Stop once the idea, motivation, and defining mechanism are clear enough to record. Point out direct contradictions or existing solutions without requiring a case for pursuing the project.
 
-3. **Research and check prior art.** Once the idea is specific enough, search the web automatically for existing solutions and relevant techniques. Use alternative terminology when useful. Prefer original project pages, repositories, documentation, or papers. For each retained external reference, open the source and check the passage supporting the description and comparison. Search snippets alone do not verify a source. Keep only references that add useful context, usually a few, and stop once the relevant comparisons are supported. Do not search for extra libraries or implementation details merely to expand the note. Distinguish source claims from inferences. Describe technical differences without unsupported judgements about quality or legitimacy. Do not invent differences, include weak matches to meet a count, or infer novelty from an unsuccessful search. If sources cannot be opened or claims remain unverified, omit those claims and report the limitation. For delegated research, specify the scope, established idea and constraints, and a request for checked URLs, supporting passages, and brief relevance summaries. Use verified delegated findings without repeating the same research. Include local prior art when relevant.
+3. **Research and check prior art.** Once the idea is specific enough, search the web automatically for existing solutions and relevant techniques. Use alternative terminology when useful. Prefer original project pages, repositories, documentation, or papers. For each retained external reference, open the source and check the passage supporting the description and comparison. Search snippets alone do not verify a source. Keep only references that add useful context, usually a few, and stop once the relevant comparisons are supported. Do not search for extra libraries or implementation details merely to expand the note. Distinguish source claims from inferences. Describe technical differences without unsupported judgements about quality or legitimacy. Do not invent differences, include weak matches to meet a count, or infer novelty from an unsuccessful search. If sources cannot be opened or claims remain unverified, omit those claims and report the limitation. For delegated research, specify the scope, established idea and constraints, and a request for checked URLs, supporting passages, and brief relevance summaries. Use verified delegated findings without repeating the same research. Include local prior art when relevant. If the user supplies an implementation of the idea or research finds one, check its repository or homepage before describing its features. Record it under Implementations rather than Prior art. If the source cannot be opened, a user-confirmed implementation link can still be included, but do not add unverified feature claims and report the access limitation.
 
 4. **Resolve material findings.** Ask a follow-up only when research or an ambiguity changes the central idea, a defining constraint, or the comparison with prior art. Leave other choices open. Include library choices, API names, protocol flags, encoding details, or similar specifics only when essential to the idea or explicitly requested. Do not add milestones, intermediate versions, or alternative projects by default.
 
@@ -51,7 +57,7 @@ Aim for roughly 200 to 400 words, including prior art. This is a soft target, no
 
 Check silently before each approval request:
 
-- The italic model attribution appears at the top, followed by the complete Abstract, Implementation, and Prior art, including unchanged content after revisions. No horizontal rule separates the attribution from the content. Exactly one `<!-- more -->` marker separates the Abstract from Implementation, with nonempty content on both sides.
+- The italic model attribution appears at the top, followed by the complete Abstract, Implementation, optional Implementations, and Prior art, including unchanged content after revisions. Include Implementations only when an implementation link is known, and distinguish it from prior art. No horizontal rule separates the attribution from the content. Exactly one `<!-- more -->` marker separates the Abstract from Implementation, with nonempty content on both sides.
 - The Abstract includes the user's motivation. Implementation uses short prose without bullets, milestones, or nonessential specifics. The note contains no invented preferences or repeated informal framing.
 - Retained source claims and comparisons have checked support. The attribution uses a confirmed drafting model name. Research limitations and important unknowns are stated accurately.
 
