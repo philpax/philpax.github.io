@@ -16,6 +16,7 @@ use crate::{
 };
 
 mod field;
+mod hero;
 mod tokens;
 
 use tokens::{Palette, Section, hex};
@@ -119,6 +120,9 @@ struct Preview {
     subtitle: Option<String>,
     /// Selects the part of the field shown; stable per page.
     seed: u64,
+    /// A document's hero image, softened into the background in place of the
+    /// field.
+    hero: Option<std::path::PathBuf>,
 }
 
 /// Every preview to draw, by served path.
@@ -141,6 +145,10 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
             title: doc.metadata.title.clone(),
             subtitle: dates(doc.metadata.datetime, doc.metadata.last_modified),
             seed: 0,
+            hero: doc
+                .hero_filename_and_alt
+                .as_ref()
+                .map(|(filename, _)| doc.source_path.with_file_name(filename)),
         };
         (doc.og_image_path(), preview)
     });
@@ -154,6 +162,7 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
             title: title.to_string(),
             subtitle: Some(subtitle.to_string()),
             seed: 0,
+            hero: None,
         };
         (page_image_path(name), preview)
     };
@@ -165,6 +174,7 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
         title: paxsite_content::CONFIG.name.to_string(),
         subtitle: None,
         seed: 0,
+        hero: None,
     };
     let pages = [
         (page_image_path("index"), index),
@@ -212,6 +222,7 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
                 .get(tag)
                 .map(|description| paxsite_content::markdown_to_plaintext(description)),
             seed: 0,
+            hero: None,
         };
         (tag_image_path(tag), preview)
     });
@@ -274,13 +285,19 @@ impl Generator {
     /// Draws `preview` to `output_path`.
     fn generate(&self, preview: &Preview, output_path: &Path) -> Result<()> {
         let section = &self.sections[preview.look as usize];
-        let background = field::render(
-            IMAGE_WIDTH,
-            IMAGE_HEIGHT,
-            preview.seed,
-            self.palette.canvas,
-            section.accent,
-        );
+        // A hero carries its own background; the field is drawn on the canvas alone.
+        let background = match &preview.hero {
+            Some(path) => hero::background(path, &self.palette).with_context(|| {
+                format!("Failed to soften the hero image for {}", preview.title)
+            })?,
+            None => field::render(
+                IMAGE_WIDTH,
+                IMAGE_HEIGHT,
+                preview.seed,
+                self.palette.canvas,
+                section.accent,
+            ),
+        };
         let size = resvg::tiny_skia::IntSize::from_wh(IMAGE_WIDTH, IMAGE_HEIGHT)
             .context("the image has no size")?;
         let mut pixmap = resvg::tiny_skia::Pixmap::from_vec(background, size)

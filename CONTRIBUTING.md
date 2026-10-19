@@ -126,7 +126,7 @@ No frontmatter needed. The directory structure becomes the breadcrumb path. For 
 | `src/views/updates/mod.rs` | Updates index and individual update pages |
 | `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script) |
 | `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
-| `src/og_image/` | OpenGraph image generation (1200x630 PNG): a contour field seeded by the document's path, in its section's colours, with the site's faces instanced from `assets/source/fonts/` |
+| `src/og_image/` | OpenGraph image generation (1200x630 PNG): a contour field seeded by the document's path, in its section's colours, or the document's hero image softened into the background where it has one, with the site's faces instanced from `assets/source/fonts/` |
 | `src/fonts/` | Font subsetting: characters from the built pages, HarfBuzz instancing, WOFF2, cache, `@font-face` rules |
 | `src/main.rs` | Build orchestration, output generation |
 
