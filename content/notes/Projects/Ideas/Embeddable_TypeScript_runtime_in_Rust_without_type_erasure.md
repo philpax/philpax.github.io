@@ -30,7 +30,7 @@ The runtime implements the TypeScript language and its standard built-ins rather
 
 TypeScript's types are structural, so an interface lists properties rather than a layout, and two objects that satisfy `{ x: number; y: number }` can hold different extra fields in different orders. Classes and object literals can have fixed layouts, but code written against an interface needs indirection, such as per-shape lookup tables passed alongside the value, inline caches, or monomorphisation per concrete shape.
 
-Generics pose a similar choice: erasure is simple, while monomorphisation is faster but increases code size and compile time. Unions and optional properties also need representation choices, and integer arithmetic on `number` needs range analysis or speculation.
+Generics pose a similar choice: a single shared, boxed implementation is simple, while monomorphisation is faster but increases code size and compile time. Unions and optional properties also need representation choices, and integer arithmetic on `number` needs range analysis or speculation.
 
 Compiling at load time puts compile time on the startup path. Cranelift compiles quickly, but large plugins may still need a cheaper first tier, a cache of compiled code keyed by source, or lazy per-function compilation.
 
