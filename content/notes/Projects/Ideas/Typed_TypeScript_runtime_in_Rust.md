@@ -12,11 +12,11 @@ Applications embedding it would get a familiar typed language and a Rust-native 
 
 The frontend would be [tsrs](https://github.com/oxc-project/tsrs), the Rust port of the TypeScript compiler [announced by Cloudflare](https://blog.cloudflare.com/typescript-rust-port), built with VoidZero and targeting full conformance with TypeScript 7. Using the real checker means the runtime reports the same type errors as the tools TypeScript developers already use, and because tsrs is written in Rust, the whole pipeline runs inside the host process without a Node or Go toolchain.
 
+The backend follows the approach of Bun's AOT compiler, listed under [Prior art](#prior-art), which lowers checked TypeScript to a typed IR, enforces the types where values enter typed code, and compiles the result to machine code at build time. This runtime would do the same at load time inside the host, so a plugin runs directly from source.
+
 TypeScript's types are unsound, so the runtime accepts only a strict subset in which they hold: it rejects `any`, `as` casts that narrow a type, non-null assertions and similar escape hatches, and treats the remaining types as guarantees. The host application can permit dynamic, checked fallbacks for specific operations, such as parsing JSON into a declared type with a check at the boundary.
 
-The runtime lowers the checked AST to a typed IR in which each value has a concrete representation, such as an unboxed float, a pointer to an object of known shape, or a tagged dynamic value, so that a property read on a known shape becomes a load at a fixed offset.
-
-Bun's AOT compiler, listed under [Prior art](#prior-art), takes the same approach at build time, whereas this runtime compiles at load time inside the host, so a plugin runs directly from source. Compiling at load time also leaves room for a speculative JIT: the types provide the baseline specialisation, and runtime profiles refine it where a type does not determine a representation, such as a union, an interface-typed parameter, or a `number` that holds only integers in practice.
+The runtime lowers the checked AST to a typed IR in which each value has a concrete representation, such as an unboxed float, a pointer to an object of known shape, or a tagged dynamic value, so that a property read on a known shape becomes a load at a fixed offset. Compiling at load time also leaves room for a speculative JIT: the types provide the baseline specialisation, and runtime profiles refine it where a type does not determine a representation, such as a union, an interface-typed parameter, or a `number` that holds only integers in practice.
 
 There are three candidate backends:
 
