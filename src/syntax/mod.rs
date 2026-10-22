@@ -3,6 +3,14 @@ use std::sync::Arc;
 use arborium::{Config, GrammarStore, Highlighter, HtmlFormat, theme::builtin};
 use paxhtml::bumpalo::Bump;
 
+/// Where a piece of code appears. Only block code reports unknown languages;
+/// inline code is usually untagged prose, so a colon in it is not a request.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum CodeKind {
+    Block,
+    Inline,
+}
+
 pub struct SyntaxHighlighter {
     store: Arc<GrammarStore>,
     config: Config,
@@ -48,11 +56,10 @@ impl SyntaxHighlighter {
         Self::normalize_language(language)
     }
 
-    /// Check if a language token is valid/recognized
-    pub fn is_valid_language(&self, language: &str) -> bool {
+    /// Check if a language token maps to a grammar we can actually highlight.
+    fn is_valid_language(&self, language: &str) -> bool {
         let normalized = Self::highlight_language(Self::normalize_language(Some(language)));
-        // Check if arborium can detect/use this language
-        normalized != "text" || language == "text"
+        self.store.get(normalized).is_some()
     }
 
     /// Parse inline code with optional language prefix (e.g., "rs:Option<T>")
@@ -77,6 +84,7 @@ impl SyntaxHighlighter {
         bump: &'bump Bump,
         language: Option<&str>,
         code: &str,
+        kind: CodeKind,
     ) -> Result<paxhtml::Element<'bump>, arborium::Error> {
         let language = Self::highlight_language(Self::normalize_language(language));
         let mut highlighter =
@@ -84,7 +92,7 @@ impl SyntaxHighlighter {
         match highlighter.highlight(language, code) {
             Ok(html) => Ok(paxhtml::Element::raw(bump, &html)),
             Err(arborium::Error::UnsupportedLanguage { language }) => {
-                if language != "text" {
+                if kind == CodeKind::Block && language != "text" {
                     eprintln!(
                         "warning: unsupported language '{language}', rendering as plain text"
                     );
@@ -92,6 +100,33 @@ impl SyntaxHighlighter {
                 Ok(paxhtml::Element::text(bump, code))
             }
             Err(e) => Err(e),
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::SyntaxHighlighter;
+
+    /// A colon only introduces a language when a grammar actually exists for it;
+    /// otherwise the text is prose that merely contains a colon.
+    #[test]
+    fn inline_code_language_prefix_requires_a_grammar() {
+        let syntax = SyntaxHighlighter::default();
+
+        assert_eq!(syntax.parse_inline_code("c:JOIN"), (Some("c"), "JOIN"));
+        assert_eq!(
+            syntax.parse_inline_code("py:print(1)"),
+            (Some("py"), "print(1)")
+        );
+
+        for code in [
+            "std::sync::atomic",
+            "http://example.com",
+            "store: false",
+            "Major: Minor",
+        ] {
+            assert_eq!(syntax.parse_inline_code(code), (None, code));
         }
     }
 }

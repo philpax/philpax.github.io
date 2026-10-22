@@ -7,6 +7,7 @@ use paxhtml::{builder::Builder, html};
 
 use crate::{
     content::{Content, Document},
+    syntax::CodeKind,
     views::{
         ViewContext,
         components::{
@@ -190,7 +191,7 @@ impl<'a> MarkdownConverter<'a> {
             // Language defaults to `text`.
             Node::Code(c) => {
                 let language = c.lang.as_deref().map(str::trim).filter(|l| !l.is_empty());
-                let highlighted = self.highlight(language, &c.value, "code block");
+                let highlighted = self.highlight(language, &c.value, CodeKind::Block);
                 html! { in bump;
                     <CodeBlock language={self.context.syntax.language_name(language)}>
                         {highlighted}
@@ -208,7 +209,7 @@ impl<'a> MarkdownConverter<'a> {
             Node::Break(_) => b.br([]),
             Node::InlineCode(c) => {
                 let (language, code) = self.context.syntax.parse_inline_code(&c.value);
-                let highlighted = self.highlight(language, code, "inline code");
+                let highlighted = self.highlight(language, code, CodeKind::Inline);
                 html! { in bump; <InlineCode>{highlighted}</InlineCode> }
             }
             Node::Image(i) => {
@@ -422,10 +423,19 @@ impl<'a> MarkdownConverter<'a> {
     }
 
     /// Highlights code; panics if the highlighter fails.
-    fn highlight(&self, language: Option<&str>, code: &str, what: &str) -> paxhtml::Element<'a> {
+    fn highlight(
+        &self,
+        language: Option<&str>,
+        code: &str,
+        kind: CodeKind,
+    ) -> paxhtml::Element<'a> {
+        let what = match kind {
+            CodeKind::Block => "code block",
+            CodeKind::Inline => "inline code",
+        };
         self.context
             .syntax
-            .highlight_code(self.context.bump, language, code)
+            .highlight_code(self.context.bump, language, code, kind)
             .unwrap_or_else(|e| {
                 panic!("failed to highlight {what} ({}): {e:?}", self.error_context)
             })
