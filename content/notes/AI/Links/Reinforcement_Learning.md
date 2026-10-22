@@ -1,0 +1,15 @@
+- [Decisions & Dragons: A guide to the perilous world of reinforcement learning.](https://www.decisionsanddragons.com/)
+- [Recent reasoning research: GRPO tweaks, base model RL, and data curation](https://www.interconnects.ai/p/papers-im-reading-base-model-rl-grpo)
+- [Towards Delivering a Coherent Self-Contained Explanation of Proximal Policy Optimization](https://fse.studenttheses.ub.rug.nl/25709/1/mAI_2021_BickD.pdf)
+- [Applying RL: Fixing Structured Outputs](https://osmosis.ai/blog/structured-outputs-comparison)
+- [The State of Reinforcement Learning for LLM Reasoning](https://magazine.sebastianraschka.com/p/the-state-of-llm-reasoning-model-training)
+- [Reward Models](https://cameronrwolfe.substack.com/p/reward-models)
+- [Direct Preference Optimization (DPO)](https://cameronrwolfe.substack.com/p/direct-preference-optimization)
+- [Reinforcement learning and general intelligence](https://www.artfintel.com/p/reinforcement-learning-and-general)
+- [PPO for LLMs: A Guide for Normal People](https://cameronrwolfe.substack.com/p/ppo-llm)
+- [Group Relative Policy Optimization (GRPO)](https://open.substack.com/pub/cameronrwolfe/p/grpo)
+- [RL Scaling Laws](https://cameronrwolfe.substack.com/p/rl-scaling-laws)
+- [Agentic RL](https://cameronrwolfe.substack.com/p/agentic-rl)
+- [Reinforcement Learning from Human Feedback Book](https://rlhfbook.com/)
+
+<!-- more -->
