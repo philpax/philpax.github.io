@@ -47,6 +47,8 @@ impl SyntaxHighlighter {
     fn highlight_language(language: &str) -> &str {
         match language {
             "crystal" => "ruby",
+            // Fences are commonly tagged `re`; arborium only knows `regex`.
+            "re" => "regex",
             lang => lang,
         }
     }
@@ -128,5 +130,18 @@ mod tests {
         ] {
             assert_eq!(syntax.parse_inline_code(code), (None, code));
         }
+    }
+
+    /// Fence tags the content uses must resolve to a grammar we have compiled in.
+    #[test]
+    fn fence_language_aliases_resolve_to_a_grammar() {
+        let syntax = SyntaxHighlighter::default();
+
+        assert!(syntax.is_valid_language("re"));
+        assert!(syntax.is_valid_language("regex"));
+        assert!(syntax.is_valid_language("crystal"));
+
+        // Anything else is prose, not a language: see `CodeKind::Inline`.
+        assert!(!syntax.is_valid_language("std"));
     }
 }
