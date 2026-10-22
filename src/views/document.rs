@@ -124,8 +124,8 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
 
 // --- Private implementation details ---
 
-/// The contents: an outline of every heading. Posts need more than one heading;
-/// notes, which have no aside, need one.
+/// The contents: a link to the top of the document, then an outline of every heading.
+/// Posts need more than one heading; notes, which have no aside, need one.
 fn toc<'a>(
     context: ViewContext<'a>,
     document: &Document,
@@ -139,9 +139,19 @@ fn toc<'a>(
         _ => 2,
     };
     (count(&headings) >= minimum).then(|| {
+        // Lowercase to match the headings when they're all lowercase.
+        let introduction = if headings
+            .iter()
+            .all(|h| h.heading_text.to_lowercase() == h.heading_text)
+        {
+            "introduction"
+        } else {
+            "Introduction"
+        };
+        let introduction = html! { in bump; <li><a href="#">{introduction}</a></li> };
         html! { in bump;
             <nav ariaLabel="Table of contents" class="toc">
-                {toc_list(bump, &headings)}
+                {toc_list(bump, Some(introduction), &headings)}
             </nav>
         }
     })
@@ -151,13 +161,18 @@ fn count(headings: &[HeadingHierarchy]) -> usize {
     headings.iter().map(|h| 1 + count(&h.children)).sum()
 }
 
-fn toc_list<'a>(bump: &'a Bump, headings: &[HeadingHierarchy<'a>]) -> Element<'a> {
+fn toc_list<'a>(
+    bump: &'a Bump,
+    first: Option<Element<'a>>,
+    headings: &[HeadingHierarchy<'a>],
+) -> Element<'a> {
     html! { in bump;
         <ol class="stack" style={gap("1")}>
+            {first}
             #{headings.iter().map(|h| html! { in bump;
                 <li>
                     <a href={format!("#{}", crate::util::slugify(&h.heading_text))}>{h.heading.clone()}</a>
-                    {(!h.children.is_empty()).then(|| toc_list(bump, &h.children))}
+                    {(!h.children.is_empty()).then(|| toc_list(bump, None, &h.children))}
                 </li>
             })}
         </ol>
