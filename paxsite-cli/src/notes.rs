@@ -103,7 +103,7 @@ pub(crate) fn ensure_note_folder_indices(root: &Path, folder_path: &str) -> anyh
         let index = current.join(INDEX_FILENAME);
         if !index.exists() {
             let folder_name = filename_to_display_name(part);
-            let content = format!("{folder_name} notes.\n\n<!-- more -->\n\n<NotesIndex />\n");
+            let content = format!("{folder_name} notes.\n\n<!-- more -->\n");
             std::fs::create_dir_all(&current)?;
             std::fs::write(&index, content)?;
             println!("Created {}", index.display());
@@ -111,4 +111,41 @@ pub(crate) fn ensure_note_folder_indices(root: &Path, folder_path: &str) -> anyh
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn folder_indices_use_plain_markdown_and_preserve_existing_content() {
+        let root = std::env::temp_dir().join(format!(
+            "paxsite-folder-indices-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos(),
+        ));
+        let notes = root.join(DocumentType::Note.content_dir());
+        let existing = notes.join("Projects").join(INDEX_FILENAME);
+        let original = "Existing introduction.\n\n<!-- more -->\n\nExisting body.\n";
+        std::fs::create_dir_all(existing.parent().unwrap()).unwrap();
+        std::fs::write(&existing, original).unwrap();
+
+        ensure_note_folder_indices(&root, "Projects/New_Ideas/Nested").unwrap();
+        ensure_note_folder_indices(&root, "Projects/New_Ideas/Nested").unwrap();
+        ensure_note_folder_indices(&root, "").unwrap();
+        let preserved = std::fs::read_to_string(existing).unwrap();
+        let generated = ["New_Ideas", "New_Ideas/Nested"].map(|path| {
+            std::fs::read_to_string(notes.join("Projects").join(path).join(INDEX_FILENAME)).unwrap()
+        });
+        let root_index_exists = notes.join(INDEX_FILENAME).exists();
+        std::fs::remove_dir_all(&root).unwrap();
+
+        assert_eq!(preserved, original);
+        assert_eq!(generated[0], "New Ideas notes.\n\n<!-- more -->\n");
+        assert_eq!(generated[1], "Nested notes.\n\n<!-- more -->\n");
+        assert!(!root_index_exists);
+    }
 }

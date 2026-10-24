@@ -100,7 +100,7 @@ impl<'a> MarkdownConverter<'a> {
     /// the outline does. The caller puts it in a `.prose` element; block components
     /// (`<PrTimeline />`, `<BlueskyPost />`, `<MusicLibrary />`, `<CityPoster>`) sit
     /// in it where they're written, and are kept from prose styles by their `.embed`
-    /// class. `<NotesIndex />` renders nothing.
+    /// class.
     pub fn convert_blocks(&mut self, root: &Node) -> paxhtml::Element<'a> {
         let b = Builder::new(self.context.bump);
 
@@ -492,8 +492,6 @@ impl<'a> MarkdownConverter<'a> {
         };
         match element.tag() {
             Some("MusicLibrary") => components::music_library(self.context),
-            // The notes rail is the index.
-            Some("NotesIndex") => paxhtml::Element::Empty,
             Some("MonthDayDate") => components::month_day_date(
                 bump,
                 &attr("date").expect("MonthDayDate requires 'date' attribute"),
@@ -1263,8 +1261,6 @@ Some prose with `code`.
 ```rust
 fn main() {}
 ```
-
-<NotesIndex />
 "#;
 
         let ast = parse_markdown(input);
@@ -1279,14 +1275,91 @@ fn main() {}
             .unwrap();
 
         // One section, with no prose runs inside: the caller's element is the prose.
-        // The notes index renders nothing.
         assert_eq!(html.matches("<section>").count(), 1);
         assert!(!html.contains(r#"class="prose""#));
         assert!(html.contains(
             r##"<h2 id="a-heading-with-a-link"><a class="heading-anchor" href="#a-heading-with-a-link"># </a>A heading with <a href="/notes/foo" class="link-note">a link</a></h2>"##
         ));
         assert!(html.contains(r#"<pre><span class="code-language">rust</span><code>"#));
+    }
+
+    #[test]
+    fn note_body_automatically_appends_child_excerpts_after_all_prose() {
+        use crate::content::{
+            Document, DocumentFolderNode, DocumentLeafNode, DocumentNode, DocumentType,
+        };
+
+        let mut content = Content::empty();
+        let mut index = paxsite_content::Document::empty();
+        index.document_type = DocumentType::Note;
+        index.id = vec!["projects".into()];
+        index.display_path = vec!["Projects".into()];
+        index.source_path = "content/notes/Projects/index.md".into();
+        index.metadata.title = "Projects".into();
+        index.metadata.datetime = Some(chrono::Utc::now());
+        index.description_raw = "Intro.".into();
+        index.rest_of_content_raw = Some("# Final heading\n\nThe final parent paragraph.".into());
+        let mut child = paxsite_content::Document::empty();
+        child.document_type = DocumentType::Note;
+        child.id = vec!["projects".into(), "blackbird".into()];
+        child.display_path = vec!["Projects".into(), "blackbird".into()];
+        child.metadata.title = "blackbird".into();
+        child.metadata.datetime = Some(chrono::Utc::now());
+        child.description_raw = "A < B & C. Another sentence.".into();
+        child.rest_of_content_raw = Some("Excluded body.".into());
+        content.notes.documents.children.insert(
+            "Projects".into(),
+            DocumentNode::Folder(DocumentFolderNode {
+                index: Some(DocumentLeafNode::Document(Box::new(Document::from_base(
+                    index,
+                )))),
+                folder_name: "Projects".into(),
+                children: std::collections::BTreeMap::from([(
+                    "blackbird".into(),
+                    DocumentNode::Leaf(DocumentLeafNode::Document(Box::new(Document::from_base(
+                        child,
+                    )))),
+                )]),
+            }),
+        );
+        let syntax = SyntaxHighlighter::default();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let index = content
+            .document_by_id(DocumentType::Note, &vec!["projects".into()])
+            .unwrap();
+        let body = crate::views::document::Body::new(context, index).into_prose(&bump);
+        let html = paxhtml::Document::new(&bump, [body])
+            .write_to_string()
+            .unwrap();
+        assert!(html.contains("class=\"document-body prose\""));
+        assert!(html.contains("class=\"notes-index embed\""));
+        assert_eq!(html.matches("class=\"notes-index-entry\"").count(), 1);
+        assert!(!html.contains("class=\"metadata"));
+        assert!(html.contains("href=\"/notes/projects/blackbird/\""));
+        assert!(html.contains("<p>A &lt; B &amp; C.</p>"));
+        assert!(!html.contains("Another sentence"));
+        assert!(!html.contains("Excluded body"));
         assert!(!html.contains("NotesIndex"));
+
+        let index_start = html.find("<nav class=\"notes-index embed\"").unwrap();
+        assert!(html.find("The final parent paragraph.").unwrap() < index_start);
+        assert!(html[..index_start].trim_end().ends_with("</section>"));
+        assert_eq!(html.matches("class=\"notes-index embed\"").count(), 1);
+
+        let child = content
+            .document_by_id(
+                DocumentType::Note,
+                &vec!["projects".into(), "blackbird".into()],
+            )
+            .unwrap();
+        let body = crate::views::document::Body::new(context, child).into_prose(&bump);
+        let html = paxhtml::Document::new(&bump, [body])
+            .write_to_string()
+            .unwrap();
+        assert!(!html.contains("notes-index"));
+        assert!(html.contains("Excluded body."));
     }
 
     #[test]

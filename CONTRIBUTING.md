@@ -123,6 +123,8 @@ content/notes/<Category>/<Subcategory>/<Title>.md
 ```
 Frontmatter is optional and supplies tags and an author credit. The directory structure becomes the breadcrumb path. For example, `content/notes/Hardware/Laptop.md` displays as "Hardware · Laptop".
 
+A folder's `index.md` automatically ends with a compact index when it has immediate child pages. Each entry has a smaller, note-coloured title link and the shared note excerpt, without a metadata row. Subfolders with index pages appear first, then notes, each alphabetically by title. Leaf folders appear as notes. Redirects and folders without index pages are omitted. No Markdown component marker is needed; an ordinary note or a folder without eligible child pages gets no appended index.
+
 ### Key Files
 
 | File | Purpose |
@@ -226,7 +228,6 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 
 **Void (self-closing) components:**
 - `<MusicLibrary />` — Interactive music library display
-- `<NotesIndex />` — Renders nothing: the notes rail is the index (kept in section notes for their structure)
 - `<PrMeta date="2025-11-06" add=128 sub=1 />` — Inline pill row with date and diff stats (always noyear)
 - `<PrMeta start="2025-11-08" end="2025-11-12" add=3130 sub=876 closed />` — Date range variant with optional `closed` badge
 - `<PrTimeline />` — Renders a Gantt-style timeline of every PR mentioned in the post (entries collected from the document's PR headings/`<PrMeta>`s)

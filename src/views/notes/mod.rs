@@ -8,7 +8,7 @@ use super::*;
 use crate::{
     content::{DocumentFolderNode, DocumentId, DocumentLeafNode, DocumentNode},
     views::{
-        components::display_timestamp,
+        components::{display_timestamp, note_index_entries},
         document::{self, Body},
     },
 };
@@ -73,8 +73,9 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a>>) -> Element<'a> {
     let bump = context.bump;
     let tree = branches(&context.content.notes.documents, &[]);
-    // A page standing in for the index (`<NotesIndex />`) has the tree open, so narrow pages still list notes.
-    let open = indexes_notes(current).then(|| paxhtml::Attribute::boolean(bump, "checked"));
+    // Notes with child pages keep the tree open on narrow screens.
+    let open = (!note_index_entries(context.content, current).is_empty())
+        .then(|| paxhtml::Attribute::boolean(bump, "checked"));
     html! { in bump;
         <nav ariaLabel={CurrentPage::Notes.name()} class="notes-rail stack">
             <div class="rail-heading">
@@ -105,17 +106,6 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
             })}
         </nav>
     }
-}
-
-/// Whether a note contains `<NotesIndex />`.
-fn indexes_notes(document: &Document) -> bool {
-    [
-        Some(document.description_raw.as_str()),
-        document.rest_of_content_raw.as_deref(),
-    ]
-    .into_iter()
-    .flatten()
-    .any(|raw| raw.contains("<NotesIndex"))
 }
 
 /// A rail row: a note, or a folder that may have its own page.

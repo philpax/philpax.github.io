@@ -11,6 +11,27 @@
 .notes-intro {
   max-width: var(--measure-short);
 }
+.notes-index {
+  max-width: var(--measure);
+  min-width: 0;
+}
+.notes-index-entry h3 {
+  font-family: var(--f-ui);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--lead-normal);
+}
+.notes-index-entry h3 > a {
+  --link-rest: var(--c-note);
+  --link-hover: color-mix(in oklab, var(--c-note) 78%, white);
+}
+.notes-index-entry > p {
+  max-width: var(--measure-short);
+  margin-top: var(--s-1);
+  font-family: var(--f-body);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
 
 /* Rail. */
 

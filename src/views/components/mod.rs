@@ -13,6 +13,9 @@ pub use date::*;
 mod document_meta;
 pub use document_meta::*;
 
+mod notes_index;
+pub use notes_index::*;
+
 mod bluesky_post;
 pub use bluesky_post::*;
 

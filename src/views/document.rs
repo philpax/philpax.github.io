@@ -8,7 +8,9 @@ use crate::{
     content::DocumentType,
     markdown::{HeadingHierarchy, MarkdownConverter, document_root},
     views::{
-        components::{MetadataLayout, collect_pr_entries, document_meta},
+        components::{
+            MetadataLayout, collect_pr_entries, document_meta, note_index_entries, notes_index,
+        },
         listings::{gap, inline_markdown, note_folders},
     },
 };
@@ -80,8 +82,15 @@ impl<'a> Body<'a> {
                 .with_document_base_url(url.clone())
                 .with_pr_entries(collect_pr_entries(context.bump, &root));
         }
+        let blocks = converter.convert_blocks(&root);
+        let entries = note_index_entries(context.content, document);
         Self {
-            blocks: converter.convert_blocks(&root),
+            blocks: html! { in context.bump;
+                <>
+                    {blocks}
+                    {notes_index(context, &entries)}
+                </>
+            },
             toc: toc(context, document, &root, &url),
         }
     }

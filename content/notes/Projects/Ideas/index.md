@@ -3,5 +3,3 @@ Project ideas that I may or may not pick up. I'm making these public so that eve
 <!-- more -->
 
 In the interest of getting these out the door, most of them will be written up by an AI. Each note's metadata states which model was responsible.
-
-<NotesIndex />
