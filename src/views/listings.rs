@@ -92,16 +92,24 @@ pub fn summary_list<'a, 'd>(
     }
 }
 
-/// A post or update: title, date, tags and summary.
+/// A document's title, date, tags, parent folders and short description.
 pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = doc.route_path().url_path();
     let tags = doc.tags().cloned().unwrap_or_default();
-    let short = doc
-        .metadata
-        .short
-        .as_deref()
-        .map(|short| inline_markdown(context, short, &url));
+    let folders = if doc.document_type == DocumentType::Note {
+        note_folders(context, doc)
+    } else {
+        vec![]
+    };
+    let short = match doc.document_type {
+        DocumentType::Note => note_excerpt(doc).map(|excerpt| html! { in bump; {excerpt} }),
+        _ => doc
+            .metadata
+            .short
+            .as_deref()
+            .map(|short| inline_markdown(context, short, &url)),
+    };
     html! { in bump;
         <article class="summary">
             <h3>
@@ -113,6 +121,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
             // Only the tag list scrolls, so the date stays put.
             <div class="summary-meta">
                 {time(bump, doc)}
+                {(!folders.is_empty()).then(|| dated_path(bump, folders))}
                 <TagList tags={tags} />
             </div>
             {short.map(|short| html! { in bump; <p>{short}</p> })}
@@ -166,6 +175,32 @@ pub fn inline_markdown<'a>(
 
 // --- Private implementation details ---
 
+/// The first sentence of a note's opening paragraph, or the paragraph without a full stop.
+fn note_excerpt(doc: &Document) -> Option<String> {
+    let paragraph = doc
+        .description
+        .children()?
+        .iter()
+        .find(|node| matches!(node, markdown::mdast::Node::Paragraph(_)))?;
+    let text = crate::markdown::plain_text(paragraph);
+    let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
+    if text.is_empty() {
+        return None;
+    }
+    let end = text
+        .char_indices()
+        .find_map(|(index, character)| {
+            (character == '.'
+                && text[index + 1..]
+                    .chars()
+                    .next()
+                    .is_none_or(char::is_whitespace))
+            .then_some(index + 1)
+        })
+        .unwrap_or(text.len());
+    Some(text[..end].to_string())
+}
+
 fn datetime(doc: &Document) -> chrono::DateTime<chrono::Utc> {
     doc.metadata
         .datetime
@@ -217,7 +252,7 @@ fn dated_path<'a>(bump: &'a Bump, folders: Vec<(String, Option<String>)>) -> Ele
         <span class="dated-path">
             #{folders.into_iter().enumerate().map(|(i, (name, route))| html! { in bump;
                 <>
-                    {(i > 0).then(|| html! { in bump; <span ariaHidden="true">"·"</span> })}
+                    {(i > 0).then(|| html! { in bump; <span ariaHidden="true">" / "</span> })}
                     {match route {
                         Some(route) => html! { in bump; <A href={route}>{name}</A> },
                         None => html! { in bump; <span>{name}</span> },
@@ -225,5 +260,182 @@ fn dated_path<'a>(bump: &'a Bump, folders: Vec<(String, Option<String>)>) -> Ele
                 </>
             })}
         </span>
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{
+        content::{Content, DocumentLeafNode, DocumentNode},
+        image_store::ImageStore,
+        syntax::SyntaxHighlighter,
+    };
+
+    #[test]
+    fn note_excerpts_use_the_first_sentence_or_whole_first_paragraph() {
+        for (markdown, expected) in [
+            (
+                "First sentence. Second sentence.\n\nAnother paragraph.",
+                Some("First sentence."),
+            ),
+            (
+                "A paragraph without a full stop\ncontinues here\n\nAnother paragraph.",
+                Some("A paragraph without a full stop continues here"),
+            ),
+            (
+                "[blackbird](https://github.com/philpax/blackbird) is a **music player**. More.",
+                Some("blackbird is a music player."),
+            ),
+            (
+                "genresin.space and llama.cpp are names. Another sentence.",
+                Some("genresin.space and llama.cpp are names."),
+            ),
+            ("Café < & music. Second sentence.", Some("Café < & music.")),
+            (
+                "First line  \ncontinues here. Second sentence.",
+                Some("First line continues here."),
+            ),
+            (
+                "First line\\\ncontinues here. Second sentence.",
+                Some("First line continues here."),
+            ),
+            (
+                "# Heading\n\nThe introduction. More.",
+                Some("The introduction."),
+            ),
+            ("# Heading only", None),
+            ("", None),
+        ] {
+            let mut note = Document::empty();
+            note.description = crate::content::parse_markdown(markdown);
+            assert_eq!(note_excerpt(&note).as_deref(), expected, "{markdown}");
+        }
+    }
+
+    #[test]
+    fn note_paths_link_each_parent_and_use_slashes() {
+        let make_note = |parts: &[&str]| {
+            let mut note = Document::empty();
+            note.base.document_type = DocumentType::Note;
+            note.base.display_path = parts.iter().map(|part| (*part).to_string()).collect();
+            note.base.id = paxsite_content::display_path_to_id(&note.display_path);
+            note.base.metadata.title = parts.last().unwrap().to_string();
+            note.base.metadata.datetime = Some(chrono::Utc::now());
+            note.base.metadata.taxonomies = Some(paxsite_content::DocumentTaxonomies {
+                tags: vec!["ai".into()],
+            });
+            note.description = crate::content::parse_markdown("A < B & C. Another sentence.");
+            note
+        };
+        let mut content = Content::empty();
+        content.notes.documents.children.insert(
+            "AI".into(),
+            DocumentNode::Folder(crate::content::DocumentFolderNode {
+                index: Some(DocumentLeafNode::Document(Box::new(make_note(&["AI"])))),
+                folder_name: "AI".into(),
+                children: std::collections::BTreeMap::from([(
+                    "Links".into(),
+                    DocumentNode::Folder(crate::content::DocumentFolderNode {
+                        index: Some(DocumentLeafNode::Document(Box::new(make_note(&[
+                            "AI", "Links",
+                        ])))),
+                        folder_name: "Links".into(),
+                        children: std::collections::BTreeMap::from([(
+                            "Agents".into(),
+                            DocumentNode::Leaf(DocumentLeafNode::Document(Box::new(make_note(&[
+                                "AI", "Links", "Agents",
+                            ])))),
+                        )]),
+                    }),
+                )]),
+            }),
+        );
+        let note = content
+            .document_by_id(
+                DocumentType::Note,
+                &vec!["ai".into(), "links".into(), "agents".into()],
+            )
+            .unwrap();
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(&content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content: &content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        let context = context.with_bump(&bump);
+        let folders = note_folders(context, note);
+        assert_eq!(
+            folders,
+            [
+                ("AI".into(), Some("/notes/ai/".into())),
+                ("Links".into(), Some("/notes/ai/links/".into())),
+            ]
+        );
+        for element in [dated_list(context, &[note]), summary(context, note)] {
+            let html = paxhtml::Document::new(&bump, [element])
+                .write_to_string()
+                .unwrap();
+            assert!(html.contains("href=\"/notes/ai/\""));
+            assert!(html.contains("href=\"/notes/ai/links/\""));
+            assert!(html.contains("<span aria-hidden=\"true\"> / </span>"));
+            assert!(!html.contains('·'));
+            if html.contains("class=\"summary\"") {
+                let meta = html
+                    .split("class=\"summary-meta\"")
+                    .nth(1)
+                    .unwrap()
+                    .split("</div>")
+                    .next()
+                    .unwrap();
+                assert!(meta.find("<time").unwrap() < meta.find("class=\"dated-path\"").unwrap());
+                assert!(
+                    meta.find("class=\"dated-path\"").unwrap()
+                        < meta.find("class=\"tag-list\"").unwrap()
+                );
+                assert!(html.contains("<p>A &lt; B &amp; C.</p>"));
+                assert!(!html.contains("Another sentence"));
+            }
+        }
+    }
+
+    #[test]
+    fn missing_parent_pages_remain_unlinked() {
+        let mut content = Content::empty();
+        let mut parent = Document::empty();
+        parent.base.document_type = DocumentType::Note;
+        parent.base.id = vec!["ai".into()];
+        content.notes.documents.children.insert(
+            "AI".into(),
+            DocumentNode::Leaf(DocumentLeafNode::Document(Box::new(parent))),
+        );
+        let mut note = Document::empty();
+        note.base.document_type = DocumentType::Note;
+        note.base.id = vec!["ai".into(), "missing".into(), "note".into()];
+        note.base.display_path = vec!["AI".into(), "Missing".into(), "Note".into()];
+        assert_eq!(
+            folders(
+                &note,
+                &content
+                    .notes
+                    .documents
+                    .all_documents()
+                    .into_iter()
+                    .map(|d| &d.id)
+                    .collect()
+            ),
+            [
+                ("AI".into(), Some("/notes/ai/".into())),
+                ("Missing".into(), None),
+            ]
+        );
     }
 }

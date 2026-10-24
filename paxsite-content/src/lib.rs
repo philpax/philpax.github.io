@@ -275,6 +275,8 @@ impl Document {
 
             (metadata, parts[2].to_string())
         } else {
+            let (taxonomies, body) = parse_note_frontmatter(&file)
+                .with_context(|| format!("invalid note frontmatter in {path:?}"))?;
             let file_dates = get_file_dates(path, fast)?;
             let metadata = DocumentMetadata {
                 title: match id.is_empty() {
@@ -285,11 +287,11 @@ impl Document {
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
                 draft: false,
-                taxonomies: None,
+                taxonomies,
                 standard_site: None,
             };
 
-            (metadata, file)
+            (metadata, body.to_string())
         };
 
         let (description_raw, rest_of_content_raw) = match content_raw.split_once(MORE_SEPARATOR) {
@@ -459,6 +461,21 @@ impl<D> DocumentFolderNode<D> {
     }
 }
 impl<D: HasDocumentId> DocumentFolderNode<D> {
+    pub fn document_by_id(&self, id: &DocumentId) -> Option<&D> {
+        if let Some(DocumentLeafNode::Document(doc)) = &self.index
+            && doc.document_id() == id
+        {
+            return Some(doc);
+        }
+        self.children.values().find_map(|child| match child {
+            DocumentNode::Folder(folder) => folder.document_by_id(id),
+            DocumentNode::Leaf(DocumentLeafNode::Document(doc)) if doc.document_id() == id => {
+                Some(doc.as_ref())
+            }
+            _ => None,
+        })
+    }
+
     pub fn find_folder_for_document(&self, id: &DocumentId) -> Option<&DocumentFolderNode<D>> {
         if let Some(DocumentLeafNode::Document(doc)) = &self.index
             && doc.document_id() == id
@@ -621,7 +638,7 @@ pub struct Content {
     pub notes: NotesCollection<Document>,
     pub about: Document,
     pub credits: Document,
-    pub tags: HashMap<Tag, Vec<DocumentId>>,
+    pub tags: HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
     pub source_path_to_route: HashMap<PathBuf, String>,
     pub source_path_to_og_image: HashMap<PathBuf, String>,
 }
@@ -670,17 +687,12 @@ impl Content {
             fast,
         )?;
 
-        // Build tags index. Includes drafts, so tag pages list them.
-        let mut tags: HashMap<Tag, Vec<DocumentId>> = HashMap::new();
-        for document in blog.documents.iter().chain(updates.documents.iter()) {
-            if let Some(taxonomies) = &document.metadata.taxonomies {
-                for tag in &taxonomies.tags {
-                    tags.entry(tag.clone())
-                        .or_default()
-                        .push(document.id.clone());
-                }
-            }
-        }
+        let tags = build_tag_index(
+            blog.documents
+                .iter()
+                .chain(updates.documents.iter())
+                .chain(notes.documents.all_documents()),
+        );
 
         // Build source path → route/og-image mappings
         let (source_path_to_route, source_path_to_og_image) = {
@@ -756,6 +768,7 @@ impl Content {
             .documents
             .iter()
             .chain(self.updates.documents.iter())
+            .chain(self.notes.documents.all_documents())
             .filter(|d| !d.metadata.draft)
         {
             if let Some(taxonomies) = &document.metadata.taxonomies {
@@ -858,11 +871,17 @@ impl Content {
             .chain(collect_note_files(&self.notes.documents))
     }
 
-    /// Looks up a document by ID across blog and update collections.
-    pub fn document_by_id(&self, id: &DocumentId) -> Option<&Document> {
-        self.blog
-            .document_by_id(id)
-            .or_else(|| self.updates.document_by_id(id))
+    /// Looks up a document by its type and ID.
+    pub fn document_by_id(
+        &self,
+        document_type: DocumentType,
+        id: &DocumentId,
+    ) -> Option<&Document> {
+        match document_type {
+            DocumentType::Blog => self.blog.document_by_id(id),
+            DocumentType::Update => self.updates.document_by_id(id),
+            DocumentType::Note => self.notes.documents.document_by_id(id),
+        }
     }
 }
 
@@ -1058,6 +1077,49 @@ pub fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
 }
 
 // ── Private helpers ─────────────────────────────────────────────────────────
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct NoteFrontmatter {
+    taxonomies: Option<DocumentTaxonomies>,
+}
+
+fn parse_note_frontmatter(file: &str) -> anyhow::Result<(Option<DocumentTaxonomies>, &str)> {
+    let mut lines = file.split_inclusive('\n');
+    let Some(first_line) = lines
+        .next()
+        .filter(|line| line.trim_end_matches(['\r', '\n']) == FRONTMATTER_DELIMITER)
+    else {
+        return Ok((None, file));
+    };
+
+    let start = first_line.len();
+    let mut end = start;
+    for line in lines {
+        if line.trim_end_matches(['\r', '\n']) == FRONTMATTER_DELIMITER {
+            let frontmatter: NoteFrontmatter = toml::from_str(&file[start..end])?;
+            return Ok((frontmatter.taxonomies, &file[end + line.len()..]));
+        }
+        end += line.len();
+    }
+    anyhow::bail!("missing closing +++ delimiter");
+}
+
+fn build_tag_index<'a>(
+    documents: impl Iterator<Item = &'a Document>,
+) -> HashMap<Tag, Vec<(DocumentType, DocumentId)>> {
+    let mut tags: HashMap<Tag, Vec<(DocumentType, DocumentId)>> = HashMap::new();
+    for document in documents {
+        if let Some(document_tags) = document.tags() {
+            for tag in document_tags.iter().collect::<BTreeSet<_>>() {
+                tags.entry(tag.clone())
+                    .or_default()
+                    .push((document.document_type, document.id.clone()));
+            }
+        }
+    }
+    tags
+}
 
 fn extract_redirect_target(content: &str) -> Option<String> {
     content
@@ -1267,6 +1329,193 @@ fn collect_note_content_items(folder: &DocumentFolderNode<Document>, items: &mut
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn note_frontmatter_is_optional_and_preserves_plain_markdown() {
+        for body in [
+            "",
+            "Plain note.\n",
+            "Intro\n\n+++\n\nBody\n",
+            "++++\nBody",
+            "    +++\n    [taxonomies]\n    tags = [\"blackbird\"]\n    +++\n",
+            "    +++\n    unterminated code example\n",
+        ] {
+            let (taxonomies, parsed_body) = parse_note_frontmatter(body).unwrap();
+            assert!(taxonomies.is_none());
+            assert_eq!(parsed_body, body);
+        }
+    }
+
+    #[test]
+    fn note_frontmatter_supports_tags_and_windows_newlines() {
+        for newline in ["\n", "\r\n"] {
+            let file = [
+                "+++",
+                "[taxonomies]",
+                "tags = [\"blackbird\", \"music\"]",
+                "+++",
+                "",
+                "Note.",
+            ]
+            .join(newline);
+            let (taxonomies, body) = parse_note_frontmatter(&file).unwrap();
+            assert_eq!(taxonomies.unwrap().tags, ["blackbird", "music"]);
+            assert_eq!(body, format!("{newline}Note."));
+        }
+        let (taxonomies, body) = parse_note_frontmatter("+++\n+++").unwrap();
+        assert!(taxonomies.is_none());
+        assert!(body.is_empty());
+    }
+
+    #[test]
+    fn note_frontmatter_rejects_invalid_metadata() {
+        for file in [
+            "+++\n[taxonomies]\ntags = [\"blackbird\"]",
+            "+++\n[taxonomies]\ntags = 1\n+++\n",
+            "+++\nnot valid toml\n+++\n",
+            "+++\ntitle = \"Override\"\n+++\n",
+            "+++\ndatetime = 2000-01-01T00:00:00Z\n+++\n",
+            "+++\ndraft = true\n+++\n",
+        ] {
+            assert!(parse_note_frontmatter(file).is_err(), "{file}");
+        }
+    }
+
+    #[test]
+    fn tagged_note_keeps_derived_metadata_and_more_separator() {
+        let directory = std::env::temp_dir().join(format!(
+            "paxsite-note-tags-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos(),
+        ));
+        std::fs::create_dir(&directory).unwrap();
+        let path = directory.join("blackbird.md");
+        std::fs::write(
+            &path,
+            "+++\n[taxonomies]\ntags = [\"blackbird\"]\n+++\n\nIntroduction.\n\n<!-- more -->\n\nDetails.\n",
+        ).unwrap();
+        let dates = get_file_dates(&path, true).unwrap();
+        let result = Document::read(
+            &path,
+            vec!["projects".into(), "blackbird".into()],
+            vec!["Projects".into(), "blackbird".into()],
+            DocumentType::Note,
+            true,
+        );
+        std::fs::remove_dir_all(&directory).unwrap();
+        let document = result.unwrap();
+        assert_eq!(document.metadata.title, "blackbird");
+        assert_eq!(document.metadata.datetime, Some(dates.first_commit));
+        assert_eq!(document.metadata.last_modified, Some(dates.last_commit));
+        assert!(!document.metadata.draft);
+        assert_eq!(document.tags().unwrap(), &["blackbird"]);
+        assert_eq!(document.description_raw, "Introduction.");
+        assert_eq!(document.rest_of_content_raw.as_deref(), Some("Details."));
+    }
+
+    #[test]
+    fn tag_index_distinguishes_document_types_and_includes_note_only_tags() {
+        let mut documents = Vec::new();
+        for kind in [DocumentType::Blog, DocumentType::Update, DocumentType::Note] {
+            let mut document = Document::empty();
+            document.document_type = kind;
+            document.id = vec!["shared".into()];
+            document.metadata.taxonomies = Some(DocumentTaxonomies {
+                tags: vec!["shared".into(), "shared".into()],
+            });
+            documents.push(document);
+        }
+        documents[2]
+            .metadata
+            .taxonomies
+            .as_mut()
+            .unwrap()
+            .tags
+            .push("note-only".into());
+        let tags = build_tag_index(documents.iter());
+        assert_eq!(tags["shared"].len(), 3);
+        assert_eq!(
+            tags["shared"][0],
+            (DocumentType::Blog, vec!["shared".into()])
+        );
+        assert_eq!(
+            tags["shared"][1],
+            (DocumentType::Update, vec!["shared".into()])
+        );
+        assert_eq!(
+            tags["shared"][2],
+            (DocumentType::Note, vec!["shared".into()])
+        );
+        assert_eq!(
+            tags["note-only"],
+            [(DocumentType::Note, vec!["shared".into()])]
+        );
+
+        let mut content = Content::empty();
+        content.notes.documents.index = Some(DocumentLeafNode::Document(Box::new(
+            documents.pop().unwrap(),
+        )));
+        assert_eq!(content.all_tags(), ["note-only", "shared"]);
+    }
+
+    #[test]
+    fn note_lookup_finds_folder_indexes_and_leaves_but_not_redirects() {
+        let make_note = |id: &[&str]| {
+            let mut note = Document::empty();
+            note.document_type = DocumentType::Note;
+            note.id = id.iter().map(|part| (*part).to_string()).collect();
+            DocumentLeafNode::Document(Box::new(note))
+        };
+        let nested = DocumentFolderNode {
+            index: Some(make_note(&["projects"])),
+            folder_name: "Projects".into(),
+            children: BTreeMap::from([
+                (
+                    "blackbird".into(),
+                    DocumentNode::Leaf(make_note(&["projects", "blackbird"])),
+                ),
+                (
+                    "alias".into(),
+                    DocumentNode::Leaf(DocumentLeafNode::Redirect(RedirectNode {
+                        id: vec!["projects".into(), "alias".into()],
+                        target_url: "/notes/projects/blackbird/".into(),
+                        target_og_image_path: None,
+                        source_path: PathBuf::new(),
+                    })),
+                ),
+            ]),
+        };
+        let mut content = Content::empty();
+        content.notes.documents.index = Some(make_note(&[]));
+        content
+            .notes
+            .documents
+            .children
+            .insert("Projects".into(), DocumentNode::Folder(nested));
+        for id in [
+            vec![],
+            vec!["projects".into()],
+            vec!["projects".into(), "blackbird".into()],
+        ] {
+            assert_eq!(
+                content.document_by_id(DocumentType::Note, &id).unwrap().id,
+                id
+            );
+        }
+        assert!(
+            content
+                .document_by_id(DocumentType::Note, &vec!["projects".into(), "alias".into()])
+                .is_none()
+        );
+        assert!(
+            content
+                .document_by_id(DocumentType::Note, &vec!["missing".into()])
+                .is_none()
+        );
+    }
 
     #[test]
     fn test_normalize_path() {

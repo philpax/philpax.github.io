@@ -69,7 +69,7 @@ Three document types defined in `paxsite-content/src/lib.rs`:
 
 1. **Blog** (`content/blog/`) - Long-form posts with TOML frontmatter
 2. **Update** (`content/updates/`) - Shorter updates with TOML frontmatter
-3. **Note** (`content/notes/`) - Wiki-style notes, hierarchical folders, NO frontmatter
+3. **Note** (`content/notes/`) - Wiki-style notes, hierarchical folders, optional TOML frontmatter for tags
 
 ### Document Metadata
 
@@ -85,12 +85,21 @@ tags=["personal", "meta"]
 +++
 ```
 
-Every tag used by a blog post or update must be described in `content/tags.toml` (one line of inline Markdown, which opens the tag's page); a tag without a description fails the build, and a description nothing uses is a warning.
+Every tag used by a blog post, update, or note must be described in `content/tags.toml` (one line of inline Markdown, which opens the tag's page); a tag without a description fails the build, and a description nothing uses is a warning. Tag pages group their documents into Posts, Updates, and Notes, omitting empty groups. Posts and updates sort by publication date; notes sort by last modification, newest first. Tagged notes use the same summary layout as posts and updates, with the folder path between the date and tags. Their summary text is the first sentence of the opening paragraph, or the whole paragraph if it has no full stop.
 
-**Notes** have NO frontmatter - metadata is auto-generated:
+**Notes** derive their title and dates from the filename and Git:
 - `title` = filename (without `.md` extension)
-- `datetime` = last Git commit date (or file mtime in fast mode)
+- `datetime` = first Git commit date; `last_modified` = last Git commit date (both use file mtime in fast mode). Notes display `last_modified`.
 - Hierarchical path becomes the display path (e.g., "Hardware · Laptop")
+
+Notes may start with optional TOML frontmatter for tags. The only supported top-level field is `taxonomies`; titles and dates remain derived. Existing notes without frontmatter need no changes.
+
+```toml
++++
+[taxonomies]
+tags = ["blackbird"]
++++
+```
 
 ### Creating Content
 
@@ -110,7 +119,7 @@ Same structure as blog posts, but for shorter updates.
 ```
 content/notes/<Category>/<Subcategory>/<Title>.md
 ```
-No frontmatter needed. The directory structure becomes the breadcrumb path. For example, `content/notes/Hardware/Laptop.md` displays as "Hardware · Laptop".
+Frontmatter is optional and only supplies tags. The directory structure becomes the breadcrumb path. For example, `content/notes/Hardware/Laptop.md` displays as "Hardware · Laptop".
 
 ### Key Files
 

@@ -135,7 +135,7 @@ pub struct Content {
     pub blog: DocumentCollection,
     pub updates: DocumentCollection,
     pub notes: NotesCollection,
-    pub tags: HashMap<Tag, Vec<DocumentId>>,
+    pub tags: HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
     /// Tag descriptions (inline Markdown) from `content/tags.toml`.
     pub tag_descriptions: HashMap<Tag, String>,
     pub about: Document,
@@ -348,10 +348,16 @@ impl Content {
             .chain(collect_note_files(&self.notes.documents))
     }
 
-    pub fn document_by_id(&self, id: &DocumentId) -> Option<&Document> {
-        self.blog
-            .document_by_id(id)
-            .or_else(|| self.updates.document_by_id(id))
+    pub fn document_by_id(
+        &self,
+        document_type: DocumentType,
+        id: &DocumentId,
+    ) -> Option<&Document> {
+        match document_type {
+            DocumentType::Blog => self.blog.document_by_id(id),
+            DocumentType::Update => self.updates.document_by_id(id),
+            DocumentType::Note => self.notes.documents.document_by_id(id),
+        }
     }
 
     /// Build a map from each document's route URL to its set of heading-slug
@@ -390,7 +396,7 @@ impl Content {
 /// Reads tag descriptions. A used tag without one is an error; an unused
 /// description is a warning.
 fn read_tag_descriptions(
-    tags: &HashMap<Tag, Vec<DocumentId>>,
+    tags: &HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
 ) -> anyhow::Result<HashMap<Tag, String>> {
     let descriptions: HashMap<Tag, String> = toml::from_str(
         &std::fs::read_to_string(TAG_DESCRIPTIONS_PATH)

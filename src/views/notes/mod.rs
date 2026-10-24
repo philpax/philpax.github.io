@@ -54,6 +54,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),
             article_modified_time: note.metadata.datetime,
+            article_tag: note.tags().map(|tags| tags.join(", ")),
             ..Default::default()
         },
         CurrentPage::Notes,

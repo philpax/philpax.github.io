@@ -1,7 +1,10 @@
 use super::*;
-use crate::views::{
-    components::{A, AProps, TagLabel, TagLabelProps, TagLink, TagLinkProps},
-    listings::{index_row, inline_markdown, page_head, summary_list},
+use crate::{
+    content::DocumentType,
+    views::{
+        components::{A, AProps, TagLabel, TagLabelProps, TagLink, TagLinkProps},
+        listings::{index_row, inline_markdown, page_head, summary_list},
+    },
 };
 
 /// Under the page's title, here and in its preview.
@@ -68,17 +71,10 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
     }
     .url_path();
 
-    // Collect all documents with this tag
-    let mut tagged_documents = Vec::new();
-    for doc_id in &content.tags[tag_id] {
-        if let Some(doc) = content.document_by_id(doc_id) {
-            tagged_documents.push(doc);
-        }
-    }
-
-    // Sort by date, newest first
-    tagged_documents.sort_by_key(|d| d.metadata.datetime);
-    tagged_documents.reverse();
+    let tagged_documents: Vec<_> = content.tags[tag_id]
+        .iter()
+        .filter_map(|(kind, id)| content.document_by_id(*kind, id))
+        .collect();
 
     layout(
         context,
@@ -107,19 +103,220 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
                     html! { in bump; <TagLabel tag={tag_id.to_string()} /> },
                     Some(inline_markdown(context, &content.tag_descriptions[tag_id], &url)),
                 )}
-                <div class="index-groups">
-                    {index_row(
-                        bump,
-                        html! { in bump; "Tagged" },
-                        Some(html! { in bump; <A href={Route::Tags.url_path()}>"All tags →"</A> }),
-                        if tagged_documents.is_empty() {
-                            html! { in bump; <p class="empty-message">"nothing has this tag"</p> }
-                        } else {
-                            summary_list(context, tagged_documents.iter().copied(), "8")
-                        },
-                    )}
-                </div>
+                <p><A href={Route::Tags.url_path()}>"All tags →"</A></p>
+                {tagged_documents.is_empty().then(|| html! { in bump;
+                    <p class="empty-message">"nothing has this tag"</p>
+                })}
+                {tag_groups(context, &tagged_documents)}
             </div>
         },
     )
+}
+
+fn tag_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<'a> {
+    let bump = context.bump;
+    html! { in bump;
+        <div class="index-groups">
+            #{[
+                (DocumentType::Blog, "Posts"),
+                (DocumentType::Update, "Updates"),
+                (DocumentType::Note, "Notes"),
+            ].into_iter().filter_map(|(kind, label)| {
+                let mut group: Vec<_> = documents.iter().copied()
+                    .filter(|document| document.document_type == kind)
+                    .collect();
+                group.sort_by(|a, b| {
+                    let when = |doc: &Document| match kind {
+                        DocumentType::Note => doc.metadata.last_modified.or(doc.metadata.datetime),
+                        _ => doc.metadata.datetime,
+                    };
+                    when(b).cmp(&when(a)).then_with(|| a.id.cmp(&b.id))
+                });
+                (!group.is_empty()).then(|| index_row(
+                    bump,
+                    html! { in bump; {label} },
+                    None,
+                    summary_list(context, group.into_iter(), "8"),
+                ))
+            })}
+        </div>
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{
+        content::{Content, DocumentCollection, DocumentLeafNode},
+        image_store::ImageStore,
+        syntax::SyntaxHighlighter,
+    };
+    use paxhtml::bumpalo::Bump;
+
+    fn document(kind: DocumentType, title: &str, day: u32, modified_day: u32) -> Document {
+        let mut document = Document::empty();
+        document.base.document_type = kind;
+        document.base.id = vec!["shared".into()];
+        document.base.display_path = vec![title.into()];
+        document.base.metadata.title = title.into();
+        document.base.metadata.datetime = Some(
+            chrono::DateTime::parse_from_rfc3339(&format!("2025-01-{day:02}T00:00:00Z"))
+                .unwrap()
+                .to_utc(),
+        );
+        document.base.metadata.last_modified = Some(
+            chrono::DateTime::parse_from_rfc3339(&format!("2025-01-{modified_day:02}T00:00:00Z"))
+                .unwrap()
+                .to_utc(),
+        );
+        document.base.metadata.taxonomies = Some(paxsite_content::DocumentTaxonomies {
+            tags: vec!["shared".into()],
+        });
+        document
+    }
+
+    fn render_tag(content: &Content) -> String {
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        tag(context.with_bump(&bump), "shared")
+            .write_to_string()
+            .unwrap()
+    }
+
+    #[test]
+    fn tag_page_separates_document_types_with_identical_ids() {
+        let mut content = Content::empty();
+        content.blog = DocumentCollection {
+            documents: vec![document(DocumentType::Blog, "The post", 2, 2)],
+            document_key_to_id: HashMap::from([(vec!["shared".into()], 0)]),
+        };
+        content.updates = DocumentCollection {
+            documents: vec![document(DocumentType::Update, "The update", 3, 3)],
+            document_key_to_id: HashMap::from([(vec!["shared".into()], 0)]),
+        };
+        content.notes.documents.index = Some(DocumentLeafNode::Document(Box::new(document(
+            DocumentType::Note,
+            "The note",
+            1,
+            4,
+        ))));
+        content.tags.insert(
+            "shared".into(),
+            [DocumentType::Blog, DocumentType::Update, DocumentType::Note]
+                .into_iter()
+                .map(|kind| (kind, vec!["shared".into()]))
+                .collect(),
+        );
+        content
+            .tag_descriptions
+            .insert("shared".into(), "Shared subject".into());
+        let html = render_tag(&content);
+        let html: String = html.split_whitespace().collect();
+        let posts = html.find("<h2>Posts</h2>").unwrap();
+        let updates = html.find("<h2>Updates</h2>").unwrap();
+        let notes = html.find("<h2>Notes</h2>").unwrap();
+        assert!(posts < updates && updates < notes);
+        assert!(html[posts..updates].contains("href=\"/blog/shared/\""));
+        assert!(html[updates..notes].contains("href=\"/updates/shared/\""));
+        assert!(html[notes..].contains("href=\"/notes/shared/\""));
+        assert!(html[notes..].contains("2025-01-04T00:00:00+00:00"));
+        for group in [&html[posts..updates], &html[updates..notes], &html[notes..]] {
+            assert!(group.contains("<articleclass=\"summary\">"));
+            assert!(group.contains("<divclass=\"summary-meta\"><time"));
+            assert!(group.find("<h3>").unwrap() < group.find("<time").unwrap());
+            assert!(!group.contains("class=\"dated-row\""));
+        }
+    }
+
+    #[test]
+    fn note_only_tag_omits_empty_groups() {
+        let mut content = Content::empty();
+        content.notes.documents.index = Some(DocumentLeafNode::Document(Box::new(document(
+            DocumentType::Note,
+            "The note",
+            1,
+            4,
+        ))));
+        content.tags.insert(
+            "shared".into(),
+            vec![(DocumentType::Note, vec!["shared".into()])],
+        );
+        content
+            .tag_descriptions
+            .insert("shared".into(), "Shared subject".into());
+        let html: String = render_tag(&content).split_whitespace().collect();
+        assert!(html.contains("<h2>Notes</h2>"));
+        assert!(!html.contains("<h2>Posts</h2>"));
+        assert!(!html.contains("<h2>Updates</h2>"));
+    }
+
+    #[test]
+    fn tag_groups_sort_posts_by_publication_and_notes_by_modification() {
+        let post_old = document(DocumentType::Blog, "Old post", 1, 5);
+        let post_new = document(DocumentType::Blog, "New post", 2, 2);
+        let note_old = document(DocumentType::Note, "Old note", 3, 3);
+        let note_new = document(DocumentType::Note, "New note", 1, 4);
+        let content = Content::empty();
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(&content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content: &content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        let groups = tag_groups(
+            context.with_bump(&bump),
+            &[&post_old, &note_old, &note_new, &post_new],
+        );
+        let html = paxhtml::Document::new(&bump, [groups])
+            .write_to_string()
+            .unwrap();
+        assert!(html.find("New post").unwrap() < html.find("Old post").unwrap());
+        assert!(html.find("New note").unwrap() < html.find("Old note").unwrap());
+    }
+
+    #[test]
+    fn note_header_renders_native_tags() {
+        let note = document(DocumentType::Note, "The note", 1, 4);
+        let content = Content::empty();
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(&content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content: &content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        let head = document::head(context.with_bump(&bump), &note);
+        let html = paxhtml::Document::new(&bump, [head])
+            .write_to_string()
+            .unwrap();
+        assert!(html.contains("href=\"/tags/shared/\""));
+        assert!(html.contains("class=\"tag-list\""));
+    }
 }
