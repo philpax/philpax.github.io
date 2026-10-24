@@ -26,6 +26,12 @@
   min-width: 0;
   font-size: inherit;
 }
+.metadata-author {
+  flex: 0 1 auto;
+  min-width: 0;
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
 .metadata-document {
   max-width: var(--measure);
 }

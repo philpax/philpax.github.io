@@ -35,6 +35,10 @@ pub fn document_meta<'a>(
         full.then(|| ("metadata-words", html! { in bump;
             <span>{format!("{} words", crate::util::number_to_comma_separated_string(document.word_count))}</span>
         })),
+        document.metadata.authored_by.as_deref()
+            .map(str::trim)
+            .filter(|author| !author.is_empty())
+            .map(|author| ("metadata-author", html! { in bump; <span>"by "<em>{author}</em></span> })),
         (!folders.is_empty()).then(|| ("metadata-folders", folder_path(bump, folders))),
         document.metadata.draft.then(|| ("metadata-draft", html! { in bump; <em>{DRAFT}</em> })),
         (!tags.is_empty()).then(|| ("metadata-tags", html! { in bump; <TagList tags={tags} /> })),
@@ -190,6 +194,31 @@ mod tests {
         assert!(html.find("<time").unwrap() < html.find("dated-path").unwrap());
         assert!(html.find("dated-path").unwrap() < html.find("metadata-tags").unwrap());
         assert_eq!(html.matches("aria-hidden=\"true\">/</span>").count(), 3);
+    }
+
+    #[test]
+    fn author_credits_are_escaped_and_separated_in_both_layouts() {
+        let mut note = document(DocumentType::Note);
+        note.base.metadata.authored_by = Some("Claude < & Opus".into());
+        for layout in [MetadataLayout::Document, MetadataLayout::Summary] {
+            let html = render(&note, layout, vec![]);
+            assert!(html.contains("<span>by<em>Claude&lt;&amp;Opus</em></span>"));
+            assert!(!html.contains("< &"));
+            assert!(html.find("<time").unwrap() < html.find("metadata-author").unwrap());
+            let expected = if matches!(layout, MetadataLayout::Document) {
+                2
+            } else {
+                1
+            };
+            assert_eq!(
+                html.matches("aria-hidden=\"true\">/</span>").count(),
+                expected
+            );
+        }
+        note.base.metadata.authored_by = Some(" \n ".into());
+        for layout in [MetadataLayout::Document, MetadataLayout::Summary] {
+            assert!(!render(&note, layout, vec![]).contains("metadata-author"));
+        }
     }
 
     #[test]

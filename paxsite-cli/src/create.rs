@@ -72,6 +72,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
     let metadata = DocumentMetadata {
         title: title.clone(),
         short: Some(short),
+        authored_by: None,
         datetime: Some(datetime),
         last_modified: None,
         draft: true,

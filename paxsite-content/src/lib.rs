@@ -107,6 +107,8 @@ impl std::fmt::Display for DocumentType {
 pub struct DocumentMetadata {
     pub title: String,
     pub short: Option<String>,
+    /// Optional plain-text author credit, separate from the document body.
+    pub authored_by: Option<String>,
     #[serde(with = "toml_datetime_compat", default)]
     pub datetime: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(skip)]
@@ -186,6 +188,7 @@ impl Document {
             metadata: DocumentMetadata {
                 title: "".to_string(),
                 short: None,
+                authored_by: None,
                 datetime: None,
                 last_modified: None,
                 draft: false,
@@ -275,7 +278,7 @@ impl Document {
 
             (metadata, parts[2].to_string())
         } else {
-            let (taxonomies, body) = parse_note_frontmatter(&file)
+            let (frontmatter, body) = parse_note_frontmatter(&file)
                 .with_context(|| format!("invalid note frontmatter in {path:?}"))?;
             let file_dates = get_file_dates(path, fast)?;
             let metadata = DocumentMetadata {
@@ -284,10 +287,11 @@ impl Document {
                     false => display_path.last().cloned().unwrap(),
                 },
                 short: None,
+                authored_by: frontmatter.authored_by,
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
                 draft: false,
-                taxonomies,
+                taxonomies: frontmatter.taxonomies,
                 standard_site: None,
             };
 
@@ -957,6 +961,13 @@ pub fn generate_frontmatter(metadata: &DocumentMetadata) -> String {
         output.push_str(&format!("short = {}\n", toml::Value::from(short.as_str())));
     }
 
+    if let Some(author) = &metadata.authored_by {
+        output.push_str(&format!(
+            "authored_by = {}\n",
+            toml::Value::from(author.as_str())
+        ));
+    }
+
     if let Some(dt) = metadata.datetime {
         output.push_str(&format!("datetime = {}\n", dt.format("%Y-%m-%dT%H:%M:%SZ")));
     }
@@ -1078,19 +1089,20 @@ pub fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
 
 // ── Private helpers ─────────────────────────────────────────────────────────
 
-#[derive(Deserialize)]
+#[derive(Default, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct NoteFrontmatter {
+    authored_by: Option<String>,
     taxonomies: Option<DocumentTaxonomies>,
 }
 
-fn parse_note_frontmatter(file: &str) -> anyhow::Result<(Option<DocumentTaxonomies>, &str)> {
+fn parse_note_frontmatter(file: &str) -> anyhow::Result<(NoteFrontmatter, &str)> {
     let mut lines = file.split_inclusive('\n');
     let Some(first_line) = lines
         .next()
         .filter(|line| line.trim_end_matches(['\r', '\n']) == FRONTMATTER_DELIMITER)
     else {
-        return Ok((None, file));
+        return Ok((NoteFrontmatter::default(), file));
     };
 
     let start = first_line.len();
@@ -1098,7 +1110,7 @@ fn parse_note_frontmatter(file: &str) -> anyhow::Result<(Option<DocumentTaxonomi
     for line in lines {
         if line.trim_end_matches(['\r', '\n']) == FRONTMATTER_DELIMITER {
             let frontmatter: NoteFrontmatter = toml::from_str(&file[start..end])?;
-            return Ok((frontmatter.taxonomies, &file[end + line.len()..]));
+            return Ok((frontmatter, &file[end + line.len()..]));
         }
         end += line.len();
     }
@@ -1340,8 +1352,9 @@ mod tests {
             "    +++\n    [taxonomies]\n    tags = [\"blackbird\"]\n    +++\n",
             "    +++\n    unterminated code example\n",
         ] {
-            let (taxonomies, parsed_body) = parse_note_frontmatter(body).unwrap();
-            assert!(taxonomies.is_none());
+            let (frontmatter, parsed_body) = parse_note_frontmatter(body).unwrap();
+            assert!(frontmatter.taxonomies.is_none());
+            assert!(frontmatter.authored_by.is_none());
             assert_eq!(parsed_body, body);
         }
     }
@@ -1358,13 +1371,53 @@ mod tests {
                 "Note.",
             ]
             .join(newline);
-            let (taxonomies, body) = parse_note_frontmatter(&file).unwrap();
-            assert_eq!(taxonomies.unwrap().tags, ["blackbird", "music"]);
+            let (frontmatter, body) = parse_note_frontmatter(&file).unwrap();
+            assert_eq!(frontmatter.taxonomies.unwrap().tags, ["blackbird", "music"]);
+            assert!(frontmatter.authored_by.is_none());
             assert_eq!(body, format!("{newline}Note."));
         }
-        let (taxonomies, body) = parse_note_frontmatter("+++\n+++").unwrap();
-        assert!(taxonomies.is_none());
+        let (frontmatter, body) = parse_note_frontmatter("+++\n+++").unwrap();
+        assert!(frontmatter.taxonomies.is_none());
+        assert!(frontmatter.authored_by.is_none());
         assert!(body.is_empty());
+    }
+
+    #[test]
+    fn note_frontmatter_supports_author_credits_with_or_without_tags() {
+        for newline in ["\n", "\r\n"] {
+            for tags in [false, true] {
+                let mut lines = vec!["+++", "authored_by = \"Claude Opus 5.5\""];
+                if tags {
+                    lines.extend(["[taxonomies]", "tags = [\"ai\"]"]);
+                }
+                lines.extend(["+++", "", "## Abstract", "", "The idea."]);
+                let (frontmatter, body) = {
+                    let source = lines.join(newline);
+                    let (frontmatter, body) = parse_note_frontmatter(&source).unwrap();
+                    (frontmatter, body.to_string())
+                };
+                assert_eq!(frontmatter.authored_by.as_deref(), Some("Claude Opus 5.5"));
+                assert_eq!(frontmatter.taxonomies.is_some(), tags);
+                assert!(body.starts_with(&format!("{newline}## Abstract")));
+                assert_eq!(
+                    md::note_excerpt(&md::parse_markdown(&body)).as_deref(),
+                    Some("The idea.")
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn author_credits_round_trip_through_generated_frontmatter() {
+        let mut document = Document::empty();
+        document.metadata.title = "An example".into();
+        document.metadata.authored_by = Some("A \"quoted\" author < &".into());
+        let source = generate_frontmatter(&document.metadata);
+        let parsed: DocumentMetadata =
+            toml::from_str(source.split(FRONTMATTER_DELIMITER).nth(1).unwrap()).unwrap();
+        assert_eq!(parsed.authored_by, document.metadata.authored_by);
+        let legacy: DocumentMetadata = toml::from_str("title = \"Legacy\"").unwrap();
+        assert!(legacy.authored_by.is_none());
     }
 
     #[test]
@@ -1376,6 +1429,7 @@ mod tests {
             "+++\ntitle = \"Override\"\n+++\n",
             "+++\ndatetime = 2000-01-01T00:00:00Z\n+++\n",
             "+++\ndraft = true\n+++\n",
+            "+++\nauthored_by = 123\n+++\n",
         ] {
             assert!(parse_note_frontmatter(file).is_err(), "{file}");
         }
@@ -1395,7 +1449,7 @@ mod tests {
         let path = directory.join("blackbird.md");
         std::fs::write(
             &path,
-            "+++\n[taxonomies]\ntags = [\"blackbird\"]\n+++\n\nIntroduction.\n\n<!-- more -->\n\nDetails.\n",
+            "+++\nauthored_by = \"GLM-5.3-Flash\"\n[taxonomies]\ntags = [\"blackbird\"]\n+++\n\nIntroduction.\n\n<!-- more -->\n\nDetails.\n",
         ).unwrap();
         let dates = get_file_dates(&path, true).unwrap();
         let result = Document::read(
@@ -1412,6 +1466,10 @@ mod tests {
         assert_eq!(document.metadata.last_modified, Some(dates.last_commit));
         assert!(!document.metadata.draft);
         assert_eq!(document.tags().unwrap(), &["blackbird"]);
+        assert_eq!(
+            document.metadata.authored_by.as_deref(),
+            Some("GLM-5.3-Flash")
+        );
         assert_eq!(document.description_raw, "Introduction.");
         assert_eq!(document.rest_of_content_raw.as_deref(), Some("Details."));
     }
