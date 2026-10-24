@@ -8,7 +8,7 @@ use crate::{
     content::DocumentType,
     markdown::{HeadingHierarchy, MarkdownConverter, document_root},
     views::{
-        components::{TagList, TagListProps, collect_pr_entries},
+        components::{MetadataLayout, collect_pr_entries, document_meta},
         listings::{gap, inline_markdown, note_folders},
     },
 };
@@ -116,7 +116,7 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
                 <h1>{inline_markdown(context, title, &url)}</h1>
                 {short}
             </hgroup>
-            {meta(bump, document)}
+            {document_meta(bump, document, MetadataLayout::Document, vec![])}
             {hero}
         </header>
     }
@@ -196,50 +196,5 @@ fn breadcrumb<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> 
                 })}
             </ol>
         </nav>
-    }
-}
-
-/// Facts separated by slashes, then the tags. The slashes are in the markup so it reads
-/// as a row unstyled; the tags have none, as they wrap onto their own line.
-fn meta<'a>(bump: &'a Bump, document: &Document) -> Element<'a> {
-    let kind = match document.document_type {
-        DocumentType::Blog => Some("Post"),
-        DocumentType::Update => Some("Update"),
-        DocumentType::Note => None,
-    };
-    // Notes are dated by last touch.
-    let when = match document.document_type {
-        DocumentType::Note => document
-            .metadata
-            .last_modified
-            .or(document.metadata.datetime),
-        _ => document.metadata.datetime,
-    }
-    .unwrap_or_else(|| panic!("No datetime for {document}"));
-
-    let segments = [
-        kind.map(|kind| html! { in bump; <span>{kind}</span> }),
-        Some(html! { in bump;
-            <time datetime={when.to_rfc3339()}>{display_date(when.date_naive())}</time>
-        }),
-        Some(
-            html! { in bump; <span>{format!("{} words", crate::util::number_to_comma_separated_string(document.word_count))}</span> },
-        ),
-        document
-            .metadata
-            .draft
-            .then(|| html! { in bump; <em>{DRAFT}</em> }),
-    ];
-    let tags = document.tags().cloned().unwrap_or_default();
-    html! { in bump;
-        <div class="document-meta">
-            #{segments.into_iter().flatten().enumerate().map(|(i, segment)| html! { in bump;
-                <>
-                    {(i > 0).then(|| html! { in bump; <span ariaHidden="true">" / "</span> })}
-                    {segment}
-                </>
-            })}
-            <TagList tags={tags} />
-        </div>
     }
 }

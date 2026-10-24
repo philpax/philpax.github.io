@@ -10,6 +10,9 @@ pub use city_poster::*;
 mod date;
 pub use date::*;
 
+mod document_meta;
+pub use document_meta::*;
+
 mod bluesky_post;
 pub use bluesky_post::*;
 

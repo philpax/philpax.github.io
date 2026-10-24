@@ -34,6 +34,7 @@ const SITE_FILES: &[(&str, &str)] = &[
     ("sections.css", include_str!("site/sections.css")),
     ("elements.css", include_str!("site/elements.css")),
     ("patterns.css", include_str!("site/patterns.css")),
+    ("metadata.css", include_str!("site/metadata.css")),
     ("layout.css", include_str!("site/layout.css")),
     ("listings.css", include_str!("site/listings.css")),
     ("home.css", include_str!("site/home.css")),

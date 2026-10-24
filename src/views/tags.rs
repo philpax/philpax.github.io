@@ -234,7 +234,7 @@ mod tests {
         assert!(html[notes..].contains("2025-01-04T00:00:00+00:00"));
         for group in [&html[posts..updates], &html[updates..notes], &html[notes..]] {
             assert!(group.contains("<articleclass=\"summary\">"));
-            assert!(group.contains("<divclass=\"summary-meta\"><time"));
+            assert!(group.contains("<divclass=\"metadatametadata-summary\">"));
             assert!(group.find("<h3>").unwrap() < group.find("<time").unwrap());
             assert!(!group.contains("class=\"dated-row\""));
         }

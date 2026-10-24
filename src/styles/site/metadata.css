@@ -1,0 +1,57 @@
+/* Metadata shared by full document headings and listing summaries. */
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-1-5);
+}
+.metadata-segment {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  gap: var(--s-1-5);
+}
+.metadata-segment > [aria-hidden],
+.dated-path > [aria-hidden] {
+  flex-shrink: 0;
+  color: var(--ink-faint);
+}
+/* The separator wraps with the tags. Only the list scrolls. */
+.metadata-tags {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.metadata-tags > .tag-list {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: inherit;
+}
+.metadata-document {
+  max-width: var(--measure);
+}
+.metadata-document > :first-child {
+  color: var(--accent);
+}
+.metadata-summary {
+  flex-wrap: nowrap;
+  margin-block: -0.25em var(--s-1);
+}
+.metadata-summary > .metadata-tags {
+  flex-basis: 0;
+}
+.metadata-folders {
+  flex: 0 1 auto;
+  max-width: 35%;
+  min-width: 0;
+  text-transform: none;
+}
+.metadata-folders > .dated-path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dated-path > [aria-hidden] {
+  margin-inline: 2px;
+  opacity: 0.6;
+}

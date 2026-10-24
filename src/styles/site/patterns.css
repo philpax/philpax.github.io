@@ -25,7 +25,6 @@
 /* Faint. */
 .index-row > header p,
 .site > footer,
-.summary-meta > time,
 .dated-row > time,
 .dated-path,
 .tag-index-count {
@@ -48,12 +47,6 @@
 .rail-row {
   font-size: var(--text-sm);
 }
-/* A meta row's tags match the row, not the step above. */
-.summary-meta > .tag-list,
-.document-meta > .tag-list {
-  font-size: var(--text-xs);
-}
-
 /* The reading face; the chrome's is the default. */
 .prose,
 .page-head p,
@@ -66,9 +59,8 @@
 .index-row > header h2,
 .aside-heading,
 .breadcrumb,
-.document-meta,
+.metadata,
 .document-toc > summary,
-.summary h3 > em,
 .timeline figcaption {
   font-family: var(--f-ui);
   font-size: var(--text-xs);

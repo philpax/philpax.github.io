@@ -10,7 +10,7 @@ use super::*;
 use crate::{
     content::{DocumentId, DocumentType},
     markdown::MarkdownConverter,
-    views::components::{TagList, TagListProps},
+    views::components::{MetadataLayout, document_meta, document_time, folder_path},
 };
 
 /// Whether a post or update appears in the indexes and on the front page: drafts only do
@@ -96,7 +96,6 @@ pub fn summary_list<'a, 'd>(
 pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     let bump = context.bump;
     let url = doc.route_path().url_path();
-    let tags = doc.tags().cloned().unwrap_or_default();
     let folders = if doc.document_type == DocumentType::Note {
         note_folders(context, doc)
     } else {
@@ -117,14 +116,8 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
                 <A href={url.clone()}>
                     <span>{inline_markdown(context, &doc.metadata.title, &url)}</span>
                 </A>
-                {doc.metadata.draft.then(|| html! { in bump; <em>{document::DRAFT}</em> })}
             </h3>
-            // Only the tag list scrolls, so the date stays put.
-            <div class="summary-meta">
-                {time(bump, doc)}
-                {(!folders.is_empty()).then(|| dated_path(bump, folders))}
-                <TagList tags={tags} />
-            </div>
+            {document_meta(bump, doc, MetadataLayout::Summary, folders)}
             {short.map(|short| html! { in bump; <p>{short}</p> })}
         </article>
     }
@@ -140,11 +133,11 @@ pub fn dated_list<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Elem
                 let folders = folders(doc, &note_ids);
                 html! { in bump;
                     <li class="dated-row">
-                        {time(bump, doc)}
+                        {document_time(bump, doc)}
                         <span class="dated-entry">
                             <A href={doc.route_path().url_path()}>{doc.metadata.title.clone()}</A>
                             {doc.metadata.draft.then(|| html! { in bump; <em>{document::DRAFT}</em> })}
-                            {(!folders.is_empty()).then(|| dated_path(bump, folders))}
+                            {(!folders.is_empty()).then(|| folder_path(bump, folders))}
                         </span>
                     </li>
                 }
@@ -182,17 +175,6 @@ fn datetime(doc: &Document) -> chrono::DateTime<chrono::Utc> {
         .unwrap_or_else(|| panic!("No datetime for {doc}"))
 }
 
-/// Publish date of a post or update, or a note's last touch.
-fn time<'a>(bump: &'a Bump, doc: &Document) -> Element<'a> {
-    let when = match doc.document_type {
-        DocumentType::Note => doc.metadata.last_modified.unwrap_or_else(|| datetime(doc)),
-        _ => datetime(doc),
-    };
-    html! { in bump;
-        <time datetime={when.to_rfc3339()}>{display_date(when.date_naive())}</time>
-    }
-}
-
 /// Every note's id.
 fn note_ids<'a>(context: ViewContext<'a>) -> HashSet<&'a DocumentId> {
     context
@@ -220,22 +202,6 @@ fn folders(doc: &Document, note_ids: &HashSet<&DocumentId>) -> Vec<(String, Opti
             (doc.display_path[i].clone(), route)
         })
         .collect()
-}
-
-fn dated_path<'a>(bump: &'a Bump, folders: Vec<(String, Option<String>)>) -> Element<'a> {
-    html! { in bump;
-        <span class="dated-path">
-            #{folders.into_iter().enumerate().map(|(i, (name, route))| html! { in bump;
-                <>
-                    {(i > 0).then(|| html! { in bump; <span ariaHidden="true">" / "</span> })}
-                    {match route {
-                        Some(route) => html! { in bump; <A href={route}>{name}</A> },
-                        None => html! { in bump; <span>{name}</span> },
-                    }}
-                </>
-            })}
-        </span>
-    }
 }
 
 #[cfg(test)]
@@ -324,11 +290,8 @@ mod tests {
             assert!(!html.contains('·'));
             if html.contains("class=\"summary\"") {
                 let meta = html
-                    .split("class=\"summary-meta\"")
+                    .split("class=\"metadata metadata-summary\"")
                     .nth(1)
-                    .unwrap()
-                    .split("</div>")
-                    .next()
                     .unwrap();
                 assert!(meta.find("<time").unwrap() < meta.find("class=\"dated-path\"").unwrap());
                 assert!(
