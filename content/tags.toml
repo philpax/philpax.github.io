@@ -1,7 +1,7 @@
 ai = "Artificial Intelligence. the big one. small, big, local, remote"
 ananke = "my daemon for intelligently multiplexing AI models and such"
 balatro = "a reimplementation of Balatro in Rust"
-blackbird = "my music player"
+blackbird = "[blackbird](/notes/projects/blackbird/), my music player"
 c = "C, and things it was never meant to do"
 cardinal = "[Cardinal](https://github.com/DISTRHO/Cardinal), and my adjacent hacking of it"
 cursed = "things that should not work, but do"
