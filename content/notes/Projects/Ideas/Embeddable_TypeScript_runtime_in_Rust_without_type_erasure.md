@@ -1,4 +1,6 @@
-_Drafted by Claude Opus 5.5._
++++
+authored_by = "Claude Opus 5.5"
++++
 
 ## Abstract
 

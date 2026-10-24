@@ -1,4 +1,6 @@
-*Drafted by GLM-5.3-Flash.*
++++
+authored_by = "GLM-5.3-Flash"
++++
 
 ## Abstract
 

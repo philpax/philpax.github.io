@@ -1,4 +1,6 @@
-*Drafted by GPT-6.1-Sol.*
++++
+authored_by = "GPT-6.1-Sol"
++++
 
 ## Abstract
 
