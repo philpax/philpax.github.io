@@ -33,6 +33,8 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
         text.value.clone()
     } else if let Node::InlineCode(code) = node {
         code.value.clone()
+    } else if matches!(node, Node::Break(_)) {
+        "\n".to_string()
     } else {
         let mut output: String = node
             .children()
@@ -49,5 +51,20 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
             output.insert(0, '\n');
         }
         output
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hard_line_breaks_separate_words() {
+        for source in [
+            "First line  \ncontinues here.",
+            "First line\\\ncontinues here.",
+        ] {
+            assert_eq!(markdown_to_plaintext(source), "First line\ncontinues here.");
+        }
     }
 }
