@@ -103,7 +103,8 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
         vec![]
     };
     let short = match doc.document_type {
-        DocumentType::Note => note_excerpt(doc).map(|excerpt| html! { in bump; {excerpt} }),
+        DocumentType::Note => paxsite_content::md::note_excerpt(&doc.description)
+            .map(|excerpt| html! { in bump; {excerpt} }),
         _ => doc
             .metadata
             .short
@@ -175,32 +176,6 @@ pub fn inline_markdown<'a>(
 
 // --- Private implementation details ---
 
-/// The first sentence of a note's opening paragraph, or the paragraph without a full stop.
-fn note_excerpt(doc: &Document) -> Option<String> {
-    let paragraph = doc
-        .description
-        .children()?
-        .iter()
-        .find(|node| matches!(node, markdown::mdast::Node::Paragraph(_)))?;
-    let text = crate::markdown::plain_text(paragraph);
-    let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
-    if text.is_empty() {
-        return None;
-    }
-    let end = text
-        .char_indices()
-        .find_map(|(index, character)| {
-            (character == '.'
-                && text[index + 1..]
-                    .chars()
-                    .next()
-                    .is_none_or(char::is_whitespace))
-            .then_some(index + 1)
-        })
-        .unwrap_or(text.len());
-    Some(text[..end].to_string())
-}
-
 fn datetime(doc: &Document) -> chrono::DateTime<chrono::Utc> {
     doc.metadata
         .datetime
@@ -271,47 +246,6 @@ mod tests {
         image_store::ImageStore,
         syntax::SyntaxHighlighter,
     };
-
-    #[test]
-    fn note_excerpts_use_the_first_sentence_or_whole_first_paragraph() {
-        for (markdown, expected) in [
-            (
-                "First sentence. Second sentence.\n\nAnother paragraph.",
-                Some("First sentence."),
-            ),
-            (
-                "A paragraph without a full stop\ncontinues here\n\nAnother paragraph.",
-                Some("A paragraph without a full stop continues here"),
-            ),
-            (
-                "[blackbird](https://github.com/philpax/blackbird) is a **music player**. More.",
-                Some("blackbird is a music player."),
-            ),
-            (
-                "genresin.space and llama.cpp are names. Another sentence.",
-                Some("genresin.space and llama.cpp are names."),
-            ),
-            ("Café < & music. Second sentence.", Some("Café < & music.")),
-            (
-                "First line  \ncontinues here. Second sentence.",
-                Some("First line continues here."),
-            ),
-            (
-                "First line\\\ncontinues here. Second sentence.",
-                Some("First line continues here."),
-            ),
-            (
-                "# Heading\n\nThe introduction. More.",
-                Some("The introduction."),
-            ),
-            ("# Heading only", None),
-            ("", None),
-        ] {
-            let mut note = Document::empty();
-            note.description = crate::content::parse_markdown(markdown);
-            assert_eq!(note_excerpt(&note).as_deref(), expected, "{markdown}");
-        }
-    }
 
     #[test]
     fn note_paths_link_each_parent_and_use_slashes() {

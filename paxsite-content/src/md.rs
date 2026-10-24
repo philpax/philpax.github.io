@@ -20,6 +20,32 @@ pub fn markdown_to_plaintext(md: &str) -> String {
     inner_text(&parse_markdown(md), None).trim().to_string()
 }
 
+/// The first sentence of the opening top-level paragraph, or the whole paragraph
+/// if it has no full stop. The result is plain text with normalized whitespace.
+pub fn note_excerpt(description: &Node) -> Option<String> {
+    let paragraph = description
+        .children()?
+        .iter()
+        .find(|node| matches!(node, Node::Paragraph(_)))?;
+    let text = inner_text(paragraph, None);
+    let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
+    if text.is_empty() {
+        return None;
+    }
+    let end = text
+        .char_indices()
+        .find_map(|(index, character)| {
+            (character == '.'
+                && text[index + 1..]
+                    .chars()
+                    .next()
+                    .is_none_or(char::is_whitespace))
+            .then_some(index + 1)
+        })
+        .unwrap_or(text.len());
+    Some(text[..end].to_string())
+}
+
 /// Recursively collects the text content of an mdast node. `ignore_node`, when
 /// provided, prunes matching subtrees (e.g. footnote definitions).
 pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String {
@@ -57,6 +83,50 @@ pub fn inner_text(node: &Node, ignore_node: Option<fn(&Node) -> bool>) -> String
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn note_excerpts_use_the_first_sentence_or_whole_first_paragraph() {
+        for (markdown, expected) in [
+            (
+                "First sentence. Second sentence.\n\nAnother paragraph.",
+                Some("First sentence."),
+            ),
+            (
+                "A paragraph without a full stop\ncontinues here\n\nAnother paragraph.",
+                Some("A paragraph without a full stop continues here"),
+            ),
+            (
+                "[blackbird](https://github.com/philpax/blackbird) is a **music player**. More.",
+                Some("blackbird is a music player."),
+            ),
+            (
+                "genresin.space and llama.cpp are names. Another sentence.",
+                Some("genresin.space and llama.cpp are names."),
+            ),
+            ("Café < & music. Second sentence.", Some("Café < & music.")),
+            (
+                "First line  \ncontinues here. Second sentence.",
+                Some("First line continues here."),
+            ),
+            (
+                "First line\\\ncontinues here. Second sentence.",
+                Some("First line continues here."),
+            ),
+            (
+                "# Heading\n\nThe introduction. More.",
+                Some("The introduction."),
+            ),
+            ("- A nested paragraph.", None),
+            ("# Heading only", None),
+            ("", None),
+        ] {
+            assert_eq!(
+                note_excerpt(&parse_markdown(markdown)).as_deref(),
+                expected,
+                "{markdown}"
+            );
+        }
+    }
 
     #[test]
     fn hard_line_breaks_separate_words() {
