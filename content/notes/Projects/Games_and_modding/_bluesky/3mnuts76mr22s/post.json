@@ -1,0 +1,40 @@
+{
+  "author_avatar_filename": "_bluesky/3mnuts76mr22s/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2026-06-09T18:38:52.813Z",
+  "facets": [
+    {
+      "byte_end": 190,
+      "byte_start": 164,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://github.com/philpax/veldera/commit/9f40c16ae3a48879605f3f8d8211db12513f4af4"
+          }
+        }
+      ]
+    }
+  ],
+  "fetched_at": "2026-10-25T17:58:48.821638584+00:00",
+  "images": [],
+  "like_count": 11,
+  "media_version": 1,
+  "quote_count": 0,
+  "reply_count": 2,
+  "repost_count": 0,
+  "text": "Fable successfully fixed a bug in twenty minutes that an eight-hour stretch of debugging with 4.8 couldn't fix\n\ncomparison video is flickery, so marked as graphic\n\ngithub.com/philpax/veld...",
+  "url": "https://bsky.app/profile/philpax.me/post/3mnuts76mr22s",
+  "video": {
+    "alt": "",
+    "height": 540,
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreiefgk6isxsxpldr5unorwbfwyedhu56s4bvvqthnnwskgejjxmhne/playlist.m3u8",
+    "thumbnail": {
+      "alt": "",
+      "filename": "_bluesky/3mnuts76mr22s/poster.jpg",
+      "height": 540,
+      "width": 1920
+    },
+    "width": 1920
+  }
+}

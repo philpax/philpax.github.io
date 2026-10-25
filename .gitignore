@@ -7,3 +7,6 @@ public
 
 # Subset fonts, cut at build time (see src/fonts/)
 /.cache
+
+# An interrupted build can leave a Bluesky archive write behind
+content/**/post.json.*.tmp

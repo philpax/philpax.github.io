@@ -1,0 +1,30 @@
+{
+  "author_avatar_filename": "_bluesky/3mptynvey2s2i/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2026-07-04T21:23:40.540Z",
+  "facets": [],
+  "fetched_at": "2026-10-25T17:58:23.179790870+00:00",
+  "images": [
+    {
+      "alt": "screenshot of pyxisdoc, the docs viewer for pyxis, showing the docs for a type with its constants / field structure / associated functoin",
+      "filename": "_bluesky/3mptynvey2s2i/image-0.webp",
+      "height": 1311,
+      "width": 1527
+    },
+    {
+      "alt": "screenshot of Zed looking at two tabs of pyxis source code; on the left, hovering over a type of a field within a structure, with a popup; on the right, the hovered-over type that corresponds",
+      "filename": "_bluesky/3mptynvey2s2i/image-1.webp",
+      "height": 1425,
+      "width": 1734
+    }
+  ],
+  "like_count": 5,
+  "media_version": 1,
+  "quote_count": 0,
+  "reply_count": 1,
+  "repost_count": 0,
+  "text": "pyxis has a docs viewer and a LSP now\n\nthat must surely qualify it for consideration as a Real Language, right?",
+  "url": "https://bsky.app/profile/philpax.me/post/3mptynvey2s2i",
+  "video": null
+}

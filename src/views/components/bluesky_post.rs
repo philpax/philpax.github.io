@@ -150,7 +150,7 @@ mod tests {
 
     fn image() -> BlueskyImage {
         BlueskyImage {
-            filename: "bluesky-123-0.webp".into(),
+            filename: "_bluesky/123/image-0.webp".into(),
             alt: "An image <&>".into(),
             width: Some(1280),
             height: Some(720),
@@ -162,8 +162,8 @@ mod tests {
         let mut post = post();
         post.images.push(image());
         let html = render(&post);
-        assert!(html.contains("href=\"bluesky-123-0.webp\""));
-        assert!(html.contains("src=\"bluesky-123-0.webp\""));
+        assert!(html.contains("href=\"_bluesky/123/image-0.webp\""));
+        assert!(html.contains("src=\"_bluesky/123/image-0.webp\""));
         assert!(html.contains("alt=\"An image &lt;&amp;&gt;\""));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("width=\"1280\""));
@@ -184,7 +184,7 @@ mod tests {
         });
         let html = render(&post);
         assert!(html.contains("data-hls=\"https://video.bsky.app/playlist.m3u8\""));
-        assert!(html.contains("poster=\"bluesky-123-0.webp\""));
+        assert!(html.contains("poster=\"_bluesky/123/image-0.webp\""));
         assert!(html.contains("aria-label=\"A video &lt;&amp;&gt;\""));
         assert!(html.contains("preload=\"none\""));
         assert!(html.contains("controls"));

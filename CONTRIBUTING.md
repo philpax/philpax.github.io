@@ -242,7 +242,7 @@ Custom components are written as PascalCase HTML tags in markdown and handled in
 - `<PrTimeline />` — Renders a Gantt-style timeline of every PR mentioned in the post (entries collected from the document's PR headings/`<PrMeta>`s)
 - `<MonthDayDate date="2025-11-06" noyear />` — Formatted date
 - `<MonthDayDateRange start="2025-11-06" end="2025-12-14" noyear />` — Date range
-- `<BlueskyPost post="https://bsky.app/profile/handle/post/rkey" />` — Archived Bluesky post embed (data fetched and cached as JSON next to the markdown file on first build)
+- `<BlueskyPost post="https://bsky.app/profile/handle/post/rkey" />` — Archived Bluesky post embed (data fetched into `_bluesky/<rkey>/post.json` beside the Markdown source on first build)
 
 **Paired (block) components:**
 - `<CityPoster image="path">...content...</CityPoster>` — Two-column layout with image and text
@@ -252,7 +252,8 @@ Component implementations live in `src/views/components/`. `MarkdownConverter::c
 ### Bluesky Post Embeds
 
 `<BlueskyPost>` tags trigger automatic fetching and caching of post data from the Bluesky API:
-- On first encounter, post text, facets, author information, engagement counts and attached media metadata are saved as `bluesky-{rkey}.json` beside the Markdown file. Avatars, attached images and video posters are saved as separate local image files and copied with the document's assets.
+- Each post has an archive folder at `_bluesky/<rkey>/` beside the Markdown source. It contains `post.json`, `avatar.<ext>`, `image-<index>.<ext>` attachments and an optional `poster.<ext>`. The cache records asset paths relative to the source directory. Image assets retain this directory structure in the output; JSON stays source-only. Note discovery ignores `_bluesky` folders.
+- Existing flat archives migrate locally before fetching. Migration preserves archived data and image bytes, validates the new files before removing the old cache, and retains shared avatars until no flat cache references them. A migration that was interrupted finishes on the next build.
 - Image attachments retain their alt text and dimensions. Image and video attachments inside a quote-with-media wrapper use the same rendering; nested quoted posts are not expanded.
 - Video files are not backed up. The page streams Bluesky's remote HLS playlist when playback starts, using native HLS where supported and the vendored hls.js light player otherwise. The non-native player shows a centred play overlay on the poster, then standard video controls during playback. The linked post timestamp remains available when playback fails or JavaScript is disabled.
 - The footer shows the post's ISO 8601 UTC datetime, linked to the original post, followed by engagement counts and `archived <datetime>` from the cache's `fetched_at`. Displayed datetimes use seconds without fractional digits; cached timestamps remain unchanged.

@@ -230,7 +230,12 @@ fn main() -> anyhow::Result<()> {
             let post_output_dir = route_path.dir_path(output_dir);
             let files = view_context.content.document_asset_paths(doc);
             for path in &files {
-                let output_path = post_output_dir.join(path.file_name().unwrap());
+                let output_path = util::document_asset_output_path(
+                    doc.source_path.parent().unwrap(),
+                    &post_output_dir,
+                    path,
+                )?;
+                std::fs::create_dir_all(output_path.parent().unwrap())?;
                 util::copy_or_symlink(path, &output_path, view_context.fast)
                     .with_context(|| format!("failed to copy {path:?} to {output_path:?}"))?;
             }

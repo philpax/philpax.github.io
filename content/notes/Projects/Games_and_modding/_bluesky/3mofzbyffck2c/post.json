@@ -1,0 +1,28 @@
+{
+  "author_avatar_filename": "_bluesky/3mofzbyffck2c/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2026-06-16T14:32:26.827Z",
+  "facets": [],
+  "fetched_at": "2026-10-25T17:58:50.549364423+00:00",
+  "images": [],
+  "like_count": 111,
+  "media_version": 1,
+  "quote_count": 1,
+  "reply_count": 7,
+  "repost_count": 15,
+  "text": "added a first-person body and ragdolling to veldera (\"engine\" for Google Earth + Bevy) and celebrated in the only way I could think of:\n\nnew york city human golf",
+  "url": "https://bsky.app/profile/philpax.me/post/3mofzbyffck2c",
+  "video": {
+    "alt": "charge-jumping around a simulated New York with ragdolling and trajectory arcs into various buildings' roofs",
+    "height": 1080,
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreicd2y6eqyslha2fmpriulfnj7max3f44yy7ic42e4dq3rok75txxm/playlist.m3u8",
+    "thumbnail": {
+      "alt": "charge-jumping around a simulated New York with ragdolling and trajectory arcs into various buildings' roofs",
+      "filename": "_bluesky/3mofzbyffck2c/poster.jpg",
+      "height": 1080,
+      "width": 1920
+    },
+    "width": 1920
+  }
+}

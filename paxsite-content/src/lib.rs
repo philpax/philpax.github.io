@@ -315,7 +315,7 @@ impl Document {
             if path.is_dir() {
                 continue;
             }
-            if bluesky::is_cache_file(&path) {
+            if bluesky::is_legacy_cache_file(&path) {
                 continue;
             }
             if let Some(filename) = path.file_name() {
@@ -1220,7 +1220,10 @@ fn read_notes_folder(
     for entry in std::fs::read_dir(path)? {
         let path = entry?.path();
 
-        if path.file_name().is_some_and(|f| f == INDEX_FILENAME) {
+        if path
+            .file_name()
+            .is_some_and(|f| f == INDEX_FILENAME || f == bluesky::ARCHIVE_DIRECTORY)
+        {
             continue;
         }
 
@@ -1484,6 +1487,31 @@ mod tests {
         );
         assert_eq!(document.description_raw, "Introduction.");
         assert_eq!(document.rest_of_content_raw.as_deref(), Some("Details."));
+    }
+
+    #[test]
+    fn bluesky_archive_folders_are_not_discovered_as_notes() {
+        let directory = std::env::temp_dir().join(format!(
+            "paxsite-note-archives-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos(),
+        ));
+        std::fs::create_dir_all(directory.join("_bluesky/3test")).unwrap();
+        std::fs::write(directory.join("example.md"), "An ordinary note.").unwrap();
+        std::fs::write(directory.join("_bluesky/index.md"), "Not a note.").unwrap();
+        std::fs::write(
+            directory.join("_bluesky/3test/post.md"),
+            "Not a note either.",
+        )
+        .unwrap();
+        let notes = NotesCollection::read(&directory, true).unwrap();
+        assert_eq!(notes.documents.children.len(), 1);
+        assert!(notes.documents.children.contains_key("example"));
+        assert_eq!(notes.documents.all_documents().len(), 1);
+        std::fs::remove_dir_all(directory).unwrap();
     }
 
     #[test]

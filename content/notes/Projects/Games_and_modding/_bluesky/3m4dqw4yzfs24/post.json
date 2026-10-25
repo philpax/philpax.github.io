@@ -1,0 +1,28 @@
+{
+  "author_avatar_filename": "_bluesky/3m4dqw4yzfs24/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2025-10-29T15:23:50.300Z",
+  "facets": [],
+  "fetched_at": "2026-10-25T17:58:34.588539846+00:00",
+  "images": [],
+  "like_count": 24,
+  "media_version": 1,
+  "quote_count": 1,
+  "reply_count": 1,
+  "repost_count": 0,
+  "text": "managed to get Just Cause 3 running in first person last night and I wish they'd shipped this with the game\n\njust watching this makes me want to hop in and drive around for an hour again",
+  "url": "https://bsky.app/profile/philpax.me/post/3m4dqw4yzfs24",
+  "video": {
+    "alt": "video of a work in progress first-person mod for Just Cause 3",
+    "height": 720,
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreies2csuj5ytbndjmn4qifj4m6yjxtuconhyokfcpq3xexpsbdexoq/playlist.m3u8",
+    "thumbnail": {
+      "alt": "video of a work in progress first-person mod for Just Cause 3",
+      "filename": "_bluesky/3m4dqw4yzfs24/poster.jpg",
+      "height": 720,
+      "width": 1280
+    },
+    "width": 1280
+  }
+}

@@ -172,7 +172,18 @@ impl Content {
     }
 
     pub fn document_asset_paths(&self, document: &Document) -> Vec<PathBuf> {
-        let mut paths = document.files.clone();
+        // A cache migration can remove flat assets collected by the initial scan.
+        let mut paths = document
+            .files
+            .iter()
+            .filter(|path| {
+                !path
+                    .file_name()
+                    .is_some_and(|name| name.to_string_lossy().starts_with("bluesky-"))
+                    || path.is_file()
+            })
+            .cloned()
+            .collect::<Vec<_>>();
         let directory = document.source_path.parent().unwrap();
         let mut posts = Vec::new();
         extract_bluesky_urls(&document.description, directory, &mut posts);
@@ -492,7 +503,7 @@ mod tests {
         let mut content = Content::empty();
         let mut doc = Document::empty();
         doc.base.source_path = PathBuf::from("content/notes/Projects/example.md");
-        let avatar = PathBuf::from("content/notes/Projects/avatar.webp");
+        let avatar = PathBuf::from("content/notes/Projects/_bluesky/123/avatar.webp");
         doc.base.files = vec![avatar.clone()];
         let url = "https://bsky.app/profile/example.test/post/123";
         let embed = format!("<BlueskyPost post=\"{url}\" />");
@@ -504,17 +515,17 @@ mod tests {
                 "url": url,
                 "author_display_name": "Example",
                 "author_handle": "example.test",
-                "author_avatar_filename": "avatar.webp",
+                "author_avatar_filename": "_bluesky/123/avatar.webp",
                 "text": "Archived text",
                 "facets": [],
                 "created_at": "2026-01-01T00:00:00Z",
                 "like_count": 0, "reply_count": 0, "repost_count": 0, "quote_count": 0,
                 "fetched_at": "2026-01-02T00:00:00Z",
-                "images": [{"filename": "image.webp", "alt": "", "width": null, "height": null}],
+                "images": [{"filename": "_bluesky/123/image-0.webp", "alt": "", "width": null, "height": null}],
                 "video": {
                     "playlist": "https://video.bsky.app/playlist.m3u8", "alt": "",
                     "width": null, "height": null,
-                    "thumbnail": {"filename": "poster.jpg", "alt": "", "width": null, "height": null}
+                    "thumbnail": {"filename": "_bluesky/123/poster.jpg", "alt": "", "width": null, "height": null}
                 }
             }))
             .unwrap(),
@@ -523,8 +534,8 @@ mod tests {
             content.document_asset_paths(&doc),
             vec![
                 avatar,
-                PathBuf::from("content/notes/Projects/image.webp"),
-                PathBuf::from("content/notes/Projects/poster.jpg"),
+                PathBuf::from("content/notes/Projects/_bluesky/123/image-0.webp"),
+                PathBuf::from("content/notes/Projects/_bluesky/123/poster.jpg"),
             ]
         );
         let mut other = Document::empty();
@@ -552,6 +563,31 @@ mod tests {
         assert_eq!(content.document_asset_paths(&doc).len(), 3);
         doc.rest_of_content = None;
         assert_eq!(content.document_asset_paths(&doc), doc.files);
+    }
+
+    #[test]
+    fn migrated_flat_assets_do_not_survive_the_initial_document_scan() {
+        let content = Content::empty();
+        let mut doc = Document::empty();
+        let directory = std::env::temp_dir().join(format!(
+            "paxsite-migrated-assets-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos(),
+        ));
+        std::fs::create_dir(&directory).unwrap();
+        doc.base.source_path = directory.join("example.md");
+        let removed = directory.join("bluesky-old-0.webp");
+        let retained = directory.join("bluesky-other-0.webp");
+        let ordinary = directory.join("ordinary-image.webp");
+        std::fs::write(&retained, b"image").unwrap();
+        doc.base.files = vec![removed, retained.clone(), ordinary.clone()];
+        let mut expected = vec![retained, ordinary];
+        expected.sort();
+        assert_eq!(content.document_asset_paths(&doc), expected);
+        std::fs::remove_dir_all(directory).unwrap();
     }
 
     #[test]

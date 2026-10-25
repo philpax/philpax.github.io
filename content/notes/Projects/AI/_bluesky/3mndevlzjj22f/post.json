@@ -1,0 +1,54 @@
+{
+  "author_avatar_filename": "_bluesky/3mndevlzjj22f/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2026-06-02T19:57:05.238Z",
+  "facets": [
+    {
+      "byte_end": 299,
+      "byte_start": 273,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://github.com/philpax/disco-diffusion"
+          }
+        }
+      ]
+    }
+  ],
+  "fetched_at": "2026-10-25T17:58:17.360631465+00:00",
+  "images": [
+    {
+      "alt": "a tranquil alpine valley at first light, mist between snowy peaks reflected in a still lake, romantic landscape by Caspar David Friedrich and Albert Bierstadt",
+      "filename": "_bluesky/3mndevlzjj22f/image-0.webp",
+      "height": 768,
+      "width": 1280
+    },
+    {
+      "alt": "a kaleidoscopic fractal mindscape, flowing iridescent patterns and sacred geometry, psychedelic visionary art by Android Jones and Pablo Amaringo",
+      "filename": "_bluesky/3mndevlzjj22f/image-1.webp",
+      "height": 768,
+      "width": 1280
+    },
+    {
+      "alt": "a glowing nebula blooming above an alien ocean, swirling galaxies and bioluminescent tides, matte painting by Roger Dean, highly detailed, trending on artstation",
+      "filename": "_bluesky/3mndevlzjj22f/image-2.webp",
+      "height": 768,
+      "width": 1280
+    },
+    {
+      "alt": "aurora borealis rippling over a frozen tundra, glowing ice and a vast starfield, luminist landscape by Thomas Moran and Ivan Shishkin",
+      "filename": "_bluesky/3mndevlzjj22f/image-3.webp",
+      "height": 768,
+      "width": 1280
+    }
+  ],
+  "like_count": 76,
+  "media_version": 1,
+  "quote_count": 5,
+  "reply_count": 2,
+  "repost_count": 13,
+  "text": "I am still very fond of the Disco Diffusion aesthetic and all of its delightful lil' quirks, so I spent some time with Claude bringing it into the present day + optimising so people can continue to enjoy it\n\n1 min/gen on my 5090, far from 10 min on a 3090 in the old days\n\ngithub.com/philpax/disc...",
+  "url": "https://bsky.app/profile/philpax.me/post/3mndevlzjj22f",
+  "video": null
+}

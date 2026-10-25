@@ -1,0 +1,51 @@
+{
+  "author_avatar_filename": "_bluesky/3my3oqyhuvk2p/avatar.webp",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "created_at": "2026-10-17T18:09:17.958Z",
+  "facets": [
+    {
+      "byte_end": 79,
+      "byte_start": 71,
+      "features": [
+        {
+          "Tag": {
+            "tag": "lunette"
+          }
+        }
+      ]
+    },
+    {
+      "byte_end": 224,
+      "byte_start": 203,
+      "features": [
+        {
+          "Mention": {
+            "did": "did:plc:bfp7n6e2rpr3yo7gpqdr2tfw"
+          }
+        }
+      ]
+    }
+  ],
+  "fetched_at": "2026-10-25T17:58:12.696992441+00:00",
+  "images": [],
+  "like_count": 42,
+  "media_version": 1,
+  "quote_count": 2,
+  "reply_count": 5,
+  "repost_count": 4,
+  "text": "new UI framework with 3D elements, a widget gallery, themes, and more! #lunette\n\nalso: improved the backdrop, including more frequency bands, fewer dropped waves, and real stereo separation (ty for idea @orpach.neocities.org!)",
+  "url": "https://bsky.app/profile/philpax.me/post/3my3oqyhuvk2p",
+  "video": {
+    "alt": "",
+    "height": 1080,
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreiferhe4rqcwvt2xwi3n3u46nfpplgdz6gcc3tmc2nkzql32vynfcy/playlist.m3u8",
+    "thumbnail": {
+      "alt": "",
+      "filename": "_bluesky/3my3oqyhuvk2p/poster.jpg",
+      "height": 1080,
+      "width": 1920
+    },
+    "width": 1920
+  }
+}
