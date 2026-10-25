@@ -21,6 +21,7 @@ jc2mp = "[Just Cause 2: Multiplayer Mod](/notes/projects/games-and-modding/just-
 jc3vr = "[jc3vr](/notes/projects/games-and-modding/jc3vr/): Just Cause 3, but in VR"
 llm = "[llm](/notes/projects/ai/llm/): a conversion of llama.cpp to Rust for use as a library"
 lunette = "[lunette](/notes/projects/graphics-and-xr/lunette/): a scriptable XR workspace for Linux"
+makima = "[makima](/notes/projects/ai/makima/): an extensible AI coding agent developed with lun-4"
 meta = "posts about the posting"
 music = "what I'm listening to, and how I listen to it"
 nixos = "of matters pertaining to the worst Linux distro, except for all of the other ones"

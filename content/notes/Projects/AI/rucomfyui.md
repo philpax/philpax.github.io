@@ -8,3 +8,7 @@ tags = ["rucomfyui"]
 In addition to this, `rucomfyui_mlua` exports a similar interface to Lua using the `mlua` library. The same metaprogramming machinery is used to dynamically generate a fluent library of nodes, making workflow construction in Lua both trivial and fun. These bindings were developed for [paxcord](../Personal_software/paxcord.md).
 
 <!-- more -->
+
+## Media
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mpoxsw2vq22h" />

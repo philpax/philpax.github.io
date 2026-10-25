@@ -1,0 +1,54 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mndevlzjj22f",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "I am still very fond of the Disco Diffusion aesthetic and all of its delightful lil' quirks, so I spent some time with Claude bringing it into the present day + optimising so people can continue to enjoy it\n\n1 min/gen on my 5090, far from 10 min on a 3090 in the old days\n\ngithub.com/philpax/disc...",
+  "facets": [
+    {
+      "byte_start": 273,
+      "byte_end": 299,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://github.com/philpax/disco-diffusion"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-06-02T19:57:05.238Z",
+  "like_count": 76,
+  "reply_count": 2,
+  "repost_count": 13,
+  "quote_count": 5,
+  "fetched_at": "2026-10-25T17:58:17.360631465+00:00",
+  "images": [
+    {
+      "filename": "bluesky-3mndevlzjj22f-0.webp",
+      "alt": "a tranquil alpine valley at first light, mist between snowy peaks reflected in a still lake, romantic landscape by Caspar David Friedrich and Albert Bierstadt",
+      "width": 1280,
+      "height": 768
+    },
+    {
+      "filename": "bluesky-3mndevlzjj22f-1.webp",
+      "alt": "a kaleidoscopic fractal mindscape, flowing iridescent patterns and sacred geometry, psychedelic visionary art by Android Jones and Pablo Amaringo",
+      "width": 1280,
+      "height": 768
+    },
+    {
+      "filename": "bluesky-3mndevlzjj22f-2.webp",
+      "alt": "a glowing nebula blooming above an alien ocean, swirling galaxies and bioluminescent tides, matte painting by Roger Dean, highly detailed, trending on artstation",
+      "width": 1280,
+      "height": 768
+    },
+    {
+      "filename": "bluesky-3mndevlzjj22f-3.webp",
+      "alt": "aurora borealis rippling over a frozen tundra, glowing ice and a vast starfield, luminist landscape by Thomas Moran and Ivan Shishkin",
+      "width": 1280,
+      "height": 768
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}

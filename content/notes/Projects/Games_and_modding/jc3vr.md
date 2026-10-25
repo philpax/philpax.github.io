@@ -8,3 +8,11 @@ tags = ["jc3vr"]
 <!-- more -->
 
 Related tooling includes [jc3boot](https://github.com/ferrobrew/jc3boot), which starts Just Cause 3 in a state suitable for development. jc3vr is also the primary consumer of [pyxis](./pyxis.md), which provides the project with comfortable Rust representations of the game's state.
+
+## Media
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3m4dqw4yzfs24" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3moxts7ue6s2e" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mylmlibiwk2u" />

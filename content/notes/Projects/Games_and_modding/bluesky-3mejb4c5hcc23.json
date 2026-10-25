@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mejb4c5hcc23",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "extended weekend project: a completely standalone first-person Google Earth viewer with physics #bevy\n\nyes, you really can go anywhere",
+  "facets": [
+    {
+      "byte_start": 96,
+      "byte_end": 101,
+      "features": [
+        {
+          "Tag": {
+            "tag": "bevy"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-02-10T15:18:28.596Z",
+  "like_count": 78,
+  "reply_count": 2,
+  "repost_count": 10,
+  "quote_count": 2,
+  "fetched_at": "2026-10-25T17:58:41.779000420+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreicdgh3ctwhei65urm5oelkcbsblt475mhcb6ifjr5mxecrlxl6bqe/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3mejb4c5hcc23-0.jpg",
+      "alt": "gameplay footage of a first-person view of Google Earth, travelling from the Hollywood Sign to Los Angeles City Hall to Times Square to Monteliusvägen, Stockholm to Shibuya Crossing to Tokyo Skytree, with orbital camera transitions between each",
+      "width": 1280,
+      "height": 720
+    },
+    "alt": "gameplay footage of a first-person view of Google Earth, travelling from the Hollywood Sign to Los Angeles City Hall to Times Square to Monteliusvägen, Stockholm to Shibuya Crossing to Tokyo Skytree, with orbital camera transitions between each",
+    "width": 1280,
+    "height": 720
+  },
+  "media_version": 1
+}

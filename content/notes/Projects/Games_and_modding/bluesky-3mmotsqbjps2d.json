@@ -1,0 +1,24 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mmotsqbjps2d",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "here's some diagnostics gore",
+  "facets": [],
+  "created_at": "2026-05-25T15:58:00.669Z",
+  "like_count": 2,
+  "reply_count": 1,
+  "repost_count": 1,
+  "quote_count": 0,
+  "fetched_at": "2026-10-25T17:58:46.862316873+00:00",
+  "images": [
+    {
+      "filename": "bluesky-3mmotsqbjps2d-0.webp",
+      "alt": "veldera diagnostics: climate on left, streaming top right, profiler bottom right",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}

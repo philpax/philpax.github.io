@@ -1,0 +1,48 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mpoxsw2vq22h",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "after two years of dawdling, I'm happy to say that I've finally published my Rust client for ComfyUI: crates.io/crates/rucom...\n\nI'm particularly proud of its code generation (which projects a strongly-typed interface over workflow nodes), the Lua bindings, and the egui recreation of Comfy's UI",
+  "facets": [
+    {
+      "byte_start": 102,
+      "byte_end": 127,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://crates.io/crates/rucomfyui"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-07-02T21:25:16.598Z",
+  "like_count": 23,
+  "reply_count": 0,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-10-25T17:58:28.314878189+00:00",
+  "images": [
+    {
+      "filename": "bluesky-3mpoxsw2vq22h-0.webp",
+      "alt": "Rust code:\nlet g = rucomfyui::WorkflowGraph::new();\n\nlet c = g.add(CheckpointLoaderSimple::new(\"sd_xl_base_1.0.safetensors\"));\nlet preview_image = g.add(PreviewImage::new(g.add(VAEDecode {\n    vae: c.vae,\n    samples: g.add(KSampler {\n        model: c.model,\n        seed: 0,\n        steps: 20,\n        cfg: 8.0,\n        sampler_name: \"euler\",\n        scheduler: \"normal\",\n        positive: g.add(CLIPTextEncode::new(\"a cat sleeping on a red chair\", c.clip)),\n        negative: g.add(CLIPTextEncode::new(\"text\", c.clip)),\n        latent_image: g.add(EmptyLatentImage {\n            width: 1024,\n            height: 1024,\n            batch_size: 1,\n        }),\n        denoise: 1.0,\n    }),\n})));",
+      "width": 533,
+      "height": 361
+    },
+    {
+      "filename": "bluesky-3mpoxsw2vq22h-1.webp",
+      "alt": "-- Build the workflow\nlocal c = g:CheckpointLoaderSimple(checkpoint_name)\nlocal preview = g:PreviewImage(\n    g:VAEDecode {\n        vae = c.vae,\n        samples = g:KSampler {\n            model = c.model,\n            seed = 0,\n            steps = 20,\n            cfg = 8.0,\n            sampler_name = \"euler\",\n            scheduler = \"normal\",\n            positive = g:CLIPTextEncode { text = prompt, clip = c.clip },\n            negative = g:CLIPTextEncode { text = \"text, watermark, blurry\", clip = c.clip },\n            latent_image = g:EmptyLatentImage { width = 1024, height = 1024, batch_size = 1 },\n            denoise = 1.0\n        }\n    }\n)",
+      "width": 593,
+      "height": 323
+    },
+    {
+      "filename": "bluesky-3mpoxsw2vq22h-2.webp",
+      "alt": "",
+      "width": 1308,
+      "height": 933
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}

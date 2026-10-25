@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3memcbrxeo22s",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "hacked and adapted Bevy's existing atmosphere support in last night, re-enabled lighting, and made a few more tweaks. enjoy some sunsets #bevy",
+  "facets": [
+    {
+      "byte_start": 137,
+      "byte_end": 142,
+      "features": [
+        {
+          "Tag": {
+            "tag": "bevy"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-02-11T20:17:25.905Z",
+  "like_count": 66,
+  "reply_count": 3,
+  "repost_count": 7,
+  "quote_count": 2,
+  "fetched_at": "2026-10-25T17:58:42.153371414+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreigno6dsggxm6dxidokxv4be3w6hcr5kb42i2eurpmt7fetzl7ycq4/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3memcbrxeo22s-0.jpg",
+      "alt": "sunsets over Tokyo, Rome, New York, and Los Angeles, bookended by orbital footage of the sunrise in Tokyo and the sunset in Los Angeles",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "sunsets over Tokyo, Rome, New York, and Los Angeles, bookended by orbital footage of the sunrise in Tokyo and the sunset in Los Angeles",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}

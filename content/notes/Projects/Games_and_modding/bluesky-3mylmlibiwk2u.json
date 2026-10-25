@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mylmlibiwk2u",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "well, now that I know there's interest, I guess it doesn't hurt to post in-progress clips\n\nfully-IKed, motion-controlled, independent aiming #jc3vr",
+  "facets": [
+    {
+      "byte_start": 141,
+      "byte_end": 147,
+      "features": [
+        {
+          "Tag": {
+            "tag": "jc3vr"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-10-24T02:13:01.530Z",
+  "like_count": 76,
+  "reply_count": 1,
+  "repost_count": 5,
+  "quote_count": 0,
+  "fetched_at": "2026-10-25T17:58:36.779449826+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreicihmrwzurjninq4aav44pwhyrs5ra4t7choq7fsjf4m5lc7qbgz4/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3mylmlibiwk2u-0.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}

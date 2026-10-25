@@ -1,0 +1,51 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mucpxodjok2m",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "so @l4.pm and I are working on our own agent, makima\n\nit is a hard-fork of maki.sh aiming at:\n- shrinking the core by moving functionality into the guest\n- improving the design (both architecture- and UX-wise)\n- making it an agent you can rely on\n\nbut most importantly, it supports custom splashes",
+  "facets": [
+    {
+      "byte_start": 3,
+      "byte_end": 9,
+      "features": [
+        {
+          "Mention": {
+            "did": "did:plc:ghmhveudel6es5chzycsi2hi"
+          }
+        }
+      ]
+    },
+    {
+      "byte_start": 75,
+      "byte_end": 82,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://maki.sh/"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-08-30T15:38:47.610Z",
+  "like_count": 44,
+  "reply_count": 3,
+  "repost_count": 2,
+  "quote_count": 2,
+  "fetched_at": "2026-10-25T19:57:07.030507378+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreifplc2d4daumqu6uzoarzuk2mhrgbsft4slz4q6hscw55qql5ygre/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3mucpxodjok2m-0.jpg",
+      "alt": "",
+      "width": 1140,
+      "height": 698
+    },
+    "alt": "",
+    "width": 1140,
+    "height": 698
+  },
+  "media_version": 1
+}

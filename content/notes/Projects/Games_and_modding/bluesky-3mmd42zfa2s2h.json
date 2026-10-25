@@ -1,0 +1,28 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mmd42zfa2s2h",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "volumetric raytraced clouds with shadows, godrays, orbital visibility, driven by a global climate simulation\n\nstill quite buggy, but directionally happy with it",
+  "facets": [],
+  "created_at": "2026-05-20T23:53:51.740Z",
+  "like_count": 14,
+  "reply_count": 2,
+  "repost_count": 3,
+  "quote_count": 2,
+  "fetched_at": "2026-10-25T17:58:46.510133115+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreiedodqjjq5tnsnuurcicsfzrtqe74tt3sjejcsfwumdbbp6gcbfoa/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3mmd42zfa2s2h-0.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}

@@ -1,0 +1,51 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mqhm6euqqs2x",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "bluesky-did-plc-wamidydbgu3u6fk3yckaglnz.webp",
+  "text": "here's #ddstudio, a live editor for shaping Disco Diffusion generations, complete with scrubbing, different kinds of brushes, and near-complete control over DD's denoising\n\nvideo sped up 4x\n\ngithub.com/philpax/disc...",
+  "facets": [
+    {
+      "byte_start": 7,
+      "byte_end": 16,
+      "features": [
+        {
+          "Tag": {
+            "tag": "ddstudio"
+          }
+        }
+      ]
+    },
+    {
+      "byte_start": 191,
+      "byte_end": 217,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://github.com/philpax/disco-diffusion"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-07-12T16:33:29.783Z",
+  "like_count": 23,
+  "reply_count": 2,
+  "repost_count": 3,
+  "quote_count": 0,
+  "fetched_at": "2026-10-25T17:58:17.769299406+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreibxxo2qpgxe3d2f5yr63agofmob6ltdyfroabvctk37im6xbsg2ou/playlist.m3u8",
+    "thumbnail": {
+      "filename": "bluesky-3mqhm6euqqs2x-0.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}
