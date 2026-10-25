@@ -510,11 +510,21 @@ impl<'a> MarkdownConverter<'a> {
                         self.error_context
                     )
                 });
+                let directory = self
+                    .source_path
+                    .as_deref()
+                    .and_then(Path::parent)
+                    .unwrap_or_else(|| {
+                        panic!(
+                            "BlueskyPost requires a source path in {}",
+                            self.error_context
+                        )
+                    });
                 let post_data = self
                     .context
                     .content
                     .bluesky_posts
-                    .get(&url)
+                    .get(&(url.clone(), directory.to_path_buf()))
                     .unwrap_or_else(|| {
                         panic!(
                             "BlueskyPost data not found for {url} in {}",
@@ -1126,6 +1136,42 @@ mod tests {
             generation_date: chrono::Utc::now(),
             fast: false,
         }
+    }
+
+    #[test]
+    fn bluesky_embed_uses_the_source_directorys_archive() {
+        let url = "https://bsky.app/profile/example.test/post/123";
+        let mut content = Content::empty();
+        for (directory, text, filename) in [
+            ("content/one", "First archive", "first.jpg"),
+            ("content/two", "Second archive", "second.webp"),
+        ] {
+            content.bluesky_posts.insert(
+                (url.into(), PathBuf::from(directory)),
+                serde_json::from_value(serde_json::json!({
+                    "url": url, "author_display_name": "Example", "author_handle": "example.test",
+                    "author_avatar_filename": filename, "text": text, "facets": [],
+                    "created_at": "2026-01-01T00:00:00Z", "fetched_at": "2026-01-02T00:00:00Z",
+                    "like_count": 0, "reply_count": 0, "repost_count": 0, "quote_count": 0
+                }))
+                .unwrap(),
+            );
+        }
+        let ast = parse_markdown(&format!("<BlueskyPost post=\"{url}\" />"));
+        let syntax = SyntaxHighlighter::default();
+        let bump = Bump::new();
+        let image_store = crate::image_store::ImageStore::new(&content);
+        let context = view_context_base(&syntax, &content, &image_store).with_bump(&bump);
+        let result = MarkdownConverter::new(context, "test")
+            .with_source_path(PathBuf::from("content/two/index.md"))
+            .convert_blocks(&ast);
+        let html = paxhtml::Document::new(&bump, [result])
+            .write_to_string()
+            .unwrap();
+        assert!(html.contains("Second archive"));
+        assert!(html.contains("src=\"second.webp\""));
+        assert!(!html.contains("First archive"));
+        assert!(!html.contains("first.jpg"));
     }
 
     #[test]

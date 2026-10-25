@@ -141,7 +141,7 @@ pub struct Content {
     pub about: Document,
     pub credits: Document,
     pub music_library: paxsite_music::MusicLibrary,
-    pub bluesky_posts: HashMap<String, paxsite_content::bluesky::BlueskyPostData>,
+    pub bluesky_posts: HashMap<(String, PathBuf), paxsite_content::bluesky::BlueskyPostData>,
     /// Map from a document's route URL (e.g. `/blog/foo/`) to the set of
     /// heading-slug anchors valid on that page. Used to validate `[a](#x)` and
     /// `[c](../c.md#d)` links during the content-phase pre-pass.
@@ -169,6 +169,27 @@ impl Content {
             anchors: HashMap::new(),
             link_errors: Vec::new(),
         }
+    }
+
+    pub fn document_asset_paths(&self, document: &Document) -> Vec<PathBuf> {
+        let mut paths = document.files.clone();
+        let directory = document.source_path.parent().unwrap();
+        let mut posts = Vec::new();
+        extract_bluesky_urls(&document.description, directory, &mut posts);
+        if let Some(rest) = &document.rest_of_content {
+            extract_bluesky_urls(rest, directory, &mut posts);
+        }
+        for key in posts {
+            if let Some(post) = self.bluesky_posts.get(&key) {
+                paths.extend(
+                    post.local_asset_filenames()
+                        .map(|name| directory.join(name)),
+                );
+            }
+        }
+        paths.sort();
+        paths.dedup();
+        paths
     }
 
     pub fn read(
@@ -385,7 +406,7 @@ impl Content {
 
     fn load_bluesky_posts(
         &self,
-    ) -> anyhow::Result<HashMap<String, paxsite_content::bluesky::BlueskyPostData>> {
+    ) -> anyhow::Result<HashMap<(String, PathBuf), paxsite_content::bluesky::BlueskyPostData>> {
         let mut posts = Vec::new();
         for doc in self.all_documents() {
             let content_dir = doc.source_path.parent().unwrap().to_path_buf();
@@ -465,6 +486,73 @@ pub fn parse_markdown(md: &str) -> markdown::mdast::Node {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn document_assets_include_fetched_media_before_a_second_file_scan() {
+        let mut content = Content::empty();
+        let mut doc = Document::empty();
+        doc.base.source_path = PathBuf::from("content/notes/Projects/example.md");
+        let avatar = PathBuf::from("content/notes/Projects/avatar.webp");
+        doc.base.files = vec![avatar.clone()];
+        let url = "https://bsky.app/profile/example.test/post/123";
+        let embed = format!("<BlueskyPost post=\"{url}\" />");
+        doc.description = parse_markdown(&embed);
+        doc.rest_of_content = Some(parse_markdown(&embed));
+        content.bluesky_posts.insert(
+            (url.into(), doc.source_path.parent().unwrap().to_path_buf()),
+            serde_json::from_value(serde_json::json!({
+                "url": url,
+                "author_display_name": "Example",
+                "author_handle": "example.test",
+                "author_avatar_filename": "avatar.webp",
+                "text": "Archived text",
+                "facets": [],
+                "created_at": "2026-01-01T00:00:00Z",
+                "like_count": 0, "reply_count": 0, "repost_count": 0, "quote_count": 0,
+                "fetched_at": "2026-01-02T00:00:00Z",
+                "images": [{"filename": "image.webp", "alt": "", "width": null, "height": null}],
+                "video": {
+                    "playlist": "https://video.bsky.app/playlist.m3u8", "alt": "",
+                    "width": null, "height": null,
+                    "thumbnail": {"filename": "poster.jpg", "alt": "", "width": null, "height": null}
+                }
+            }))
+            .unwrap(),
+        );
+        assert_eq!(
+            content.document_asset_paths(&doc),
+            vec![
+                avatar,
+                PathBuf::from("content/notes/Projects/image.webp"),
+                PathBuf::from("content/notes/Projects/poster.jpg"),
+            ]
+        );
+        let mut other = Document::empty();
+        other.base.source_path = PathBuf::from("content/notes/Other/example.md");
+        other.description = parse_markdown(&embed);
+        let mut other_post = content.bluesky_posts.values().next().unwrap().clone();
+        other_post.author_avatar_filename = Some("different-avatar.jpg".into());
+        other_post.images[0].filename = "different-image.png".into();
+        other_post.video = None;
+        content.bluesky_posts.insert(
+            (
+                url.into(),
+                other.source_path.parent().unwrap().to_path_buf(),
+            ),
+            other_post,
+        );
+        assert_eq!(
+            content.document_asset_paths(&other),
+            vec![
+                PathBuf::from("content/notes/Other/different-avatar.jpg"),
+                PathBuf::from("content/notes/Other/different-image.png"),
+            ]
+        );
+        doc.description = parse_markdown("");
+        assert_eq!(content.document_asset_paths(&doc).len(), 3);
+        doc.rest_of_content = None;
+        assert_eq!(content.document_asset_paths(&doc), doc.files);
+    }
 
     #[test]
     fn test_resolve_markdown_link() {

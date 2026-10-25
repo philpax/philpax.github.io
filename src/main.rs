@@ -226,9 +226,10 @@ fn main() -> anyhow::Result<()> {
             let route_path = doc.route_path();
             view.write_to_route(output_dir, route_path.clone())?;
 
-            // Copy associated files
+            // Include Bluesky assets fetched after the document's initial file scan.
             let post_output_dir = route_path.dir_path(output_dir);
-            for path in &doc.files {
+            let files = view_context.content.document_asset_paths(doc);
+            for path in &files {
                 let output_path = post_output_dir.join(path.file_name().unwrap());
                 util::copy_or_symlink(path, &output_path, view_context.fast)
                     .with_context(|| format!("failed to copy {path:?} to {output_path:?}"))?;

@@ -252,11 +252,14 @@ Component implementations live in `src/views/components/`. `MarkdownConverter::c
 ### Bluesky Post Embeds
 
 `<BlueskyPost>` tags trigger automatic fetching and caching of post data from the Bluesky API:
-- On first encounter, the post data (text, facets, author info, avatar as base64, engagement metrics) is fetched and stored as `bluesky-{rkey}.json` next to the markdown file
-- Subsequent builds read from cache and never re-fetch (implicit archiving)
-- The fetch runs even in `--fast` mode since it only happens once per post
-- Fetching/caching logic lives in `paxsite-content/src/bluesky.rs`; rendering in `src/views/components/bluesky_post.rs`
-- All Bluesky URL construction is centralised in the bluesky module (`profile_url()`, `hashtag_url()`)
+- On first encounter, post text, facets, author information, engagement counts and attached media metadata are saved as `bluesky-{rkey}.json` beside the Markdown file. Avatars, attached images and video posters are saved as separate local image files and copied with the document's assets.
+- Image attachments retain their alt text and dimensions. Image and video attachments inside a quote-with-media wrapper use the same rendering; nested quoted posts are not expanded.
+- Video files are not backed up. The page streams Bluesky's remote HLS playlist when playback starts, using native HLS where supported and the vendored hls.js light player otherwise. The non-native player shows a centred play overlay on the poster, then standard video controls during playback. The linked post timestamp remains available when playback fails or JavaScript is disabled.
+- The footer shows the post's ISO 8601 UTC datetime, linked to the original post, followed by engagement counts and `archived <datetime>` from the cache's `fetched_at`. Displayed datetimes use seconds without fractional digits; cached timestamps remain unchanged.
+- Existing text-only caches receive a one-time media upgrade without replacing their archived text, counts or author information. Cache updates use a temporary file and atomic replacement. Subsequent builds use the cache without refreshing the post. Each source directory retains its own archive and local asset filenames, including when the same post appears in several directories.
+- Fetching runs even in `--fast` mode. Image downloads have time and size limits. Media created during the content phase is included in the same build's output.
+- Fetching and caching live in `paxsite-content/src/bluesky.rs`; rendering in `src/views/components/bluesky_post.rs`; player setup in `src/js/bluesky.js`. The pinned player version and licence are in `static/vendor/`. Run the player event tests with `node src/js/bluesky.test.cjs`; these use a simulated document and do not start a browser.
+- All Bluesky URL construction is centralised in the bluesky module (`profile_url()`, `hashtag_url()`).
 
 ### Workspace Crates
 

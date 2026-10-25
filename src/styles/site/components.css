@@ -185,7 +185,7 @@ h1 .tag-prefix {
   align-items: center;
   gap: var(--s-2);
 }
-.social-card img {
+.social-card header img {
   width: var(--s-8);
   height: var(--s-8);
   border-radius: 9999px;
@@ -204,9 +204,73 @@ h1 .tag-prefix {
   white-space: pre-wrap;
   color: var(--ink);
 }
+.social-card-images,
+.social-card-video {
+  margin-top: var(--s-3);
+}
+.social-card-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--s-2);
+}
+.social-card-images img,
+.social-card-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 36rem;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--canvas);
+}
+.social-card-video {
+  position: relative;
+}
+.social-card-video-play {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 2px solid rgb(255 255 255 / 80%);
+  border-radius: 50%;
+  color: white;
+  background: rgb(0 0 0 / 75%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+.social-card-video-play::before {
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 0.2rem;
+  border-block: 0.6rem solid transparent;
+  border-left: 0.9rem solid currentColor;
+}
+.social-card-video-play[data-loading='true']::before {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: 0;
+  border: 0;
+  background: currentColor;
+}
+.social-card-video-play:hover {
+  background: rgb(0 0 0 / 90%);
+}
+.social-card-video-play:focus-visible {
+  border-radius: 50%;
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+.social-card-video-play[hidden] {
+  display: none;
+}
 .social-card figcaption {
   display: flex;
-  gap: var(--s-4);
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
   margin-top: var(--s-3);
   font-family: var(--f-ui);
   font-size: var(--text-xs);
