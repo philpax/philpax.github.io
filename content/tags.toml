@@ -17,7 +17,7 @@ gguf = "[GGUF](/notes/projects/ai/gguf/): my work on the model file format's des
 hardware = "the physical stuff: servers, workstations, headsets"
 idacsplitter = "[ida-c-splitter](/notes/projects/systems-and-languages/ida-c-splitter/): splitting IDA's decompiler output into files you can actually search"
 jc2mp = "[Just Cause 2: Multiplayer Mod](/notes/projects/games-and-modding/just-cause-2-multiplayer/)"
-jc3vrs = "[jc3vr](/notes/projects/games-and-modding/jc3vr/): Just Cause 3, but in VR"
+jc3vr = "[jc3vr](/notes/projects/games-and-modding/jc3vr/): Just Cause 3, but in VR"
 llm = "[llm](/notes/projects/ai/llm/): my work on Rust LLM inference and its ecosystem"
 lunette = "[lunette](/notes/projects/graphics-and-xr/lunette/): a scriptable XR workspace for Linux"
 meta = "posts about the posting"
@@ -42,3 +42,6 @@ website = "[paxsite](/notes/projects/personal-software/paxsite/): this site and 
 wikitextsimplified = "[wikitext_simplified](/notes/projects/systems-and-languages/wikitext-simplified/): turning Wikipedia markup into a tree you can use"
 xr = "virtual and augmented reality"
 zuihitsu = "[zuihitsu](/notes/projects/ai/zuihitsu/): a conversational agent system with persistent memory and identity"
+
+[aliases]
+jc3vrs = "jc3vr"

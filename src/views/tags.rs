@@ -62,6 +62,23 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     )
 }
 
+pub fn tag_alias_redirect<'a>(
+    context: ViewContext<'a>,
+    canonical_tag: &str,
+) -> paxhtml::Document<'a> {
+    let to_url = Route::Tag {
+        tag_id: canonical_tag.to_string(),
+    }
+    .url_path();
+    let og_image_url = format!(
+        "{}{}",
+        context.website_base_url,
+        crate::og_image::tag_image_path(canonical_tag),
+    );
+
+    super::redirect(context.bump, &to_url, Some(&og_image_url))
+}
+
 pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> {
     let bump = context.bump;
     let content = &context.content;
@@ -193,6 +210,89 @@ mod tests {
         tag(context.with_bump(&bump), "shared")
             .write_to_string()
             .unwrap()
+    }
+
+    fn render_tag_alias_redirect(content: &Content, canonical_tag: &str) -> String {
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        tag_alias_redirect(context.with_bump(&bump), canonical_tag)
+            .write_to_string()
+            .unwrap()
+    }
+
+    fn render_index(content: &Content) -> String {
+        let syntax = SyntaxHighlighter::default();
+        let image_store = ImageStore::new(content);
+        let bump = Bump::new();
+        let context = ViewContextBase {
+            website_author: "test",
+            website_name: "test",
+            website_description: "test",
+            website_base_url: "https://example.com",
+            syntax: &syntax,
+            content,
+            image_store: &image_store,
+            generation_date: chrono::Utc::now(),
+            fast: true,
+        };
+        index(context.with_bump(&bump)).write_to_string().unwrap()
+    }
+
+    #[test]
+    fn tag_alias_redirects_to_canonical_tag_with_canonical_preview() {
+        let html = render_tag_alias_redirect(&Content::empty(), "canonical");
+        let parsed = scraper::Html::parse_document(&html);
+        let refresh = scraper::Selector::parse("meta[http-equiv='refresh']").unwrap();
+        assert_eq!(
+            parsed
+                .select(&refresh)
+                .next()
+                .unwrap()
+                .value()
+                .attr("content"),
+            Some("0; url=/tags/canonical/")
+        );
+        let preview = scraper::Selector::parse("meta[property='og:image']").unwrap();
+        assert_eq!(
+            parsed
+                .select(&preview)
+                .next()
+                .unwrap()
+                .value()
+                .attr("content"),
+            Some("https://example.com/og-images/tags/canonical.png")
+        );
+        assert!(html.contains("<a href=\"/tags/canonical/\""));
+        assert!(!html.contains("class=\"frame-narrow\""));
+        assert!(!html.contains("class=\"tag-index\""));
+        assert!(!html.contains("index-groups"));
+        assert!(!html.contains("#alias"));
+    }
+
+    #[test]
+    fn tag_index_omits_alias_names() {
+        let mut content = Content::empty();
+        content.tags.insert("canonical".into(), Vec::new());
+        content
+            .tag_aliases
+            .insert("alias".into(), "canonical".into());
+
+        let html = render_index(&content);
+        assert!(html.contains("href=\"/tags/canonical/\""));
+        assert!(!html.contains("href=\"/tags/alias/\""));
+        assert!(!html.contains(">#alias<"));
     }
 
     #[test]

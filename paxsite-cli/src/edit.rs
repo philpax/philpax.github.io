@@ -67,6 +67,7 @@ fn edit_metadata(
     item: &paxsite_content::ContentItem,
 ) -> anyhow::Result<()> {
     let (mut metadata, body) = read_frontmatter(&item.source_path)?;
+    content.tag_config.canonicalize_metadata(&mut metadata);
 
     let title = Text::new("Title:").with_default(&metadata.title).prompt()?;
     metadata.title = title;

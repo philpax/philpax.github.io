@@ -204,13 +204,18 @@ fn document_record(publication_uri: &str, doc: &Document) -> anyhow::Result<PdsD
 
 /// Re-reads a document from disk so callers observe just-written frontmatter.
 fn reload_document(doc: &Document) -> anyhow::Result<Document> {
-    Document::read(
+    let mut document = Document::read(
         &doc.source_path,
         doc.id.clone(),
         doc.display_path.clone(),
         doc.document_type,
         true,
-    )
+    )?;
+    paxsite_content::tags::TagConfig::read(
+        &Path::new(paxsite_content::CONTENT_DIR).join("tags.toml"),
+    )?
+    .canonicalize_document(&mut document);
+    Ok(document)
 }
 
 /// Publishes a single chosen non-draft blog/update post to standard.site.

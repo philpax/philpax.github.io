@@ -4,7 +4,7 @@ short = "in which I reveal one of my classic brainworms"
 datetime = 2025-11-04T05:45:00Z
 
 [taxonomies]
-tags=["jc3vrs", "pyxis", "blackbird", "website", "genresinspace"]
+tags=["jc3vr", "pyxis", "blackbird", "website", "genresinspace"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mg7zw52v"

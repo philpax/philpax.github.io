@@ -343,6 +343,21 @@ fn main() -> anyhow::Result<()> {
                     },
                 )?;
             }
+
+            for (alias, canonical_tag) in &content.tag_aliases {
+                if !content.tags.contains_key(canonical_tag) {
+                    continue;
+                }
+
+                let bump = Bump::new();
+                views::tags::tag_alias_redirect(view_context.with_bump(&bump), canonical_tag)
+                    .write_to_route(
+                        output_dir,
+                        Route::Tag {
+                            tag_id: alias.to_string(),
+                        },
+                    )?;
+            }
             anyhow::Ok(())
         })?;
 

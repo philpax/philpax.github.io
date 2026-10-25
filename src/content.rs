@@ -3,8 +3,6 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use anyhow::Context;
-
 use crate::{Route, RoutePath};
 
 pub use paxsite_content::{
@@ -138,6 +136,8 @@ pub struct Content {
     pub tags: HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
     /// Tag descriptions (inline Markdown) from `content/tags.toml`.
     pub tag_descriptions: HashMap<Tag, String>,
+    /// Old tag names mapped directly to their canonical tag names.
+    pub tag_aliases: HashMap<Tag, Tag>,
     pub about: Document,
     pub credits: Document,
     pub music_library: paxsite_music::MusicLibrary,
@@ -161,6 +161,7 @@ impl Content {
             notes: NotesCollection::empty(),
             tags: HashMap::new(),
             tag_descriptions: HashMap::new(),
+            tag_aliases: HashMap::new(),
             about: Document::empty(),
             credits: Document::empty(),
             music_library: paxsite_music::MusicLibrary::empty(),
@@ -235,7 +236,9 @@ impl Content {
         let tags = raw.tags;
 
         let now = std::time::Instant::now();
-        let tag_descriptions = read_tag_descriptions(&tags)?;
+        let tag_descriptions = raw.tag_config.descriptions;
+        let tag_aliases = raw.tag_config.aliases;
+        validate_tag_descriptions(&tags, &tag_descriptions)?;
         report("Read tag descriptions", now.elapsed());
         let base = paxsite_content::Content {
             blog: paxsite_content::DocumentCollection::empty(),
@@ -244,6 +247,7 @@ impl Content {
             about: paxsite_content::Document::empty(),
             credits: paxsite_content::Document::empty(),
             tags: HashMap::new(),
+            tag_config: paxsite_content::tags::TagConfig::default(),
             source_path_to_route: raw.source_path_to_route,
             source_path_to_og_image: raw.source_path_to_og_image,
         };
@@ -255,6 +259,7 @@ impl Content {
             notes,
             tags,
             tag_descriptions,
+            tag_aliases,
             about,
             credits,
             music_library,
@@ -393,17 +398,11 @@ impl Content {
     }
 }
 
-/// Reads tag descriptions. A used tag without one is an error; an unused
-/// description is a warning.
-fn read_tag_descriptions(
+/// A used tag without a description is an error; an unused description is a warning.
+fn validate_tag_descriptions(
     tags: &HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
-) -> anyhow::Result<HashMap<Tag, String>> {
-    let descriptions: HashMap<Tag, String> = toml::from_str(
-        &std::fs::read_to_string(TAG_DESCRIPTIONS_PATH)
-            .with_context(|| format!("failed to read {TAG_DESCRIPTIONS_PATH}"))?,
-    )
-    .with_context(|| format!("failed to parse {TAG_DESCRIPTIONS_PATH}"))?;
-
+    descriptions: &HashMap<Tag, String>,
+) -> anyhow::Result<()> {
     let mut undescribed: Vec<&Tag> = tags
         .keys()
         .filter(|tag| !descriptions.contains_key(*tag))
@@ -437,7 +436,7 @@ fn read_tag_descriptions(
         );
     }
 
-    Ok(descriptions)
+    Ok(())
 }
 
 fn extract_bluesky_urls(

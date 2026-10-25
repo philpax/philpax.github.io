@@ -12,6 +12,7 @@ pub use paxhtml::util::slugify;
 pub mod bluesky;
 pub mod md;
 pub mod standard_site;
+pub mod tags;
 
 pub use md::{inner_text, markdown_to_plaintext, parse_markdown};
 
@@ -643,6 +644,7 @@ pub struct Content {
     pub about: Document,
     pub credits: Document,
     pub tags: HashMap<Tag, Vec<(DocumentType, DocumentId)>>,
+    pub tag_config: tags::TagConfig,
     pub source_path_to_route: HashMap<PathBuf, String>,
     pub source_path_to_og_image: HashMap<PathBuf, String>,
 }
@@ -655,41 +657,50 @@ impl Content {
             about: Document::empty(),
             credits: Document::empty(),
             tags: HashMap::new(),
+            tag_config: tags::TagConfig::default(),
             source_path_to_route: HashMap::new(),
             source_path_to_og_image: HashMap::new(),
         }
     }
 
     pub fn read(fast: bool, include_drafts: bool) -> anyhow::Result<Self> {
+        let tag_config = tags::TagConfig::read(&Path::new(CONTENT_DIR).join("tags.toml"))?;
+        let canonicalize = |mut document: Document| {
+            tag_config.canonicalize_document(&mut document);
+            document
+        };
         let blog = DocumentCollection::read(
             &DocumentType::Blog.content_dir(),
             DocumentType::Blog,
             fast,
             include_drafts,
-        )?;
+        )?
+        .map_documents(canonicalize);
         let updates = DocumentCollection::read(
             &DocumentType::Update.content_dir(),
             DocumentType::Update,
             fast,
             include_drafts,
-        )?;
-        let mut notes = NotesCollection::read(&DocumentType::Note.content_dir(), fast)?;
+        )?
+        .map_documents(canonicalize);
+        let mut notes = NotesCollection::read(&DocumentType::Note.content_dir(), fast)?
+            .map_documents(canonicalize);
 
-        let about = Document::read(
+        let about = canonicalize(Document::read(
             &Path::new(CONTENT_DIR).join(ABOUT_FILENAME),
             vec!["about".to_string()],
             vec!["About".to_string()],
             DocumentType::Blog,
             fast,
-        )?;
+        )?);
 
-        let credits = Document::read(
+        let credits = canonicalize(Document::read(
             &Path::new(CONTENT_DIR).join(CREDITS_FILENAME),
             vec!["credits".to_string()],
             vec!["Credits".to_string()],
             DocumentType::Blog,
             fast,
-        )?;
+        )?);
 
         let tags = build_tag_index(
             blog.documents
@@ -759,6 +770,7 @@ impl Content {
             about,
             credits,
             tags,
+            tag_config,
             source_path_to_route,
             source_path_to_og_image,
         })
@@ -1517,6 +1529,32 @@ mod tests {
             documents.pop().unwrap(),
         )));
         assert_eq!(content.all_tags(), ["note-only", "shared"]);
+    }
+
+    #[test]
+    fn alias_tags_merge_in_indexes_and_cli_suggestions() {
+        let config =
+            tags::TagConfig::parse("jc3vr = \"VR mod\"\n[aliases]\njc3vrs = \"jc3vr\"\n").unwrap();
+        let mut documents = Vec::new();
+        for kind in [DocumentType::Blog, DocumentType::Update, DocumentType::Note] {
+            let mut document = Document::empty();
+            document.document_type = kind;
+            document.id = vec!["shared".into()];
+            document.metadata.taxonomies = Some(DocumentTaxonomies {
+                tags: vec!["jc3vrs".into(), "jc3vr".into()],
+            });
+            config.canonicalize_document(&mut document);
+            documents.push(document);
+        }
+        let index = build_tag_index(documents.iter());
+        assert_eq!(index.len(), 1);
+        assert_eq!(index["jc3vr"].len(), 3);
+        let mut content = Content::empty();
+        content.blog.documents.push(documents.remove(0));
+        content.updates.documents.push(documents.remove(0));
+        content.notes.documents.index =
+            Some(DocumentLeafNode::Document(Box::new(documents.remove(0))));
+        assert_eq!(content.all_tags(), ["jc3vr"]);
     }
 
     #[test]

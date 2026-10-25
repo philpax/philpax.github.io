@@ -87,6 +87,15 @@ tags=["personal", "meta"]
 
 Every tag used by a blog post, update, or note must be described in `content/tags.toml` (one line of inline Markdown, which opens the tag's page); a tag without a description fails the build, and a description nothing uses is a warning. Tag pages group their documents into Posts, Updates, and Notes, omitting empty groups. Posts and updates sort by publication date; notes sort by last modification, newest first. Tagged notes use the same summary layout as posts and updates, with the folder path between the date and tags. Their summary text is the first sentence of the opening paragraph, or the whole paragraph if it has no full stop. The shared extractor is `paxsite_content::md::note_excerpt`, which returns plain text from a parsed Markdown description.
 
+Tag renames use an `[aliases]` table at the end of `content/tags.toml`. Each entry maps an old name to a canonical tag with a description:
+
+```toml
+[aliases]
+jc3vrs = "jc3vr"
+```
+
+The old `/tags/jc3vrs/` page redirects to `/tags/jc3vr/`. Aliases do not appear in tag indexes. Document tags resolve to their canonical names before rendering and indexing, including older frontmatter that still uses an alias. Duplicate names collapse to one tag per document. Alias chains resolve directly to the final target. Cycles, missing targets, and names that have both an alias and a description fail validation. Tag names use lowercase ASCII letters, digits, and hyphens; `index` is reserved for the tag index page.
+
 Document headings and listing summaries use `src/views/components/document_meta.rs` for slash-separated metadata. Their shared styles are in `src/styles/site/metadata.css`. Full headings include the document type and word count; summaries include a note's parent folders. Optional author credits appear as a separate segment. Draft labels and tags follow the other metadata.
 
 **Notes** derive their title and dates from the filename and Git:
