@@ -8,6 +8,10 @@ A local CLI that turns hundreds of GitHub stars into a browsable taxonomy: it ba
 
 <!-- more -->
 
+## Attempt
+
+I built [star-categorizer](https://github.com/philpax/star-categorizer) to explore this idea, but couldn't get it working as I wanted it to work.
+
 ## Implementation
 
 The pipeline is a local CLI, run on demand with no scheduling or service: pull stars, fetch README plus language breakdown and metadata per repo (first commits and file tree as a fallback for empty READMEs), embed locally or via a cheap embedding API, cluster flat, and present the proposed lists. Approval is the workflow, not an add-on: the tool shows the clusters, you name or rename them and confirm which repos belong where, and only then does it write back — creating lists and assigning stars through the GraphQL API (`createUserList`, `updateUserListsForItem`, the latter being replace-not-append, so assignments require read-modify-write). Nothing runs automatically; the user simply re-runs it when the backlog grows, and re-running can re-cluster the whole set or just a chosen cluster at higher K to split a category that proved too coarse.
