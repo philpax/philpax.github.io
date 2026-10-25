@@ -1,3 +1,3 @@
-Software for running and coordinating AI models, building generation workflows, and maintaining conversational agents.
+The inference of and deployment of AI, through specs, libraries, and applications.
 
 <!-- more -->

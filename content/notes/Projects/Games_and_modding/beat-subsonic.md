@@ -3,6 +3,6 @@
 tags = ["beatsubsonic"]
 +++
 
-[beat-subsonic](https://github.com/philpax/beat-subsonic) is a browser-based tool for finding Beat Saber maps for music in an OpenSubsonic library. It matches tracks from the library to maps on BeatSaver, so the music collection provides a starting point for finding maps to play.
+[beat-subsonic](https://github.com/philpax/beat-subsonic) is a browser-based tool for finding Beat Saber maps for the tracks in your OpenSubsonic-accessible library. It does this by fuzzily matching your library to a Beat Saver library dump, and filtering out anything that you already have installed.
 
 <!-- more -->
