@@ -4,7 +4,7 @@ use crate::{
     content::{Content, Document, DocumentLeafNode, DocumentNode, DocumentType},
     views::{
         ViewContext,
-        components::{A, AProps, project_status},
+        components::{A, AProps, StatusYear, project_status},
         listings::{gap, inline_markdown},
     },
 };
@@ -64,7 +64,7 @@ pub fn notes_index<'a>(context: ViewContext<'a>, entries: &[&Document]) -> Eleme
                             <h3>
                                 <A href={url.clone()}>{inline_markdown(context, &document.metadata.title, &url)}</A>
                                 {document.metadata.status.as_ref().map(|status| html! { in bump;
-                                    <span class="notes-index-status">{project_status(bump, status)}</span>
+                                    <span class="notes-index-status">{project_status(bump, status, StatusYear::Leading)}</span>
                                 })}
                             </h3>
                             {excerpt.map(|excerpt| html! { in bump; <p>{excerpt}</p> })}

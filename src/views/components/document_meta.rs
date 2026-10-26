@@ -34,7 +34,7 @@ pub fn document_meta<'a>(
         kind.map(|kind| ("metadata-kind", html! { in bump; <span>{kind}</span> })),
         Some(("metadata-date", document_time(bump, document))),
         document.metadata.status.as_ref()
-            .map(|status| ("metadata-status", project_status(bump, status))),
+            .map(|status| ("metadata-status", project_status(bump, status, StatusYear::Trailing))),
         full.then(|| ("metadata-words", html! { in bump;
             <span>{format!("{} words", crate::util::number_to_comma_separated_string(document.word_count))}</span>
         })),
@@ -62,20 +62,40 @@ pub fn document_meta<'a>(
     }
 }
 
-/// A project's lifecycle state: the year first in the faint ink, then the state
-/// word in its own colour.
-pub fn project_status<'a>(bump: &'a Bump, status: &ProjectStatus) -> Element<'a> {
+/// Where a status's year sits relative to its state word.
+#[derive(Clone, Copy)]
+pub enum StatusYear {
+    /// `2026 | paused`, where the segments are spread across a band.
+    Leading,
+    /// `paused (2026)`, in a line of slash-separated metadata.
+    Trailing,
+}
+
+/// A project's lifecycle state, in the state's own colour, with the year in the
+/// faint ink on whichever side suits the context.
+pub fn project_status<'a>(bump: &'a Bump, status: &ProjectStatus, year: StatusYear) -> Element<'a> {
     let kind = status.kind.label();
-    html! { in bump;
-        <span class={format!("status status-{kind}")}>
-            {status.year.map(|year| html! { in bump;
-                <>
-                    <span class="status-year">{year.to_string()}</span>
-                    <span class="status-separator" ariaHidden="true">" | "</span>
-                </>
-            })}
-            {kind}
-        </span>
+    let class = format!("status status-{kind}");
+    match year {
+        StatusYear::Leading => html! { in bump;
+            <span class={class}>
+                {status.year.map(|year| html! { in bump;
+                    <>
+                        <span class="status-year">{year.to_string()}</span>
+                        <span class="status-separator" ariaHidden="true">" | "</span>
+                    </>
+                })}
+                {kind}
+            </span>
+        },
+        StatusYear::Trailing => html! { in bump;
+            <span class={class}>
+                {kind}
+                {status.year.map(|year| html! { in bump;
+                    <span class="status-year">{format!(" ({year})")}</span>
+                })}
+            </span>
+        },
     }
 }
 
@@ -256,11 +276,10 @@ mod tests {
         assert!(html.contains("metadata-status"));
         assert!(html.contains("status-paused"));
         assert!(html.contains("status-year"));
-        assert!(html.contains("status-separator"));
         assert!(html.contains("2019"));
         assert!(
-            html.find("status-year").unwrap() < html.find(">paused").unwrap(),
-            "the year comes before the state word: {html}"
+            html.find(">paused").unwrap() < html.find("status-year").unwrap(),
+            "the metadata row puts the year after the state word: {html}"
         );
         assert!(html.find("<time").unwrap() < html.find("metadata-status").unwrap());
         assert!(html.find("metadata-status").unwrap() < html.find("dated-path").unwrap());
