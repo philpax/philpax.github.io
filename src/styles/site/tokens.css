@@ -44,6 +44,23 @@
   --c-elsewhere: light-dark(oklch(42% 0.12 165), oklch(74% 0.095 165));
   --c-listening: light-dark(oklch(42% 0.14 35), oklch(74% 0.11 35));
 
+  /* Project status: one hue per lifecycle state. Active borrows `--good`,
+     since "still going" and "went well" should read alike. */
+  --hue-done: 196;
+  --hue-paused: 35;
+  --hue-abandoned: 5;
+
+  --c-status-active: var(--good);
+  --c-status-done: light-dark(oklch(42% 0.105 var(--hue-done)), oklch(74% 0.095 var(--hue-done)));
+  --c-status-paused: light-dark(
+    oklch(42% 0.14 var(--hue-paused)),
+    oklch(74% 0.11 var(--hue-paused))
+  );
+  --c-status-abandoned: light-dark(
+    oklch(42% 0.16 var(--hue-abandoned)),
+    oklch(74% 0.105 var(--hue-abandoned))
+  );
+
   /* Washes: the same hues at surface weight. */
   --w-post: light-dark(oklch(94.5% 0.032 var(--hue-post)), oklch(29.5% 0.058 var(--hue-post)));
   --w-update: light-dark(

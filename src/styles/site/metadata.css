@@ -61,3 +61,27 @@
   margin-inline: 2px;
   opacity: 0.6;
 }
+
+/* A project's status: the state word carries the colour, the year stays quiet. */
+.status {
+  font-style: normal;
+  white-space: nowrap;
+}
+.status-active {
+  color: var(--c-status-active);
+}
+.status-done {
+  color: var(--c-status-done);
+}
+.status-paused {
+  color: var(--c-status-paused);
+}
+.status-abandoned {
+  color: var(--c-status-abandoned);
+}
+.status-year {
+  color: var(--ink-faint);
+}
+.status-separator {
+  color: var(--ink-faint);
+}

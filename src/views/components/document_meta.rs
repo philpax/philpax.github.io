@@ -1,4 +1,5 @@
 use paxhtml::{Element, bumpalo::Bump, html};
+use paxsite_content::ProjectStatus;
 
 use super::{A, AProps, TagList, TagListProps, display_date};
 use crate::{
@@ -32,6 +33,8 @@ pub fn document_meta<'a>(
     let segments = [
         kind.map(|kind| ("metadata-kind", html! { in bump; <span>{kind}</span> })),
         Some(("metadata-date", document_time(bump, document))),
+        document.metadata.status.as_ref()
+            .map(|status| ("metadata-status", project_status(bump, status))),
         full.then(|| ("metadata-words", html! { in bump;
             <span>{format!("{} words", crate::util::number_to_comma_separated_string(document.word_count))}</span>
         })),
@@ -56,6 +59,23 @@ pub fn document_meta<'a>(
                 </div>
             })}
         </div>
+    }
+}
+
+/// A project's lifecycle state: the year first in the faint ink, then the state
+/// word in its own colour.
+pub fn project_status<'a>(bump: &'a Bump, status: &ProjectStatus) -> Element<'a> {
+    let kind = status.kind.label();
+    html! { in bump;
+        <span class={format!("status status-{kind}")}>
+            {status.year.map(|year| html! { in bump;
+                <>
+                    <span class="status-year">{year.to_string()}</span>
+                    <span class="status-separator" ariaHidden="true">" | "</span>
+                </>
+            })}
+            {kind}
+        </span>
     }
 }
 
@@ -219,6 +239,34 @@ mod tests {
         for layout in [MetadataLayout::Document, MetadataLayout::Summary] {
             assert!(!render(&note, layout, vec![]).contains("metadata-author"));
         }
+    }
+
+    #[test]
+    fn project_status_follows_the_date_and_precedes_the_folders() {
+        let mut note = document(DocumentType::Note);
+        note.base.metadata.status = Some(paxsite_content::ProjectStatus {
+            kind: paxsite_content::ProjectStatusKind::Paused,
+            year: Some(2019),
+        });
+        let html = render(
+            &note,
+            MetadataLayout::Document,
+            vec![("Projects".into(), Some("/notes/projects/".into()))],
+        );
+        assert!(html.contains("metadata-status"));
+        assert!(html.contains("status-paused"));
+        assert!(html.contains("status-year"));
+        assert!(html.contains("status-separator"));
+        assert!(html.contains("2019"));
+        assert!(
+            html.find("status-year").unwrap() < html.find(">paused").unwrap(),
+            "the year comes before the state word: {html}"
+        );
+        assert!(html.find("<time").unwrap() < html.find("metadata-status").unwrap());
+        assert!(html.find("metadata-status").unwrap() < html.find("dated-path").unwrap());
+
+        note.base.metadata.status = None;
+        assert!(!render(&note, MetadataLayout::Document, vec![]).contains("metadata-status"));
     }
 
     #[test]

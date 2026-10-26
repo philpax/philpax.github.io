@@ -131,6 +131,8 @@ pub struct DocumentMetadata {
     pub last_modified: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(default)]
     pub draft: bool,
+    /// Optional project lifecycle state. Notes only; absent means unstated.
+    pub status: Option<ProjectStatus>,
     pub taxonomies: Option<DocumentTaxonomies>,
     /// Present once this document has been published as a `site.standard.document`
     /// record on the PDS. Drives the `<link rel="site.standard.document">` tag and
@@ -151,6 +153,58 @@ pub struct StandardSite {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DocumentTaxonomies {
     pub tags: Vec<Tag>,
+}
+
+/// A project's lifecycle state, from a note's frontmatter.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectStatus {
+    pub kind: ProjectStatusKind,
+    /// Year the project reached this state, when it is known.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub year: Option<i32>,
+}
+
+/// Where a project has got to.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum ProjectStatusKind {
+    Active,
+    Done,
+    Paused,
+    Abandoned,
+}
+
+impl ProjectStatus {
+    /// An active project has nothing to date, so a year beside one is a mistake.
+    pub fn validate(&self) -> anyhow::Result<()> {
+        anyhow::ensure!(
+            !(self.kind == ProjectStatusKind::Active && self.year.is_some()),
+            "an active status does not take a year"
+        );
+        Ok(())
+    }
+}
+
+impl ProjectStatusKind {
+    /// The name shown in metadata, matching the frontmatter spelling.
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Active => "active",
+            Self::Done => "done",
+            Self::Paused => "paused",
+            Self::Abandoned => "abandoned",
+        }
+    }
+}
+
+impl std::fmt::Display for ProjectStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(year) = self.year {
+            write!(f, "{year} | ")?;
+        }
+        f.write_str(self.kind.label())
+    }
 }
 
 // ── Traits ──────────────────────────────────────────────────────────────────
@@ -208,6 +262,7 @@ impl Document {
                 datetime: None,
                 last_modified: None,
                 draft: false,
+                status: None,
                 taxonomies: None,
                 standard_site: None,
             },
@@ -304,6 +359,7 @@ impl Document {
                 datetime: Some(file_dates.first_commit),
                 last_modified: Some(file_dates.last_commit),
                 draft: false,
+                status: frontmatter.status,
                 taxonomies: frontmatter.taxonomies,
                 standard_site: None,
             };
@@ -1008,6 +1064,19 @@ pub fn generate_frontmatter(metadata: &DocumentMetadata) -> String {
         output.push_str("draft = true\n");
     }
 
+    if let Some(status) = &metadata.status {
+        match status.year {
+            Some(year) => output.push_str(&format!(
+                "status = {{ kind = \"{}\", year = {year} }}\n",
+                status.kind.label()
+            )),
+            None => output.push_str(&format!(
+                "status = {{ kind = \"{}\" }}\n",
+                status.kind.label()
+            )),
+        }
+    }
+
     if let Some(taxonomies) = &metadata.taxonomies {
         output.push_str("\n[taxonomies]\n");
         let tags: Vec<String> = taxonomies
@@ -1125,6 +1194,7 @@ pub fn get_file_dates(path: &Path, fast: bool) -> anyhow::Result<FileDates> {
 #[serde(deny_unknown_fields)]
 struct NoteFrontmatter {
     authored_by: Option<String>,
+    status: Option<ProjectStatus>,
     taxonomies: Option<DocumentTaxonomies>,
 }
 
@@ -1142,6 +1212,9 @@ fn parse_note_frontmatter(file: &str) -> anyhow::Result<(NoteFrontmatter, &str)>
     for line in lines {
         if line.trim_end_matches(['\r', '\n']) == FRONTMATTER_DELIMITER {
             let frontmatter: NoteFrontmatter = toml::from_str(&file[start..end])?;
+            if let Some(status) = &frontmatter.status {
+                status.validate()?;
+            }
             return Ok((frontmatter, &file[end + line.len()..]));
         }
         end += line.len();
@@ -1376,6 +1449,88 @@ fn collect_note_content_items(folder: &DocumentFolderNode<Document>, items: &mut
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn project_status_reads_a_table_with_and_without_a_year() {
+        let yearless = ["+++", r#"status = { kind = "active" }"#, "+++", ""].join("\n");
+        let (frontmatter, _) = parse_note_frontmatter(&yearless).unwrap();
+        assert_eq!(
+            frontmatter.status,
+            Some(ProjectStatus {
+                kind: ProjectStatusKind::Active,
+                year: None
+            })
+        );
+
+        let dated = [
+            "+++",
+            r#"status = { kind = "paused", year = 2019 }"#,
+            "+++",
+            "",
+        ]
+        .join("\n");
+        let (frontmatter, _) = parse_note_frontmatter(&dated).unwrap();
+        assert_eq!(
+            frontmatter.status,
+            Some(ProjectStatus {
+                kind: ProjectStatusKind::Paused,
+                year: Some(2019)
+            })
+        );
+    }
+
+    #[test]
+    fn project_status_rejects_a_bare_kind() {
+        let bare = ["+++", r#"status = "active""#, "+++", ""].join("\n");
+        assert!(parse_note_frontmatter(&bare).is_err());
+    }
+
+    #[test]
+    fn project_status_rejects_a_year_on_active_and_renders_its_label() {
+        let active_with_year = [
+            "+++",
+            r#"status = { kind = "active", year = 2019 }"#,
+            "+++",
+            "",
+        ]
+        .join("\n");
+        assert!(parse_note_frontmatter(&active_with_year).is_err());
+
+        assert_eq!(
+            ProjectStatus {
+                kind: ProjectStatusKind::Active,
+                year: None
+            }
+            .to_string(),
+            "active"
+        );
+        assert_eq!(
+            ProjectStatus {
+                kind: ProjectStatusKind::Abandoned,
+                year: Some(2016)
+            }
+            .to_string(),
+            "2016 | abandoned"
+        );
+    }
+
+    #[test]
+    fn generated_frontmatter_writes_a_project_status() {
+        let mut metadata = Document::empty().metadata;
+        metadata.status = Some(ProjectStatus {
+            kind: ProjectStatusKind::Done,
+            year: Some(2023),
+        });
+        assert!(
+            generate_frontmatter(&metadata).contains(r#"status = { kind = "done", year = 2023 }"#)
+        );
+
+        metadata.status = Some(ProjectStatus {
+            kind: ProjectStatusKind::Active,
+            year: None,
+        });
+        assert!(generate_frontmatter(&metadata).contains(r#"status = { kind = "active" }"#));
+    }
 
     #[test]
     fn note_frontmatter_is_optional_and_preserves_plain_markdown() {

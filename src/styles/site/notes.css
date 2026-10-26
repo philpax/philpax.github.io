@@ -13,14 +13,26 @@
   min-width: 0;
 }
 .notes-index-entry h3 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-1-5);
   font-family: var(--f-ui);
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   line-height: var(--lead-normal);
 }
 .notes-index-entry h3 > a {
+  min-width: 0;
   --link-rest: var(--c-note);
   --link-hover: color-mix(in oklab, var(--c-note) 78%, white);
+}
+.notes-index-status {
+  margin-inline-start: auto;
+  font-family: var(--f-ui);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: end;
 }
 .notes-index-entry > p {
   max-width: var(--measure-short);

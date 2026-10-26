@@ -76,6 +76,7 @@ fn create_blog_or_update(root: &Path, doc_type: DocumentType) -> anyhow::Result<
         datetime: Some(datetime),
         last_modified: None,
         draft: true,
+        status: None,
         taxonomies: Some(DocumentTaxonomies {
             tags: selected_tags,
         }),
