@@ -49,15 +49,10 @@
   }
 }
 
-/* Credits: one column, so no rows to take the rule from. */
-.plain-page-body {
-  padding-top: var(--s-5);
-  border-top: var(--rule) solid var(--line);
-}
-@container site (width >= 48rem) {
-  .plain-page-body {
-    padding-top: var(--s-6);
-  }
+/* A head followed straight by a body sits as close to it as the home page's title
+   does, with no rule between them. */
+.page-head:has(+ .prose) {
+  margin-bottom: var(--s-4);
 }
 
 /* Summary: a post, update or note. */

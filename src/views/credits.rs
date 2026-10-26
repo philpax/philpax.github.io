@@ -33,7 +33,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     html! { in bump; <span>{inline_markdown(context, &content.credits.metadata.title, &url)}</span> },
                     Some(html! { in bump; {LEDE} }),
                 )}
-                <article class="plain-page-body prose">
+                <article class="prose">
                     {MarkdownConverter::new(context, &url).with_source_path(content.credits.source_path.clone()).convert_blocks(&crate::markdown::document_root(&content.credits))}
                 </article>
             </div>

@@ -4,7 +4,7 @@ use super::*;
 pub const LEDE: &str =
     "can make all the difference in the world. But not this world. Alas, there’s nothing here.";
 
-/// The 404 page GitHub Pages serves: credits-page layout with a link home.
+/// The 404 page GitHub Pages serves: a page head and a link home.
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
     let bump = context.bump;
 
@@ -27,10 +27,8 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                     <h1>{CurrentPage::NotFound.name()}</h1>
                     <p>{LEDE}</p>
                 </header>
-                <article class="plain-page-body">
-                    <div class="prose">
-                        <p><A href={Route::Index.url_path()}>"Back to the front page"</A></p>
-                    </div>
+                <article class="prose">
+                    <p><A href={Route::Index.url_path()}>"Back to the front page"</A></p>
                 </article>
             </div>
         },
