@@ -11,11 +11,11 @@ The long-term goal is a completely standalone XR working environment that can be
 
 I've been dreaming of something like AwesomeWM-for-XR for a long, long time, but could not invest the time or effort required to bring it to fruition. For reasons that are obvious at the time of writing[^jihad], this has become much less of a consideration, and I am now free to pursue my vision.
 
-Despite being nearly a decade-and-a-half into the availability of VR hardware, there have only been a few efforts to build real XR workspaces, and they are either proprietary, esoteric, or incomplete. I daily [WayVR](https://github.com/wayvr-org/wayvr), and it's _fine_, but it doesn't work how I would want it to work, and lunette - as well as the ecosystem that I hope eventually grows around it - is my answer to that.
+Despite being nearly a decade and a half into the availability of VR hardware, there have only been a few efforts to build real XR workspaces, and they are either proprietary, esoteric, or incomplete. I daily [WayVR](https://github.com/wayvr-org/wayvr), and it's _fine_, but it doesn't work how I would want it to work, and lunette - as well as the ecosystem that I hope eventually grows around it - is my answer to that.
 
 [^jihad]: If you are in the future and this is no longer obvious, congratulations (?) on your successful (?) Butlerian Jihad.
 
-I would also be remiss to not mention [Stardust XR](https://stardustxr.org/), which I am a fan of, and have contributed to in the past. I think that, in the long run, it is the better long-term approach: lunette is strictly monolithic-with-plugins, while Stardust lets you supply arbitrary 2D and 3D content. lunette takes different compromises, and I hope that we continue to cross-pollinate ideas!
+I would also be remiss in not mentioning [Stardust XR](https://stardustxr.org/), which I am a fan of, and have contributed to in the past. I think that, in the long run, it is the better approach: lunette is strictly monolithic-with-plugins, while Stardust lets you supply arbitrary 2D and 3D content. lunette makes different compromises, and I hope that we continue to cross-pollinate ideas!
 
 ## Media
 

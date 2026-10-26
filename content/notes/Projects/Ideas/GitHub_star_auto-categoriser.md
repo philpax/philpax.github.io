@@ -21,8 +21,8 @@ Embedding-driven clustering is the point of the design: the taxonomy grows out o
 ## Prior art
 
 - [gh-stars-organizer](https://github.com/vins13pattar/gh-stars-organizer): fetches stars, LLM-classifies, builds embedding search, and writes GitHub Lists — the full pipeline, but its taxonomy is LLM-classified into preset categories rather than derived from embedding clusters, and it has no approval gate.
-- [gh-stars-classifier-skill](https://github.com/catuscio/gh-stars-classifier-skill): an agent skill whose LLM proposes a taxonomy and writes assignments after approval — the same approval loop, but purely LLM-judgment with no embeddings.
-- [Startidy](https://github.com/hellosunghyun/Startidy): Gemini analyzes titles, descriptions, and READMEs into a fixed `Major: Minor` category shape; no clustering, no approval gate.
+- [gh-stars-classifier-skill](https://github.com/catuscio/gh-stars-classifier-skill): an agent skill whose LLM proposes a taxonomy and writes assignments after approval — the same approval loop, but purely LLM judgement with no embeddings.
+- [Startidy](https://github.com/hellosunghyun/Startidy): Gemini analyses titles, descriptions, and READMEs into a fixed `Major: Minor` category shape; no clustering, no approval gate.
 - [starman](https://github.com/morehao/starman): batch AI analysis with summaries, tags, keyword-assisted categories, and embeddings for local semantic search — no GitHub Lists write-back.
 - [ghs](https://github.com/webpolis/ghs): README embeddings for semantic search over stars, no clustering or write-back.
 - [astral](https://github.com/astralapp/astral): the manual-organiser baseline — tags, filters, no AI.

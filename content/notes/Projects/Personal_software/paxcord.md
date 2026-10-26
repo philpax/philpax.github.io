@@ -7,6 +7,6 @@ tags = ["paxcord"]
 
 <!-- more -->
 
-It can make LLM inference calls through [ananke](../AI/ananke.md), and generate visual content through [rucomfyui-mlua](../AI/rucomfyui.md). This, combined with its asynchronous scripting support, enables the creation and execution of procedural-generative workflows on the fly. That's right, it can be used for generative jams!
+It can make LLM inference calls through [ananke](../AI/ananke.md), and generate visual content through [rucomfyui_mlua](../AI/rucomfyui.md). This, combined with its asynchronous scripting support, enables the creation and execution of procedural-generative workflows on the fly. That's right, it can be used for generative jams!
 
 Now, all I need to do is to have the LLM generate the workflows so that I don't have to remember ComfyUI model names...

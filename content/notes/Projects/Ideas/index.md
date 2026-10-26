@@ -1,4 +1,4 @@
-Project ideas that I may or may not pick up. I'm making these public so that even if I don't, someone else might. If you do, I'd appreciate credit, but some of these are from conversations with our machine friends, so, you know, from the noösphere, to the noösphere.
+Project ideas that I may or may not pick up. I'm making these public so that even if I don't, someone else might. If you do, I'd appreciate credit, but some of these are from conversations with our machine friends, so, you know, from the noösphere to the noösphere.
 
 <!-- more -->
 

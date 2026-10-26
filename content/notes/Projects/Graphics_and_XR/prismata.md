@@ -7,7 +7,7 @@ tags = ["prismata"]
 
 <!-- more -->
 
-Specifically, I was exploring creating worlds through synthesizing 2D imagery, projecting it into 3D space through depth estimation, and "filling in the blanks" by repeating this process from different angles and perspectives. Construction through photography, in a sense.
+Specifically, I was exploring creating worlds through synthesising 2D imagery, projecting it into 3D space through depth estimation, and "filling in the blanks" by repeating this process from different angles and perspectives. Construction through photography, in a sense.
 
 The models of the time couldn't make this work - the estimations were wrong and the image models struggled to produce consistent geometry - but I do sometimes wonder about picking it up and trying again. Much has changed since 2024, after all!
 

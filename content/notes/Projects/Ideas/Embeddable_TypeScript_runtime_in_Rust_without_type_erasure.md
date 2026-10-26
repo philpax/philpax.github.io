@@ -36,7 +36,7 @@ Generics pose a similar choice: a single shared, boxed implementation is simple,
 
 Compiling at load time puts compile time on the startup path. Cranelift compiles quickly, but large plugins may still need a cheaper first tier, a cache of compiled code keyed by source, or lazy per-function compilation.
 
-Both backends need a garbage collector. With Cranelift, that means stack maps and a collector written for the runtime's object model; with WebAssembly, it means either a collector in linear memory or WebAssembly GC types, which suit fixed shapes but constrain the representation. Speculation is also harder on WebAssembly, because deoptimisation requires recompiling and swapping modules instead of patching code in place.
+The backends need a garbage collector. With Cranelift, that means stack maps and a collector written for the runtime's object model; with WebAssembly, it means either a collector in linear memory or WebAssembly GC types, which suit fixed shapes but constrain the representation. Speculation is also harder on WebAssembly, because deoptimisation requires recompiling and swapping modules instead of patching code in place.
 
 Closures, generators and `async` functions need lowering to state machines or coroutines, and the built-ins (UTF-16 strings, `Array`, `Map`, `Promise`, regular expressions) need Rust implementations that match the specification closely enough for the checker's types to hold.
 

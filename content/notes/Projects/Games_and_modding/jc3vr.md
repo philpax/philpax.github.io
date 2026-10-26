@@ -3,7 +3,7 @@
 tags = ["jc3vr"]
 +++
 
-[jc3vr](https://github.com/ferrobrew/jc3vr) is a total VR conversion of Just Cause 3. It implements real stereo rendering, (work-in-progress) motion controls, UI adaptations, and more. I have been trying to bring JC3 to VR since 2016; finally, I have what I need to see my vision through to completion.
+[jc3vr](https://github.com/ferrobrew/jc3vr) is a total VR conversion of Just Cause 3. It implements real stereo rendering, work-in-progress motion controls, UI adaptations, and more. I have been trying to bring JC3 to VR since 2016; finally, I have what I need to see my vision through to completion.
 
 <!-- more -->
 

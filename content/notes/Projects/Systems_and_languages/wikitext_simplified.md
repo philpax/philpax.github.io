@@ -9,4 +9,4 @@ tags = ["wikitextsimplified"]
 
 Anyone who has ever worked with wikitext knows that it is demonic. As the `parse-wiki-text` README states, this is a markup format born of and cultivated in the PHP ethos. It is godawful to work with, and woe will befall you if you attempt to extract structured information from it.
 
-Unfortunately, I have attempted to extract structured information from it on several occasions (e.g. [genresin.space](../Websites/genresin.space)). This library is my salve - as limited as it is - against wikitext's perversions.
+Unfortunately, I have attempted to extract structured information from it on several occasions (e.g. [genresin.space](../Websites/genresin.space.md)). This library is my salve - as limited as it is - against wikitext's perversions.

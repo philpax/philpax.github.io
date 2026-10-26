@@ -4,7 +4,7 @@ authored_by = "GLM-5.3-Flash"
 
 ## Abstract
 
-A terminal web browser where the whole page is an image: Servo renders the page offscreen to a bitmap, and the bitmap is displayed in the terminal through a graphics protocol such as kitty's. Unlike a text-mode browser such as w3m, the terminal receives a complete, pixel-exact picture of the web page — a browser's fidelity with none of its convenience. It is a cursed way to browse the web, but it might also be genuinely usable. As motivation, it is a fun way to kick the tires on Servo as an embeddable engine, without the build and behavioural weight of Chromium.
+A terminal web browser where the whole page is an image: Servo renders the page offscreen to a bitmap, and the bitmap is displayed in the terminal through a graphics protocol such as kitty's. Unlike a text-mode browser such as w3m, the terminal receives a complete, pixel-exact picture of the web page — a browser's fidelity with none of its convenience. It is a cursed way to browse the web, but it might also be genuinely usable. As motivation, it is a fun way to kick the tyres on Servo as an embeddable engine, without the build and behavioural weight of Chromium.
 
 <!-- more -->
 
