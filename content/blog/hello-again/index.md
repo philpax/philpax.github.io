@@ -8,7 +8,7 @@ tags=["personal", "meta"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mfag4w2n"
-hash = "fbc1a70d351b5f439bbb4d278fcfb6e2220c0a824f8ee407c687ce6af337e4d5"
+hash = "731d08a2b3276cd4f3ae17a436dcb4c831e5ab74a3b0deaf8218dc125340e9a7"
 +++
 
 So, here we are: a mere ten years and twenty days since my last blog post. That's one-and-a-quarter AAA game development cycles. That spans the rise and fall of cryptocurrency in the mainstream. And, most painfully, that's two full website rebuilds without any new content. Let's see if I can fix that this year.

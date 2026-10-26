@@ -3,9 +3,10 @@
 use std::path::Path;
 
 use anyhow::Context;
-use inquire::Select;
+use inquire::{Confirm, Select};
 use paxsite_content::{
-    CONFIG, Document, StandardSite, markdown_to_plaintext, read_frontmatter, write_frontmatter,
+    CONFIG, Document, StandardSite, markdown_to_plaintext, read_frontmatter,
+    standard_site::PUBLICATION_RKEY, write_frontmatter,
 };
 
 use crate::atproto::{self, Datetime, Document as PdsDocument, Publication, Str, UriValue};
@@ -165,6 +166,81 @@ pub(crate) async fn update_publication(root: &Path) -> anyhow::Result<()> {
         println!("\nPublication already up to date ({uri}).");
     }
     Ok(())
+}
+
+/// Deletes publication records for this site that sit at a rkey other than the
+/// current [`PUBLICATION_RKEY`], so that a publication which moved leaves no
+/// second record describing the same site. Records for other sites on the same
+/// account are left alone.
+pub(crate) async fn clean_up_publications(root: &Path) -> anyhow::Result<()> {
+    let Some(publisher) = standard_site_login(root).await? else {
+        anyhow::bail!("standard.site is not configured (no DID set in paxsite_content::CONFIG)");
+    };
+
+    let publications = publisher.list_publications().await?;
+    if publications.is_empty() {
+        println!("No publication records.");
+        return Ok(());
+    }
+
+    println!("Publication records:");
+    for (rkey, record) in &publications {
+        let suffix = if rkey == PUBLICATION_RKEY {
+            "  (current)"
+        } else {
+            ""
+        };
+        println!(
+            "  {rkey}: {} — {}{suffix}",
+            record.url.as_str(),
+            record.name
+        );
+    }
+
+    // Older records for this site are the ones to retire; a publication
+    // belonging to another site is not our business.
+    let stale: Vec<(String, String)> = publications
+        .iter()
+        .filter(|(rkey, record)| rkey != PUBLICATION_RKEY && same_site(record.url.as_str()))
+        .map(|(rkey, record)| (rkey.clone(), record.url.as_str().to_string()))
+        .collect();
+
+    if stale.is_empty() {
+        println!("\nNothing to clean up.");
+        return Ok(());
+    }
+
+    println!(
+        "\n{} record(s) for {} at an outdated key:",
+        stale.len(),
+        CONFIG.base_url
+    );
+    for (rkey, _) in &stale {
+        println!("  {rkey}");
+    }
+    let confirmed = Confirm::new("Delete these publication records?")
+        .with_default(false)
+        .prompt()?;
+    if !confirmed {
+        println!("Cancelled.");
+        return Ok(());
+    }
+
+    for (rkey, _) in stale {
+        publisher
+            .delete_publication(&rkey)
+            .await
+            .with_context(|| format!("failed to delete publication {rkey}"))?;
+        println!("Deleted {rkey}");
+    }
+    Ok(())
+}
+
+/// Whether a publication record's `url` is this site's base URL, ignoring
+/// trailing slashes (the lexicon asks publishers not to use them, and not every
+/// publisher conforms).
+fn same_site(url: &str) -> bool {
+    url.trim_end_matches('/') == CONFIG.base_url.trim_end_matches('/')
 }
 
 /// Builds the `site.standard.document` record for a document.

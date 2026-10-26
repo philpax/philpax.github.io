@@ -8,7 +8,7 @@ tags=[]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mggdws2d"
-hash = "4ce8a4c6faf46b5d3e86b07b292f731d2de5926e9783057611ec87f5db734f72"
+hash = "41b745e37874db84cc85a190456e2ac35920e0334816ed782c1d981acdc8bb62"
 +++
 
 I worked on [OWL Control](https://github.com/Wayfarer-Labs/owl-control), including releasing it, and played Cyberpunk 2077 for the last two weeks. That's the update. That's it.

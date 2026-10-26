@@ -8,7 +8,7 @@ tags=["c", "cursed"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn6y75sgyw2a"
-hash = "1bdfea3f311966c5e3909aa4c97b5d7c42c7395c076e36729f7bf6125d232218"
+hash = "8a1240d313da9764689abf4a25cb3b448be0c7459f3d9e1da3e3179c106e788d"
 +++
 
 I've always wondered what could be done with the C preprocessor. The existence of projects such as [Boost Preprocessor](http://www.boost.org/doc/libs/release/libs/preprocessor/) and the infamous [Brainfuck interpreter](https://github.com/orangeduck/CPP_COMPLETE) are a testament to its wide-ranging capabilities.

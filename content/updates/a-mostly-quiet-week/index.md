@@ -8,7 +8,7 @@ tags=["meta", "paxboard", "nixos"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhmjmw2w"
-hash = "44881cc115f35fd64d4bc671de8561fd1fffc80c49039995dbc72a480913b1dc"
+hash = "03b9fbff5fe8c1434231e18681ce78d37a210ce1fd21a982b2b2225848992257"
 +++
 
 Between work and social engagements, I had limited time to work on my own personal projects this week.

@@ -8,7 +8,7 @@ tags=["blackbird", "website", "nixos", "photos"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mgmm3o2r"
-hash = "0d944f90b81ae73340d5b424ae749b582943fba7ecc4a1a7a07b5a0d33d8d448"
+hash = "68f5cf7b674797f85ca92f60eb389c378b6a4d871820bee9ec6af2f5004063b9"
 +++
 
 Pretty small update to cover these last 12 days. I've been busy with [OWL Control](https://github.com/Wayfarer-Labs/owl-control), the project that I maintain for [Wayfarer Labs](https://wayfarerlabs.ai/), but the main thing I completed was to finally set up my own personal photo library.

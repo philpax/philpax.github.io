@@ -8,7 +8,7 @@ tags=["hardware"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mh7gxu2k"
-hash = "51fddc9e6d08ed8ce1a1c1630cb65fd281a285d66a26246a46ad7c4cd9e5722c"
+hash = "3e067898f1d3e02f2befb7358bfd73667f4f456d0f3531a33dbf07f2a03e651b"
 +++
 
 Not an awful lot to say this week, unfortunately; between work, my failing GPU, and the Battlefield 6 open beta, I haven't been able to get much done.

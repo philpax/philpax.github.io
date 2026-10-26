@@ -16,7 +16,10 @@ use std::{
 use anyhow::{Context, Result};
 
 use jacquard::{
-    api::com_atproto::repo::{get_record::GetRecord, put_record::PutRecord},
+    api::com_atproto::repo::{
+        delete_record::DeleteRecord, get_record::GetRecord, list_records::ListRecords,
+        put_record::PutRecord,
+    },
     client::{Agent, FileAuthStore},
     common::types::{
         did::Did,
@@ -160,9 +163,53 @@ impl Publisher {
         })
     }
 
+    /// Lists every `site.standard.publication` record in the account as
+    /// `(rkey, record)` pairs. Used to find publications sitting at a rkey other
+    /// than the current one.
+    pub async fn list_publications(&self) -> Result<Vec<(String, Publication<Str>)>> {
+        let mut out = Vec::new();
+        let mut cursor: Option<Str> = None;
+        loop {
+            let req = ListRecords::new()
+                .collection(Nsid::<Str>::new(Str::from(PUBLICATION_NSID))?)
+                .repo(self.repo())
+                .maybe_cursor(cursor.clone())
+                .build();
+            let resp = self.agent.send(req).await?.into_output()?;
+            for record in resp.records {
+                let rkey = record
+                    .uri
+                    .to_string()
+                    .rsplit('/')
+                    .next()
+                    .unwrap_or_default()
+                    .to_string();
+                out.push((rkey, from_data(&record.value)?));
+            }
+            // A cursor that doesn't advance would loop forever.
+            match resp.cursor {
+                Some(next) if Some(&next) != cursor.as_ref() => cursor = Some(next),
+                _ => break,
+            }
+        }
+        Ok(out)
+    }
+
+    /// Deletes the publication record at `rkey`.
+    pub async fn delete_publication(&self, rkey: &str) -> Result<()> {
+        let req = DeleteRecord::new()
+            .collection(Nsid::<Str>::new(Str::from(PUBLICATION_NSID))?)
+            .repo(self.repo())
+            .rkey(RecordKey::<Rkey>::from_str(rkey).context("invalid rkey")?)
+            .build();
+        self.agent.send(req).await?.into_output()?;
+        Ok(())
+    }
+
     /// Creates or updates the publication singleton record, returning its AT-URI.
     pub async fn upsert_publication(&self, record: &Publication<Str>) -> Result<String> {
-        // The publication is a singleton at a fixed rkey.
+        // The publication is a singleton at a fixed rkey, a TID because the
+        // lexicon's record key type requires one.
         self.put_record(PUBLICATION_NSID, PUBLICATION_RKEY, to_data(record)?)
             .await
     }
@@ -206,5 +253,18 @@ impl Publisher {
     /// The logged-in account as an XRPC `repo` identifier.
     fn repo(&self) -> AtIdentifier<Str> {
         AtIdentifier::from(self.did.clone())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The publication rkey is a hand-written constant and a PDS rejects any key
+    /// that isn't a valid TID, so keep it honest. TIDs are base32-sortable, which
+    /// rules out `0`, `1`, `8` and `9` — an easy slip when writing one by hand.
+    #[test]
+    fn publication_rkey_is_a_valid_tid() {
+        Tid::new(PUBLICATION_RKEY).expect("publication rkey must be a valid TID");
     }
 }

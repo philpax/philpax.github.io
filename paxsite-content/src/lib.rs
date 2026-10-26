@@ -35,8 +35,9 @@ pub struct Config {
 }
 
 impl Config {
-    /// Deterministic AT-URI of the publication record (a singleton at a fixed
-    /// rkey), or `None` when standard.site is disabled.
+    /// Deterministic AT-URI of the publication record (a singleton at the fixed
+    /// TID rkey in [`standard_site::PUBLICATION_RKEY`]), or `None` when
+    /// standard.site is disabled.
     pub fn publication_uri(&self) -> Option<String> {
         self.atproto_did.map(standard_site::publication_uri)
     }
@@ -276,8 +277,9 @@ impl Document {
     /// Stable fingerprint of the content that maps into a `site.standard.document`
     /// record. Used to detect when a published record has gone stale relative to the
     /// source. Covers everything that would change the record: title, publish date,
-    /// the document's path (id), tags, and the raw markdown body. Deliberately
-    /// excludes `last_modified` (derived from Git) so the hash is reproducible.
+    /// the document's path (id), tags, the raw markdown body, and the publication the
+    /// record belongs to. Deliberately excludes `last_modified` (derived from Git) so
+    /// the hash is reproducible.
     pub fn standard_site_fingerprint(&self) -> String {
         use sha2::{Digest, Sha256};
 
@@ -301,6 +303,12 @@ impl Document {
         if let Some(rest) = &self.rest_of_content_raw {
             hasher.update([0]);
             hasher.update(rest.as_bytes());
+        }
+        // The record's `site` field, so moving the publication to a new AT-URI
+        // repoints every document rather than leaving stale references behind.
+        hasher.update([0]);
+        if let Some(publication_uri) = CONFIG.publication_uri() {
+            hasher.update(publication_uri.as_bytes());
         }
 
         hasher

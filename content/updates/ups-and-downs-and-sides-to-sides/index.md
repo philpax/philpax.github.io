@@ -8,7 +8,7 @@ tags=["meta", "genresinspace", "hardware", "nixos"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhsh5q26"
-hash = "84be4b30483ca1da8e9b54bd0bee25fea83853a1c194f185ae0123ffe2d354bf"
+hash = "271f3a067a27801c58d8be000176a7f0a6447da1b8ef411e633d75cfdb1b58c1"
 +++
 
 My pet project for the last week and a half has been to stay logged out of Discord, my primary social platform, through which I stay in touch with my friends, group chats, and niche news. The goal behind this was simple: I spend a _lot_ of time talking to people on Discord, especially when I'm waiting on things to complete (long-running processes, AI agents, etc) or as junk-food-stimulation for when my brain simply refuses to shift out of neutral. Taking a break should, theoretically, force me to spend more time actually doing the things that I am supposed to be doing.

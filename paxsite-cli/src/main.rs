@@ -2,8 +2,8 @@ use create::create_content;
 use edit::edit_content;
 use inquire::Select;
 use publish::{
-    backfill_standard_site, check_standard_site, publish_content, publish_one_standard_site,
-    update_publication,
+    backfill_standard_site, check_standard_site, clean_up_publications, publish_content,
+    publish_one_standard_site, update_publication,
 };
 use util::find_project_root;
 
@@ -31,6 +31,7 @@ async fn main() -> anyhow::Result<()> {
     const PUBLISH_ONE: &str = "Publish one post to standard.site";
     const BACKFILL: &str = "Backfill standard.site records";
     const UPDATE_PUBLICATION: &str = "Update standard.site publication";
+    const CLEAN_UP_PUBLICATIONS: &str = "Delete outdated standard.site publications";
 
     let action = Select::new(
         "What would you like to do?",
@@ -41,6 +42,7 @@ async fn main() -> anyhow::Result<()> {
             PUBLISH_ONE,
             BACKFILL,
             UPDATE_PUBLICATION,
+            CLEAN_UP_PUBLICATIONS,
         ],
     )
     .prompt()?;
@@ -52,6 +54,7 @@ async fn main() -> anyhow::Result<()> {
         PUBLISH_ONE => publish_one_standard_site(&root).await?,
         BACKFILL => backfill_standard_site(&root).await?,
         UPDATE_PUBLICATION => update_publication(&root).await?,
+        CLEAN_UP_PUBLICATIONS => clean_up_publications(&root).await?,
         _ => unreachable!(),
     }
 

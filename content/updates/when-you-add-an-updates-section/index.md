@@ -8,7 +8,7 @@ tags=["meta", "blackbird", "genresinspace", "jc2mp", "nixos"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mhzvco2c"
-hash = "f00d51a01a9944f60339072343b94f421730c389f11bee49e6b07eebfa96344f"
+hash = "1563083f2e7e2affb7b92f90fccb8585878a54d8ca42f4dceb4ec7884db77d79"
 +++
 
 As is usually the case, I find myself in a state of paralysis with regards to writing blog posts: whatever I write needs to be worthy of taking a prominent spot on my front page, which has prevented me from documenting the day-to-day out of a fear of banality. To counteract that, I have brought this section into existence for off-the-cuff updates that don't have to be held to the same standard.

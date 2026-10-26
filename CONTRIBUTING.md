@@ -294,13 +294,20 @@ records, making them discoverable on the AT Protocol network while the content s
   `paxsite_content::CONFIG` — the single source of truth, from which `ViewContextBase` is derived.
   Standard.site is **disabled** while `CONFIG.atproto_did` is `None`; set it to
   `Some("did:plc:...")` to enable. No on-disk config file is involved.
-- **Publication**: a singleton `site.standard.publication` record at a fixed rkey (`self`), so its
-  AT-URI is fully derived from the DID — nothing is persisted.
+- **Publication**: a singleton `site.standard.publication` record at a fixed rkey, so its AT-URI is
+  fully derived from the DID — nothing is persisted. The rkey is a TID
+  (`standard_site::PUBLICATION_RKEY`) because the lexicon declares `"key": "tid"`: a PDS validates
+  record keys against the published schema on write, and rejects anything else with
+  `Invalid record key for site.standard.publication: Invalid TID string format`. The key is
+  hardcoded rather than minted at publish time so the AT-URI stays derivable; it is a TID from the
+  moment the record was created, and a TID is only an identifier.
 - **Records**: each published post gets a `site.standard.document` record on the PDS. The
   document's AT-URI and a content fingerprint are written back into the post's frontmatter under
   `[standard_site]`. Its `path` and the SSG's output route share one canonical derivation
   (`Document::route_path`), and `textContent` uses the shared `markdown_to_plaintext` — so neither
-  can drift from the site.
+  can drift from the site. The fingerprint also covers the publication's AT-URI, so moving the
+  publication repoints every document through a normal backfill instead of leaving stale `site`
+  references behind.
 - **Build output**: the SSG emits `/.well-known/site.standard.publication` (the derived AT-URI)
   and, for any post with a `[standard_site]` URI, a `<link rel="site.standard.document" href="at://…">`
   tag in its `<head>`. Posts without a record emit no link, so unpublished content is never advertised.
@@ -321,8 +328,16 @@ Run `cargo run -p paxsite-cli`:
 - **Publish a draft** — flips the draft to published *and* upserts its standard.site record.
 - **Backfill standard.site records** — publishes every non-draft blog/update post that has no
   record yet or whose content has changed since it was last published.
+- **Update standard.site publication** — pushes the name/description/URL from `CONFIG` and shows the
+  before/after.
+- **Delete outdated standard.site publications** — deletes this site's publication records that sit
+  at a rkey other than the current one, so changing `PUBLICATION_RKEY` can't leave a second
+  publication describing the same site.
 
-The first publish opens a browser for OAuth login and creates the publication record.
+The first publish opens a browser for OAuth login and creates the publication record. Changing
+`PUBLICATION_RKEY` requires a backfill (the fingerprint covers the publication AT-URI, so every
+record repoints) followed by a rebuild, so the emitted well-known file matches. Run the cleanup
+action afterwards to remove the record at the old rkey.
 
 ### Pre-push hook
 
