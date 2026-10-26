@@ -1,3 +1,3 @@
-Applications and libraries designed around personal workflows and the needs of a particular setup.
+Applications and libraries designed around how I like things to work. They probably won't work for anyone else, and that's the fun of it!
 
 <!-- more -->

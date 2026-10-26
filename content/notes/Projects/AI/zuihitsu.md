@@ -11,6 +11,6 @@ It serves as a testbed for my ideas about neurosymbolic agents. I believe that m
 
 At the time of writing, I am working on a much stronger expression of this methodology, inspired by the last half-century in symbolic knowledge representation, to enable near-total tracking of claims and derived insights. My goal is to build an agent that will never _unintentionally_ forget, and one that can explain how it reached a given informational result long after the initial derivation.
 
-As an additional design constraint, zuihitsu is designed to target models that can be run at home. I find it difficult to trust agents running on remote models[^weights]: you do not know who's listening in, and the underlying model could be pulled at any moment.
+As an additional design constraint, zuihitsu is designed to target models that can be run at home. I find it difficult to trust agents running on remote models[^weights]: you do not know who's listening in, and the underlying model could be altered, replaced, or removed at any moment.
 
 [^weights]: Or as stated more pithily: _not your weights, not your waifu_. (For the avoidance of doubt, I do not date my agents.)

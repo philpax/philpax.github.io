@@ -1,0 +1,17 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mliy2qgoyc2l",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mliy2qgoyc2l/avatar.webp",
+  "text": "let's say you've built a wonderfully crosslinked and interdependent ecosystem across atproto.\n\nwhat's to stop a left-pad incident from happening (i.e. an author pulling their deeply-interwoven content, or their PDS going down)? how does the network recover from that?",
+  "facets": [],
+  "created_at": "2026-05-10T14:32:54.189Z",
+  "like_count": 16,
+  "reply_count": 4,
+  "repost_count": 0,
+  "quote_count": 2,
+  "fetched_at": "2026-10-26T01:28:22.358109458+00:00",
+  "images": [],
+  "video": null,
+  "media_version": 1
+}
