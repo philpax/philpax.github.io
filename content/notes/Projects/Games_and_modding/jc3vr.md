@@ -4,7 +4,7 @@ status = { kind = "active" }
 tags = ["jc3vr"]
 +++
 
-[jc3vr](https://github.com/ferrobrew/jc3vr) is a total VR conversion of Just Cause 3. It implements real stereo rendering, work-in-progress motion controls, UI adaptations, and more. I have been trying to bring JC3 to VR since 2016; finally, I have what I need to see my vision through to completion.
+[jc3vr](https://github.com/ferrobrew/jc3vr) is a total VR conversion of Just Cause 3. It implements real stereo rendering, work-in-progress motion controls, UI adaptations, and more. I have been trying to bring [JC3 to VR since 2016](https://steamcommunity.com/sharedfiles/filedetails/?id=602678242); finally, I have what I need to see my vision through to completion.
 
 <!-- more -->
 
@@ -17,3 +17,5 @@ Related tooling includes [jc3boot](https://github.com/ferrobrew/jc3boot), which 
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3moxts7ue6s2e" />
 
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mylmlibiwk2u" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mysk27ayw22p" />
