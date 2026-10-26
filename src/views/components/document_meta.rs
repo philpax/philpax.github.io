@@ -25,7 +25,7 @@ pub fn document_meta<'a>(
         .then_some(match document.document_type {
             DocumentType::Blog => Some("Post"),
             DocumentType::Update => Some("Update"),
-            DocumentType::Note => None,
+            DocumentType::Note | DocumentType::Page => None,
         })
         .flatten();
     let tags = document.tags().cloned().unwrap_or_default();

@@ -131,11 +131,13 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
     documents.extend(&content.blog.documents);
     documents.extend(&content.updates.documents);
     collect_notes(&mut documents, &content.notes.documents);
-    let documents = documents.into_iter().map(|doc| {
+    let documents = documents.into_iter().filter_map(|doc| {
         let look = match doc.document_type {
             DocumentType::Blog => Look::Post,
             DocumentType::Update => Look::Update,
             DocumentType::Note => Look::Note,
+            // A page's preview is drawn by name below, from `page`, not as a document.
+            DocumentType::Page => return None,
         };
         let preview = Preview {
             look,
@@ -150,7 +152,7 @@ fn previews(content: &Content) -> Vec<(String, Preview)> {
                 .as_ref()
                 .map(|(filename, _)| doc.source_path.with_file_name(filename)),
         };
-        (doc.og_image_path(), preview)
+        Some((doc.og_image_path(), preview))
     });
 
     let page = |name: &str, look, title: &str, subtitle: &str| {

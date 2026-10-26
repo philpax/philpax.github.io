@@ -107,22 +107,23 @@ impl Document {
     }
 
     pub fn alternate_route_path(&self) -> Option<RoutePath> {
-        self.alternate_id
-            .as_ref()
-            .map(|post_id| match self.document_type {
-                DocumentType::Blog => Route::BlogPost {
-                    post_id: post_id.clone(),
-                }
-                .route_path(),
-                DocumentType::Update => Route::UpdatePost {
-                    post_id: post_id.clone(),
-                }
-                .route_path(),
-                DocumentType::Note => Route::Note {
-                    note_id: post_id.clone(),
-                }
-                .route_path(),
-            })
+        let alternate_id = self.alternate_id.as_ref()?;
+        Some(match self.document_type {
+            DocumentType::Blog => Route::BlogPost {
+                post_id: alternate_id.clone(),
+            }
+            .route_path(),
+            DocumentType::Update => Route::UpdatePost {
+                post_id: alternate_id.clone(),
+            }
+            .route_path(),
+            DocumentType::Note => Route::Note {
+                note_id: alternate_id.clone(),
+            }
+            .route_path(),
+            // A page has a single route, so it has no alternate one.
+            DocumentType::Page => return None,
+        })
     }
 }
 
@@ -394,6 +395,9 @@ impl Content {
             DocumentType::Blog => self.blog.document_by_id(id),
             DocumentType::Update => self.updates.document_by_id(id),
             DocumentType::Note => self.notes.documents.document_by_id(id),
+            DocumentType::Page => [&self.about, &self.credits]
+                .into_iter()
+                .find(|page| &page.id == id),
         }
     }
 

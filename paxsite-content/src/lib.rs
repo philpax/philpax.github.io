@@ -81,14 +81,29 @@ pub enum DocumentType {
     Blog,
     Update,
     Note,
+    /// A page of its own, outside the blog, updates and notes sections: `about`,
+    /// `credits`. Served at `/<id>/` rather than under a section directory.
+    Page,
 }
 impl DocumentType {
-    /// Returns the directory name for this document type within the content directory.
+    /// Returns the directory name for this document type: its section in the
+    /// content directory, and under `/og-images/` for generated previews (a page
+    /// has no section, so its previews sit under `pages/`).
     pub fn dir_name(self) -> &'static str {
         match self {
             DocumentType::Blog => "blog",
             DocumentType::Update => "updates",
             DocumentType::Note => "notes",
+            DocumentType::Page => "pages",
+        }
+    }
+
+    /// The section directory this type is served under, or `None` for a page,
+    /// which sits at the root.
+    pub fn route_segment(self) -> Option<&'static str> {
+        match self {
+            DocumentType::Page => None,
+            DocumentType::Blog | DocumentType::Update | DocumentType::Note => Some(self.dir_name()),
         }
     }
 
@@ -240,16 +255,13 @@ impl Document {
             .collect()
     }
 
-    /// Canonical route for this document: `<type-dir>/<id segments>`. This is the
-    /// single source of truth for the document's location, shared by the site
-    /// generator (for output paths and links) and the CLI (for the
-    /// `site.standard.document` `path`), so the two can never drift apart.
+    /// Canonical route for this document: `<type-dir>/<id segments>`, or just
+    /// `<id segments>` for a page, which has no section. This is the single
+    /// source of truth for the document's location, shared by the site generator
+    /// (for output paths and links) and the CLI (for the `site.standard.document`
+    /// `path`), so the two can never drift apart.
     pub fn route_path(&self) -> paxhtml::RoutePath {
-        paxhtml::RoutePath::new(
-            std::iter::once(self.document_type.dir_name())
-                .chain(self.id.iter().map(|s| s.as_str())),
-            None,
-        )
+        paxhtml::RoutePath::new(route_segments(self.document_type, &self.id), None)
     }
 
     /// Site-relative URL path for this document, e.g. `/blog/hello-again/`.
@@ -381,15 +393,20 @@ impl Document {
 
 /// Returns the URL path for a document given its type and ID.
 ///
-/// Produces paths like `/blog/my-post/`, `/updates/my-update/`, `/notes/programming/rust/`.
+/// Produces paths like `/blog/my-post/`, `/updates/my-update/`, `/notes/programming/rust/`
+/// and, for a page, `/credits/`.
 pub fn document_url_path(doc_type: DocumentType, id: &DocumentId) -> String {
-    let dir = doc_type.dir_name();
-    let id_path = id.join("/");
-    if id_path.is_empty() {
-        format!("/{dir}/")
-    } else {
-        format!("/{dir}/{id_path}/")
-    }
+    let segments: Vec<&str> = route_segments(doc_type, id).collect();
+    format!("/{}/", segments.join("/"))
+}
+
+/// A document's URL segments: its type's section directory (none for a page)
+/// followed by its id's own segments.
+fn route_segments(doc_type: DocumentType, id: &DocumentId) -> impl Iterator<Item = &str> {
+    doc_type
+        .route_segment()
+        .into_iter()
+        .chain(id.iter().map(String::as_str))
 }
 
 // ── Tree types ──────────────────────────────────────────────────────────────
@@ -690,7 +707,7 @@ impl Content {
             &Path::new(CONTENT_DIR).join(ABOUT_FILENAME),
             vec!["about".to_string()],
             vec!["About".to_string()],
-            DocumentType::Blog,
+            DocumentType::Page,
             fast,
         )?);
 
@@ -698,7 +715,7 @@ impl Content {
             &Path::new(CONTENT_DIR).join(CREDITS_FILENAME),
             vec!["credits".to_string()],
             vec!["Credits".to_string()],
-            DocumentType::Blog,
+            DocumentType::Page,
             fast,
         )?);
 
@@ -897,6 +914,9 @@ impl Content {
             DocumentType::Blog => self.blog.document_by_id(id),
             DocumentType::Update => self.updates.document_by_id(id),
             DocumentType::Note => self.notes.documents.document_by_id(id),
+            DocumentType::Page => [&self.about, &self.credits]
+                .into_iter()
+                .find(|page| page.id == *id),
         }
     }
 }
@@ -1675,6 +1695,11 @@ mod tests {
             "/notes/programming/rust/"
         );
         assert_eq!(document_url_path(DocumentType::Note, &vec![]), "/notes/");
+        // A page has no section, so its id is the whole path.
+        assert_eq!(
+            document_url_path(DocumentType::Page, &vec!["credits".to_string()]),
+            "/credits/"
+        );
     }
 
     #[test]

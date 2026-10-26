@@ -277,6 +277,10 @@ fn main() -> anyhow::Result<()> {
                     let view = views::notes::note(ctx, doc);
                     write_post(output_dir, view_context, doc, view)?;
                 }
+                // Pages aren't in this list: each one is written by its own view.
+                content::DocumentType::Page => {
+                    anyhow::bail!("page {:?} is not written by the document loop", doc.id)
+                }
             }
             anyhow::Ok(())
         })?;
