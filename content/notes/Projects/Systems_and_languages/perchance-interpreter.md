@@ -3,6 +3,8 @@
 tags = ["perchanceinterpreter"]
 +++
 
-[perchance-interpreter](https://github.com/philpax/perchance-interpreter) is an experimental Rust implementation of Perchance's random-text template language. It supports weighted lists and template expansion, with an emphasis on deterministic generation. It is not intended as a complete replacement for the original implementation.
+[perchance-interpreter](https://github.com/philpax/perchance-interpreter) is an experimental Rust re-implementation of [Perchance](https://perchance.org/). It is fully deterministic and pure, making it suitable for embedding in other applications. For more details, see [the update in which it was created](../../../updates/the-big-claude-down/index.md#perchance-interpreter).
 
 <!-- more -->
+
+You can play with the late-2025-era vibed frontend [here](/experimental/perchance/). It's not pretty, but it works.
