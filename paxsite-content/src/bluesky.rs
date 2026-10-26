@@ -91,6 +91,11 @@ pub fn profile_url(did: &str) -> String {
     format!("{BSKY_WEB}/profile/{did}")
 }
 
+/// A profile link from a handle, for archives that store the handle but not the DID.
+pub fn handle_profile_url(handle: &str) -> String {
+    format!("{BSKY_WEB}/profile/{handle}")
+}
+
 pub fn hashtag_url(tag: &str) -> String {
     format!("{BSKY_WEB}/hashtag/{tag}")
 }

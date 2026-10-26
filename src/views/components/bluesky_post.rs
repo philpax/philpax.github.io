@@ -1,5 +1,7 @@
 use paxhtml::bumpalo::Bump;
-use paxsite_content::bluesky::{BlueskyPostData, Facet, FacetFeature};
+use paxsite_content::bluesky::{self, BlueskyPostData, Facet, FacetFeature};
+
+use super::{A, AProps};
 
 /// An archived Bluesky post with local images, remote video and a link to the original.
 pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml::Element<'bump> {
@@ -15,12 +17,14 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
     paxhtml::html! { in bump;
         <figure class="social-card embed">
             <header>
-                {avatar}
-                // Name over handle.
-                <p class="stack">
-                    <b>{name}</b>
-                    <span>{format!("@{}", post.author_handle)}</span>
-                </p>
+                <A href={bluesky::handle_profile_url(&post.author_handle)} class={"social-card-author".to_string()}>
+                    {avatar}
+                    // Name over handle.
+                    <p class="stack">
+                        <b>{name}</b>
+                        <span>{format!("@{}", post.author_handle)}</span>
+                    </p>
+                </A>
             </header>
             <blockquote>{render_rich_text(bump, &post.text, &post.facets)}</blockquote>
             {(!post.images.is_empty()).then(|| paxhtml::html! { in bump;
@@ -54,7 +58,7 @@ pub fn bluesky_post<'bump>(bump: &'bump Bump, post: &BlueskyPostData) -> paxhtml
                 <span>{format!("{} replies", post.reply_count)}</span>
                 <span>{format!("{} reposts", post.repost_count)}</span>
                 <span>{format!("{} likes", post.like_count)}</span>
-                <span title="Archived at">
+                <span title={format!("Archived at {archived_at}")}>
                     "archived "<time datetime={archived_at.as_str()}>{archived_at.as_str()}</time>
                 </span>
             </figcaption>

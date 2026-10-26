@@ -239,3 +239,9 @@
     color: var(--bad);
   }
 }
+
+/* What follows a heading sits closer to it, and an embed is no exception: without
+   this it keeps the component's own, wider margin above. */
+.prose :is(h2, h3, h4) + .embed {
+  margin-top: var(--r-6);
+}

@@ -180,15 +180,25 @@ h1 .tag-prefix {
   border-radius: var(--radius-md);
   background: var(--raised);
 }
-.social-card header {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-}
 .social-card header img {
   width: var(--s-8);
   height: var(--s-8);
   border-radius: 9999px;
+}
+/* The whole author band is the link: it carries the surface and runs to the
+   card's edges, so the padding is part of what you click and what lights up. */
+.social-card-author {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: calc(var(--s-4) * -1) calc(var(--s-4) * -1) 0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: calc(var(--radius-md) - var(--rule)) calc(var(--radius-md) - var(--rule)) 0 0;
+  background: var(--raised-band);
+  transition: background-color var(--motion) ease;
+}
+.social-card-author:hover {
+  background: var(--raised-band-hover);
 }
 .social-card header p {
   font-size: var(--text-sm);
@@ -207,6 +217,10 @@ h1 .tag-prefix {
 .social-card-images,
 .social-card-video {
   margin-top: var(--s-3);
+  /* The media is the filling: it runs to the card's edges, with the bands above
+     and below as the bun. It takes the card's own border with it, so no hairline
+     sits against the picture. */
+  margin-inline: calc((var(--s-4) + var(--rule)) * -1);
 }
 .social-card-images {
   display: grid;
@@ -220,7 +234,6 @@ h1 .tag-prefix {
   height: auto;
   max-height: 36rem;
   object-fit: contain;
-  border-radius: var(--radius-sm);
   background: var(--canvas);
 }
 .social-card-video {
@@ -269,14 +282,38 @@ h1 .tag-prefix {
 }
 .social-card figcaption {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-1) var(--s-3);
-  margin-top: var(--s-3);
+  align-items: baseline;
+  gap: var(--s-1) 0;
+  /* The footer is a band too: full width, its own surface, its segments divided
+     by hairlines. */
+  margin: var(--s-3) calc(var(--s-4) * -1) calc(var(--s-4) * -1);
+  padding: var(--s-3);
+  border-radius: 0 0 calc(var(--radius-md) - var(--rule)) calc(var(--radius-md) - var(--rule));
+  background: var(--raised-band);
   font-family: var(--f-ui);
   font-size: var(--text-xs);
   color: var(--ink-muted);
 }
-
+.social-card figcaption > * {
+  /* Each segment takes a content-sized cell, then an equal share of what's left,
+     so the row fills the band like a table's. */
+  flex: 1 1 auto;
+  min-width: 0;
+  /* Symmetric padding, so the centring matches whether or not a cell opens with
+     a divider. */
+  padding-inline: var(--s-1-5);
+  text-align: center;
+}
+.social-card figcaption > * + * {
+  /* `--line` sits a hair off the band's own lightness and vanishes on it. */
+  border-inline-start: var(--rule) solid var(--line-strong);
+}
+/* Flush media is filling, so it meets the footer band directly instead of
+   leaving a strip of card between them. */
+.social-card-images + figcaption,
+.social-card-video + figcaption {
+  margin-top: 0;
+}
 /* City poster. */
 
 .city-poster {
