@@ -1,4 +1,5 @@
 +++
+status = { kind = "abandoned", year = 2024 }
 [taxonomies]
 tags = ["llm"]
 +++

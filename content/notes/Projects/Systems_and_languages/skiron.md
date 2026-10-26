@@ -1,4 +1,5 @@
 +++
+status = { kind = "abandoned", year = 2019 }
 [taxonomies]
 tags = ["skiron"]
 +++

@@ -1,4 +1,5 @@
 +++
+status = { kind = "paused", year = 2026 }
 [taxonomies]
 tags = ["cardinal"]
 +++

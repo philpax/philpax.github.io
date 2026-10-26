@@ -1,4 +1,5 @@
 +++
+status = { kind = "abandoned", year = 2025 }
 [taxonomies]
 tags = ["ambient"]
 +++

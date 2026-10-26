@@ -1,4 +1,5 @@
 +++
+status = { kind = "done", year = 2022 }
 [taxonomies]
 tags = ["exoform"]
 +++

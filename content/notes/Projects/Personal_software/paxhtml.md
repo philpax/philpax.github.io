@@ -1,4 +1,5 @@
 +++
+status = { kind = "active" }
 [taxonomies]
 tags = ["paxhtml"]
 +++

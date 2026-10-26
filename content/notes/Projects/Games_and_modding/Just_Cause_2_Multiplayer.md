@@ -1,4 +1,5 @@
 +++
+status = { kind = "done" }
 [taxonomies]
 tags = ["jc2mp"]
 +++

@@ -1,4 +1,5 @@
 +++
+status = { kind = "abandoned", year = 2021 }
 [taxonomies]
 tags = ["borealis"]
 +++

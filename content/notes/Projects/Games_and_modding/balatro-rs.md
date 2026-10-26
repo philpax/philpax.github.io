@@ -1,4 +1,5 @@
 +++
+status = { kind = "done", year = 2026 }
 [taxonomies]
 tags = ["balatro"]
 +++

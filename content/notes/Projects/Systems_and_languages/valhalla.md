@@ -1,4 +1,5 @@
 +++
+status = { kind = "done", year = 2016 }
 [taxonomies]
 tags = ["valhalla"]
 +++
