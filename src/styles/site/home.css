@@ -6,7 +6,6 @@
   --stack: var(--s-12);
 }
 .home-page h1 {
-  margin-bottom: var(--s-4);
   font-size: var(--text-2xl);
   line-height: var(--lead-tight);
   letter-spacing: var(--tracking-heading);

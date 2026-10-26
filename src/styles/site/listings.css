@@ -3,12 +3,9 @@
    and dated row the front page shares with them.
    ======================================================================== */
 
-.page-head {
-  margin-bottom: var(--s-8);
-}
+/* The head's lede keeps to the measure, in muted ink. */
 .page-head p {
   max-width: var(--measure-short);
-  margin-top: var(--s-3);
   color: var(--ink-muted);
 }
 /* A lede that finishes the title's sentence runs on at its width. */
@@ -47,12 +44,6 @@
   .index-row > header {
     text-align: right;
   }
-}
-
-/* A head followed straight by a body sits as close to it as the home page's title
-   does, with no rule between them. */
-.page-head:has(+ .prose) {
-  margin-bottom: var(--s-4);
 }
 
 /* Summary: a post, update or note. */

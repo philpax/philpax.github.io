@@ -22,7 +22,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ),
         CurrentPage::NotFound,
         html! { in bump;
-            <div class="frame-narrow">
+            <div class="frame-narrow page-column">
                 <header class="page-head run-on">
                     <h1>{CurrentPage::NotFound.name()}</h1>
                     <p>{LEDE}</p>

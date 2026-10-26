@@ -31,7 +31,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ),
         CurrentPage::Updates,
         html! { in bump;
-            <div class="frame-narrow">
+            <div class="frame-narrow page-column">
                 {page_head(bump, html! { in bump; {CurrentPage::Updates.name()} }, Some(html! { in bump; {LEDE} }))}
                 {year_groups(context, &documents)}
             </div>

@@ -15,7 +15,6 @@ use crate::{
 
 pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<'a> {
     let bump = context.bump;
-    let is_index = note.id.is_empty();
     let title = note.metadata.title.clone();
 
     let description = if note.rest_of_content.is_none() {
@@ -31,17 +30,6 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
 
     let body = Body::new(context, note);
     let rail = rail(context, note, body.toc.clone());
-    let main = if is_index {
-        // The section's introduction, beside the rail.
-        html! { in bump;
-            <article class="document-content">
-                {document::head(context, note)}
-                <div class="notes-intro">{body.into_prose(bump)}</div>
-            </article>
-        }
-    } else {
-        document::article(context, note, body)
-    };
 
     layout(
         context,
@@ -61,7 +49,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         html! { in bump;
             <div class="frame notes-layout">
                 {rail}
-                {main}
+                {document::article(context, note, body)}
             </div>
         },
     )

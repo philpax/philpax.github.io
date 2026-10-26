@@ -27,7 +27,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ),
         CurrentPage::Credits,
         html! { in bump;
-            <div class="frame-narrow">
+            <div class="frame-narrow page-column">
                 {page_head(
                     bump,
                     html! { in bump; <span>{inline_markdown(context, &content.credits.metadata.title, &url)}</span> },

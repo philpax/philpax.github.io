@@ -56,7 +56,7 @@ pub fn article<'a>(
         }
     });
     html! { in bump;
-        <article class="document-content">
+        <article class="document-content page-column">
             {head(context, document)}
             {toc}
             {body.into_prose(bump)}

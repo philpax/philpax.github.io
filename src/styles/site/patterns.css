@@ -10,6 +10,14 @@
   gap: var(--stack);
 }
 
+/* A page's own column, by the fixed step: a head or title, then the body it opens.
+   A page that needs another step joins another class rather than passing a value. */
+.page-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

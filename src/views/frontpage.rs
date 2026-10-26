@@ -49,7 +49,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         CurrentPage::Home,
         html! { in bump;
             <div class="frame-narrow home-page stack">
-                <section ariaLabel="Introduction">
+                <section class="page-column" ariaLabel="Introduction">
                     <h1>"I've seen things you people wouldn't believe..."</h1>
                     <div class="prose">
                         {MarkdownConverter::new(context, Route::Index.url_path()).with_source_path(content.about.source_path.clone()).convert_blocks(&crate::markdown::document_root(&content.about))}

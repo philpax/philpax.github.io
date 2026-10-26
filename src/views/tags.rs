@@ -37,7 +37,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         ),
         CurrentPage::Tags,
         html! { in bump;
-            <div class="frame-narrow">
+            <div class="frame-narrow page-column">
                 {page_head(bump, html! { in bump; {CurrentPage::Tags.name()} }, Some(html! { in bump; {LEDE} }))}
                 <div class="index-groups">
                     {index_row(
@@ -114,7 +114,7 @@ pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> 
         ),
         CurrentPage::Tags,
         html! { in bump;
-            <div class="frame-narrow">
+            <div class="frame-narrow page-column">
                 {page_head(
                     bump,
                     html! { in bump; <TagLabel tag={tag_id.to_string()} /> },

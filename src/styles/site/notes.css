@@ -8,9 +8,6 @@
   align-items: start;
   column-gap: var(--s-10);
 }
-.notes-intro {
-  max-width: var(--measure-short);
-}
 .notes-index {
   max-width: var(--measure);
   min-width: 0;
