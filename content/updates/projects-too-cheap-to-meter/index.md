@@ -5,7 +5,7 @@ datetime = 2026-05-19T00:00:00Z
 draft = true
 
 [taxonomies]
-tags=["ai", "blackbird", "genresinspace", "pyxis", "website", "ananke", "cardinal", "veldera", "balatro"]
+tags=["ai", "ananke", "balatro", "beatsubsonic", "blackbird", "cardinal", "discodiffusionstudio", "genresinspace", "jc3vr", "lunette", "makima", "paxboard", "paxcord", "paxhtml", "pyxis", "rucomfyui", "tsurezure", "veldera", "vouchgraph", "website", "zuihitsu"]
 +++
 
 Writing [the big claude down](../the-big-claude-down/index.md) took four months to cover a two-month period. To avoid that, I will be rather terse in this update, in which I cover the work I've done from January to today. Perhaps I can be less laconic in future updates.
@@ -23,6 +23,20 @@ Writing [the big claude down](../the-big-claude-down/index.md) took four months 
 - used cosmograph v1 for this, as it was the only library that I could find that would handle the task reasonably well; the other alternatives were deficient, especially in layouting - cosmograph v2 doesn't work on all browsers
 - I also wired up live updates as atproto makes that easy; unfortunately, cosmograph v1 - and indeed, all (?) web graph visualisation libraries - do not handle online node additions and removal
 - resorted to a bodge where the graph is rebuilt at the user's request when changes occur
+
+# paxboard
+
+[paxboard](../../notes/Projects/Personal_software/paxboard.md)
+
+# maptoposter
+
+<!-- image -->
+
+https://github.com/philpax/maptoposter
+
+# paxhtml
+
+[paxhtml](../../notes/Projects/Personal_software/paxhtml.md)
 
 # cardinal-rs
 
@@ -47,27 +61,65 @@ Writing [the big claude down](../the-big-claude-down/index.md) took four months 
 - at the time of writing, I have the modules rendering with some degree of interaction, but there's still some work left to make it all come together
 - but it's not far off, and I'm excited to post a video once it's done
 
-# ananke
-
-<!-- image -->
-
-[ananke](../../notes/Projects/AI/ananke.md)
-
-# maptoposter
-
-<!-- image -->
-
-https://github.com/philpax/maptoposter
-
 # veldera
 
 <!-- videos -->
 
 [veldera](../../notes/Projects/Games_and_modding/veldera.md)
 
-# paxsite
+# rucomfyui
 
-[paxsite](../../notes/Projects/Personal_software/paxsite.md)
+[rucomfyui](../../notes/Projects/AI/rucomfyui.md)
+
+# Disco Diffusion Studio
+
+[Disco Diffusion Studio](../../notes/Projects/AI/Disco_Diffusion_Studio.md)
+
+# paxcord
+
+[paxcord](../../notes/Projects/Personal_software/paxcord.md)
+
+# beat-subsonic
+
+[beat-subsonic](../../notes/Projects/Games_and_modding/beat-subsonic.md)
+
+# zuihitsu
+
+[zuihitsu](../../notes/Projects/AI/zuihitsu.md)
+
+# pyxis
+
+[pyxis](../../notes/Projects/Games_and_modding/pyxis.md)
+
+# balatro-rs
+
+<!-- image -->
+
+[balatro-rs](../../notes/Projects/Games_and_modding/balatro-rs.md)
+
+# ananke
+
+<!-- image -->
+
+[ananke](../../notes/Projects/AI/ananke.md)
+
+# makima
+
+[makima](../../notes/Projects/AI/makima.md)
+
+# tsurezure
+
+[tsurezure](../../notes/Projects/Personal_software/tsurezure.md)
+
+# genresin.space
+
+<!-- image -->
+
+[genresin.space](../../notes/Projects/Websites/genresin.space.md)
+
+# jc3vr
+
+[jc3vr](../../notes/Projects/Games_and_modding/jc3vr.md)
 
 # blackbird
 
@@ -87,18 +139,10 @@ https://github.com/philpax/maptoposter
 - Other additions include a configurable terminal background, play count in the now-playing bar and the current track in the terminal title.
 - The standalone library JSON export moved from blackbird to the website.
 
-# balatro-rs
+# lunette
 
-<!-- image -->
+[lunette](../../notes/Projects/Graphics_and_XR/lunette.md)
 
-[balatro-rs](../../notes/Projects/Games_and_modding/balatro-rs.md)
+# paxsite
 
-# genresin.space
-
-<!-- image -->
-
-[genresin.space](../../notes/Projects/Websites/genresin.space.md)
-
-# pyxis
-
-[pyxis](../../notes/Projects/Games_and_modding/pyxis.md)
+[paxsite](../../notes/Projects/Personal_software/paxsite.md)
