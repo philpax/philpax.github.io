@@ -1,5 +1,5 @@
 +++
-title = "four months, abbreviated"
+title = "projects too cheap to meter"
 short = "After a terribly busy two months, the following four months had no shortage of things to work on - but nothing quite as intense, thankfully."
 datetime = 2026-05-19T00:00:00Z
 draft = true
@@ -16,7 +16,7 @@ Writing [the big claude down](../the-big-claude-down/index.md) took four months 
 
 <!-- image -->
 
-https://github.com/philpax/vouchgraph
+[vouchgraph](../../notes/Projects/Websites/vouchgraph.md)
 
 - [atvouch](https://atvouch.dev) is an experiment by [luna](https://l4.pm) to create a basic web of trust on atproto for developers
 - I helped with some of the initial design, but thought it would be interesting to put together a graph visualisation of the resulting web
@@ -24,11 +24,11 @@ https://github.com/philpax/vouchgraph
 - I also wired up live updates as atproto makes that easy; unfortunately, cosmograph v1 - and indeed, all (?) web graph visualisation libraries - do not handle online node additions and removal
 - resorted to a bodge where the graph is rebuilt at the user's request when changes occur
 
-# cardinal-xr
+# cardinal-rs
 
 <!-- image -->
 
-https://github.com/philpax/Cardinal
+[cardinal-rs](../../notes/Projects/Graphics_and_XR/cardinal-rs.md)
 
 - Cardinal is a fork of VCV Rack that is designed to be used as a plugin in a DAW, and includes a great many modules as a result
 - I've been a passive participant in the [Stardust XR](https://stardustxr.org/) ecosystem for years, but never an active participant
@@ -51,7 +51,7 @@ https://github.com/philpax/Cardinal
 
 <!-- image -->
 
-https://github.com/philpax/ananke
+[ananke](../../notes/Projects/AI/ananke.md)
 
 # maptoposter
 
@@ -63,30 +63,42 @@ https://github.com/philpax/maptoposter
 
 <!-- videos -->
 
-https://github.com/philpax/veldera
+[veldera](../../notes/Projects/Games_and_modding/veldera.md)
 
-# website
+# paxsite
 
-https://github.com/philpax/philpax.github.io
+[paxsite](../../notes/Projects/Personal_software/paxsite.md)
 
 # blackbird
 
 <!-- image -->
 
-https://github.com/philpax/blackbird
+[blackbird](../../notes/Projects/Personal_software/blackbird.md)
+
+- A Ratatui terminal UI was added alongside the egui client in January. The egui client was removed in August, leaving the terminal UI as the main client.
+- The terminal UI initially rendered cover art using half blocks. It later gained Kitty, iTerm2 and Sixel graphics protocol support, retaining half blocks as a fallback. The image cache was reworked to address blanking and image downgrades while scrolling or changing tracks.
+- Playback gained a precomputed queue and queue display. Shuffle switched to Fisher-Yates, with new seeds on wraparound, entering shuffle and deliberate track selection. An optional queue sidebar followed.
+- ReplayGain normalization was added, with a live toggle and preamp control. A custom playback source replaced `rodio::Player` to address fragile queue reconciliation and rapid skipping.
+- The last track can be restored paused on startup, and tracks can be navigated by group.
+- Library browsing gained configurable album spacing and a most-played sort based on average track play count. Search became insensitive to punctuation and diacritics, gained Unicode lookalike folding, and gained the ability to reveal a result in the library.
+- Inline lyrics were added, followed by a resizable lyrics sidebar with auto-follow and click-to-seek. The sidebar became configurable and gained similar-song support. It uses the sonic-similarity endpoint when the server advertises that extension, falling back to `getSimilarSongs2` otherwise.
+- The terminal UI gained config auto-reload, a settings UI, mouse navigation, scrollbar dragging and inertial library scrolling.
+- Startup now displays a cached library while refreshing from the server. The cached library can be browsed when the server is unreachable, but playback still requires the server. This work also improved loading and sorting and switched alphabetical ordering to ICU collation. The commit reports approximately 260 ms cached loading and 2 ms sort changes for an 18,500-track library in a dev build.
+- Other additions include a configurable terminal background, play count in the now-playing bar and the current track in the terminal title.
+- The standalone library JSON export moved from blackbird to the website.
 
 # balatro-rs
 
 <!-- image -->
 
-Private repo
+[balatro-rs](../../notes/Projects/Games_and_modding/balatro-rs.md)
 
-# genresinspace
+# genresin.space
 
 <!-- image -->
 
-https://github.com/genresinspace/genresinspace.github.io
+[genresin.space](../../notes/Projects/Websites/genresin.space.md)
 
 # pyxis
 
-https://github.com/ferrobrew/pyxis
+[pyxis](../../notes/Projects/Games_and_modding/pyxis.md)
