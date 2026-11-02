@@ -93,11 +93,11 @@ const GARDENS: &[(&str, &str)] = &[
     ("ancolie", "de l'ancolie"),
     ("lilas", "du lilas"),
     // Posts.
-    ("lavande", "de la lavande"),
+    ("vesce", "de la vesce"),
     ("pensee", "de la pensée"),
     // Updates.
     ("barbeau", "du barbeau"),
-    ("ble", "du blé"),
+    ("jasmin", "du jasmin"),
     // Notes.
     ("fougere", "de la fougère"),
     ("pervenche", "de la pervenche"),

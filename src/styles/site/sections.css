@@ -9,7 +9,7 @@
   --accent-soft: var(--w-post);
   --accent-solid: var(--c-post-solid);
   --icon: var(--icon-post);
-  --garden-start: url('/margins/lavande.svg');
+  --garden-start: url('/margins/vesce.svg');
   --garden-end: url('/margins/pensee.svg');
 }
 [data-section='updates'] {
@@ -18,7 +18,7 @@
   --accent-solid: var(--c-update-solid);
   --icon: var(--icon-update);
   --garden-start: url('/margins/barbeau.svg');
-  --garden-end: url('/margins/ble.svg');
+  --garden-end: url('/margins/jasmin.svg');
 }
 [data-section='notes'] {
   --accent: var(--c-note);
