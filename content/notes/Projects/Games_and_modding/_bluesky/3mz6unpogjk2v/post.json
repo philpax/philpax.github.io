@@ -1,0 +1,42 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mz6unpogjk2v",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mz6unpogjk2v/avatar.webp",
+  "text": "decided to put my GPUs where my mouth is\n\n64 hours ago, I started decompiling Just Cause 2 using a bespoke harness, three xx90-class GPUs, two computers, and (now) 22 parallel sessions of Qwen 3.8 27B with 45K context each\n\nI now have 6% of functions (note: <1% bytecode) decompiled w/ byte-matching",
+  "facets": [],
+  "created_at": "2026-10-31T17:58:01.365Z",
+  "like_count": 136,
+  "reply_count": 10,
+  "repost_count": 8,
+  "quote_count": 2,
+  "fetched_at": "2026-11-01T19:35:37.656525028+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mz6unpogjk2v/image-0.webp",
+      "alt": "screenshot with 2,279/41,376 functions recovered (but only 0.4% of code), 120 matches in the last hour, and a breakdown of how much work remains",
+      "width": 951,
+      "height": 837
+    },
+    {
+      "filename": "_bluesky/3mz6unpogjk2v/image-1.webp",
+      "alt": "screenshot showing several matches in the last few minutes, and a distribution of task difficulty",
+      "width": 944,
+      "height": 940
+    },
+    {
+      "filename": "_bluesky/3mz6unpogjk2v/image-2.webp",
+      "alt": "decompilation output of a function",
+      "width": 1126,
+      "height": 1269
+    },
+    {
+      "filename": "_bluesky/3mz6unpogjk2v/image-3.webp",
+      "alt": "conversational trace for a function being decompiled",
+      "width": 715,
+      "height": 1258
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}

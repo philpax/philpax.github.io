@@ -1,0 +1,42 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzbcqymr2k23",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzbcqymr2k23/avatar.webp",
+  "text": "~24 hour update: 13% decompiled (but only 1.27% bytecode: that is, we haven't hit any _real_ logic yet)\n\nrotated 6x Qwen 3.8 Flash Next in on the 5090 using Basalt (github.com/jesdga95/bas...); it is definitely more capable than the 27B\n\nstill starting to see a ceiling to what's viable here, though",
+  "facets": [
+    {
+      "byte_start": 165,
+      "byte_end": 191,
+      "features": [
+        {
+          "Link": {
+            "uri": "https://github.com/jesdga95/basalt"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-01T17:15:43.274Z",
+  "like_count": 22,
+  "reply_count": 2,
+  "repost_count": 0,
+  "quote_count": 1,
+  "fetched_at": "2026-11-01T19:35:38.028527394+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mzbcqymr2k23/image-0.webp",
+      "alt": "5,476/41,370 functions recovered",
+      "width": 1028,
+      "height": 768
+    },
+    {
+      "filename": "_bluesky/3mzbcqymr2k23/image-1.webp",
+      "alt": "qwen flash next + qwen 27b (swift finetune) churning away ",
+      "width": 1026,
+      "height": 944
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}
