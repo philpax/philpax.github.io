@@ -234,7 +234,11 @@ pub fn layout<'a>(
                 <body class="site" {section}>
                     <a class="skip-link" href="#content">"Skip to content"</a>
                     {header(context, current_page)}
-                    <main id="content">{inner}</main>
+                    <main id="content">
+                        // The gardens in the margins: decorative, shown only on wide windows.
+                        <div class="margin-gardens" ariaHidden="true"><div></div><div></div></div>
+                        {inner}
+                    </main>
                     {footer(context)}
                 </body>
             </html>

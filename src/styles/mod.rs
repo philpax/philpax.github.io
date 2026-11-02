@@ -45,6 +45,7 @@ const SITE_FILES: &[(&str, &str)] = &[
     ("footnotes.css", include_str!("site/footnotes.css")),
     ("components.css", include_str!("site/components.css")),
     ("music.css", include_str!("site/music.css")),
+    ("margins.css", include_str!("site/margins.css")),
 ];
 
 /// Replaces each `@import './name.css';` line with that file's contents.

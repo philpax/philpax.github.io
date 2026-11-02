@@ -95,6 +95,11 @@
   --accent-soft: var(--w-post);
   --accent-solid: var(--c-post-solid);
 
+  /* The gardens in the margins (margins.css), at either side: the front page's,
+     until sections.css repoints them. Masks, drawn in the accent. */
+  --garden-start: url('/margins/ancolie.svg');
+  --garden-end: url('/margins/lilas.svg');
+
   /* Faces. */
   --f-body: 'Source Serif 4 Variable', Georgia, serif;
   --f-display: 'Fraunces Variable', Georgia, serif;

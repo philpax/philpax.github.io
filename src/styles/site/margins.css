@@ -1,0 +1,64 @@
+/* ========================================================================
+   MARGINS — a garden either side of the page, in the space a wide window
+   leaves beside the widest frame, hanging from the header's border and
+   running past the window's edges. Each is a copperplate drawing used as a
+   mask over the section's accent, so it follows the section and the theme;
+   its paper lets the page through. Decorative, and hidden from readers.
+   ======================================================================== */
+
+.margin-gardens {
+  display: none;
+}
+
+@container site (width >= 93rem) {
+  .site > main {
+    position: relative;
+  }
+
+  /* Spans the main column and clips to it, so the gardens can run past the
+     window's edges and tuck under the header without widening the page. */
+  .margin-gardens {
+    --margin: calc((100cqw - 79rem) / 2);
+    /* About a quarter of each garden lies past the window's edge. */
+    --garden-width: min(18rem, (var(--margin) - 1rem) / 0.75);
+    /* How far each garden's stems run up under the header. */
+    --garden-sink: 2.5rem;
+    --garden-ink: color-mix(in oklab, var(--accent) 42%, var(--canvas));
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    overflow: clip;
+    pointer-events: none;
+  }
+
+  .margin-gardens > * {
+    /* Hangs below the header while the page scrolls; the header hides the
+       stems' feet. The drawing is flipped, so its foot is at the top. */
+    position: sticky;
+    top: calc(var(--header-height) - var(--garden-sink));
+    width: var(--garden-width);
+    aspect-ratio: 6 / 22;
+    /* A short window shrinks the drawing rather than cropping it. */
+    max-height: calc(100svh - var(--header-height) + var(--garden-sink));
+    margin-inline-start: calc(var(--garden-width) * -0.25);
+    margin-top: calc(-1 * var(--garden-sink));
+    background: var(--garden-ink);
+    mask: var(--garden-start) bottom left / contain no-repeat luminance;
+    transform: scaleY(-1);
+  }
+
+  /* Mirrored, so both stems come in from the window's edges. */
+  .margin-gardens > :last-child {
+    margin-inline: 0 calc(var(--garden-width) * -0.25);
+    mask-image: var(--garden-end);
+    transform: scale(-1, -1);
+  }
+}
+
+@media print, (forced-colors: active) {
+  .margin-gardens {
+    display: none;
+  }
+}
