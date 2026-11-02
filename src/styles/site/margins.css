@@ -12,7 +12,7 @@
 }
 
 /* Only once each margin can show 6rem of garden: sooner beside the narrow
-   frame than the wide one. */
+   frames (the notes', then the others') than the wide one. */
 @container site (width >= 74rem) {
   .site > main:has(> .frame-narrow) {
     --frame: 62rem;
@@ -21,11 +21,19 @@
     display: grid;
   }
 }
+@container site (width >= 75.5rem) {
+  .site > main:has(> .notes-layout) {
+    --frame: var(--frame-notes);
+  }
+  .site > main:has(> .notes-layout) > .margin-gardens {
+    display: grid;
+  }
+}
 @container site (width >= 91rem) {
-  .site > main:has(> .frame) {
+  .site > main:has(> .frame:not(.notes-layout)) {
     --frame: 79rem;
   }
-  .site > main:has(> .frame) > .margin-gardens {
+  .site > main:has(> .frame:not(.notes-layout)) > .margin-gardens {
     display: grid;
   }
 }

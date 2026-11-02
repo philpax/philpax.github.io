@@ -8,6 +8,15 @@
   align-items: start;
   column-gap: var(--s-10);
 }
+/* The notes keep no sidenote gutter: their frame fits the rail, its gap and
+   a measure (18 + 2.75 + 38.75rem, 63.5rem with the frame's padding), so the
+   page is centred on what it shows, and footnotes open in place. */
+.site:has(> main > .notes-layout) {
+  --frame-notes: calc(var(--rail-width) + var(--s-10) + var(--measure) + 2 * var(--s-8));
+}
+.notes-layout {
+  max-width: var(--frame-notes);
+}
 .notes-index {
   max-width: var(--measure);
   min-width: 0;
