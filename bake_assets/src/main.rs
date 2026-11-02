@@ -1,10 +1,13 @@
 use std::path::Path;
 
+mod margins;
+
 fn main() -> anyhow::Result<()> {
     let static_dir = Path::new("assets/baked/static");
     std::fs::create_dir_all(static_dir)?;
 
     icon::build(Path::new("assets/source/icon.png"), static_dir)?;
+    margins::build(static_dir)?;
     Ok(())
 }
 
