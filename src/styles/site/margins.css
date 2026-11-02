@@ -29,6 +29,17 @@
     display: grid;
   }
 }
+/* With the notes' rail hidden, the gardens close in on the note's column,
+   leaving room before it for the control that brings the rail back; the
+   rail can only be hidden from 64rem. */
+@container site (width >= 64rem) {
+  .site > main:has(> .notes-layout > .rail-hide-box:checked) {
+    --frame: calc(var(--measure) + 2 * var(--s-10));
+  }
+  .site > main:has(> .notes-layout > .rail-hide-box:checked) > .margin-gardens {
+    display: grid;
+  }
+}
 @container site (width >= 91rem) {
   .site > main:has(> .frame:not(.notes-layout)) {
     --frame: 79rem;

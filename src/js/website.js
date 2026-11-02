@@ -198,6 +198,7 @@ function initNotesRail() {
   if (!rail) return;
   initRailFilter(rail);
   initNoteAges(rail);
+  initRailHide();
 
   // On a deep link the current row may be far down the rail; scroll the rail
   // (not the page) to it.
@@ -211,6 +212,24 @@ function initNotesRail() {
       rail.scrollTop -= railBox.top - rowBox.top;
     }
   }
+}
+
+// Remembers whether the reader hid the rail, so the next note opens the same
+// way; the inline script after the checkbox restores it.
+function initRailHide() {
+  const box = document.getElementById("rail-hide");
+  if (!box) return;
+  box.addEventListener("change", function () {
+    try {
+      if (box.checked) {
+        localStorage.setItem("rail", "hidden");
+      } else {
+        localStorage.removeItem("rail");
+      }
+    } catch (e) {
+      // Storage may be unavailable; the choice then lasts the page.
+    }
+  });
 }
 
 // Keeps matching rows, their descendants and their ancestor folders, opening

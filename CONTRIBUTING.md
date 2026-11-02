@@ -152,7 +152,7 @@ A folder's `index.md` automatically ends with a compact index when it has immedi
 | `src/views/listings.rs` | Page heads, index rows, summaries and dated rows, shared by the indexes, tag pages and front page |
 | `src/views/blog/mod.rs` | Blog index and individual post pages |
 | `src/views/updates/mod.rs` | Updates index and individual update pages |
-| `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script) |
+| `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script; on wide pages another checkbox hides the rail and centres the note, and script remembers that choice between pages) |
 | `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
 | `src/og_image/` | OpenGraph image generation (1200x630 PNG): a contour field seeded by the document's path, in its section's colours, or the document's hero image softened into the background where it has one, with the site's faces instanced from `assets/source/fonts/` |
 | `src/fonts/` | Font subsetting: characters from the built pages, HarfBuzz instancing, WOFF2, cache, `@font-face` rules |

@@ -1,6 +1,7 @@
 //! The notes section: a rail beside every note, doubling as the index. The tree and
-//! (on narrow pages) the rail itself open and close without script, via checkboxes;
-//! script adds the filter and note ages.
+//! (on narrow pages) the rail itself open and close without script, via checkboxes, as
+//! does hiding the rail on wide pages; script adds the filter and note ages, and
+//! remembers whether the rail is hidden.
 
 use paxhtml::bumpalo::Bump;
 
@@ -48,6 +49,13 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         CurrentPage::Notes,
         html! { in bump;
             <div class="frame notes-layout">
+                // Wide pages only: hides the rail and centres the note. The script
+                // after it restores the reader's last choice before the rail draws.
+                <input r#type="checkbox" id="rail-hide" class="rail-hide-box sr-only" autocomplete="off" ariaLabel="Hide the notes index" />
+                <script>{r#"try{if(localStorage.getItem('rail')==='hidden')document.getElementById('rail-hide').checked=true}catch(e){}"#}</script>
+                <label r#for="rail-hide" class="rail-show" title="Show the notes index">
+                    <span class="rail-icon" ariaHidden="true"></span>
+                </label>
                 {rail}
                 {document::article(context, note, body)}
             </div>
@@ -68,6 +76,9 @@ fn rail<'a>(context: ViewContext<'a>, current: &Document, toc: Option<Element<'a
         <nav ariaLabel={CurrentPage::Notes.name()} class="notes-rail stack">
             <div class="rail-heading">
                 <A href={CurrentPage::Notes.url_path()}>"Index"</A>
+                <label r#for="rail-hide" class="rail-hide" title="Hide the notes index">
+                    <span class="rail-icon" ariaHidden="true"></span>
+                </label>
             </div>
 
             // Narrow pages only; the tree folds behind it.
