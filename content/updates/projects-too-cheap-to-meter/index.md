@@ -5,7 +5,7 @@ datetime = 2026-05-19T00:00:00Z
 draft = true
 
 [taxonomies]
-tags=["ai", "ananke", "balatro", "beatsubsonic", "blackbird", "cardinal", "discodiffusionstudio", "genresinspace", "jc3vr", "lunette", "makima", "paxboard", "paxcord", "paxhtml", "pyxis", "rucomfyui", "tsurezure", "veldera", "vouchgraph", "website", "zuihitsu"]
+tags=["ai", "ananke", "balatro", "beatsubsonic", "blackbird", "cardinal", "discodiffusionstudio", "genresinspace", "jc3vr", "lunette", "makima", "paxboard", "paxcord", "paxhtml", "pyxis", "rucomfyui", "tsurezure", "unjustcause2", "veldera", "vouchgraph", "website", "zuihitsu"]
 +++
 
 Writing [the big claude down](../the-big-claude-down/index.md) took four months to cover a two-month period. To avoid that, I will be rather terse in this update, in which I cover the work I've done from January to today. Perhaps I can be less laconic in future updates.
@@ -275,6 +275,7 @@ https://github.com/philpax/maptoposter
 - The open agent API branch develops Lua agent handles, tickets, subscriptions, exact-turn orchestration and authority boundaries. It contains work by both Philpax and Luna and should not be attributed wholesale to either.
 - The same branch includes work on concurrent input and cancellation across the TUI, SDK and ACP, as well as plugin commands across frontends and subagents.
 - Planning work includes plan submission and implementation-model selection; output handling gained offloading for oversized tool results and protection around writing them back.
+- Merged fixes for the status bar's provider display, navigation across wrapped prompt rows and bash file operations.
 
 # tsurezure
 
@@ -387,6 +388,13 @@ https://github.com/philpax/maptoposter
 - Explored OpenXR overlays, OpenVR lifecycle support, Steam Frame bindings and desktop-simulator fallbacks. These changes are not independent hardware validation.
 - Added offscreen graphics and logic-headless tests; these do not establish headset presentation, controller behaviour or comfort.
 
+- Split the wrist menu into a gauntlet and a list, so the shortcuts stay reachable while the list is open; shrank and repositioned the button, wrapped it around the wrist and faded it as it turns away from the head.
+- Added a placement-memory plugin that saves a keyed surface's pose on drop and restores it across reloads and restarts; the keyboard and wrist menu use it, and the keyboard also keeps its size and whether it was shown by hand.
+- Made panel curves signed and axis-selectable, with images subdivided to follow the surface, and let a two-handed grab zoom a UI host panel about its centre.
+- Gave menu actions icons and added a Hide panels action that hides every non-essential panel, including ones opened while it holds, plus an optional shortcut row defaulting to it.
+- Extended Hide panels to the toolkit's panels and the keyboard, which is suppressed in place rather than moved, and saved the wrist menu's open and torn-off state.
+- Hid idle laser beams over another application's scene unless they hover, grab or press.
+
 # paxsite
 
 [paxsite](../../notes/Projects/Personal_software/paxsite.md)
@@ -400,3 +408,18 @@ https://github.com/philpax/maptoposter
 - Added note tags, grouped summaries, automatic folder indexes, tag aliases and redirects, author credits and project-status metadata.
 - Updated Arborium and added regex fences; added local caching for Bluesky images and video posters while video streams on demand.
 - Added standalone pages as a document type.
+
+# Unjust Cause 2
+
+[Unjust Cause 2](../../notes/Projects/Games_and_modding/Unjust_Cause_2.md)
+
+- Reconstructs Just Cause 2's C++ source one function at a time: a record counts only once it compiles with Visual C++ 2005 to the original bytes, and then rebuilds with every other record into a hybrid executable that still equals the original.
+- Built `decomp`, a target-independent harness that turns a Ghidra analysis into a task queue and gives each function an evidence packet of disassembly, decompilation, callee declarations and compiler-idiom notes.
+- Compiled, linked and compared each candidate in a sandbox with a pinned toolchain, returning mismatches as diffs over phases of attempts with a distilled history, and added stop, resume and interrupted-run handling.
+- Ran several local models against the queue across the GPUs, ordered by estimated value against difficulty and session cost, with an adapter that rewrites a matched source for its identical family.
+- Harvested types and signatures from accepted sources, proved them with probe compiles and wrote the backed facts into a type registry, seeded with 1,438 RTTI skeleton classes.
+- Added compiler profiles for x87 and SSE differences, pattern notes for recurring idioms, and repairs for function extents that Ghidra truncated or split.
+- Ran representatives of large families through a strong model, then windows of strong-model time valued against the throughput they displace.
+- Closed the loop with a coordinating frontier model that clusters failed sessions, proves a fix against a session's closest attempt and turns each into a pattern note, harness fix, profile or analysis repair.
+- By 2026-11-01 about 5,400 of 41,370 functions were recovered, mostly by local models and the family adapter. The byte share trails well behind: 13% of functions was 1.27% of the bytecode after the first day.
+- The isolated model worker and autonomous promotion that unattended operation needs are not built.
