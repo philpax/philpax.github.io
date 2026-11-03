@@ -1,0 +1,36 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzbgbwlxyk2n",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzbgbwlxyk2n/avatar.webp",
+  "text": "I must admit I'm a little impressed that it can one-shot MMX/SSE. it's better and faster than me at reconstruction!",
+  "facets": [],
+  "created_at": "2026-11-01T18:18:52.797Z",
+  "like_count": 7,
+  "reply_count": 2,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-11-03T04:47:13.965885463+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mzbgbwlxyk2n/image-0.webp",
+      "alt": "",
+      "width": 920,
+      "height": 1269
+    },
+    {
+      "filename": "_bluesky/3mzbgbwlxyk2n/image-1.webp",
+      "alt": "",
+      "width": 901,
+      "height": 1294
+    },
+    {
+      "filename": "_bluesky/3mzbgbwlxyk2n/image-2.webp",
+      "alt": "",
+      "width": 634,
+      "height": 1275
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}
