@@ -11,4 +11,4 @@ Design inspiration was taken from [Gwern](https://gwern.net/), [Weak Opinions, S
 
 The type is [Source Serif 4](https://github.com/adobe-fonts/source-serif) for reading, [Fraunces](https://github.com/undercasetype/Fraunces) for headings, [Figtree](https://github.com/erikdkennedy/figtree) for everything around them, [Alegreya](https://github.com/huertatipografica/Alegreya) for the wordmark, and [Iosevka](https://github.com/be5invis/Iosevka) for code. [Phosphor Icons](https://phosphoricons.com/) are used for the theme switcher, the copy buttons and the control that hides the notes index.
 
-The plants in the margins of wide windows are grown and drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia), by cadaeix, after the French Republican calendar.
+The plants in the margins of wide windows are grown and drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia), by [cadaeic](https://cadaeic.space/), after the French Republican calendar.
