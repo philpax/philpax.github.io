@@ -200,16 +200,17 @@ function initNotesRail() {
   initNoteAges(rail);
   initRailHide();
 
-  // On a deep link the current row may be far down the rail; scroll the rail
+  // On a deep link the current row may be far down the tree; scroll the tree
   // (not the page) to it.
+  const tree = rail.querySelector(".rail-tree > .notes-level");
   const row = rail.querySelector(".rail-row[aria-current]");
-  if (row && rail.scrollHeight > rail.clientHeight) {
-    const railBox = rail.getBoundingClientRect();
+  if (tree && row && tree.scrollHeight > tree.clientHeight) {
+    const treeBox = tree.getBoundingClientRect();
     const rowBox = row.getBoundingClientRect();
-    if (rowBox.bottom > railBox.bottom) {
-      rail.scrollTop += rowBox.bottom - railBox.bottom;
-    } else if (rowBox.top < railBox.top) {
-      rail.scrollTop -= railBox.top - rowBox.top;
+    if (rowBox.bottom > treeBox.bottom) {
+      tree.scrollTop += rowBox.bottom - treeBox.bottom;
+    } else if (rowBox.top < treeBox.top) {
+      tree.scrollTop -= treeBox.top - rowBox.top;
     }
   }
 }

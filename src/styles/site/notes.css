@@ -240,7 +240,29 @@ label.rail-row {
     top: calc(var(--header-height) + var(--s-4));
     max-height: calc(100svh - var(--header-height) - 2rem);
     margin-bottom: 0;
+  }
+  /* The rail doesn't scroll as a whole: its headings and the filter stay put,
+     and the tree and the contents scroll on their own. */
+  .rail-tree,
+  .notes-rail-toc {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  /* Beside contents, the tree keeps its height, up to 40% of the window,
+     and the contents fill the rest. */
+  .notes-rail:has(> .notes-rail-toc) > .rail-tree {
+    flex-shrink: 0;
+    & > .notes-level {
+      max-height: 40svh;
+    }
+  }
+  .rail-tree > .notes-level,
+  .notes-rail-toc > .toc {
+    min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
   }
   .rail-toggle-box,
   .rail-toggle {
