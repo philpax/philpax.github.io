@@ -23,7 +23,7 @@ pub fn listed(doc: &Document) -> bool {
 pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a>>) -> Element<'a> {
     html! { in bump;
         <header class="page-head">
-            <h1>{title}</h1>
+            <h1 id="page-title">{title}</h1>
             {lede.map(|lede| html! { in bump; <p>{lede}</p> })}
         </header>
     }
@@ -32,6 +32,7 @@ pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a
 /// An index row: a margin label, entries in the column.
 pub fn index_row<'a>(
     bump: &'a Bump,
+    id: &str,
     label: Element<'a>,
     note: Option<Element<'a>>,
     children: Element<'a>,
@@ -39,7 +40,7 @@ pub fn index_row<'a>(
     html! { in bump;
         <section class="index-row">
             <header>
-                <h2>{label}</h2>
+                <h2 id={id.to_string()}>{label}</h2>
                 {note.map(|note| html! { in bump; <p>{note}</p> })}
             </header>
             <div>{children}</div>
@@ -68,6 +69,7 @@ pub fn year_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Ele
                 let group = documents.iter().filter(|d| datetime(d).year() == year);
                 index_row(
                     bump,
+                    &year.to_string(),
                     html! { in bump; {year.to_string()} },
                     None,
                     summary_list(context, group.copied(), "8"),
@@ -112,7 +114,7 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     };
     html! { in bump;
         <article class="summary">
-            <h3>
+            <h3 id={crate::util::slugify(&doc.metadata.title)}>
                 <A href={url.clone()}>
                     <span>{inline_markdown(context, &doc.metadata.title, &url)}</span>
                 </A>

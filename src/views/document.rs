@@ -27,7 +27,7 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let aside = body.toc.clone().map(|toc| {
         html! { in bump;
             <aside>
-                <h2 class="aside-heading">{CONTENTS}</h2>
+                <h2 id="contents" class="aside-heading">{CONTENTS}</h2>
                 {toc}
             </aside>
         }
@@ -122,7 +122,7 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
         <header class="document-header">
             {(is_note && !document.id.is_empty()).then(|| breadcrumb(context, document))}
             <hgroup>
-                <h1>{inline_markdown(context, title, &url)}</h1>
+                <h1 id="page-title">{inline_markdown(context, title, &url)}</h1>
                 {short}
             </hgroup>
             {document_meta(bump, document, MetadataLayout::Document, vec![])}

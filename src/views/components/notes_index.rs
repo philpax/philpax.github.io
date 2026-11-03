@@ -61,7 +61,7 @@ pub fn notes_index<'a>(context: ViewContext<'a>, entries: &[&Document]) -> Eleme
                     let excerpt = paxsite_content::md::note_excerpt(&document.description);
                     html! { in bump;
                         <li class="notes-index-entry">
-                            <h3>
+                            <h3 id={crate::util::slugify(&document.metadata.title)}>
                                 <A href={url.clone()}>{inline_markdown(context, &document.metadata.title, &url)}</A>
                                 {document.metadata.status.as_ref().map(|status| html! { in bump;
                                     <span class="notes-index-status">{project_status(bump, status, StatusYear::Leading)}</span>

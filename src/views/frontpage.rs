@@ -50,7 +50,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         html! { in bump;
             <div class="frame-narrow home-page stack">
                 <section class="page-column" ariaLabel="Introduction">
-                    <h1>"I've seen things you people wouldn't believe..."</h1>
+                    <h1 id="page-title">"I've seen things you people wouldn't believe..."</h1>
                     <div class="prose">
                         {MarkdownConverter::new(context, Route::Index.url_path()).with_source_path(content.about.source_path.clone()).convert_blocks(&crate::markdown::document_root(&content.about))}
                     </div>
@@ -229,7 +229,7 @@ fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element
     html! { in bump;
         <section {attrs.into_iter().flatten()}>
             <header>
-                <h2>{props.title}</h2>
+                <h2 id={crate::util::slugify(props.title)}>{props.title}</h2>
                 {props.href.map(|href| html! { in bump;
                     <p>
                         {feed.map(|feed| html! { in bump; <a href={feed}>"RSS"</a> })}

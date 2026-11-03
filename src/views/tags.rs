@@ -42,6 +42,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
                 <div class="index-groups">
                     {index_row(
                         bump,
+                        "subjects",
                         html! { in bump; "Subjects" },
                         Some(html! { in bump; {format!("{} {}", tags.len(), crate::util::pluralize("tag", tags.len()))} }),
                         html! { in bump;
@@ -151,6 +152,7 @@ fn tag_groups<'a>(context: ViewContext<'a>, documents: &[&Document]) -> Element<
                 });
                 (!group.is_empty()).then(|| index_row(
                     bump,
+                    &crate::util::slugify(label),
                     html! { in bump; {label} },
                     None,
                     summary_list(context, group.into_iter(), "8"),
@@ -324,9 +326,9 @@ mod tests {
             .insert("shared".into(), "Shared subject".into());
         let html = render_tag(&content);
         let html: String = html.split_whitespace().collect();
-        let posts = html.find("<h2>Posts</h2>").unwrap();
-        let updates = html.find("<h2>Updates</h2>").unwrap();
-        let notes = html.find("<h2>Notes</h2>").unwrap();
+        let posts = html.find("<h2id=\"posts\">Posts</h2>").unwrap();
+        let updates = html.find("<h2id=\"updates\">Updates</h2>").unwrap();
+        let notes = html.find("<h2id=\"notes\">Notes</h2>").unwrap();
         assert!(posts < updates && updates < notes);
         assert!(html[posts..updates].contains("href=\"/blog/shared/\""));
         assert!(html[updates..notes].contains("href=\"/updates/shared/\""));
@@ -335,7 +337,7 @@ mod tests {
         for group in [&html[posts..updates], &html[updates..notes], &html[notes..]] {
             assert!(group.contains("<articleclass=\"summary\">"));
             assert!(group.contains("<divclass=\"metadatametadata-summary\">"));
-            assert!(group.find("<h3>").unwrap() < group.find("<time").unwrap());
+            assert!(group.find("<h3").unwrap() < group.find("<time").unwrap());
             assert!(!group.contains("class=\"dated-row\""));
         }
     }
@@ -357,9 +359,9 @@ mod tests {
             .tag_descriptions
             .insert("shared".into(), "Shared subject".into());
         let html: String = render_tag(&content).split_whitespace().collect();
-        assert!(html.contains("<h2>Notes</h2>"));
-        assert!(!html.contains("<h2>Posts</h2>"));
-        assert!(!html.contains("<h2>Updates</h2>"));
+        assert!(html.contains("<h2id=\"notes\">Notes</h2>"));
+        assert!(!html.contains("<h2id=\"posts\">Posts</h2>"));
+        assert!(!html.contains("<h2id=\"updates\">Updates</h2>"));
     }
 
     #[test]
