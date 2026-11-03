@@ -5,7 +5,10 @@ use super::*;
 use crate::{
     content::DocumentType,
     markdown::MarkdownConverter,
-    views::listings::{dated_list, listed, summary_list},
+    views::{
+        components::{Heading, HeadingProps},
+        listings::{dated_list, listed, summary_list},
+    },
 };
 
 pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
@@ -50,7 +53,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         html! { in bump;
             <div class="frame-narrow home-page stack">
                 <section class="page-column" ariaLabel="Introduction">
-                    <h1 id="page-title">"I've seen things you people wouldn't believe..."</h1>
+                    <Heading level={1} id={"page-title".to_string()}>"I've seen things you people wouldn't believe..."</Heading>
                     <div class="prose">
                         {MarkdownConverter::new(context, Route::Index.url_path()).with_source_path(content.about.source_path.clone()).convert_blocks(&crate::markdown::document_root(&content.about))}
                     </div>
@@ -229,7 +232,7 @@ fn section<'a>(bump: &'a Bump, props: Section, children: Element<'a>) -> Element
     html! { in bump;
         <section {attrs.into_iter().flatten()}>
             <header>
-                <h2 id={crate::util::slugify(props.title)}>{props.title}</h2>
+                <Heading level={2} id={crate::util::slugify(props.title)}>{props.title}</Heading>
                 {props.href.map(|href| html! { in bump;
                     <p>
                         {feed.map(|feed| html! { in bump; <a href={feed}>"RSS"</a> })}

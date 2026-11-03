@@ -1,4 +1,5 @@
 use super::*;
+use crate::views::components::{Heading, HeadingProps};
 
 /// Under the title, finishing its sentence; here and in the page's preview.
 pub const LEDE: &str =
@@ -24,7 +25,7 @@ pub fn index<'a>(context: ViewContext<'a>) -> paxhtml::Document<'a> {
         html! { in bump;
             <div class="frame-narrow page-column">
                 <header class="page-head run-on">
-                    <h1 id="page-title">{CurrentPage::NotFound.name()}</h1>
+                    <Heading level={1} id={"page-title".to_string()}>{CurrentPage::NotFound.name()}</Heading>
                     <p>{LEDE}</p>
                 </header>
                 <article class="prose">

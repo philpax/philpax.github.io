@@ -108,3 +108,30 @@
     background-image: none;
   }
 }
+
+/* A heading's own anchor: the whole heading where it holds no link, or a
+   hanging # in the margin where it does. */
+.site :is(h1, h2, h3, h4) a.heading-link {
+  --link-rest: currentColor;
+  --link-hover: color-mix(in oklab, currentColor 78%, white);
+}
+.site :is(h1, h2, h3, h4) a.heading-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+.site :is(h1, h2, h3, h4):has(> .heading-anchor) {
+  position: relative;
+}
+.site :is(h1, h2, h3, h4) > .heading-anchor {
+  --link-rest: var(--ink-faint);
+  position: absolute;
+  right: 100%;
+  padding-right: var(--r-2);
+  opacity: 0;
+  transition: opacity var(--motion) ease;
+}
+.site :is(h1, h2, h3, h4):hover > .heading-anchor,
+.site .heading-anchor:focus-visible {
+  opacity: 1;
+}

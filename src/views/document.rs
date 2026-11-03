@@ -9,7 +9,8 @@ use crate::{
     markdown::{HeadingHierarchy, MarkdownConverter, document_root},
     views::{
         components::{
-            MetadataLayout, collect_pr_entries, document_meta, note_index_entries, notes_index,
+            Heading, HeadingProps, MetadataLayout, collect_pr_entries, document_meta,
+            note_index_entries, notes_index,
         },
         listings::{gap, inline_markdown, note_folders},
     },
@@ -27,7 +28,7 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
     let aside = body.toc.clone().map(|toc| {
         html! { in bump;
             <aside>
-                <h2 id="contents" class="aside-heading">{CONTENTS}</h2>
+                <Heading level={2} id={"contents".to_string()} class={"aside-heading".to_string()}>{CONTENTS}</Heading>
                 {toc}
             </aside>
         }
@@ -122,7 +123,7 @@ pub fn head<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
         <header class="document-header">
             {(is_note && !document.id.is_empty()).then(|| breadcrumb(context, document))}
             <hgroup>
-                <h1 id="page-title">{inline_markdown(context, title, &url)}</h1>
+                <Heading level={1} id={"page-title".to_string()}>{inline_markdown(context, title, &url)}</Heading>
                 {short}
             </hgroup>
             {document_meta(bump, document, MetadataLayout::Document, vec![])}

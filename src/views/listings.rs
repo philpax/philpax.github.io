@@ -10,7 +10,9 @@ use super::*;
 use crate::{
     content::{DocumentId, DocumentType},
     markdown::MarkdownConverter,
-    views::components::{MetadataLayout, document_meta, document_time, folder_path},
+    views::components::{
+        Heading, HeadingProps, MetadataLayout, document_meta, document_time, folder_path,
+    },
 };
 
 /// Whether a post or update appears in the indexes and on the front page: drafts only do
@@ -23,7 +25,7 @@ pub fn listed(doc: &Document) -> bool {
 pub fn page_head<'a>(bump: &'a Bump, title: Element<'a>, lede: Option<Element<'a>>) -> Element<'a> {
     html! { in bump;
         <header class="page-head">
-            <h1 id="page-title">{title}</h1>
+            <Heading level={1} id={"page-title".to_string()}>{title}</Heading>
             {lede.map(|lede| html! { in bump; <p>{lede}</p> })}
         </header>
     }
@@ -40,7 +42,7 @@ pub fn index_row<'a>(
     html! { in bump;
         <section class="index-row">
             <header>
-                <h2 id={id.to_string()}>{label}</h2>
+                <Heading level={2} id={id.to_string()}>{label}</Heading>
                 {note.map(|note| html! { in bump; <p>{note}</p> })}
             </header>
             <div>{children}</div>
@@ -114,11 +116,11 @@ pub fn summary<'a>(context: ViewContext<'a>, doc: &Document) -> Element<'a> {
     };
     html! { in bump;
         <article class="summary">
-            <h3 id={crate::util::slugify(&doc.metadata.title)}>
+            <Heading level={3} id={crate::util::slugify(&doc.metadata.title)} contains_link={true}>
                 <A href={url.clone()}>
                     <span>{inline_markdown(context, &doc.metadata.title, &url)}</span>
                 </A>
-            </h3>
+            </Heading>
             {document_meta(bump, doc, MetadataLayout::Summary, folders)}
             {short.map(|short| html! { in bump; <p>{short}</p> })}
         </article>

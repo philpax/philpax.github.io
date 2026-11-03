@@ -4,7 +4,7 @@ use crate::{
     content::{Content, Document, DocumentLeafNode, DocumentNode, DocumentType},
     views::{
         ViewContext,
-        components::{A, AProps, StatusYear, project_status},
+        components::{A, AProps, Heading, HeadingProps, StatusYear, project_status},
         listings::{gap, inline_markdown},
     },
 };
@@ -61,12 +61,12 @@ pub fn notes_index<'a>(context: ViewContext<'a>, entries: &[&Document]) -> Eleme
                     let excerpt = paxsite_content::md::note_excerpt(&document.description);
                     html! { in bump;
                         <li class="notes-index-entry">
-                            <h3 id={crate::util::slugify(&document.metadata.title)}>
+                            <Heading level={3} id={crate::util::slugify(&document.metadata.title)} contains_link={true}>
                                 <A href={url.clone()}>{inline_markdown(context, &document.metadata.title, &url)}</A>
                                 {document.metadata.status.as_ref().map(|status| html! { in bump;
                                     <span class="notes-index-status">{project_status(bump, status, StatusYear::Leading)}</span>
                                 })}
-                            </h3>
+                            </Heading>
                             {excerpt.map(|excerpt| html! { in bump; <p>{excerpt}</p> })}
                         </li>
                     }

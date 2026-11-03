@@ -325,18 +325,18 @@ mod tests {
             .tag_descriptions
             .insert("shared".into(), "Shared subject".into());
         let html = render_tag(&content);
-        let html: String = html.split_whitespace().collect();
-        let posts = html.find("<h2id=\"posts\">Posts</h2>").unwrap();
-        let updates = html.find("<h2id=\"updates\">Updates</h2>").unwrap();
-        let notes = html.find("<h2id=\"notes\">Notes</h2>").unwrap();
+        let html = html.split_whitespace().collect::<Vec<_>>().join(" ");
+        let posts = html.find("<h2 id=\"posts\">").unwrap();
+        let updates = html.find("<h2 id=\"updates\">").unwrap();
+        let notes = html.find("<h2 id=\"notes\">").unwrap();
         assert!(posts < updates && updates < notes);
         assert!(html[posts..updates].contains("href=\"/blog/shared/\""));
         assert!(html[updates..notes].contains("href=\"/updates/shared/\""));
         assert!(html[notes..].contains("href=\"/notes/shared/\""));
         assert!(html[notes..].contains("2025-01-04T00:00:00+00:00"));
         for group in [&html[posts..updates], &html[updates..notes], &html[notes..]] {
-            assert!(group.contains("<articleclass=\"summary\">"));
-            assert!(group.contains("<divclass=\"metadatametadata-summary\">"));
+            assert!(group.contains("<article class=\"summary\">"));
+            assert!(group.contains("<div class=\"metadata metadata-summary\">"));
             assert!(group.find("<h3").unwrap() < group.find("<time").unwrap());
             assert!(!group.contains("class=\"dated-row\""));
         }
@@ -358,10 +358,13 @@ mod tests {
         content
             .tag_descriptions
             .insert("shared".into(), "Shared subject".into());
-        let html: String = render_tag(&content).split_whitespace().collect();
-        assert!(html.contains("<h2id=\"notes\">Notes</h2>"));
-        assert!(!html.contains("<h2id=\"posts\">Posts</h2>"));
-        assert!(!html.contains("<h2id=\"updates\">Updates</h2>"));
+        let html = render_tag(&content)
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .join(" ");
+        assert!(html.contains("<h2 id=\"notes\">"));
+        assert!(!html.contains("<h2 id=\"posts\">"));
+        assert!(!html.contains("<h2 id=\"updates\">"));
     }
 
     #[test]

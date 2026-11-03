@@ -11,9 +11,9 @@ use crate::{
     views::{
         ViewContext,
         components::{
-            self, CodeBlock, CodeBlockProps, Footnote, FootnoteProps, HeadingAnchor,
-            HeadingAnchorProps, InlineCode, InlineCodeProps, PrEntry, destination_class,
-            pr_id_from_url, tl_id_from_url,
+            self, CodeBlock, CodeBlockProps, Footnote, FootnoteProps, Heading, HeadingProps,
+            InlineCode, InlineCodeProps, PrEntry, destination_class, pr_id_from_url,
+            tl_id_from_url,
         },
     },
 };
@@ -130,16 +130,16 @@ impl<'a> MarkdownConverter<'a> {
                 if self.without_blocking_elements {
                     return children;
                 }
-                let id = heading_id(node);
-                let contains_link = contains_link(&h.children);
-                // The tag depends on the depth, so it's built here.
-                b.tag(
-                    &format!("h{}", (h.depth + 1).min(6)),
-                    [b.attr(("id", id.clone()))],
-                    false,
-                )(html! { in bump;
-                    <HeadingAnchor id={id} contains_link={contains_link}>{children}</HeadingAnchor>
-                })
+                Heading(
+                    bump,
+                    HeadingProps {
+                        level: h.depth + 1,
+                        id: heading_id(node),
+                        class: String::new(),
+                        contains_link: contains_link(&h.children),
+                        children: Some(children),
+                    },
+                )
             }
             Node::Text(t) => b.text(&t.value),
             Node::Paragraph(p) => {

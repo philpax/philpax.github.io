@@ -112,21 +112,6 @@
     font-size: var(--em-down);
     font-weight: var(--font-weight-bold);
   }
-  /* A heading holding a link of its own gets a separate # anchor, hung in the
-     margin until hovered or focused. */
-  :scope .heading-anchor {
-    --link-rest: var(--ink-faint);
-    position: absolute;
-    right: 100%;
-    padding-right: var(--r-2);
-    opacity: 0;
-    transition: opacity var(--motion) ease;
-  }
-  :scope :is(h2, h3, h4):hover > .heading-anchor,
-  :scope .heading-anchor:focus-visible {
-    opacity: 1;
-  }
-
   /* Lists. */
 
   :scope ul,
