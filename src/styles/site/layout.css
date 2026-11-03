@@ -30,8 +30,9 @@
   padding-block: var(--s-8);
 }
 
-/* Fits the notes rail, its gap, a measure and the sidenote gutter
-   (18 + 2.75 + 38.75 + 15rem); narrower, sidenotes never fit. */
+/* Fits a document's rail, its gap, a measure and the sidenote gutter
+   (18 + 2.75 + 38.75 + 15rem); narrower, sidenotes never fit. The notes
+   narrow it to drop the gutter (see notes.css). */
 .frame,
 .frame-narrow {
   margin-inline: auto;

@@ -1,12 +1,22 @@
 /* ========================================================================
    NOTES — the notes layout and the rail: a disclosure above the note on a
-   narrow page, a sticky column beside it on a wide one.
+   narrow page, a sticky column beside it on a wide one, which the reader
+   can hide.
    ======================================================================== */
 
 .notes-layout {
   display: grid;
   align-items: start;
   column-gap: var(--s-10);
+}
+/* The notes keep no sidenote gutter: their frame fits the rail, its gap and
+   a measure (18 + 2.75 + 38.75rem, 63.5rem with the frame's padding), so the
+   page is centred on what it shows, and footnotes open in place. */
+.site:has(> main > .notes-layout) {
+  --frame-notes: calc(var(--rail-width) + var(--s-10) + var(--measure) + 2 * var(--s-8));
+}
+.notes-layout {
+  max-width: var(--frame-notes);
 }
 .notes-index {
   max-width: var(--measure);
@@ -230,10 +240,95 @@ label.rail-row {
     top: calc(var(--header-height) + var(--s-4));
     max-height: calc(100svh - var(--header-height) - 2rem);
     margin-bottom: 0;
+  }
+  /* The rail doesn't scroll as a whole: its headings and the filter stay put,
+     and the tree and the contents scroll on their own. */
+  .rail-tree,
+  .notes-rail-toc {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  /* Beside contents, the tree keeps its height, up to 40% of the window,
+     and the contents fill the rest. */
+  .notes-rail:has(> .notes-rail-toc) > .rail-tree {
+    flex-shrink: 0;
+    & > .notes-level {
+      max-height: 40svh;
+    }
+  }
+  .rail-tree > .notes-level,
+  .notes-rail-toc > .toc {
+    min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
   }
   .rail-toggle-box,
   .rail-toggle {
     display: none;
+  }
+
+  /* Hidden, the rail gives way to a single column centred in the frame, and
+     the control that brings it back stands just before the column. */
+  .notes-layout:has(> .rail-hide-box:checked) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
+    column-gap: 0;
+    & > .notes-rail {
+      display: none;
+    }
+    & > .rail-show {
+      display: flex;
+    }
+    & > :not(.rail-show) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+}
+
+/* Hiding the rail: an icon beside its heading, and once it's hidden, the
+   same icon beside the note. Both label the one checkbox, so they
+   work without script. Wide pages only. */
+.rail-hide,
+.rail-show {
+  display: none;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: color var(--motion) ease;
+}
+.rail-hide:hover,
+.rail-show:hover {
+  color: var(--accent);
+}
+.rail-icon {
+  width: 1em;
+  height: 1lh;
+  background: currentColor;
+  mask: var(--icon-sidebar) center / contain no-repeat;
+}
+.rail-show {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  margin-inline-end: var(--s-3);
+  position: sticky;
+  top: calc(var(--header-height) + var(--s-4));
+}
+.rail-hide-box:focus-visible ~ .rail-show,
+.rail-hide-box:focus-visible ~ .notes-rail .rail-hide {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+/* Centred, not on the heading's baseline: with no text of its own, its
+   baseline would be its foot, and it would push the heading down. */
+@container site (width >= 64rem) {
+  .rail-hide {
+    display: flex;
+    align-self: center;
+    margin-inline-start: auto;
   }
 }

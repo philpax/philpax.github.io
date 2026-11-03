@@ -1,0 +1,112 @@
+/* ========================================================================
+   MARGINS — a garden either side of the page's frame, like bookends: each
+   hangs from the header's border with its stems against the frame and its
+   leaves reaching out into the margin. Each is a copperplate drawing used
+   as a mask over the section's accent, so it follows the section and the
+   theme; its paper lets the page through. Decorative, and hidden from
+   readers.
+   ======================================================================== */
+
+.margin-gardens {
+  display: none;
+}
+
+/* Only once each margin can show 6rem of garden: sooner beside the narrow
+   frames (the notes', then the others') than the wide one. */
+@container site (width >= 74rem) {
+  .site > main:has(> .frame-narrow) {
+    --frame: 62rem;
+  }
+  .site > main:has(> .frame-narrow) > .margin-gardens {
+    display: grid;
+  }
+}
+@container site (width >= 75.5rem) {
+  .site > main:has(> .notes-layout) {
+    --frame: var(--frame-notes);
+  }
+  .site > main:has(> .notes-layout) > .margin-gardens {
+    display: grid;
+  }
+}
+/* With the notes' rail hidden, the gardens close in on the note's column,
+   leaving room before it for the control that brings the rail back; the
+   rail can only be hidden from 64rem. */
+@container site (width >= 64rem) {
+  .site > main:has(> .notes-layout > .rail-hide-box:checked) {
+    --frame: calc(var(--measure) + 2 * var(--s-10));
+  }
+  .site > main:has(> .notes-layout > .rail-hide-box:checked) > .margin-gardens {
+    display: grid;
+  }
+}
+@container site (width >= 91rem) {
+  .site > main:has(> .frame:not(.notes-layout)) {
+    --frame: 79rem;
+  }
+  .site > main:has(> .frame:not(.notes-layout)) > .margin-gardens {
+    display: grid;
+  }
+}
+
+.site > main:has(> .margin-gardens) {
+  position: relative;
+}
+
+/* Spans the main column and clips to it, so the gardens' stems tuck under
+   the header without widening the page. The middle track is the page's
+   frame; the outer tracks are never narrower than a garden, and when they
+   would be, the grid stays centred and runs past the window's edges, so the
+   frame track stays on the frame and the gardens are cropped outside. */
+.margin-gardens {
+  /* How far each garden's stems run up under the header. */
+  --garden-sink: 2.5rem;
+  --garden-width: 13rem;
+  --garden-ink: color-mix(in oklab, var(--accent) 42%, var(--canvas));
+  position: absolute;
+  inset: 0;
+  grid-template-columns:
+    minmax(var(--garden-width), 1fr)
+    min(var(--frame), 100%)
+    minmax(var(--garden-width), 1fr);
+  justify-content: center;
+  align-items: start;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.margin-gardens > * {
+  /* Hangs below the header while the page scrolls; the header hides the
+     stems' feet. The drawing is flipped, so its foot is at the top. */
+  position: sticky;
+  top: calc(var(--header-height) - var(--garden-sink));
+  grid-row: 1;
+  width: var(--garden-width);
+  /* The column the plants are grown in (see bake_assets/src/margins.rs). */
+  aspect-ratio: 6 / 28;
+  /* A short window shrinks the drawing rather than cropping it. */
+  max-height: calc(100svh - var(--header-height) + var(--garden-sink));
+  margin-top: calc(-1 * var(--garden-sink));
+  background: var(--garden-ink);
+  mask: var(--garden-start) bottom left / contain no-repeat luminance;
+}
+
+/* The drawings grow from their left; both are turned so that side, where
+   the stems stand, faces the frame. */
+.margin-gardens > :first-child {
+  grid-column: 1;
+  justify-self: end;
+  transform: scale(-1, -1);
+}
+.margin-gardens > :last-child {
+  grid-column: 3;
+  justify-self: start;
+  mask-image: var(--garden-end);
+  transform: scaleY(-1);
+}
+
+@media print, (forced-colors: active) {
+  .margin-gardens {
+    display: none !important;
+  }
+}

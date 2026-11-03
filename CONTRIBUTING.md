@@ -59,6 +59,12 @@ Each variable font is then instanced with HarfBuzz to what the sheet uses: the w
 
 Results are cached in `.cache/fonts/` (gitignored), keyed by the source file, the instancing and the character set, and served as `/fonts/<face>.<key>.woff2`. A build whose text hasn't changed reuses them; a change costs a few seconds. Pass `-v` to print each face's source and served sizes (a new cut always prints them).
 
+### Margin Gardens
+
+On windows wide enough to leave room beside the page's frame, each page has a plant either side of its frame, drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia). Each section has its own pair (`--garden-start` and `--garden-end`, set in `tokens.css` for the front page and in `sections.css` for the rest), and `margins.css` places them: like bookends, each hangs from the header's border with its stems against the frame (`.frame` or `.frame-narrow`, whichever the page uses) and its leaves reaching into the margin, cropped at the window's edge when the margin is narrow. The notes' frame keeps no sidenote gutter (see `notes.css`), so their gardens stand beside the rail and the text. The drawings are white ink on black paper, used as luminance masks over the section's accent, so they follow the section and the theme without a copy per colour.
+
+The SVGs in `assets/baked/static/margins/` are committed. `bake_assets` regenerates them: it fetches Églantine's TypeScript at the commit pinned in `bake_assets/src/margins.rs`, strips the types with oxc and runs it in QuickJS, so no Node is needed. The plants are chosen by their names in Églantine's calendar, in `GARDENS` there; a new plant also needs its file named in the sheet.
+
 ## Project Structure
 
 This is a static site generator written in Rust that produces a personal blog/notes website.
@@ -146,7 +152,7 @@ A folder's `index.md` automatically ends with a compact index when it has immedi
 | `src/views/listings.rs` | Page heads, index rows, summaries and dated rows, shared by the indexes, tag pages and front page |
 | `src/views/blog/mod.rs` | Blog index and individual post pages |
 | `src/views/updates/mod.rs` | Updates index and individual update pages |
-| `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script) |
+| `src/views/notes/mod.rs` | Note pages and the notes rail (the tree, which opens and closes with checkboxes, so it works without script; on wide pages another checkbox hides the rail and centres the note, and script remembers that choice between pages) |
 | `src/views/components/` | Reusable UI components (Link, dates, BlueskyPost, etc.) |
 | `src/og_image/` | OpenGraph image generation (1200x630 PNG): a contour field seeded by the document's path, in its section's colours, or the document's hero image softened into the background where it has one, with the site's faces instanced from `assets/source/fonts/` |
 | `src/fonts/` | Font subsetting: characters from the built pages, HarfBuzz instancing, WOFF2, cache, `@font-face` rules |
@@ -269,7 +275,7 @@ Component implementations live in `src/views/components/`. `MarkdownConverter::c
 | `paxsite` (root) | Main SSG: markdown rendering, views, build orchestration |
 | `paxsite-content` | Content layer: document types, disk I/O, frontmatter parsing, Git dates, Bluesky API/caching |
 | `paxsite-cli` | CLI tool for creating content and publishing to standard.site (the `atproto` module: OAuth localhost public client + record writes) |
-| `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`) |
+| `bake_assets` | Asset preprocessing tool (run manually: `cargo run -p bake_assets`): the icons, and the margin gardens (see Margin Gardens) |
 | `paxsite-music` | Music library types shared by the SSG and `music-export`, plus the front page's `most_listened` |
 | `music-export` | Exports the music library to `assets/baked/music.json` (run manually; see below) |
 

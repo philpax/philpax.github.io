@@ -4,5 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+reqwest = { workspace = true }
 anyhow = { workspace = true }
+flate2 = "1.1.10"
 image = { workspace = true }
+oxc = { version = "0.156", features = ["transformer", "codegen", "semantic"] }
+rquickjs = { version = "0.14", features = ["loader"] }
+tar = "0.4.46"

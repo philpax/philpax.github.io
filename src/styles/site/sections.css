@@ -9,29 +9,39 @@
   --accent-soft: var(--w-post);
   --accent-solid: var(--c-post-solid);
   --icon: var(--icon-post);
+  --garden-start: url('/margins/vesce.svg');
+  --garden-end: url('/margins/pensee.svg');
 }
 [data-section='updates'] {
   --accent: var(--c-update);
   --accent-soft: var(--w-update);
   --accent-solid: var(--c-update-solid);
   --icon: var(--icon-update);
+  --garden-start: url('/margins/barbeau.svg');
+  --garden-end: url('/margins/jasmin.svg');
 }
 [data-section='notes'] {
   --accent: var(--c-note);
   --accent-soft: var(--w-note);
   --accent-solid: var(--c-note-solid);
   --icon: var(--icon-note);
+  --garden-start: url('/margins/fougere.svg');
+  --garden-end: url('/margins/pervenche.svg');
 }
 [data-section='tags'] {
   --accent: var(--c-tag);
   --accent-soft: var(--w-tag);
   --accent-solid: var(--c-tag-solid);
   --icon: var(--icon-tag);
+  --garden-start: url('/margins/rose.svg');
+  --garden-end: url('/margins/pavot.svg');
 }
 [data-section='credits'] {
   --accent: var(--c-credits);
   --accent-soft: var(--w-credits);
   --accent-solid: var(--c-credits-solid);
+  --garden-start: url('/margins/lierre.svg');
+  --garden-end: url('/margins/trefle.svg');
 }
 /* A tone is an accent for a block that is not a section. */
 [data-tone='elsewhere'] {
