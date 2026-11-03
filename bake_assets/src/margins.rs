@@ -152,8 +152,10 @@ fn grow(modules: BTreeMap<String, String>) -> anyhow::Result<Vec<(&'static str, 
     })
 }
 
-/// Grows a plant from the calendar and draws it in bloom, about two-thirds into its leaves, in
-/// white ink on black paper. Every ink is white, so the hatching and the pistils both show.
+/// Grows a plant from the calendar, in a column 6 by 28 centimetres (longer than the library's
+/// 6 by 22, so it trails further down the margin; the sheet's `aspect-ratio` matches), and draws
+/// it in bloom, about two-thirds into its leaves, in white ink on black paper. Every ink is white,
+/// so the hatching and the pistils both show.
 const DRIVER: &str = r##"
 import { growGarden, renderGarden, withInks } from "src/index.js";
 import { PLANTS } from "src/calendar/plants.js";
@@ -161,7 +163,7 @@ import { PLANTS } from "src/calendar/plants.js";
 globalThis.draw = (name, id) => {
   const plant = PLANTS.find(p => p.name === name);
   if (!plant) throw new Error(`no plant named ${name}`);
-  const garden = growGarden({ seed: 1793, form: plant.form, variant: plant.variant });
+  const garden = growGarden({ seed: 1793, form: plant.form, variant: plant.variant, width: 6, height: 28 });
   const svg = renderGarden(garden, { t: 0.55, fullness: 0.6 }, { manner: "taille-douce", id, scale: 30 });
   return withInks(svg, { ink: "#fff", paper: "#000", accent: "#fff", wash: "#fff" });
 };
