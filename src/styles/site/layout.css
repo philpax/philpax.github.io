@@ -30,16 +30,17 @@
   padding-block: var(--s-8);
 }
 
-/* Fits a document's rail, its gap, a measure and the sidenote gutter
-   (18 + 2.75 + 38.75 + 15rem); narrower, sidenotes never fit. The notes
-   narrow it to drop the gutter (see notes.css). */
+/* The frame: the header, the footer and the documents' grid share its width
+   (78.25rem), so the wordmark stands over the side column and the nav ends
+   over the margin. The narrow frame holds the listings, the front page and
+   the credits. */
 .frame,
 .frame-narrow {
   margin-inline: auto;
   padding-inline: var(--s-5);
 }
 .frame {
-  max-width: 79rem;
+  max-width: var(--frame-width);
 }
 .frame-narrow {
   max-width: 62rem;
@@ -48,6 +49,34 @@
   .frame,
   .frame-narrow {
     padding-inline: var(--s-8);
+  }
+}
+
+/* The page grid, for posts and notes: side column, measure, margin column.
+   What a page puts in it goes in the measure and the margin unless placed
+   (the side column takes the notes rail or a post's contents), so every
+   document's text starts in the same place and sidenotes have the margin.
+   Too narrow for the margin, it goes; too narrow for the side, it stacks. */
+@container site (width >= 64rem) {
+  .page-grid {
+    display: grid;
+    grid-template-columns: [side-start] var(--side-width) [side-end text-start] minmax(0, 1fr) [text-end margin-start margin-end];
+    column-gap: var(--grid-gap);
+    align-items: start;
+    align-content: start;
+  }
+  .page-grid > * {
+    grid-column: text-start / margin-end;
+  }
+}
+/* Written out: container queries can't read the frame's width. */
+@container site (width >= 78.25rem) {
+  .page-grid {
+    grid-template-columns:
+      [side-start] var(--side-width)
+      [side-end text-start] var(--measure)
+      [text-end margin-start] var(--side-width)
+      [margin-end];
   }
 }
 

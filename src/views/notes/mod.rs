@@ -48,7 +48,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
         },
         CurrentPage::Notes,
         html! { in bump;
-            <div class="frame notes-layout">
+            <div class="frame page-grid notes-layout">
                 // Wide pages only: hides the rail and centres the note. The script
                 // after it restores the reader's last choice before the rail draws.
                 <input r#type="checkbox" id="rail-hide" class="rail-hide-box sr-only" autocomplete="off" ariaLabel="Hide the notes index" />

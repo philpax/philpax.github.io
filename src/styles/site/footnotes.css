@@ -72,12 +72,13 @@
   }
 }
 
-/* Sidenotes, measured on the prose's column: the measure plus the gutter,
-   written out because container queries can't read variables. */
+/* Sidenotes, measured on the prose's column: the measure plus the gutter
+   (38.75 + 2.75 + 15rem), the page grid's measure and margin, written out
+   because container queries can't read variables. */
 .prose {
   container: column / inline-size;
 }
-@container column (width >= 53.75rem) {
+@container column (width >= 56.5rem) {
   @scope (.prose) to (.embed) {
     :scope .fn-note,
     :scope .fn-note:target,

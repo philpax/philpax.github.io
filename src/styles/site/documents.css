@@ -14,16 +14,12 @@
 .document-content {
   min-width: 0;
 }
+/* The page grid places the article in the measure and the margin; the
+   contents stand in the side column. */
 @container site (width >= 64rem) {
-  /* The rail's column is kept without contents, so the text starts where a note's does.
-     Explicit column: it is the container the sidenotes measure. */
-  .document-layout {
-    grid-template-columns: var(--rail-width) minmax(0, calc(var(--measure) + var(--sidenote-gutter)));
-  }
-  .document-layout > :not(aside) {
-    grid-column: 2;
-  }
   .document-layout > aside {
+    grid-row: 1;
+    grid-column: side;
     position: sticky;
     top: calc(var(--header-height) + var(--s-4));
     display: block;

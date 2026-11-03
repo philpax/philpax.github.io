@@ -49,6 +49,10 @@ Font subsetting builds HarfBuzz from source, so a C++ compiler is needed too. `.
 
 The stylesheet is plain CSS in `src/styles/`. `site/` is the site's sheet (`site.css` imports the rest, in order); `src/styles/mod.rs` inlines those imports at build time and bundles them with `document.css` and the syntax highlighter's generated theme into `/styles.css`, behind the fonts' generated `@font-face` rules. A new file in `site/` must also be listed in `SITE_FILES` there.
 
+### Page Grid
+
+Posts, updates and notes lay out on one grid, `.page-grid` in `layout.css`, inside the frame the header and footer share: a side column, the measure and a margin column of the same width (`--side-width`, `--measure` and `--grid-gap` in `tokens.css`). A document goes in the measure and the margin unless placed, so every document's text starts in the same place and sidenotes have the margin; the side column holds a post's contents or the notes rail. Narrower than the whole grid, the margin column goes; narrower than 64rem, everything stacks. The listings, the front page and the credits keep the narrow frame (`.frame-narrow`) and their own layouts.
+
 ### Fonts
 
 The site's faces are cut at build time by `src/fonts/`, from the originals in `assets/source/fonts/` (each beside its licence): Source Serif 4 roman and italic, Fraunces, Figtree and Alegreya as variable TTFs from google/fonts, and Iosevka's static Regular from its 33.3.6 release.
@@ -61,7 +65,7 @@ Results are cached in `.cache/fonts/` (gitignored), keyed by the source file, th
 
 ### Margin Gardens
 
-On windows wide enough to leave room beside the page's frame, each page has a plant either side of its frame, drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia). Each section has its own pair (`--garden-start` and `--garden-end`, set in `tokens.css` for the front page and in `sections.css` for the rest), and `margins.css` places them: like bookends, each hangs from the header's border with its stems against the frame (`.frame` or `.frame-narrow`, whichever the page uses) and its leaves reaching into the margin, cropped at the window's edge when the margin is narrow. The notes' frame keeps no sidenote gutter (see `notes.css`), so their gardens stand beside the rail and the text. The drawings are white ink on black paper, used as luminance masks over the section's accent, so they follow the section and the theme without a copy per colour.
+On windows wide enough to leave room beside the page's frame, each page has a plant either side of its frame, drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia). Each section has its own pair (`--garden-start` and `--garden-end`, set in `tokens.css` for the front page and in `sections.css` for the rest), and `margins.css` places them: like bookends, each hangs from the header's border with its stems against the frame and its leaves reaching into the margin, cropped at the window's edge when the margin is narrow. Every document shares one frame (see Page Grid), so their gardens stand in the same place. A post, update or note with nothing in its margin column (no sidenotes, city posters or music library) gets a wider end garden instead, its section's `--garden-reach` (sweet pea, jasmine and maidenhair fern, set in `sections.css`), grown in a wider column so it reaches across the empty column from the text's edge. The drawings are white ink on black paper, used as luminance masks over the section's accent, so they follow the section and the theme without a copy per colour.
 
 The SVGs in `assets/baked/static/margins/` are committed. `bake_assets` regenerates them: it fetches Églantine's TypeScript at the commit pinned in `bake_assets/src/margins.rs`, strips the types with oxc and runs it in QuickJS, so no Node is needed. The plants are chosen by their names in Églantine's calendar, in `GARDENS` there; a new plant also needs its file named in the sheet.
 
