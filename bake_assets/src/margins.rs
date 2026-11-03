@@ -108,8 +108,10 @@ const GARDENS: &[(&str, &str, u32)] = &[
     // Credits.
     ("lierre", "du lierre", 6),
     ("trefle", "du trèfle", 6),
-    // For a post, an update or a note with nothing in its margin column: each reaches across it
-    // as well, so it is grown wider, 14 by 28 (the sheet's `aspect-ratio` matches).
+    // For a post, an update or a note with nothing in its side or margin column: each reaches
+    // across it as well, so it is grown wider, 14 by 28 (the sheet's `aspect-ratio` matches).
+    ("vesce-wide", "de la vesce", 14),
+    ("barbeau-wide", "du barbeau", 14),
     ("gesse", "de la gesse", 14),
     ("jasmin-wide", "du jasmin", 14),
     ("capillaire", "du capillaire", 14),

@@ -97,11 +97,20 @@
     /* The wide plant's column (see bake_assets/src/margins.rs). */
     aspect-ratio: 14 / 28;
     margin-inline-start: calc(-1 * (var(--side-width) + var(--s-8)));
-    mask-image: var(--garden-reach);
+    mask-image: var(--garden-end-reach);
   }
   & .document-header :is(h1, hgroup p, > img) {
     max-width: var(--measure);
   }
+}
+
+/* Likewise a post or an update with no contents leaves its side column
+   empty, so its start garden reaches across that. */
+.site > main:has(> .document-layout):not(:has(> .document-layout > aside)) > .margin-gardens > :first-child {
+  width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
+  aspect-ratio: 14 / 28;
+  margin-inline-end: calc(-1 * (var(--side-width) + var(--s-8)));
+  mask-image: var(--garden-start-reach);
 }
 
 @media print, (forced-colors: active) {
