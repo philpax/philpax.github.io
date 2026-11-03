@@ -86,27 +86,33 @@ fn strip_types(path: &str, source: &str) -> anyhow::Result<String> {
     Ok(Codegen::new().build(&program).code)
 }
 
-/// Each garden: the file it's written to, and the plant it grows, by its name in the library's
-/// calendar (which carries the form and the variant that tune it to that plant).
-const GARDENS: &[(&str, &str)] = &[
+/// Each garden: the file it's written to, the plant it grows, by its name in the library's
+/// calendar (which carries the form and the variant that tune it to that plant), and the width of
+/// its column in centimetres, 6 for a garden in the margin.
+const GARDENS: &[(&str, &str, u32)] = &[
     // The front page.
-    ("ancolie", "de l'ancolie"),
-    ("lilas", "du lilas"),
+    ("ancolie", "de l'ancolie", 6),
+    ("lilas", "du lilas", 6),
     // Posts.
-    ("vesce", "de la vesce"),
-    ("pensee", "de la pensée"),
+    ("vesce", "de la vesce", 6),
+    ("pensee", "de la pensée", 6),
     // Updates.
-    ("barbeau", "du barbeau"),
-    ("jasmin", "du jasmin"),
+    ("barbeau", "du barbeau", 6),
+    ("jasmin", "du jasmin", 6),
     // Notes.
-    ("fougere", "de la fougère"),
-    ("pervenche", "de la pervenche"),
+    ("fougere", "de la fougère", 6),
+    ("pervenche", "de la pervenche", 6),
     // Tags.
-    ("rose", "de la rose"),
-    ("pavot", "du pavot"),
+    ("rose", "de la rose", 6),
+    ("pavot", "du pavot", 6),
     // Credits.
-    ("lierre", "du lierre"),
-    ("trefle", "du trèfle"),
+    ("lierre", "du lierre", 6),
+    ("trefle", "du trèfle", 6),
+    // For a post, an update or a note with nothing in its margin column: each reaches across it
+    // as well, so it is grown wider, 14 by 28 (the sheet's `aspect-ratio` matches).
+    ("gesse", "de la gesse", 14),
+    ("jasmin-wide", "du jasmin", 14),
+    ("capillaire", "du capillaire", 14),
 ];
 
 /// Runs the library and draws every garden in `GARDENS`.
@@ -140,9 +146,9 @@ fn grow(modules: BTreeMap<String, String>) -> anyhow::Result<Vec<(&'static str, 
 
         GARDENS
             .iter()
-            .map(|&(file, plant)| {
+            .map(|&(file, plant, width)| {
                 let svg: String = draw
-                    .call((plant, file))
+                    .call((plant, file, width))
                     .catch(&ctx)
                     .map_err(|e| anyhow::anyhow!("{e}"))
                     .with_context(|| format!("drawing {plant}"))?;
@@ -152,18 +158,18 @@ fn grow(modules: BTreeMap<String, String>) -> anyhow::Result<Vec<(&'static str, 
     })
 }
 
-/// Grows a plant from the calendar, in a column 6 by 28 centimetres (longer than the library's
-/// 6 by 22, so it trails further down the margin; the sheet's `aspect-ratio` matches), and draws
-/// it in bloom, about two-thirds into its leaves, in white ink on black paper. Every ink is white,
+/// Grows a plant from the calendar, in a column 28 centimetres tall (longer than the library's
+/// 22, so it trails further down the margin; the sheet's `aspect-ratio` matches) and as wide as
+/// its garden asks, and draws it in bloom, about two-thirds into its leaves, in white ink on black paper. Every ink is white,
 /// so the hatching and the pistils both show.
 const DRIVER: &str = r##"
 import { growGarden, renderGarden, withInks } from "src/index.js";
 import { PLANTS } from "src/calendar/plants.js";
 
-globalThis.draw = (name, id) => {
+globalThis.draw = (name, id, width) => {
   const plant = PLANTS.find(p => p.name === name);
   if (!plant) throw new Error(`no plant named ${name}`);
-  const garden = growGarden({ seed: 1793, form: plant.form, variant: plant.variant, width: 6, height: 28 });
+  const garden = growGarden({ seed: 1793, form: plant.form, variant: plant.variant, width, height: 28 });
   const svg = renderGarden(garden, { t: 0.55, fullness: 0.6 }, { manner: "taille-douce", id, scale: 30 });
   return withInks(svg, { ink: "#fff", paper: "#000", accent: "#fff", wash: "#fff" });
 };
