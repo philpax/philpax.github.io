@@ -33,7 +33,7 @@ pub fn page<'a>(context: ViewContext<'a>, document: &Document) -> Element<'a> {
         }
     });
     html! { in bump;
-        <div class="frame document-layout">
+        <div class="frame page-grid document-layout">
             {article(context, document, body)}
             {aside}
         </div>

@@ -9,15 +9,6 @@
   align-items: start;
   column-gap: var(--s-10);
 }
-/* The notes keep no sidenote gutter: their frame fits the rail, its gap and
-   a measure (18 + 2.75 + 38.75rem, 63.5rem with the frame's padding), so the
-   page is centred on what it shows, and footnotes open in place. */
-.site:has(> main > .notes-layout) {
-  --frame-notes: calc(var(--rail-width) + var(--s-10) + var(--measure) + 2 * var(--s-8));
-}
-.notes-layout {
-  max-width: var(--frame-notes);
-}
 .notes-index {
   max-width: var(--measure);
   min-width: 0;
@@ -232,10 +223,11 @@ label.rail-row {
 }
 /* The rail's grid area runs the row's height, so it sticks down a long note. */
 @container site (width >= 64rem) {
-  .notes-layout {
-    grid-template-columns: var(--rail-width) minmax(0, 1fr);
-  }
+  /* The page grid places the note in the measure and the margin; the rail
+     stands in the side column. */
   .notes-rail {
+    grid-row: 1;
+    grid-column: side;
     position: sticky;
     top: calc(var(--header-height) + var(--s-4));
     max-height: calc(100svh - var(--header-height) - 2rem);
@@ -269,20 +261,14 @@ label.rail-row {
     display: none;
   }
 
-  /* Hidden, the rail gives way to a single column centred in the frame, and
-     the control that brings it back stands just before the column. */
+  /* Hidden, the rail leaves the side column to the control that brings it
+     back, just before the note. */
   .notes-layout:has(> .rail-hide-box:checked) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
-    column-gap: 0;
     & > .notes-rail {
       display: none;
     }
     & > .rail-show {
       display: flex;
-    }
-    & > :not(.rail-show) {
-      grid-column: 2;
-      grid-row: 1;
     }
   }
 }
@@ -310,10 +296,10 @@ label.rail-row {
   mask: var(--icon-sidebar) center / contain no-repeat;
 }
 .rail-show {
-  grid-column: 1;
   grid-row: 1;
+  grid-column: side;
   justify-self: end;
-  margin-inline-end: var(--s-3);
+  margin-inline-end: calc(var(--s-3) - var(--grid-gap));
   position: sticky;
   top: calc(var(--header-height) + var(--s-4));
 }

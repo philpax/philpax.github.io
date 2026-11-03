@@ -124,15 +124,20 @@
   --measure: 38.75rem;
   --measure-short: 33.25rem;
 
-  /* The column beside a wide document: the notes rail, or a post's contents. Shared, so
-     every document's text starts at the same place. */
-  --rail-width: 18rem;
+  /* Every page shares one grid: a side column, the measure and a margin column of the
+     same width, so the text sits in the same place on every page (see .page-grid in
+     layout.css). The side column holds the notes rail, a post's contents and the
+     listings' labels; the margin, sidenotes. */
+  --side-width: 15rem;
+  --grid-gap: var(--s-10);
+  /* The grid and the frame's padding: 15 + 2.75 + 38.75 + 2.75 + 15 + 4rem. */
+  --frame-width: calc(2 * var(--side-width) + 2 * var(--grid-gap) + var(--measure) + 2 * var(--s-8));
 
   --motion: 120ms;
 
-  /* A sidenote's width plus its gap, which the document grid reserves. */
-  --sidenote-width: 13rem;
-  --sidenote-gap: 2rem;
+  /* A sidenote fills the margin column; its gap is the grid's. */
+  --sidenote-width: var(--side-width);
+  --sidenote-gap: var(--grid-gap);
   --sidenote-gutter: calc(var(--sidenote-width) + var(--sidenote-gap));
 
   --lead-none: 1;

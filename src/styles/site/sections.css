@@ -11,6 +11,9 @@
   --icon: var(--icon-post);
   --garden-start: url('/margins/vesce.svg');
   --garden-end: url('/margins/pensee.svg');
+  --garden-start-reach: url('/margins/vesce-wide.svg');
+  /* Reach across an empty side or margin column (see margins.css). */
+  --garden-end-reach: url('/margins/gesse.svg');
 }
 [data-section='updates'] {
   --accent: var(--c-update);
@@ -19,6 +22,9 @@
   --icon: var(--icon-update);
   --garden-start: url('/margins/barbeau.svg');
   --garden-end: url('/margins/jasmin.svg');
+  --garden-start-reach: url('/margins/barbeau-wide.svg');
+  /* Reach across an empty side or margin column (see margins.css). */
+  --garden-end-reach: url('/margins/jasmin-wide.svg');
 }
 [data-section='notes'] {
   --accent: var(--c-note);
@@ -27,6 +33,9 @@
   --icon: var(--icon-note);
   --garden-start: url('/margins/fougere.svg');
   --garden-end: url('/margins/pervenche.svg');
+  /* Reaches across an empty margin column (see margins.css); the rail
+     always fills the side column. */
+  --garden-end-reach: url('/margins/capillaire.svg');
 }
 [data-section='tags'] {
   --accent: var(--c-tag);

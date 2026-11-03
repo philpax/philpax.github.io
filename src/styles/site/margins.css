@@ -12,7 +12,8 @@
 }
 
 /* Only once each margin can show 6rem of garden: sooner beside the narrow
-   frames (the notes', then the others') than the wide one. */
+   frame (62 + 12rem) than the documents' (78.25 + 12rem). Written out:
+   container queries can't read the frames' widths. */
 @container site (width >= 74rem) {
   .site > main:has(> .frame-narrow) {
     --frame: 62rem;
@@ -21,30 +22,11 @@
     display: grid;
   }
 }
-@container site (width >= 75.5rem) {
-  .site > main:has(> .notes-layout) {
-    --frame: var(--frame-notes);
+@container site (width >= 90.25rem) {
+  .site > main:has(> .page-grid) {
+    --frame: var(--frame-width);
   }
-  .site > main:has(> .notes-layout) > .margin-gardens {
-    display: grid;
-  }
-}
-/* With the notes' rail hidden, the gardens close in on the note's column,
-   leaving room before it for the control that brings the rail back; the
-   rail can only be hidden from 64rem. */
-@container site (width >= 64rem) {
-  .site > main:has(> .notes-layout > .rail-hide-box:checked) {
-    --frame: calc(var(--measure) + 2 * var(--s-10));
-  }
-  .site > main:has(> .notes-layout > .rail-hide-box:checked) > .margin-gardens {
-    display: grid;
-  }
-}
-@container site (width >= 91rem) {
-  .site > main:has(> .frame:not(.notes-layout)) {
-    --frame: 79rem;
-  }
-  .site > main:has(> .frame:not(.notes-layout)) > .margin-gardens {
+  .site > main:has(> .page-grid) > .margin-gardens {
     display: grid;
   }
 }
@@ -103,6 +85,32 @@
   justify-self: start;
   mask-image: var(--garden-end);
   transform: scaleY(-1);
+}
+
+/* A post, an update or a note with nothing in its margin column (no
+   sidenotes, no wide embeds) leaves it empty, so its end garden is its
+   section's wider plant, reaching across it from the text's edge, and the
+   title, standfirst and hero image keep to the measure to make room. */
+.site > main:has(> .page-grid):not(:has(.fn-note, .city-poster, .music-library)) {
+  & > .margin-gardens > :last-child {
+    width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
+    /* The wide plant's column (see bake_assets/src/margins.rs). */
+    aspect-ratio: 14 / 28;
+    margin-inline-start: calc(-1 * (var(--side-width) + var(--s-8)));
+    mask-image: var(--garden-end-reach);
+  }
+  & .document-header :is(h1, hgroup p, > img) {
+    max-width: var(--measure);
+  }
+}
+
+/* Likewise a post or an update with no contents leaves its side column
+   empty, so its start garden reaches across that. */
+.site > main:has(> .document-layout):not(:has(> .document-layout > aside)) > .margin-gardens > :first-child {
+  width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
+  aspect-ratio: 14 / 28;
+  margin-inline-end: calc(-1 * (var(--side-width) + var(--s-8)));
+  mask-image: var(--garden-start-reach);
 }
 
 @media print, (forced-colors: active) {
