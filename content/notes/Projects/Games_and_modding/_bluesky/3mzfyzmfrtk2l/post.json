@@ -1,0 +1,28 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzfyzmfrtk2l",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzfyzmfrtk2l/avatar.webp",
+  "text": "I want to make it clear: I am not lying about running a thousand watts of GPUs around the clock to do this\n\nI'm very lucky that we're heading into winter in Sweden",
+  "facets": [],
+  "created_at": "2026-11-03T14:04:53.716Z",
+  "like_count": 115,
+  "reply_count": 6,
+  "repost_count": 3,
+  "quote_count": 1,
+  "fetched_at": "2026-11-05T01:13:13.042399126+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreia3xr7jv742po2ki22p4u7tyewd5h53anwuryowfvwlxqzxwyqfbq/playlist.m3u8",
+    "thumbnail": {
+      "filename": "_bluesky/3mzfyzmfrtk2l/poster.jpg",
+      "alt": "",
+      "width": 1080,
+      "height": 1920
+    },
+    "alt": "",
+    "width": 1080,
+    "height": 1920
+  },
+  "media_version": 1
+}

@@ -39,3 +39,7 @@ The local models still do the bulk of the recovery. Indeed, even the local model
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzbgbwlxyk2n" />
 
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzduysfvqs2x" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzfyzmfrtk2l" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzgfnsjsr22x" />

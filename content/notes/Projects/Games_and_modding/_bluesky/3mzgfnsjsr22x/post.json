@@ -1,0 +1,30 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzgfnsjsr22x",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzgfnsjsr22x/avatar.webp",
+  "text": "also in progress: a meta-learning lesson system that allows models to share things they've discovered in the process of decompilation, which can also be used by stronger models to teach weaker models",
+  "facets": [],
+  "created_at": "2026-11-03T17:50:53.367Z",
+  "like_count": 11,
+  "reply_count": 0,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-11-05T01:13:16.713432924+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mzgfnsjsr22x/image-0.webp",
+      "alt": "",
+      "width": 1030,
+      "height": 1328
+    },
+    {
+      "filename": "_bluesky/3mzgfnsjsr22x/image-1.webp",
+      "alt": "",
+      "width": 1029,
+      "height": 1260
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}
