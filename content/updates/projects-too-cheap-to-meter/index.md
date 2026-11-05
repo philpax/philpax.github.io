@@ -408,6 +408,7 @@ https://github.com/philpax/maptoposter
 - Added note tags, grouped summaries, automatic folder indexes, tag aliases and redirects, author credits and project-status metadata.
 - Updated Arborium and added regex fences; added local caching for Bluesky images and video posters while video streams on demand.
 - Added standalone pages as a document type.
+- Added margin gardens on wide windows: a plant either side of the page, drawn by [Églantine](https://github.com/cadaeix/eglantine-marginalia) and inked in the section's colour. Each section has its own plants, with wider ones where a page leaves a column empty. The drawings are baked ahead of time by running Églantine's TypeScript in QuickJS, so the build needs no Node.
 
 # Unjust Cause 2
 
