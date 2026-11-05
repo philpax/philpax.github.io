@@ -1,10 +1,9 @@
 /* ========================================================================
    MARGINS — a garden either side of the page's frame, like bookends: each
    hangs from the header's border with its stems against the frame and its
-   leaves reaching out into the margin. Each is a copperplate drawing used
-   as a mask over the section's accent, so it follows the section and the
-   theme; its paper lets the page through. Decorative, and hidden from
-   readers.
+   leaves reaching out into the margin. Each is a copperplate drawing in
+   white on clear paper, inked in the section's accent by a filter, so it
+   follows the section and the theme. Decorative, and hidden from readers.
    ======================================================================== */
 
 .margin-gardens {
@@ -53,7 +52,7 @@
   pointer-events: none;
 }
 
-.margin-gardens > * {
+.margin-gardens > div {
   /* Hangs below the header while the page scrolls, down to the foot of the
      window; the header hides the stems' feet. The drawing is flipped, so
      its foot is at the top. */
@@ -63,27 +62,36 @@
   width: var(--garden-width);
   height: calc(100svh - var(--header-height) + var(--garden-sink));
   margin-top: calc(-1 * var(--garden-sink));
-  background: var(--garden-ink);
   /* The drawing fits the garden's width and trails as far down as it was
      grown (see bake_assets/src/margins.rs); where the window ends first, it
-     fades out over the last stretch rather than stopping at the edge. The
-     second layer is that fade, at the top since the garden is flipped. */
+     fades out over the last stretch rather than stopping at the edge (at the
+     top, since the garden is flipped). The drawing is a background, inked
+     by the filter, rather than a mask over a coloured box: a browser can
+     paint a box before its mask has loaded, but has nothing to paint
+     before its background has. */
   --garden-fade: 12rem;
-  mask:
-    var(--garden-plant) bottom left / 100% auto no-repeat luminance,
-    linear-gradient(to bottom, transparent, #000 var(--garden-fade)) alpha;
-  mask-composite: intersect;
+  background: var(--garden-plant) bottom left / 100% auto no-repeat;
+  filter: url(#garden-ink);
+  mask: linear-gradient(to bottom, transparent, #000 var(--garden-fade));
+}
+/* Keeps a white stroke's luminance, and its paper and the black of the
+   leaves behind it clear, then floods what's left with the ink. */
+.margin-gardens > svg {
+  position: absolute;
+}
+.margin-gardens feFlood {
+  flood-color: var(--garden-ink);
 }
 
 /* The drawings grow from their left; both are turned so that side, where
    the stems stand, faces the frame. */
-.margin-gardens > :first-child {
+.margin-gardens > .garden-start {
   --garden-plant: var(--garden-start);
   grid-column: 1;
   justify-self: end;
   transform: scale(-1, -1);
 }
-.margin-gardens > :last-child {
+.margin-gardens > .garden-end {
   --garden-plant: var(--garden-end);
   grid-column: 3;
   justify-self: start;
@@ -95,7 +103,7 @@
    section's wider plant, reaching across it from the text's edge, and the
    title, standfirst and hero image keep to the measure to make room. */
 .site:has(> main > .page-grid):not(:has(.fn-note, .city-poster, .music-library)) {
-  & > .margin-gardens > :last-child {
+  & > .margin-gardens > .garden-end {
     --garden-plant: var(--garden-end-reach);
     width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
     margin-inline-start: calc(-1 * (var(--side-width) + var(--s-8)));
@@ -107,7 +115,7 @@
 
 /* Likewise a post or an update with no contents leaves its side column
    empty, so its start garden reaches across that. */
-.site:has(> main > .document-layout):not(:has(> main > .document-layout > aside)) > .margin-gardens > :first-child {
+.site:has(> main > .document-layout):not(:has(> main > .document-layout > aside)) > .margin-gardens > .garden-start {
   --garden-plant: var(--garden-start-reach);
   width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
   margin-inline-end: calc(-1 * (var(--side-width) + var(--s-8)));

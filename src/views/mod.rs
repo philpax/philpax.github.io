@@ -202,6 +202,8 @@ pub fn layout<'a>(
     inner: Element<'a>,
 ) -> paxhtml::Document<'a> {
     let bump = context.bump;
+    // The filter's second input: the macro would write `in2` as `in-2`.
+    let in2 = |input: &str| [paxhtml::Attribute::new(bump, "in2", input)];
     let standard_site_uri = meta.standard_site_uri.clone();
     let section = current_page
         .section()
@@ -238,8 +240,20 @@ pub fn layout<'a>(
                         {inner}
                     </main>
                     // The gardens in the margins: decorative, shown only on wide windows. Beside
-                    // main rather than in it, so they run to the foot of the page.
-                    <div class="margin-gardens" ariaHidden="true"><div></div><div></div></div>
+                    // main rather than in it, so they run to the foot of the page. The filter
+                    // inks each drawing in the section's colour (see margins.css).
+                    <div class="margin-gardens" ariaHidden="true">
+                        <div class="garden-start"></div>
+                        <div class="garden-end"></div>
+                        <svg width="0" height="0">
+                            <filter id="garden-ink" colorInterpolationFilters="sRGB">
+                                <feColorMatrix r#type="luminanceToAlpha" result="luminance"></feColorMatrix>
+                                <feComposite r#in="luminance" {in2("SourceAlpha")} operator="in" result="drawing"></feComposite>
+                                <feFlood></feFlood>
+                                <feComposite {in2("drawing")} operator="in"></feComposite>
+                            </filter>
+                        </svg>
+                    </div>
                     {footer(context)}
                 </body>
             </html>
