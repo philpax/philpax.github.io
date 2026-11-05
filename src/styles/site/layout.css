@@ -295,9 +295,13 @@
 
 /* Footer. */
 
+/* Over the margin gardens, which run behind it to the foot of the page. */
 .site > footer {
   --hue: var(--accent);
+  position: relative;
+  z-index: 1;
   border-top: var(--rule) solid var(--line);
+  background: var(--canvas);
 }
 .site > footer > .frame {
   display: flex;

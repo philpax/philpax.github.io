@@ -15,28 +15,24 @@
    frame (62 + 12rem) than the documents' (78.25 + 12rem). Written out:
    container queries can't read the frames' widths. */
 @container site (width >= 74rem) {
-  .site > main:has(> .frame-narrow) {
+  .site:has(> main > .frame-narrow) > .margin-gardens {
     --frame: 62rem;
-  }
-  .site > main:has(> .frame-narrow) > .margin-gardens {
     display: grid;
   }
 }
 @container site (width >= 90.25rem) {
-  .site > main:has(> .page-grid) {
+  .site:has(> main > .page-grid) > .margin-gardens {
     --frame: var(--frame-width);
-  }
-  .site > main:has(> .page-grid) > .margin-gardens {
     display: grid;
   }
 }
 
-.site > main:has(> .margin-gardens) {
-  position: relative;
-}
-
-/* Spans the main column and clips to it, so the gardens' stems tuck under
-   the header without widening the page. The middle track is the page's
+/* Runs from the header to the foot of the page, behind the footer, and
+   clips to it, so the gardens' stems tuck under the header without
+   widening the page. Running to the foot, a garden as tall as the window
+   still fits when the page is scrolled to its end, so it stays hung from
+   the header rather than being pushed up as the page's main column ends.
+   The middle track is the page's
    frame; the outer tracks are never narrower than a garden, and when they
    would be, the grid stays centred and runs past the window's edges, so the
    frame track stays on the frame and the gardens are cropped outside. */
@@ -46,7 +42,7 @@
   --garden-width: 13rem;
   --garden-ink: color-mix(in oklab, var(--accent) 42%, var(--canvas));
   position: absolute;
-  inset: 0;
+  inset: var(--header-height) 0 0;
   grid-template-columns:
     minmax(var(--garden-width), 1fr)
     min(var(--frame), 100%)
@@ -58,32 +54,39 @@
 }
 
 .margin-gardens > * {
-  /* Hangs below the header while the page scrolls; the header hides the
-     stems' feet. The drawing is flipped, so its foot is at the top. */
+  /* Hangs below the header while the page scrolls, down to the foot of the
+     window; the header hides the stems' feet. The drawing is flipped, so
+     its foot is at the top. */
   position: sticky;
   top: calc(var(--header-height) - var(--garden-sink));
   grid-row: 1;
   width: var(--garden-width);
-  /* The column the plants are grown in (see bake_assets/src/margins.rs). */
-  aspect-ratio: 6 / 28;
-  /* A short window shrinks the drawing rather than cropping it. */
-  max-height: calc(100svh - var(--header-height) + var(--garden-sink));
+  height: calc(100svh - var(--header-height) + var(--garden-sink));
   margin-top: calc(-1 * var(--garden-sink));
   background: var(--garden-ink);
-  mask: var(--garden-start) bottom left / contain no-repeat luminance;
+  /* The drawing fits the garden's width and trails as far down as it was
+     grown (see bake_assets/src/margins.rs); where the window ends first, it
+     fades out over the last stretch rather than stopping at the edge. The
+     second layer is that fade, at the top since the garden is flipped. */
+  --garden-fade: 12rem;
+  mask:
+    var(--garden-plant) bottom left / 100% auto no-repeat luminance,
+    linear-gradient(to bottom, transparent, #000 var(--garden-fade)) alpha;
+  mask-composite: intersect;
 }
 
 /* The drawings grow from their left; both are turned so that side, where
    the stems stand, faces the frame. */
 .margin-gardens > :first-child {
+  --garden-plant: var(--garden-start);
   grid-column: 1;
   justify-self: end;
   transform: scale(-1, -1);
 }
 .margin-gardens > :last-child {
+  --garden-plant: var(--garden-end);
   grid-column: 3;
   justify-self: start;
-  mask-image: var(--garden-end);
   transform: scaleY(-1);
 }
 
@@ -91,13 +94,11 @@
    sidenotes, no wide embeds) leaves it empty, so its end garden is its
    section's wider plant, reaching across it from the text's edge, and the
    title, standfirst and hero image keep to the measure to make room. */
-.site > main:has(> .page-grid):not(:has(.fn-note, .city-poster, .music-library)) {
+.site:has(> main > .page-grid):not(:has(.fn-note, .city-poster, .music-library)) {
   & > .margin-gardens > :last-child {
+    --garden-plant: var(--garden-end-reach);
     width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
-    /* The wide plant's column (see bake_assets/src/margins.rs). */
-    aspect-ratio: 14 / 28;
     margin-inline-start: calc(-1 * (var(--side-width) + var(--s-8)));
-    mask-image: var(--garden-end-reach);
   }
   & .document-header :is(h1, hgroup p, > img) {
     max-width: var(--measure);
@@ -106,11 +107,10 @@
 
 /* Likewise a post or an update with no contents leaves its side column
    empty, so its start garden reaches across that. */
-.site > main:has(> .document-layout):not(:has(> .document-layout > aside)) > .margin-gardens > :first-child {
+.site:has(> main > .document-layout):not(:has(> main > .document-layout > aside)) > .margin-gardens > :first-child {
+  --garden-plant: var(--garden-start-reach);
   width: calc(var(--side-width) + var(--s-8) + var(--garden-width));
-  aspect-ratio: 14 / 28;
   margin-inline-end: calc(-1 * (var(--side-width) + var(--s-8)));
-  mask-image: var(--garden-start-reach);
 }
 
 @media print, (forced-colors: active) {

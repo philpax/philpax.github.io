@@ -230,7 +230,7 @@ const GARDENS: &[Garden] = &[
         fullness: 0.35,
     },
     // For a post, an update or a note with nothing in its side or margin column: each reaches
-    // across it as well, so it is grown wider, 14 by 28 (the sheet's `aspect-ratio` matches).
+    // across it as well, so it is grown wider, 14 centimetres.
     Garden {
         file: "vesce-wide",
         plant: "de la vesce",
@@ -340,9 +340,9 @@ fn grow(
     })
 }
 
-/// Grows a plant from the calendar, in a column 28 centimetres tall (longer than the library's
-/// 22, so it trails further down the margin; the sheet's `aspect-ratio` matches) and as wide as
-/// its garden asks, at its section's moment, with its guest if it has one, in white ink on black
+/// Grows a plant from the calendar, in a column 48 centimetres tall (more than twice the
+/// library's 22, so it trails down a tall window; the sheet fits the drawing to the garden's width
+/// and fades it out where a shorter window ends) and as wide as its garden asks, at its section's moment, with its guest if it has one, in white ink on black
 /// paper. Every ink is white, so the hatching and the pistils both show.
 const DRIVER: &str = r##"
 import { growGarden, renderGarden, withInks } from "src/index.js";
@@ -352,7 +352,7 @@ import { FIGURES, FIGURE_SIZE } from "src/calendar/index.js";
 globalThis.draw = (name, id, width, guest, guestFigure, t, fullness) => {
   const plant = PLANTS.find(p => p.name === name);
   if (!plant) throw new Error(`no plant named ${name}`);
-  const spec = { seed: 1793, form: plant.form, variant: plant.variant, width, height: 28 };
+  const spec = { seed: 1793, form: plant.form, variant: plant.variant, width, height: 48 };
   if (guest) {
     const figure = FIGURES[guest];
     if (!figure) throw new Error(`no figure named ${guest}`);
