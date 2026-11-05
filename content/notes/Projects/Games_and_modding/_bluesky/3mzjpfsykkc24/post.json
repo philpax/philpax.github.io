@@ -1,0 +1,30 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzjpfsykkc24",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzjpfsykkc24/avatar.webp",
+  "text": "t+7d: 24% fns/2.8% bc\n\nprogress is noticeably slowing down - but that's okay, for I  will do two things:\n- rework the processing pipeline to take advantage of more semantic info, enabling codebase-wide metadata fusion\n- cheat, by abusing my OpenAI sub before firing my soon-to-expire banked reset",
+  "facets": [],
+  "created_at": "2026-11-05T01:23:24.815Z",
+  "like_count": 1,
+  "reply_count": 1,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-11-05T01:56:23.091370332+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mzjpfsykkc24/image-0.webp",
+      "alt": "",
+      "width": 1019,
+      "height": 778
+    },
+    {
+      "filename": "_bluesky/3mzjpfsykkc24/image-1.webp",
+      "alt": "",
+      "width": 1015,
+      "height": 944
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}
