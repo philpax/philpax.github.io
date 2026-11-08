@@ -21,3 +21,5 @@ Related tooling includes [jc3boot](https://github.com/ferrobrew/jc3boot), which 
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mysk27ayw22p" />
 
 <BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzei7x62a223" />
+
+<BlueskyPost post="https://bsky.app/profile/philpax.me/post/3mzotcc6hxd26" />
