@@ -205,12 +205,14 @@ fn main() -> anyhow::Result<()> {
 
     fn write_redirect(
         output_dir: &Path,
+        base_url: &str,
         to_url: &str,
         og_image_url: Option<&str>,
         route_path: impl Into<RoutePath>,
     ) -> anyhow::Result<()> {
         let bump = paxhtml::bumpalo::Bump::new();
-        views::redirect(&bump, to_url, og_image_url).write_to_route(output_dir, route_path)?;
+        views::redirect(&bump, base_url, to_url, og_image_url)
+            .write_to_route(output_dir, route_path)?;
         Ok(())
     }
 
@@ -246,6 +248,7 @@ fn main() -> anyhow::Result<()> {
                     format!("{}{}", view_context.website_base_url, doc.og_image_path());
                 write_redirect(
                     output_dir,
+                    view_context.website_base_url,
                     &route_path.url_path(),
                     Some(&og_image_url),
                     alternate_route_path,
@@ -292,6 +295,7 @@ fn main() -> anyhow::Result<()> {
                 .map(|p| format!("{}{}", view_context.website_base_url, p));
             write_redirect(
                 output_dir,
+                view_context.website_base_url,
                 &r.target_url,
                 og_image_url.as_deref(),
                 Route::Note {
@@ -398,6 +402,7 @@ fn main() -> anyhow::Result<()> {
         substeps.step("Wrote deprecated about redirect", || {
             write_redirect(
                 output_dir,
+                view_context.website_base_url,
                 &Route::Index.url_path(),
                 None,
                 Route::DeprecatedAbout,

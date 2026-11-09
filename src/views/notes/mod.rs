@@ -38,7 +38,7 @@ pub fn note<'a>(context: ViewContext<'a>, note: &Document) -> paxhtml::Document<
             title: Some(title),
             description: Some(description),
             image: Some(og_image_url.clone()),
-            url: Some(Route::Note { note_id: vec![] }.abs_url(context.website_base_url)),
+            url: Some(note.route_path().abs_url(context.website_base_url)),
             type_: Some("website".to_string()),
             twitter_card: Some("summary_large_image".to_string()),
             twitter_image: Some(og_image_url),

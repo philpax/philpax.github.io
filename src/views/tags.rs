@@ -77,7 +77,12 @@ pub fn tag_alias_redirect<'a>(
         crate::og_image::tag_image_path(canonical_tag),
     );
 
-    super::redirect(context.bump, &to_url, Some(&og_image_url))
+    super::redirect(
+        context.bump,
+        context.website_base_url,
+        &to_url,
+        Some(&og_image_url),
+    )
 }
 
 pub fn tag<'a>(context: ViewContext<'a>, tag_id: &str) -> paxhtml::Document<'a> {
@@ -276,6 +281,16 @@ mod tests {
                 .attr("content"),
             Some("https://example.com/og-images/tags/canonical.png")
         );
+        let canonical = scraper::Selector::parse("link[rel='canonical']").unwrap();
+        assert_eq!(
+            parsed
+                .select(&canonical)
+                .next()
+                .unwrap()
+                .value()
+                .attr("href"),
+            Some("https://example.com/tags/canonical/")
+        );
         assert!(html.contains("<a href=\"/tags/canonical/\""));
         assert!(!html.contains("class=\"frame-narrow\""));
         assert!(!html.contains("class=\"tag-index\""));
@@ -325,6 +340,9 @@ mod tests {
             .tag_descriptions
             .insert("shared".into(), "Shared subject".into());
         let html = render_tag(&content);
+        assert!(
+            html.contains("<link rel=\"canonical\" href=\"https://example.com/tags/shared/\">")
+        );
         let html = html.split_whitespace().collect::<Vec<_>>().join(" ");
         let posts = html.find("<h2 id=\"posts\">").unwrap();
         let updates = html.find("<h2 id=\"updates\">").unwrap();

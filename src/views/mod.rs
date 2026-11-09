@@ -124,7 +124,7 @@ pub struct SocialMeta {
     description: Option<String>,
     /// The image URL to display for OpenGraph
     image: Option<String>,
-    /// The canonical URL of the page for OpenGraph
+    /// The page's absolute URL; emitted as `og:url` and `rel="canonical"`.
     url: Option<String>,
     /// The type of content for OpenGraph (e.g. "article", "website")
     type_: Option<String>,
@@ -205,6 +205,8 @@ pub fn layout<'a>(
     // The filter's second input: the macro would write `in2` as `in-2`.
     let in2 = |input: &str| [paxhtml::Attribute::new(bump, "in2", input)];
     let standard_site_uri = meta.standard_site_uri.clone();
+    // Drafts are noindex; a canonical would only contradict that.
+    let canonical_url = if meta.noindex { None } else { meta.url.clone() };
     let section = current_page
         .section()
         .map(|section| paxhtml::Attribute::new(bump, "data-section", section));
@@ -216,6 +218,9 @@ pub fn layout<'a>(
                     <title>{meta.full_title(&context)}</title>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    {canonical_url.map(|url| html! { in bump;
+                        <link rel="canonical" href={url} />
+                    })}
                     {meta.noindex.then(|| html! { in bump;
                         <meta name="robots" content="noindex, nofollow" />
                     })}
@@ -263,9 +268,13 @@ pub fn layout<'a>(
 
 pub fn redirect<'bump>(
     bump: &'bump Bump,
+    base_url: &str,
     to_url: &str,
     og_image_url: Option<&str>,
 ) -> paxhtml::Document<'bump> {
+    // The meta refresh is already a permanent-redirect signal. The canonical is
+    // belt and braces for the same target, so the two never disagree.
+    let canonical_url = format!("{base_url}{to_url}");
     paxhtml::Document::new_with_doctype(
         bump,
         html! { in bump;
@@ -274,6 +283,7 @@ pub fn redirect<'bump>(
                     <title>"Redirecting..."</title>
                     <meta charset="utf-8" />
                     <meta httpEquiv="refresh" content={format!("0; url={to_url}")} />
+                    <link rel="canonical" href={canonical_url} />
                     {og_image_url.map(|url| html! { in bump;
                         <meta property="og:image" content={url} />
                     })}
