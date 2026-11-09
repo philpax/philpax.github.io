@@ -1,0 +1,24 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzny432qos2z",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzny432qos2z/avatar.webp",
+  "text": "good news: switching to GPT-6 for my inference is faster, cheaper, and quieter\nbad news: oh my god it writes the ugliest code what have they done to these models",
+  "facets": [],
+  "created_at": "2026-11-06T18:09:40.367Z",
+  "like_count": 5,
+  "reply_count": 1,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-11-06T18:18:32.406102440+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3mzny432qos2z/image-0.webp",
+      "alt": "",
+      "width": 1035,
+      "height": 969
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}

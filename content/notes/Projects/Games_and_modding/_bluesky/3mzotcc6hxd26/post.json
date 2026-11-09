@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3mzotcc6hxd26",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "_bluesky/3mzotcc6hxd26/avatar.webp",
+  "text": "an explosion to remember #jc3vr\n\n(veteran JC3 players may remember the game, by default, does not let you use an independent weapon per hand)",
+  "facets": [
+    {
+      "byte_start": 25,
+      "byte_end": 31,
+      "features": [
+        {
+          "Tag": {
+            "tag": "jc3vr"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-07T02:16:20.185Z",
+  "like_count": 8,
+  "reply_count": 1,
+  "repost_count": 2,
+  "quote_count": 0,
+  "fetched_at": "2026-11-08T01:20:37.229888099+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreif2i3vfnvn4bur6ilwun5nfdpcyvju6jr7h5pbf63liqlswpj6bk4/playlist.m3u8",
+    "thumbnail": {
+      "filename": "_bluesky/3mzotcc6hxd26/poster.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}
