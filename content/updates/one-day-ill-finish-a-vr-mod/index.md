@@ -8,7 +8,7 @@ tags=["jc3vr", "pyxis", "blackbird", "website", "genresinspace"]
 
 [standard_site]
 uri = "at://did:plc:wamidydbgu3u6fk3yckaglnz/site.standard.document/3mn73mg7zw52v"
-hash = "bf0b33ea77a4e257e762e4749ce682679091bd46ef4ca2dc8b74283effb7cab2"
+hash = "6f58b8ff4f91ff20593f1c75dd2702b7f9b736f9951ce4d1057907435ac71edf"
 +++
 
 Only a bit late this time around! After recovering from my two-week Cyberpunk ~~crashout~~ dedicated playthrough, I've spent the last week and a bit working on things that aren't work again. Let's start with the most exciting one.
