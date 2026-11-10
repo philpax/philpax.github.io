@@ -2,7 +2,7 @@
   "url": "https://bsky.app/profile/philpax.me/post/3mzduysfvqs2x",
   "author_display_name": "philpax",
   "author_handle": "philpax.me",
-  "author_avatar_filename": "_bluesky/3mzduysfvqs2x/avatar.webp",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
   "text": "t+112h (+24 hours): 15% decompiled (1.59% bytecode)\n\nsome of the slowdown is from harness issues/reduced capability (I needed my 5090 for VR >_>), but the further in we get, the harder it gets for Qwen 3.8 to tackle these within 45k context\n\nQwen 4, save me",
   "facets": [],
   "created_at": "2026-11-02T17:47:32.023Z",

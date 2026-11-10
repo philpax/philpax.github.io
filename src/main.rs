@@ -1,4 +1,4 @@
-use std::{path::Path, sync::Arc};
+use std::{collections::HashSet, path::Path, sync::Arc};
 
 use anyhow::Context;
 use paxhtml::{RoutePath, bumpalo::Bump};
@@ -104,6 +104,35 @@ impl From<Route> for RoutePath {
     }
 }
 
+/// Copies each referenced shared avatar once into the output, preserving its site-root path.
+fn copy_shared_avatars<'a>(
+    content_root: &Path,
+    output_dir: &Path,
+    posts: impl IntoIterator<Item = &'a paxsite_content::bluesky::BlueskyPostData>,
+    fast: bool,
+) -> anyhow::Result<()> {
+    let mut sources = HashSet::new();
+    for post in posts {
+        if let Some(filename) = &post.author_avatar_filename {
+            sources.insert(paxsite_content::bluesky::shared_asset_path(
+                content_root,
+                filename,
+            )?);
+        }
+    }
+    for source in sources {
+        let relative = source.strip_prefix(content_root)?;
+        let output_path = output_dir.join(relative);
+        let parent = output_path
+            .parent()
+            .context("shared avatar output path has no parent")?;
+        std::fs::create_dir_all(parent)?;
+        util::copy_or_symlink(&source, &output_path, fast)
+            .with_context(|| format!("failed to copy {source:?} to {output_path:?}"))?;
+    }
+    Ok(())
+}
+
 fn main() -> anyhow::Result<()> {
     let fast = std::env::args().any(|arg| arg == "--fast" || arg == "-f");
     let verbose = std::env::args().any(|arg| arg == "--verbose" || arg == "-v");
@@ -202,6 +231,16 @@ fn main() -> anyhow::Result<()> {
         eprintln!("check: all links valid");
         return Ok(());
     }
+
+    // Author avatars are shared by every post, so they are copied once to the site root.
+    timer.step("Copied shared Bluesky avatars", |_| {
+        copy_shared_avatars(
+            Path::new(paxsite_content::CONTENT_DIR),
+            output_dir,
+            content.bluesky_posts.values(),
+            fast,
+        )
+    })?;
 
     fn write_redirect(
         output_dir: &Path,
@@ -545,5 +584,62 @@ fn collect_notes<'a>(
                 redirects.push(r)
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn post(avatar: &str) -> paxsite_content::bluesky::BlueskyPostData {
+        serde_json::from_value(serde_json::json!({
+            "url": "https://bsky.app/profile/example.test/post/1",
+            "author_display_name": "Example",
+            "author_handle": "example.test",
+            "author_avatar_filename": avatar,
+            "text": "",
+            "facets": [],
+            "created_at": "2026-01-01T00:00:00Z",
+            "like_count": 0,
+            "reply_count": 0,
+            "repost_count": 0,
+            "quote_count": 0,
+            "fetched_at": "2026-01-02T00:00:00Z"
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn shared_avatars_are_copied_once_to_the_output_root() {
+        let root = std::env::temp_dir().join(format!(
+            "paxsite-shared-avatars-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let content_root = root.join("content");
+        let output_dir = root.join("public");
+        let avatars = content_root.join("_bluesky/avatars");
+        std::fs::create_dir_all(&avatars).unwrap();
+        std::fs::write(avatars.join("one.webp"), b"one").unwrap();
+        std::fs::write(avatars.join("two.webp"), b"two").unwrap();
+
+        let one = post("/_bluesky/avatars/one.webp");
+        let two = post("/_bluesky/avatars/two.webp");
+        copy_shared_avatars(&content_root, &output_dir, [&one, &one, &two], false).unwrap();
+
+        let output_avatars = output_dir.join("_bluesky/avatars");
+        assert_eq!(
+            std::fs::read(output_avatars.join("one.webp")).unwrap(),
+            b"one"
+        );
+        assert_eq!(
+            std::fs::read(output_avatars.join("two.webp")).unwrap(),
+            b"two"
+        );
+        assert_eq!(std::fs::read_dir(output_avatars).unwrap().count(), 2);
+        std::fs::remove_dir_all(root).unwrap();
     }
 }

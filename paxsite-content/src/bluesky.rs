@@ -1,5 +1,5 @@
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashMap,
     fs::OpenOptions,
     io::{Read, Write},
     path::{Path, PathBuf},
@@ -9,9 +9,14 @@ use std::{
 use anyhow::Context;
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 /// Source-only post archives and their local media live beneath each source directory.
 pub const ARCHIVE_DIRECTORY: &str = "_bluesky";
+
+/// Author avatars are shared by every post that embeds them. They live once under the
+/// content root and carry a site-root-relative path, so the output can serve one copy.
+pub const SHARED_AVATAR_DIRECTORY: &str = "_bluesky/avatars";
 
 /// The archived fields of a post. Migrating a legacy archive edits the stored JSON in place, so
 /// fields a newer version added survive it. Enriching a text-only cache writes this struct
@@ -58,18 +63,25 @@ pub struct BlueskyVideo {
 }
 
 impl BlueskyPostData {
-    /// Includes assets fetched after the document's associated files are collected.
+    /// Per-post assets, relative to the document's source directory.
     pub fn local_asset_filenames(&self) -> impl Iterator<Item = &str> {
-        self.author_avatar_filename
-            .as_deref()
-            .into_iter()
-            .chain(self.images.iter().map(|image| image.filename.as_str()))
+        self.images
+            .iter()
+            .map(|image| image.filename.as_str())
             .chain(
                 self.video
                     .iter()
                     .filter_map(|video| video.thumbnail.as_ref())
                     .map(|image| image.filename.as_str()),
             )
+    }
+
+    /// Every asset the cache references, including the shared author avatar.
+    pub fn asset_filenames(&self) -> impl Iterator<Item = &str> {
+        self.author_avatar_filename
+            .as_deref()
+            .into_iter()
+            .chain(self.local_asset_filenames())
     }
 }
 
@@ -100,9 +112,9 @@ pub fn hashtag_url(tag: &str) -> String {
     format!("{BSKY_WEB}/hashtag/{tag}")
 }
 
-/// Flat `bluesky-<rkey>.json` archives left by the previous layout are excluded from document
-/// assets. Avatars, images and video posters are copied. Archive folders hold `post.json`, which
-/// this does not match; those are excluded by their directory instead.
+/// Flat `bluesky-<rkey>.json` files left by the previous layout are ignored: they are neither
+/// document assets nor archives, so a post that still has one is fetched fresh. Archive folders
+/// hold `post.json`, which this does not match; those are excluded by their directory instead.
 pub fn is_legacy_cache_file(path: &Path) -> bool {
     path.file_name().is_some_and(|f| {
         let f = f.to_string_lossy();
@@ -112,17 +124,18 @@ pub fn is_legacy_cache_file(path: &Path) -> bool {
 
 /// Ensures each (URL, content directory) has its own cache and local image assets.
 /// Returns cached post data keyed by URL and content directory. Legacy caches receive media only.
+/// Avatars are stored once per author beneath `content_root`.
 pub fn ensure_posts_cached(
+    content_root: &Path,
     posts: &[(String, PathBuf)],
 ) -> anyhow::Result<HashMap<(String, PathBuf), BlueskyPostData>> {
     let mut client = None;
-    ensure_posts_cached_with(posts, |url, content_dir, cached| {
+    ensure_posts_cached_with(content_root, posts, |url, content_dir, cached| {
         if client.is_none() {
             client = Some(http_client()?);
         }
         let client = client.as_ref().expect("HTTP client was initialised");
         let (handle, rkey) = parse_bsky_url(url)?;
-        let archive_dir = content_dir.join(ARCHIVE_DIRECTORY).join(rkey);
         let did = resolve_handle(client, handle)?;
         let at_uri = format!("at://{did}/app.bsky.feed.post/{rkey}");
         let mut post = get_post(client, url, &at_uri)?;
@@ -137,8 +150,9 @@ pub fn ensure_posts_cached(
             let media = cache_media(client, embed, content_dir, rkey)?;
             let avatar_filename = match &post.author.avatar {
                 Some(avatar_url) => {
-                    match fetch_image(client, avatar_url, &archive_dir, "avatar", MAX_AVATAR_SIZE) {
-                        Ok(filename) => Some(asset_url(rkey, &filename)),
+                    match fetch_shared_avatar(client, avatar_url, content_root, &post.author.handle)
+                    {
+                        Ok(filename) => Some(filename),
                         Err(error) => {
                             eprintln!("warning: failed to fetch avatar for {handle}: {error:#}");
                             None
@@ -161,23 +175,10 @@ const MAX_AVATAR_SIZE: u64 = 5 * 1024 * 1024;
 const IMAGE_EXTENSIONS: [&str; 4] = ["jpg", "png", "webp", "gif"];
 
 fn ensure_posts_cached_with(
+    content_root: &Path,
     posts: &[(String, PathBuf)],
     mut fetch: impl FnMut(&str, &Path, Option<BlueskyPostData>) -> anyhow::Result<BlueskyPostData>,
 ) -> anyhow::Result<HashMap<(String, PathBuf), BlueskyPostData>> {
-    // Finish every requested layout migration before any fetch can use the network.
-    let mut migrations = Vec::new();
-    let mut seen = HashSet::new();
-    for (url, content_dir) in posts {
-        let (_, rkey) = parse_bsky_url(url)?;
-        if seen.insert((content_dir, rkey))
-            && let Some(migration) = migrate_cache(content_dir, rkey).with_context(|| {
-                format!("failed to migrate Bluesky post {url} in {content_dir:?}")
-            })?
-        {
-            migrations.push(migration);
-        }
-    }
-
     let mut result = HashMap::new();
     for (url, content_dir) in posts {
         let key = (url.clone(), content_dir.clone());
@@ -188,15 +189,13 @@ fn ensure_posts_cached_with(
         ensure_archive_directory(content_dir, rkey)?;
         let cache_file = cache_path(content_dir, rkey);
         let cached = if path_exists(&cache_file)? {
-            let data = read_cache(&cache_file)?;
-            validate_cache_assets(content_dir, rkey, &data)?;
-            Some(data)
+            Some(read_cache(&cache_file)?)
         } else {
             None
         };
 
-        let data = match cached {
-            Some(data) if data.media_version >= MEDIA_VERSION => data,
+        let (data, needs_write) = match cached {
+            Some(data) if data.media_version >= MEDIA_VERSION => (data, false),
             cached => {
                 let upgrading = cached.is_some();
                 let data = match cached {
@@ -212,255 +211,25 @@ fn ensure_posts_cached_with(
                         }
                     })?,
                 };
-                validate_cache_assets(content_dir, rkey, &data)?;
-                write_cache(&cache_file, &data)?;
-                data
+                (data, true)
             }
         };
+        // Validate before replacing the cache so a failed upgrade keeps the last good copy.
+        validate_cache_assets(content_root, content_dir, rkey, &data)?;
+        if needs_write {
+            write_cache(&cache_file, &data)?;
+        }
         result.insert(key, data);
     }
-    cleanup_legacy_archives(&migrations)?;
     Ok(result)
 }
 
-struct LegacyArchive {
-    content_dir: PathBuf,
-    rkey: String,
-    original_json: Vec<u8>,
-    /// Flat asset files the legacy cache referenced, relative to its source directory.
-    legacy_paths: Vec<String>,
-}
-
-/// A legacy asset moving into its archive folder. `bytes` is absent when an earlier attempt
-/// already wrote the target and stopped before removing the flat archive.
-struct MigratedAsset {
-    source: String,
-    target: String,
-    bytes: Option<Vec<u8>>,
-}
-
-fn migrate_cache(content_dir: &Path, rkey: &str) -> anyhow::Result<Option<LegacyArchive>> {
-    let old_path = legacy_cache_path(content_dir, rkey);
-    if !path_exists(&old_path)? {
-        return Ok(None);
-    }
-    let original_json = read_regular_file(&old_path)?;
-    let mut json: serde_json::Value = serde_json::from_slice(&original_json)
-        .with_context(|| format!("failed to parse cache file {old_path:?}"))?;
-    let data: BlueskyPostData = serde_json::from_value(json.clone())?;
-    let archive_dir = ensure_archive_directory(content_dir, rkey)?;
-    let mut assets = Vec::new();
-    let mut prepare = |filename: &str, stem: &str| -> anyhow::Result<String> {
-        let ext = asset_extension(filename)?;
-        let target = format!("{stem}.{ext}");
-        let target_path = archive_dir.join(&target);
-        let source_path = content_dir.join(filename);
-        let bytes = if path_exists(&source_path)? {
-            let bytes = read_regular_file(&source_path)?;
-            if path_exists(&target_path)? {
-                anyhow::ensure!(
-                    read_regular_file(&target_path)? == bytes,
-                    "conflicting migration asset {target_path:?}"
-                );
-            }
-            Some(bytes)
-        } else {
-            // An interrupted cleanup may have removed the flat copy after writing the target.
-            anyhow::ensure!(
-                path_exists(&target_path)?,
-                "missing legacy asset {filename:?} in {content_dir:?}"
-            );
-            read_regular_file(&target_path)?;
-            None
-        };
-        let url = asset_url(rkey, &target);
-        assets.push(MigratedAsset {
-            source: filename.to_owned(),
-            target,
-            bytes,
-        });
-        Ok(url)
-    };
-    if let Some(filename) = &data.author_avatar_filename {
-        json["author_avatar_filename"] = prepare(filename, "avatar")?.into();
-    }
-    for (index, image) in data.images.iter().enumerate() {
-        json["images"][index]["filename"] =
-            prepare(&image.filename, &format!("image-{index}"))?.into();
-    }
-    if let Some(thumbnail) = data
-        .video
-        .as_ref()
-        .and_then(|video| video.thumbnail.as_ref())
-    {
-        json["video"]["thumbnail"]["filename"] = prepare(&thumbnail.filename, "poster")?.into();
-    }
-    let path = cache_path(content_dir, rkey);
-    if path_exists(&path)? {
-        let existing: serde_json::Value = serde_json::from_slice(&read_regular_file(&path)?)
-            .with_context(|| format!("failed to parse migrated cache {path:?}"))?;
-        anyhow::ensure!(
-            archives_agree(&existing, &json),
-            "conflicting migration cache {path:?}: it holds different archived data; remove \
-             the flat archive or this file to choose which one to keep"
-        );
-    }
-    for asset in &assets {
-        if let Some(bytes) = &asset.bytes {
-            write_asset(&archive_dir.join(&asset.target), bytes)?;
-        }
-    }
-    if !path_exists(&path)? {
-        write_cache(&path, &json)?;
-    }
-    validate_cache_assets(content_dir, rkey, &read_cache(&path)?)?;
-    Ok(Some(LegacyArchive {
-        content_dir: content_dir.to_owned(),
-        rkey: rkey.to_owned(),
-        original_json,
-        legacy_paths: assets.into_iter().map(|asset| asset.source).collect(),
-    }))
-}
-
-/// True when an existing archive holds the migrated archive's values. A build interrupted
-/// between migrating and cleaning up can leave the same archive rewritten with media, so an
-/// enrichment step's changes to the media fields are tolerated; media the legacy archive
-/// already carried must still match.
-fn archives_agree(existing: &serde_json::Value, migrated: &serde_json::Value) -> bool {
-    let (mut existing, mut migrated) = (existing.clone(), migrated.clone());
-    if !has_media(&migrated) {
-        for value in [&mut existing, &mut migrated] {
-            if let serde_json::Value::Object(object) = value {
-                object.remove("images");
-                object.remove("video");
-            }
-        }
-    }
-    for value in [&mut existing, &mut migrated] {
-        if let serde_json::Value::Object(object) = value {
-            object.remove("media_version");
-        }
-    }
-    without_nulls(existing) == without_nulls(migrated)
-}
-
-/// A field one writer omits and another writes as `null` describes the same archive.
-fn without_nulls(value: serde_json::Value) -> serde_json::Value {
-    match value {
-        serde_json::Value::Object(object) => serde_json::Value::Object(
-            object
-                .into_iter()
-                .filter(|(_, value)| !value.is_null())
-                .map(|(key, value)| (key, without_nulls(value)))
-                .collect(),
-        ),
-        serde_json::Value::Array(items) => {
-            serde_json::Value::Array(items.into_iter().map(without_nulls).collect())
-        }
-        value => value,
-    }
-}
-
-fn has_media(json: &serde_json::Value) -> bool {
-    json.get("images")
-        .and_then(serde_json::Value::as_array)
-        .is_some_and(|images| !images.is_empty())
-        || json.get("video").is_some_and(|video| !video.is_null())
-}
-
-fn cleanup_legacy_archives(migrations: &[LegacyArchive]) -> anyhow::Result<()> {
-    let completed: HashSet<_> = migrations
-        .iter()
-        .map(|migration| legacy_cache_path(&migration.content_dir, &migration.rkey))
-        .collect();
-    let mut candidates = HashSet::new();
-    let mut remaining = HashSet::new();
-    let mut keep_directories = HashSet::new();
-    let mut directories = HashSet::new();
-    // Inspect all remaining flat archives before removing anything, including shared avatars.
-    for migration in migrations {
-        let old_path = legacy_cache_path(&migration.content_dir, &migration.rkey);
-        anyhow::ensure!(
-            read_regular_file(&old_path)? == migration.original_json,
-            "legacy archive changed during migration: {old_path:?}"
-        );
-        validate_cache_assets(
-            &migration.content_dir,
-            &migration.rkey,
-            &read_cache(&cache_path(&migration.content_dir, &migration.rkey))?,
-        )?;
-        candidates.extend(
-            migration
-                .legacy_paths
-                .iter()
-                .map(|name| migration.content_dir.join(name)),
-        );
-        if directories.insert(&migration.content_dir) {
-            for entry in std::fs::read_dir(&migration.content_dir)? {
-                let path = entry?.path();
-                if is_legacy_cache_file(&path)
-                    && !completed.contains(&path)
-                    && !remaining_assets(&path, &migration.content_dir, &mut remaining)
-                {
-                    keep_directories.insert(migration.content_dir.clone());
-                }
-            }
-        }
-    }
-    let keep = |path: &Path| {
-        path.parent()
-            .is_some_and(|parent| keep_directories.contains(parent))
-    };
-    // Assets go first. A failure then leaves the flat archive in place, and the next build
-    // picks the cleanup up again instead of orphaning assets nothing refers to.
-    let mut failure = None;
-    for path in candidates.difference(&remaining) {
-        if !keep(path)
-            && let Err(error) = remove_migrated_file(path)
-        {
-            failure.get_or_insert(error);
-        }
-    }
-    if failure.is_none() {
-        for path in completed {
-            if !keep(&path)
-                && let Err(error) = remove_migrated_file(&path)
-            {
-                failure.get_or_insert(error);
-            }
-        }
-    }
-    failure.map_or(Ok(()), Err)
-}
-
-/// Records the assets a flat archive that is not being migrated still references. Returns
-/// false when the archive cannot be attributed, so its directory keeps its legacy assets.
-fn remaining_assets(path: &Path, content_dir: &Path, remaining: &mut HashSet<PathBuf>) -> bool {
-    let data = match read_cache(path) {
-        Ok(data) => data,
-        Err(error) => {
-            eprintln!("warning: keeping this folder's legacy Bluesky assets: {error:#}");
-            return false;
-        }
-    };
-    for name in data.local_asset_filenames() {
-        if let Err(error) = asset_extension(name) {
-            eprintln!("warning: keeping this folder's legacy Bluesky assets: {error:#}");
-            return false;
-        }
-        remaining.insert(content_dir.join(name));
-    }
-    true
-}
-
-/// Removal is idempotent: a file an earlier attempt already deleted is not a failure.
-fn remove_migrated_file(path: &Path) -> anyhow::Result<()> {
+/// Removal is idempotent: a file that is already gone is not a failure.
+fn remove_file_idempotent(path: &Path) -> anyhow::Result<()> {
     match std::fs::remove_file(path) {
         Ok(()) => Ok(()),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
-        Err(error) => {
-            Err(error).with_context(|| format!("failed to remove migrated legacy file {path:?}"))
-        }
+        Err(error) => Err(error).with_context(|| format!("failed to remove {path:?}")),
     }
 }
 
@@ -527,11 +296,62 @@ fn asset_url(rkey: &str, filename: &str) -> String {
     format!("{ARCHIVE_DIRECTORY}/{rkey}/{filename}")
 }
 
+/// Resolves a site-root-relative shared avatar path against the content root.
+pub fn shared_asset_path(content_root: &Path, filename: &str) -> anyhow::Result<PathBuf> {
+    let relative = filename
+        .strip_prefix('/')
+        .and_then(|filename| filename.strip_prefix(&format!("{SHARED_AVATAR_DIRECTORY}/")))
+        .with_context(|| format!("unsafe shared asset path: {filename}"))?;
+    asset_extension(relative)?;
+    Ok(content_root.join(SHARED_AVATAR_DIRECTORY).join(relative))
+}
+
+/// Stores an author avatar once under the content root. Identical bytes share one file.
+fn store_shared_avatar(
+    content_root: &Path,
+    handle: &str,
+    bytes: &[u8],
+    ext: &str,
+) -> anyhow::Result<String> {
+    let digest = Sha256::digest(bytes);
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let mut hash = String::with_capacity(16);
+    for byte in &digest[..8] {
+        hash.push(HEX[(byte >> 4) as usize] as char);
+        hash.push(HEX[(byte & 0xf) as usize] as char);
+    }
+    let stem: String = handle
+        .chars()
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '_') {
+                c
+            } else {
+                '_'
+            }
+        })
+        .collect();
+    let relative = format!("{SHARED_AVATAR_DIRECTORY}/{stem}-{hash}.{ext}");
+    let path = content_root.join(&relative);
+    let parent = path.parent().context("shared avatar path has no parent")?;
+    std::fs::create_dir_all(parent)?;
+    // A content-addressed name with different bytes is a partial or corrupt write; replace it
+    // rather than failing every post by this author.
+    if path_exists(&path)? && read_regular_file(&path)? != bytes {
+        remove_file_idempotent(&path)?;
+    }
+    write_asset(&path, bytes)?;
+    Ok(format!("/{relative}"))
+}
+
 fn validate_cache_assets(
+    content_root: &Path,
     content_dir: &Path,
     rkey: &str,
     data: &BlueskyPostData,
 ) -> anyhow::Result<()> {
+    if let Some(filename) = &data.author_avatar_filename {
+        read_regular_file(&shared_asset_path(content_root, filename)?)?;
+    }
     for filename in data.local_asset_filenames() {
         let local = filename
             .strip_prefix(&format!("{ARCHIVE_DIRECTORY}/{rkey}/"))
@@ -638,10 +458,6 @@ fn cache_path(content_dir: &Path, rkey: &str) -> PathBuf {
         .join(ARCHIVE_DIRECTORY)
         .join(rkey)
         .join("post.json")
-}
-
-fn legacy_cache_path(content_dir: &Path, rkey: &str) -> PathBuf {
-    content_dir.join(format!("{LEGACY_CACHE_PREFIX}{rkey}.json"))
 }
 
 /// Resolves a handle to a DID. DID-based post URLs need no resolution.
@@ -816,6 +632,29 @@ fn fetch_image(
         }
     }
 
+    let (bytes, ext) = download_image(client, url, limit)?;
+    let filename = format!("{stem}.{ext}");
+    let path = archive_dir.join(&filename);
+    write_asset(&path, &bytes)?;
+    Ok(filename)
+}
+
+/// Fetches an author avatar into the shared store, deduplicated by its content.
+fn fetch_shared_avatar(
+    client: &Client,
+    url: &str,
+    content_root: &Path,
+    handle: &str,
+) -> anyhow::Result<String> {
+    let (bytes, ext) = download_image(client, url, MAX_AVATAR_SIZE)?;
+    store_shared_avatar(content_root, handle, &bytes, ext)
+}
+
+fn download_image(
+    client: &Client,
+    url: &str,
+    limit: u64,
+) -> anyhow::Result<(Vec<u8>, &'static str)> {
     let response = client
         .get(url)
         .send()
@@ -848,10 +687,7 @@ fn fetch_image(
         Some(ext) => ext,
         None => image_signature_extension(&bytes)?,
     };
-    let filename = format!("{stem}.{ext}");
-    let path = archive_dir.join(&filename);
-    write_asset(&path, &bytes)?;
-    Ok(filename)
+    Ok((bytes, ext))
 }
 
 fn image_extension(content_type: &str) -> anyhow::Result<&'static str> {
@@ -1076,71 +912,27 @@ mod tests {
         serde_json::from_value(old_cache_json()).unwrap()
     }
 
+    const SHARED_AVATAR: &str = "/_bluesky/avatars/example.test-0123456789abcdef.jpg";
+
     fn archive_cache() -> BlueskyPostData {
         let mut cached = old_cache();
-        cached.author_avatar_filename = Some(asset_url("3test", "avatar.jpg"));
+        cached.author_avatar_filename = Some(SHARED_AVATAR.into());
         cached
     }
 
     fn save_archive(dir: &Path, cached: &BlueskyPostData) -> PathBuf {
         ensure_archive_directory(dir, "3test").unwrap();
+        if let Some(filename) = &cached.author_avatar_filename {
+            let path = shared_asset_path(dir, filename).unwrap();
+            std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+            std::fs::write(path, filename.as_bytes()).unwrap();
+        }
         for name in cached.local_asset_filenames() {
             std::fs::write(dir.join(name), name.as_bytes()).unwrap();
         }
         let path = cache_path(dir, "3test");
         write_cache(&path, cached).unwrap();
         path
-    }
-
-    fn flat_cache(dir: &Path, rkey: &str, image: bool) -> Value {
-        let mut json = old_cache_json();
-        json["url"] = POST_URL.replace("3test", rkey).into();
-        json["media_version"] = MEDIA_VERSION.into();
-        json["images"] = if image {
-            json!([{
-                "filename": format!("bluesky-{rkey}-0.webp"),
-                "alt": "Preserved image alt",
-                "width": 1234,
-                "height": 567
-            }])
-        } else {
-            json!([])
-        };
-        json["video"] = json!({
-            "playlist": "https://video.test/preserved.m3u8",
-            "thumbnail": {
-                "filename": format!("bluesky-{rkey}-poster.png"),
-                "alt": "Preserved poster alt",
-                "width": 1920,
-                "height": 1080
-            },
-            "alt": "Preserved video alt",
-            "width": 1920,
-            "height": 1080
-        });
-        json["fetched_at"] = "2025-01-02T01:02:03.123456789+00:00".into();
-        json["future_archive_field"] = json!({"nested": [null, true, 123, "unchanged"]});
-        let cached: BlueskyPostData = serde_json::from_value(json.clone()).unwrap();
-        for filename in cached.local_asset_filenames() {
-            std::fs::write(dir.join(filename), format!("original bytes: {filename}\0")).unwrap();
-        }
-        write_cache(&legacy_cache_path(dir, rkey), &json).unwrap();
-        json
-    }
-
-    /// A cache from before media support: no images, no video and no media version, so the
-    /// build that migrates it also upgrades it.
-    fn flat_text_only_cache(dir: &Path, rkey: &str) -> Value {
-        let mut json = old_cache_json();
-        json["url"] = POST_URL.replace("3test", rkey).into();
-        json["images"] = json!([]);
-        json["video"] = Value::Null;
-        let cached: BlueskyPostData = serde_json::from_value(json.clone()).unwrap();
-        for filename in cached.local_asset_filenames() {
-            std::fs::write(dir.join(filename), format!("original bytes: {filename}\0")).unwrap();
-        }
-        write_cache(&legacy_cache_path(dir, rkey), &json).unwrap();
-        json
     }
 
     fn image_embed() -> Value {
@@ -1414,7 +1206,32 @@ mod tests {
     }
 
     #[test]
-    fn local_asset_filenames_include_avatar_images_and_video_poster() {
+    fn shared_avatars_dedupe_by_content_and_keep_old_versions() {
+        let dir = TestDir::new();
+        let original = store_shared_avatar(&dir.0, "example.test", b"original", "webp").unwrap();
+        let duplicate = store_shared_avatar(&dir.0, "example.test", b"original", "webp").unwrap();
+        let changed = store_shared_avatar(&dir.0, "example.test", b"changed", "webp").unwrap();
+
+        assert_eq!(original, duplicate);
+        assert_ne!(original, changed);
+        assert_eq!(
+            std::fs::read(shared_asset_path(&dir.0, &original).unwrap()).unwrap(),
+            b"original"
+        );
+        assert_eq!(
+            std::fs::read(shared_asset_path(&dir.0, &changed).unwrap()).unwrap(),
+            b"changed"
+        );
+        assert_eq!(
+            std::fs::read_dir(dir.0.join(SHARED_AVATAR_DIRECTORY))
+                .unwrap()
+                .count(),
+            2
+        );
+    }
+
+    #[test]
+    fn asset_filenames_include_shared_avatar_images_and_video_poster() {
         let mut cached = archive_cache();
         cached.images = cache_media_with(post_view(image_embed()).embed, |_, stem| {
             Ok(asset_url("3test", &format!("{stem}.png")))
@@ -1427,9 +1244,18 @@ mod tests {
         .unwrap()
         .video;
         assert_eq!(
+            cached.asset_filenames().collect::<Vec<_>>(),
+            [
+                SHARED_AVATAR,
+                "_bluesky/3test/image-0.png",
+                "_bluesky/3test/image-1.png",
+                "_bluesky/3test/poster.jpg"
+            ]
+        );
+        // Per-document assets exclude the shared avatar, which is copied once.
+        assert_eq!(
             cached.local_asset_filenames().collect::<Vec<_>>(),
             [
-                "_bluesky/3test/avatar.jpg",
                 "_bluesky/3test/image-0.png",
                 "_bluesky/3test/image-1.png",
                 "_bluesky/3test/poster.jpg"
@@ -1438,7 +1264,7 @@ mod tests {
         cached.author_avatar_filename = None;
         cached.images.clear();
         cached.video.as_mut().unwrap().thumbnail = None;
-        assert_eq!(cached.local_asset_filenames().count(), 0);
+        assert_eq!(cached.asset_filenames().count(), 0);
     }
 
     #[test]
@@ -1466,7 +1292,7 @@ mod tests {
         let cache_file = save_archive(&dir.0, &archive_cache());
         let posts = [(POST_URL.into(), dir.0.clone())];
         let mut calls = 0;
-        let result = ensure_posts_cached_with(&posts, |_, dir, cached| {
+        let result = ensure_posts_cached_with(&dir.0, &posts, |_, dir, cached| {
             calls += 1;
             let mut cached = cached.unwrap();
             enrich_media(&mut cached, post_view(image_embed()).embed, |embed| {
@@ -1489,7 +1315,7 @@ mod tests {
         assert_eq!(on_disk.media_version, MEDIA_VERSION);
         assert_eq!(on_disk.like_count, 7);
         assert_eq!(on_disk.images.len(), 2);
-        ensure_posts_cached_with(&posts, |_, _, _| panic!("cache upgraded twice")).unwrap();
+        ensure_posts_cached_with(&dir.0, &posts, |_, _, _| panic!("cache upgraded twice")).unwrap();
     }
 
     #[test]
@@ -1502,10 +1328,11 @@ mod tests {
         .unwrap()
         .video;
         let cache_file = save_archive(&dir.0, &cached);
-        let result = ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| {
-            panic!("existing media metadata must not trigger a request")
-        })
-        .unwrap();
+        let result =
+            ensure_posts_cached_with(&dir.0, &[(POST_URL.into(), dir.0.clone())], |_, _, _| {
+                panic!("existing media metadata must not trigger a request")
+            })
+            .unwrap();
         let key = (POST_URL.to_owned(), dir.0.clone());
         assert_eq!(result[&key].media_version, MEDIA_VERSION);
         assert_eq!(result[&key].video, cached.video);
@@ -1520,10 +1347,11 @@ mod tests {
         let dir = TestDir::new();
         let cache_file = save_archive(&dir.0, &archive_cache());
         let original = std::fs::read_to_string(&cache_file).unwrap();
-        let error = ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| {
-            anyhow::bail!("poster download failed")
-        })
-        .unwrap_err();
+        let error =
+            ensure_posts_cached_with(&dir.0, &[(POST_URL.into(), dir.0.clone())], |_, _, _| {
+                anyhow::bail!("poster download failed")
+            })
+            .unwrap_err();
         let error = format!("{error:#}");
         assert!(error.contains(POST_URL));
         assert!(error.contains("archived cache is unchanged"));
@@ -1541,13 +1369,13 @@ mod tests {
             (POST_URL.into(), first.0.clone()),
         ];
         let mut calls = 0;
-        let result = ensure_posts_cached_with(&posts, |_, dir, _| {
+        let result = ensure_posts_cached_with(&first.0, &posts, |_, dir, _| {
             calls += 1;
             let mut cached = old_cache();
             cached.text = format!("Archived post text {calls}");
-            let avatar_filename = asset_url("3test", "avatar.jpg");
+            let avatar_filename =
+                store_shared_avatar(&first.0, "example.test", b"avatar", "jpg").unwrap();
             let image_filename = asset_url("3test", "image-0.png");
-            std::fs::write(dir.join(&avatar_filename), b"avatar").unwrap();
             std::fs::write(dir.join(&image_filename), b"image").unwrap();
             cached.author_avatar_filename = Some(avatar_filename);
             cached.images.push(BlueskyImage {
@@ -1563,21 +1391,22 @@ mod tests {
         assert_eq!(calls, 2);
         assert_eq!(result.len(), 2);
 
-        for (index, dir) in [&first.0, &second.0].into_iter().enumerate() {
+        for dir in [&first.0, &second.0] {
             let key = (POST_URL.to_owned(), dir.clone());
             let post = &result[&key];
-            assert_eq!(post.text, format!("Archived post text {}", index + 1));
-            assert_eq!(
-                post.author_avatar_filename.as_deref(),
-                Some("_bluesky/3test/avatar.jpg")
+            assert!(
+                post.author_avatar_filename
+                    .as_deref()
+                    .is_some_and(|filename| filename.starts_with("/_bluesky/avatars/"))
             );
             assert_eq!(post.images[0].filename, "_bluesky/3test/image-0.png");
             assert_eq!(std::fs::read_dir(dir).unwrap().count(), 1);
+            // post.json and the image; the avatar now lives in the shared store.
             assert_eq!(
                 std::fs::read_dir(dir.join("_bluesky/3test"))
                     .unwrap()
                     .count(),
-                3
+                2
             );
             assert!(cache_path(dir, "3test").is_file());
             for filename in post.local_asset_filenames() {
@@ -1587,272 +1416,16 @@ mod tests {
                 );
             }
         }
-        ensure_posts_cached_with(&posts, |_, _, _| panic!("cached post fetched again")).unwrap();
-    }
-
-    #[test]
-    fn migration_preserves_raw_json_and_asset_bytes_without_network_and_is_idempotent() {
-        let dir = TestDir::new();
-        let nested = dir.0.join("notes/nested/source");
-        std::fs::create_dir_all(&nested).unwrap();
-        let original = flat_cache(&nested, "3test", true);
-        let original_data: BlueskyPostData = serde_json::from_value(original.clone()).unwrap();
-        let old_bytes: Vec<_> = original_data
-            .local_asset_filenames()
-            .map(|name| std::fs::read(nested.join(name)).unwrap())
-            .collect();
-        // An unrelated file with the same old prefix must never be swept up.
-        let unrelated = nested.join("bluesky-unrelated.jpg");
-        std::fs::write(&unrelated, b"unrelated").unwrap();
-        let posts = [(POST_URL.into(), nested.clone())];
-        let result =
-            ensure_posts_cached_with(&posts, |_, _, _| panic!("migration used network")).unwrap();
-        let post = &result[&(POST_URL.to_owned(), nested.clone())];
-        assert_eq!(
-            post.local_asset_filenames().collect::<Vec<_>>(),
-            [
-                "_bluesky/3test/avatar.jpg",
-                "_bluesky/3test/image-0.webp",
-                "_bluesky/3test/poster.png"
-            ]
-        );
-        for (name, bytes) in post.local_asset_filenames().zip(&old_bytes) {
-            assert_eq!(std::fs::read(nested.join(name)).unwrap(), *bytes);
-        }
-        let path = cache_path(&nested, "3test");
-        let saved = std::fs::read(&path).unwrap();
-        let mut migrated: Value = serde_json::from_slice(&saved).unwrap();
-        migrated["author_avatar_filename"] = original["author_avatar_filename"].clone();
-        migrated["images"][0]["filename"] = original["images"][0]["filename"].clone();
-        migrated["video"]["thumbnail"]["filename"] =
-            original["video"]["thumbnail"]["filename"].clone();
-        assert_eq!(migrated, original);
-        assert!(!legacy_cache_path(&nested, "3test").exists());
-        for name in original_data.local_asset_filenames() {
-            assert!(!nested.join(name).exists());
-        }
-        assert_eq!(std::fs::read(&unrelated).unwrap(), b"unrelated");
-        ensure_posts_cached_with(&posts, |_, _, _| panic!("repeat migration used network"))
-            .unwrap();
-        assert_eq!(std::fs::read(path).unwrap(), saved);
-        assert_eq!(std::fs::read_dir(nested).unwrap().count(), 2);
-    }
-
-    #[test]
-    fn shared_legacy_avatar_remains_until_last_flat_archive_is_migrated() {
-        let dir = TestDir::new();
-        flat_cache(&dir.0, "3test", true);
-        flat_cache(&dir.0, "second", false);
-        let avatar = dir.0.join("bluesky-did-plc-test.jpg");
-        let bytes = std::fs::read(&avatar).unwrap();
-        ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| {
-            panic!("network")
+        let shared = first.0.join("_bluesky/avatars");
+        assert_eq!(std::fs::read_dir(shared).unwrap().count(), 1);
+        ensure_posts_cached_with(&first.0, &posts, |_, _, _| {
+            panic!("cached post fetched again")
         })
         .unwrap();
-        assert_eq!(std::fs::read(&avatar).unwrap(), bytes);
-        assert!(legacy_cache_path(&dir.0, "second").is_file());
-        assert!(!legacy_cache_path(&dir.0, "3test").exists());
-        let second_url = POST_URL.replace("3test", "second");
-        ensure_posts_cached_with(&[(second_url, dir.0.clone())], |_, _, _| panic!("network"))
-            .unwrap();
-        assert!(!avatar.exists());
-        for key in ["3test", "second"] {
-            assert_eq!(
-                std::fs::read(dir.0.join(asset_url(key, "avatar.jpg"))).unwrap(),
-                bytes
-            );
-            assert!(!legacy_cache_path(&dir.0, key).exists());
-        }
     }
 
     #[test]
-    fn failed_migration_preserves_all_legacy_files_and_can_be_retried() {
-        for failure in ["missing", "asset conflict", "json conflict"] {
-            let dir = TestDir::new();
-            flat_cache(&dir.0, "3test", true);
-            flat_cache(&dir.0, "second", true);
-            let originals: Vec<_> = ["3test", "second"]
-                .into_iter()
-                .map(|rkey| {
-                    let path = legacy_cache_path(&dir.0, rkey);
-                    let bytes = std::fs::read(&path).unwrap();
-                    (path, bytes)
-                })
-                .collect();
-            let old_asset = dir.0.join("bluesky-second-0.webp");
-            let old_bytes = std::fs::read(&old_asset).unwrap();
-            let archive_dir = ensure_archive_directory(&dir.0, "second").unwrap();
-            let conflict = match failure {
-                "missing" => {
-                    std::fs::remove_file(&old_asset).unwrap();
-                    old_asset.clone()
-                }
-                "asset conflict" => archive_dir.join("image-0.webp"),
-                "json conflict" => archive_dir.join("post.json"),
-                _ => unreachable!(),
-            };
-            if failure == "asset conflict" {
-                std::fs::write(&conflict, b"conflicting bytes").unwrap();
-            } else if failure == "json conflict" {
-                std::fs::write(&conflict, b"{}").unwrap();
-            }
-            let posts = [
-                (POST_URL.into(), dir.0.clone()),
-                (POST_URL.replace("3test", "second"), dir.0.clone()),
-            ];
-            assert!(
-                ensure_posts_cached_with(&posts, |_, _, _| panic!(
-                    "network before migrations finished"
-                ))
-                .is_err()
-            );
-            // The first new archive may be complete, but nothing old is removed on failure.
-            assert!(cache_path(&dir.0, "3test").is_file());
-            for (path, bytes) in &originals {
-                assert_eq!(std::fs::read(path).unwrap(), *bytes);
-            }
-            assert!(dir.0.join("bluesky-did-plc-test.jpg").is_file());
-            assert!(dir.0.join("bluesky-3test-0.webp").is_file());
-            if failure == "missing" {
-                std::fs::write(&old_asset, &old_bytes).unwrap();
-            } else {
-                assert_eq!(std::fs::read(&old_asset).unwrap(), old_bytes);
-                assert_eq!(
-                    std::fs::read(&conflict).unwrap(),
-                    if failure == "asset conflict" {
-                        &b"conflicting bytes"[..]
-                    } else {
-                        &b"{}"[..]
-                    }
-                );
-                std::fs::remove_file(&conflict).unwrap();
-            }
-            ensure_posts_cached_with(&posts, |_, _, _| panic!("retry used network")).unwrap();
-            for (path, _) in originals {
-                assert!(!path.exists());
-            }
-            assert!(!dir.0.join("bluesky-did-plc-test.jpg").exists());
-        }
-    }
-
-    #[test]
-    fn legacy_text_only_archive_is_migrated_and_upgraded_in_one_build() {
-        let dir = TestDir::new();
-        let original = flat_text_only_cache(&dir.0, "3test");
-        let posts = [(POST_URL.into(), dir.0.clone())];
-        let upgrade = |_: &str, _: &Path, cached: Option<BlueskyPostData>| {
-            let mut data = cached.context("the migrated cache reaches the upgrade")?;
-            data.media_version = MEDIA_VERSION;
-            Ok(data)
-        };
-        let result = ensure_posts_cached_with(&posts, upgrade).unwrap();
-        assert_eq!(
-            result[&(POST_URL.to_owned(), dir.0.clone())].media_version,
-            MEDIA_VERSION
-        );
-        assert!(!legacy_cache_path(&dir.0, "3test").exists());
-        assert!(!dir.0.join("bluesky-did-plc-test.jpg").exists());
-        let saved = std::fs::read(cache_path(&dir.0, "3test")).unwrap();
-        let mut migrated: Value = serde_json::from_slice(&saved).unwrap();
-        migrated["author_avatar_filename"] = original["author_avatar_filename"].clone();
-        // The upgrade this build performed is the only change beyond the asset paths.
-        let mut expected = original.clone();
-        expected["media_version"] = MEDIA_VERSION.into();
-        assert_eq!(migrated, expected);
-        ensure_posts_cached_with(&posts, |_, _, _| panic!("second build used network")).unwrap();
-        assert_eq!(std::fs::read(cache_path(&dir.0, "3test")).unwrap(), saved);
-    }
-
-    #[test]
-    fn interrupted_build_after_upgrade_does_not_block_the_next_migration() {
-        let dir = TestDir::new();
-        flat_text_only_cache(&dir.0, "3test");
-        flat_text_only_cache(&dir.0, "second");
-        let posts = [
-            (POST_URL.into(), dir.0.clone()),
-            (POST_URL.replace("3test", "second"), dir.0.clone()),
-        ];
-        let upgrade = |url: &str, _: &Path, cached: Option<BlueskyPostData>| {
-            let mut data = cached.context("the migrated cache reaches the upgrade")?;
-            data.media_version = MEDIA_VERSION;
-            anyhow::ensure!(url.ends_with("3test"), "stop the build before cleanup");
-            Ok(data)
-        };
-        assert!(ensure_posts_cached_with(&posts, upgrade).is_err());
-        // The first archive was upgraded before the build stopped, and its flat archive is
-        // still there; the next build must finish the migration rather than call it a conflict.
-        assert!(cache_path(&dir.0, "3test").is_file());
-        assert!(legacy_cache_path(&dir.0, "3test").is_file());
-        ensure_posts_cached_with(&posts[..1], |_, _, cached| {
-            let mut data = cached.context("the upgraded cache is reused")?;
-            data.media_version = MEDIA_VERSION;
-            Ok(data)
-        })
-        .unwrap();
-        assert!(!legacy_cache_path(&dir.0, "3test").exists());
-        // The shared avatar is still referenced by the second, unmigrated archive.
-        assert!(dir.0.join("bluesky-did-plc-test.jpg").is_file());
-        assert!(legacy_cache_path(&dir.0, "second").is_file());
-    }
-
-    #[test]
-    fn unreadable_unrelated_flat_archive_keeps_its_directorys_legacy_assets() {
-        let dir = TestDir::new();
-        flat_cache(&dir.0, "3test", true);
-        std::fs::write(dir.0.join("bluesky-unrelated.json"), b"{ not json").unwrap();
-        ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| {
-            panic!("network")
-        })
-        .unwrap();
-        // Nothing in the directory can be attributed, so no legacy file is removed.
-        assert!(legacy_cache_path(&dir.0, "3test").is_file());
-        assert!(dir.0.join("bluesky-3test-0.webp").is_file());
-        assert!(dir.0.join("bluesky-did-plc-test.jpg").is_file());
-    }
-
-    #[test]
-    fn interrupted_cleanup_is_finished_by_the_next_build() {
-        let dir = TestDir::new();
-        flat_cache(&dir.0, "3test", true);
-        // A cleanup that copied the asset, removed the flat copy and then stopped.
-        std::fs::remove_file(dir.0.join("bluesky-did-plc-test.jpg")).unwrap();
-        ensure_archive_directory(&dir.0, "3test").unwrap();
-        std::fs::write(
-            dir.0.join(asset_url("3test", "avatar.jpg")),
-            b"original bytes: bluesky-did-plc-test.jpg\0",
-        )
-        .unwrap();
-        ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| {
-            panic!("network")
-        })
-        .unwrap();
-        assert!(!legacy_cache_path(&dir.0, "3test").exists());
-        assert!(!dir.0.join("bluesky-3test-0.webp").exists());
-        assert!(dir.0.join(asset_url("3test", "image-0.webp")).is_file());
-    }
-
-    #[test]
-    fn missing_first_legacy_asset_never_creates_a_new_cache_or_calls_network() {
-        let dir = TestDir::new();
-        flat_cache(&dir.0, "3test", true);
-        let original = std::fs::read(legacy_cache_path(&dir.0, "3test")).unwrap();
-        std::fs::remove_file(dir.0.join("bluesky-did-plc-test.jpg")).unwrap();
-        assert!(
-            ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| panic!(
-                "network"
-            ))
-            .is_err()
-        );
-        assert!(!cache_path(&dir.0, "3test").exists());
-        assert_eq!(
-            std::fs::read(legacy_cache_path(&dir.0, "3test")).unwrap(),
-            original
-        );
-        assert!(dir.0.join("bluesky-3test-0.webp").is_file());
-    }
-
-    #[test]
-    fn unsafe_legacy_and_nested_asset_paths_are_rejected_without_network() {
+    fn unsafe_avatar_paths_are_rejected_without_network() {
         for name in [
             "../outside.png",
             "/tmp/outside.png",
@@ -1863,87 +1436,26 @@ mod tests {
             "image.PNG",
             "_bluesky/other/image.png",
         ] {
-            for legacy in [true, false] {
-                let dir = TestDir::new();
-                let mut cached = archive_cache();
-                cached.media_version = MEDIA_VERSION;
-                cached.author_avatar_filename = Some(name.into());
-                let path = if legacy {
-                    legacy_cache_path(&dir.0, "3test")
-                } else {
-                    ensure_archive_directory(&dir.0, "3test").unwrap();
-                    cache_path(&dir.0, "3test")
-                };
-                write_cache(&path, &cached).unwrap();
-                let original = std::fs::read(&path).unwrap();
-                assert!(
-                    ensure_posts_cached_with(
-                        &[(POST_URL.into(), dir.0.clone())],
-                        |_, _, _| panic!("unsafe cache used network")
-                    )
-                    .is_err(),
-                    "{name}"
-                );
-                assert_eq!(std::fs::read(&path).unwrap(), original);
-            }
-        }
-    }
-
-    #[cfg(unix)]
-    #[test]
-    fn migration_rejects_symlink_directories_and_assets() {
-        use std::os::unix::fs::symlink;
-        for linked in ["directory", "source", "source with target", "target"] {
             let dir = TestDir::new();
-            let outside = TestDir::new();
-            flat_cache(&dir.0, "3test", true);
-            let original = std::fs::read(legacy_cache_path(&dir.0, "3test")).unwrap();
-            match linked {
-                "directory" => symlink(&outside.0, dir.0.join(ARCHIVE_DIRECTORY)).unwrap(),
-                "source" => {
-                    let path = dir.0.join("bluesky-3test-0.webp");
-                    std::fs::rename(&path, outside.0.join("image.webp")).unwrap();
-                    symlink(outside.0.join("image.webp"), path).unwrap();
-                }
-                "source with target" => {
-                    let path = dir.0.join("bluesky-3test-0.webp");
-                    let bytes = std::fs::read(&path).unwrap();
-                    std::fs::rename(&path, outside.0.join("image.webp")).unwrap();
-                    symlink(outside.0.join("image.webp"), &path).unwrap();
-                    let archive_dir = ensure_archive_directory(&dir.0, "3test").unwrap();
-                    std::fs::write(archive_dir.join("image-0.webp"), bytes).unwrap();
-                }
-                "target" => {
-                    let archive_dir = ensure_archive_directory(&dir.0, "3test").unwrap();
-                    std::fs::write(outside.0.join("image.webp"), b"untouched").unwrap();
-                    symlink(
-                        outside.0.join("image.webp"),
-                        archive_dir.join("image-0.webp"),
-                    )
-                    .unwrap();
-                }
-                _ => unreachable!(),
-            }
+            let mut cached = archive_cache();
+            cached.media_version = MEDIA_VERSION;
+            cached.author_avatar_filename = Some(name.into());
+            ensure_archive_directory(&dir.0, "3test").unwrap();
+            let path = cache_path(&dir.0, "3test");
+            write_cache(&path, &cached).unwrap();
+            let original = std::fs::read(&path).unwrap();
             assert!(
-                ensure_posts_cached_with(&[(POST_URL.into(), dir.0.clone())], |_, _, _| panic!(
-                    "network"
-                ))
-                .is_err()
+                ensure_posts_cached_with(
+                    &dir.0,
+                    &[(POST_URL.into(), dir.0.clone())],
+                    |_, _, _| panic!("unsafe cache used network")
+                )
+                .is_err(),
+                "{name}"
             );
-            assert_eq!(
-                std::fs::read(legacy_cache_path(&dir.0, "3test")).unwrap(),
-                original
-            );
-            assert!(!outside.0.join("3test").exists());
-            if linked == "target" {
-                assert_eq!(
-                    std::fs::read(outside.0.join("image.webp")).unwrap(),
-                    b"untouched"
-                );
-            }
+            assert_eq!(std::fs::read(&path).unwrap(), original);
         }
     }
-
     #[test]
     fn fresh_media_fetches_write_only_inside_archive_with_semantic_filenames() {
         for (embed, stem) in [
@@ -1960,7 +1472,7 @@ mod tests {
                 embed["media"]["thumbnail"] = url.into();
             }
             let posts = [(POST_URL.into(), dir.0.clone())];
-            let result = ensure_posts_cached_with(&posts, |url, source, cached| {
+            let result = ensure_posts_cached_with(&dir.0, &posts, |url, source, cached| {
                 assert!(cached.is_none());
                 let mut post = post_view(embed.clone());
                 let media = cache_media(&test_client(), post.embed.take(), source, "3test")?;
@@ -1981,7 +1493,6 @@ mod tests {
                 2
             );
             assert!(cache_path(&dir.0, "3test").is_file());
-            assert!(!legacy_cache_path(&dir.0, "3test").exists());
         }
     }
 

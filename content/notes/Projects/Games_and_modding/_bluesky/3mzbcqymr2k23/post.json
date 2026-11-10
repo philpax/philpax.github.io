@@ -2,7 +2,7 @@
   "url": "https://bsky.app/profile/philpax.me/post/3mzbcqymr2k23",
   "author_display_name": "philpax",
   "author_handle": "philpax.me",
-  "author_avatar_filename": "_bluesky/3mzbcqymr2k23/avatar.webp",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
   "text": "~24 hour update: 13% decompiled (but only 1.27% bytecode: that is, we haven't hit any _real_ logic yet)\n\nrotated 6x Qwen 3.8 Flash Next in on the 5090 using Basalt (github.com/jesdga95/bas...); it is definitely more capable than the 27B\n\nstill starting to see a ceiling to what's viable here, though",
   "facets": [
     {

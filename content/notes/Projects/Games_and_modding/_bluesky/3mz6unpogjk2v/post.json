@@ -2,7 +2,7 @@
   "url": "https://bsky.app/profile/philpax.me/post/3mz6unpogjk2v",
   "author_display_name": "philpax",
   "author_handle": "philpax.me",
-  "author_avatar_filename": "_bluesky/3mz6unpogjk2v/avatar.webp",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
   "text": "decided to put my GPUs where my mouth is\n\n64 hours ago, I started decompiling Just Cause 2 using a bespoke harness, three xx90-class GPUs, two computers, and (now) 22 parallel sessions of Qwen 3.8 27B with 45K context each\n\nI now have 6% of functions (note: <1% bytecode) decompiled w/ byte-matching",
   "facets": [],
   "created_at": "2026-10-31T17:58:01.365Z",

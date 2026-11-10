@@ -173,18 +173,7 @@ impl Content {
     }
 
     pub fn document_asset_paths(&self, document: &Document) -> Vec<PathBuf> {
-        // A cache migration can remove flat assets collected by the initial scan.
-        let mut paths = document
-            .files
-            .iter()
-            .filter(|path| {
-                !path
-                    .file_name()
-                    .is_some_and(|name| name.to_string_lossy().starts_with("bluesky-"))
-                    || path.is_file()
-            })
-            .cloned()
-            .collect::<Vec<_>>();
+        let mut paths = document.files.clone();
         let directory = document.source_path.parent().unwrap();
         let mut posts = Vec::new();
         extract_bluesky_urls(&document.description, directory, &mut posts);
@@ -430,7 +419,10 @@ impl Content {
                 extract_bluesky_urls(rest, &content_dir, &mut posts);
             }
         }
-        paxsite_content::bluesky::ensure_posts_cached(&posts)
+        paxsite_content::bluesky::ensure_posts_cached(
+            Path::new(paxsite_content::CONTENT_DIR),
+            &posts,
+        )
     }
 }
 
@@ -507,8 +499,6 @@ mod tests {
         let mut content = Content::empty();
         let mut doc = Document::empty();
         doc.base.source_path = PathBuf::from("content/notes/Projects/example.md");
-        let avatar = PathBuf::from("content/notes/Projects/_bluesky/123/avatar.webp");
-        doc.base.files = vec![avatar.clone()];
         let url = "https://bsky.app/profile/example.test/post/123";
         let embed = format!("<BlueskyPost post=\"{url}\" />");
         doc.description = parse_markdown(&embed);
@@ -519,7 +509,7 @@ mod tests {
                 "url": url,
                 "author_display_name": "Example",
                 "author_handle": "example.test",
-                "author_avatar_filename": "_bluesky/123/avatar.webp",
+                "author_avatar_filename": "/_bluesky/avatars/example.test-0123456789abcdef.webp",
                 "text": "Archived text",
                 "facets": [],
                 "created_at": "2026-01-01T00:00:00Z",
@@ -534,10 +524,10 @@ mod tests {
             }))
             .unwrap(),
         );
+        // Shared avatars are copied once, not into each document's output directory.
         assert_eq!(
             content.document_asset_paths(&doc),
             vec![
-                avatar,
                 PathBuf::from("content/notes/Projects/_bluesky/123/image-0.webp"),
                 PathBuf::from("content/notes/Projects/_bluesky/123/poster.jpg"),
             ]
@@ -546,7 +536,8 @@ mod tests {
         other.base.source_path = PathBuf::from("content/notes/Other/example.md");
         other.description = parse_markdown(&embed);
         let mut other_post = content.bluesky_posts.values().next().unwrap().clone();
-        other_post.author_avatar_filename = Some("different-avatar.jpg".into());
+        other_post.author_avatar_filename =
+            Some("/_bluesky/avatars/other.test-fedcba9876543210.webp".into());
         other_post.images[0].filename = "different-image.png".into();
         other_post.video = None;
         content.bluesky_posts.insert(
@@ -558,40 +549,12 @@ mod tests {
         );
         assert_eq!(
             content.document_asset_paths(&other),
-            vec![
-                PathBuf::from("content/notes/Other/different-avatar.jpg"),
-                PathBuf::from("content/notes/Other/different-image.png"),
-            ]
+            vec![PathBuf::from("content/notes/Other/different-image.png")]
         );
         doc.description = parse_markdown("");
-        assert_eq!(content.document_asset_paths(&doc).len(), 3);
+        assert_eq!(content.document_asset_paths(&doc).len(), 2);
         doc.rest_of_content = None;
         assert_eq!(content.document_asset_paths(&doc), doc.files);
-    }
-
-    #[test]
-    fn migrated_flat_assets_do_not_survive_the_initial_document_scan() {
-        let content = Content::empty();
-        let mut doc = Document::empty();
-        let directory = std::env::temp_dir().join(format!(
-            "paxsite-migrated-assets-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos(),
-        ));
-        std::fs::create_dir(&directory).unwrap();
-        doc.base.source_path = directory.join("example.md");
-        let removed = directory.join("bluesky-old-0.webp");
-        let retained = directory.join("bluesky-other-0.webp");
-        let ordinary = directory.join("ordinary-image.webp");
-        std::fs::write(&retained, b"image").unwrap();
-        doc.base.files = vec![removed, retained.clone(), ordinary.clone()];
-        let mut expected = vec![retained, ordinary];
-        expected.sort();
-        assert_eq!(content.document_asset_paths(&doc), expected);
-        std::fs::remove_dir_all(directory).unwrap();
     }
 
     #[test]

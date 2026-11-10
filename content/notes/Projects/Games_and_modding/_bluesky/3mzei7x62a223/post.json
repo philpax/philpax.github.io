@@ -2,7 +2,7 @@
   "url": "https://bsky.app/profile/philpax.me/post/3mzei7x62a223",
   "author_display_name": "philpax",
   "author_handle": "philpax.me",
-  "author_avatar_filename": "_bluesky/3mzei7x62a223/avatar.webp",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
   "text": "to help debug #jc3vr, I record traces that contain logs + all body pose information + etc\n\nbefore I went to sleep last night, I idly asked Claude about a way to visualise these traces; I woke up this morning, and it had written an exporter to @rerun.io overnight",
   "facets": [
     {
