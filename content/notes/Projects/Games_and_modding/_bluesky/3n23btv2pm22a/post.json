@@ -1,0 +1,24 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3n23btv2pm22a",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
+  "text": "to celebrate exactly 14 days since project formation: token counts\n\nbillions must decompile",
+  "facets": [],
+  "created_at": "2026-11-12T01:08:39.656Z",
+  "like_count": 17,
+  "reply_count": 4,
+  "repost_count": 1,
+  "quote_count": 0,
+  "fetched_at": "2026-11-12T03:19:07.269087344+00:00",
+  "images": [
+    {
+      "filename": "_bluesky/3n23btv2pm22a/image-0.webp",
+      "alt": "Total 1576.8M in, 6468.3M cached, 959.1M out\nQwen 452.9M in, 838.2M cached, 243.9M out\nGLM 319.0M in, 1655.7M cached, 331.3M out\nDeepSeek 353.4M in, 1376.0M cached, 199.7M out\nGPT 262.6M in, 1922.5M cached, 96.7M out\nKimi 188.9M in, 675.9M cached, 87.5M out",
+      "width": 1018,
+      "height": 362
+    }
+  ],
+  "video": null,
+  "media_version": 1
+}
