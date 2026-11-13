@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3n25efi6mwc2d",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
+  "text": "real virtual flight controls! #jc3vr",
+  "facets": [
+    {
+      "byte_start": 30,
+      "byte_end": 36,
+      "features": [
+        {
+          "Tag": {
+            "tag": "jc3vr"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-12T20:59:37.092Z",
+  "like_count": 17,
+  "reply_count": 1,
+  "repost_count": 0,
+  "quote_count": 0,
+  "fetched_at": "2026-11-13T00:52:41.733842305+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreihp4xz6jtpab7vk7lc5khdvypyz7tqspx24addqyvriwhesmo5iji/playlist.m3u8",
+    "thumbnail": {
+      "filename": "_bluesky/3n25efi6mwc2d/poster.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}
