@@ -1,0 +1,40 @@
+{
+  "url": "https://bsky.app/profile/philpax.me/post/3n2cir2ub2k2z",
+  "author_display_name": "philpax",
+  "author_handle": "philpax.me",
+  "author_avatar_filename": "/_bluesky/avatars/philpax.me-24ff12e036c78223.webp",
+  "text": "disposing of the evidence #jc3vr",
+  "facets": [
+    {
+      "byte_start": 26,
+      "byte_end": 32,
+      "features": [
+        {
+          "Tag": {
+            "tag": "jc3vr"
+          }
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-14T22:00:59.435Z",
+  "like_count": 12,
+  "reply_count": 0,
+  "repost_count": 0,
+  "quote_count": 1,
+  "fetched_at": "2026-11-15T23:57:04.564228125+00:00",
+  "images": [],
+  "video": {
+    "playlist": "https://video.bsky.app/watch/did%3Aplc%3Awamidydbgu3u6fk3yckaglnz/bafkreidkmzyi55d7grap6h6tyqsfqfdp4ao2ffhntww475bwuyjoyh3e4e/playlist.m3u8",
+    "thumbnail": {
+      "filename": "_bluesky/3n2cir2ub2k2z/poster.jpg",
+      "alt": "",
+      "width": 1920,
+      "height": 1080
+    },
+    "alt": "",
+    "width": 1920,
+    "height": 1080
+  },
+  "media_version": 1
+}
